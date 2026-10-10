@@ -31,6 +31,7 @@ var annotated_dup =
       [ "ActivationModule", "classpulsatrix_1_1ActivationModule.html", "classpulsatrix_1_1ActivationModule" ],
       [ "ActivationSnapshot", "classpulsatrix_1_1ActivationSnapshot.html", "classpulsatrix_1_1ActivationSnapshot" ],
       [ "AdamOptimizer", "classpulsatrix_1_1AdamOptimizer.html", "classpulsatrix_1_1AdamOptimizer" ],
+      [ "AdamTensorStep", "structpulsatrix_1_1AdamTensorStep.html", "structpulsatrix_1_1AdamTensorStep" ],
       [ "AdamWOptimizer", "classpulsatrix_1_1AdamWOptimizer.html", "classpulsatrix_1_1AdamWOptimizer" ],
       [ "AdaptiveAvgPool2DModule", "classpulsatrix_1_1AdaptiveAvgPool2DModule.html", "classpulsatrix_1_1AdaptiveAvgPool2DModule" ],
       [ "AddedToken", "structpulsatrix_1_1AddedToken.html", "structpulsatrix_1_1AddedToken" ],

@@ -171,6 +171,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:ac06276c01c2b60b411140ff2391ca591" id="r_ac06276c01c2b60b411140ff2391ca591"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1CUDABackend.html#ac06276c01c2b60b411140ff2391ca591">add_row_vector</a> (const float *in, const float *row, float *out, size_t rows, size_t cols) override</td></tr>
 <tr class="memdesc:ac06276c01c2b60b411140ff2391ca591"><td class="mdescLeft">&#160;</td><td class="mdescRight">Broadcast row add: out[i][j] = in[i][j] + row[j] for a (rows x cols) matrix.  <br /></td></tr>
 <tr class="separator:ac06276c01c2b60b411140ff2391ca591"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aed5d7d58834dc3a3b9463e7c28d9a80d" id="r_aed5d7d58834dc3a3b9463e7c28d9a80d"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1CUDABackend.html#aed5d7d58834dc3a3b9463e7c28d9a80d">add_row_vector_relu</a> (const float *in, const float *row, float *z, float *out, size_t rows, size_t cols) override</td></tr>
+<tr class="memdesc:aed5d7d58834dc3a3b9463e7c28d9a80d"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="classpulsatrix_1_1CUDABackend.html#ac06276c01c2b60b411140ff2391ca591" title="Broadcast row add: out[i][j] = in[i][j] + row[j] for a (rows x cols) matrix.">add_row_vector()</a> into z, then ReLU of z into out: a Linear layer's bias and the ReLU after it (HIP-6). Both are written, since the ReLU's backward and <a class="el" href="classpulsatrix_1_1LRP.html" title="Whole-model LRP: runs the forward pass, seeds relevance at the chosen output(s), and propagates it to...">LRP</a> read z.  <br /></td></tr>
+<tr class="separator:aed5d7d58834dc3a3b9463e7c28d9a80d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7166d2b0e2684edabb1b143b5eb837f4" id="r_a7166d2b0e2684edabb1b143b5eb837f4"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1CUDABackend.html#a7166d2b0e2684edabb1b143b5eb837f4">elementwise_backward</a> (<a class="el" href="namespacepulsatrix.html#afec27fa326532e4ad62b32d54558b503">ElementwiseOp</a> op, const float *x, const float *grad_out, float *grad_in, size_t n) override</td></tr>
 <tr class="memdesc:a7166d2b0e2684edabb1b143b5eb837f4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Activation backward: grad_in[i] = grad_out[i] * f'(x[i]), f = op, x = the forward <em>input</em>.  <br /></td></tr>
 <tr class="separator:a7166d2b0e2684edabb1b143b5eb837f4"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -180,6 +183,18 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:aaff34c8332b931c73e0698f630fb35ba" id="r_aaff34c8332b931c73e0698f630fb35ba"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1CUDABackend.html#aaff34c8332b931c73e0698f630fb35ba">dot</a> (const float *a, const float *b, size_t n) override</td></tr>
 <tr class="memdesc:aaff34c8332b931c73e0698f630fb35ba"><td class="mdescLeft">&#160;</td><td class="mdescRight">Dot product sum_i a[i]*b[i], returned to the host.  <br /></td></tr>
 <tr class="separator:aaff34c8332b931c73e0698f630fb35ba"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a49b6de65afd095dc18299dd52bc2a531" id="r_a49b6de65afd095dc18299dd52bc2a531"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1CUDABackend.html#a49b6de65afd095dc18299dd52bc2a531">gemm_strided_batched</a> (const float *a, bool transpose_a, size_t stride_a, const float *b, bool transpose_b, size_t stride_b, float *out, size_t stride_out, size_t m, size_t k, size_t n, size_t batch, float beta=0.0f) override</td></tr>
+<tr class="memdesc:a49b6de65afd095dc18299dd52bc2a531"><td class="mdescLeft">&#160;</td><td class="mdescRight"><code>batch</code> independent <a class="el" href="classpulsatrix_1_1CUDABackend.html#a8e15a31ce782d6c2a913c2542152db3a" title="General row-major matrix multiply: out = op(A) * op(B) + beta * out.">gemm_ex()</a> products, out_i = op(A_i) op(B_i) (+ beta out_i), with A_i = a + i * stride_a and likewise for b and out; a stride of 0 shares one matrix (HIP-6: a convolution's kernel against every example's patches).  <br /></td></tr>
+<tr class="separator:a49b6de65afd095dc18299dd52bc2a531"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a617cb7cdbf2bbe8d458724b91c2ca60d" id="r_a617cb7cdbf2bbe8d458724b91c2ca60d"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1CUDABackend.html#a617cb7cdbf2bbe8d458724b91c2ca60d">accumulate_parts</a> (const float *parts, size_t count, size_t n, float *acc) override</td></tr>
+<tr class="memdesc:a617cb7cdbf2bbe8d458724b91c2ca60d"><td class="mdescLeft">&#160;</td><td class="mdescRight">acc += parts[0], then += parts[1], ... (count blocks of n floats, in order): the sums accumulating one gradient per example gave, one <a class="el" href="classpulsatrix_1_1CUDABackend.html#abef98d1540502382189c08c3e525d86a" title="Elementwise binary addition: out[i] = a[i] + b[i] for i in [0, n).">add()</a> each (HIP-6).  <br /></td></tr>
+<tr class="separator:a617cb7cdbf2bbe8d458724b91c2ca60d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a44b7489d4a747916b45f0449e7b1c2fe" id="r_a44b7489d4a747916b45f0449e7b1c2fe"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1CUDABackend.html#a44b7489d4a747916b45f0449e7b1c2fe">dot_into</a> (const float *a, const float *b, size_t n, float *out) override</td></tr>
+<tr class="memdesc:a44b7489d4a747916b45f0449e7b1c2fe"><td class="mdescLeft">&#160;</td><td class="mdescRight">No wait: the result stays on the device (HIP-6).  <br /></td></tr>
+<tr class="separator:a44b7489d4a747916b45f0449e7b1c2fe"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0f45940c274c0cc4e110da0035231c48" id="r_a0f45940c274c0cc4e110da0035231c48"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1CUDABackend.html#a0f45940c274c0cc4e110da0035231c48">adam_step_multi</a> (const <a class="el" href="structpulsatrix_1_1AdamTensorStep.html">AdamTensorStep</a> *tensors, size_t count, float beta1, float beta2, float eps) override</td></tr>
+<tr class="memdesc:a0f45940c274c0cc4e110da0035231c48"><td class="mdescLeft">&#160;</td><td class="mdescRight">One launch per 32 tensors, the table passed as kernel arguments (HIP-6).  <br /></td></tr>
+<tr class="separator:a0f45940c274c0cc4e110da0035231c48"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aac38739d4442961adae210913e37a29d" id="r_aac38739d4442961adae210913e37a29d"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1CUDABackend.html#aac38739d4442961adae210913e37a29d">softmax_rows</a> (const float *in, float *out, size_t rows, size_t cols) override</td></tr>
 <tr class="memdesc:aac38739d4442961adae210913e37a29d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Row-wise softmax of a (rows x cols) matrix, max-subtracted. out may alias in.  <br /></td></tr>
 <tr class="separator:aac38739d4442961adae210913e37a29d"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -418,6 +433,59 @@ Modules, optimizers, losses and <a class="el" href="classpulsatrix_1_1LRP.html" 
 </div>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
+<a id="a617cb7cdbf2bbe8d458724b91c2ca60d" name="a617cb7cdbf2bbe8d458724b91c2ca60d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a617cb7cdbf2bbe8d458724b91c2ca60d">&#9670;&#160;</a></span>accumulate_parts()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void pulsatrix::CUDABackend::accumulate_parts </td>
+          <td>(</td>
+          <td class="paramtype">const float *&#160;</td>
+          <td class="paramname"><em>parts</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">size_t&#160;</td>
+          <td class="paramname"><em>count</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">size_t&#160;</td>
+          <td class="paramname"><em>n</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">float *&#160;</td>
+          <td class="paramname"><em>acc</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">override</span><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>acc += parts[0], then += parts[1], ... (count blocks of n floats, in order): the sums accumulating one gradient per example gave, one <a class="el" href="classpulsatrix_1_1CUDABackend.html#abef98d1540502382189c08c3e525d86a" title="Elementwise binary addition: out[i] = a[i] + b[i] for i in [0, n).">add()</a> each (HIP-6). </p>
+<dl class="section note"><dt>Note</dt><dd>The default is those <a class="el" href="classpulsatrix_1_1CUDABackend.html#abef98d1540502382189c08c3e525d86a" title="Elementwise binary addition: out[i] = a[i] + b[i] for i in [0, n).">add()</a> calls; GPU backends do it in one launch, each element adding the parts in the same order. </dd></dl>
+
+<p>Reimplemented from <a class="el" href="classpulsatrix_1_1DeviceBackend.html#ace233eba0422e8ad9890ae2fb4a1886f">pulsatrix::DeviceBackend</a>.</p>
+
+</div>
+</div>
 <a id="a1b81fbc1960fcad6ce2c8c0bb3f1c180" name="a1b81fbc1960fcad6ce2c8c0bb3f1c180"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a1b81fbc1960fcad6ce2c8c0bb3f1c180">&#9670;&#160;</a></span>accumulate_rows()</h2>
 
@@ -570,6 +638,64 @@ Modules, optimizers, losses and <a class="el" href="classpulsatrix_1_1LRP.html" 
 <dl class="section note"><dt>Note</dt><dd>Same per-element expression order as the pre-campaign <a class="el" href="classpulsatrix_1_1AdamOptimizer.html" title="Adam (Kingma &amp; Ba, 2015): per-parameter moving averages of gradient (m) and squared gradient (v),...">AdamOptimizer</a> host loop: m = b1*m + (1-b1)*g; v = b2*v + (1-b2)*g*g; p -= lr * (m/bc1) / (sqrt(v/bc2) + eps). </dd></dl>
 
 <p>Implements <a class="el" href="classpulsatrix_1_1DeviceBackend.html#af911088cd492ed287da35639ea846eca">pulsatrix::DeviceBackend</a>.</p>
+
+</div>
+</div>
+<a id="a0f45940c274c0cc4e110da0035231c48" name="a0f45940c274c0cc4e110da0035231c48"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0f45940c274c0cc4e110da0035231c48">&#9670;&#160;</a></span>adam_step_multi()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void pulsatrix::CUDABackend::adam_step_multi </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="structpulsatrix_1_1AdamTensorStep.html">AdamTensorStep</a> *&#160;</td>
+          <td class="paramname"><em>tensors</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">size_t&#160;</td>
+          <td class="paramname"><em>count</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">float&#160;</td>
+          <td class="paramname"><em>beta1</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">float&#160;</td>
+          <td class="paramname"><em>beta2</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">float&#160;</td>
+          <td class="paramname"><em>eps</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">override</span><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>One launch per 32 tensors, the table passed as kernel arguments (HIP-6). </p>
+
+<p>Reimplemented from <a class="el" href="classpulsatrix_1_1DeviceBackend.html#ac0949da79b5be2a5ad00a6c6d89b3b5a">pulsatrix::DeviceBackend</a>.</p>
 
 </div>
 </div>
@@ -757,6 +883,71 @@ Modules, optimizers, losses and <a class="el" href="classpulsatrix_1_1LRP.html" 
 <dl class="section note"><dt>Note</dt><dd>out may alias in. </dd></dl>
 
 <p>Implements <a class="el" href="classpulsatrix_1_1DeviceBackend.html#ad9951a0cf9c89db339f37942954982a2">pulsatrix::DeviceBackend</a>.</p>
+
+</div>
+</div>
+<a id="aed5d7d58834dc3a3b9463e7c28d9a80d" name="aed5d7d58834dc3a3b9463e7c28d9a80d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aed5d7d58834dc3a3b9463e7c28d9a80d">&#9670;&#160;</a></span>add_row_vector_relu()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void pulsatrix::CUDABackend::add_row_vector_relu </td>
+          <td>(</td>
+          <td class="paramtype">const float *&#160;</td>
+          <td class="paramname"><em>in</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const float *&#160;</td>
+          <td class="paramname"><em>row</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">float *&#160;</td>
+          <td class="paramname"><em>z</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">float *&#160;</td>
+          <td class="paramname"><em>out</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">size_t&#160;</td>
+          <td class="paramname"><em>rows</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">size_t&#160;</td>
+          <td class="paramname"><em>cols</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">override</span><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p><a class="el" href="classpulsatrix_1_1CUDABackend.html#ac06276c01c2b60b411140ff2391ca591" title="Broadcast row add: out[i][j] = in[i][j] + row[j] for a (rows x cols) matrix.">add_row_vector()</a> into z, then ReLU of z into out: a Linear layer's bias and the ReLU after it (HIP-6). Both are written, since the ReLU's backward and <a class="el" href="classpulsatrix_1_1LRP.html" title="Whole-model LRP: runs the forward pass, seeds relevance at the chosen output(s), and propagates it to...">LRP</a> read z. </p>
+<dl class="section note"><dt>Note</dt><dd>The default is those two calls; GPU backends do both in one launch with the same arithmetic, so the values are identical. </dd></dl>
+
+<p>Reimplemented from <a class="el" href="classpulsatrix_1_1DeviceBackend.html#afd7ac06cb202fdbbeb5cd81b3db6df68">pulsatrix::DeviceBackend</a>.</p>
 
 </div>
 </div>
@@ -2193,6 +2384,58 @@ Modules, optimizers, losses and <a class="el" href="classpulsatrix_1_1LRP.html" 
 
 </div>
 </div>
+<a id="a44b7489d4a747916b45f0449e7b1c2fe" name="a44b7489d4a747916b45f0449e7b1c2fe"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a44b7489d4a747916b45f0449e7b1c2fe">&#9670;&#160;</a></span>dot_into()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void pulsatrix::CUDABackend::dot_into </td>
+          <td>(</td>
+          <td class="paramtype">const float *&#160;</td>
+          <td class="paramname"><em>a</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const float *&#160;</td>
+          <td class="paramname"><em>b</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">size_t&#160;</td>
+          <td class="paramname"><em>n</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">float *&#160;</td>
+          <td class="paramname"><em>out</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">override</span><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>No wait: the result stays on the device (HIP-6). </p>
+
+<p>Reimplemented from <a class="el" href="classpulsatrix_1_1DeviceBackend.html#a74e97354cabb6f5b0decc2a2738edab7">pulsatrix::DeviceBackend</a>.</p>
+
+</div>
+</div>
 <a id="a7750f6b02eb0065b318ca3a2e1113c7a" name="a7750f6b02eb0065b318ca3a2e1113c7a"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a7750f6b02eb0065b318ca3a2e1113c7a">&#9670;&#160;</a></span>dropout_forward()</h2>
 
@@ -2704,6 +2947,113 @@ Modules, optimizers, losses and <a class="el" href="classpulsatrix_1_1LRP.html" 
 <dl class="section note"><dt>Note</dt><dd>Replaces the explicit host-side transpose() copies modules built to feed <a class="el" href="classpulsatrix_1_1CUDABackend.html#af3b83c006aafa62eea5046cab2747e32" title="Row-major matrix multiply: out = a * b.">gemm()</a>. </dd></dl>
 
 <p>Implements <a class="el" href="classpulsatrix_1_1DeviceBackend.html#ae11eb20165162a07132507fdf873e29e">pulsatrix::DeviceBackend</a>.</p>
+
+</div>
+</div>
+<a id="a49b6de65afd095dc18299dd52bc2a531" name="a49b6de65afd095dc18299dd52bc2a531"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a49b6de65afd095dc18299dd52bc2a531">&#9670;&#160;</a></span>gemm_strided_batched()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void pulsatrix::CUDABackend::gemm_strided_batched </td>
+          <td>(</td>
+          <td class="paramtype">const float *&#160;</td>
+          <td class="paramname"><em>a</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>transpose_a</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">size_t&#160;</td>
+          <td class="paramname"><em>stride_a</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const float *&#160;</td>
+          <td class="paramname"><em>b</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>transpose_b</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">size_t&#160;</td>
+          <td class="paramname"><em>stride_b</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">float *&#160;</td>
+          <td class="paramname"><em>out</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">size_t&#160;</td>
+          <td class="paramname"><em>stride_out</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">size_t&#160;</td>
+          <td class="paramname"><em>m</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">size_t&#160;</td>
+          <td class="paramname"><em>k</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">size_t&#160;</td>
+          <td class="paramname"><em>n</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">size_t&#160;</td>
+          <td class="paramname"><em>batch</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">float&#160;</td>
+          <td class="paramname"><em>beta</em> = <code>0.0f</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">override</span><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p><code>batch</code> independent <a class="el" href="classpulsatrix_1_1CUDABackend.html#a8e15a31ce782d6c2a913c2542152db3a" title="General row-major matrix multiply: out = op(A) * op(B) + beta * out.">gemm_ex()</a> products, out_i = op(A_i) op(B_i) (+ beta out_i), with A_i = a + i * stride_a and likewise for b and out; a stride of 0 shares one matrix (HIP-6: a convolution's kernel against every example's patches). </p>
+<dl class="section note"><dt>Note</dt><dd>The default makes the batch's calls one by one (<a class="el" href="classpulsatrix_1_1CUDABackend.html#af3b83c006aafa62eea5046cab2747e32" title="Row-major matrix multiply: out = a * b.">gemm()</a> when nothing is transposed and beta is 0, as the callers did before), so its results are those calls'. GPU backends override it with one strided-batched BLAS call. </dd></dl>
+
+<p>Reimplemented from <a class="el" href="classpulsatrix_1_1DeviceBackend.html#a98b106725ddfe5f569112e8c14a1cfc2">pulsatrix::DeviceBackend</a>.</p>
 
 </div>
 </div>

@@ -15,6 +15,7 @@ var namespacepulsatrix =
     [ "ActivationModule", "classpulsatrix_1_1ActivationModule.html", "classpulsatrix_1_1ActivationModule" ],
     [ "ActivationSnapshot", "classpulsatrix_1_1ActivationSnapshot.html", "classpulsatrix_1_1ActivationSnapshot" ],
     [ "AdamOptimizer", "classpulsatrix_1_1AdamOptimizer.html", "classpulsatrix_1_1AdamOptimizer" ],
+    [ "AdamTensorStep", "structpulsatrix_1_1AdamTensorStep.html", "structpulsatrix_1_1AdamTensorStep" ],
     [ "AdamWOptimizer", "classpulsatrix_1_1AdamWOptimizer.html", "classpulsatrix_1_1AdamWOptimizer" ],
     [ "AdaptiveAvgPool2DModule", "classpulsatrix_1_1AdaptiveAvgPool2DModule.html", "classpulsatrix_1_1AdaptiveAvgPool2DModule" ],
     [ "AddedToken", "structpulsatrix_1_1AddedToken.html", "structpulsatrix_1_1AddedToken" ],
@@ -604,7 +605,8 @@ var namespacepulsatrix =
       [ "PpoLoss", "namespacepulsatrix.html#af72bbbb89c154b30ca26561ab2f87930a8bc4fa0f592f03c568063df4971d27f9", null ],
       [ "PpoGrad", "namespacepulsatrix.html#af72bbbb89c154b30ca26561ab2f87930a2c877e3b6b6c4faf78580a5ec9780536", null ],
       [ "DqnTarget", "namespacepulsatrix.html#af72bbbb89c154b30ca26561ab2f87930a97740b358c4a01f16fb9d431dc884b87", null ],
-      [ "PolyakBlend", "namespacepulsatrix.html#af72bbbb89c154b30ca26561ab2f87930a1f0ee8594b99d914e20915ca8f0fa1e9", null ]
+      [ "PolyakBlend", "namespacepulsatrix.html#af72bbbb89c154b30ca26561ab2f87930a1f0ee8594b99d914e20915ca8f0fa1e9", null ],
+      [ "TokenCeLoss", "namespacepulsatrix.html#af72bbbb89c154b30ca26561ab2f87930a5ed4507114a78629b19d2e61177555fc", null ]
     ] ],
     [ "RoPELayout", "namespacepulsatrix.html#a89b7a7289be539d1acdd882186624044", [
       [ "AdjacentPairs", "namespacepulsatrix.html#a89b7a7289be539d1acdd882186624044a54607b51fc9d8414153c7147fc056c5c", null ],

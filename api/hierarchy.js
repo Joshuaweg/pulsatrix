@@ -7,6 +7,7 @@ var hierarchy =
       [ "pulsatrix::AdamWOptimizer", "classpulsatrix_1_1AdamWOptimizer.html", null ]
     ] ],
     [ "pulsatrix::AdamOptimizer::AdamState", "structpulsatrix_1_1AdamOptimizer_1_1AdamState.html", null ],
+    [ "pulsatrix::AdamTensorStep", "structpulsatrix_1_1AdamTensorStep.html", null ],
     [ "pulsatrix::AddedToken", "structpulsatrix_1_1AddedToken.html", null ],
     [ "pulsatrix::Agent", "classpulsatrix_1_1Agent.html", [
       [ "pulsatrix::CategoricalPolicyAgent", "classpulsatrix_1_1CategoricalPolicyAgent.html", null ],
