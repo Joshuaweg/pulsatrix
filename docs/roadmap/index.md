@@ -157,7 +157,8 @@ Load SmolLM2-135M and ResNet18, run them, and match the reference implementation
 - HIP-6 (**done**): fused kernels (HIP-3 landed early, in v1.1)
 - HIP-7 (**done**): bounded-memory Conv2D
 - VIZ-3, VIZ-6a (**done**): Vega-Lite HTML and the token relevance view
-- NB-1, NB-2: native rich display and the `.ipynb`/HTML report writer
+- NB-1 (**done**): native rich display
+- NB-2: the `.ipynb`/HTML report writer
 - AGT-1 to AGT-4: the native orchestrator core
 - KS-8: GPU CI on gfx1151
 - KS-9 (**done**): a model zoo, ResNet18 and VGG16 with heatmaps checked against Zennit
@@ -1169,13 +1170,34 @@ format, with static and web renderers next to it.
 Notebook output needs neither Python nor a running kernel. The layers build on each other. ImGui
 can't draw inline in a notebook, so it stays the desktop tool and shares the VIZ-1 data.
 
-| ID | Item | Why | Depends on | P | Effort |
-|---|---|---|---|---|---|
-| NB-1 | `pulsatrix::mime_bundle_repr(const T&)` overloads that return MIME bundles: tensor summaries, attribution heatmaps as SVG, token relevance, circuit graphs and persistence diagrams as Vega-Lite. The C++ Jupyter kernel xeus-cpp finds them automatically, so pulsatrix doesn't depend on it | Rich display in a C++ notebook | VIZ-1, VIZ-2 | P1 | S |
-| NB-2 | A C++ `Report` builder that writes `.ipynb` files (nbformat 4.5) and self-contained HTML: markdown, code shown as text, and rich outputs | Notebook-format results with no Python and no kernel; they render on GitHub, in VS Code and in Quarto | NB-1 | P1 | S–M |
-| NB-3 | Python `_repr_mimebundle_` on the bound types, delegating to NB-1 so both languages render the same (golden test), then interactive views with anywidget | Notebook users on the Python side | NB-1 | P2 | S → M |
-| NB-4 | xeus-cpp support: a `pulsatrix_notebook.hpp` header, example notebooks, and a Linux CI smoke test. Windows and GPU code inside notebook cells are marked experimental. Every precondition reachable from a cell throws instead of aborting, because a crash kills the kernel | Run pulsatrix interactively in C++ | NB-1 | P3 | M |
-| NB-5 | A WebAssembly build of the CPU backend for JupyterLite | Notebooks in the browser with nothing installed | NB-4 | Deferred | XL |
+| ID | Item | Why | Depends on | P | Effort | Status |
+|---|---|---|---|---|---|---|
+| NB-1 | `pulsatrix::mime_bundle_repr(const T&)` overloads that return MIME bundles: tensor summaries, attribution heatmaps as SVG, token relevance, circuit graphs and persistence diagrams as Vega-Lite. The C++ Jupyter kernel xeus-cpp finds them automatically, so pulsatrix doesn't depend on it | Rich display in a C++ notebook | VIZ-1, VIZ-2 | P1 | S | Done (see below) |
+| NB-2 | A C++ `Report` builder that writes `.ipynb` files (nbformat 4.5) and self-contained HTML: markdown, code shown as text, and rich outputs | Notebook-format results with no Python and no kernel; they render on GitHub, in VS Code and in Quarto | NB-1 | P1 | S–M | |
+| NB-3 | Python `_repr_mimebundle_` on the bound types, delegating to NB-1 so both languages render the same (golden test), then interactive views with anywidget | Notebook users on the Python side | NB-1 | P2 | S → M | |
+| NB-4 | xeus-cpp support: a `pulsatrix_notebook.hpp` header, example notebooks, and a Linux CI smoke test. Windows and GPU code inside notebook cells are marked experimental. Every precondition reachable from a cell throws instead of aborting, because a crash kills the kernel | Run pulsatrix interactively in C++ | NB-1 | P3 | M | |
+| NB-5 | A WebAssembly build of the CPU backend for JupyterLite | Notebooks in the browser with nothing installed | NB-4 | Deferred | XL | |
+
+### How the NB work departed from the plan
+
+- **NB-1** returns pulsatrix's own `MimeBundle` and adds a `to_json()` template written against
+  nlohmann's interface, which xeus-cpp's `nlohmann::json` finds by argument-dependent lookup. So the
+  library takes on no JSON dependency; only the tests fetch nlohmann (3.12, MIT) to check the
+  conversion and xeus-cpp 0.10's own lookup, copied from `xdisplay.hpp` and `xmime.hpp`.
+  - **Attribution heatmaps** are SVG and Vega-Lite up to 64 × 64 cells, and a PNG beyond: a
+    224 × 224 map would be about 50,000 SVG shapes.
+  - **Vega-Lite 5.** pulsatrix's specs say version 6, but the front ends render the version 5 MIME
+    type, so bundles send them as version 5. Every spec is valid under both schemas and renders
+    with Vega-Lite 5.23 without warnings.
+  - **Circuit graphs** needed a view, so `ToVegaLiteCircuitGraph()` lays them out by depth.
+  - **Persistence diagrams** aren't covered: pulsatrix has no persistent-homology type.
+
+### Follow-ups the NB work surfaced
+
+| Follow-up | Found in | Belongs with |
+|---|---|---|
+| Persistence diagrams, once a topological-data-analysis type exists | NB-1 | its own item |
+| Bundles for `FeatureDashboardDocument`, the attribution graph and the What-If view, which only have full HTML pages | NB-1 | NB-2 |
 
 ## HIP: Training efficiency on AMD GPUs
 
