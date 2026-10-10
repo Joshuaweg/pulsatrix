@@ -373,6 +373,7 @@ var hierarchy =
     [ "pulsatrix::ReparamGrad", "structpulsatrix_1_1ReparamGrad.html", null ],
     [ "pulsatrix::ReplayBatch", "structpulsatrix_1_1ReplayBatch.html", null ],
     [ "pulsatrix::ReplayBuffer", "classpulsatrix_1_1ReplayBuffer.html", null ],
+    [ "pulsatrix::Report", "classpulsatrix_1_1Report.html", null ],
     [ "pulsatrix::ResidueAgreement", "structpulsatrix_1_1ResidueAgreement.html", null ],
     [ "pulsatrix::ResidueDeletionCurve", "structpulsatrix_1_1ResidueDeletionCurve.html", null ],
     [ "pulsatrix::ResidueEmbeddings", "structpulsatrix_1_1ResidueEmbeddings.html", null ],

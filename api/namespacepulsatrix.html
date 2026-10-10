@@ -1002,6 +1002,9 @@ Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1ReplayBuffer.html">ReplayBuffer</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Fixed-capacity circular replay buffer of (observation, action, reward, next_observation, done) transitions, with uniform-random-with-replacement batch sampling &ndash; the off-policy experience store of Mnih et al. 2015 (DQN), reused unchanged by SAC and every other off-policy learner in this campaign.  <a href="classpulsatrix_1_1ReplayBuffer.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1Report.html">Report</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">A document of markdown, code and rich outputs, written as a Jupyter notebook (nbformat 4.5) or as one self-contained HTML page. Neither needs Python or a kernel: the notebook renders on GitHub, in JupyterLab, VS Code and Quarto with its outputs already in place.  <a href="classpulsatrix_1_1Report.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1ResampleTransform.html">ResampleTransform</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Resamples a waveform (sample.fields[0], shape (1, channels, num_samples) &ndash; <a class="el" href="classpulsatrix_1_1WavReader.html" title="Reads uncompressed 16-bit PCM WAV files directly – pulsatrix&#39;s first audio primitive (campaign_exai_d...">WavReader</a>'s/AudioFolderDataset's convention) from source_sample_rate to target_sample_rate via linear interpolation.  <a href="classpulsatrix_1_1ResampleTransform.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -2910,6 +2913,9 @@ Functions</h2></td></tr>
 <tr class="memitem:a0d0825289a63e8e0e20bfbe51d1a9820" id="r_a0d0825289a63e8e0e20bfbe51d1a9820"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#a0d0825289a63e8e0e20bfbe51d1a9820">RenderFeatureDashboardHtml</a> (const <a class="el" href="structpulsatrix_1_1FeatureDashboardDocument.html">FeatureDashboardDocument</a> &amp;doc, const std::string &amp;structure, const std::string &amp;chain, size_t example, const <a class="el" href="structpulsatrix_1_1HtmlOptions.html">HtmlOptions</a> &amp;options={})</td></tr>
 <tr class="memdesc:a0d0825289a63e8e0e20bfbe51d1a9820"><td class="mdescLeft">&#160;</td><td class="mdescRight">A feature dashboard (RenderFeatureDashboardHtml) with a structure panel (PLM-8): top example <code>example</code> drawn on <code>structure's</code> <code>chain</code>, colored by the feature's activation. The example's tokens must be single residues matching the chain one for one, as an AlphaFold DB model of the protein does.  <br /></td></tr>
 <tr class="separator:a0d0825289a63e8e0e20bfbe51d1a9820"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac1509316a91f4f64cd63b4d2d7d1716f" id="r_ac1509316a91f4f64cd63b4d2d7d1716f"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#ac1509316a91f4f64cd63b4d2d7d1716f">MarkdownToHtml</a> (const std::string &amp;markdown)</td></tr>
+<tr class="memdesc:ac1509316a91f4f64cd63b4d2d7d1716f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Markdown (the subset <a class="el" href="classpulsatrix_1_1Report.html#a9c3e5997e898eccd0a685c56d64c442e" title="One HTML page. Vega-Lite charts load Vega from the CDN (pinned, with integrity hashes) or,...">Report::to_html()</a> supports) as HTML; raw HTML is escaped.  <br /></td></tr>
+<tr class="separator:ac1509316a91f4f64cd63b4d2d7d1716f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac7ea947d4abd55ea6c393c762a3c429c" id="r_ac7ea947d4abd55ea6c393c762a3c429c"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#ac7ea947d4abd55ea6c393c762a3c429c">RenderBarChartSvg</a> (const <a class="el" href="structpulsatrix_1_1AttributionDocument.html">AttributionDocument</a> &amp;doc, int <a class="el" href="namespacepulsatrix.html#a307af1ed1935c2c78f7e2aead3f70c45">top_k</a>=10, const <a class="el" href="structpulsatrix_1_1SvgOptions.html">SvgOptions</a> &amp;options={})</td></tr>
 <tr class="memdesc:ac7ea947d4abd55ea6c393c762a3c429c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Horizontal bars of the <code>top_k</code> features with the largest |attribution|, largest first, on an axis through zero, each colored by its signed value and labeled with it. Labels come from metadata["feature_names"] (comma-separated) when present.  <br /></td></tr>
 <tr class="separator:ac7ea947d4abd55ea6c393c762a3c429c"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -10712,6 +10718,26 @@ template&lt;typename Genotype , typename FitnessT &gt; </div>
   </table>
   </dd>
 </dl>
+
+</div>
+</div>
+<a id="ac1509316a91f4f64cd63b4d2d7d1716f" name="ac1509316a91f4f64cd63b4d2d7d1716f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac1509316a91f4f64cd63b4d2d7d1716f">&#9670;&#160;</a></span>MarkdownToHtml()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::string pulsatrix::MarkdownToHtml </td>
+          <td>(</td>
+          <td class="paramtype">const std::string &amp;&#160;</td>
+          <td class="paramname"><em>markdown</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Markdown (the subset <a class="el" href="classpulsatrix_1_1Report.html#a9c3e5997e898eccd0a685c56d64c442e" title="One HTML page. Vega-Lite charts load Vega from the CDN (pinned, with integrity hashes) or,...">Report::to_html()</a> supports) as HTML; raw HTML is escaped. </p>
 
 </div>
 </div>
