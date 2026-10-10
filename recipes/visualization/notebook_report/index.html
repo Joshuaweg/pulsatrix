@@ -2256,8 +2256,13 @@ in, and the report holds:</p>
 </ul>
 <p>Nothing needs Python, a Jupyter kernel or a download.</p>
 <p>CMake target: <code>notebook_report_recipe</code> (<code>examples/recipes/notebook_report.cpp</code>).</p>
-<div class="highlight"><pre><span></span><code>./build/notebook_report_recipe<span class="w"> </span>out/<span class="w">      </span><span class="c1"># writes out/xor_report.ipynb and out/xor_report.html</span>
+<p>Build it, then run it from the repository root:</p>
+<div class="highlight"><pre><span></span><code>cmake<span class="w"> </span>-S<span class="w"> </span>.<span class="w"> </span>-B<span class="w"> </span>build<span class="w">                        </span><span class="c1"># reconfigure, so an older build directory picks up the target</span>
+cmake<span class="w"> </span>--build<span class="w"> </span>build<span class="w"> </span>--target<span class="w"> </span>notebook_report_recipe<span class="w"> </span>--config<span class="w"> </span>Release
+./build/notebook_report_recipe<span class="w"> </span>out/<span class="w">        </span><span class="c1"># Linux/macOS: writes out/xor_report.ipynb and out/xor_report.html</span>
+build<span class="se">\R</span>elease<span class="se">\n</span>otebook_report_recipe.exe<span class="w"> </span>out<span class="w">   </span><span class="c1"># Windows (Visual Studio)</span>
 </code></pre></div>
+<p>The recipe creates the output directory; without an argument, the files go to the current directory.</p>
 <p>Open <code>xor_report.ipynb</code> in VS Code, JupyterLab or on GitHub, or <code>xor_report.html</code> in a browser.
 JupyterLab asks for the notebook's C++ kernel; choose "No Kernel" and every output still shows.
 See <a href="../../../visualization/notebooks/">Notebooks and Reports</a> for what a report can hold.</p>

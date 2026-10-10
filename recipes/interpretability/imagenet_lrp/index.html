@@ -2295,7 +2295,9 @@ torchvision does, prints the top five classes, and explains the top one with one
 rule for each kind of layer). It writes the photo as the model saw it and the heatmap: red for pixels that are
 evidence for the class, blue for evidence against.</p>
 <p>CMake target: <code>imagenet_lrp_recipe</code> (<code>examples/recipes/imagenet_lrp.cpp</code>).</p>
-<div class="highlight"><pre><span></span><code>./build/imagenet_lrp_recipe<span class="w"> </span>resnet18<span class="w"> </span>resnet18.safetensors<span class="w"> </span>photo.jpg<span class="w"> </span>out/<span class="w"> </span><span class="o">[</span>--composite<span class="w"> </span>NAME<span class="o">]</span><span class="w"> </span><span class="o">[</span>--device<span class="w"> </span>hip<span class="o">]</span>
+<div class="highlight"><pre><span></span><code>cmake<span class="w"> </span>--build<span class="w"> </span>build<span class="w"> </span>--target<span class="w"> </span>imagenet_lrp_recipe<span class="w"> </span>--config<span class="w"> </span>Release
+./build/imagenet_lrp_recipe<span class="w"> </span>resnet18<span class="w"> </span>resnet18.safetensors<span class="w"> </span>photo.jpg<span class="w"> </span>out/<span class="w"> </span><span class="o">[</span>--composite<span class="w"> </span>NAME<span class="o">]</span><span class="w"> </span><span class="o">[</span>--device<span class="w"> </span>hip<span class="o">]</span>
+build<span class="se">\R</span>elease<span class="se">\i</span>magenet_lrp_recipe.exe<span class="w"> </span>resnet18<span class="w"> </span>resnet18.safetensors<span class="w"> </span>photo.jpg<span class="w"> </span>out<span class="w">   </span><span class="c1"># Windows (Visual Studio)</span>
 </code></pre></div>
 <ul>
 <li><code>resnet18</code> or <code>vgg16</code>, then the converted weights, any PNG, JPEG or BMP, and an output
