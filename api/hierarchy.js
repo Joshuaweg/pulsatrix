@@ -235,6 +235,7 @@ var hierarchy =
       [ "pulsatrix::ImPlotMetricsSink", "classpulsatrix_1_1ImPlotMetricsSink.html", null ],
       [ "pulsatrix::NoOpMetricsSink", "classpulsatrix_1_1NoOpMetricsSink.html", null ]
     ] ],
+    [ "pulsatrix::MimeBundle", "structpulsatrix_1_1MimeBundle.html", null ],
     [ "pulsatrix::MnistConvNet", "classpulsatrix_1_1MnistConvNet.html", null ],
     [ "pulsatrix::MnistDataset", "structpulsatrix_1_1MnistDataset.html", null ],
     [ "pulsatrix::MnistIdxLoader", "classpulsatrix_1_1MnistIdxLoader.html", null ],

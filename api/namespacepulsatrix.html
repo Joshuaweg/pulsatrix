@@ -797,6 +797,9 @@ Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1MetricsSink.html">MetricsSink</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Interface the training loop logs scalars/histograms through. Concrete writers (TensorBoard event format, W&amp;B, CSV, ...) implement this; the training loop and Phase 4 validation harness only ever see <a class="el" href="classpulsatrix_1_1MetricsSink.html" title="Interface the training loop logs scalars/histograms through. Concrete writers (TensorBoard event form...">MetricsSink</a>.  <a href="classpulsatrix_1_1MetricsSink.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpulsatrix_1_1MimeBundle.html">MimeBundle</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">One displayable value in several formats: MIME type to data, richest first. Text formats (<code>text/plain</code>, <code>text/html</code>, <code>image/svg+xml</code>, base64 <code>image/png</code>) are strings; <code>+json</code> formats are JSON objects, as Jupyter's display protocol and nbformat store them.  <a href="structpulsatrix_1_1MimeBundle.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1MnistConvNet.html">MnistConvNet</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Conv2D(1,8,5,5) -&gt; ReLU -&gt; Flatten -&gt; <a class="el" href="namespacepulsatrix.html#a94d9ac6240473b5362d1e8e5c11157bba32a843da6ea40ab3b17a3421ccdf671b">Linear(4608,10)</a>, trained via <a class="el" href="classpulsatrix_1_1CrossEntropyLoss.html" title="loss = -log(softmax(logits)[target_class]), combined for numerical stability (subtract the max logit ...">CrossEntropyLoss</a> + Adam, one real MNIST image at a time (this library has no batch dimension anywhere, same constraint <a class="el" href="classpulsatrix_1_1XorNetwork.html" title="A tiny MLP (Linear(2,4) -&gt; ReLU -&gt; Linear(4,1)) trained on XOR – the canonical not-linearly-separable...">XorNetwork</a> already works under).  <a href="classpulsatrix_1_1MnistConvNet.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -2802,6 +2805,20 @@ Functions</h2></td></tr>
 <tr class="memitem:ab63456f92b24d043e06d7a94af529f4e" id="r_ab63456f92b24d043e06d7a94af529f4e"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#ab63456f92b24d043e06d7a94af529f4e">RenderTokenRelevanceHtml</a> (const <a class="el" href="structpulsatrix_1_1TokenRelevanceDocument.html">TokenRelevanceDocument</a> &amp;doc, const <a class="el" href="structpulsatrix_1_1HtmlOptions.html">HtmlOptions</a> &amp;options={})</td></tr>
 <tr class="memdesc:ab63456f92b24d043e06d7a94af529f4e"><td class="mdescLeft">&#160;</td><td class="mdescRight">The text with each piece (token or word) on a background colored by its relevance, as plain HTML with no scripts: the browser lays out and shapes the text, so every script reads correctly (right-to-left, joined Arabic, Indic conjuncts), and wraps it. Hovering a piece shows its score; unscored pieces are plain text. Scripts option is ignored.  <br /></td></tr>
 <tr class="separator:ab63456f92b24d043e06d7a94af529f4e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a00f8a4e48cc4b517b01a40c08b2e9ad5" id="r_a00f8a4e48cc4b517b01a40c08b2e9ad5"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classpulsatrix_1_1JsonValue.html">JsonValue</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#a00f8a4e48cc4b517b01a40c08b2e9ad5">ToVegaLiteCircuitGraph</a> (const <a class="el" href="structpulsatrix_1_1CircuitGraphDocument.html">CircuitGraphDocument</a> &amp;doc)</td></tr>
+<tr class="memdesc:a00f8a4e48cc4b517b01a40c08b2e9ad5"><td class="mdescLeft">&#160;</td><td class="mdescRight">A Vega-Lite node-link view of a circuit graph: nodes in columns by depth (longest path from a source), colored by ablation effect, edges as lines weighted by |weight|.  <br /></td></tr>
+<tr class="separator:a00f8a4e48cc4b517b01a40c08b2e9ad5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:acda0b9003c68755d2db269518e750cbc" id="r_acda0b9003c68755d2db269518e750cbc"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#acda0b9003c68755d2db269518e750cbc">Base64Encode</a> (const std::vector&lt; uint8_t &gt; &amp;bytes)</td></tr>
+<tr class="memdesc:acda0b9003c68755d2db269518e750cbc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Standard base64 (RFC 4648, with padding), for <code>image/png</code> data.  <br /></td></tr>
+<tr class="separator:acda0b9003c68755d2db269518e750cbc"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a67958a23dcb78a6477ca7276457ea457" id="r_a67958a23dcb78a6477ca7276457ea457"><td class="memTemplParams" colspan="2">template&lt;class Json &gt; </td></tr>
+<tr class="memitem:a67958a23dcb78a6477ca7276457ea457"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#a67958a23dcb78a6477ca7276457ea457">to_json</a> (Json &amp;j, const <a class="el" href="classpulsatrix_1_1JsonValue.html">JsonValue</a> &amp;value)</td></tr>
+<tr class="memdesc:a67958a23dcb78a6477ca7276457ea457"><td class="mdescLeft">&#160;</td><td class="mdescRight">Converts a <a class="el" href="classpulsatrix_1_1JsonValue.html" title="One JSON value: null, a boolean, a number, a string, an array or an object.">JsonValue</a> to another JSON library's value type by its common interface (assignment from null, bool, number and string; <code>object()</code>, <code>array()</code>, <code>operator[]</code>, <code>push_back</code>). nlohmann::json finds it by argument-dependent lookup, so <code>nlohmann::json j = value;</code> works without pulsatrix including nlohmann.  <br /></td></tr>
+<tr class="separator:a67958a23dcb78a6477ca7276457ea457"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae6ac032290ca2bd170f7bbb0879b3e37" id="r_ae6ac032290ca2bd170f7bbb0879b3e37"><td class="memTemplParams" colspan="2">template&lt;class Json &gt; </td></tr>
+<tr class="memitem:ae6ac032290ca2bd170f7bbb0879b3e37"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#ae6ac032290ca2bd170f7bbb0879b3e37">to_json</a> (Json &amp;j, const <a class="el" href="structpulsatrix_1_1MimeBundle.html">MimeBundle</a> &amp;bundle)</td></tr>
+<tr class="memdesc:ae6ac032290ca2bd170f7bbb0879b3e37"><td class="mdescLeft">&#160;</td><td class="mdescRight">The bundle as a JSON object of MIME type to data (see <a class="el" href="namespacepulsatrix.html#a67958a23dcb78a6477ca7276457ea457" title="Converts a JsonValue to another JSON library&#39;s value type by its common interface (assignment from nu...">to_json(Json&amp;, const JsonValue&amp;)</a>).  <br /></td></tr>
+<tr class="separator:ae6ac032290ca2bd170f7bbb0879b3e37"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab81a9c0a4ab6fc4d1d737368b0ec12b9" id="r_ab81a9c0a4ab6fc4d1d737368b0ec12b9"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structpulsatrix_1_1BarSeries.html">BarSeries</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#ab81a9c0a4ab6fc4d1d737368b0ec12b9">ToFeatureImportanceBars</a> (const <a class="el" href="structpulsatrix_1_1Attribution.html">Attribution</a> &amp;attr, int <a class="el" href="namespacepulsatrix.html#a307af1ed1935c2c78f7e2aead3f70c45">top_k</a>)</td></tr>
 <tr class="memdesc:ab81a9c0a4ab6fc4d1d737368b0ec12b9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Converts an <a class="el" href="structpulsatrix_1_1Attribution.html" title="An explanation result: the raw attribution values, the method that produced them, and any relevant me...">Attribution</a>'s per-feature values into labeled, magnitude-sorted bars for a horizontal bar chart &ndash; the canonical XAI feature-importance encoding (hc_information_visualization.md SS5: position on a shared axis, Cleveland-McGill rank 1).  <br /></td></tr>
 <tr class="separator:ab81a9c0a4ab6fc4d1d737368b0ec12b9"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -2950,6 +2967,49 @@ Functions</h2></td></tr>
 <tr class="memitem:a9969ba30da557b617c083a42527ae783" id="r_a9969ba30da557b617c083a42527ae783"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structpulsatrix_1_1WordScores.html">WordScores</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#a9969ba30da557b617c083a42527ae783">AggregateToWords</a> (std::string_view text, const <a class="el" href="structpulsatrix_1_1Encoding.html">Encoding</a> &amp;encoding, const std::vector&lt; float &gt; &amp;token_scores, <a class="el" href="namespacepulsatrix.html#aaf1d7cc456b87e2b0713eff66fc17954">WordAggregation</a> aggregation=<a class="el" href="namespacepulsatrix.html#aaf1d7cc456b87e2b0713eff66fc17954aa0ec87054b5e5b7847d0d8780a01a3d5">WordAggregation::Sum</a>, <a class="el" href="namespacepulsatrix.html#a1c796f1d1ffa3966d6cc310c29a720b4">WordSplit</a> split=<a class="el" href="namespacepulsatrix.html#a1c796f1d1ffa3966d6cc310c29a720b4a79e192157e129c1c826c7488bb3769b4">WordSplit::WordsAndPunctuation</a>)</td></tr>
 <tr class="memdesc:a9969ba30da557b617c083a42527ae783"><td class="mdescLeft">&#160;</td><td class="mdescRight">AggregateToWords over an <a class="el" href="structpulsatrix_1_1Encoding.html" title="The result of encoding one text.">Encoding</a> of <code>text</code>, with words from SplitWords(<code>text</code>, <code>split</code>).  <br /></td></tr>
 <tr class="separator:a9969ba30da557b617c083a42527ae783"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr><td colspan="2"><div class="groupHeader">mime_bundle_repr</div></td></tr>
+<tr><td colspan="2"><div class="groupText"><p>What a notebook shows for each type. Every bundle has <code>text/plain</code>.</p>
+<p>xeus-cpp's <code>xcpp::display(x)</code> (and a cell ending in <code>x</code>) calls <code>mime_bundle_repr(x)</code> unqualified, so argument-dependent lookup finds these overloads, and the result converts to xeus's <code>nlohmann::json</code> through <a class="el" href="namespacepulsatrix.html#a67958a23dcb78a6477ca7276457ea457" title="Converts a JsonValue to another JSON library&#39;s value type by its common interface (assignment from nu...">to_json()</a> below; pulsatrix itself doesn't depend on xeus or on nlohmann. NB-2's notebook writer and NB-3's Python <code>_repr_mimebundle_</code> use the same bundles.</p>
+<ul>
+<li><a class="el" href="classpulsatrix_1_1Tensor.html" title="N-dimensional tensor. Owns its data buffer exclusively; a DeviceBackend* is injected (not owned) – th...">Tensor</a>: a summary (shape, device, statistics, leading values) as text and an HTML table.</li>
+<li><a class="el" href="structpulsatrix_1_1Attribution.html" title="An explanation result: the raw attribution values, the method that produced them, and any relevant me...">Attribution</a>: an image-shaped one (rank 2 to 4, channels summed) as a heatmap, PNG when it has more than 64 x 64 cells and SVG plus Vega-Lite otherwise; any other shape as a bar chart of its largest features. A batch shows its first example.</li>
+<li>Documents with a Vega-Lite view get Vega-Lite and the SVG figure; token relevance, protein views and circuit graphs get their SVG (circuit graphs: Vega-Lite only). </li>
+</ul>
+</div></td></tr>
+<tr class="memitem:a71b7ebedf3ae3a9f8f43f2ceeaa3b5b5" id="r_a71b7ebedf3ae3a9f8f43f2ceeaa3b5b5"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structpulsatrix_1_1MimeBundle.html">MimeBundle</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#a71b7ebedf3ae3a9f8f43f2ceeaa3b5b5">mime_bundle_repr</a> (const <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp;tensor)</td></tr>
+<tr class="separator:a71b7ebedf3ae3a9f8f43f2ceeaa3b5b5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a10fa8d2b1fde640f55f4f7c3d87e9190" id="r_a10fa8d2b1fde640f55f4f7c3d87e9190"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structpulsatrix_1_1MimeBundle.html">MimeBundle</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#a10fa8d2b1fde640f55f4f7c3d87e9190">mime_bundle_repr</a> (const <a class="el" href="structpulsatrix_1_1Attribution.html">Attribution</a> &amp;attribution)</td></tr>
+<tr class="separator:a10fa8d2b1fde640f55f4f7c3d87e9190"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a718fd41444d4333f05b342ad37b0dd56" id="r_a718fd41444d4333f05b342ad37b0dd56"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structpulsatrix_1_1MimeBundle.html">MimeBundle</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#a718fd41444d4333f05b342ad37b0dd56">mime_bundle_repr</a> (const <a class="el" href="classpulsatrix_1_1CircuitGraph.html">CircuitGraph</a> &amp;graph)</td></tr>
+<tr class="separator:a718fd41444d4333f05b342ad37b0dd56"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad4dbcb8ec9b7d8408367e7618f7de178" id="r_ad4dbcb8ec9b7d8408367e7618f7de178"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structpulsatrix_1_1MimeBundle.html">MimeBundle</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#ad4dbcb8ec9b7d8408367e7618f7de178">mime_bundle_repr</a> (const <a class="el" href="structpulsatrix_1_1AttributionDocument.html">AttributionDocument</a> &amp;doc)</td></tr>
+<tr class="separator:ad4dbcb8ec9b7d8408367e7618f7de178"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0a96592fc3296784644c9a50a98356e3" id="r_a0a96592fc3296784644c9a50a98356e3"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structpulsatrix_1_1MimeBundle.html">MimeBundle</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#a0a96592fc3296784644c9a50a98356e3">mime_bundle_repr</a> (const <a class="el" href="structpulsatrix_1_1HeatmapDocument.html">HeatmapDocument</a> &amp;doc)</td></tr>
+<tr class="separator:a0a96592fc3296784644c9a50a98356e3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae99119c089ef19e4e1d65076dbaf8e89" id="r_ae99119c089ef19e4e1d65076dbaf8e89"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structpulsatrix_1_1MimeBundle.html">MimeBundle</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#ae99119c089ef19e4e1d65076dbaf8e89">mime_bundle_repr</a> (const <a class="el" href="structpulsatrix_1_1TokenRelevanceDocument.html">TokenRelevanceDocument</a> &amp;doc)</td></tr>
+<tr class="separator:ae99119c089ef19e4e1d65076dbaf8e89"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aea9e03f554b09c01e0ecfa1a4f5253ff" id="r_aea9e03f554b09c01e0ecfa1a4f5253ff"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structpulsatrix_1_1MimeBundle.html">MimeBundle</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#aea9e03f554b09c01e0ecfa1a4f5253ff">mime_bundle_repr</a> (const <a class="el" href="structpulsatrix_1_1CircuitGraphDocument.html">CircuitGraphDocument</a> &amp;doc)</td></tr>
+<tr class="separator:aea9e03f554b09c01e0ecfa1a4f5253ff"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa37231ff279eb9a9310bc53f081287e6" id="r_aa37231ff279eb9a9310bc53f081287e6"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structpulsatrix_1_1MimeBundle.html">MimeBundle</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#aa37231ff279eb9a9310bc53f081287e6">mime_bundle_repr</a> (const <a class="el" href="structpulsatrix_1_1TrainingLogDocument.html">TrainingLogDocument</a> &amp;doc)</td></tr>
+<tr class="separator:aa37231ff279eb9a9310bc53f081287e6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6e04a44ae6552e0612c827d8a384132a" id="r_a6e04a44ae6552e0612c827d8a384132a"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structpulsatrix_1_1MimeBundle.html">MimeBundle</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#a6e04a44ae6552e0612c827d8a384132a">mime_bundle_repr</a> (const <a class="el" href="structpulsatrix_1_1PartialDependenceDocument.html">PartialDependenceDocument</a> &amp;doc)</td></tr>
+<tr class="separator:a6e04a44ae6552e0612c827d8a384132a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5d1031a366e1377496a6abd0c66825b1" id="r_a5d1031a366e1377496a6abd0c66825b1"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structpulsatrix_1_1MimeBundle.html">MimeBundle</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#a5d1031a366e1377496a6abd0c66825b1">mime_bundle_repr</a> (const <a class="el" href="structpulsatrix_1_1SensitivityDocument.html">SensitivityDocument</a> &amp;doc)</td></tr>
+<tr class="separator:a5d1031a366e1377496a6abd0c66825b1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a79ac13943c8636e5c163a3393758398d" id="r_a79ac13943c8636e5c163a3393758398d"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structpulsatrix_1_1MimeBundle.html">MimeBundle</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#a79ac13943c8636e5c163a3393758398d">mime_bundle_repr</a> (const <a class="el" href="structpulsatrix_1_1CounterfactualDocument.html">CounterfactualDocument</a> &amp;doc)</td></tr>
+<tr class="separator:a79ac13943c8636e5c163a3393758398d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2c22c9057f5981696ca0a404cf7a5d45" id="r_a2c22c9057f5981696ca0a404cf7a5d45"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structpulsatrix_1_1MimeBundle.html">MimeBundle</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#a2c22c9057f5981696ca0a404cf7a5d45">mime_bundle_repr</a> (const <a class="el" href="structpulsatrix_1_1MorrisDocument.html">MorrisDocument</a> &amp;doc)</td></tr>
+<tr class="separator:a2c22c9057f5981696ca0a404cf7a5d45"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a27045a862ccecd46ccbf77554962ebcc" id="r_a27045a862ccecd46ccbf77554962ebcc"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structpulsatrix_1_1MimeBundle.html">MimeBundle</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#a27045a862ccecd46ccbf77554962ebcc">mime_bundle_repr</a> (const <a class="el" href="structpulsatrix_1_1SobolDocument.html">SobolDocument</a> &amp;doc)</td></tr>
+<tr class="separator:a27045a862ccecd46ccbf77554962ebcc"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3f6249854f36483286fb2e988ea0f529" id="r_a3f6249854f36483286fb2e988ea0f529"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structpulsatrix_1_1MimeBundle.html">MimeBundle</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#a3f6249854f36483286fb2e988ea0f529">mime_bundle_repr</a> (const <a class="el" href="structpulsatrix_1_1MutationMapDocument.html">MutationMapDocument</a> &amp;doc)</td></tr>
+<tr class="separator:a3f6249854f36483286fb2e988ea0f529"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a99ab3a4a86c7d737fb6830e4d12441f3" id="r_a99ab3a4a86c7d737fb6830e4d12441f3"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structpulsatrix_1_1MimeBundle.html">MimeBundle</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#a99ab3a4a86c7d737fb6830e4d12441f3">mime_bundle_repr</a> (const <a class="el" href="structpulsatrix_1_1SequenceLogoDocument.html">SequenceLogoDocument</a> &amp;doc)</td></tr>
+<tr class="separator:a99ab3a4a86c7d737fb6830e4d12441f3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af01877b8e7b3d8f50cec63a2d878ca7a" id="r_af01877b8e7b3d8f50cec63a2d878ca7a"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structpulsatrix_1_1MimeBundle.html">MimeBundle</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#af01877b8e7b3d8f50cec63a2d878ca7a">mime_bundle_repr</a> (const <a class="el" href="structpulsatrix_1_1ContactMapDocument.html">ContactMapDocument</a> &amp;doc)</td></tr>
+<tr class="separator:af01877b8e7b3d8f50cec63a2d878ca7a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a16c3a4bc0a1be9a51f178f5d70fe37db" id="r_a16c3a4bc0a1be9a51f178f5d70fe37db"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structpulsatrix_1_1MimeBundle.html">MimeBundle</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#a16c3a4bc0a1be9a51f178f5d70fe37db">mime_bundle_repr</a> (const <a class="el" href="structpulsatrix_1_1ResidueTracksDocument.html">ResidueTracksDocument</a> &amp;doc)</td></tr>
+<tr class="separator:a16c3a4bc0a1be9a51f178f5d70fe37db"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="var-members" name="var-members"></a>
 Variables</h2></td></tr>
@@ -2979,6 +3039,9 @@ Variables</h2></td></tr>
 <tr class="separator:a34805eba94fcb8268ead2b919a9c6ea2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a69da35a089b7c4138a52bd0a2344dc57" id="r_a69da35a089b7c4138a52bd0a2344dc57"><td class="memItemLeft" align="right" valign="top">constexpr const char *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#a69da35a089b7c4138a52bd0a2344dc57">kVegaEmbedVersion</a> = &quot;7.3.0&quot;</td></tr>
 <tr class="separator:a69da35a089b7c4138a52bd0a2344dc57"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:acad5172bb32c63d0fce817d5f9811faf" id="r_acad5172bb32c63d0fce817d5f9811faf"><td class="memItemLeft" align="right" valign="top">constexpr const char *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#acad5172bb32c63d0fce817d5f9811faf">kVegaLiteMimeType</a> = &quot;application/vnd.vegalite.v5+json&quot;</td></tr>
+<tr class="memdesc:acad5172bb32c63d0fce817d5f9811faf"><td class="mdescLeft">&#160;</td><td class="mdescRight">The MIME type Jupyter front ends (JupyterLab, Notebook 7, VS Code) render Vega-Lite from. pulsatrix's specs use only Vega-Lite 5 features, so they're sent as version 5.  <br /></td></tr>
+<tr class="separator:acad5172bb32c63d0fce817d5f9811faf"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a53e58562b930b7ba3a9cea70bc7a3f02" id="r_a53e58562b930b7ba3a9cea70bc7a3f02"><td class="memItemLeft" align="right" valign="top">constexpr const char *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#a53e58562b930b7ba3a9cea70bc7a3f02">k3DmolVersion</a> = &quot;2.5.5&quot;</td></tr>
 <tr class="memdesc:a53e58562b930b7ba3a9cea70bc7a3f02"><td class="mdescLeft">&#160;</td><td class="mdescRight">The 3Dmol.js version the structure page loads.  <br /></td></tr>
 <tr class="separator:a53e58562b930b7ba3a9cea70bc7a3f02"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -5021,6 +5084,26 @@ Every op here computes the <em>forward</em> value only &ndash; no derivative var
   </table>
   </dd>
 </dl>
+
+</div>
+</div>
+<a id="acda0b9003c68755d2db269518e750cbc" name="acda0b9003c68755d2db269518e750cbc"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#acda0b9003c68755d2db269518e750cbc">&#9670;&#160;</a></span>Base64Encode()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::string pulsatrix::Base64Encode </td>
+          <td>(</td>
+          <td class="paramtype">const std::vector&lt; uint8_t &gt; &amp;&#160;</td>
+          <td class="paramname"><em>bytes</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Standard base64 (RFC 4648, with padding), for <code>image/png</code> data. </p>
 
 </div>
 </div>
@@ -11223,6 +11306,312 @@ template&lt;typename Genotype , typename FitnessT &gt; </div>
 </div><div class="memdoc">
 
 <p>ProteinGym's MCC: <code>scores</code> at or above their median predict 1. </p>
+
+</div>
+</div>
+<a id="a10fa8d2b1fde640f55f4f7c3d87e9190" name="a10fa8d2b1fde640f55f4f7c3d87e9190"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a10fa8d2b1fde640f55f4f7c3d87e9190">&#9670;&#160;</a></span>mime_bundle_repr() <span class="overload">[1/17]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="structpulsatrix_1_1MimeBundle.html">MimeBundle</a> pulsatrix::mime_bundle_repr </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="structpulsatrix_1_1Attribution.html">Attribution</a> &amp;&#160;</td>
+          <td class="paramname"><em>attribution</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="ad4dbcb8ec9b7d8408367e7618f7de178" name="ad4dbcb8ec9b7d8408367e7618f7de178"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad4dbcb8ec9b7d8408367e7618f7de178">&#9670;&#160;</a></span>mime_bundle_repr() <span class="overload">[2/17]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="structpulsatrix_1_1MimeBundle.html">MimeBundle</a> pulsatrix::mime_bundle_repr </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="structpulsatrix_1_1AttributionDocument.html">AttributionDocument</a> &amp;&#160;</td>
+          <td class="paramname"><em>doc</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a718fd41444d4333f05b342ad37b0dd56" name="a718fd41444d4333f05b342ad37b0dd56"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a718fd41444d4333f05b342ad37b0dd56">&#9670;&#160;</a></span>mime_bundle_repr() <span class="overload">[3/17]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="structpulsatrix_1_1MimeBundle.html">MimeBundle</a> pulsatrix::mime_bundle_repr </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classpulsatrix_1_1CircuitGraph.html">CircuitGraph</a> &amp;&#160;</td>
+          <td class="paramname"><em>graph</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="aea9e03f554b09c01e0ecfa1a4f5253ff" name="aea9e03f554b09c01e0ecfa1a4f5253ff"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aea9e03f554b09c01e0ecfa1a4f5253ff">&#9670;&#160;</a></span>mime_bundle_repr() <span class="overload">[4/17]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="structpulsatrix_1_1MimeBundle.html">MimeBundle</a> pulsatrix::mime_bundle_repr </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="structpulsatrix_1_1CircuitGraphDocument.html">CircuitGraphDocument</a> &amp;&#160;</td>
+          <td class="paramname"><em>doc</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="af01877b8e7b3d8f50cec63a2d878ca7a" name="af01877b8e7b3d8f50cec63a2d878ca7a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af01877b8e7b3d8f50cec63a2d878ca7a">&#9670;&#160;</a></span>mime_bundle_repr() <span class="overload">[5/17]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="structpulsatrix_1_1MimeBundle.html">MimeBundle</a> pulsatrix::mime_bundle_repr </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="structpulsatrix_1_1ContactMapDocument.html">ContactMapDocument</a> &amp;&#160;</td>
+          <td class="paramname"><em>doc</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a79ac13943c8636e5c163a3393758398d" name="a79ac13943c8636e5c163a3393758398d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a79ac13943c8636e5c163a3393758398d">&#9670;&#160;</a></span>mime_bundle_repr() <span class="overload">[6/17]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="structpulsatrix_1_1MimeBundle.html">MimeBundle</a> pulsatrix::mime_bundle_repr </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="structpulsatrix_1_1CounterfactualDocument.html">CounterfactualDocument</a> &amp;&#160;</td>
+          <td class="paramname"><em>doc</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a0a96592fc3296784644c9a50a98356e3" name="a0a96592fc3296784644c9a50a98356e3"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0a96592fc3296784644c9a50a98356e3">&#9670;&#160;</a></span>mime_bundle_repr() <span class="overload">[7/17]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="structpulsatrix_1_1MimeBundle.html">MimeBundle</a> pulsatrix::mime_bundle_repr </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="structpulsatrix_1_1HeatmapDocument.html">HeatmapDocument</a> &amp;&#160;</td>
+          <td class="paramname"><em>doc</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a2c22c9057f5981696ca0a404cf7a5d45" name="a2c22c9057f5981696ca0a404cf7a5d45"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2c22c9057f5981696ca0a404cf7a5d45">&#9670;&#160;</a></span>mime_bundle_repr() <span class="overload">[8/17]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="structpulsatrix_1_1MimeBundle.html">MimeBundle</a> pulsatrix::mime_bundle_repr </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="structpulsatrix_1_1MorrisDocument.html">MorrisDocument</a> &amp;&#160;</td>
+          <td class="paramname"><em>doc</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a3f6249854f36483286fb2e988ea0f529" name="a3f6249854f36483286fb2e988ea0f529"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3f6249854f36483286fb2e988ea0f529">&#9670;&#160;</a></span>mime_bundle_repr() <span class="overload">[9/17]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="structpulsatrix_1_1MimeBundle.html">MimeBundle</a> pulsatrix::mime_bundle_repr </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="structpulsatrix_1_1MutationMapDocument.html">MutationMapDocument</a> &amp;&#160;</td>
+          <td class="paramname"><em>doc</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a6e04a44ae6552e0612c827d8a384132a" name="a6e04a44ae6552e0612c827d8a384132a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6e04a44ae6552e0612c827d8a384132a">&#9670;&#160;</a></span>mime_bundle_repr() <span class="overload">[10/17]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="structpulsatrix_1_1MimeBundle.html">MimeBundle</a> pulsatrix::mime_bundle_repr </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="structpulsatrix_1_1PartialDependenceDocument.html">PartialDependenceDocument</a> &amp;&#160;</td>
+          <td class="paramname"><em>doc</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a16c3a4bc0a1be9a51f178f5d70fe37db" name="a16c3a4bc0a1be9a51f178f5d70fe37db"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a16c3a4bc0a1be9a51f178f5d70fe37db">&#9670;&#160;</a></span>mime_bundle_repr() <span class="overload">[11/17]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="structpulsatrix_1_1MimeBundle.html">MimeBundle</a> pulsatrix::mime_bundle_repr </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="structpulsatrix_1_1ResidueTracksDocument.html">ResidueTracksDocument</a> &amp;&#160;</td>
+          <td class="paramname"><em>doc</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a5d1031a366e1377496a6abd0c66825b1" name="a5d1031a366e1377496a6abd0c66825b1"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5d1031a366e1377496a6abd0c66825b1">&#9670;&#160;</a></span>mime_bundle_repr() <span class="overload">[12/17]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="structpulsatrix_1_1MimeBundle.html">MimeBundle</a> pulsatrix::mime_bundle_repr </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="structpulsatrix_1_1SensitivityDocument.html">SensitivityDocument</a> &amp;&#160;</td>
+          <td class="paramname"><em>doc</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a99ab3a4a86c7d737fb6830e4d12441f3" name="a99ab3a4a86c7d737fb6830e4d12441f3"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a99ab3a4a86c7d737fb6830e4d12441f3">&#9670;&#160;</a></span>mime_bundle_repr() <span class="overload">[13/17]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="structpulsatrix_1_1MimeBundle.html">MimeBundle</a> pulsatrix::mime_bundle_repr </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="structpulsatrix_1_1SequenceLogoDocument.html">SequenceLogoDocument</a> &amp;&#160;</td>
+          <td class="paramname"><em>doc</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a27045a862ccecd46ccbf77554962ebcc" name="a27045a862ccecd46ccbf77554962ebcc"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a27045a862ccecd46ccbf77554962ebcc">&#9670;&#160;</a></span>mime_bundle_repr() <span class="overload">[14/17]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="structpulsatrix_1_1MimeBundle.html">MimeBundle</a> pulsatrix::mime_bundle_repr </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="structpulsatrix_1_1SobolDocument.html">SobolDocument</a> &amp;&#160;</td>
+          <td class="paramname"><em>doc</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a71b7ebedf3ae3a9f8f43f2ceeaa3b5b5" name="a71b7ebedf3ae3a9f8f43f2ceeaa3b5b5"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a71b7ebedf3ae3a9f8f43f2ceeaa3b5b5">&#9670;&#160;</a></span>mime_bundle_repr() <span class="overload">[15/17]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="structpulsatrix_1_1MimeBundle.html">MimeBundle</a> pulsatrix::mime_bundle_repr </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp;&#160;</td>
+          <td class="paramname"><em>tensor</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="ae99119c089ef19e4e1d65076dbaf8e89" name="ae99119c089ef19e4e1d65076dbaf8e89"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae99119c089ef19e4e1d65076dbaf8e89">&#9670;&#160;</a></span>mime_bundle_repr() <span class="overload">[16/17]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="structpulsatrix_1_1MimeBundle.html">MimeBundle</a> pulsatrix::mime_bundle_repr </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="structpulsatrix_1_1TokenRelevanceDocument.html">TokenRelevanceDocument</a> &amp;&#160;</td>
+          <td class="paramname"><em>doc</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="aa37231ff279eb9a9310bc53f081287e6" name="aa37231ff279eb9a9310bc53f081287e6"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa37231ff279eb9a9310bc53f081287e6">&#9670;&#160;</a></span>mime_bundle_repr() <span class="overload">[17/17]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="structpulsatrix_1_1MimeBundle.html">MimeBundle</a> pulsatrix::mime_bundle_repr </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="structpulsatrix_1_1TrainingLogDocument.html">TrainingLogDocument</a> &amp;&#160;</td>
+          <td class="paramname"><em>doc</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
 
 </div>
 </div>
@@ -17938,6 +18327,71 @@ Device-generic (GPU-native-kernels Mission 7): each parameter is one buffer copy
 
 </div>
 </div>
+<a id="a67958a23dcb78a6477ca7276457ea457" name="a67958a23dcb78a6477ca7276457ea457"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a67958a23dcb78a6477ca7276457ea457">&#9670;&#160;</a></span>to_json() <span class="overload">[1/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class Json &gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">void pulsatrix::to_json </td>
+          <td>(</td>
+          <td class="paramtype">Json &amp;&#160;</td>
+          <td class="paramname"><em>j</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="classpulsatrix_1_1JsonValue.html">JsonValue</a> &amp;&#160;</td>
+          <td class="paramname"><em>value</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Converts a <a class="el" href="classpulsatrix_1_1JsonValue.html" title="One JSON value: null, a boolean, a number, a string, an array or an object.">JsonValue</a> to another JSON library's value type by its common interface (assignment from null, bool, number and string; <code>object()</code>, <code>array()</code>, <code>operator[]</code>, <code>push_back</code>). nlohmann::json finds it by argument-dependent lookup, so <code>nlohmann::json j = value;</code> works without pulsatrix including nlohmann. </p>
+<dl class="section note"><dt>Note</dt><dd>Integers (number text without '.', 'e' or 'E' that fits int64_t) stay integers. </dd></dl>
+
+</div>
+</div>
+<a id="ae6ac032290ca2bd170f7bbb0879b3e37" name="ae6ac032290ca2bd170f7bbb0879b3e37"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae6ac032290ca2bd170f7bbb0879b3e37">&#9670;&#160;</a></span>to_json() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class Json &gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">void pulsatrix::to_json </td>
+          <td>(</td>
+          <td class="paramtype">Json &amp;&#160;</td>
+          <td class="paramname"><em>j</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="structpulsatrix_1_1MimeBundle.html">MimeBundle</a> &amp;&#160;</td>
+          <td class="paramname"><em>bundle</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>The bundle as a JSON object of MIME type to data (see <a class="el" href="namespacepulsatrix.html#a67958a23dcb78a6477ca7276457ea457" title="Converts a JsonValue to another JSON library&#39;s value type by its common interface (assignment from nu...">to_json(Json&amp;, const JsonValue&amp;)</a>). </p>
+
+</div>
+</div>
 <a id="a0f72456585566c7d3dd290e3ac5f0af5" name="a0f72456585566c7d3dd290e3ac5f0af5"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a0f72456585566c7d3dd290e3ac5f0af5">&#9670;&#160;</a></span>ToAttentionConfig() <span class="overload">[1/2]</span></h2>
 
@@ -19301,6 +19755,32 @@ template&lt;typename Genotype , typename FitnessT , typename RNG &gt; </div>
 </div><div class="memdoc">
 
 <p>One row per feature in <code>feature_indices:</code> every document's value for it, spread so points don't overlap (ToBeeswarmPoints). </p>
+
+</div>
+</div>
+<a id="a00f8a4e48cc4b517b01a40c08b2e9ad5" name="a00f8a4e48cc4b517b01a40c08b2e9ad5"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a00f8a4e48cc4b517b01a40c08b2e9ad5">&#9670;&#160;</a></span>ToVegaLiteCircuitGraph()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classpulsatrix_1_1JsonValue.html">JsonValue</a> pulsatrix::ToVegaLiteCircuitGraph </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="structpulsatrix_1_1CircuitGraphDocument.html">CircuitGraphDocument</a> &amp;&#160;</td>
+          <td class="paramname"><em>doc</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>A Vega-Lite node-link view of a circuit graph: nodes in columns by depth (longest path from a source), colored by ablation effect, edges as lines weighted by |weight|. </p>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname">std::invalid_argument</td><td>for an empty graph or an edge naming a missing node. </td></tr>
+  </table>
+  </dd>
+</dl>
 
 </div>
 </div>
@@ -20839,6 +21319,30 @@ template&lt;typename T &gt; </div>
   </tr>
 </table>
 </div><div class="memdoc">
+
+</div>
+</div>
+<a id="acad5172bb32c63d0fce817d5f9811faf" name="acad5172bb32c63d0fce817d5f9811faf"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#acad5172bb32c63d0fce817d5f9811faf">&#9670;&#160;</a></span>kVegaLiteMimeType</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">constexpr const char* pulsatrix::kVegaLiteMimeType = &quot;application/vnd.vegalite.v5+json&quot;</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">constexpr</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>The MIME type Jupyter front ends (JupyterLab, Notebook 7, VS Code) render Vega-Lite from. pulsatrix's specs use only Vega-Lite 5 features, so they're sent as version 5. </p>
 
 </div>
 </div>

@@ -17,7 +17,7 @@ var searchData=
   ['kh_14',['kh',['../structpulsatrix_1_1ConvGeometry.html#a25629392ac9ed80e051edf1947af4c8f',1,'pulsatrix::ConvGeometry']]],
   ['kheads_15',['kHeads',['../classpulsatrix_1_1TinyTagger.html#abd1f2a1e0c72695b07c8f5be770da04d',1,'pulsatrix::TinyTagger']]],
   ['kignoreindex_16',['kIgnoreIndex',['../classpulsatrix_1_1TokenCrossEntropyLoss.html#a179bb970fc18d8fd27c6058a2581d3c8',1,'pulsatrix::TokenCrossEntropyLoss']]],
-  ['kind_17',['kind',['../structpulsatrix_1_1EncoderTarget.html#ae2d7694b62d34da5296b59c20cc66bfe',1,'pulsatrix::EncoderTarget::kind'],['../structpulsatrix_1_1ParameterSpec.html#a4ed5a9b63c8562ebf60f1a5fc06994a1',1,'pulsatrix::ParameterSpec::kind'],['../structpulsatrix_1_1BenchmarkRecord.html#af5adc5717a715d6b1ed4a8f2ed483bdc',1,'pulsatrix::BenchmarkRecord::kind'],['../structpulsatrix_1_1BenchmarkComparison.html#a0f2ec12d3bffe53f43d177c0752e6127',1,'pulsatrix::BenchmarkComparison::kind'],['../structpulsatrix_1_1CounterfactualTarget.html#a0e7b28ee3fd8bc1457c09afbeebc9fa7',1,'pulsatrix::CounterfactualTarget::kind'],['../structpulsatrix_1_1Imputation.html#ad987ae934546d28263ad94a6b6907bd9',1,'pulsatrix::Imputation::kind']]],
+  ['kind_17',['kind',['../structpulsatrix_1_1ParameterSpec.html#a4ed5a9b63c8562ebf60f1a5fc06994a1',1,'pulsatrix::ParameterSpec::kind'],['../structpulsatrix_1_1EncoderTarget.html#ae2d7694b62d34da5296b59c20cc66bfe',1,'pulsatrix::EncoderTarget::kind'],['../structpulsatrix_1_1BenchmarkRecord.html#af5adc5717a715d6b1ed4a8f2ed483bdc',1,'pulsatrix::BenchmarkRecord::kind'],['../structpulsatrix_1_1BenchmarkComparison.html#a0f2ec12d3bffe53f43d177c0752e6127',1,'pulsatrix::BenchmarkComparison::kind'],['../structpulsatrix_1_1CounterfactualTarget.html#a0e7b28ee3fd8bc1457c09afbeebc9fa7',1,'pulsatrix::CounterfactualTarget::kind'],['../structpulsatrix_1_1Imputation.html#ad987ae934546d28263ad94a6b6907bd9',1,'pulsatrix::Imputation::kind']]],
   ['klogprobstabilizer_18',['kLogProbStabilizer',['../classpulsatrix_1_1TanhGaussianPolicy.html#a70e084dd37bfa0a8c7c9fe4f67a8d66d',1,'pulsatrix::TanhGaussianPolicy']]],
   ['klongrange_19',['kLongRange',['../namespacepulsatrix.html#a31b9ea5e0b7630734453a841016c03a7',1,'pulsatrix']]],
   ['kmediumrange_20',['kMediumRange',['../namespacepulsatrix.html#a49f75d00f35298ffe41e59bc9ee36ceb',1,'pulsatrix']]],
@@ -27,10 +27,11 @@ var searchData=
   ['kunkindex_24',['kUnkIndex',['../classpulsatrix_1_1Vocabulary.html#adf6ce45df1fa2aec244bef15f7387dc1',1,'pulsatrix::Vocabulary']]],
   ['kunktoken_25',['kUnkToken',['../classpulsatrix_1_1Vocabulary.html#afc3a1419ab5f15f4a600a081e94cdadb',1,'pulsatrix::Vocabulary']]],
   ['kvegaembedversion_26',['kVegaEmbedVersion',['../namespacepulsatrix.html#a69da35a089b7c4138a52bd0a2344dc57',1,'pulsatrix']]],
-  ['kvegaliteversion_27',['kVegaLiteVersion',['../namespacepulsatrix.html#a34805eba94fcb8268ead2b919a9c6ea2',1,'pulsatrix']]],
-  ['kvegaversion_28',['kVegaVersion',['../namespacepulsatrix.html#aa2f0de394cd273dd8a83b33b814742d3',1,'pulsatrix']]],
-  ['kvizdocumentversion_29',['kVizDocumentVersion',['../namespacepulsatrix.html#ad7c306e18124f3aeb68cde6615b337b5',1,'pulsatrix']]],
-  ['kvocab_30',['kVocab',['../classpulsatrix_1_1TinyTagger.html#a052db03bbdaa2c14bc78dadb71d986d0',1,'pulsatrix::TinyTagger']]],
-  ['kw_31',['kw',['../structpulsatrix_1_1ConvGeometry.html#a3c71499e1d2935fabe6d79fc021be996',1,'pulsatrix::ConvGeometry']]],
-  ['kxthreshold_32',['kxthreshold',['../classpulsatrix_1_1CartPoleEnv.html#a66dd76bb785b90ab53706444344acd95',1,'pulsatrix::CartPoleEnv::kXThreshold'],['../classpulsatrix_1_1ContinuousCartPoleEnv.html#aa61c33724968ad0d501b922dd341078a',1,'pulsatrix::ContinuousCartPoleEnv::kXThreshold']]]
+  ['kvegalitemimetype_27',['kVegaLiteMimeType',['../namespacepulsatrix.html#acad5172bb32c63d0fce817d5f9811faf',1,'pulsatrix']]],
+  ['kvegaliteversion_28',['kVegaLiteVersion',['../namespacepulsatrix.html#a34805eba94fcb8268ead2b919a9c6ea2',1,'pulsatrix']]],
+  ['kvegaversion_29',['kVegaVersion',['../namespacepulsatrix.html#aa2f0de394cd273dd8a83b33b814742d3',1,'pulsatrix']]],
+  ['kvizdocumentversion_30',['kVizDocumentVersion',['../namespacepulsatrix.html#ad7c306e18124f3aeb68cde6615b337b5',1,'pulsatrix']]],
+  ['kvocab_31',['kVocab',['../classpulsatrix_1_1TinyTagger.html#a052db03bbdaa2c14bc78dadb71d986d0',1,'pulsatrix::TinyTagger']]],
+  ['kw_32',['kw',['../structpulsatrix_1_1ConvGeometry.html#a3c71499e1d2935fabe6d79fc021be996',1,'pulsatrix::ConvGeometry']]],
+  ['kxthreshold_33',['kxthreshold',['../classpulsatrix_1_1ContinuousCartPoleEnv.html#aa61c33724968ad0d501b922dd341078a',1,'pulsatrix::ContinuousCartPoleEnv::kXThreshold'],['../classpulsatrix_1_1CartPoleEnv.html#a66dd76bb785b90ab53706444344acd95',1,'pulsatrix::CartPoleEnv::kXThreshold']]]
 ];
