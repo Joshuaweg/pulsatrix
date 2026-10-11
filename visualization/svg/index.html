@@ -2297,6 +2297,11 @@ magnitudes.</p>
 <td>Per-residue tracks and annotated features under the sequence</td>
 <td><code>ResidueTracksDocument</code></td>
 </tr>
+<tr>
+<td><code>RenderProjectionSvg(doc, x_axis, y_axis)</code></td>
+<td>Two axes of a projection, such as PC1 and PC2, on one scale: points colored by group (with a legend) or by value (with a color bar), each with its label on hover</td>
+<td><code>ProjectionDocument</code></td>
+</tr>
 </tbody>
 </table>
 <div class="highlight"><pre><span></span><code><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;fstream&gt;</span>
@@ -2325,8 +2330,9 @@ pulsatrix_svg<span class="w"> </span>cf.json<span class="w"> </span>-o<span clas
 pulsatrix_svg<span class="w"> </span>cf1.json<span class="w"> </span>cf2.json<span class="w"> </span>cf3.json<span class="w"> </span>-o<span class="w"> </span>set.svg<span class="w">        </span><span class="c1"># several counterfactuals side by side</span>
 pulsatrix_svg<span class="w"> </span>morris.json<span class="w"> </span>-o<span class="w"> </span>morris.svg<span class="w">                    </span><span class="c1"># Morris screening scatter</span>
 pulsatrix_svg<span class="w"> </span>sobol.json<span class="w"> </span>-o<span class="w"> </span>sobol.svg<span class="w">                      </span><span class="c1"># Sobol index bars</span>
+pulsatrix_svg<span class="w"> </span>pca.json<span class="w"> </span>--axes<span class="w"> </span><span class="m">1</span>,3<span class="w"> </span>-o<span class="w"> </span>pca13.svg<span class="w">             </span><span class="c1"># projection: PC1 against PC3</span>
 </code></pre></div>
-<p>Other options: <code>--top-k N</code>, <code>--width W</code>, <code>--font-size N</code>, <code>--title TEXT</code>.</p>
+<p>Other options: <code>--top-k N</code>, <code>--axes I,J</code> (a projection's axes, from 1), <code>--width W</code>, <code>--font-size N</code>, <code>--title TEXT</code>.</p>
 <p><strong>Details:</strong></p>
 <ul>
 <li><strong>Deterministic.</strong> The same input gives the same bytes on every platform. Tests compare each

@@ -163,6 +163,7 @@ var dir_549639eb5e09d856a0d6449a002be6ea =
     [ "parameter_decomposition.hpp", "parameter__decomposition_8hpp.html", "parameter__decomposition_8hpp" ],
     [ "pbt.hpp", "pbt_8hpp.html", "pbt_8hpp" ],
     [ "pbt_trial.hpp", "pbt__trial_8hpp.html", "pbt__trial_8hpp" ],
+    [ "pca.hpp", "pca_8hpp.html", "pca_8hpp" ],
     [ "pdp.hpp", "pdp_8hpp.html", "pdp_8hpp" ],
     [ "policy_gradient_loss.hpp", "policy__gradient__loss_8hpp.html", "policy__gradient__loss_8hpp" ],
     [ "polyak_update.hpp", "polyak__update_8hpp.html", "polyak__update_8hpp" ],

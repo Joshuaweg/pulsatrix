@@ -3982,7 +3982,8 @@ machine, and explain it with the tools pulsatrix already has. Items on that path
 <li>INT-1 (<strong>done</strong>, <a href="https://github.com/Joshuaweg/pulsatrix/pull/132">#132</a>): nearest neighbors, mutual nearest neighbors, mutual-kNN alignment</li>
 <li>INT-3 (<strong>done</strong>, <a href="https://github.com/Joshuaweg/pulsatrix/pull/133">#133</a>): probe controls (selectivity, and gain over a baseline)</li>
 <li>INT-4 (<strong>done</strong>, <a href="https://github.com/Joshuaweg/pulsatrix/pull/134">#134</a>): anisotropy, effective rank, TwoNN intrinsic dimension</li>
-<li>INT-5, INT-6: PCA, TCAV and CRP</li>
+<li>INT-5 (<strong>done</strong>, <a href="https://github.com/Joshuaweg/pulsatrix/pull/135">#135</a>): PCA, projection plots, split-half stability</li>
+<li>INT-6: TCAV and CRP</li>
 <li>TDA-1 to TDA-8, TDA-11: persistent homology and RTD</li>
 <li>KS-3, KS-4: uncertainty and adversarial robustness</li>
 <li>Llama-3.2-1B and Qwen2.5-0.5B pass the golden-logit test</li>
@@ -5421,7 +5422,7 @@ network says nothing about what the model learned.</p>
 <td>FND-4</td>
 <td>P1</td>
 <td>M</td>
-<td></td>
+<td>Done, <a href="https://github.com/Joshuaweg/pulsatrix/pull/135">#135</a> (see below)</td>
 </tr>
 <tr>
 <td>INT-6</td>
@@ -5454,7 +5455,31 @@ network says nothing about what the model learned.</p>
 </table>
 <h3 id="how-the-int-work-departed-from-the-plan">How the INT work departed from the plan<a class="headerlink" href="#how-the-int-work-departed-from-the-plan" title="Permanent link">&para;</a></h3>
 <ul>
-<li><strong>INT-4</strong> follows the plan in <code>representation_geometry.hpp</code>.</li>
+<li><strong>INT-5</strong> adds <code>pca.hpp</code>.</li>
+<li><strong>The functions:</strong> <code>FitPca()</code>, <code>PcaProject()</code> (optionally whitened), <code>PcaReconstruct()</code>,
+    <code>PcaComponent()</code> as a steering direction, <code>SubspaceOverlap()</code>, and <code>PcaSplitHalfOverlap()</code>.</li>
+<li><strong>Checked against</strong> scikit-learn 1.7.2's full-SVD PCA, read from its released package and
+    transcribed into <code>tools/generate_pca_reference_values.py</code>. Components, variances, ratios
+    and projections agree to 1e-10, through both the covariance and the Gram path.</li>
+<li><strong>Views:</strong> the 2D and 3D views became a new viz document, <code>pulsatrix.projection.v1</code>, the
+    sixteenth kind.<ul>
+<li>It has an SVG scatter plot (<code>RenderProjectionSvg</code>, either pair of axes, one scale on
+  both) and a Vega-Lite page that shows three pair panels for three components.</li>
+<li>It's wired into <code>pulsatrix_svg</code> (with <code>--axes</code>), notebooks and the document fuzzer.</li>
+<li>A rotating 3D view isn't built in; the document holds every coordinate for a tool that
+  has one.</li>
+</ul>
+</li>
+<li><strong>Added beyond the plan: a stability check.</strong> A 2D picture of noise can look like
+    structure, so <code>PcaSplitHalfOverlap()</code> fits two halves and compares them. Points on a plane
+    give 0.9995, the plane under equal noise 0.92, and noise alone 0.09.</li>
+<li>
+<p><strong><code>SymmetricEigenInDouble()</code></strong> joins FND-4's decompositions, so components and variances
+    stay in double precision.</p>
+</li>
+<li>
+<p><strong>INT-4</strong> follows the plan in <code>representation_geometry.hpp</code>.</p>
+</li>
 <li><strong><code>Anisotropy()</code></strong> is the exact mean cosine over every pair, raw or centered.</li>
 <li><strong><code>MeasureEffectiveRank()</code></strong> gives Roy and Vetterli's effective rank and the participation
     ratio.</li>

@@ -2320,7 +2320,7 @@ a file format outlasts any one viewer.</p>
 <span class="w">    </span><span class="n">AttributionBarChart</span><span class="o">::</span><span class="n">Draw</span><span class="p">(</span><span class="s">"Top features"</span><span class="p">,</span><span class="w"> </span><span class="n">ParseAttributionDocument</span><span class="p">(</span><span class="n">text</span><span class="p">.</span><span class="n">str</span><span class="p">()));</span>
 <span class="p">}</span>
 </code></pre></div>
-<p>There are fifteen kinds. Each has a struct, a writer (<code>ToJson</code>) and a reader (<code>Parse&lt;Kind&gt;Document</code>):</p>
+<p>There are sixteen kinds. Each has a struct, a writer (<code>ToJson</code>) and a reader (<code>Parse&lt;Kind&gt;Document</code>):</p>
 <table>
 <thead>
 <tr>
@@ -2414,6 +2414,12 @@ a file format outlasts any one viewer.</p>
 <td><code>ContactMapDocument</code></td>
 <td><code>title</code>, <code>sequence</code>, <code>first_position</code>, <code>method</code>, <code>predicted</code> (L × L) and <code>truth</code> (L × L of 0, 1 and NaN, or empty)</td>
 <td><code>ContactMap</code></td>
+</tr>
+<tr>
+<td><code>pulsatrix.projection.v1</code></td>
+<td><code>ProjectionDocument</code></td>
+<td><code>title</code>, <code>method</code>, <code>axes</code>, <code>explained_variance_ratio</code> (one per axis, or empty), row-major <code>coordinates</code> (points × axes), and optional per-point <code>labels</code>, <code>groups</code> and <code>values</code></td>
+<td><code>MakeProjectionDocument(pca, scores)</code></td>
 </tr>
 <tr>
 <td><code>pulsatrix.residue_tracks.v1</code></td>

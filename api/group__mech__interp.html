@@ -99,7 +99,7 @@ $(document).ready(function(){initNavTree('group__mech__interp.html',''); initRes
 </div><!--header-->
 <div class="contents">
 
-<p>Tools for inspecting and probing a model's internal computation directly &ndash; activation caching, linear probes and their controls, representation similarity (linear CKA), nearest neighbors and mutual-kNN alignment, representation geometry (anisotropy, effective rank, intrinsic dimension), sparse autoencoders, circuit graphs &ndash; plus the GFlowNet-based non-goal-directed training objectives motivated by the Scientist AI research direction.  
+<p>Tools for inspecting and probing a model's internal computation directly &ndash; activation caching, linear probes and their controls, representation similarity (linear CKA), nearest neighbors and mutual-kNN alignment, representation geometry (anisotropy, effective rank, intrinsic dimension), PCA projections, sparse autoencoders, circuit graphs &ndash; plus the GFlowNet-based non-goal-directed training objectives motivated by the Scientist AI research direction.  
 <a href="#details">More...</a></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="files" name="files"></a>
@@ -159,6 +159,9 @@ Files</h2></td></tr>
 <tr class="memitem:parameter__decomposition_8hpp" id="r_parameter__decomposition_8hpp"><td class="memItemLeft" align="right" valign="top">file &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="parameter__decomposition_8hpp.html">parameter_decomposition.hpp</a></td></tr>
 <tr class="memdesc:parameter__decomposition_8hpp"><td class="mdescLeft">&#160;</td><td class="mdescRight">Parameter decomposition (FEAT-9): explaining a network in weight space. Each weight matrix is split into rank-one subcomponents, and training asks that, for every input, few of them be needed to compute the output. SPD (Bushnaq, Braun and Sharkey, "Stochastic Parameter Decomposition", arXiv 2506.20790) and VPD (Bushnaq et al., "Interpreting Language Model Parameters", Goodfire, 2026: adversarial parameter decomposition) are both here, after their reference code (github.com/goodfire-ai/ param-decomp: tag v1 for SPD, nano_param_decomp for VPD). <br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:pca_8hpp" id="r_pca_8hpp"><td class="memItemLeft" align="right" valign="top">file &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="pca_8hpp.html">pca.hpp</a></td></tr>
+<tr class="memdesc:pca_8hpp"><td class="mdescLeft">&#160;</td><td class="mdescRight">Principal component analysis of a layer's representations (INT-5): 2D and 3D views, directions to steer along, and fewer dimensions for what comes after. <br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:probe__controls_8hpp" id="r_probe__controls_8hpp"><td class="memItemLeft" align="right" valign="top">file &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="probe__controls_8hpp.html">probe_controls.hpp</a></td></tr>
 <tr class="memdesc:probe__controls_8hpp"><td class="mdescLeft">&#160;</td><td class="mdescRight">Linear probes with controls (INT-3): a multi-class probe trainer, Hewitt and Liang's control task and selectivity, and a comparison against a baseline representation. <br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -194,7 +197,7 @@ Files</h2></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<p>Tools for inspecting and probing a model's internal computation directly &ndash; activation caching, linear probes and their controls, representation similarity (linear CKA), nearest neighbors and mutual-kNN alignment, representation geometry (anisotropy, effective rank, intrinsic dimension), sparse autoencoders, circuit graphs &ndash; plus the GFlowNet-based non-goal-directed training objectives motivated by the Scientist AI research direction. </p>
+<p>Tools for inspecting and probing a model's internal computation directly &ndash; activation caching, linear probes and their controls, representation similarity (linear CKA), nearest neighbors and mutual-kNN alignment, representation geometry (anisotropy, effective rank, intrinsic dimension), PCA projections, sparse autoencoders, circuit graphs &ndash; plus the GFlowNet-based non-goal-directed training objectives motivated by the Scientist AI research direction. </p>
 </div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
