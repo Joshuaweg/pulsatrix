@@ -227,6 +227,7 @@ add_executable(pulsatrix_tests
     activation_snapshot_test.cpp
     circuit_graph_test.cpp
     linear_probe_test.cpp
+    representation_similarity_test.cpp
     sparse_autoencoder_test.cpp
     saliency_test.cpp
     lrp_test.cpp

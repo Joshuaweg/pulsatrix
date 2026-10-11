@@ -16,6 +16,7 @@ attribution graphs of a language model's prediction.
 | Your question | Tool | Page |
 |---|---|---|
 | Is concept X linearly readable from layer L? | `LinearProbe` | [Below](#probing-a-layer-for-a-concept) |
+| How similar are two layers, two models, or a model before and after fine-tuning? | `LinearCka`, `LinearCkaMatrix` | [Below](#comparing-representations-cka) |
 | Which directions in a layer stand for concepts, found without labels? | Sparse autoencoders: `TopKSparseAutoencoder`, `JumpReLUSparseAutoencoder`, `SparseAutoencoder` | [Finding features](featurizers.md) |
 | Which concepts take more than one dimension, such as an angle or a position? | `BlockSparseFeaturizer` | [Finding features](featurizers.md#block-sparse-featurizers) |
 | What does an MLP compute, step by step? | `Transcoder` | [Finding features](featurizers.md#transcoders) |
@@ -126,6 +127,61 @@ const float accuracy = probe.accuracy(held_out_activations, held_out_labels);
   are as easy to probe from local sequence alone.
 
 Recipe: [Sparse autoencoder + linear probe](../recipes/mechanistic-interpretability/sparse_autoencoder_probe.md).
+
+### Comparing representations (CKA)
+
+Centered kernel alignment (CKA) measures how similar two representations of the same inputs
+are: one layer of two models, two layers of one model, a model before and after fine-tuning, or
+the same layer computed on the CPU and the GPU. Run the same n inputs through both, collect one
+row per input from each, and compare:
+
+```cpp
+#include "pulsatrix/representation_similarity.hpp"
+
+// layer_a: (n, 768) activations from one model; layer_b: (n, 1024) from another, same n inputs.
+const double similarity = LinearCka(layer_a, layer_b);
+```
+
+- **1** means one representation is a rotation and uniform scaling of the other, plus an offset.
+  The two layers don't need the same width, and their neurons don't need to line up.
+- **Near 0** means they are unrelated.
+- Dimensions after the first are flattened, so a convolution's (n, channels, height, width)
+  activations are n vectors. The tensors can be on any device; CKA is computed in double
+  precision on the host.
+
+`LinearCkaMatrix(layers_a, layers_b)` compares every layer of one model with every layer of
+another, reusing each layer's work across its row or column. Draw the result as a heatmap:
+
+```cpp
+#include "pulsatrix/viz/svg.hpp"
+
+const CkaMatrix m = LinearCkaMatrix(layers_a, layers_b);
+HeatmapDocument doc;
+doc.title = "CKA, model A layers × model B layers";
+doc.rows = m.rows;
+doc.cols = m.cols;
+doc.values.assign(m.values.begin(), m.values.end());
+std::ofstream("cka.svg") << RenderHeatmapSvg(doc);
+```
+
+Things to know:
+
+- **Use the default, debiased estimator.** The original estimator is pulled towards 1 when
+  there are few inputs for the width: two unrelated random representations of 50 inputs with
+  1,000 features each score 0.95 with it and −0.02 debiased. Pass `CkaEstimator::Biased` to
+  reproduce numbers from papers that used it. The debiased value can be slightly negative, and
+  needs at least 4 inputs.
+- **Compare against an untrained model.** Two layers can look similar because of the
+  architecture or the input, not what was learned. In the tests, the second hidden layers of two
+  small networks trained from different seeds score 0.68; one of them against the same network
+  untrained scores 0.10. Run the comparison on a `NullModelBaseline` too (below).
+- **Outliers move it.** A few inputs with very large activations can dominate, and CKA can be
+  pushed up or down on purpose (Davari et al., 2022). Check that a result holds on a second set
+  of inputs.
+- A representation that is constant over the inputs has no CKA: the result is NaN.
+
+The implementation matches the reference code of Kornblith et al. (ICML 2019) to 12 decimal
+places for both estimators.
 
 ### Baselines
 
