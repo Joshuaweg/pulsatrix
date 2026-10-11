@@ -7,5 +7,6 @@ var searchData=
   ['always_4',['Always',['../namespacepulsatrix.html#ad7a1ebc92bdef322b1c30385aac7c066a68eec46437c384d8dad18d5464ebc35c',1,'pulsatrix']]],
   ['aonly_5',['AOnly',['../namespacepulsatrix.html#ab673d269658e3265e7743bcffa908aa8a1fc5889d3bb8f6cad1f13441c1717a48',1,'pulsatrix']]],
   ['array_6',['Array',['../classpulsatrix_1_1JsonValue.html#abc4394f62a71b7f447ca50e841ecc98da4410ec34d9e6c1a68100ca0ce033fb17',1,'pulsatrix::JsonValue']]],
-  ['attention_7',['Attention',['../namespacepulsatrix.html#a94d9ac6240473b5362d1e8e5c11157bba2aa97e44cace7cb882c9dcba32940f8f',1,'pulsatrix']]]
+  ['assistant_7',['Assistant',['../structpulsatrix_1_1orch_1_1Message.html#a239a7e236f2be2bfce5d5bb8876ffc5fa9b1363da9503dbd4142c0274a88e8d4b',1,'pulsatrix::orch::Message']]],
+  ['attention_8',['Attention',['../namespacepulsatrix.html#a94d9ac6240473b5362d1e8e5c11157bba2aa97e44cace7cb882c9dcba32940f8f',1,'pulsatrix']]]
 ];

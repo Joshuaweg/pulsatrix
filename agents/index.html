@@ -1045,6 +1045,45 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#talking-to-a-model" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Talking to a model
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Talking to a model">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#tools-and-the-tool-loop" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Tools and the tool loop
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#what-the-providers-handle-for-you" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        What the providers handle for you
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#api-keys" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -2287,6 +2326,45 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#talking-to-a-model" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Talking to a model
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Talking to a model">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#tools-and-the-tool-loop" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Tools and the tool loop
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#what-the-providers-handle-for-you" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        What the providers handle for you
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#api-keys" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -2345,9 +2423,10 @@ OpenAI-compatible local servers (llama-server, vLLM, Ollama), a tool loop, and l
 that lets Claude and other agents drive pulsatrix's explainers. It needs no Python and no SDK.</p>
 <div class="admonition note">
 <p class="admonition-title">In progress</p>
-<p>So far: the build target, a holder for API keys, one-line JSON (AGT-1), and HTTP with
-streaming (AGT-2). The providers with the tool loop, and the tool registry, follow as AGT-3
-and AGT-4. See the <a href="../roadmap/#agt-agents-native-c">roadmap</a>.</p>
+<p>So far: the build target, API keys and JSON (AGT-1), HTTP with streaming (AGT-2), and the
+providers with the tool loop (AGT-3). A tool registry that validates the model's tool inputs
+follows as AGT-4, and an MCP server as AGT-5. See the
+<a href="../roadmap/#agt-agents-native-c">roadmap</a>.</p>
 </div>
 <h2 id="building-it">Building it<a class="headerlink" href="#building-it" title="Permanent link">&para;</a></h2>
 <p>The orchestrator is a separate library, off by default, so the core library never takes on
@@ -2384,6 +2463,85 @@ HTTPS.</p>
 pulsatrix (<code>find_package(pulsatrix)</code> sets <code>pulsatrix_HAS_ORCHESTRATOR</code>). Its headers are under
 <code>pulsatrix/orch/</code> and its names in <code>pulsatrix::orch</code>, since <code>pulsatrix::Agent</code> already names the
 reinforcement-learning policy.</p>
+<h2 id="talking-to-a-model">Talking to a model<a class="headerlink" href="#talking-to-a-model" title="Permanent link">&para;</a></h2>
+<p>A <code>Provider</code> sends a conversation to a model and streams the answer back. There are two:</p>
+<ul>
+<li><code>MakeAnthropicProvider()</code> for the Claude API;</li>
+<li><code>MakeOpenAiCompatibleProvider()</code> for a server with OpenAI's chat-completions API, such as
+  llama-server, vLLM or Ollama running on your own machine.</li>
+</ul>
+<p>Both take the same <code>ChatRequest</code> and return the same <code>ChatResponse</code>, so code written for one
+works with the other:</p>
+<div class="highlight"><pre><span></span><code><span class="cp">#include</span><span class="w"> </span><span class="cpf">"pulsatrix/orch/provider.hpp"</span>
+
+<span class="k">using</span><span class="w"> </span><span class="k">namespace</span><span class="w"> </span><span class="nn">pulsatrix</span><span class="o">::</span><span class="nn">orch</span><span class="p">;</span>
+
+<span class="n">std</span><span class="o">::</span><span class="n">unique_ptr</span><span class="o">&lt;</span><span class="n">Provider</span><span class="o">&gt;</span><span class="w"> </span><span class="n">claude</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">MakeAnthropicProvider</span><span class="p">(</span><span class="n">AnthropicOptions</span><span class="o">::</span><span class="n">FromEnv</span><span class="p">());</span><span class="w">  </span><span class="c1">// ANTHROPIC_API_KEY</span>
+
+<span class="n">ChatRequest</span><span class="w"> </span><span class="n">request</span><span class="p">;</span>
+<span class="n">request</span><span class="p">.</span><span class="n">model</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">"claude-opus-5-5"</span><span class="p">;</span>
+<span class="n">request</span><span class="p">.</span><span class="n">system</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">"Answer in one sentence."</span><span class="p">;</span>
+<span class="n">request</span><span class="p">.</span><span class="n">messages</span><span class="p">.</span><span class="n">push_back</span><span class="p">(</span><span class="n">Message</span><span class="o">::</span><span class="n">User</span><span class="p">(</span><span class="s">"What does layer-wise relevance propagation conserve?"</span><span class="p">));</span>
+
+<span class="n">ChatResponse</span><span class="w"> </span><span class="n">answer</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">claude</span><span class="o">-&gt;</span><span class="n">chat</span><span class="p">(</span><span class="n">request</span><span class="p">,</span><span class="w"> </span><span class="p">{[](</span><span class="n">std</span><span class="o">::</span><span class="n">string_view</span><span class="w"> </span><span class="n">text</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">text</span><span class="p">;</span><span class="w"> </span><span class="p">}});</span>
+<span class="n">std</span><span class="o">::</span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">"</span><span class="se">\n</span><span class="s">"</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">answer</span><span class="p">.</span><span class="n">usage</span><span class="p">.</span><span class="n">output_tokens</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">" tokens</span><span class="se">\n</span><span class="s">"</span><span class="p">;</span>
+</code></pre></div>
+<p>The callback prints the answer as it arrives. <code>answer.message</code> holds the whole thing.</p>
+<p>For a local model, only the provider changes:</p>
+<div class="highlight"><pre><span></span><code><span class="n">OpenAiCompatibleOptions</span><span class="w"> </span><span class="n">local</span><span class="p">;</span>
+<span class="n">local</span><span class="p">.</span><span class="n">base_url</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">"http://127.0.0.1:11434/v1"</span><span class="p">;</span><span class="w">  </span><span class="c1">// Ollama; llama-server's default is http://127.0.0.1:8080/v1</span>
+<span class="n">std</span><span class="o">::</span><span class="n">unique_ptr</span><span class="o">&lt;</span><span class="n">Provider</span><span class="o">&gt;</span><span class="w"> </span><span class="n">model</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">MakeOpenAiCompatibleProvider</span><span class="p">(</span><span class="n">local</span><span class="p">);</span>
+<span class="n">request</span><span class="p">.</span><span class="n">model</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">"qwen2.5:7b"</span><span class="p">;</span>
+</code></pre></div>
+<h3 id="tools-and-the-tool-loop">Tools and the tool loop<a class="headerlink" href="#tools-and-the-tool-loop" title="Permanent link">&para;</a></h3>
+<p>Give the model tools with <code>ToolSpec</code> (a name, a description and a JSON Schema for the input), and
+<code>RunToolLoop()</code> does the rest. It asks the model, runs each tool the model calls, sends the
+results back, and repeats until the model answers:</p>
+<div class="highlight"><pre><span></span><code><span class="cp">#include</span><span class="w"> </span><span class="cpf">"pulsatrix/orch/tool_loop.hpp"</span>
+
+<span class="n">ToolSpec</span><span class="w"> </span><span class="n">add</span><span class="p">;</span>
+<span class="n">add</span><span class="p">.</span><span class="n">name</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">"add"</span><span class="p">;</span>
+<span class="n">add</span><span class="p">.</span><span class="n">description</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">"Adds two integers a and b and returns their sum."</span><span class="p">;</span>
+<span class="n">add</span><span class="p">.</span><span class="n">input_schema</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">pulsatrix</span><span class="o">::</span><span class="n">ParseJson</span><span class="p">(</span><span class="sa">R</span><span class="s">"</span><span class="dl">(</span><span class="s">{"type": "object",</span>
+<span class="s">    "properties": {"a": {"type": "integer"}, "b": {"type": "integer"}},</span>
+<span class="s">    "required": ["a", "b"], "additionalProperties": false}</span><span class="dl">)</span><span class="s">"</span><span class="p">);</span>
+<span class="n">add</span><span class="p">.</span><span class="n">strict</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">true</span><span class="p">;</span><span class="w">  </span><span class="c1">// Claude guarantees inputs that match the schema</span>
+<span class="n">request</span><span class="p">.</span><span class="n">tools</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="n">add</span><span class="p">};</span>
+
+<span class="n">ToolLoopResult</span><span class="w"> </span><span class="n">result</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">RunToolLoop</span><span class="p">(</span><span class="o">*</span><span class="n">claude</span><span class="p">,</span><span class="w"> </span><span class="n">request</span><span class="p">,</span><span class="w"> </span><span class="p">[](</span><span class="k">const</span><span class="w"> </span><span class="n">ToolCall</span><span class="o">&amp;</span><span class="w"> </span><span class="n">call</span><span class="p">)</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="n">ToolOutcome</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">call</span><span class="p">.</span><span class="n">name</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="s">"add"</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="p">{</span><span class="s">"unknown tool "</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">call</span><span class="p">.</span><span class="n">name</span><span class="p">,</span><span class="w"> </span><span class="cm">/*is_error=*/</span><span class="nb">true</span><span class="p">};</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="p">{</span><span class="n">std</span><span class="o">::</span><span class="n">to_string</span><span class="p">(</span><span class="n">call</span><span class="p">.</span><span class="n">input</span><span class="p">.</span><span class="n">find</span><span class="p">(</span><span class="s">"a"</span><span class="p">)</span><span class="o">-&gt;</span><span class="n">as_int64</span><span class="p">()</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">call</span><span class="p">.</span><span class="n">input</span><span class="p">.</span><span class="n">find</span><span class="p">(</span><span class="s">"b"</span><span class="p">)</span><span class="o">-&gt;</span><span class="n">as_int64</span><span class="p">())};</span>
+<span class="p">});</span>
+<span class="n">std</span><span class="o">::</span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">result</span><span class="p">.</span><span class="n">last</span><span class="p">.</span><span class="n">message</span><span class="p">.</span><span class="n">text</span><span class="p">()</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">"</span><span class="se">\n</span><span class="s">"</span><span class="p">;</span>
+</code></pre></div>
+<p>A tool that throws is reported to the model as an error, so the model can try again.
+<code>max_turns</code> (20) bounds the loop. AGT-4 will add a registry that checks each input against its
+schema before your function sees it.</p>
+<h3 id="what-the-providers-handle-for-you">What the providers handle for you<a class="headerlink" href="#what-the-providers-handle-for-you" title="Permanent link">&para;</a></h3>
+<ul>
+<li><strong>Retries.</strong> Overloads (529), server errors (500, 502, 503, 504), timeouts and broken
+  connections are retried twice, with a random wait that doubles each time. A rate limit (429)
+  waits as long as the server's <code>retry-after</code> says. A 429 without <code>retry-after</code> from the Claude
+  API is the monthly spend cap, which retrying can't fix, so it fails at once. Nothing is
+  retried once part of the answer has reached your callback, since a retry would repeat it.</li>
+<li><strong>Errors.</strong> <code>ProviderError</code> carries the HTTP status, the API's error type (for example
+  <code>overloaded_error</code>) and the request ID to quote to support.</li>
+<li><strong>Prompt caching</strong> (Claude). The tool definitions, the system prompt and the conversation so
+  far are cached, so each turn of a tool loop pays full price only for what's new.
+  <code>answer.usage.cache_read_input_tokens</code> shows it working. Prompts under 512 tokens aren't
+  cached.</li>
+<li><strong>Thinking.</strong> Current Claude models think before answering. Their thinking blocks have to be
+  sent back unchanged in a tool loop, and they are; <code>on_thinking</code> shows the thinking as it
+  streams.</li>
+<li><strong>Tool choice.</strong> Current Claude models (Opus 5.5, Sonnet 5.5, Fable 5.1) reject forcing a
+  particular tool with HTTP 400, so the providers never do. Set <code>allow_tool_calls = false</code> to
+  tell the model not to call any.</li>
+<li><strong>Local models.</strong> A small model sometimes writes tool arguments that aren't valid JSON. The
+  provider keeps them as a string in <code>call.input</code>, so your tool can report the mistake back to
+  the model instead of the loop failing.</li>
+</ul>
 <h2 id="api-keys">API keys<a class="headerlink" href="#api-keys" title="Permanent link">&para;</a></h2>
 <p><code>orch::Secret</code> holds a credential. It has no <code>operator&lt;&lt;</code> and doesn't convert to a string, so a
 key can't reach a log line or an error message by accident. The one way to read it is <code>reveal()</code>:</p>
@@ -2399,6 +2557,7 @@ key can't reach a log line or an error message by accident. The one way to read 
 </code></pre></div>
 <p>The memory holding the key is overwritten when the <code>Secret</code> is destroyed or assigned over.</p>
 <h2 id="http-and-streaming">HTTP and streaming<a class="headerlink" href="#http-and-streaming" title="Permanent link">&para;</a></h2>
+<p>The providers are built on this layer. Use it directly for an API they don't cover.</p>
 <p><code>MakeHttpTransport()</code> returns a transport: libcurl when the build has it, cpp-httplib otherwise.
 <code>send()</code> waits for the whole response; <code>stream()</code> passes a successful response's body to a
 callback as it arrives, which is how LLM APIs stream their answers. <code>SseParser</code> turns those chunks
@@ -2418,7 +2577,7 @@ into server-sent events:</p>
 
 <span class="n">SseParser</span><span class="w"> </span><span class="nf">parser</span><span class="p">([](</span><span class="k">const</span><span class="w"> </span><span class="n">SseEvent</span><span class="o">&amp;</span><span class="w"> </span><span class="n">event</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
 <span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">event</span><span class="p">.</span><span class="n">type</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="s">"content_block_delta"</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
-<span class="w">        </span><span class="n">std</span><span class="o">::</span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">event</span><span class="p">.</span><span class="n">data</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">"</span><span class="se">\n</span><span class="s">"</span><span class="p">;</span><span class="w">  </span><span class="c1">// a JSON object; AGT-3 will parse it for you</span>
+<span class="w">        </span><span class="n">std</span><span class="o">::</span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">event</span><span class="p">.</span><span class="n">data</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">"</span><span class="se">\n</span><span class="s">"</span><span class="p">;</span><span class="w">  </span><span class="c1">// a JSON object; the providers above parse these</span>
 <span class="w">    </span><span class="p">}</span><span class="w">                                     </span><span class="c1">// other types, such as ping, are skipped</span>
 <span class="p">});</span>
 <span class="n">std</span><span class="o">::</span><span class="n">unique_ptr</span><span class="o">&lt;</span><span class="n">HttpTransport</span><span class="o">&gt;</span><span class="w"> </span><span class="n">http</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">MakeHttpTransport</span><span class="p">();</span>

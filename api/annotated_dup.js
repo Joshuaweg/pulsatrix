@@ -27,6 +27,10 @@ var annotated_dup =
         [ "RawReading", "structpulsatrix_1_1detail_1_1RawReading.html", "structpulsatrix_1_1detail_1_1RawReading" ]
       ] ],
       [ "orch", "namespacepulsatrix_1_1orch.html", [
+        [ "AnthropicOptions", "structpulsatrix_1_1orch_1_1AnthropicOptions.html", "structpulsatrix_1_1orch_1_1AnthropicOptions" ],
+        [ "ChatRequest", "structpulsatrix_1_1orch_1_1ChatRequest.html", "structpulsatrix_1_1orch_1_1ChatRequest" ],
+        [ "ChatResponse", "structpulsatrix_1_1orch_1_1ChatResponse.html", "structpulsatrix_1_1orch_1_1ChatResponse" ],
+        [ "ContentBlock", "structpulsatrix_1_1orch_1_1ContentBlock.html", "structpulsatrix_1_1orch_1_1ContentBlock" ],
         [ "HttpError", "classpulsatrix_1_1orch_1_1HttpError.html", "classpulsatrix_1_1orch_1_1HttpError" ],
         [ "HttpHeader", "structpulsatrix_1_1orch_1_1HttpHeader.html", "structpulsatrix_1_1orch_1_1HttpHeader" ],
         [ "HttpRequest", "structpulsatrix_1_1orch_1_1HttpRequest.html", "structpulsatrix_1_1orch_1_1HttpRequest" ],
@@ -34,9 +38,21 @@ var annotated_dup =
         [ "HttpTransport", "classpulsatrix_1_1orch_1_1HttpTransport.html", "classpulsatrix_1_1orch_1_1HttpTransport" ],
         [ "HttpTransportOptions", "structpulsatrix_1_1orch_1_1HttpTransportOptions.html", "structpulsatrix_1_1orch_1_1HttpTransportOptions" ],
         [ "HttpUrl", "structpulsatrix_1_1orch_1_1HttpUrl.html", "structpulsatrix_1_1orch_1_1HttpUrl" ],
+        [ "Message", "structpulsatrix_1_1orch_1_1Message.html", "structpulsatrix_1_1orch_1_1Message" ],
+        [ "OpenAiCompatibleOptions", "structpulsatrix_1_1orch_1_1OpenAiCompatibleOptions.html", "structpulsatrix_1_1orch_1_1OpenAiCompatibleOptions" ],
+        [ "Provider", "classpulsatrix_1_1orch_1_1Provider.html", "classpulsatrix_1_1orch_1_1Provider" ],
+        [ "ProviderError", "classpulsatrix_1_1orch_1_1ProviderError.html", "classpulsatrix_1_1orch_1_1ProviderError" ],
+        [ "RetryPolicy", "structpulsatrix_1_1orch_1_1RetryPolicy.html", "structpulsatrix_1_1orch_1_1RetryPolicy" ],
         [ "Secret", "classpulsatrix_1_1orch_1_1Secret.html", "classpulsatrix_1_1orch_1_1Secret" ],
         [ "SseEvent", "structpulsatrix_1_1orch_1_1SseEvent.html", "structpulsatrix_1_1orch_1_1SseEvent" ],
-        [ "SseParser", "classpulsatrix_1_1orch_1_1SseParser.html", "classpulsatrix_1_1orch_1_1SseParser" ]
+        [ "SseParser", "classpulsatrix_1_1orch_1_1SseParser.html", "classpulsatrix_1_1orch_1_1SseParser" ],
+        [ "StreamCallbacks", "structpulsatrix_1_1orch_1_1StreamCallbacks.html", "structpulsatrix_1_1orch_1_1StreamCallbacks" ],
+        [ "ToolCall", "structpulsatrix_1_1orch_1_1ToolCall.html", "structpulsatrix_1_1orch_1_1ToolCall" ],
+        [ "ToolLoopOptions", "structpulsatrix_1_1orch_1_1ToolLoopOptions.html", "structpulsatrix_1_1orch_1_1ToolLoopOptions" ],
+        [ "ToolLoopResult", "structpulsatrix_1_1orch_1_1ToolLoopResult.html", "structpulsatrix_1_1orch_1_1ToolLoopResult" ],
+        [ "ToolOutcome", "structpulsatrix_1_1orch_1_1ToolOutcome.html", "structpulsatrix_1_1orch_1_1ToolOutcome" ],
+        [ "ToolSpec", "structpulsatrix_1_1orch_1_1ToolSpec.html", "structpulsatrix_1_1orch_1_1ToolSpec" ],
+        [ "Usage", "structpulsatrix_1_1orch_1_1Usage.html", "structpulsatrix_1_1orch_1_1Usage" ]
       ] ],
       [ "AbsorptionOptions", "structpulsatrix_1_1AbsorptionOptions.html", "structpulsatrix_1_1AbsorptionOptions" ],
       [ "AbsorptionResult", "structpulsatrix_1_1AbsorptionResult.html", "structpulsatrix_1_1AbsorptionResult" ],
