@@ -3983,7 +3983,7 @@ machine, and explain it with the tools pulsatrix already has. Items on that path
 <li>INT-3 (<strong>done</strong>, <a href="https://github.com/Joshuaweg/pulsatrix/pull/133">#133</a>): probe controls (selectivity, and gain over a baseline)</li>
 <li>INT-4 (<strong>done</strong>, <a href="https://github.com/Joshuaweg/pulsatrix/pull/134">#134</a>): anisotropy, effective rank, TwoNN intrinsic dimension</li>
 <li>INT-5 (<strong>done</strong>, <a href="https://github.com/Joshuaweg/pulsatrix/pull/135">#135</a>): PCA, projection plots, split-half stability</li>
-<li>INT-6: TCAV and CRP</li>
+<li>INT-6: TCAV (<strong>done</strong>, <a href="https://github.com/Joshuaweg/pulsatrix/pull/136">#136</a>) and CRP (next)</li>
 <li>TDA-1 to TDA-8, TDA-11: persistent homology and RTD</li>
 <li>KS-3, KS-4: uncertainty and adversarial robustness</li>
 <li>Llama-3.2-1B and Qwen2.5-0.5B pass the golden-logit test</li>
@@ -5431,7 +5431,7 @@ network says nothing about what the model learned.</p>
 <td>INT-3</td>
 <td>P1</td>
 <td>M</td>
-<td></td>
+<td>TCAV done, <a href="https://github.com/Joshuaweg/pulsatrix/pull/136">#136</a>; CRP next (see below)</td>
 </tr>
 <tr>
 <td>INT-7</td>
@@ -5455,7 +5455,31 @@ network says nothing about what the model learned.</p>
 </table>
 <h3 id="how-the-int-work-departed-from-the-plan">How the INT work departed from the plan<a class="headerlink" href="#how-the-int-work-departed-from-the-plan" title="Permanent link">&para;</a></h3>
 <ul>
-<li><strong>INT-5</strong> adds <code>pca.hpp</code>.</li>
+<li><strong>INT-6</strong> is split in two. TCAV comes first, in <code>tcav.hpp</code>; Concept Relevance Propagation
+  follows in its own PR.</li>
+<li><strong>The functions:</strong><ul>
+<li><code>TrainCav</code> uses logistic regression (Kim et al.'s choice) or a difference of means, with
+  held-out accuracy.</li>
+<li><code>ConceptualSensitivities</code> and <code>TcavScore</code>.</li>
+<li><code>LayerActivations</code> and <code>LayerGradients</code> for <code>ExplainerContext</code> models.</li>
+<li><code>RunTcav</code> runs the significance test against random concepts.</li>
+</ul>
+</li>
+<li><strong>No t-test existed,</strong> so <code>StudentTTest</code> was added: pooled variance and two-sided, as
+    scipy's <code>ttest_ind</code> defaults. Its p-values match the t distribution's closed forms for 2
+    and 4 degrees of freedom to 1e-12, and the tabled 5% point for 18.</li>
+<li><strong>The falsifier</strong> is a network whose class logit is 2 h0 − h1. Concepts that raise h0 or
+    h1 score 1 and 0, both significant. A separable concept the logit ignores isn't.</li>
+<li><strong>A trap it found:</strong> a concept's CAVs all share its examples. With 30 of them, an ignored
+    concept passed the test in 8 of 40 trials, against 2 expected; with 300, in none. This is
+    documented and tested.</li>
+<li>
+<p><strong>Not covered:</strong> the language models, which don't expose gradients at an intermediate
+    layer.</p>
+</li>
+<li>
+<p><strong>INT-5</strong> adds <code>pca.hpp</code>.</p>
+</li>
 <li><strong>The functions:</strong> <code>FitPca()</code>, <code>PcaProject()</code> (optionally whitened), <code>PcaReconstruct()</code>,
     <code>PcaComponent()</code> as a steering direction, <code>SubspaceOverlap()</code>, and <code>PcaSplitHalfOverlap()</code>.</li>
 <li><strong>Checked against</strong> scikit-learn 1.7.2's full-SVD PCA, read from its released package and

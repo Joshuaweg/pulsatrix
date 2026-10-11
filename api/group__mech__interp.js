@@ -25,6 +25,7 @@ var group__mech__interp =
     [ "sparse_autoencoder.hpp", "sparse__autoencoder_8hpp.html", null ],
     [ "steering.hpp", "steering_8hpp.html", null ],
     [ "subtb_loss.hpp", "subtb__loss_8hpp.html", null ],
+    [ "tcav.hpp", "tcav_8hpp.html", null ],
     [ "topk_sparse_autoencoder.hpp", "topk__sparse__autoencoder_8hpp.html", null ],
     [ "trajectory_balance_loss.hpp", "trajectory__balance__loss_8hpp.html", null ],
     [ "transcoder.hpp", "transcoder_8hpp.html", null ]

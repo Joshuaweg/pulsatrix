@@ -7,7 +7,7 @@ var searchData=
   ['rankcontactheads_4',['RankContactHeads',['../namespacepulsatrix.html#a9521995a242e243082cd61ff252b255e',1,'pulsatrix']]],
   ['rankselect_5',['RankSelect',['../namespacepulsatrix.html#a22532e4874cd35681db7270ced4fc066',1,'pulsatrix']]],
   ['rankselectbydraw_6',['RankSelectByDraw',['../namespacepulsatrix.html#a440d49a4d556810d54bd803b384b14e6',1,'pulsatrix']]],
-  ['read_7',['read',['../classpulsatrix_1_1SafetensorsFile.html#a8956e82d2421e257b9a97663eb6eb01c',1,'pulsatrix::SafetensorsFile::Read()'],['../classpulsatrix_1_1detail_1_1PlatformSources.html#ac350742d733587cf72f40d405e81bdc1',1,'pulsatrix::detail::PlatformSources::read()'],['../classpulsatrix_1_1detail_1_1LinuxSources.html#adb460b3c3f220284548c0049a0b2d445',1,'pulsatrix::detail::LinuxSources::read() override']]],
+  ['read_7',['read',['../classpulsatrix_1_1detail_1_1PlatformSources.html#ac350742d733587cf72f40d405e81bdc1',1,'pulsatrix::detail::PlatformSources::read()'],['../classpulsatrix_1_1detail_1_1LinuxSources.html#adb460b3c3f220284548c0049a0b2d445',1,'pulsatrix::detail::LinuxSources::read()'],['../classpulsatrix_1_1SafetensorsFile.html#a8956e82d2421e257b9a97663eb6eb01c',1,'pulsatrix::SafetensorsFile::Read()']]],
   ['read_5famd_5fgpu_8',['read_amd_gpu',['../classpulsatrix_1_1detail_1_1LinuxSources.html#ae288787bd453db8eab8e8098cd78f8eb',1,'pulsatrix::detail::LinuxSources']]],
   ['read_5fcpu_5ftemperature_5fc_9',['read_cpu_temperature_c',['../classpulsatrix_1_1detail_1_1LinuxSources.html#ac327cb1fe1ba7f752f967fb5d5654cd2',1,'pulsatrix::detail::LinuxSources']]],
   ['read_5felement_10',['read_element',['../classpulsatrix_1_1Tensor.html#a9a2059bfdff6da4fd98a44bd2aaba9f5',1,'pulsatrix::Tensor']]],
@@ -138,7 +138,8 @@ var searchData=
   ['runpbtgeneration_135',['RunPBTGeneration',['../namespacepulsatrix.html#aa4584b28ef74adb6063a85587bf7ad29',1,'pulsatrix']]],
   ['runsuccessivehalving_136',['RunSuccessiveHalving',['../namespacepulsatrix.html#aca7e1f167f27418f95b6a8dec4c51955',1,'pulsatrix']]],
   ['runsuccessivehalvingonconfigs_137',['RunSuccessiveHalvingOnConfigs',['../namespacepulsatrix.html#aa54b946112a389becc102e114672dcbd',1,'pulsatrix']]],
-  ['runtoolloop_138',['RunToolLoop',['../namespacepulsatrix_1_1orch.html#a7dc8c979832324fb2b4063131ed95c2b',1,'pulsatrix::orch']]],
-  ['runtpeloop_139',['RunTPELoop',['../namespacepulsatrix.html#a2d278aa15e82c07f12370078484d3e92',1,'pulsatrix']]],
-  ['rwkvmodule_140',['RWKVModule',['../classpulsatrix_1_1RWKVModule.html#aed8b3e16e6c2219ec6dc9eb0a8e7aa21',1,'pulsatrix::RWKVModule']]]
+  ['runtcav_138',['RunTcav',['../namespacepulsatrix.html#ad2bb179db23384a5ae77b15279842ddb',1,'pulsatrix']]],
+  ['runtoolloop_139',['RunToolLoop',['../namespacepulsatrix_1_1orch.html#a7dc8c979832324fb2b4063131ed95c2b',1,'pulsatrix::orch']]],
+  ['runtpeloop_140',['RunTPELoop',['../namespacepulsatrix.html#a2d278aa15e82c07f12370078484d3e92',1,'pulsatrix']]],
+  ['rwkvmodule_141',['RWKVModule',['../classpulsatrix_1_1RWKVModule.html#aed8b3e16e6c2219ec6dc9eb0a8e7aa21',1,'pulsatrix::RWKVModule']]]
 ];

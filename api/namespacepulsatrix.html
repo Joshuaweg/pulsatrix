@@ -288,6 +288,11 @@ Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1CausalLM.html">CausalLM</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Token embedding, <code>num_hidden_layers</code> pre-norm transformer blocks, a final RMSNorm and a language-model head (tied to the embedding or its own bias-free Linear): the architecture of Llama, SmolLM2, Qwen2/2.5 and Qwen3. Maps <code>(N, L)</code> token ids to <code>(N, L, vocab)</code> logits.  <a href="classpulsatrix_1_1CausalLM.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpulsatrix_1_1Cav.html">Cav</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">A concept activation vector.  <a href="structpulsatrix_1_1Cav.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpulsatrix_1_1CavOptions.html">CavOptions</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1CenterCropTransform.html">CenterCropTransform</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Crops the centered (crop_height, crop_width) region of the image.  <a href="classpulsatrix_1_1CenterCropTransform.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -1254,6 +1259,11 @@ Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpulsatrix_1_1TanhGaussianSample.html">TanhGaussianSample</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The (action, log_prob) pair <a class="el" href="classpulsatrix_1_1TanhGaussianPolicy.html#a161dc7dc0ebfd3fad5514aeebd8baa1b" title="Samples action = tanh(mean + exp(log_std)*epsilon) and its corrected log-density, caching what backwa...">TanhGaussianPolicy::forward()</a> produces.  <a href="structpulsatrix_1_1TanhGaussianSample.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpulsatrix_1_1TcavOptions.html">TcavOptions</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpulsatrix_1_1TcavResult.html">TcavResult</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="namespacepulsatrix.html#ad2bb179db23384a5ae77b15279842ddb" title="TCAV with Kim et al.&#39;s significance test, for one concept, layer and class.">RunTcav()</a>'s result.  <a href="structpulsatrix_1_1TcavResult.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1TemplatePostProcessor.html">TemplatePostProcessor</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Special tokens around a single sequence (Hugging Face's TemplateProcessing, <code>single</code>).  <a href="classpulsatrix_1_1TemplatePostProcessor.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -1347,6 +1357,9 @@ Classes</h2></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1Trial.html">Trial</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">A configuration paired with the metric history observed while evaluating it (instantiate a network under this configuration, train it, record whatever metrics the training loop reports). Deliberately decoupled from <a class="el" href="classpulsatrix_1_1SearchSpace.html" title="Describes a hyperparameter search space as an ordered list of named, typed parameters....">SearchSpace</a> &ndash; a <a class="el" href="classpulsatrix_1_1Trial.html" title="A configuration paired with the metric history observed while evaluating it (instantiate a network un...">Trial</a> records what actually happened, a <a class="el" href="classpulsatrix_1_1SearchSpace.html" title="Describes a hyperparameter search space as an ordered list of named, typed parameters....">SearchSpace</a> describes what could be proposed; neither needs to reference the other directly.  <a href="classpulsatrix_1_1Trial.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpulsatrix_1_1TTestResult.html">TTestResult</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">A two-sample t-test's result.  <a href="structpulsatrix_1_1TTestResult.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpulsatrix_1_1TwoNNResult.html">TwoNNResult</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="namespacepulsatrix.html#aa8f5a465cad9f1a4542aad834172f955" title="TwoNN intrinsic dimension (Facco, d&#39;Errico, Rodriguez and Laio, Scientific Reports 2017): from each p...">TwoNNDimension()</a>'s result.  <a href="structpulsatrix_1_1TwoNNResult.html#details">More...</a><br /></td></tr>
@@ -1751,6 +1764,11 @@ Enumerations</h2></td></tr>
  }</td></tr>
 <tr class="memdesc:ae999cb7b2d1c9ba912797e3319968107"><td class="mdescLeft">&#160;</td><td class="mdescRight">How a token's tag follows from it and the token before it (the first token's predecessor is 0). Tags are modulo kClasses.  <a href="namespacepulsatrix.html#ae999cb7b2d1c9ba912797e3319968107">More...</a><br /></td></tr>
 <tr class="separator:ae999cb7b2d1c9ba912797e3319968107"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae6ebe8206389518eb092b7e2e120f3f8" id="r_ae6ebe8206389518eb092b7e2e120f3f8"><td class="memItemLeft" align="right" valign="top">enum class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#ae6ebe8206389518eb092b7e2e120f3f8">CavMethod</a> { <a class="el" href="namespacepulsatrix.html#ae6ebe8206389518eb092b7e2e120f3f8a6c9b5576a1fdfaccea4e06393e36e730">LogisticRegression</a>
+, <a class="el" href="namespacepulsatrix.html#ae6ebe8206389518eb092b7e2e120f3f8a9911bc5c5cedf60e6351cc4807c87c0e">DifferenceOfMeans</a>
+ }</td></tr>
+<tr class="memdesc:ae6ebe8206389518eb092b7e2e120f3f8"><td class="mdescLeft">&#160;</td><td class="mdescRight">How TrainCav() finds the concept direction.  <a href="namespacepulsatrix.html#ae6ebe8206389518eb092b7e2e120f3f8">More...</a><br /></td></tr>
+<tr class="separator:ae6ebe8206389518eb092b7e2e120f3f8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8de26e99febee574ce230489c26fa567" id="r_a8de26e99febee574ce230489c26fa567"><td class="memItemLeft" align="right" valign="top">enum class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#a8de26e99febee574ce230489c26fa567">HtmlScripts</a> { <a class="el" href="namespacepulsatrix.html#a8de26e99febee574ce230489c26fa567a4b335085de5262aba6ea08f93d524393">Cdn</a>
 , <a class="el" href="namespacepulsatrix.html#a8de26e99febee574ce230489c26fa567a0125cf5f3ca38b312ca5d3b511c45a13">Inline</a>
  }</td></tr>
@@ -2656,6 +2674,27 @@ Functions</h2></td></tr>
 <tr class="memitem:a0d5b21b37e5d559fd4c837fecbfcfd3b" id="r_a0d5b21b37e5d559fd4c837fecbfcfd3b"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#a0d5b21b37e5d559fd4c837fecbfcfd3b">TaggingAccuracy</a> (<a class="el" href="classpulsatrix_1_1TinyTagger.html">TinyTagger</a> &amp;tagger, <a class="el" href="namespacepulsatrix.html#ae999cb7b2d1c9ba912797e3319968107">TaggingRule</a> rule, int64_t num_sequences)</td></tr>
 <tr class="memdesc:a0d5b21b37e5d559fd4c837fecbfcfd3b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Fraction of real tokens tagged correctly on <code>num_sequences</code> fresh sequences.  <br /></td></tr>
 <tr class="separator:a0d5b21b37e5d559fd4c837fecbfcfd3b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac41928c12d83188667a46fcb44f07f82" id="r_ac41928c12d83188667a46fcb44f07f82"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structpulsatrix_1_1Cav.html">Cav</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#ac41928c12d83188667a46fcb44f07f82">TrainCav</a> (const <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp;concept_activations, const <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp;random_activations, const <a class="el" href="structpulsatrix_1_1CavOptions.html">CavOptions</a> &amp;options={})</td></tr>
+<tr class="memdesc:ac41928c12d83188667a46fcb44f07f82"><td class="mdescLeft">&#160;</td><td class="mdescRight">Trains a CAV from a layer's activations on concept examples and on random examples.  <br /></td></tr>
+<tr class="separator:ac41928c12d83188667a46fcb44f07f82"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a814df8e95fb21fa89eaaf4726862e822" id="r_a814df8e95fb21fa89eaaf4726862e822"><td class="memItemLeft" align="right" valign="top">std::vector&lt; double &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#a814df8e95fb21fa89eaaf4726862e822">ConceptualSensitivities</a> (const <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp;gradients, const <a class="el" href="structpulsatrix_1_1Cav.html">Cav</a> &amp;cav)</td></tr>
+<tr class="memdesc:a814df8e95fb21fa89eaaf4726862e822"><td class="mdescLeft">&#160;</td><td class="mdescRight">Each input's directional derivative along the CAV: the row of <code>gradients</code> dotted with cav.direction.  <br /></td></tr>
+<tr class="separator:a814df8e95fb21fa89eaaf4726862e822"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aefa84ef1a1c7eea2e381c63bf3294bf5" id="r_aefa84ef1a1c7eea2e381c63bf3294bf5"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#aefa84ef1a1c7eea2e381c63bf3294bf5">TcavScore</a> (const std::vector&lt; double &gt; &amp;sensitivities)</td></tr>
+<tr class="memdesc:aefa84ef1a1c7eea2e381c63bf3294bf5"><td class="mdescLeft">&#160;</td><td class="mdescRight">The fraction of sensitivities above zero.  <br /></td></tr>
+<tr class="separator:aefa84ef1a1c7eea2e381c63bf3294bf5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a75e70aebcb9b31639893de7963f7ae34" id="r_a75e70aebcb9b31639893de7963f7ae34"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structpulsatrix_1_1TTestResult.html">TTestResult</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#a75e70aebcb9b31639893de7963f7ae34">StudentTTest</a> (const std::vector&lt; double &gt; &amp;a, const std::vector&lt; double &gt; &amp;b)</td></tr>
+<tr class="memdesc:a75e70aebcb9b31639893de7963f7ae34"><td class="mdescLeft">&#160;</td><td class="mdescRight">Student's two-sample t-test with pooled variance, two-sided, as scipy.stats.ttest_ind computes by default and the TCAV library uses.  <br /></td></tr>
+<tr class="separator:a75e70aebcb9b31639893de7963f7ae34"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a10a2657b8fe49a0800177afbb2d4602f" id="r_a10a2657b8fe49a0800177afbb2d4602f"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#a10a2657b8fe49a0800177afbb2d4602f">LayerActivations</a> (<a class="el" href="classpulsatrix_1_1ExplainerContext.html">ExplainerContext</a> &amp;ctx, const <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp;inputs, <a class="el" href="namespacepulsatrix.html#a2b8dc3d7d2cef35f192d191f09156e67">NodeId</a> layer)</td></tr>
+<tr class="memdesc:a10a2657b8fe49a0800177afbb2d4602f"><td class="mdescLeft">&#160;</td><td class="mdescRight">The layer's activations for <code>inputs</code>, from one forward pass: shape (n, width).  <br /></td></tr>
+<tr class="separator:a10a2657b8fe49a0800177afbb2d4602f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a17c91655ead2141e47b74fefbf5dce1f" id="r_a17c91655ead2141e47b74fefbf5dce1f"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#a17c91655ead2141e47b74fefbf5dce1f">LayerGradients</a> (<a class="el" href="classpulsatrix_1_1ExplainerContext.html">ExplainerContext</a> &amp;ctx, const <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp;inputs, <a class="el" href="namespacepulsatrix.html#a2b8dc3d7d2cef35f192d191f09156e67">NodeId</a> layer, int64_t target, <a class="el" href="classpulsatrix_1_1DeviceBackend.html">DeviceBackend</a> *backend)</td></tr>
+<tr class="memdesc:a17c91655ead2141e47b74fefbf5dce1f"><td class="mdescLeft">&#160;</td><td class="mdescRight">The gradient of logit <code>target</code> with respect to the layer, for each of <code>inputs:</code> shape (n, width).  <br /></td></tr>
+<tr class="separator:a17c91655ead2141e47b74fefbf5dce1f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad2bb179db23384a5ae77b15279842ddb" id="r_ad2bb179db23384a5ae77b15279842ddb"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structpulsatrix_1_1TcavResult.html">TcavResult</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#ad2bb179db23384a5ae77b15279842ddb">RunTcav</a> (<a class="el" href="classpulsatrix_1_1ExplainerContext.html">ExplainerContext</a> &amp;ctx, <a class="el" href="namespacepulsatrix.html#a2b8dc3d7d2cef35f192d191f09156e67">NodeId</a> layer, int64_t target, const <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp;class_inputs, const <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp;concept_inputs, const std::vector&lt; <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &gt; &amp;random_inputs, <a class="el" href="classpulsatrix_1_1DeviceBackend.html">DeviceBackend</a> *backend, const <a class="el" href="structpulsatrix_1_1TcavOptions.html">TcavOptions</a> &amp;options={})</td></tr>
+<tr class="memdesc:ad2bb179db23384a5ae77b15279842ddb"><td class="mdescLeft">&#160;</td><td class="mdescRight">TCAV with Kim et al.'s significance test, for one concept, layer and class.  <br /></td></tr>
+<tr class="separator:ad2bb179db23384a5ae77b15279842ddb"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a71ec5781347ddf2db42af3e5675d3748" id="r_a71ec5781347ddf2db42af3e5675d3748"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#a71ec5781347ddf2db42af3e5675d3748">require_device</a> (const <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp;t, <a class="el" href="namespacepulsatrix.html#a5480c8cbe462fe3f5a8eb04a8c579e6e">DeviceType</a> expected, const char *where)</td></tr>
 <tr class="memdesc:a71ec5781347ddf2db42af3e5675d3748"><td class="mdescLeft">&#160;</td><td class="mdescRight">Throws unless <code>t</code> lives on <code>expected</code> &ndash; the check every module and loss runs on the tensors handed to it (roadmap FND-8, gpu_review #1).  <br /></td></tr>
 <tr class="separator:a71ec5781347ddf2db42af3e5675d3748"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -3492,6 +3531,36 @@ Applied to the <a class="el" href="classpulsatrix_1_1ExplainerContext.html" titl
 <tr><td class="fieldname"><a id="a056ad7d81b2ee20acdbf7f6f7a1e7a9ca7865867e192c85f94cb5cbf96923b41a" name="a056ad7d81b2ee20acdbf7f6f7a1e7a9ca7865867e192c85f94cb5cbf96923b41a"></a>Grassmannian&#160;</td><td class="fielddoc"><p>Tied, orthonormal frames: <code>z_g = γ_g x D_gᵀ</code> with <code>D_g D_gᵀ = I</code>, then Π_k. </p>
 </td></tr>
 <tr><td class="fieldname"><a id="a056ad7d81b2ee20acdbf7f6f7a1e7a9cae3f1dee6b41cf7ad97e79b39791cb10c" name="a056ad7d81b2ee20acdbf7f6f7a1e7a9cae3f1dee6b41cf7ad97e79b39791cb10c"></a>GroupLasso&#160;</td><td class="fielddoc"><p>A free encoder and a learned threshold per block: a block fires when its norm is above θ_g, under an L0 penalty whose weight is set by dual ascent to hit target_l0. </p>
+</td></tr>
+</table>
+
+</div>
+</div>
+<a id="ae6ebe8206389518eb092b7e2e120f3f8" name="ae6ebe8206389518eb092b7e2e120f3f8"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae6ebe8206389518eb092b7e2e120f3f8">&#9670;&#160;</a></span>CavMethod</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">enum class <a class="el" href="namespacepulsatrix.html#ae6ebe8206389518eb092b7e2e120f3f8">pulsatrix::CavMethod</a></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">strong</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>How <a class="el" href="namespacepulsatrix.html#ac41928c12d83188667a46fcb44f07f82" title="Trains a CAV from a layer&#39;s activations on concept examples and on random examples.">TrainCav()</a> finds the concept direction. </p>
+<table class="fieldtable">
+<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="ae6ebe8206389518eb092b7e2e120f3f8a6c9b5576a1fdfaccea4e06393e36e730" name="ae6ebe8206389518eb092b7e2e120f3f8a6c9b5576a1fdfaccea4e06393e36e730"></a>LogisticRegression&#160;</td><td class="fielddoc"><p>The weights of an L2-regularized logistic regression, as Kim et al. train them. The features are standardized while fitting and the direction mapped back. </p>
+</td></tr>
+<tr><td class="fieldname"><a id="ae6ebe8206389518eb092b7e2e120f3f8a9911bc5c5cedf60e6351cc4807c87c0e" name="ae6ebe8206389518eb092b7e2e120f3f8a9911bc5c5cedf60e6351cc4807c87c0e"></a>DifferenceOfMeans&#160;</td><td class="fielddoc"><p>The difference of the two sets' mean activations. It needs no fitting, and doesn't rotate towards dimensions that only separate the two samples by chance. </p>
 </td></tr>
 </table>
 
@@ -7294,6 +7363,48 @@ Host boundary (GPU-native-kernels Mission 7): a strictly sequential reverse recu
 
 </div>
 </div>
+<a id="a814df8e95fb21fa89eaaf4726862e822" name="a814df8e95fb21fa89eaaf4726862e822"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a814df8e95fb21fa89eaaf4726862e822">&#9670;&#160;</a></span>ConceptualSensitivities()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::vector&lt; double &gt; pulsatrix::ConceptualSensitivities </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp;&#160;</td>
+          <td class="paramname"><em>gradients</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="structpulsatrix_1_1Cav.html">Cav</a> &amp;&#160;</td>
+          <td class="paramname"><em>cav</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Each input's directional derivative along the CAV: the row of <code>gradients</code> dotted with cav.direction. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">gradients</td><td>shape (n, ...): the gradient of the class logit with respect to the layer, a row per input. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname">std::invalid_argument</td><td>if the rows aren't the CAV's width. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
 <a id="a7ccbd3a48e5c96acac0e21de5b8b2056" name="a7ccbd3a48e5c96acac0e21de5b8b2056"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a7ccbd3a48e5c96acac0e21de5b8b2056">&#9670;&#160;</a></span>ContactFeatures()</h2>
 
@@ -10091,6 +10202,90 @@ template&lt;typename Genotype , typename FitnessT &gt; </div>
   </table>
   </dd>
 </dl>
+
+</div>
+</div>
+<a id="a10a2657b8fe49a0800177afbb2d4602f" name="a10a2657b8fe49a0800177afbb2d4602f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a10a2657b8fe49a0800177afbb2d4602f">&#9670;&#160;</a></span>LayerActivations()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> pulsatrix::LayerActivations </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classpulsatrix_1_1ExplainerContext.html">ExplainerContext</a> &amp;&#160;</td>
+          <td class="paramname"><em>ctx</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp;&#160;</td>
+          <td class="paramname"><em>inputs</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="namespacepulsatrix.html#a2b8dc3d7d2cef35f192d191f09156e67">NodeId</a>&#160;</td>
+          <td class="paramname"><em>layer</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>The layer's activations for <code>inputs</code>, from one forward pass: shape (n, width). </p>
+
+</div>
+</div>
+<a id="a17c91655ead2141e47b74fefbf5dce1f" name="a17c91655ead2141e47b74fefbf5dce1f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a17c91655ead2141e47b74fefbf5dce1f">&#9670;&#160;</a></span>LayerGradients()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> pulsatrix::LayerGradients </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classpulsatrix_1_1ExplainerContext.html">ExplainerContext</a> &amp;&#160;</td>
+          <td class="paramname"><em>ctx</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp;&#160;</td>
+          <td class="paramname"><em>inputs</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="namespacepulsatrix.html#a2b8dc3d7d2cef35f192d191f09156e67">NodeId</a>&#160;</td>
+          <td class="paramname"><em>layer</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int64_t&#160;</td>
+          <td class="paramname"><em>target</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="classpulsatrix_1_1DeviceBackend.html">DeviceBackend</a> *&#160;</td>
+          <td class="paramname"><em>backend</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>The gradient of logit <code>target</code> with respect to the layer, for each of <code>inputs:</code> shape (n, width). </p>
 
 </div>
 </div>
@@ -18104,6 +18299,89 @@ template&lt;typename RNG &gt; </div>
 
 </div>
 </div>
+<a id="ad2bb179db23384a5ae77b15279842ddb" name="ad2bb179db23384a5ae77b15279842ddb"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad2bb179db23384a5ae77b15279842ddb">&#9670;&#160;</a></span>RunTcav()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="structpulsatrix_1_1TcavResult.html">TcavResult</a> pulsatrix::RunTcav </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classpulsatrix_1_1ExplainerContext.html">ExplainerContext</a> &amp;&#160;</td>
+          <td class="paramname"><em>ctx</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="namespacepulsatrix.html#a2b8dc3d7d2cef35f192d191f09156e67">NodeId</a>&#160;</td>
+          <td class="paramname"><em>layer</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int64_t&#160;</td>
+          <td class="paramname"><em>target</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp;&#160;</td>
+          <td class="paramname"><em>class_inputs</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp;&#160;</td>
+          <td class="paramname"><em>concept_inputs</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const std::vector&lt; <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &gt; &amp;&#160;</td>
+          <td class="paramname"><em>random_inputs</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="classpulsatrix_1_1DeviceBackend.html">DeviceBackend</a> *&#160;</td>
+          <td class="paramname"><em>backend</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="structpulsatrix_1_1TcavOptions.html">TcavOptions</a> &amp;&#160;</td>
+          <td class="paramname"><em>options</em> = <code>{}</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>TCAV with Kim et al.'s significance test, for one concept, layer and class. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">ctx</td><td>The model, as an <a class="el" href="classpulsatrix_1_1ExplainerContext.html" title="Wraps an ordered chain of Modules, running them via Module::forward_traced to build a real Computatio...">ExplainerContext</a>; its output is (n, classes). </td></tr>
+    <tr><td class="paramname">layer</td><td>The node whose output is the layer: module i's output is node i + 1. </td></tr>
+    <tr><td class="paramname">target</td><td>The class whose logit is explained. </td></tr>
+    <tr><td class="paramname">class_inputs</td><td>Inputs of that class, the model's input shape with a leading batch. </td></tr>
+    <tr><td class="paramname">concept_inputs</td><td>Examples of the concept. </td></tr>
+    <tr><td class="paramname">random_inputs</td><td>At least 3 sets of random examples. CAV i is the concept against set i; random CAV i is set i against set i + 1 (the last against the first). </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname">std::invalid_argument</td><td>if layer isn't a node of the model, target is out of range, there are fewer than 3 random sets, or for what <a class="el" href="namespacepulsatrix.html#ac41928c12d83188667a46fcb44f07f82" title="Trains a CAV from a layer&#39;s activations on concept examples and on random examples.">TrainCav()</a> rejects. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
 <a id="a2d278aa15e82c07f12370078484d3e92" name="a2d278aa15e82c07f12370078484d3e92"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a2d278aa15e82c07f12370078484d3e92">&#9670;&#160;</a></span>RunTPELoop()</h2>
 
@@ -19253,6 +19531,43 @@ Scoped to the small, dense, well-conditioned systems this codebase's callers act
 
 </div>
 </div>
+<a id="a75e70aebcb9b31639893de7963f7ae34" name="a75e70aebcb9b31639893de7963f7ae34"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a75e70aebcb9b31639893de7963f7ae34">&#9670;&#160;</a></span>StudentTTest()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="structpulsatrix_1_1TTestResult.html">TTestResult</a> pulsatrix::StudentTTest </td>
+          <td>(</td>
+          <td class="paramtype">const std::vector&lt; double &gt; &amp;&#160;</td>
+          <td class="paramname"><em>a</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const std::vector&lt; double &gt; &amp;&#160;</td>
+          <td class="paramname"><em>b</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Student's two-sample t-test with pooled variance, two-sided, as scipy.stats.ttest_ind computes by default and the TCAV library uses. </p>
+<dl class="section note"><dt>Note</dt><dd>When both samples have no variance, t is 0 and p is 1 if their means are equal, and t is infinite and p is 0 if not. </dd></dl>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname">std::invalid_argument</td><td>if either sample has fewer than 2 values, or a value isn't finite. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
 <a id="a81b0ee5fc57f31fcfe00e4d377b0837d" name="a81b0ee5fc57f31fcfe00e4d377b0837d"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a81b0ee5fc57f31fcfe00e4d377b0837d">&#9670;&#160;</a></span>SubspaceOverlap()</h2>
 
@@ -19556,6 +19871,32 @@ Device-generic (GPU-native-kernels Mission 7): each parameter is one buffer copy
 </div><div class="memdoc">
 
 <p>Fraction of real tokens tagged correctly on <code>num_sequences</code> fresh sequences. </p>
+
+</div>
+</div>
+<a id="aefa84ef1a1c7eea2e381c63bf3294bf5" name="aefa84ef1a1c7eea2e381c63bf3294bf5"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aefa84ef1a1c7eea2e381c63bf3294bf5">&#9670;&#160;</a></span>TcavScore()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">double pulsatrix::TcavScore </td>
+          <td>(</td>
+          <td class="paramtype">const std::vector&lt; double &gt; &amp;&#160;</td>
+          <td class="paramname"><em>sensitivities</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>The fraction of sensitivities above zero. </p>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname">std::invalid_argument</td><td>if empty. </td></tr>
+  </table>
+  </dd>
+</dl>
 
 </div>
 </div>
@@ -21648,6 +21989,54 @@ template&lt;typename Genotype , typename FitnessT , typename RNG &gt; </div>
 </dl>
 </li>
 </ul>
+
+</div>
+</div>
+<a id="ac41928c12d83188667a46fcb44f07f82" name="ac41928c12d83188667a46fcb44f07f82"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac41928c12d83188667a46fcb44f07f82">&#9670;&#160;</a></span>TrainCav()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="structpulsatrix_1_1Cav.html">Cav</a> pulsatrix::TrainCav </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp;&#160;</td>
+          <td class="paramname"><em>concept_activations</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp;&#160;</td>
+          <td class="paramname"><em>random_activations</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="structpulsatrix_1_1CavOptions.html">CavOptions</a> &amp;&#160;</td>
+          <td class="paramname"><em>options</em> = <code>{}</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Trains a CAV from a layer's activations on concept examples and on random examples. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">concept_activations,random_activations</td><td>shape (n, ...), a row per example, the same width. Each needs at least 2 rows (3 with the default holdout). </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname">std::invalid_argument</td><td>if the widths differ, a set is too small, or a value isn't finite. </td></tr>
+  </table>
+  </dd>
+</dl>
 
 </div>
 </div>
