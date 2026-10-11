@@ -2,10 +2,12 @@
 
 #include <algorithm>
 #include <cmath>
+#include <functional>
 #include <limits>
 #include <numeric>
 #include <stdexcept>
 #include <string>
+#include <utility>
 #include <vector>
 
 namespace pulsatrix {
@@ -39,11 +41,7 @@ Dense load(const Tensor& a, const char* who) {
     return d;
 }
 
-Dense load_symmetric(const Tensor& a, const char* who) {
-    Dense d = load(a, who);
-    if (d.rows != d.cols) {
-        throw std::invalid_argument(std::string(who) + ": input must be square");
-    }
+void check_symmetric(const Dense& d, const char* who) {
     double scale = 1.0;
     for (double x : d.v) {
         scale = std::max(scale, std::fabs(x));
@@ -55,6 +53,14 @@ Dense load_symmetric(const Tensor& a, const char* who) {
             }
         }
     }
+}
+
+Dense load_symmetric(const Tensor& a, const char* who) {
+    Dense d = load(a, who);
+    if (d.rows != d.cols) {
+        throw std::invalid_argument(std::string(who) + ": input must be square");
+    }
+    check_symmetric(d, who);
     return d;
 }
 
@@ -412,6 +418,25 @@ EigenResult SymmetricEigen(const Tensor& input) {
         sorted[static_cast<size_t>(j)] = d[static_cast<size_t>(order[static_cast<size_t>(j)])];
     }
     return {to_tensor(sorted, Shape({n}), input.backend()), columns_to_tensor(v, order, input.backend())};
+}
+
+std::vector<double> SymmetricEigenvalues(std::vector<double> values, int64_t n) {
+    if (n < 1 || values.size() != static_cast<size_t>(n) * static_cast<size_t>(n)) {
+        throw std::invalid_argument("SymmetricEigenvalues: input must hold n * n values, n >= 1");
+    }
+    for (double x : values) {
+        if (!std::isfinite(x)) {
+            throw std::invalid_argument("SymmetricEigenvalues: input has a non-finite entry");
+        }
+    }
+    Dense a{n, n, std::move(values)};
+    check_symmetric(a, "SymmetricEigenvalues");
+    std::vector<double> d(static_cast<size_t>(n)), e(static_cast<size_t>(n));
+    householder_tridiagonalize(a, d, e);
+    Dense zt = transpose(a);
+    tridiagonal_ql(d, e, zt);
+    std::sort(d.begin(), d.end(), std::greater<double>());
+    return d;
 }
 
 DominantEigenResult PowerIteration(const Tensor& input, int64_t max_iterations, float tolerance, uint64_t seed) {
