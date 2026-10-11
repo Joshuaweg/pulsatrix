@@ -13,5 +13,6 @@ var searchData=
   ['pre_10',['Pre',['../namespacepulsatrix.html#af006dd0a5403341bfc3ad106ea4a4077afb55a965b77791b31ffd2bb548f71080',1,'pulsatrix']]],
   ['probabilityofimprovement_11',['ProbabilityOfImprovement',['../namespacepulsatrix.html#aaf838275fc40b42d2c67d2772d64d1b8aaf919544378ee679da880abe8f7ec8e9',1,'pulsatrix']]],
   ['product_12',['product',['../classpulsatrix_1_1ConjunctionModule.html#ac337b697d16a8cdac0dda3744c73346fadeb10517653c255364175796ace3553f',1,'pulsatrix::ConjunctionModule::Product'],['../classpulsatrix_1_1DisjunctionModule.html#aa262bae9403da4b2852f4d66c158da3eadeb10517653c255364175796ace3553f',1,'pulsatrix::DisjunctionModule::Product']]],
-  ['proteinhead_13',['ProteinHead',['../structpulsatrix_1_1EncoderTarget.html#a86c31c5e38672e75042f220cb00d9d58ac8ed705ea21b3b3a251ddeb543c483b5',1,'pulsatrix::EncoderTarget']]]
+  ['proteinhead_13',['ProteinHead',['../structpulsatrix_1_1EncoderTarget.html#a86c31c5e38672e75042f220cb00d9d58ac8ed705ea21b3b3a251ddeb543c483b5',1,'pulsatrix::EncoderTarget']]],
+  ['protocol_14',['Protocol',['../classpulsatrix_1_1orch_1_1HttpError.html#a52a20f658bca430e8bec642446e1ccfea888a77f5ac0748b6c8001822417df8b6',1,'pulsatrix::orch::HttpError']]]
 ];

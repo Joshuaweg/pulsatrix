@@ -94,17 +94,250 @@ $(document).ready(function(){initNavTree('namespacepulsatrix_1_1orch.html',''); 
 
 <div class="header">
   <div class="summary">
-<a href="#nested-classes">Classes</a>  </div>
+<a href="#nested-classes">Classes</a> &#124;
+<a href="#typedef-members">Typedefs</a> &#124;
+<a href="#enum-members">Enumerations</a> &#124;
+<a href="#func-members">Functions</a>  </div>
   <div class="headertitle"><div class="title">pulsatrix::orch Namespace Reference</div></div>
 </div><!--header-->
 <div class="contents">
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="nested-classes" name="nested-classes"></a>
 Classes</h2></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1orch_1_1HttpError.html">HttpError</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">A request that got no complete response: the connection, TLS, a timeout or a limit failed.  <a href="classpulsatrix_1_1orch_1_1HttpError.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpulsatrix_1_1orch_1_1HttpHeader.html">HttpHeader</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">One request header. A sensitive one (a credential) is redacted by <a class="el" href="structpulsatrix_1_1orch_1_1HttpRequest.html#a067af8b487d5157dc8acb33d8c439906" title="The method, URL and headers, with sensitive values redacted, for logs and errors.">HttpRequest::describe()</a>.  <a href="structpulsatrix_1_1orch_1_1HttpHeader.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpulsatrix_1_1orch_1_1HttpRequest.html">HttpRequest</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">An HTTP request. Redirects are never followed, so a credential only goes to <a class="el" href="structpulsatrix_1_1orch_1_1HttpRequest.html#a599b4a13d5e04e113cd2cc9ddf053cb4">url</a>.  <a href="structpulsatrix_1_1orch_1_1HttpRequest.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpulsatrix_1_1orch_1_1HttpResponse.html">HttpResponse</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">An HTTP response. A status of 400 or 500 is a response, not an error.  <a href="structpulsatrix_1_1orch_1_1HttpResponse.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1orch_1_1HttpTransport.html">HttpTransport</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sends HTTP requests. One instance may be used by one thread at a time.  <a href="classpulsatrix_1_1orch_1_1HttpTransport.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpulsatrix_1_1orch_1_1HttpTransportOptions.html">HttpTransportOptions</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">How a transport trusts servers. Certificate verification can't be turned off.  <a href="structpulsatrix_1_1orch_1_1HttpTransportOptions.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpulsatrix_1_1orch_1_1HttpUrl.html">HttpUrl</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">An <code>http</code> or <code>https</code> URL split into its parts.  <a href="structpulsatrix_1_1orch_1_1HttpUrl.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1orch_1_1Secret.html">Secret</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Holds a credential, such as an LLM provider's API key.  <a href="classpulsatrix_1_1orch_1_1Secret.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpulsatrix_1_1orch_1_1SseEvent.html">SseEvent</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">One server-sent event.  <a href="structpulsatrix_1_1orch_1_1SseEvent.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1orch_1_1SseParser.html">SseParser</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Parses a <code>text/event-stream</code> body fed in chunks of any size, as the WHATWG HTML specification defines it.  <a href="classpulsatrix_1_1orch_1_1SseParser.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="typedef-members" name="typedef-members"></a>
+Typedefs</h2></td></tr>
+<tr class="memitem:a0391722362a15ec3d4fc0764ef325d3b" id="r_a0391722362a15ec3d4fc0764ef325d3b"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix_1_1orch.html#a0391722362a15ec3d4fc0764ef325d3b">HttpChunkHandler</a> = std::function&lt; bool(std::string_view chunk)&gt;</td></tr>
+<tr class="memdesc:a0391722362a15ec3d4fc0764ef325d3b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Receives a streamed body chunk by chunk. Return false to cancel the request.  <br /></td></tr>
+<tr class="separator:a0391722362a15ec3d4fc0764ef325d3b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="enum-members" name="enum-members"></a>
+Enumerations</h2></td></tr>
+<tr class="memitem:a765c26f70e26c83078a483eb602ed2a6" id="r_a765c26f70e26c83078a483eb602ed2a6"><td class="memItemLeft" align="right" valign="top">enum class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix_1_1orch.html#a765c26f70e26c83078a483eb602ed2a6">HttpBackend</a> { <a class="el" href="namespacepulsatrix_1_1orch.html#a765c26f70e26c83078a483eb602ed2a6ac09dd353163bfb3b8fa9d892ba77938b">Httplib</a>
+, <a class="el" href="namespacepulsatrix_1_1orch.html#a765c26f70e26c83078a483eb602ed2a6a66b29b9f2bdc949a7545046fbe59fcef">Curl</a>
+ }</td></tr>
+<tr class="memdesc:a765c26f70e26c83078a483eb602ed2a6"><td class="mdescLeft">&#160;</td><td class="mdescRight">The HTTP libraries a transport can use.  <a href="namespacepulsatrix_1_1orch.html#a765c26f70e26c83078a483eb602ed2a6">More...</a><br /></td></tr>
+<tr class="separator:a765c26f70e26c83078a483eb602ed2a6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
+Functions</h2></td></tr>
+<tr class="memitem:a6831d578a80f89e4a14552616263db54" id="r_a6831d578a80f89e4a14552616263db54"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix_1_1orch.html#a6831d578a80f89e4a14552616263db54">HttpBackendAvailable</a> (<a class="el" href="namespacepulsatrix_1_1orch.html#a765c26f70e26c83078a483eb602ed2a6">HttpBackend</a> backend)</td></tr>
+<tr class="memdesc:a6831d578a80f89e4a14552616263db54"><td class="mdescLeft">&#160;</td><td class="mdescRight">Whether this build has <code>backend</code>.  <br /></td></tr>
+<tr class="separator:a6831d578a80f89e4a14552616263db54"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0a47b5ca62f0d085a928776a6d3a6217" id="r_a0a47b5ca62f0d085a928776a6d3a6217"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix_1_1orch.html#a0a47b5ca62f0d085a928776a6d3a6217">HttpsSupported</a> (<a class="el" href="namespacepulsatrix_1_1orch.html#a765c26f70e26c83078a483eb602ed2a6">HttpBackend</a> backend)</td></tr>
+<tr class="memdesc:a0a47b5ca62f0d085a928776a6d3a6217"><td class="mdescLeft">&#160;</td><td class="mdescRight">Whether <code>backend</code> can make HTTPS requests in this build.  <br /></td></tr>
+<tr class="separator:a0a47b5ca62f0d085a928776a6d3a6217"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a78097a3e47a5ce6ffc1759bdc4510cc2" id="r_a78097a3e47a5ce6ffc1759bdc4510cc2"><td class="memItemLeft" align="right" valign="top">std::unique_ptr&lt; <a class="el" href="classpulsatrix_1_1orch_1_1HttpTransport.html">HttpTransport</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix_1_1orch.html#a78097a3e47a5ce6ffc1759bdc4510cc2">MakeHttpTransport</a> (<a class="el" href="namespacepulsatrix_1_1orch.html#a765c26f70e26c83078a483eb602ed2a6">HttpBackend</a> backend, <a class="el" href="structpulsatrix_1_1orch_1_1HttpTransportOptions.html">HttpTransportOptions</a> options={})</td></tr>
+<tr class="memdesc:a78097a3e47a5ce6ffc1759bdc4510cc2"><td class="mdescLeft">&#160;</td><td class="mdescRight">A transport using <code>backend</code>.  <br /></td></tr>
+<tr class="separator:a78097a3e47a5ce6ffc1759bdc4510cc2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a37124dc0edd398c70803d295f19cacf9" id="r_a37124dc0edd398c70803d295f19cacf9"><td class="memItemLeft" align="right" valign="top">std::unique_ptr&lt; <a class="el" href="classpulsatrix_1_1orch_1_1HttpTransport.html">HttpTransport</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix_1_1orch.html#a37124dc0edd398c70803d295f19cacf9">MakeHttpTransport</a> (<a class="el" href="structpulsatrix_1_1orch_1_1HttpTransportOptions.html">HttpTransportOptions</a> options={})</td></tr>
+<tr class="memdesc:a37124dc0edd398c70803d295f19cacf9"><td class="mdescLeft">&#160;</td><td class="mdescRight">A transport using libcurl if this build has it, which you asked for by turning it on, and cpp-httplib otherwise.  <br /></td></tr>
+<tr class="separator:a37124dc0edd398c70803d295f19cacf9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4f55e2bcec9448d4043e7fd5c728ff2b" id="r_a4f55e2bcec9448d4043e7fd5c728ff2b"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structpulsatrix_1_1orch_1_1HttpUrl.html">HttpUrl</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix_1_1orch.html#a4f55e2bcec9448d4043e7fd5c728ff2b">ParseHttpUrl</a> (std::string_view url)</td></tr>
+<tr class="memdesc:a4f55e2bcec9448d4043e7fd5c728ff2b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Parses an <code><a href="http://">http://</a></code> or <code><a href="https://">https://</a></code> URL.  <br /></td></tr>
+<tr class="separator:a4f55e2bcec9448d4043e7fd5c728ff2b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
+<h2 class="groupheader">Typedef Documentation</h2>
+<a id="a0391722362a15ec3d4fc0764ef325d3b" name="a0391722362a15ec3d4fc0764ef325d3b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0391722362a15ec3d4fc0764ef325d3b">&#9670;&#160;</a></span>HttpChunkHandler</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">using <a class="el" href="namespacepulsatrix_1_1orch.html#a0391722362a15ec3d4fc0764ef325d3b">pulsatrix::orch::HttpChunkHandler</a> = typedef std::function&lt;bool(std::string_view chunk)&gt;</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Receives a streamed body chunk by chunk. Return false to cancel the request. </p>
+
+</div>
+</div>
+<h2 class="groupheader">Enumeration Type Documentation</h2>
+<a id="a765c26f70e26c83078a483eb602ed2a6" name="a765c26f70e26c83078a483eb602ed2a6"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a765c26f70e26c83078a483eb602ed2a6">&#9670;&#160;</a></span>HttpBackend</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">enum class <a class="el" href="namespacepulsatrix_1_1orch.html#a765c26f70e26c83078a483eb602ed2a6">pulsatrix::orch::HttpBackend</a></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">strong</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>The HTTP libraries a transport can use. </p>
+<table class="fieldtable">
+<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="a765c26f70e26c83078a483eb602ed2a6ac09dd353163bfb3b8fa9d892ba77938b" name="a765c26f70e26c83078a483eb602ed2a6ac09dd353163bfb3b8fa9d892ba77938b"></a>Httplib&#160;</td><td class="fielddoc"><p>cpp-httplib, always built; HTTPS when the build found OpenSSL </p>
+</td></tr>
+<tr><td class="fieldname"><a id="a765c26f70e26c83078a483eb602ed2a6a66b29b9f2bdc949a7545046fbe59fcef" name="a765c26f70e26c83078a483eb602ed2a6a66b29b9f2bdc949a7545046fbe59fcef"></a>Curl&#160;</td><td class="fielddoc"><p>libcurl, with PULSATRIX_ORCHESTRATOR_CURL; its own TLS (Schannel on Windows) </p>
+</td></tr>
+</table>
+
+</div>
+</div>
+<h2 class="groupheader">Function Documentation</h2>
+<a id="a6831d578a80f89e4a14552616263db54" name="a6831d578a80f89e4a14552616263db54"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6831d578a80f89e4a14552616263db54">&#9670;&#160;</a></span>HttpBackendAvailable()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool pulsatrix::orch::HttpBackendAvailable </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="namespacepulsatrix_1_1orch.html#a765c26f70e26c83078a483eb602ed2a6">HttpBackend</a>&#160;</td>
+          <td class="paramname"><em>backend</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Whether this build has <code>backend</code>. </p>
+
+</div>
+</div>
+<a id="a0a47b5ca62f0d085a928776a6d3a6217" name="a0a47b5ca62f0d085a928776a6d3a6217"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0a47b5ca62f0d085a928776a6d3a6217">&#9670;&#160;</a></span>HttpsSupported()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool pulsatrix::orch::HttpsSupported </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="namespacepulsatrix_1_1orch.html#a765c26f70e26c83078a483eb602ed2a6">HttpBackend</a>&#160;</td>
+          <td class="paramname"><em>backend</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Whether <code>backend</code> can make HTTPS requests in this build. </p>
+
+</div>
+</div>
+<a id="a78097a3e47a5ce6ffc1759bdc4510cc2" name="a78097a3e47a5ce6ffc1759bdc4510cc2"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a78097a3e47a5ce6ffc1759bdc4510cc2">&#9670;&#160;</a></span>MakeHttpTransport() <span class="overload">[1/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::unique_ptr&lt; <a class="el" href="classpulsatrix_1_1orch_1_1HttpTransport.html">HttpTransport</a> &gt; pulsatrix::orch::MakeHttpTransport </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="namespacepulsatrix_1_1orch.html#a765c26f70e26c83078a483eb602ed2a6">HttpBackend</a>&#160;</td>
+          <td class="paramname"><em>backend</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structpulsatrix_1_1orch_1_1HttpTransportOptions.html">HttpTransportOptions</a>&#160;</td>
+          <td class="paramname"><em>options</em> = <code>{}</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>A transport using <code>backend</code>. </p>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname">std::invalid_argument</td><td>if this build doesn't have <code>backend</code>. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="a37124dc0edd398c70803d295f19cacf9" name="a37124dc0edd398c70803d295f19cacf9"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a37124dc0edd398c70803d295f19cacf9">&#9670;&#160;</a></span>MakeHttpTransport() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::unique_ptr&lt; <a class="el" href="classpulsatrix_1_1orch_1_1HttpTransport.html">HttpTransport</a> &gt; pulsatrix::orch::MakeHttpTransport </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structpulsatrix_1_1orch_1_1HttpTransportOptions.html">HttpTransportOptions</a>&#160;</td>
+          <td class="paramname"><em>options</em> = <code>{}</code></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>A transport using libcurl if this build has it, which you asked for by turning it on, and cpp-httplib otherwise. </p>
+
+</div>
+</div>
+<a id="a4f55e2bcec9448d4043e7fd5c728ff2b" name="a4f55e2bcec9448d4043e7fd5c728ff2b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4f55e2bcec9448d4043e7fd5c728ff2b">&#9670;&#160;</a></span>ParseHttpUrl()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="structpulsatrix_1_1orch_1_1HttpUrl.html">HttpUrl</a> pulsatrix::orch::ParseHttpUrl </td>
+          <td>(</td>
+          <td class="paramtype">std::string_view&#160;</td>
+          <td class="paramname"><em>url</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Parses an <code><a href="http://">http://</a></code> or <code><a href="https://">https://</a></code> URL. </p>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname"><a class="el" href="classpulsatrix_1_1orch_1_1HttpError.html" title="A request that got no complete response: the connection, TLS, a timeout or a limit failed.">HttpError</a></td><td>(InvalidRequest) for another scheme, user info (<code>user@host</code>), a fragment, an empty host, a bad port, or whitespace or control characters. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
 </div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->

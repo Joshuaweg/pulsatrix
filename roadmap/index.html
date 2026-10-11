@@ -2742,6 +2742,17 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#follow-ups-the-agt-work-surfaced" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Follow-ups the AGT work surfaced
+      
+    </span>
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -3595,6 +3606,17 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#follow-ups-the-agt-work-surfaced" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Follow-ups the AGT work surfaced
+      
+    </span>
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -3899,7 +3921,8 @@ machine, and explain it with the tools pulsatrix already has. Items on that path
 <li>NB-1 (<strong>done</strong>): native rich display</li>
 <li>NB-2 (<strong>done</strong>): the <code>.ipynb</code>/HTML report writer</li>
 <li>AGT-1 (<strong>done</strong>, <a href="https://github.com/Joshuaweg/pulsatrix/pull/126">#126</a>): the optional orchestrator target</li>
-<li>AGT-2 to AGT-4: the native orchestrator core: HTTP transport, providers and the tool loop, the tool registry</li>
+<li>AGT-2 (<strong>done</strong>, <a href="https://github.com/Joshuaweg/pulsatrix/pull/127">#127</a>): HTTP transport and server-sent events</li>
+<li>AGT-3, AGT-4: providers and the tool loop, the tool registry</li>
 <li>KS-8 (<strong>done</strong>): GPU CI on gfx1151</li>
 <li>KS-9 (<strong>done</strong>): a model zoo, ResNet18 and VGG16 with heatmaps checked against Zennit
   (SmolLM2's against LXT came with LLM-7)</li>
@@ -6675,7 +6698,7 @@ that only offers tools is small. The genuinely hard parts are narrow:</p>
 <td>AGT-1</td>
 <td>P1</td>
 <td>M</td>
-<td></td>
+<td>Done, <a href="https://github.com/Joshuaweg/pulsatrix/pull/127">#127</a> (see below)</td>
 </tr>
 <tr>
 <td>AGT-3</td>
@@ -6775,6 +6798,45 @@ that only offers tools is small. The genuinely hard parts are narrow:</p>
     test linking it from a separate project.</li>
 </ul>
 <p>CI's build-and-test job turns the option on, so it is built and tested on Linux and Windows.</p>
+<ul>
+<li><strong>AGT-2</strong> follows the plan: an <code>HttpTransport</code> with a cpp-httplib backend (0.57.1, fetched by
+  hash) and an optional libcurl one, and an <code>SseParser</code> written to the WHATWG specification.</li>
+<li><strong>TLS.</strong> cpp-httplib does HTTPS through OpenSSL 3, which CMake finds by default
+    (<code>PULSATRIX_ORCHESTRATOR_OPENSSL=AUTO</code>). With it, cpp-httplib also checks certificates
+    against the Windows and macOS stores, so libcurl matters only on Windows without OpenSSL,
+    where it uses Schannel.</li>
+<li><strong>Safety.</strong> Certificate checks can't be turned off; <code>ca_cert_file</code> replaces the trust store
+    for a company proxy or a local server. Redirects are never followed, so a key only goes to
+    the URL it was sent to. Header values with CR or LF are refused, and responses are capped
+    at <code>max_response_bytes</code>. <code>Secret</code> headers are redacted by <code>HttpRequest::describe()</code>.</li>
+<li><strong>"Ignores unknown event types"</strong> is the provider's job: the parser passes every type on,
+    and ignores unknown fields as the specification requires.</li>
+<li><strong>Tests</strong> run both backends against a cpp-httplib server in the test process, including
+    TLS with a CA made at run time. With certificate checks turned off, the TLS tests fail, as
+    they should.</li>
+</ul>
+<h3 id="follow-ups-the-agt-work-surfaced">Follow-ups the AGT work surfaced<a class="headerlink" href="#follow-ups-the-agt-work-surfaced" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Follow-up</th>
+<th>Found in</th>
+<th>Belongs with</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>HTTPS on Windows isn't tested in CI: the Windows job builds cpp-httplib without OpenSSL, and libcurl isn't installed there</td>
+<td>AGT-2</td>
+<td>KS-8-style CI work</td>
+</tr>
+<tr>
+<td>A connection is opened per request. Reusing one would save a TLS handshake per call in a long tool loop</td>
+<td>AGT-2</td>
+<td>AGT-3, if it measures slow</td>
+</tr>
+</tbody>
+</table>
 <h2 id="ks-kitchen-sink">KS: Kitchen sink<a class="headerlink" href="#ks-kitchen-sink" title="Permanent link">&para;</a></h2>
 <table>
 <thead>

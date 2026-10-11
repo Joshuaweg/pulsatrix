@@ -8,5 +8,6 @@ var searchData=
   ['inline_5',['Inline',['../namespacepulsatrix.html#a8de26e99febee574ce230489c26fa567a0125cf5f3ca38b312ca5d3b511c45a13',1,'pulsatrix']]],
   ['input_6',['Input',['../structpulsatrix_1_1NodeGene.html#a64663eaaff545087a7584d5dab39b0d4a324118a6721dd6b8a9b9f4e327df2bf5',1,'pulsatrix::NodeGene']]],
   ['integer_7',['Integer',['../namespacepulsatrix.html#abb575cb311c04812afe7f12350d86eecaa0faef0851b4294c06f2b94bb1cb2044',1,'pulsatrix']]],
-  ['isolated_8',['Isolated',['../namespacepulsatrix.html#ae6aaf6ae4d4aeddc14425e5de53d6ed2ad1f847307d4668ee43043ea87f2a00a6',1,'pulsatrix']]]
+  ['invalidrequest_8',['InvalidRequest',['../classpulsatrix_1_1orch_1_1HttpError.html#a52a20f658bca430e8bec642446e1ccfead544eb3da2f68d24cf92a8519ed53a31',1,'pulsatrix::orch::HttpError']]],
+  ['isolated_9',['Isolated',['../namespacepulsatrix.html#ae6aaf6ae4d4aeddc14425e5de53d6ed2ad1f847307d4668ee43043ea87f2a00a6',1,'pulsatrix']]]
 ];

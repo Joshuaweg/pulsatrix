@@ -1056,6 +1056,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#http-and-streaming" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        HTTP and streaming
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#json" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -2287,6 +2298,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#http-and-streaming" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        HTTP and streaming
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#json" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -2323,9 +2345,9 @@ OpenAI-compatible local servers (llama-server, vLLM, Ollama), a tool loop, and l
 that lets Claude and other agents drive pulsatrix's explainers. It needs no Python and no SDK.</p>
 <div class="admonition note">
 <p class="admonition-title">In progress</p>
-<p>Only the foundation is in so far (roadmap AGT-1): the build target, a holder for API keys and
-one-line JSON. The HTTP transport, the providers with the tool loop, and the tool registry
-follow as AGT-2 to AGT-4. See the <a href="../roadmap/#agt-agents-native-c">roadmap</a>.</p>
+<p>So far: the build target, a holder for API keys, one-line JSON (AGT-1), and HTTP with
+streaming (AGT-2). The providers with the tool loop, and the tool registry, follow as AGT-3
+and AGT-4. See the <a href="../roadmap/#agt-agents-native-c">roadmap</a>.</p>
 </div>
 <h2 id="building-it">Building it<a class="headerlink" href="#building-it" title="Permanent link">&para;</a></h2>
 <p>The orchestrator is a separate library, off by default, so the core library never takes on
@@ -2333,6 +2355,31 @@ networking dependencies:</p>
 <div class="highlight"><pre><span></span><code>cmake<span class="w"> </span>-S<span class="w"> </span>.<span class="w"> </span>-B<span class="w"> </span>build<span class="w"> </span>-DPULSATRIX_ENABLE_ORCHESTRATOR<span class="o">=</span>ON
 cmake<span class="w"> </span>--build<span class="w"> </span>build
 </code></pre></div>
+<p>HTTP comes from <a href="https://github.com/yhirose/cpp-httplib">cpp-httplib</a> (MIT, one header, fetched
+at a pinned version). Two settings control TLS:</p>
+<table>
+<thead>
+<tr>
+<th>Option</th>
+<th>Default</th>
+<th>What it does</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>PULSATRIX_ORCHESTRATOR_OPENSSL</code></td>
+<td><code>AUTO</code></td>
+<td>HTTPS through OpenSSL 3: <code>AUTO</code> uses it when CMake finds it, <code>ON</code> requires it, <code>OFF</code> builds plain HTTP only. Certificates are checked against the system's trust store, including Windows' and macOS'.</td>
+</tr>
+<tr>
+<td><code>PULSATRIX_ORCHESTRATOR_CURL</code></td>
+<td><code>OFF</code></td>
+<td>Also builds a libcurl backend. libcurl brings its own TLS, Schannel on Windows, so it's the way to get HTTPS on Windows without OpenSSL.</td>
+</tr>
+</tbody>
+</table>
+<p>Plain HTTP is enough for a local server such as llama-server or Ollama. The Anthropic API needs
+HTTPS.</p>
 <p>Link <code>pulsatrix_orchestrator</code> in the same build, or <code>pulsatrix::orchestrator</code> from an installed
 pulsatrix (<code>find_package(pulsatrix)</code> sets <code>pulsatrix_HAS_ORCHESTRATOR</code>). Its headers are under
 <code>pulsatrix/orch/</code> and its names in <code>pulsatrix::orch</code>, since <code>pulsatrix::Agent</code> already names the
@@ -2351,6 +2398,60 @@ key can't reach a log line or an error message by accident. The one way to read 
 <span class="c1">// headers.emplace_back("x-api-key", key-&gt;reveal());   // the only place the value goes</span>
 </code></pre></div>
 <p>The memory holding the key is overwritten when the <code>Secret</code> is destroyed or assigned over.</p>
+<h2 id="http-and-streaming">HTTP and streaming<a class="headerlink" href="#http-and-streaming" title="Permanent link">&para;</a></h2>
+<p><code>MakeHttpTransport()</code> returns a transport: libcurl when the build has it, cpp-httplib otherwise.
+<code>send()</code> waits for the whole response; <code>stream()</code> passes a successful response's body to a
+callback as it arrives, which is how LLM APIs stream their answers. <code>SseParser</code> turns those chunks
+into server-sent events:</p>
+<div class="highlight"><pre><span></span><code><span class="cp">#include</span><span class="w"> </span><span class="cpf">"pulsatrix/orch/http.hpp"</span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">"pulsatrix/orch/sse.hpp"</span>
+
+<span class="k">using</span><span class="w"> </span><span class="k">namespace</span><span class="w"> </span><span class="nn">pulsatrix</span><span class="o">::</span><span class="nn">orch</span><span class="p">;</span>
+
+<span class="n">HttpRequest</span><span class="w"> </span><span class="n">request</span><span class="p">;</span>
+<span class="n">request</span><span class="p">.</span><span class="n">url</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">"https://api.anthropic.com/v1/messages"</span><span class="p">;</span>
+<span class="n">request</span><span class="p">.</span><span class="n">add_secret_header</span><span class="p">(</span><span class="s">"x-api-key"</span><span class="p">,</span><span class="w"> </span><span class="o">*</span><span class="n">key</span><span class="p">);</span><span class="w">            </span><span class="c1">// redacted by request.describe()</span>
+<span class="n">request</span><span class="p">.</span><span class="n">add_header</span><span class="p">(</span><span class="s">"anthropic-version"</span><span class="p">,</span><span class="w"> </span><span class="s">"2023-06-01"</span><span class="p">);</span>
+<span class="n">request</span><span class="p">.</span><span class="n">add_header</span><span class="p">(</span><span class="s">"content-type"</span><span class="p">,</span><span class="w"> </span><span class="s">"application/json"</span><span class="p">);</span>
+<span class="n">request</span><span class="p">.</span><span class="n">body</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="sa">R</span><span class="s">"</span><span class="dl">(</span><span class="s">{"model": "claude-opus-5-5", "max_tokens": 256, "stream": true,</span>
+<span class="s">                   "messages": [{"role": "user", "content": "Hello"}]}</span><span class="dl">)</span><span class="s">"</span><span class="p">;</span>
+
+<span class="n">SseParser</span><span class="w"> </span><span class="nf">parser</span><span class="p">([](</span><span class="k">const</span><span class="w"> </span><span class="n">SseEvent</span><span class="o">&amp;</span><span class="w"> </span><span class="n">event</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">event</span><span class="p">.</span><span class="n">type</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="s">"content_block_delta"</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="n">std</span><span class="o">::</span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">event</span><span class="p">.</span><span class="n">data</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">"</span><span class="se">\n</span><span class="s">"</span><span class="p">;</span><span class="w">  </span><span class="c1">// a JSON object; AGT-3 will parse it for you</span>
+<span class="w">    </span><span class="p">}</span><span class="w">                                     </span><span class="c1">// other types, such as ping, are skipped</span>
+<span class="p">});</span>
+<span class="n">std</span><span class="o">::</span><span class="n">unique_ptr</span><span class="o">&lt;</span><span class="n">HttpTransport</span><span class="o">&gt;</span><span class="w"> </span><span class="n">http</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">MakeHttpTransport</span><span class="p">();</span>
+<span class="n">HttpResponse</span><span class="w"> </span><span class="n">response</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">http</span><span class="o">-&gt;</span><span class="n">stream</span><span class="p">(</span><span class="n">request</span><span class="p">,</span><span class="w"> </span><span class="p">[</span><span class="o">&amp;</span><span class="p">](</span><span class="n">std</span><span class="o">::</span><span class="n">string_view</span><span class="w"> </span><span class="n">chunk</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">parser</span><span class="p">.</span><span class="n">feed</span><span class="p">(</span><span class="n">chunk</span><span class="p">);</span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="nb">true</span><span class="p">;</span><span class="w">  </span><span class="c1">// false cancels the request</span>
+<span class="p">});</span>
+<span class="n">parser</span><span class="p">.</span><span class="n">finish</span><span class="p">();</span>
+<span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="o">!</span><span class="n">response</span><span class="p">.</span><span class="n">ok</span><span class="p">())</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">std</span><span class="o">::</span><span class="n">cerr</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">"HTTP "</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">response</span><span class="p">.</span><span class="n">status</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">": "</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">response</span><span class="p">.</span><span class="n">body</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">"</span><span class="se">\n</span><span class="s">"</span><span class="p">;</span><span class="w">  </span><span class="c1">// the error, collected</span>
+<span class="p">}</span>
+</code></pre></div>
+<p>What the transport does for you:</p>
+<ul>
+<li><strong>No redirects.</strong> A redirect would send your key to a host you didn't choose, so a 3xx is
+  returned as a response instead.</li>
+<li><strong>Limits.</strong> <code>connect_timeout</code> (10 s) and <code>read_timeout</code>, the longest the server may go without
+  sending a byte (10 minutes, since a model can think for a while). <code>max_response_bytes</code> (64 MiB)
+  stops a server that never stops sending.</li>
+<li><strong>Certificate checks can't be turned off.</strong> To trust a company proxy or your own server,
+  pass its CA certificate: <code>MakeHttpTransport({"/path/to/ca.pem"})</code>. It replaces the system's
+  trust store.</li>
+<li><strong>Errors.</strong> A response with a 4xx or 5xx status is a response. A request that got no
+  response throws <code>HttpError</code>, whose <code>kind()</code> says why: <code>Connect</code>, <code>Tls</code>, <code>Timeout</code>, <code>TooLarge</code>,
+  <code>Protocol</code> or <code>InvalidRequest</code>. A header value with a CR or LF is refused before anything is
+  sent, so a value can't inject headers of its own.</li>
+</ul>
+<p>The parser follows the WHATWG specification: any line ending, chunks split anywhere, comments,
+<code>id</code> and <code>retry</code>. It passes every event type on; skip the ones you don't handle, since APIs add
+new ones.</p>
+<p>On Linux and macOS, a server that closes the connection while OpenSSL is writing can raise
+<code>SIGPIPE</code>, which ends the process by default. A program that streams should ignore it:
+<code>std::signal(SIGPIPE, SIG_IGN);</code>.</p>
 <h2 id="json">JSON<a class="headerlink" href="#json" title="Permanent link">&para;</a></h2>
 <p>The orchestrator uses pulsatrix's own JSON (<code>pulsatrix/json.hpp</code>), not a separate library. Its
 parser is strict and refuses nesting deeper than 256 levels, which is what reading a remote

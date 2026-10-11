@@ -1,6 +1,6 @@
 var searchData=
 [
-  ['u_0',['u',['../structpulsatrix_1_1SVDResult.html#a83f441fd65542940c39bfa22ef015305',1,'pulsatrix::SVDResult::u'],['../classpulsatrix_1_1RWKVModule.html#ab7510e7540343bffe75454aef2f8180d',1,'pulsatrix::RWKVModule::u()'],['../classpulsatrix_1_1ComponentLinear.html#a35859f815ac1760eff55d9e9e5686379',1,'pulsatrix::ComponentLinear::U()']]],
+  ['u_0',['u',['../classpulsatrix_1_1ComponentLinear.html#a35859f815ac1760eff55d9e9e5686379',1,'pulsatrix::ComponentLinear::U()'],['../structpulsatrix_1_1SVDResult.html#a83f441fd65542940c39bfa22ef015305',1,'pulsatrix::SVDResult::u'],['../classpulsatrix_1_1RWKVModule.html#ab7510e7540343bffe75454aef2f8180d',1,'pulsatrix::RWKVModule::u()']]],
   ['u16_1',['U16',['../namespacepulsatrix.html#a4635e5585e80a55ee96adcfd4f80b57baef9ef3ebca4d2b64b6ec83808bafa5f2',1,'pulsatrix']]],
   ['u32_2',['U32',['../namespacepulsatrix.html#a4635e5585e80a55ee96adcfd4f80b57bac8bd5bedff8ef192d39a962afc0e19ee',1,'pulsatrix']]],
   ['u64_3',['U64',['../namespacepulsatrix.html#a4635e5585e80a55ee96adcfd4f80b57ba31d65cccd6593e4101db93fb878abcaa',1,'pulsatrix']]],
@@ -21,13 +21,14 @@ var searchData=
   ['up_5fproj_18',['up_proj',['../classpulsatrix_1_1SwiGLUModule.html#a219452cb9a7a6ae1f453ba04aa50f5e8',1,'pulsatrix::SwiGLUModule']]],
   ['upper_19',['upper',['../structpulsatrix_1_1GlobalSensitivityProblem.html#a12f4a51f2300371106cab5a7ce319ffd',1,'pulsatrix::GlobalSensitivityProblem::upper'],['../structpulsatrix_1_1ParameterSpec.html#a64ac6009017302f66e9b3c0fa7319191',1,'pulsatrix::ParameterSpec::upper'],['../structpulsatrix_1_1RlRowArgs.html#ab2cded7a8f000ed4d95ece741791053a',1,'pulsatrix::RlRowArgs::upper'],['../structpulsatrix_1_1CounterfactualConstraints.html#ac5d456efcddb5ef469b29f1aebe948fe',1,'pulsatrix::CounterfactualConstraints::upper']]],
   ['upperconfidencebound_20',['upperconfidencebound',['../namespacepulsatrix.html#a3de09b80f2b9d5933d7f452615305b59',1,'pulsatrix::UpperConfidenceBound(double mean, double variance, double kappa=2.0)'],['../namespacepulsatrix.html#aaf838275fc40b42d2c67d2772d64d1b8a371a6f869e3164dc4a6070d647e961c9',1,'pulsatrix::UpperConfidenceBound']]],
-  ['use_5fcomponents_21',['use_components',['../classpulsatrix_1_1ComponentLinear.html#a490af6fd76ece4fc30b24ac4d96d7e18',1,'pulsatrix::ComponentLinear']]],
-  ['use_5fqk_5fnorm_22',['use_qk_norm',['../structpulsatrix_1_1AttentionConfig.html#abafab0d9710e0e0fe974823a50d67bc8',1,'pulsatrix::AttentionConfig']]],
-  ['use_5frope_23',['use_rope',['../structpulsatrix_1_1AttentionConfig.html#a754e8188c47c387669c93a4f633459f4',1,'pulsatrix::AttentionConfig']]],
-  ['use_5ftarget_24',['use_target',['../classpulsatrix_1_1ComponentLinear.html#adac0c9f33a28d6cba7c68616cf50b3ff',1,'pulsatrix::ComponentLinear']]],
-  ['uses_5fbias_25',['uses_bias',['../classpulsatrix_1_1LinearModule.html#aba7e0538dca132407f25f4c6b4aed86f',1,'pulsatrix::LinearModule']]],
-  ['uses_5fqk_5fnorm_26',['uses_qk_norm',['../classpulsatrix_1_1MultiHeadAttentionModule.html#aa401137110ef1ce787af71a61654b484',1,'pulsatrix::MultiHeadAttentionModule']]],
-  ['uses_5frope_27',['uses_rope',['../classpulsatrix_1_1MultiHeadAttentionModule.html#a84eaff4be5e5453e6d5fdeff04f98371',1,'pulsatrix::MultiHeadAttentionModule']]],
-  ['uses_5ftarget_28',['uses_target',['../classpulsatrix_1_1ComponentLinear.html#a0a40883b8c168eeada469d23d6275199',1,'pulsatrix::ComponentLinear']]],
-  ['utilization_5fpercent_29',['utilization_percent',['../structpulsatrix_1_1GpuSample.html#af5da2c51f58bd34026dd5f7c9e567657',1,'pulsatrix::GpuSample']]]
+  ['url_21',['url',['../structpulsatrix_1_1orch_1_1HttpRequest.html#a599b4a13d5e04e113cd2cc9ddf053cb4',1,'pulsatrix::orch::HttpRequest']]],
+  ['use_5fcomponents_22',['use_components',['../classpulsatrix_1_1ComponentLinear.html#a490af6fd76ece4fc30b24ac4d96d7e18',1,'pulsatrix::ComponentLinear']]],
+  ['use_5fqk_5fnorm_23',['use_qk_norm',['../structpulsatrix_1_1AttentionConfig.html#abafab0d9710e0e0fe974823a50d67bc8',1,'pulsatrix::AttentionConfig']]],
+  ['use_5frope_24',['use_rope',['../structpulsatrix_1_1AttentionConfig.html#a754e8188c47c387669c93a4f633459f4',1,'pulsatrix::AttentionConfig']]],
+  ['use_5ftarget_25',['use_target',['../classpulsatrix_1_1ComponentLinear.html#adac0c9f33a28d6cba7c68616cf50b3ff',1,'pulsatrix::ComponentLinear']]],
+  ['uses_5fbias_26',['uses_bias',['../classpulsatrix_1_1LinearModule.html#aba7e0538dca132407f25f4c6b4aed86f',1,'pulsatrix::LinearModule']]],
+  ['uses_5fqk_5fnorm_27',['uses_qk_norm',['../classpulsatrix_1_1MultiHeadAttentionModule.html#aa401137110ef1ce787af71a61654b484',1,'pulsatrix::MultiHeadAttentionModule']]],
+  ['uses_5frope_28',['uses_rope',['../classpulsatrix_1_1MultiHeadAttentionModule.html#a84eaff4be5e5453e6d5fdeff04f98371',1,'pulsatrix::MultiHeadAttentionModule']]],
+  ['uses_5ftarget_29',['uses_target',['../classpulsatrix_1_1ComponentLinear.html#a0a40883b8c168eeada469d23d6275199',1,'pulsatrix::ComponentLinear']]],
+  ['utilization_5fpercent_30',['utilization_percent',['../structpulsatrix_1_1GpuSample.html#af5da2c51f58bd34026dd5f7c9e567657',1,'pulsatrix::GpuSample']]]
 ];
