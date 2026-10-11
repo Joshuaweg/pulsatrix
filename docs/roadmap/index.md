@@ -16,6 +16,8 @@ v1.0 is strong on explainability and thin on the foundations that larger models 
 [PLM](#plm-protein-language-models) is done.
 **The FEAT epic, featurizers and feature-level interpretability, is complete** (2026-10-09):
 every item in [FEAT](#feat-featurizers-sparse-autoencoders-and-goodfire-bsf) is done.
+**v1.2, "Real pretrained models", is complete** (2026-10-10): every item in its
+[milestone](#v12-real-pretrained-models) is done.
 
 - **Strong.** LRP covers every layer and is checked against Zennit and LXT. Saliency, Integrated
   Gradients and Grad-CAM are checked against Captum. LIME, KernelSHAP, PDP, logit lens,
@@ -33,7 +35,7 @@ every item in [FEAT](#feat-featurizers-sparse-autoencoders-and-goodfire-bsf) is 
   for every view and dependency-free SVG figures ([VIZ-1, VIZ-2](#viz-visualization-pack)).
   `cmake --install` with `find_package(pulsatrix)`, and a benchmark suite that compares builds
   and gates LRP conservation ([KS-1, KS-2](#ks-kitchen-sink)).
-- **v1.2 so far.** Attention that loads current small LLMs
+- **v1.2.** Attention that loads current small LLMs
   ([LLM-1](#llm-running-real-language-models)): grouped-query attention, causal and padding
   masks, "rotate half" RoPE with a configurable base, QK-Norm and bias-free projections, checked
   against Hugging Face's Llama, Qwen2 and Qwen3 attention. A language-model head that shares the
@@ -42,7 +44,13 @@ every item in [FEAT](#feat-featurizers-sparse-autoencoders-and-goodfire-bsf) is 
   real SmolLM2-135M runs and matches transformers. torchvision's ResNet18 and VGG16 load from
   their published weights, and their LRP heatmaps match Zennit's (KS-9). Fused training kernels
   and a bounded-memory Conv2D (HIP-6, HIP-7). Rich notebook display and reports written as
-  `.ipynb` or HTML (NB-1, NB-2).
+  `.ipynb` or HTML (NB-1, NB-2). Tokenizers loaded from `tokenizer.json`, with offsets and
+  word-level scores (LLM-3, TOK-1 to TOK-4). A golden-logit harness, and AttnLRP checked against
+  LXT (LLM-6, LLM-7). A converter for PyTorch checkpoints (IO-3). ICE, ALE,
+  sensitivity analysis and counterfactuals ([CFS-1 to CFS-7](#cfs-counterfactuals-and-sensitivity)).
+  The core of a native LLM-agent library: Anthropic and OpenAI-compatible providers, a tool loop
+  and a schema-checked tool registry ([AGT-1 to AGT-4](#agt-agents-native-c)). GPU CI on a
+  self-hosted gfx1151 runner (KS-8).
 - **Protein language models** ([PLM-1 to PLM-9](#plm-protein-language-models)). ESM-2 8M to
   650M load from Hugging Face and match transformers to float precision. On top of that:
   - zero-shot variant scoring that reproduces ProteinGym's published numbers;
@@ -148,6 +156,7 @@ The plumbing everything else needs, plus the checks that keep explanations hones
 ### v1.2 "Real pretrained models"
 
 Load SmolLM2-135M and ResNet18, run them, and match the reference implementations.
+**Complete** (2026-10-10; the last item was [#129](https://github.com/Joshuaweg/pulsatrix/pull/129)).
 
 - IO-3 to IO-6 (**done**): the pickle converter, name mapping, Hugging Face configs, bf16 upcast
 - LLM-1 to LLM-7 (**done**): attention upgrade, tied LM head, native tokenizers, generation, KV
@@ -1430,7 +1439,7 @@ AGT-5 has to follow these security rules:
 | Follow-up | Found in | Belongs with |
 |---|---|---|
 | HTTPS on Windows isn't tested in CI: the Windows job builds cpp-httplib without OpenSSL, and libcurl isn't installed there | AGT-2 | KS-8-style CI work |
-| A connection is opened per request. Reusing one would save a TLS handshake per call in a long tool loop | AGT-2 | AGT-3, if it measures slow |
+| A connection is opened per request. Reusing one would save a TLS handshake per call in a long tool loop | AGT-2 | AGT-5, or when a tool loop measures slow |
 | The live Anthropic test runs only by hand (`PULSATRIX_ORCH_LIVE=1`). A CI secret would run it on each merge, at a few cents a run | AGT-3 | CI |
 | Resuming an interrupted stream (the docs' "continue from where you left off" message) | AGT-3 | when an agent needs it |
 | `pattern` in tool schemas, which needs a regular expression engine that is linear-time on hostile input (RE2-style) | AGT-4 | when a tool needs it |
