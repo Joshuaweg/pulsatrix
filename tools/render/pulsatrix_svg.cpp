@@ -16,6 +16,7 @@
 //   pulsatrix_svg logo.json -o logo.svg                        # sequence_logo (PLM-5)
 //   pulsatrix_svg contacts.json -o contacts.svg                # contact_map (PLM-5)
 //   pulsatrix_svg tracks.json -o tracks.svg                    # residue_tracks (PLM-5)
+//   pulsatrix_svg pca.json --axes 1,3 -o pca13.svg             # projection: PC1 against PC3 (INT-5)
 //
 //   pulsatrix_svg explanation.json -o explanation.html          # interactive: hover, zoom, export
 //   pulsatrix_svg run.json -o run.html                          # training_log (HTML only)
@@ -25,7 +26,7 @@
 //   pulsatrix_svg circuit.json --neuronpedia -o graph.json      # circuit graph for Neuronpedia (VIZ-4)
 //
 // Options: -o FILE (default stdout), --html, --inline-js DIR (or $PULSATRIX_VEGA_DIR), --offline, --top-k N,
-//          --ice raw|centered|derivative, --max-curves N, --width W, --font-size N, --title TEXT.
+//          --ice raw|centered|derivative, --max-curves N, --axes I,J, --width W, --font-size N, --title TEXT.
 // Exit status: 0 on success, 1 if a document can't be read or drawn, 2 on a usage error.
 #include <cstdio>
 #include <cstdlib>
@@ -46,7 +47,7 @@ namespace {
 
 constexpr const char* kUsage =
     "usage: pulsatrix_svg DOCUMENT.json... [-o FILE] [--top-k N] [--waterfall BASELINE]\n"
-    "                     [--beeswarm I,J,...] [--ice raw|centered|derivative] [--max-curves N]\n"
+    "                     [--beeswarm I,J,...] [--ice raw|centered|derivative] [--max-curves N] [--axes I,J]\n"
     "                     [--width W] [--font-size N] [--title TEXT] [--html] [--inline-js DIR] [--offline]\n"
     "                     [--neuronpedia [--slug S] [--scan MODEL_ID]]\n";
 
@@ -127,6 +128,7 @@ std::string RenderHtml(const std::vector<std::string>& inputs, int top_k, bool w
     if (kind == "sequence_logo") return RenderSequenceLogoHtml(ParseSequenceLogoDocument(json), options);
     if (kind == "contact_map") return RenderContactMapHtml(ParseContactMapDocument(json), {}, options);
     if (kind == "residue_tracks") return RenderResidueTracksHtml(ParseResidueTracksDocument(json), options);
+    if (kind == "projection") return RenderProjectionHtml(ParseProjectionDocument(json), options);
     throw std::invalid_argument("there is no HTML view for " + kind + " documents yet");
 }
 
@@ -141,6 +143,7 @@ int main(int argc, char** argv) {
     bool waterfall = false;
     float baseline = 0.0f;
     std::vector<int64_t> beeswarm_features;
+    int x_axis = 0, y_axis = 1;  // a projection's axes, from --axes (1-based)
     PartialDependenceSvgOptions pd_options;
     bool html = false;
     bool neuronpedia = false;
@@ -173,6 +176,12 @@ int main(int argc, char** argv) {
             baseline = std::strtof(v.c_str(), &end);
             if (v.empty() || *end != '\0') Usage("--waterfall needs a number, got \"" + v + "\"");
             waterfall = true;
+        } else if (a == "--axes") {
+            const std::string v = value();
+            const size_t comma = v.find(',');
+            if (comma == std::string::npos) Usage("--axes needs two axis numbers, such as 1,3");
+            x_axis = static_cast<int>(ParseInt(v.substr(0, comma), "--axes")) - 1;
+            y_axis = static_cast<int>(ParseInt(v.substr(comma + 1), "--axes")) - 1;
         } else if (a == "--beeswarm") {
             std::stringstream list(value());
             std::string item;
@@ -287,6 +296,8 @@ int main(int argc, char** argv) {
                 svg = RenderContactMapSvg(ParseContactMapDocument(json), {}, options);
             } else if (kind == "residue_tracks") {
                 svg = RenderResidueTracksSvg(ParseResidueTracksDocument(json), options);
+            } else if (kind == "projection") {
+                svg = RenderProjectionSvg(ParseProjectionDocument(json), x_axis, y_axis, options);
             } else {
                 throw std::invalid_argument("there is no SVG view for " + kind + " documents yet");
             }

@@ -69,6 +69,7 @@ struct MimeBundle {
 [[nodiscard]] MimeBundle mime_bundle_repr(const CounterfactualDocument& doc);
 [[nodiscard]] MimeBundle mime_bundle_repr(const MorrisDocument& doc);
 [[nodiscard]] MimeBundle mime_bundle_repr(const SobolDocument& doc);
+[[nodiscard]] MimeBundle mime_bundle_repr(const ProjectionDocument& doc);
 [[nodiscard]] MimeBundle mime_bundle_repr(const MutationMapDocument& doc);
 [[nodiscard]] MimeBundle mime_bundle_repr(const SequenceLogoDocument& doc);
 [[nodiscard]] MimeBundle mime_bundle_repr(const ContactMapDocument& doc);

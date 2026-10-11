@@ -420,23 +420,59 @@ EigenResult SymmetricEigen(const Tensor& input) {
     return {to_tensor(sorted, Shape({n}), input.backend()), columns_to_tensor(v, order, input.backend())};
 }
 
-std::vector<double> SymmetricEigenvalues(std::vector<double> values, int64_t n) {
+namespace {
+
+// Householder reduction and QL on a row-major double matrix; vectors stay in d's columns.
+Dense eigen_in_double(std::vector<double>& values, int64_t n, const char* who, std::vector<double>& d) {
     if (n < 1 || values.size() != static_cast<size_t>(n) * static_cast<size_t>(n)) {
-        throw std::invalid_argument("SymmetricEigenvalues: input must hold n * n values, n >= 1");
+        throw std::invalid_argument(std::string(who) + ": input must hold n * n values, n >= 1");
     }
     for (double x : values) {
         if (!std::isfinite(x)) {
-            throw std::invalid_argument("SymmetricEigenvalues: input has a non-finite entry");
+            throw std::invalid_argument(std::string(who) + ": input has a non-finite entry");
         }
     }
     Dense a{n, n, std::move(values)};
-    check_symmetric(a, "SymmetricEigenvalues");
-    std::vector<double> d(static_cast<size_t>(n)), e(static_cast<size_t>(n));
+    check_symmetric(a, who);
+    d.assign(static_cast<size_t>(n), 0.0);
+    std::vector<double> e(static_cast<size_t>(n));
     householder_tridiagonalize(a, d, e);
     Dense zt = transpose(a);
     tridiagonal_ql(d, e, zt);
+    return zt;  // row j is the eigenvector for d[j]
+}
+
+}  // namespace
+
+std::vector<double> SymmetricEigenvalues(std::vector<double> values, int64_t n) {
+    std::vector<double> d;
+    (void)eigen_in_double(values, n, "SymmetricEigenvalues", d);
     std::sort(d.begin(), d.end(), std::greater<double>());
     return d;
+}
+
+DoubleEigenResult SymmetricEigenInDouble(std::vector<double> values, int64_t n) {
+    std::vector<double> d;
+    const Dense zt = eigen_in_double(values, n, "SymmetricEigenInDouble", d);
+    const std::vector<int64_t> order = descending_order(d);
+    DoubleEigenResult out;
+    out.values.reserve(static_cast<size_t>(n));
+    out.vectors.reserve(static_cast<size_t>(n * n));
+    for (int64_t j : order) {
+        out.values.push_back(d[static_cast<size_t>(j)]);
+        const double* row = &zt.v[static_cast<size_t>(j * n)];
+        int64_t best = 0;
+        for (int64_t i = 1; i < n; ++i) {
+            if (std::fabs(row[i]) > std::fabs(row[best])) {
+                best = i;
+            }
+        }
+        const double sign = row[best] < 0.0 ? -1.0 : 1.0;
+        for (int64_t i = 0; i < n; ++i) {
+            out.vectors.push_back(sign * row[i]);
+        }
+    }
+    return out;
 }
 
 DominantEigenResult PowerIteration(const Tensor& input, int64_t max_iterations, float tolerance, uint64_t seed) {

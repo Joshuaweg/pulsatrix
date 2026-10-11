@@ -190,7 +190,8 @@ Fine-tune the models from v1.2 and explain what the fine-tuning changed.
 - INT-1 (**done**, [#132](https://github.com/Joshuaweg/pulsatrix/pull/132)): nearest neighbors, mutual nearest neighbors, mutual-kNN alignment
 - INT-3 (**done**, [#133](https://github.com/Joshuaweg/pulsatrix/pull/133)): probe controls (selectivity, and gain over a baseline)
 - INT-4 (**done**, [#134](https://github.com/Joshuaweg/pulsatrix/pull/134)): anisotropy, effective rank, TwoNN intrinsic dimension
-- INT-5, INT-6: PCA, TCAV and CRP
+- INT-5 (**done**, [#135](https://github.com/Joshuaweg/pulsatrix/pull/135)): PCA, projection plots, split-half stability
+- INT-6: TCAV and CRP
 - TDA-1 to TDA-8, TDA-11: persistent homology and RTD
 - KS-3, KS-4: uncertainty and adversarial robustness
 - Llama-3.2-1B and Qwen2.5-0.5B pass the golden-logit test
@@ -785,12 +786,31 @@ network says nothing about what the model learned.
 | INT-2 | Linear CKA (debiased) | Compare layers across models, training runs and backends | — | P0 | S | Done, [#131](https://github.com/Joshuaweg/pulsatrix/pull/131) (see below) |
 | INT-3 | Control tasks for `LinearProbe` (selectivity = probe accuracy minus control accuracy) | High probe accuracy can come from the probe, not the representation | — | P0 | S | Done, [#133](https://github.com/Joshuaweg/pulsatrix/pull/133) (see below) |
 | INT-4 | Anisotropy, effective rank and TwoNN intrinsic dimension | Explains why raw cosine similarity misleads; one number per layer | INT-1 | P1 | S | Done, [#134](https://github.com/Joshuaweg/pulsatrix/pull/134) (see below) |
-| INT-5 | PCA projections | 2D and 3D views, steering directions, preprocessing for TDA | FND-4 | P1 | M | |
+| INT-5 | PCA projections | 2D and 3D views, steering directions, preprocessing for TDA | FND-4 | P1 | M | Done, [#135](https://github.com/Joshuaweg/pulsatrix/pull/135) (see below) |
 | INT-6 | TCAV (with significance against random concepts) and Concept Relevance Propagation | Concept-level explanations, and CRP reuses pulsatrix's LRP rules | INT-3 | P1 | M | |
 | INT-7 | RSA and SVCCA | Mostly covered by CKA | FND-4 | P2 | — | |
 | INT-8 | UMAP and t-SNE: export the data only, don't implement | Expensive, and they distort distances and cluster sizes | VIZ-1 | P3 | — | |
 
 ### How the INT work departed from the plan
+
+- **INT-5** adds `pca.hpp`.
+  - **The functions:** `FitPca()`, `PcaProject()` (optionally whitened), `PcaReconstruct()`,
+    `PcaComponent()` as a steering direction, `SubspaceOverlap()`, and `PcaSplitHalfOverlap()`.
+  - **Checked against** scikit-learn 1.7.2's full-SVD PCA, read from its released package and
+    transcribed into `tools/generate_pca_reference_values.py`. Components, variances, ratios
+    and projections agree to 1e-10, through both the covariance and the Gram path.
+  - **Views:** the 2D and 3D views became a new viz document, `pulsatrix.projection.v1`, the
+    sixteenth kind.
+    - It has an SVG scatter plot (`RenderProjectionSvg`, either pair of axes, one scale on
+      both) and a Vega-Lite page that shows three pair panels for three components.
+    - It's wired into `pulsatrix_svg` (with `--axes`), notebooks and the document fuzzer.
+    - A rotating 3D view isn't built in; the document holds every coordinate for a tool that
+      has one.
+  - **Added beyond the plan: a stability check.** A 2D picture of noise can look like
+    structure, so `PcaSplitHalfOverlap()` fits two halves and compares them. Points on a plane
+    give 0.9995, the plane under equal noise 0.92, and noise alone 0.09.
+  - **`SymmetricEigenInDouble()`** joins FND-4's decompositions, so components and variances
+    stay in double precision.
 
 - **INT-4** follows the plan in `representation_geometry.hpp`.
   - **`Anisotropy()`** is the exact mean cosine over every pair, raw or centered.
