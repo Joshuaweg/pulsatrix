@@ -3923,7 +3923,7 @@ machine, and explain it with the tools pulsatrix already has. Items on that path
 <li>AGT-1 (<strong>done</strong>, <a href="https://github.com/Joshuaweg/pulsatrix/pull/126">#126</a>): the optional orchestrator target</li>
 <li>AGT-2 (<strong>done</strong>, <a href="https://github.com/Joshuaweg/pulsatrix/pull/127">#127</a>): HTTP transport and server-sent events</li>
 <li>AGT-3 (<strong>done</strong>, <a href="https://github.com/Joshuaweg/pulsatrix/pull/128">#128</a>): providers and the tool loop</li>
-<li>AGT-4: the tool registry</li>
+<li>AGT-4 (<strong>done</strong>, <a href="https://github.com/Joshuaweg/pulsatrix/pull/129">#129</a>): the tool registry</li>
 <li>KS-8 (<strong>done</strong>): GPU CI on gfx1151</li>
 <li>KS-9 (<strong>done</strong>): a model zoo, ResNet18 and VGG16 with heatmaps checked against Zennit
   (SmolLM2's against LXT came with LLM-7)</li>
@@ -6717,7 +6717,7 @@ that only offers tools is small. The genuinely hard parts are narrow:</p>
 <td>AGT-1</td>
 <td>P1</td>
 <td>S–M</td>
-<td></td>
+<td>Done, <a href="https://github.com/Joshuaweg/pulsatrix/pull/129">#129</a> (see below)</td>
 </tr>
 <tr>
 <td>AGT-5</td>
@@ -6835,10 +6835,32 @@ that only offers tools is small. The genuinely hard parts are narrow:</p>
     callback isn't retried, since a retry would show that part twice. The docs' recovery
     recipe (ask the model to continue) is left to the caller.</li>
 <li><strong>Strict tools</strong> are opt-in per <code>ToolSpec</code>, since a schema must follow strict mode's rules.
-    AGT-4's registry can turn it on for schemas that do.</li>
-<li><strong>Tests</strong> replay streams shaped like the API docs' examples through a scripted transport,
+    AGT-4's registry checks that a strict tool's schema suits it.</li>
+<li>
+<p><strong>Tests</strong> replay streams shaped like the API docs' examples through a scripted transport,
     so they need no key and no network. One test calls the real API when
-    <code>PULSATRIX_ORCH_LIVE=1</code> and <code>ANTHROPIC_API_KEY</code> are set; it hasn't run in CI.</li>
+    <code>PULSATRIX_ORCH_LIVE=1</code> and <code>ANTHROPIC_API_KEY</code> are set; it hasn't run in CI.</p>
+</li>
+<li>
+<p><strong>AGT-4</strong> follows the plan: a <code>ToolRegistry</code> of tools (name, description, input schema,
+  function) that gives the providers their <code>ToolSpec</code>s and <code>RunToolLoop()</code> its executor, and that
+  AGT-5's MCP server will serve as well.</p>
+</li>
+<li><strong>The validator</strong> (<code>json_schema.hpp</code>) supports only the keywords that mean the same in
+    draft-7 and 2020-12, and <code>add()</code> refuses any other keyword rather than not enforce it. Left
+    out: <code>$ref</code> and <code>$defs</code>/<code>definitions</code> (spelled differently in the two drafts), <code>items</code> as
+    an array (2020-12's <code>prefixItems</code>), <code>dependencies</code>, and <code>pattern</code>. <code>pattern</code> needs an
+    ECMA-262 regular expression engine that is safe on input a model wrote, which <code>std::regex</code>
+    isn't (it recurses per character and backtracks without limit).</li>
+<li><strong>Errors go to the model.</strong> An input that fails its schema, arguments that weren't JSON, an
+    unknown tool and a function that throws all become error results the model can act on.
+    Messages say where each problem is but never quote the model's values, and a property name
+    the model made up is repeated only if it is short and plain.</li>
+<li><strong>Strict mode</strong> stays opt-in per tool, as in AGT-3, but <code>add()</code> now refuses a strict tool
+    whose schema strict mode can't take (an object without <code>"additionalProperties": false</code>,
+    numeric or length limits, <code>oneOf</code>, <code>not</code>), checked against the API docs on 2026-10-10. The
+    request-wide limits (20 strict tools, 24 optional parameters, 16 union-typed parameters)
+    aren't checked; the API reports them.</li>
 </ul>
 <h3 id="follow-ups-the-agt-work-surfaced">Follow-ups the AGT work surfaced<a class="headerlink" href="#follow-ups-the-agt-work-surfaced" title="Permanent link">&para;</a></h3>
 <table>
@@ -6869,6 +6891,11 @@ that only offers tools is small. The genuinely hard parts are narrow:</p>
 <td>Resuming an interrupted stream (the docs' "continue from where you left off" message)</td>
 <td>AGT-3</td>
 <td>when an agent needs it</td>
+</tr>
+<tr>
+<td><code>pattern</code> in tool schemas, which needs a regular expression engine that is linear-time on hostile input (RE2-style)</td>
+<td>AGT-4</td>
+<td>when a tool needs it</td>
 </tr>
 </tbody>
 </table>

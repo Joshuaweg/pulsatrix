@@ -152,6 +152,9 @@ Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpulsatrix_1_1orch_1_1RetryPolicy.html">RetryPolicy</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">When and how long to retry.  <a href="structpulsatrix_1_1orch_1_1RetryPolicy.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpulsatrix_1_1orch_1_1SchemaError.html">SchemaError</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">One way a value fails a schema.  <a href="structpulsatrix_1_1orch_1_1SchemaError.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1orch_1_1Secret.html">Secret</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Holds a credential, such as an LLM provider's API key.  <a href="classpulsatrix_1_1orch_1_1Secret.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -164,6 +167,9 @@ Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpulsatrix_1_1orch_1_1StreamCallbacks.html">StreamCallbacks</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Called as a streamed answer arrives. Either may be empty.  <a href="structpulsatrix_1_1orch_1_1StreamCallbacks.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpulsatrix_1_1orch_1_1Tool.html">Tool</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">A tool: what the model sees, and the function that runs it.  <a href="structpulsatrix_1_1orch_1_1Tool.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpulsatrix_1_1orch_1_1ToolCall.html">ToolCall</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">One tool call to run.  <a href="structpulsatrix_1_1orch_1_1ToolCall.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -175,6 +181,9 @@ Classes</h2></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpulsatrix_1_1orch_1_1ToolOutcome.html">ToolOutcome</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">What a tool returned. An error is reported to the model, which can try again.  <a href="structpulsatrix_1_1orch_1_1ToolOutcome.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1orch_1_1ToolRegistry.html">ToolRegistry</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The tools an agent may use. <a class="el" href="namespacepulsatrix_1_1orch.html#a7dc8c979832324fb2b4063131ed95c2b" title="Sends request, runs each tool the model calls with execute, and sends the results back,...">RunToolLoop()</a> takes <a class="el" href="classpulsatrix_1_1orch_1_1ToolRegistry.html#abffb28577b613d17c759c26f0322df70" title="An executor for RunToolLoop() that calls call(). It refers to this registry, which must outlive it.">executor()</a> and the MCP server (AGT-5) serves the same registry, so a tool is defined once.  <a href="classpulsatrix_1_1orch_1_1ToolRegistry.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpulsatrix_1_1orch_1_1ToolSpec.html">ToolSpec</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">A tool the model may call. AGT-4's tool registry makes these from its tools.  <a href="structpulsatrix_1_1orch_1_1ToolSpec.html#details">More...</a><br /></td></tr>
@@ -191,6 +200,9 @@ Typedefs</h2></td></tr>
 <tr class="memitem:a0b12f555fda7e4fe333673a2937de23a" id="r_a0b12f555fda7e4fe333673a2937de23a"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix_1_1orch.html#a0b12f555fda7e4fe333673a2937de23a">ToolExecutor</a> = std::function&lt; <a class="el" href="structpulsatrix_1_1orch_1_1ToolOutcome.html">ToolOutcome</a>(const <a class="el" href="structpulsatrix_1_1orch_1_1ToolCall.html">ToolCall</a> &amp;)&gt;</td></tr>
 <tr class="memdesc:a0b12f555fda7e4fe333673a2937de23a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Runs one tool call. AGT-4's tool registry provides one; any function works.  <br /></td></tr>
 <tr class="separator:a0b12f555fda7e4fe333673a2937de23a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abf47d0d4839b6411af9b0978258978df" id="r_abf47d0d4839b6411af9b0978258978df"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix_1_1orch.html#abf47d0d4839b6411af9b0978258978df">ToolHandler</a> = std::function&lt; <a class="el" href="structpulsatrix_1_1orch_1_1ToolOutcome.html">ToolOutcome</a>(const <a class="el" href="classpulsatrix_1_1JsonValue.html">JsonValue</a> &amp;input)&gt;</td></tr>
+<tr class="memdesc:abf47d0d4839b6411af9b0978258978df"><td class="mdescLeft">&#160;</td><td class="mdescRight">Runs a tool on an input that already matches its schema. An exception becomes an error result with the exception's message.  <br /></td></tr>
+<tr class="separator:abf47d0d4839b6411af9b0978258978df"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="enum-members" name="enum-members"></a>
 Enumerations</h2></td></tr>
@@ -230,6 +242,18 @@ Functions</h2></td></tr>
 <tr class="memitem:a4f55e2bcec9448d4043e7fd5c728ff2b" id="r_a4f55e2bcec9448d4043e7fd5c728ff2b"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structpulsatrix_1_1orch_1_1HttpUrl.html">HttpUrl</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix_1_1orch.html#a4f55e2bcec9448d4043e7fd5c728ff2b">ParseHttpUrl</a> (std::string_view url)</td></tr>
 <tr class="memdesc:a4f55e2bcec9448d4043e7fd5c728ff2b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Parses an <code><a href="http://">http://</a></code> or <code><a href="https://">https://</a></code> URL.  <br /></td></tr>
 <tr class="separator:a4f55e2bcec9448d4043e7fd5c728ff2b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7755d21a70fda4a40842285f22574d0e" id="r_a7755d21a70fda4a40842285f22574d0e"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix_1_1orch.html#a7755d21a70fda4a40842285f22574d0e">CheckSchema</a> (const <a class="el" href="classpulsatrix_1_1JsonValue.html">JsonValue</a> &amp;schema)</td></tr>
+<tr class="memdesc:a7755d21a70fda4a40842285f22574d0e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Checks that <code>schema</code> uses only the supported keywords, each with a valid value.  <br /></td></tr>
+<tr class="separator:a7755d21a70fda4a40842285f22574d0e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af30b7e037642928a055bd3d9dd81f70b" id="r_af30b7e037642928a055bd3d9dd81f70b"><td class="memItemLeft" align="right" valign="top">std::vector&lt; <a class="el" href="structpulsatrix_1_1orch_1_1SchemaError.html">SchemaError</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix_1_1orch.html#af30b7e037642928a055bd3d9dd81f70b">ValidateJson</a> (const <a class="el" href="classpulsatrix_1_1JsonValue.html">JsonValue</a> &amp;schema, const <a class="el" href="classpulsatrix_1_1JsonValue.html">JsonValue</a> &amp;value, std::size_t max_errors=16)</td></tr>
+<tr class="memdesc:af30b7e037642928a055bd3d9dd81f70b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Checks <code>value</code> against <code>schema</code>.  <br /></td></tr>
+<tr class="separator:af30b7e037642928a055bd3d9dd81f70b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af11a7bae7b706443e681a4d6040c7971" id="r_af11a7bae7b706443e681a4d6040c7971"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix_1_1orch.html#af11a7bae7b706443e681a4d6040c7971">StrictModeProblem</a> (const <a class="el" href="classpulsatrix_1_1JsonValue.html">JsonValue</a> &amp;schema)</td></tr>
+<tr class="memdesc:af11a7bae7b706443e681a4d6040c7971"><td class="mdescLeft">&#160;</td><td class="mdescRight">Why <code>schema</code> can't be used with Anthropic's strict tool use, or "" if it can.  <br /></td></tr>
+<tr class="separator:af11a7bae7b706443e681a4d6040c7971"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac47270067ff66f5140b14eb4d2d3c2fb" id="r_ac47270067ff66f5140b14eb4d2d3c2fb"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix_1_1orch.html#ac47270067ff66f5140b14eb4d2d3c2fb">JsonEquals</a> (const <a class="el" href="classpulsatrix_1_1JsonValue.html">JsonValue</a> &amp;a, const <a class="el" href="classpulsatrix_1_1JsonValue.html">JsonValue</a> &amp;b)</td></tr>
+<tr class="memdesc:ac47270067ff66f5140b14eb4d2d3c2fb"><td class="mdescLeft">&#160;</td><td class="mdescRight">JSON equality, as <code>enum</code>, <code>const</code> and <code>uniqueItems</code> use it: numbers by value (1 equals 1.0), objects regardless of member order.  <br /></td></tr>
+<tr class="separator:ac47270067ff66f5140b14eb4d2d3c2fb"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa4db7d6568e1d5d9fab8e832f08e4eb3" id="r_aa4db7d6568e1d5d9fab8e832f08e4eb3"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix_1_1orch.html#aa4db7d6568e1d5d9fab8e832f08e4eb3">IsValidToolName</a> (const std::string &amp;name)</td></tr>
 <tr class="memdesc:aa4db7d6568e1d5d9fab8e832f08e4eb3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Whether <code>name</code> is a valid tool name (<code>^[a-zA-Z0-9_-]{1,128}$</code>).  <br /></td></tr>
 <tr class="separator:aa4db7d6568e1d5d9fab8e832f08e4eb3"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -274,6 +298,22 @@ Functions</h2></td></tr>
 
 <p>Runs one tool call. AGT-4's tool registry provides one; any function works. </p>
 <dl class="section note"><dt>Note</dt><dd>An exception is caught and sent to the model as an error result with its message. </dd></dl>
+
+</div>
+</div>
+<a id="abf47d0d4839b6411af9b0978258978df" name="abf47d0d4839b6411af9b0978258978df"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#abf47d0d4839b6411af9b0978258978df">&#9670;&#160;</a></span>ToolHandler</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">using <a class="el" href="namespacepulsatrix_1_1orch.html#abf47d0d4839b6411af9b0978258978df">pulsatrix::orch::ToolHandler</a> = typedef std::function&lt;<a class="el" href="structpulsatrix_1_1orch_1_1ToolOutcome.html">ToolOutcome</a>(const <a class="el" href="classpulsatrix_1_1JsonValue.html">JsonValue</a>&amp; input)&gt;</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Runs a tool on an input that already matches its schema. An exception becomes an error result with the exception's message. </p>
 
 </div>
 </div>
@@ -349,6 +389,32 @@ Functions</h2></td></tr>
 </div>
 </div>
 <h2 class="groupheader">Function Documentation</h2>
+<a id="a7755d21a70fda4a40842285f22574d0e" name="a7755d21a70fda4a40842285f22574d0e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7755d21a70fda4a40842285f22574d0e">&#9670;&#160;</a></span>CheckSchema()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void pulsatrix::orch::CheckSchema </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classpulsatrix_1_1JsonValue.html">JsonValue</a> &amp;&#160;</td>
+          <td class="paramname"><em>schema</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Checks that <code>schema</code> uses only the supported keywords, each with a valid value. </p>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname">std::invalid_argument</td><td>naming the first problem and where it is in the schema. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
 <a id="a6831d578a80f89e4a14552616263db54" name="a6831d578a80f89e4a14552616263db54"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a6831d578a80f89e4a14552616263db54">&#9670;&#160;</a></span>HttpBackendAvailable()</h2>
 
@@ -406,6 +472,36 @@ Functions</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Whether <code>name</code> is a valid tool name (<code>^[a-zA-Z0-9_-]{1,128}$</code>). </p>
+
+</div>
+</div>
+<a id="ac47270067ff66f5140b14eb4d2d3c2fb" name="ac47270067ff66f5140b14eb4d2d3c2fb"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac47270067ff66f5140b14eb4d2d3c2fb">&#9670;&#160;</a></span>JsonEquals()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool pulsatrix::orch::JsonEquals </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classpulsatrix_1_1JsonValue.html">JsonValue</a> &amp;&#160;</td>
+          <td class="paramname"><em>a</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="classpulsatrix_1_1JsonValue.html">JsonValue</a> &amp;&#160;</td>
+          <td class="paramname"><em>b</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>JSON equality, as <code>enum</code>, <code>const</code> and <code>uniqueItems</code> use it: numbers by value (1 equals 1.0), objects regardless of member order. </p>
 
 </div>
 </div>
@@ -594,6 +690,77 @@ Functions</h2></td></tr>
 <dl class="exception"><dt>Exceptions</dt><dd>
   <table class="exception">
     <tr><td class="paramname"><a class="el" href="classpulsatrix_1_1orch_1_1ProviderError.html" title="The provider answered with an error, or failed after its retries.">ProviderError</a></td><td>or <a class="el" href="classpulsatrix_1_1orch_1_1HttpError.html" title="A request that got no complete response: the connection, TLS, a timeout or a limit failed.">HttpError</a> as <a class="el" href="classpulsatrix_1_1orch_1_1Provider.html#ad9d7a7bd48481f4508504b18b9771d79" title="Sends request and returns the model&#39;s answer, streaming it to stream as it arrives.">Provider::chat()</a> does. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="af11a7bae7b706443e681a4d6040c7971" name="af11a7bae7b706443e681a4d6040c7971"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af11a7bae7b706443e681a4d6040c7971">&#9670;&#160;</a></span>StrictModeProblem()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::string pulsatrix::orch::StrictModeProblem </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classpulsatrix_1_1JsonValue.html">JsonValue</a> &amp;&#160;</td>
+          <td class="paramname"><em>schema</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Why <code>schema</code> can't be used with Anthropic's strict tool use, or "" if it can. </p>
+<dl class="section note"><dt>Note</dt><dd>Strict mode needs <code>"additionalProperties": false</code> on every object, and doesn't support numeric, string-length or most array constraints, <code>oneOf</code>, <code>not</code>, or <code>enum</code> values that are arrays or objects. Its limits across a whole request (20 strict tools, 24 optional parameters, 16 union-typed parameters) aren't checked here. </dd></dl>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname">std::invalid_argument</td><td>if <code>schema</code> doesn't pass <a class="el" href="namespacepulsatrix_1_1orch.html#a7755d21a70fda4a40842285f22574d0e" title="Checks that schema uses only the supported keywords, each with a valid value.">CheckSchema()</a>. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="af30b7e037642928a055bd3d9dd81f70b" name="af30b7e037642928a055bd3d9dd81f70b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af30b7e037642928a055bd3d9dd81f70b">&#9670;&#160;</a></span>ValidateJson()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::vector&lt; <a class="el" href="structpulsatrix_1_1orch_1_1SchemaError.html">SchemaError</a> &gt; pulsatrix::orch::ValidateJson </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classpulsatrix_1_1JsonValue.html">JsonValue</a> &amp;&#160;</td>
+          <td class="paramname"><em>schema</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="classpulsatrix_1_1JsonValue.html">JsonValue</a> &amp;&#160;</td>
+          <td class="paramname"><em>value</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">std::size_t&#160;</td>
+          <td class="paramname"><em>max_errors</em> = <code>16</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Checks <code>value</code> against <code>schema</code>. </p>
+<dl class="section return"><dt>Returns</dt><dd>The ways it fails, at most <code>max_errors</code> of them; empty if it matches. A failed <code>anyOf</code>, <code>oneOf</code> or <code>not</code> is one error, without the reasons inside it. </dd></dl>
+<dl class="section note"><dt>Note</dt><dd>Error messages never quote the value, which came from a model and may be large. </dd></dl>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname">std::invalid_argument</td><td>if <code>schema</code> doesn't pass <a class="el" href="namespacepulsatrix_1_1orch.html#a7755d21a70fda4a40842285f22574d0e" title="Checks that schema uses only the supported keywords, each with a valid value.">CheckSchema()</a>. </td></tr>
   </table>
   </dd>
 </dl>
