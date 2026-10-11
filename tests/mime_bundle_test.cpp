@@ -182,6 +182,7 @@ TEST(MimeBundle, EveryDocumentKind) {
         {"sequence_logo", xcpp::XeusDisplay(ParseSequenceLogoDocument(ReadFixture("sequence_logo.v1.json"))), false, true},
         {"contact_map", xcpp::XeusDisplay(ParseContactMapDocument(ReadFixture("contact_map.v1.json"))), false, true},
         {"residue_tracks", xcpp::XeusDisplay(ParseResidueTracksDocument(ReadFixture("residue_tracks.v1.json"))), false, true},
+        {"projection", xcpp::XeusDisplay(ParseProjectionDocument(ReadFixture("projection.v1.json"))), true, true},
     };
     for (const Case& c : cases) {
         SCOPED_TRACE(c.name);

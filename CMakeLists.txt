@@ -143,6 +143,7 @@ add_library(pulsatrix_core
     src/nearest_neighbors.cpp
     src/probe_controls.cpp
     src/representation_geometry.cpp
+    src/pca.cpp
     src/topk_sparse_autoencoder.cpp
     src/jumprelu_sparse_autoencoder.cpp
     src/transcoder.cpp
@@ -235,6 +236,8 @@ add_library(pulsatrix_core
     src/viz/protein_views.cpp
     src/viz/svg_whatif.cpp
     src/viz/document_whatif.cpp
+    src/viz/document_projection.cpp
+    src/viz/svg_projection.cpp
     src/benchmark.cpp
     src/json.cpp
 )

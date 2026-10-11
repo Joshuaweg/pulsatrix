@@ -2,6 +2,7 @@
 
 #include <algorithm>
 #include <cmath>
+#include <cstdio>
 #include <fstream>
 #include <limits>
 #include <numeric>
@@ -603,6 +604,80 @@ JsonValue ToVegaLiteMorris(const MorrisDocument& doc, const HtmlOptions& options
     return spec;
 }
 
+JsonValue ToVegaLiteProjection(const ProjectionDocument& doc, const HtmlOptions& options) {
+    (void)ToJson(doc);  // checks the document
+    const int64_t n = doc.num_points();
+    if (n == 0) throw std::invalid_argument("ToVegaLiteProjection: the document has no points");
+    const auto axes = static_cast<int64_t>(doc.axes.size());
+    const int64_t shown = std::min<int64_t>(axes, 3);
+    Arr values;
+    double lo = std::numeric_limits<double>::infinity(), hi = -lo;
+    for (int64_t i = 0; i < n; ++i) {
+        Obj v{{"index", i}};
+        for (int64_t a = 0; a < shown; ++a) {
+            const float c = doc.coordinates[static_cast<size_t>(i * axes + a)];
+            v.emplace_back("a" + std::to_string(a), NumF(c));
+            lo = std::min(lo, static_cast<double>(c));
+            hi = std::max(hi, static_cast<double>(c));
+        }
+        if (!doc.labels.empty()) v.emplace_back("label", doc.labels[static_cast<size_t>(i)]);
+        if (!doc.groups.empty()) v.emplace_back("group", doc.groups[static_cast<size_t>(i)]);
+        if (!doc.values.empty()) v.emplace_back("value", NumF(doc.values[static_cast<size_t>(i)]));
+        values.push_back(std::move(v));
+    }
+    // One domain for every axis, and square panels, so distances on the page are distances in the
+    // projection.
+    const double pad = hi > lo ? 0.05 * (hi - lo) : 1.0;
+    const JsonValue domain = Arr{Num(lo - pad), Num(hi + pad)};
+    auto caption = [&](int64_t a) {
+        std::string c = doc.axes[static_cast<size_t>(a)];
+        if (!doc.explained_variance_ratio.empty()) {
+            char share[32];
+            std::snprintf(share, sizeof share, " (%.1f%% of variance)", 100.0 * doc.explained_variance_ratio[static_cast<size_t>(a)]);
+            c += share;
+        }
+        return c;
+    };
+    Arr tooltip{Field("index", "quantitative", Obj{{"title", "point"}})};
+    if (!doc.labels.empty()) tooltip.push_back(Field("label", "nominal"));
+    if (!doc.groups.empty()) tooltip.push_back(Field("group", "nominal"));
+    if (!doc.values.empty()) tooltip.push_back(Field("value", "quantitative", Obj{{"format", ".4~g"}}));
+    for (int64_t a = 0; a < shown; ++a) {
+        tooltip.push_back(Field("a" + std::to_string(a), "quantitative", Obj{{"title", doc.axes[static_cast<size_t>(a)]}, {"format", ".4~g"}}));
+    }
+    Obj mark{{"type", "circle"}, {"size", n > 500 ? 18 : 45}, {"opacity", 0.8}};
+    JsonValue color;
+    if (!doc.groups.empty()) {
+        color = Field("group", "nominal", Obj{{"scale", Obj{{"scheme", "tableau10"}}}});
+    } else if (!doc.values.empty()) {
+        color = Field("value", "quantitative", Obj{{"scale", Obj{{"scheme", "viridis"}}}});
+    } else {
+        mark.emplace_back("color", "#4e79a7");
+    }
+    const int side = std::max(120, shown > 2 ? (options.width - 60) / 3 : std::min(options.width, 520));
+    auto panel = [&](int64_t xa, int64_t ya, bool zoom) {
+        Obj encoding{{"x", Field("a" + std::to_string(xa), "quantitative", Obj{{"title", caption(xa)}, {"scale", Obj{{"domain", domain}}}})},
+                     {"y", Field("a" + std::to_string(ya), "quantitative", Obj{{"title", caption(ya)}, {"scale", Obj{{"domain", domain}}}})},
+                     {"tooltip", tooltip}};
+        if (!color.is_null()) encoding.emplace_back("color", color);
+        Obj p{{"width", side}, {"height", side}, {"mark", mark}, {"encoding", std::move(encoding)}};
+        if (zoom) p.emplace_back("params", ZoomParams());
+        return p;
+    };
+    const std::string subtitle = std::to_string(n) + " points" + (doc.method.empty() ? "" : ", " + doc.method) +
+                                 "; one scale on every axis, so distances on the page are distances in the projection";
+    Obj spec = Base(doc.title.empty() ? "Projection" : doc.title, options, std::move(values), subtitle);
+    spec.erase(std::remove_if(spec.begin(), spec.end(), [](const auto& kv) { return kv.first == "width"; }), spec.end());
+    if (shown == 2) {
+        for (auto& kv : panel(0, 1, true)) spec.push_back(std::move(kv));
+    } else {
+        // Zoom binds scales, which concatenated views share; zooming the first panel only keeps the
+        // others as an overview.
+        spec.emplace_back("hconcat", Arr{panel(0, 1, true), panel(0, 2, false), panel(1, 2, false)});
+    }
+    return spec;
+}
+
 JsonValue ToVegaLiteSobol(const SobolDocument& doc, int top_k, const HtmlOptions& options) {
     CheckTopK(top_k, "ToVegaLiteSobol");
     if (doc.features.empty()) throw std::invalid_argument("ToVegaLiteSobol: the document has no features");
@@ -755,6 +830,9 @@ std::string RenderCounterfactualSetHtml(const std::vector<CounterfactualDocument
 }
 std::string RenderMorrisHtml(const MorrisDocument& doc, const HtmlOptions& options) {
     return VegaLitePage(ToVegaLiteMorris(doc, options), Heading(options, "Morris screening"), options);
+}
+std::string RenderProjectionHtml(const ProjectionDocument& doc, const HtmlOptions& options) {
+    return VegaLitePage(ToVegaLiteProjection(doc, options), Heading(options, doc.title.empty() ? "Projection" : doc.title), options);
 }
 std::string RenderSobolHtml(const SobolDocument& doc, int top_k, const HtmlOptions& options) {
     return VegaLitePage(ToVegaLiteSobol(doc, top_k, options), Heading(options, "Sobol indices"), options);

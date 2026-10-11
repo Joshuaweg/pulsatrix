@@ -82,6 +82,23 @@ struct SVDResult {
  */
 [[nodiscard]] std::vector<double> SymmetricEigenvalues(std::vector<double> a, int64_t n);
 
+/** @brief SymmetricEigenInDouble()'s result. */
+struct DoubleEigenResult {
+    /** @brief The n eigenvalues, largest first. */
+    std::vector<double> values;
+    /** @brief Row-major `(n, n)`: row j is the unit eigenvector for `values[j]`, sign made
+     *         canonical as SymmetricEigen() makes it. */
+    std::vector<double> vectors;
+};
+
+/**
+ * @brief SymmetricEigen() in double precision from end to end, eigenvectors included: PCA's
+ *        directions and variances from a covariance or Gram matrix computed in double.
+ * @param a Row-major `(n, n)`, symmetric to within a relative 1e-5, all finite.
+ * @throws std::invalid_argument as SymmetricEigenvalues() does.
+ */
+[[nodiscard]] DoubleEigenResult SymmetricEigenInDouble(std::vector<double> a, int64_t n);
+
 /**
  * @brief The dominant eigenpair of a symmetric matrix by power iteration -- cheaper than
  *        SymmetricEigen() when only the top eigenpair is needed (spectral norm, stable rank).
