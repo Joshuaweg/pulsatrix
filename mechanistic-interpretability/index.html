@@ -841,6 +841,17 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#concepts-tcav" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Concepts (TCAV)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#baselines" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -2506,6 +2517,17 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#concepts-tcav" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Concepts (TCAV)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#baselines" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -2608,6 +2630,11 @@ attribution graphs of a language model's prediction.</p>
 <td>What does a layer look like in 2D or 3D? Which directions vary most?</td>
 <td><code>FitPca</code>, <code>PcaProject</code>, <code>PcaSplitHalfOverlap</code>, <code>RenderProjectionSvg</code></td>
 <td><a href="#pca-projections">Below</a></td>
+</tr>
+<tr>
+<td>Does a concept, given by examples, push the model towards a class?</td>
+<td><code>RunTcav</code>, <code>TrainCav</code></td>
+<td><a href="#concepts-tcav">Below</a></td>
 </tr>
 <tr>
 <td>Which directions in a layer stand for concepts, found without labels?</td>
@@ -3029,6 +3056,53 @@ matrix.</p>
   Look at the explained variance ratios, and treat a direction as a hypothesis to test.</li>
 <li><strong><code>SubspaceOverlap(a, b, k)</code></strong> compares any two PCAs of the same width, for example the same
   layer in two models, or before and after fine-tuning.</li>
+</ul>
+<h3 id="concepts-tcav">Concepts (TCAV)<a class="headerlink" href="#concepts-tcav" title="Permanent link">&para;</a></h3>
+<p>TCAV (Kim et al., 2018) asks whether a human concept, given only by examples (striped images,
+say), pushes a model towards a class. It works in three steps:</p>
+<ol>
+<li><strong>A concept activation vector (CAV).</strong> <code>TrainCav</code> fits a linear classifier that separates a
+   layer's activations on the concept's examples from its activations on random examples. Its
+   normal, pointing towards the concept, is the CAV.</li>
+<li><strong>Sensitivity.</strong> Each input's sensitivity is the class logit's gradient at that layer,
+   dotted with the CAV.</li>
+<li><strong>The TCAV score.</strong> It's the fraction of the class's inputs with positive sensitivity.</li>
+</ol>
+<div class="highlight"><pre><span></span><code><span class="cp">#include</span><span class="w"> </span><span class="cpf">"pulsatrix/tcav.hpp"</span>
+
+<span class="n">ExplainerContext</span><span class="w"> </span><span class="nf">ctx</span><span class="p">({</span><span class="o">&amp;</span><span class="n">conv1</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">relu1</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">conv2</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">relu2</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">flatten</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">fc</span><span class="p">});</span>
+<span class="c1">// Node i + 1 is module i's output: 4 is relu2's.</span>
+<span class="k">const</span><span class="w"> </span><span class="n">TcavResult</span><span class="w"> </span><span class="n">r</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">RunTcav</span><span class="p">(</span><span class="n">ctx</span><span class="p">,</span><span class="w"> </span><span class="cm">/*layer=*/</span><span class="mi">4</span><span class="p">,</span><span class="w"> </span><span class="cm">/*target=*/</span><span class="n">zebra</span><span class="p">,</span><span class="w"> </span><span class="n">zebra_images</span><span class="p">,</span><span class="w"> </span><span class="n">striped_images</span><span class="p">,</span>
+<span class="w">                             </span><span class="n">random_image_sets</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">backend</span><span class="p">);</span>
+<span class="c1">// r.mean_score, r.significant, r.test.p_value, r.cav_accuracies</span>
+</code></pre></div>
+<p><strong>One score means little.</strong> A CAV trained against one random set can point anywhere that
+separates the two sets, and a meaningless direction scores anywhere from 0 to 1. <code>RunTcav</code>
+follows Kim et al.:</p>
+<ul>
+<li>It trains a CAV against each of several random sets (at least 3; Kim et al. use many more).</li>
+<li>It does the same with random sets in place of the concept.</li>
+<li>A two-sided t-test (<code>StudentTTest</code>) compares the two lists of scores.</li>
+</ul>
+<p>A concept is significant at <code>alpha</code> (0.05; divide it by the number of concepts, layers and
+classes you test). A score near 0 is as significant as one near 1: the concept pushes away from
+the class.</p>
+<p>In the test's network, class 0's logit is 2 h0 − h1. Concepts that raise h0 score 1, and those
+that raise h1 score 0. Both are significant. A concept that raises only h2, which the logit
+ignores, isn't, even though its CAVs separate it at over 85%.</p>
+<p>Things to know:</p>
+<ul>
+<li><strong>Use plenty of concept examples.</strong> Every CAV of a concept shares its examples, so their
+  sampling noise tilts every CAV the same way. In the test, an ignored concept passed the test
+  in 8 of 40 trials with 30 concept examples, where about 2 are expected by chance. With 300
+  examples it passed in none.</li>
+<li><strong>Check the CAV's accuracy.</strong> <code>cav_accuracies</code> are measured on held-out examples. Near 0.5,
+  the layer doesn't separate the concept and the CAV means nothing.</li>
+<li><strong>Logistic regression or difference of means.</strong> <code>CavOptions::method</code> chooses. Logistic
+  regression is Kim et al.'s. <code>DifferenceOfMeans</code> needs no fitting and doesn't tilt towards
+  dimensions that separate the two samples only by chance.</li>
+<li><strong>Models.</strong> The models are <code>ExplainerContext</code> chains. TCAV needs the gradient at an inner
+  layer, which the language models don't expose yet.</li>
 </ul>
 <h3 id="baselines">Baselines<a class="headerlink" href="#baselines" title="Permanent link">&para;</a></h3>
 <p><code>NullModelBaseline</code> re-initializes a model randomly, so the same probe, featurizer or

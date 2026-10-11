@@ -3,7 +3,7 @@ var searchData=
   ['p_0',['p',['../structpulsatrix_1_1DecompositionOptions.html#a021bee22301ecc04efeb39acfbeb4448',1,'pulsatrix::DecompositionOptions']]],
   ['p10_5fms_1',['p10_ms',['../structpulsatrix_1_1TimingStats.html#a179407f7e3e0c94fff1644e13f141671',1,'pulsatrix::TimingStats']]],
   ['p90_5fms_2',['p90_ms',['../structpulsatrix_1_1TimingStats.html#ad31767ea55f55888370f8207521064df',1,'pulsatrix::TimingStats']]],
-  ['p_5fvalue_3',['p_value',['../structpulsatrix_1_1BenchmarkComparison.html#a15a944ba8a3055b76b1fde348aafe8ba',1,'pulsatrix::BenchmarkComparison']]],
+  ['p_5fvalue_3',['p_value',['../structpulsatrix_1_1BenchmarkComparison.html#a15a944ba8a3055b76b1fde348aafe8ba',1,'pulsatrix::BenchmarkComparison::p_value'],['../structpulsatrix_1_1TTestResult.html#a5fff96b3d3fa616e4a79e75e244c1a1e',1,'pulsatrix::TTestResult::p_value']]],
   ['pad_5fh_4',['pad_h',['../structpulsatrix_1_1ConvGeometry.html#ac1fb3333ab59c247cc99e77895125111',1,'pulsatrix::ConvGeometry']]],
   ['pad_5ftoken_5fid_5',['pad_token_id',['../structpulsatrix_1_1EncoderLMConfig.html#a22b23abcb1b3266e0b37d613615ce313',1,'pulsatrix::EncoderLMConfig']]],
   ['pad_5fw_6',['pad_w',['../structpulsatrix_1_1ConvGeometry.html#a29e6cf6e16c241e7238bc0bc0c18473f',1,'pulsatrix::ConvGeometry']]],

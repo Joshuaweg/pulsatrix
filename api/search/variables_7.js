@@ -18,6 +18,7 @@ var searchData=
   ['histograms_15',['histograms',['../structpulsatrix_1_1TrainingLogDocument.html#aed20fbe4ce2cbedf046391f207353c10',1,'pulsatrix::TrainingLogDocument']]],
   ['history_5fcapacity_16',['history_capacity',['../structpulsatrix_1_1SystemMonitor_1_1Options.html#a913dee1327e86dd00e846c7b09475f5b',1,'pulsatrix::SystemMonitor::Options']]],
   ['hit_5fturn_5flimit_17',['hit_turn_limit',['../structpulsatrix_1_1orch_1_1ToolLoopResult.html#ae2f0716fe3adf4598ff9cb5166592302',1,'pulsatrix::orch::ToolLoopResult']]],
-  ['host_18',['host',['../structpulsatrix_1_1orch_1_1HttpUrl.html#a8a304497d2d29d47d5a01333a9aaae24',1,'pulsatrix::orch::HttpUrl']]],
-  ['https_19',['https',['../structpulsatrix_1_1orch_1_1HttpUrl.html#a60367c4f7ce1c2c4a5e8ad04a8cb607f',1,'pulsatrix::orch::HttpUrl']]]
+  ['holdout_5fevery_18',['holdout_every',['../structpulsatrix_1_1CavOptions.html#aadfe1c57099dc91990e9d7a9a33d5147',1,'pulsatrix::CavOptions']]],
+  ['host_19',['host',['../structpulsatrix_1_1orch_1_1HttpUrl.html#a8a304497d2d29d47d5a01333a9aaae24',1,'pulsatrix::orch::HttpUrl']]],
+  ['https_20',['https',['../structpulsatrix_1_1orch_1_1HttpUrl.html#a60367c4f7ce1c2c4a5e8ad04a8cb607f',1,'pulsatrix::orch::HttpUrl']]]
 ];
