@@ -186,7 +186,8 @@ Fine-tune the models from v1.2 and explain what the fine-tuning changed.
 - KD-1, KD-2: distillation and teacher–student explanation agreement
 - XAI-1 to XAI-4: the question-driven planner, explanation reports, counterfactuals, surrogates,
   Anchors
-- INT-1 to INT-6: neighbors, CKA, probe controls, intrinsic dimension, PCA, TCAV and CRP
+- INT-2 (**done**, PR pending): linear CKA
+- INT-1, INT-3 to INT-6: neighbors, probe controls, intrinsic dimension, PCA, TCAV and CRP
 - TDA-1 to TDA-8, TDA-11: persistent homology and RTD
 - KS-3, KS-4: uncertainty and adversarial robustness
 - Llama-3.2-1B and Qwen2.5-0.5B pass the golden-logit test
@@ -775,16 +776,31 @@ network says nothing about what the model learned.
 
 ## INT: Embedding and representation analysis
 
-| ID | Item | Why | Depends on | P | Effort |
-|---|---|---|---|---|---|
-| INT-1 | Nearest neighbors and mutual nearest neighbors over embeddings or activations, with optional mean-centering | The cheapest useful embedding tool; also a cross-model alignment score | FND-3 | P0 | S |
-| INT-2 | Linear CKA (debiased) | Compare layers across models, training runs and backends | — | P0 | S |
-| INT-3 | Control tasks for `LinearProbe` (selectivity = probe accuracy minus control accuracy) | High probe accuracy can come from the probe, not the representation | — | P0 | S |
-| INT-4 | Anisotropy, effective rank and TwoNN intrinsic dimension | Explains why raw cosine similarity misleads; one number per layer | INT-1 | P1 | S |
-| INT-5 | PCA projections | 2D and 3D views, steering directions, preprocessing for TDA | FND-4 | P1 | M |
-| INT-6 | TCAV (with significance against random concepts) and Concept Relevance Propagation | Concept-level explanations, and CRP reuses pulsatrix's LRP rules | INT-3 | P1 | M |
-| INT-7 | RSA and SVCCA | Mostly covered by CKA | FND-4 | P2 | — |
-| INT-8 | UMAP and t-SNE: export the data only, don't implement | Expensive, and they distort distances and cluster sizes | VIZ-1 | P3 | — |
+| ID | Item | Why | Depends on | P | Effort | Status |
+|---|---|---|---|---|---|---|
+| INT-1 | Nearest neighbors and mutual nearest neighbors over embeddings or activations, with optional mean-centering | The cheapest useful embedding tool; also a cross-model alignment score | FND-3 | P0 | S | |
+| INT-2 | Linear CKA (debiased) | Compare layers across models, training runs and backends | — | P0 | S | Done, PR pending (see below) |
+| INT-3 | Control tasks for `LinearProbe` (selectivity = probe accuracy minus control accuracy) | High probe accuracy can come from the probe, not the representation | — | P0 | S | |
+| INT-4 | Anisotropy, effective rank and TwoNN intrinsic dimension | Explains why raw cosine similarity misleads; one number per layer | INT-1 | P1 | S | |
+| INT-5 | PCA projections | 2D and 3D views, steering directions, preprocessing for TDA | FND-4 | P1 | M | |
+| INT-6 | TCAV (with significance against random concepts) and Concept Relevance Propagation | Concept-level explanations, and CRP reuses pulsatrix's LRP rules | INT-3 | P1 | M | |
+| INT-7 | RSA and SVCCA | Mostly covered by CKA | FND-4 | P2 | — | |
+| INT-8 | UMAP and t-SNE: export the data only, don't implement | Expensive, and they distort distances and cluster sizes | VIZ-1 | P3 | — | |
+
+### How the INT work departed from the plan
+
+- **INT-2** follows the plan: `LinearCka()` with the debiased estimator as the default and the
+  biased one on request, and `LinearCkaMatrix()` for every pair of layers.
+  - **Checked against** the reference code of Kornblith et al. (the notebook that goes with
+    the paper), to 12 decimal places for both estimators, on inputs with more rows than
+    features and with fewer. `tools/generate_cka_reference_values.py` makes the values.
+  - **The falsifier** is a test: the second hidden layers of two small networks trained from
+    different seeds score 0.68, and one of them against an untrained network of the same
+    architecture scores 0.10.
+  - **Why debiased by default:** two unrelated random representations of 50 inputs with 1,000
+    features score 0.95 biased and −0.02 debiased.
+  - **Double precision on the host,** through n × n Gram matrices or through the features,
+    whichever is cheaper. The matrix computes each layer's Gram matrix once.
 
 ## TDA: Topological data analysis
 
