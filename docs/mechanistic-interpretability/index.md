@@ -18,6 +18,7 @@ attribution graphs of a language model's prediction.
 | Is concept X linearly readable from layer L? | `LinearProbe`, `TrainLinearProbe()`, with `MeasureSelectivity()` or `CompareToBaseline()` as the control | [Below](#probing-a-layer-for-a-concept) |
 | How similar are two layers, two models, or a model before and after fine-tuning? | `LinearCka`, `LinearCkaMatrix` | [Below](#comparing-representations-cka) |
 | Which inputs does a layer treat as alike? Do two models agree on it? | `NearestNeighbors`, `MutualKnnAlignment`, `MutualNearestNeighbors`, `MeasureHubness` | [Below](#nearest-neighbors) |
+| Is cosine similarity meaningful in this layer? How many dimensions does it use? | `Anisotropy`, `MeasureEffectiveRank`, `TwoNNDimension` | [Below](#the-shape-of-a-layer) |
 | Which directions in a layer stand for concepts, found without labels? | Sparse autoencoders: `TopKSparseAutoencoder`, `JumpReLUSparseAutoencoder`, `SparseAutoencoder` | [Finding features](featurizers.md) |
 | Which concepts take more than one dimension, such as an angle or a position? | `BlockSparseFeaturizer` | [Finding features](featurizers.md#block-sparse-featurizers) |
 | What does an MLP compute, step by step? | `Transcoder` | [Finding features](featurizers.md#transcoders) |
@@ -288,6 +289,48 @@ Things to know:
     | 300 | 3.52 | 20% of lists | 36% of points |
 
     Centering also reduces hubness for cosine similarity (Suzuki et al., 2013).
+
+### The shape of a layer
+
+Three numbers describe a layer's representations of a set of inputs. Each is cheap enough to
+compute for every layer.
+
+```cpp
+#include "pulsatrix/representation_geometry.hpp"
+
+// layer: (n, width), a row per input.
+const double raw = Anisotropy(layer);                     // mean cosine over all pairs
+const double centered = Anisotropy(layer, /*center=*/true);
+const EffectiveRank rank = MeasureEffectiveRank(layer);  // .effective_rank, .participation_ratio
+const TwoNNResult id = TwoNNDimension(layer);            // .dimension, .mle_dimension
+```
+
+- **Anisotropy** is the mean cosine similarity between different inputs. Spread-out
+  directions score about 0. Language models' layers often score 0.5 or more (Ethayarajh,
+  2019): they share a few large directions, so any two inputs look alike by cosine. If raw
+  anisotropy is high and centered anisotropy is near 0, the similarity was the shared
+  direction. Center before comparing by cosine (`NeighborOptions::center`, above). The test
+  data shows this: rows spread evenly score 0.001, shifting them all along one axis raises that
+  to 0.63, and centering brings it back to −0.003.
+- **Effective rank** (Roy and Vetterli, 2007) is how many directions the inputs spread along.
+  It's the exponential of the entropy of the normalized singular values, between 1 and the
+  smaller of n and the width. The participation ratio is a coarser count that the largest
+  directions dominate more. Both center by default, because a shared direction would otherwise
+  take up part of the count.
+- **TwoNN intrinsic dimension** (Facco et al., 2017) is how many dimensions the inputs vary in
+  locally, which can be far below the width. It uses only each point's two nearest neighbors.
+  `dimension` is the paper's fit and matches scikit-dimension and DADApy. `mle_dimension` is
+  DADApy's maximum-likelihood version. Exact repeated rows are dropped first and counted in
+  `duplicates`. In the test, points filling a 2- and a 5-dimensional cube, written in 40
+  dimensions, give 1.91 and 4.53.
+
+Things to know about TwoNN:
+
+- **Low with too few points.** It reads low when the dimension is high for the number of
+  points: tens of dimensions need thousands.
+- **Noise raises it.** It measures the nearest neighbors' scale, so noise on a low-dimensional
+  surface adds dimensions.
+- **Cost.** The search is exact, at n² × width.
 
 ### Baselines
 

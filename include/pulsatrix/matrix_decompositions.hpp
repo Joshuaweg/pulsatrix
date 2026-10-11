@@ -14,6 +14,7 @@
 #pragma once
 
 #include <cstdint>
+#include <vector>
 
 #include "pulsatrix/tensor.hpp"
 
@@ -69,6 +70,17 @@ struct SVDResult {
  *         which does not happen for finite symmetric input in practice.
  */
 [[nodiscard]] EigenResult SymmetricEigen(const Tensor& a);
+
+/**
+ * @brief SymmetricEigen()'s eigenvalues, in double precision from end to end: for a matrix
+ *        computed in double, such as a Gram matrix, whose small eigenvalues a float copy would
+ *        lose.
+ * @param a Row-major `(n, n)`, symmetric to within a relative 1e-5, all finite.
+ * @return The n eigenvalues, largest first.
+ * @throws std::invalid_argument if `a` doesn't hold n * n values, n < 1, it has a non-finite
+ *         entry, or it isn't symmetric.
+ */
+[[nodiscard]] std::vector<double> SymmetricEigenvalues(std::vector<double> a, int64_t n);
 
 /**
  * @brief The dominant eigenpair of a symmetric matrix by power iteration -- cheaper than
