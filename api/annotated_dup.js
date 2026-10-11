@@ -123,6 +123,7 @@ var annotated_dup =
       [ "CircuitScores", "structpulsatrix_1_1CircuitScores.html", "structpulsatrix_1_1CircuitScores" ],
       [ "CircuitTrace", "structpulsatrix_1_1CircuitTrace.html", "structpulsatrix_1_1CircuitTrace" ],
       [ "CircuitTraceOptions", "structpulsatrix_1_1CircuitTraceOptions.html", "structpulsatrix_1_1CircuitTraceOptions" ],
+      [ "CkaMatrix", "structpulsatrix_1_1CkaMatrix.html", "structpulsatrix_1_1CkaMatrix" ],
       [ "ClusterSampler", "classpulsatrix_1_1ClusterSampler.html", "classpulsatrix_1_1ClusterSampler" ],
       [ "CMAES", "classpulsatrix_1_1CMAES.html", "classpulsatrix_1_1CMAES" ],
       [ "CMAESState", "structpulsatrix_1_1CMAESState.html", "structpulsatrix_1_1CMAESState" ],

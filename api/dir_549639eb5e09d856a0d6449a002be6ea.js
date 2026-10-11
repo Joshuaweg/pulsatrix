@@ -177,6 +177,7 @@ var dir_549639eb5e09d856a0d6449a002be6ea =
     [ "relu_module.hpp", "relu__module_8hpp.html", "relu__module_8hpp" ],
     [ "reparameterize.hpp", "reparameterize_8hpp.html", "reparameterize_8hpp" ],
     [ "replay_buffer.hpp", "replay__buffer_8hpp.html", "replay__buffer_8hpp" ],
+    [ "representation_similarity.hpp", "representation__similarity_8hpp.html", "representation__similarity_8hpp" ],
     [ "residual_module.hpp", "residual__module_8hpp.html", "residual__module_8hpp" ],
     [ "retnet_module.hpp", "retnet__module_8hpp.html", "retnet__module_8hpp" ],
     [ "rms_norm_module.hpp", "rms__norm__module_8hpp.html", "rms__norm__module_8hpp" ],

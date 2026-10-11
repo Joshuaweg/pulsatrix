@@ -42,7 +42,7 @@ var searchData=
   ['rms_5fnorm_5feps_39',['rms_norm_eps',['../structpulsatrix_1_1HfModelConfig.html#a9c5d046f102bb44566c0c67d205d5af7',1,'pulsatrix::HfModelConfig']]],
   ['role_40',['role',['../structpulsatrix_1_1orch_1_1Message.html#acd68b927c30c0712d46f0eb8b17522bb',1,'pulsatrix::orch::Message']]],
   ['rope_5fbase_41',['rope_base',['../structpulsatrix_1_1AttentionConfig.html#ac186a454599c0f64cf83dc63026da08a',1,'pulsatrix::AttentionConfig']]],
-  ['rope_5finverse_5ffrequencies_42',['rope_inverse_frequencies',['../structpulsatrix_1_1AttentionConfig.html#a014fa007d6902dcabdf51c5ebabc6e9e',1,'pulsatrix::AttentionConfig::rope_inverse_frequencies'],['../structpulsatrix_1_1EncoderLMConfig.html#a8fdb496c35bdb14bba4c9cb582f18b18',1,'pulsatrix::EncoderLMConfig::rope_inverse_frequencies']]],
+  ['rope_5finverse_5ffrequencies_42',['rope_inverse_frequencies',['../structpulsatrix_1_1EncoderLMConfig.html#a8fdb496c35bdb14bba4c9cb582f18b18',1,'pulsatrix::EncoderLMConfig::rope_inverse_frequencies'],['../structpulsatrix_1_1AttentionConfig.html#a014fa007d6902dcabdf51c5ebabc6e9e',1,'pulsatrix::AttentionConfig::rope_inverse_frequencies']]],
   ['rope_5flayout_43',['rope_layout',['../structpulsatrix_1_1AttentionConfig.html#a0fe86a56ad802d98e3111e9aa690f153',1,'pulsatrix::AttentionConfig']]],
   ['rope_5flocal_5fbase_5ffreq_44',['rope_local_base_freq',['../structpulsatrix_1_1HfModelConfig.html#ac043f3c361322db9bc8189a1291930db',1,'pulsatrix::HfModelConfig']]],
   ['rope_5fscaling_45',['rope_scaling',['../structpulsatrix_1_1HfModelConfig.html#a7846ab56f6edd788243eaff38c0c7e41',1,'pulsatrix::HfModelConfig']]],
@@ -52,7 +52,7 @@ var searchData=
   ['row_5fcount_49',['row_count',['../structpulsatrix_1_1WeightMapping.html#aa9e184dc005f3c80d749fde30746bd0a',1,'pulsatrix::WeightMapping']]],
   ['row_5flabels_50',['row_labels',['../structpulsatrix_1_1HeatmapDocument.html#a9663e7df4640216ae5d68ba0d52e6179',1,'pulsatrix::HeatmapDocument']]],
   ['row_5fstart_51',['row_start',['../structpulsatrix_1_1SparseCodes.html#aec1ae3fd587e07b4166ae6be37aad0f0',1,'pulsatrix::SparseCodes']]],
-  ['rows_52',['rows',['../structpulsatrix_1_1CsvTable.html#a382cf4a2da8b53e079dae6ef705f8c8d',1,'pulsatrix::CsvTable::rows'],['../structpulsatrix_1_1RlRowArgs.html#a3cc8d89e08f6f3425270bc2f0d58af3e',1,'pulsatrix::RlRowArgs::rows'],['../structpulsatrix_1_1HeatmapDocument.html#af269686e10c62f1bb843fc384a52d137',1,'pulsatrix::HeatmapDocument::rows'],['../structpulsatrix_1_1HeatmapGrid.html#aaed2dbeebcfc74ae63b85207681232ae',1,'pulsatrix::HeatmapGrid::rows']]],
+  ['rows_52',['rows',['../structpulsatrix_1_1CsvTable.html#a382cf4a2da8b53e079dae6ef705f8c8d',1,'pulsatrix::CsvTable::rows'],['../structpulsatrix_1_1RlRowArgs.html#a3cc8d89e08f6f3425270bc2f0d58af3e',1,'pulsatrix::RlRowArgs::rows'],['../structpulsatrix_1_1CkaMatrix.html#af7e214db6c2b6fcad2bead976749a775',1,'pulsatrix::CkaMatrix::rows'],['../structpulsatrix_1_1HeatmapDocument.html#af269686e10c62f1bb843fc384a52d137',1,'pulsatrix::HeatmapDocument::rows'],['../structpulsatrix_1_1HeatmapGrid.html#aaed2dbeebcfc74ae63b85207681232ae',1,'pulsatrix::HeatmapGrid::rows']]],
   ['rule_53',['rule',['../structpulsatrix_1_1LRPRuleConfig.html#af2058e16402ec127db79a8f37bdaf489',1,'pulsatrix::LRPRuleConfig']]],
   ['rung_54',['rung',['../structpulsatrix_1_1detail_1_1ASHACandidate.html#a3ca06fb5b61ce6ea3a425b909a43c99f',1,'pulsatrix::detail::ASHACandidate']]]
 ];

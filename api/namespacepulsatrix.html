@@ -320,6 +320,9 @@ Classes</h2></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpulsatrix_1_1CircuitTraceOptions.html">CircuitTraceOptions</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpulsatrix_1_1CkaMatrix.html">CkaMatrix</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">CKA between every pair from two lists of representations, such as the layers of two models: <code>values[i * cols + j]</code> compares <code>a[i]</code> with <code>b[j]</code>.  <a href="structpulsatrix_1_1CkaMatrix.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1ClusterSampler.html">ClusterSampler</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Cluster-weighted sampling, as ESM-2 drew UniRef50: a cluster uniformly, then one of its members uniformly, so large families don't dominate. With every sequence its own cluster, it is uniform sampling with replacement.  <a href="classpulsatrix_1_1ClusterSampler.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -1651,6 +1654,11 @@ Enumerations</h2></td></tr>
  }</td></tr>
 <tr class="memdesc:ad459b72b938b5edbe52c75cbc8ee743a"><td class="mdescLeft">&#160;</td><td class="mdescRight">How variants are scored.  <a href="namespacepulsatrix.html#ad459b72b938b5edbe52c75cbc8ee743a">More...</a><br /></td></tr>
 <tr class="separator:ad459b72b938b5edbe52c75cbc8ee743a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac793506d330b9f7e81f562eed3ab8539" id="r_ac793506d330b9f7e81f562eed3ab8539"><td class="memItemLeft" align="right" valign="top">enum class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#ac793506d330b9f7e81f562eed3ab8539">CkaEstimator</a> { <a class="el" href="namespacepulsatrix.html#ac793506d330b9f7e81f562eed3ab8539a3b04dd98f4b6bfb00045042467cc909b">Debiased</a>
+, <a class="el" href="namespacepulsatrix.html#ac793506d330b9f7e81f562eed3ab8539a218fddd7a527a321c8a7ef68d25f1260">Biased</a>
+ }</td></tr>
+<tr class="memdesc:ac793506d330b9f7e81f562eed3ab8539"><td class="mdescLeft">&#160;</td><td class="mdescRight">Which estimator of CKA to use.  <a href="namespacepulsatrix.html#ac793506d330b9f7e81f562eed3ab8539">More...</a><br /></td></tr>
+<tr class="separator:ac793506d330b9f7e81f562eed3ab8539"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a89b7a7289be539d1acdd882186624044" id="r_a89b7a7289be539d1acdd882186624044"><td class="memItemLeft" align="right" valign="top">enum class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#a89b7a7289be539d1acdd882186624044">RoPELayout</a> { <a class="el" href="namespacepulsatrix.html#a89b7a7289be539d1acdd882186624044a54607b51fc9d8414153c7147fc056c5c">AdjacentPairs</a>
 , <a class="el" href="namespacepulsatrix.html#a89b7a7289be539d1acdd882186624044ac511759c9946791b469c82b78075b1bb">RotateHalf</a>
  }</td></tr>
@@ -2457,6 +2465,12 @@ Functions</h2></td></tr>
 <tr class="memitem:ae7086aa42f9ed760fa08b132212f3d3a" id="r_ae7086aa42f9ed760fa08b132212f3d3a"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structpulsatrix_1_1AttributionGraph.html">AttributionGraph</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#ae7086aa42f9ed760fa08b132212f3d3a">BuildRelevanceGraph</a> (<a class="el" href="classpulsatrix_1_1CausalLM.html">CausalLM</a> &amp;model, <a class="el" href="classpulsatrix_1_1DeviceBackend.html">DeviceBackend</a> *backend, const std::vector&lt; int64_t &gt; &amp;ids, int64_t target, const <a class="el" href="structpulsatrix_1_1RelevanceGraphOptions.html">RelevanceGraphOptions</a> &amp;options)</td></tr>
 <tr class="memdesc:ae7086aa42f9ed760fa08b132212f3d3a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Explains the model's logit for <code>target</code> at the last position with <a class="el" href="classpulsatrix_1_1LRP.html" title="Whole-model LRP: runs the forward pass, seeds relevance at the chosen output(s), and propagates it to...">LRP</a> and returns the relevance flow as an attribution graph.  <br /></td></tr>
 <tr class="separator:ae7086aa42f9ed760fa08b132212f3d3a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a20006889a282e5fa1d7d864597ef08d4" id="r_a20006889a282e5fa1d7d864597ef08d4"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#a20006889a282e5fa1d7d864597ef08d4">LinearCka</a> (const <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp;x, const <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp;y, <a class="el" href="namespacepulsatrix.html#ac793506d330b9f7e81f562eed3ab8539">CkaEstimator</a> estimator=<a class="el" href="namespacepulsatrix.html#ac793506d330b9f7e81f562eed3ab8539a3b04dd98f4b6bfb00045042467cc909b">CkaEstimator::Debiased</a>)</td></tr>
+<tr class="memdesc:a20006889a282e5fa1d7d864597ef08d4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Linear CKA between two representations of the same inputs.  <br /></td></tr>
+<tr class="separator:a20006889a282e5fa1d7d864597ef08d4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8b250634e4925e7e6a75808694e96f1a" id="r_a8b250634e4925e7e6a75808694e96f1a"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structpulsatrix_1_1CkaMatrix.html">CkaMatrix</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#a8b250634e4925e7e6a75808694e96f1a">LinearCkaMatrix</a> (const std::vector&lt; <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &gt; &amp;a, const std::vector&lt; <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &gt; &amp;b, <a class="el" href="namespacepulsatrix.html#ac793506d330b9f7e81f562eed3ab8539">CkaEstimator</a> estimator=<a class="el" href="namespacepulsatrix.html#ac793506d330b9f7e81f562eed3ab8539a3b04dd98f4b6bfb00045042467cc909b">CkaEstimator::Debiased</a>, std::size_t max_gram_bytes=std::size_t{2}&lt;&lt; 30)</td></tr>
+<tr class="memdesc:a8b250634e4925e7e6a75808694e96f1a"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="namespacepulsatrix.html#a20006889a282e5fa1d7d864597ef08d4" title="Linear CKA between two representations of the same inputs.">LinearCka()</a> between every representation in <code>a</code> and every one in <code>b</code>.  <br /></td></tr>
+<tr class="separator:a8b250634e4925e7e6a75808694e96f1a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3b2ebcf822ff6e68e95388365ae2774c" id="r_a3b2ebcf822ff6e68e95388365ae2774c"><td class="memItemLeft" align="right" valign="top">std::vector&lt; uint8_t &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#a3b2ebcf822ff6e68e95388365ae2774c">SerializeSafetensors</a> (const std::vector&lt; std::pair&lt; std::string, const <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> * &gt; &gt; &amp;tensors, const std::map&lt; std::string, std::string &gt; &amp;metadata={})</td></tr>
 <tr class="memdesc:a3b2ebcf822ff6e68e95388365ae2774c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Serializes tensors (as F32) and string metadata into safetensors bytes.  <br /></td></tr>
 <tr class="separator:a3b2ebcf822ff6e68e95388365ae2774c"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -3369,6 +3383,36 @@ Applied to the <a class="el" href="classpulsatrix_1_1ExplainerContext.html" titl
 <tr><td class="fieldname"><a id="a056ad7d81b2ee20acdbf7f6f7a1e7a9ca7865867e192c85f94cb5cbf96923b41a" name="a056ad7d81b2ee20acdbf7f6f7a1e7a9ca7865867e192c85f94cb5cbf96923b41a"></a>Grassmannian&#160;</td><td class="fielddoc"><p>Tied, orthonormal frames: <code>z_g = γ_g x D_gᵀ</code> with <code>D_g D_gᵀ = I</code>, then Π_k. </p>
 </td></tr>
 <tr><td class="fieldname"><a id="a056ad7d81b2ee20acdbf7f6f7a1e7a9cae3f1dee6b41cf7ad97e79b39791cb10c" name="a056ad7d81b2ee20acdbf7f6f7a1e7a9cae3f1dee6b41cf7ad97e79b39791cb10c"></a>GroupLasso&#160;</td><td class="fielddoc"><p>A free encoder and a learned threshold per block: a block fires when its norm is above θ_g, under an L0 penalty whose weight is set by dual ascent to hit target_l0. </p>
+</td></tr>
+</table>
+
+</div>
+</div>
+<a id="ac793506d330b9f7e81f562eed3ab8539" name="ac793506d330b9f7e81f562eed3ab8539"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac793506d330b9f7e81f562eed3ab8539">&#9670;&#160;</a></span>CkaEstimator</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">enum class <a class="el" href="namespacepulsatrix.html#ac793506d330b9f7e81f562eed3ab8539">pulsatrix::CkaEstimator</a></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">strong</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Which estimator of CKA to use. </p>
+<table class="fieldtable">
+<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="ac793506d330b9f7e81f562eed3ab8539a3b04dd98f4b6bfb00045042467cc909b" name="ac793506d330b9f7e81f562eed3ab8539a3b04dd98f4b6bfb00045042467cc909b"></a>Debiased&#160;</td><td class="fielddoc"><p>Unbiased HSIC in place of HSIC: near 0 for unrelated representations at any number of inputs. Needs at least 4 inputs, and can be slightly negative. </p>
+</td></tr>
+<tr><td class="fieldname"><a id="ac793506d330b9f7e81f562eed3ab8539a218fddd7a527a321c8a7ef68d25f1260" name="ac793506d330b9f7e81f562eed3ab8539a218fddd7a527a321c8a7ef68d25f1260"></a>Biased&#160;</td><td class="fielddoc"><p>Kornblith et al.'s original estimator. Between 0 and 1, but biased upwards when the inputs are few compared with the width. </p>
 </td></tr>
 </table>
 
@@ -9672,6 +9716,106 @@ template&lt;typename Genotype , typename FitnessT &gt; </div>
 <dl class="exception"><dt>Exceptions</dt><dd>
   <table class="exception">
     <tr><td class="paramname">std::invalid_argument</td><td>as <a class="el" href="namespacepulsatrix.html#a08ca823b9f2196df3e5f407dee95fcc5" title="Deletion (MoRF): removes features from most to least relevant, imputing them, and records the target ...">DeletionCurve()</a>. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="a20006889a282e5fa1d7d864597ef08d4" name="a20006889a282e5fa1d7d864597ef08d4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a20006889a282e5fa1d7d864597ef08d4">&#9670;&#160;</a></span>LinearCka()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">double pulsatrix::LinearCka </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp;&#160;</td>
+          <td class="paramname"><em>x</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp;&#160;</td>
+          <td class="paramname"><em>y</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="namespacepulsatrix.html#ac793506d330b9f7e81f562eed3ab8539">CkaEstimator</a>&#160;</td>
+          <td class="paramname"><em>estimator</em> = <code><a class="el" href="namespacepulsatrix.html#ac793506d330b9f7e81f562eed3ab8539a3b04dd98f4b6bfb00045042467cc909b">CkaEstimator::Debiased</a></code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Linear CKA between two representations of the same inputs. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">x</td><td>one representation, shape (n, ...): a row per input. Dimensions after the first are flattened, so a (n, channels, height, width) activation is n vectors. </td></tr>
+    <tr><td class="paramname">y</td><td>another representation of the same n inputs, in the same order, of any width. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>The similarity, 1 for representations equal up to rotation, reflection, uniform scale and a constant offset. NaN if either representation is constant over the inputs (or, debiased, its unbiased variance estimate isn't positive), since CKA is undefined there. </dd></dl>
+<dl class="section note"><dt>Note</dt><dd>Computed in double precision on the host, whatever device the tensors are on. It costs about n × min(n (p + q), p q + p² + q²) multiply-adds for widths p and q. </dd></dl>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname">std::invalid_argument</td><td>if a tensor has rank below 2, the two have different numbers of rows, or there are fewer than 2 inputs (4 for the debiased estimator). </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="a8b250634e4925e7e6a75808694e96f1a" name="a8b250634e4925e7e6a75808694e96f1a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8b250634e4925e7e6a75808694e96f1a">&#9670;&#160;</a></span>LinearCkaMatrix()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="structpulsatrix_1_1CkaMatrix.html">CkaMatrix</a> pulsatrix::LinearCkaMatrix </td>
+          <td>(</td>
+          <td class="paramtype">const std::vector&lt; <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &gt; &amp;&#160;</td>
+          <td class="paramname"><em>a</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const std::vector&lt; <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &gt; &amp;&#160;</td>
+          <td class="paramname"><em>b</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="namespacepulsatrix.html#ac793506d330b9f7e81f562eed3ab8539">CkaEstimator</a>&#160;</td>
+          <td class="paramname"><em>estimator</em> = <code><a class="el" href="namespacepulsatrix.html#ac793506d330b9f7e81f562eed3ab8539a3b04dd98f4b6bfb00045042467cc909b">CkaEstimator::Debiased</a></code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">std::size_t&#160;</td>
+          <td class="paramname"><em>max_gram_bytes</em> = <code>std::size_t{2}&lt;&lt;&#160;30</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p><a class="el" href="namespacepulsatrix.html#a20006889a282e5fa1d7d864597ef08d4" title="Linear CKA between two representations of the same inputs.">LinearCka()</a> between every representation in <code>a</code> and every one in <code>b</code>. </p>
+<dl class="section note"><dt>Note</dt><dd>Each representation's n × n Gram matrix is computed once and reused for every pair, so a 12 × 12 layer comparison costs about 24 Gram matrices rather than 144 CKAs. When those wouldn't fit in <code>max_gram_bytes</code>, each pair is computed on its own instead. </dd></dl>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname">std::invalid_argument</td><td>as <a class="el" href="namespacepulsatrix.html#a20006889a282e5fa1d7d864597ef08d4" title="Linear CKA between two representations of the same inputs.">LinearCka()</a> does, for any representation, or if a list is empty. </td></tr>
   </table>
   </dd>
 </dl>
