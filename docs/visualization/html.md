@@ -1,7 +1,5 @@
 # Interactive HTML
 
-## Interactive HTML
-
 `viz/html.hpp` writes the same views as self-contained HTML pages, drawn in the browser by
 [Vega-Lite](https://vega.github.io/vega-lite/). Hover any bar, point or cell to see its exact
 value. Zoom continuous charts with the mouse wheel and pan by dragging. Save a PNG or SVG from
@@ -12,8 +10,8 @@ histogram and top examples.
 
 | Function | Draws |
 |---|---|
-| `RenderBarChartHtml`, `RenderWaterfallHtml`, `RenderHeatmapHtml`, `RenderBeeswarmHtml` | The attribution and heatmap views, as above |
-| `RenderPartialDependenceHtml`, `RenderTornadoHtml`, `RenderCounterfactualHtml`, `RenderCounterfactualSetHtml`, `RenderMorrisHtml`, `RenderSobolHtml` | The CFS views, as above |
+| `RenderBarChartHtml`, `RenderWaterfallHtml`, `RenderHeatmapHtml`, `RenderBeeswarmHtml` | The attribution and heatmap views, as on [SVG Figures](svg.md) |
+| `RenderPartialDependenceHtml`, `RenderTornadoHtml`, `RenderCounterfactualHtml`, `RenderCounterfactualSetHtml`, `RenderMorrisHtml`, `RenderSobolHtml` | The partial dependence, ICE and ALE, sensitivity (tornado), counterfactual, Morris and Sobol views, as on [SVG Figures](svg.md) |
 | `RenderTrainingLogHtml(doc)` | A line chart per scalar tag and a histogram per histogram tag (HTML only) |
 | `RenderFeatureDashboardHtml(doc)` | A feature's statistics, activation histogram and top examples (HTML only) |
 | `RenderTokenRelevanceHtml(doc)` | The text, each piece on a background colored by its relevance |
@@ -37,7 +35,7 @@ network connection. For a page that works offline, or that you can mail as one f
 scripts in (about 830 KB more):
 
 ```bash
-tools/render/fetch_vega.sh ~/vega                     # downloads and checks the three files once
+tools/render/fetch_vega.sh ~/vega                     # downloads and checks the scripts once
 pulsatrix_svg x.json -o x.html --inline-js ~/vega     # or set PULSATRIX_VEGA_DIR=~/vega
 ```
 

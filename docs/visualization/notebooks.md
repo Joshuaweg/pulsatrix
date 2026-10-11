@@ -48,7 +48,7 @@ report.save_html("resnet18.html");
   ```cpp
   HtmlOptions options;
   options.scripts = HtmlScripts::Inline;
-  options.script_dir = "vega";  // tools/render/fetch_vega.sh downloads the three files
+  options.script_dir = "vega";  // tools/render/fetch_vega.sh downloads the scripts
   report.save_html("resnet18.html", options);
   ```
 
@@ -101,7 +101,7 @@ MimeBundle b = mime_bundle_repr(attribution);
     `xcpp::display(x)` finds pulsatrix's `mime_bundle_repr` automatically, and pulsatrix doesn't
     depend on xeus. The tests check that lookup with a copy of xeus-cpp 0.10's display code, but
     pulsatrix hasn't been run inside a live kernel yet: loading the library into one is a planned
-    roadmap item. Until then, write notebooks with `Report` below.
+    roadmap item. Until then, write notebooks with [`Report`](#reports) above.
 
     ```cpp
     // in a xeus-cpp cell, once the library is loaded

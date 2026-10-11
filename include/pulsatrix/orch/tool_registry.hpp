@@ -34,8 +34,8 @@ struct Tool {
 };
 
 /**
- * @brief The tools an agent may use. RunToolLoop() takes executor() and the MCP server (AGT-5)
- *        serves the same registry, so a tool is defined once.
+ * @brief The tools an agent may use. RunToolLoop() takes executor(), and a planned MCP server will
+ *        serve the same registry, so a tool is defined once.
  * @note Calls are const and may run concurrently if the handlers allow it; add() may not.
  */
 class ToolRegistry {

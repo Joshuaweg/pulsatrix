@@ -1,7 +1,5 @@
 # Attribution Graph Viewers
 
-## Attribution graphs (Neuronpedia and circuit-tracer)
-
 An attribution graph shows how a prediction is built up through the layers of a network.
 pulsatrix writes graphs in the JSON format that
 [Neuronpedia's graph viewer](https://www.neuronpedia.org/graph/validator) and Anthropic's
