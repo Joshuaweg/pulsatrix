@@ -163,7 +163,8 @@ Load SmolLM2-135M and ResNet18, run them, and match the reference implementation
 - NB-2 (**done**): the `.ipynb`/HTML report writer
 - AGT-1 (**done**, [#126](https://github.com/Joshuaweg/pulsatrix/pull/126)): the optional orchestrator target
 - AGT-2 (**done**, [#127](https://github.com/Joshuaweg/pulsatrix/pull/127)): HTTP transport and server-sent events
-- AGT-3, AGT-4: providers and the tool loop, the tool registry
+- AGT-3 (**done**): providers and the tool loop
+- AGT-4: the tool registry
 - KS-8 (**done**): GPU CI on gfx1151
 - KS-9 (**done**): a model zoo, ResNet18 and VGG16 with heatmaps checked against Zennit
   (SmolLM2's against LXT came with LLM-7)
@@ -1326,7 +1327,7 @@ LLM agents live in `pulsatrix::orch` (target `pulsatrix_orchestrator`), because
 |---|---|---|---|---|---|---|
 | AGT-1 | An optional `PULSATRIX_ENABLE_ORCHESTRATOR` target, off by default, with nlohmann/json (MIT). The same JSON library serves VIZ-1 and NB-1 | Keeps the core free of networking dependencies | — | P1 | S | Done, [#126](https://github.com/Joshuaweg/pulsatrix/pull/126) (see below) |
 | AGT-2 | An `HttpTransport` interface. cpp-httplib by default, with an optional libcurl backend that uses the operating system's TLS on Windows. A shared server-sent-events parser that ignores unknown event types | Streaming LLM responses | AGT-1 | P1 | M | Done, [#127](https://github.com/Joshuaweg/pulsatrix/pull/127) (see below) |
-| AGT-3 | Providers and the tool loop: an Anthropic provider and an OpenAI-compatible provider (llama-server, vLLM, Ollama), with one internal message format | The orchestrator itself | AGT-2 | P1 | M | |
+| AGT-3 | Providers and the tool loop: an Anthropic provider and an OpenAI-compatible provider (llama-server, vLLM, Ollama), with one internal message format | The orchestrator itself | AGT-2 | P1 | M | Done, PR pending (see below) |
 | AGT-4 | A tool registry: name, description, input schema and a `std::function`. Schemas use only the keywords that mean the same in JSON Schema draft-7 and 2020-12, checked by a small built-in validator. The MCP server and the in-process loop share one registry | Define a tool once, use it everywhere | AGT-1 | P1 | S–M | |
 | AGT-5 | A native MCP server over stdio (2026-07-28 specification, with a fallback for older clients) that exposes explain, attribute, logit lens, patching and featurizer tools | Lets Claude and other agents drive pulsatrix | AGT-4, IO-1 | P2 | M | |
 | AGT-6 | A local provider that runs pulsatrix's own LLM, with tool calls constrained by a token-level mask | Agents with no network, and a model pulsatrix can explain | LLM-1 to LLM-5, AGT-4 | P3 | M | |
@@ -1384,12 +1385,35 @@ AGT-5 has to follow these security rules:
     TLS with a CA made at run time. With certificate checks turned off, the TLS tests fail, as
     they should.
 
+- **AGT-3** follows the plan: an Anthropic provider and an OpenAI-compatible one behind one
+  `Provider` interface and one message format, and `RunToolLoop()`. Both stream.
+  - **The API rules** were checked again against the current docs (2026-10-10): no forced tool
+    choice; tool results first in the next user message; a 429 without `retry-after` (the spend
+    cap, `enforced_spend_limit_reached`) is never retried; 5xx, 529, timeouts and mid-stream
+    `overloaded_error` back off with full jitter; the key is a `Secret`.
+  - **Caching** uses explicit breakpoints on the last tool and the system prompt, plus automatic
+    caching for the conversation: three of the four slots.
+  - **Thinking.** Current Claude models think by default, and a tool loop must send their
+    thinking blocks back unchanged or the API returns 400. So the message format keeps any
+    block it doesn't model (thinking, redacted thinking, server tool calls) as the raw JSON it
+    arrived as, tagged with its provider, and sends it back only to that provider.
+  - **Not retried after streaming.** A failure after part of the answer reached the caller's
+    callback isn't retried, since a retry would show that part twice. The docs' recovery
+    recipe (ask the model to continue) is left to the caller.
+  - **Strict tools** are opt-in per `ToolSpec`, since a schema must follow strict mode's rules.
+    AGT-4's registry can turn it on for schemas that do.
+  - **Tests** replay streams shaped like the API docs' examples through a scripted transport,
+    so they need no key and no network. One test calls the real API when
+    `PULSATRIX_ORCH_LIVE=1` and `ANTHROPIC_API_KEY` are set; it hasn't run in CI.
+
 ### Follow-ups the AGT work surfaced
 
 | Follow-up | Found in | Belongs with |
 |---|---|---|
 | HTTPS on Windows isn't tested in CI: the Windows job builds cpp-httplib without OpenSSL, and libcurl isn't installed there | AGT-2 | KS-8-style CI work |
 | A connection is opened per request. Reusing one would save a TLS handshake per call in a long tool loop | AGT-2 | AGT-3, if it measures slow |
+| The live Anthropic test runs only by hand (`PULSATRIX_ORCH_LIVE=1`). A CI secret would run it on each merge, at a few cents a run | AGT-3 | CI |
+| Resuming an interrupted stream (the docs' "continue from where you left off" message) | AGT-3 | when an agent needs it |
 
 ## KS: Kitchen sink
 
