@@ -964,10 +964,16 @@ Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1PreTokenizer.html">PreTokenizer</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Splits text into the pieces the model tokenizes separately, and may change them (byte- level mapping).  <a href="classpulsatrix_1_1PreTokenizer.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpulsatrix_1_1ProbeGain.html">ProbeGain</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">A probe on a representation beside the same probe on a baseline representation.  <a href="structpulsatrix_1_1ProbeGain.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpulsatrix_1_1ProbeOptions.html">ProbeOptions</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpulsatrix_1_1ProbeResult.html">ProbeResult</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">A probe's quality on held-out residues.  <a href="structpulsatrix_1_1ProbeResult.html#details">More...</a><br /></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">A probe's quality on held-out rows.  <a href="structpulsatrix_1_1ProbeResult.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpulsatrix_1_1ProbeSelectivity.html">ProbeSelectivity</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">A probe on the real task beside the same probe on the control task.  <a href="structpulsatrix_1_1ProbeSelectivity.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpulsatrix_1_1ProteinFeature.html">ProteinFeature</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">One annotated stretch, numbered from 1, inclusive, as UniProt numbers it.  <a href="structpulsatrix_1_1ProteinFeature.html#details">More...</a><br /></td></tr>
@@ -2370,6 +2376,18 @@ Functions</h2></td></tr>
 <tr class="memitem:a04988305f3fb93fa30aa30cfcbb09a6e" id="r_a04988305f3fb93fa30aa30cfcbb09a6e"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#a04988305f3fb93fa30aa30cfcbb09a6e">PolyakUpdate</a> (<a class="el" href="classpulsatrix_1_1Module.html">Module</a> &amp;source, <a class="el" href="classpulsatrix_1_1Module.html">Module</a> &amp;destination, float tau)</td></tr>
 <tr class="memdesc:a04988305f3fb93fa30aa30cfcbb09a6e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Soft target-network update (Lillicrap et al. 2016 / Haarnoja et al. 2018): <code>destination_param[i] = tau * source_param[i] + (1 - tau) * destination_param[i]</code>, element-wise and in place.  <br /></td></tr>
 <tr class="separator:a04988305f3fb93fa30aa30cfcbb09a6e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a56a84372b7e549d43d56bc72b063c212" id="r_a56a84372b7e549d43d56bc72b063c212"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structpulsatrix_1_1ProbeResult.html">ProbeResult</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#a56a84372b7e549d43d56bc72b063c212">TrainLinearProbe</a> (const std::vector&lt; float &gt; &amp;features, int64_t dim, const std::vector&lt; int &gt; &amp;labels, int classes, const std::vector&lt; bool &gt; &amp;train, const std::vector&lt; bool &gt; &amp;test, <a class="el" href="classpulsatrix_1_1DeviceBackend.html">DeviceBackend</a> *backend, const <a class="el" href="structpulsatrix_1_1ProbeOptions.html">ProbeOptions</a> &amp;options={})</td></tr>
+<tr class="memdesc:a56a84372b7e549d43d56bc72b063c212"><td class="mdescLeft">&#160;</td><td class="mdescRight">Trains a linear softmax probe (standardized features, AdamW, cross-entropy) on the rows marked in <code>train</code> and scores it on those marked in <code>test</code>.  <br /></td></tr>
+<tr class="separator:a56a84372b7e549d43d56bc72b063c212"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2e9c1c46653240bbf1556762b96a6208" id="r_a2e9c1c46653240bbf1556762b96a6208"><td class="memItemLeft" align="right" valign="top">std::vector&lt; int &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#a2e9c1c46653240bbf1556762b96a6208">ControlTaskLabels</a> (const std::vector&lt; int64_t &gt; &amp;token_types, const std::vector&lt; int &gt; &amp;labels, int classes, uint64_t seed)</td></tr>
+<tr class="memdesc:a2e9c1c46653240bbf1556762b96a6208"><td class="mdescLeft">&#160;</td><td class="mdescRight">Hewitt and Liang's control labels: each distinct value in <code>token_types</code> gets one label, drawn from the distribution of <code>labels</code>, and every row of that type carries it.  <br /></td></tr>
+<tr class="separator:a2e9c1c46653240bbf1556762b96a6208"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8c060570347ec02e0dbd2d96460d0ada" id="r_a8c060570347ec02e0dbd2d96460d0ada"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structpulsatrix_1_1ProbeSelectivity.html">ProbeSelectivity</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#a8c060570347ec02e0dbd2d96460d0ada">MeasureSelectivity</a> (const std::vector&lt; float &gt; &amp;features, int64_t dim, const std::vector&lt; int &gt; &amp;labels, int classes, const std::vector&lt; int64_t &gt; &amp;token_types, const std::vector&lt; bool &gt; &amp;train, const std::vector&lt; bool &gt; &amp;test, <a class="el" href="classpulsatrix_1_1DeviceBackend.html">DeviceBackend</a> *backend, const <a class="el" href="structpulsatrix_1_1ProbeOptions.html">ProbeOptions</a> &amp;options={})</td></tr>
+<tr class="memdesc:a8c060570347ec02e0dbd2d96460d0ada"><td class="mdescLeft">&#160;</td><td class="mdescRight">Trains one probe on <code>labels</code> and one on ControlTaskLabels(<code>token_types</code>, <code>labels</code>, <code>classes</code>, <code>options.seed</code>), with the same features, split and options, and reports both.  <br /></td></tr>
+<tr class="separator:a8c060570347ec02e0dbd2d96460d0ada"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a07c6d5d366e4264b31cc2533ec02f8e3" id="r_a07c6d5d366e4264b31cc2533ec02f8e3"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structpulsatrix_1_1ProbeGain.html">ProbeGain</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#a07c6d5d366e4264b31cc2533ec02f8e3">CompareToBaseline</a> (const std::vector&lt; float &gt; &amp;features, int64_t dim, const std::vector&lt; float &gt; &amp;baseline, int64_t baseline_dim, const std::vector&lt; int &gt; &amp;labels, int classes, const std::vector&lt; bool &gt; &amp;train, const std::vector&lt; bool &gt; &amp;test, <a class="el" href="classpulsatrix_1_1DeviceBackend.html">DeviceBackend</a> *backend, const <a class="el" href="structpulsatrix_1_1ProbeOptions.html">ProbeOptions</a> &amp;options={})</td></tr>
+<tr class="memdesc:a07c6d5d366e4264b31cc2533ec02f8e3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Trains the same probe on <code>features</code> and on <code>baseline</code>, rows matched, and reports how much better the representation does. A gain near zero means the probe reads nothing from the representation that the baseline (local sequence, a random model's layer, the raw input) doesn't already hold.  <br /></td></tr>
+<tr class="separator:a07c6d5d366e4264b31cc2533ec02f8e3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:afd7250f5a22146178d37dc309a6992ab" id="r_afd7250f5a22146178d37dc309a6992ab"><td class="memItemLeft" align="right" valign="top">std::vector&lt; <a class="el" href="structpulsatrix_1_1AnnotatedProtein.html">AnnotatedProtein</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#afd7250f5a22146178d37dc309a6992ab">ParseAnnotatedProteins</a> (std::string_view jsonl)</td></tr>
 <tr class="memdesc:afd7250f5a22146178d37dc309a6992ab"><td class="mdescLeft">&#160;</td><td class="mdescRight">Reads JSON lines, one protein per line: <code>{"accession", "sequence", "features": [{"type", "start", "end"}]}</code> (tools/plm/fetch_swissprot_annotations.py writes them). Blank lines are skipped.  <br /></td></tr>
 <tr class="separator:afd7250f5a22146178d37dc309a6992ab"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -2391,9 +2409,6 @@ Functions</h2></td></tr>
 <tr class="memitem:a8b016809750c7346797368bfde55faad" id="r_a8b016809750c7346797368bfde55faad"><td class="memItemLeft" align="right" valign="top">std::vector&lt; float &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#a8b016809750c7346797368bfde55faad">SequenceWindowFeatures</a> (const std::vector&lt; std::string &gt; &amp;sequences, int64_t window)</td></tr>
 <tr class="memdesc:a8b016809750c7346797368bfde55faad"><td class="mdescLeft">&#160;</td><td class="mdescRight">The control a residue probe has to beat: each residue's local sequence, one-hot over the 20 amino acids at every position within <code>window</code> of it (<code>20 * (2 window + 1)</code> values, zeros past the ends and for other letters). A linear probe that reads a concept from a layer no better than from this hasn't shown the model adds anything beyond nearby sequence.  <br /></td></tr>
 <tr class="separator:a8b016809750c7346797368bfde55faad"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a56a84372b7e549d43d56bc72b063c212" id="r_a56a84372b7e549d43d56bc72b063c212"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structpulsatrix_1_1ProbeResult.html">ProbeResult</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#a56a84372b7e549d43d56bc72b063c212">TrainLinearProbe</a> (const std::vector&lt; float &gt; &amp;features, int64_t dim, const std::vector&lt; int &gt; &amp;labels, int classes, const std::vector&lt; bool &gt; &amp;train, const std::vector&lt; bool &gt; &amp;test, <a class="el" href="classpulsatrix_1_1DeviceBackend.html">DeviceBackend</a> *backend, const <a class="el" href="structpulsatrix_1_1ProbeOptions.html">ProbeOptions</a> &amp;options={})</td></tr>
-<tr class="memdesc:a56a84372b7e549d43d56bc72b063c212"><td class="mdescLeft">&#160;</td><td class="mdescRight">Trains a linear softmax probe (standardized features, AdamW, cross-entropy) on the residues marked in <code>train</code> and scores it on those marked in <code>test</code>.  <br /></td></tr>
-<tr class="separator:a56a84372b7e549d43d56bc72b063c212"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af63df3a0c3e3a0acbed536596078eeac" id="r_af63df3a0c3e3a0acbed536596078eeac"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structpulsatrix_1_1SparseCodes.html">SparseCodes</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#af63df3a0c3e3a0acbed536596078eeac">EncodeSparse</a> (<a class="el" href="classpulsatrix_1_1Featurizer.html">Featurizer</a> &amp;featurizer, const std::vector&lt; float &gt; &amp;rows, <a class="el" href="classpulsatrix_1_1DeviceBackend.html">DeviceBackend</a> *backend, int64_t batch=4096)</td></tr>
 <tr class="memdesc:af63df3a0c3e3a0acbed536596078eeac"><td class="mdescLeft">&#160;</td><td class="mdescRight"><code>featurizer's</code> codes for every residue in <code>rows</code> (<code>residues x input_dim</code>), encoded in batches of <code>batch</code> and kept where above zero.  <br /></td></tr>
 <tr class="separator:af63df3a0c3e3a0acbed536596078eeac"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -6008,6 +6023,90 @@ One difference from PyTorch: a NaN or infinite norm leaves the gradients unchang
 
 </div>
 </div>
+<a id="a07c6d5d366e4264b31cc2533ec02f8e3" name="a07c6d5d366e4264b31cc2533ec02f8e3"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a07c6d5d366e4264b31cc2533ec02f8e3">&#9670;&#160;</a></span>CompareToBaseline()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="structpulsatrix_1_1ProbeGain.html">ProbeGain</a> pulsatrix::CompareToBaseline </td>
+          <td>(</td>
+          <td class="paramtype">const std::vector&lt; float &gt; &amp;&#160;</td>
+          <td class="paramname"><em>features</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int64_t&#160;</td>
+          <td class="paramname"><em>dim</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const std::vector&lt; float &gt; &amp;&#160;</td>
+          <td class="paramname"><em>baseline</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int64_t&#160;</td>
+          <td class="paramname"><em>baseline_dim</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const std::vector&lt; int &gt; &amp;&#160;</td>
+          <td class="paramname"><em>labels</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>classes</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const std::vector&lt; bool &gt; &amp;&#160;</td>
+          <td class="paramname"><em>train</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const std::vector&lt; bool &gt; &amp;&#160;</td>
+          <td class="paramname"><em>test</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="classpulsatrix_1_1DeviceBackend.html">DeviceBackend</a> *&#160;</td>
+          <td class="paramname"><em>backend</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="structpulsatrix_1_1ProbeOptions.html">ProbeOptions</a> &amp;&#160;</td>
+          <td class="paramname"><em>options</em> = <code>{}</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Trains the same probe on <code>features</code> and on <code>baseline</code>, rows matched, and reports how much better the representation does. A gain near zero means the probe reads nothing from the representation that the baseline (local sequence, a random model's layer, the raw input) doesn't already hold. </p>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname">std::invalid_argument</td><td>if <code>baseline</code> doesn't have the same rows as <code>features</code>, or for what <a class="el" href="namespacepulsatrix.html#a56a84372b7e549d43d56bc72b063c212" title="Trains a linear softmax probe (standardized features, AdamW, cross-entropy) on the rows marked in tra...">TrainLinearProbe()</a> rejects. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
 <a id="a18efbc5917c05fb62bb95cb673b59566" name="a18efbc5917c05fb62bb95cb673b59566"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a18efbc5917c05fb62bb95cb673b59566">&#9670;&#160;</a></span>CompareToGolden()</h2>
 
@@ -7174,6 +7273,62 @@ Host boundary (GPU-native-kernels Mission 7): a strictly sequential reverse recu
 </dl>
 </li>
 </ul>
+
+</div>
+</div>
+<a id="a2e9c1c46653240bbf1556762b96a6208" name="a2e9c1c46653240bbf1556762b96a6208"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2e9c1c46653240bbf1556762b96a6208">&#9670;&#160;</a></span>ControlTaskLabels()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::vector&lt; int &gt; pulsatrix::ControlTaskLabels </td>
+          <td>(</td>
+          <td class="paramtype">const std::vector&lt; int64_t &gt; &amp;&#160;</td>
+          <td class="paramname"><em>token_types</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const std::vector&lt; int &gt; &amp;&#160;</td>
+          <td class="paramname"><em>labels</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>classes</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">uint64_t&#160;</td>
+          <td class="paramname"><em>seed</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Hewitt and Liang's control labels: each distinct value in <code>token_types</code> gets one label, drawn from the distribution of <code>labels</code>, and every row of that type carries it. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">token_types</td><td>One id per row saying which token type (a word, an amino acid) the row is. </td></tr>
+    <tr><td class="paramname">labels</td><td>The real task's labels, one per row in [0, classes). Only their distribution is used. </td></tr>
+    <tr><td class="paramname">seed</td><td>The same seed, types and labels give the same control labels. The types are visited in increasing order, so the order of the rows doesn't matter. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname">std::invalid_argument</td><td>if the sizes differ, there are no rows, classes &lt; 2, or a label is outside [0, classes). </td></tr>
+  </table>
+  </dd>
+</dl>
 
 </div>
 </div>
@@ -11459,6 +11614,84 @@ template&lt;typename Genotype , typename FitnessT &gt; </div>
 </div><div class="memdoc">
 
 <p>Loss recovered for a transcoder spliced in for an MLP: <code>loss</code> installs the MlpHook it is given on the MLP's block, runs the model, removes it and returns the loss. Ablation zeroes the MLP's output. </p>
+
+</div>
+</div>
+<a id="a8c060570347ec02e0dbd2d96460d0ada" name="a8c060570347ec02e0dbd2d96460d0ada"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8c060570347ec02e0dbd2d96460d0ada">&#9670;&#160;</a></span>MeasureSelectivity()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="structpulsatrix_1_1ProbeSelectivity.html">ProbeSelectivity</a> pulsatrix::MeasureSelectivity </td>
+          <td>(</td>
+          <td class="paramtype">const std::vector&lt; float &gt; &amp;&#160;</td>
+          <td class="paramname"><em>features</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int64_t&#160;</td>
+          <td class="paramname"><em>dim</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const std::vector&lt; int &gt; &amp;&#160;</td>
+          <td class="paramname"><em>labels</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>classes</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const std::vector&lt; int64_t &gt; &amp;&#160;</td>
+          <td class="paramname"><em>token_types</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const std::vector&lt; bool &gt; &amp;&#160;</td>
+          <td class="paramname"><em>train</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const std::vector&lt; bool &gt; &amp;&#160;</td>
+          <td class="paramname"><em>test</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="classpulsatrix_1_1DeviceBackend.html">DeviceBackend</a> *&#160;</td>
+          <td class="paramname"><em>backend</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="structpulsatrix_1_1ProbeOptions.html">ProbeOptions</a> &amp;&#160;</td>
+          <td class="paramname"><em>options</em> = <code>{}</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Trains one probe on <code>labels</code> and one on ControlTaskLabels(<code>token_types</code>, <code>labels</code>, <code>classes</code>, <code>options.seed</code>), with the same features, split and options, and reports both. </p>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname">std::invalid_argument</td><td>for what <a class="el" href="namespacepulsatrix.html#a56a84372b7e549d43d56bc72b063c212" title="Trains a linear softmax probe (standardized features, AdamW, cross-entropy) on the rows marked in tra...">TrainLinearProbe()</a> and <a class="el" href="namespacepulsatrix.html#a2e9c1c46653240bbf1556762b96a6208" title="Hewitt and Liang&#39;s control labels: each distinct value in token_types gets one label,...">ControlTaskLabels()</a> reject. </td></tr>
+  </table>
+  </dd>
+</dl>
 
 </div>
 </div>
@@ -17694,7 +17927,7 @@ template&lt;typename ObjectiveFn , typename RNG &gt; </div>
 </div><div class="memdoc">
 
 <p>The control a residue probe has to beat: each residue's local sequence, one-hot over the 20 amino acids at every position within <code>window</code> of it (<code>20 * (2 window + 1)</code> values, zeros past the ends and for other letters). A linear probe that reads a concept from a layer no better than from this hasn't shown the model adds anything beyond nearby sequence. </p>
-<dl class="section note"><dt>Note</dt><dd>Hewitt and Liang's control task, labels fixed per token type, is no control here: with only 20 amino acids, a linear probe on any representation that encodes identity learns it perfectly. Local sequence plays its role instead. </dd></dl>
+<dl class="section note"><dt>Note</dt><dd>Hewitt and Liang's control task (<a class="el" href="namespacepulsatrix.html#a2e9c1c46653240bbf1556762b96a6208" title="Hewitt and Liang&#39;s control labels: each distinct value in token_types gets one label,...">ControlTaskLabels()</a>), labels fixed per token type, is no control here: with only 20 amino acids, a linear probe on any representation that encodes identity learns it perfectly. Local sequence plays its role instead, through <a class="el" href="namespacepulsatrix.html#a07c6d5d366e4264b31cc2533ec02f8e3" title="Trains the same probe on features and on baseline, rows matched, and reports how much better the repr...">CompareToBaseline()</a>. </dd></dl>
 <dl class="section return"><dt>Returns</dt><dd><code>residues x 20 (2 window + 1)</code>, the sequences' residues one after another. </dd></dl>
 
 </div>
@@ -20908,11 +21141,11 @@ template&lt;typename Optimizer &gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p>Trains a linear softmax probe (standardized features, AdamW, cross-entropy) on the residues marked in <code>train</code> and scores it on those marked in <code>test</code>. </p>
+<p>Trains a linear softmax probe (standardized features, AdamW, cross-entropy) on the rows marked in <code>train</code> and scores it on those marked in <code>test</code>. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">features</td><td><code>residues x dim</code>, row-major.</td></tr>
-    <tr><td class="paramname">labels</td><td>one class in [0, classes) per residue. </td></tr>
+    <tr><td class="paramname">features</td><td><code>rows x dim</code>, row-major.</td></tr>
+    <tr><td class="paramname">labels</td><td>one class in [0, classes) per row. </td></tr>
   </table>
   </dd>
 </dl>
