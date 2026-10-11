@@ -3980,7 +3980,8 @@ machine, and explain it with the tools pulsatrix already has. Items on that path
   Anchors</li>
 <li>INT-2 (<strong>done</strong>, <a href="https://github.com/Joshuaweg/pulsatrix/pull/131">#131</a>): linear CKA</li>
 <li>INT-1 (<strong>done</strong>, <a href="https://github.com/Joshuaweg/pulsatrix/pull/132">#132</a>): nearest neighbors, mutual nearest neighbors, mutual-kNN alignment</li>
-<li>INT-3 to INT-6: probe controls, intrinsic dimension, PCA, TCAV and CRP</li>
+<li>INT-3 (<strong>done</strong>, <a href="https://github.com/Joshuaweg/pulsatrix/pull/133">#133</a>): probe controls (selectivity, and gain over a baseline)</li>
+<li>INT-4 to INT-6: intrinsic dimension, PCA, TCAV and CRP</li>
 <li>TDA-1 to TDA-8, TDA-11: persistent homology and RTD</li>
 <li>KS-3, KS-4: uncertainty and adversarial robustness</li>
 <li>Llama-3.2-1B and Qwen2.5-0.5B pass the golden-logit test</li>
@@ -5226,7 +5227,7 @@ doesn't support.</p>
 <tr>
 <td>A built-in plain-linear-probe comparison, the second half of the baseline rule</td>
 <td>XAI-6</td>
-<td>INT-3 (probe controls)</td>
+<td>Done in INT-3 (<code>CompareToBaseline</code>)</td>
 </tr>
 <tr>
 <td>Running the null-model baseline and the metrics from the report planner</td>
@@ -5401,7 +5402,7 @@ network says nothing about what the model learned.</p>
 <td>—</td>
 <td>P0</td>
 <td>S</td>
-<td></td>
+<td>Done, <a href="https://github.com/Joshuaweg/pulsatrix/pull/133">#133</a> (see below)</td>
 </tr>
 <tr>
 <td>INT-4</td>
@@ -5452,9 +5453,25 @@ network says nothing about what the model learned.</p>
 </table>
 <h3 id="how-the-int-work-departed-from-the-plan">How the INT work departed from the plan<a class="headerlink" href="#how-the-int-work-departed-from-the-plan" title="Permanent link">&para;</a></h3>
 <ul>
-<li><strong>INT-1</strong> follows the plan: <code>NearestNeighbors()</code> (cosine or Euclidean, with optional
+<li><strong>INT-3</strong> adds <code>probe_controls.hpp</code>, and covers more than <code>LinearProbe</code>'s control task.</li>
+<li><strong>Hewitt and Liang's control task:</strong> <code>ControlTaskLabels()</code> gives each token type a fixed
+    label drawn from the real labels' distribution. <code>MeasureSelectivity()</code> trains the same
+    probe on both and reports selectivity.</li>
+<li><strong>A baseline comparison:</strong> <code>CompareToBaseline()</code> trains the same probe on a baseline
+    representation and reports the gain. PLM-8 found the control task meaningless with 20
+    amino acids, and XAI-6 asked for a plain-probe comparison; this answers both.</li>
+<li><strong><code>TrainLinearProbe()</code> moved</strong> from <code>protein_concepts.hpp</code>, which includes the new header,
+    so existing code still compiles.</li>
+<li>
+<p><strong>The falsifier</strong> is a test. On 100 token types, a structured 8-dimensional representation
+    and a one-hot one both read the task at 0.96. The control task scores 0.61 and 0.98, giving
+    selectivity +0.35 and −0.02.</p>
+</li>
+<li>
+<p><strong>INT-1</strong> follows the plan: <code>NearestNeighbors()</code> (cosine or Euclidean, with optional
   mean-centering, within one set or against another), <code>MutualNearestNeighbors()</code> across two
-  sets, and <code>MutualKnnAlignment()</code> between two representations of the same inputs.</li>
+  sets, and <code>MutualKnnAlignment()</code> between two representations of the same inputs.</p>
+</li>
 <li><strong>Checked against</strong> PyTorch for the neighbor lists, and against Huh et al.'s <code>mutual_knn</code>
     (platonic-rep's metrics.py) for the alignment, exactly.
     <code>tools/generate_neighbors_reference_values.py</code> makes the values.</li>
@@ -7577,7 +7594,7 @@ sources are in <a href="protein-language-models/">Protein language models: resea
 <tr>
 <td>Solvent-accessibility labels (computed from structures), and probe splits that keep homologs apart. Also, Hewitt and Liang's control task is trivial with few token types: on 20 amino acids a linear probe learns it perfectly, so INT-3 should offer a sequence-window control</td>
 <td>PLM-8</td>
-<td>INT-3 (probe controls)</td>
+<td>Control: done in INT-3 (<code>CompareToBaseline</code>). Accessibility labels and homolog-aware splits: open</td>
 </tr>
 </tbody>
 </table>

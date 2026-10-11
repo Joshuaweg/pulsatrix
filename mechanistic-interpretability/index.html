@@ -777,6 +777,23 @@
     </span>
   </a>
   
+    <nav class="md-nav" aria-label="Probing a layer for a concept">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#controls-the-representation-or-the-probe" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Controls: the representation or the probe?
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
 </li>
         
           <li class="md-nav__item">
@@ -2403,6 +2420,23 @@
     </span>
   </a>
   
+    <nav class="md-nav" aria-label="Probing a layer for a concept">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#controls-the-representation-or-the-probe" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Controls: the representation or the probe?
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
 </li>
         
           <li class="md-nav__item">
@@ -2508,7 +2542,7 @@ attribution graphs of a language model's prediction.</p>
 <tbody>
 <tr>
 <td>Is concept X linearly readable from layer L?</td>
-<td><code>LinearProbe</code></td>
+<td><code>LinearProbe</code>, <code>TrainLinearProbe()</code>, with <code>MeasureSelectivity()</code> or <code>CompareToBaseline()</code> as the control</td>
 <td><a href="#probing-a-layer-for-a-concept">Below</a></td>
 </tr>
 <tr>
@@ -2664,11 +2698,71 @@ pairs.</p>
 <ul>
 <li><strong>High held-out accuracy</strong> means the concept is linearly readable.</li>
 <li><strong>Chance accuracy</strong> means it isn't, at least not linearly.</li>
-<li><strong>A probe reads; it doesn't show the model <em>uses</em> the information.</strong> Compare against a probe
-  on a randomly initialized model, and on the raw input. The
-  <a href="../protein-models/">Protein language models guide</a> shows why: some protein concepts
-  are as easy to probe from local sequence alone.</li>
+<li><strong>A probe reads; it doesn't show the model <em>uses</em> the information.</strong></li>
+<li><strong>High accuracy can come from the probe rather than the representation.</strong> Run a control
+  (below).</li>
 </ul>
+<h4 id="controls-the-representation-or-the-probe">Controls: the representation or the probe?<a class="headerlink" href="#controls-the-representation-or-the-probe" title="Permanent link">&para;</a></h4>
+<p><code>probe_controls.hpp</code> trains a multi-class probe, <code>TrainLinearProbe()</code> (standardized features,
+AdamW, cross-entropy, scored on held-out rows), and gives it two kinds of control.</p>
+<p><strong>Hewitt and Liang's control task</strong> (EMNLP 2019) gives each token type, such as each word, a
+random label and keeps it fixed. The labels are drawn from the real labels' distribution. A
+probe can only learn that by memorizing types, so <strong>selectivity</strong>, task accuracy minus control
+accuracy, is what the representation adds beyond memorization.</p>
+<div class="highlight"><pre><span></span><code><span class="cp">#include</span><span class="w"> </span><span class="cpf">"pulsatrix/probe_controls.hpp"</span>
+
+<span class="c1">// features: rows x dim; labels: one class per row; token_types: which word each row is.</span>
+<span class="k">const</span><span class="w"> </span><span class="n">ProbeSelectivity</span><span class="w"> </span><span class="n">s</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">MeasureSelectivity</span><span class="p">(</span><span class="n">features</span><span class="p">,</span><span class="w"> </span><span class="n">dim</span><span class="p">,</span><span class="w"> </span><span class="n">labels</span><span class="p">,</span><span class="w"> </span><span class="cm">/*classes=*/</span><span class="mi">2</span><span class="p">,</span><span class="w"> </span><span class="n">token_types</span><span class="p">,</span>
+<span class="w">                                              </span><span class="n">train</span><span class="p">,</span><span class="w"> </span><span class="n">test</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">backend</span><span class="p">);</span>
+<span class="c1">// s.task.accuracy, s.control.accuracy, s.selectivity, s.train_types</span>
+</code></pre></div>
+<p>The test shows the difference on two representations of the same 100 token types. In the
+structured one, each type's label is a linear function of an 8-dimensional vector. The one-hot
+one only names the type:</p>
+<table>
+<thead>
+<tr>
+<th>Representation</th>
+<th>Task accuracy</th>
+<th>Control accuracy</th>
+<th>Selectivity</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Structured (8 dimensions)</td>
+<td>0.96</td>
+<td>0.61</td>
+<td>+0.35</td>
+</tr>
+<tr>
+<td>One-hot type (100 dimensions)</td>
+<td>0.96</td>
+<td>0.98</td>
+<td>−0.02</td>
+</tr>
+</tbody>
+</table>
+<p>Both read the task equally well. Only the structured representation does it without being able
+to memorize arbitrary labels.</p>
+<p><code>ControlTaskLabels()</code> makes the control labels on their own, for example for a <code>LinearProbe</code>.</p>
+<p><strong>When there are few types, compare against a baseline representation.</strong> With no more types
+than dimensions, a linear probe learns any control task. On 20 amino acids it scores 1.0 at
+every layer of a protein model. <code>CompareToBaseline()</code> trains the same probe on the
+representation and on a baseline, with the same rows and split, and reports the gain.</p>
+<p>Good baselines:</p>
+<ul>
+<li>one-hot local sequence, <code>SequenceWindowFeatures()</code>;</li>
+<li>the same layer of a randomly initialized model;</li>
+<li>the raw input.</li>
+</ul>
+<div class="highlight"><pre><span></span><code><span class="k">const</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">float</span><span class="o">&gt;</span><span class="w"> </span><span class="n">window</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">SequenceWindowFeatures</span><span class="p">(</span><span class="n">sequences</span><span class="p">,</span><span class="w"> </span><span class="cm">/*window=*/</span><span class="mi">3</span><span class="p">);</span>
+<span class="k">const</span><span class="w"> </span><span class="n">ProbeGain</span><span class="w"> </span><span class="n">g</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">CompareToBaseline</span><span class="p">(</span><span class="n">layer</span><span class="p">,</span><span class="w"> </span><span class="n">hidden</span><span class="p">,</span><span class="w"> </span><span class="n">window</span><span class="p">,</span><span class="w"> </span><span class="mi">20</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="mi">7</span><span class="p">,</span><span class="w"> </span><span class="n">labels</span><span class="p">,</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span><span class="w"> </span><span class="n">train</span><span class="p">,</span><span class="w"> </span><span class="n">test</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">backend</span><span class="p">);</span>
+<span class="c1">// g.gain, g.balanced_gain, g.auc_gain (two classes)</span>
+</code></pre></div>
+<p>The <a href="../protein-models/">Protein language models guide</a> uses this. Disulfide probes show
+no gain over local sequence, because they find cysteines. Secondary structure gains 0.20 to
+0.25 balanced accuracy.</p>
 <p>Recipe: <a href="../recipes/mechanistic-interpretability/sparse_autoencoder_probe/">Sparse autoencoder + linear probe</a>.</p>
 <h3 id="comparing-representations-cka">Comparing representations (CKA)<a class="headerlink" href="#comparing-representations-cka" title="Permanent link">&para;</a></h3>
 <p>Centered kernel alignment (CKA) measures how similar two representations of the same inputs

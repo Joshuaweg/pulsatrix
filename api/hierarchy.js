@@ -371,8 +371,10 @@ var hierarchy =
       [ "pulsatrix::SplitPreTokenizer", "classpulsatrix_1_1SplitPreTokenizer.html", null ],
       [ "pulsatrix::WordPunctuationSplit", "classpulsatrix_1_1WordPunctuationSplit.html", null ]
     ] ],
+    [ "pulsatrix::ProbeGain", "structpulsatrix_1_1ProbeGain.html", null ],
     [ "pulsatrix::ProbeOptions", "structpulsatrix_1_1ProbeOptions.html", null ],
     [ "pulsatrix::ProbeResult", "structpulsatrix_1_1ProbeResult.html", null ],
+    [ "pulsatrix::ProbeSelectivity", "structpulsatrix_1_1ProbeSelectivity.html", null ],
     [ "pulsatrix::ProteinFeature", "structpulsatrix_1_1ProteinFeature.html", null ],
     [ "pulsatrix::ProteinGymAssay", "structpulsatrix_1_1ProteinGymAssay.html", null ],
     [ "pulsatrix::ProteinStructure", "structpulsatrix_1_1ProteinStructure.html", null ],

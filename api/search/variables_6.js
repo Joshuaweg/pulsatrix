@@ -1,13 +1,13 @@
 var searchData=
 [
   ['g_0',['g',['../structpulsatrix_1_1RgbColor.html#a018874e3dd38efe9377b1f0ac57f59d7',1,'pulsatrix::RgbColor']]],
-  ['gain_1',['gain',['../structpulsatrix_1_1BlockSparseOptions.html#aa7cfa17422c89b36d8f5483d3c4cbfa5',1,'pulsatrix::BlockSparseOptions']]],
+  ['gain_1',['gain',['../structpulsatrix_1_1BlockSparseOptions.html#aa7cfa17422c89b36d8f5483d3c4cbfa5',1,'pulsatrix::BlockSparseOptions::gain'],['../structpulsatrix_1_1ProbeGain.html#a47b6b84b530d6db1afeef7c3a16f9a39',1,'pulsatrix::ProbeGain::gain']]],
   ['gamma_2',['gamma',['../structpulsatrix_1_1SsmPassArgs.html#a20dbcf10998a16fef9dd80d0ced20dd4',1,'pulsatrix::SsmPassArgs::gamma'],['../structpulsatrix_1_1RlRowArgs.html#a48d938d69c6be92d2a37ec1256de4b2d',1,'pulsatrix::RlRowArgs::gamma'],['../structpulsatrix_1_1LRPRuleConfig.html#a8d65fffbd435bcc131073f7100573ab9',1,'pulsatrix::LRPRuleConfig::gamma']]],
   ['gate_5factivation_3',['gate_activation',['../structpulsatrix_1_1EncoderBlockOptions.html#a6cc2f13ba2e817d721248eeab49ead3e',1,'pulsatrix::EncoderBlockOptions']]],
   ['generations_5frun_4',['generations_run',['../structpulsatrix_1_1NEATEvolutionResult.html#a69058f39364cf12172a9e4ac480ac2dd',1,'pulsatrix::NEATEvolutionResult::generations_run'],['../structpulsatrix_1_1PBTResult.html#ab2954c61764cb9444ccc7bcb83e11066',1,'pulsatrix::PBTResult::generations_run']]],
   ['genes_5',['genes',['../structpulsatrix_1_1Individual.html#a54ceda26947cc3c0886bc5cae7d3e8e3',1,'pulsatrix::Individual']]],
   ['gpus_6',['gpus',['../structpulsatrix_1_1SystemSample.html#a8de86c1eef79a23e771c0e4f0a4d3d5f',1,'pulsatrix::SystemSample::gpus'],['../structpulsatrix_1_1detail_1_1RawReading.html#a86f508d8f6f14a59f22b1a3ced963c38',1,'pulsatrix::detail::RawReading::gpus']]],
-  ['grad_7',['grad',['../structpulsatrix_1_1AdamTensorStep.html#af9d2b8acde6d17a2c23f8df216d7dceb',1,'pulsatrix::AdamTensorStep::grad'],['../structpulsatrix_1_1ParamRef.html#afdf2da37358479b58e19f1b0468a03d0',1,'pulsatrix::ParamRef::grad'],['../structpulsatrix_1_1datalog_1_1DualNumber.html#af9d38d6baf6070d6c463250be296202b',1,'pulsatrix::datalog::DualNumber::grad']]],
+  ['grad_7',['grad',['../structpulsatrix_1_1datalog_1_1DualNumber.html#af9d38d6baf6070d6c463250be296202b',1,'pulsatrix::datalog::DualNumber::grad'],['../structpulsatrix_1_1ParamRef.html#afdf2da37358479b58e19f1b0468a03d0',1,'pulsatrix::ParamRef::grad'],['../structpulsatrix_1_1AdamTensorStep.html#af9d2b8acde6d17a2c23f8df216d7dceb',1,'pulsatrix::AdamTensorStep::grad']]],
   ['grad_5flog_5fsigma_8',['grad_log_sigma',['../structpulsatrix_1_1ReparamGrad.html#ad3703e6310d7ca316764423baa89f332',1,'pulsatrix::ReparamGrad']]],
   ['grad_5flog_5fstd_9',['grad_log_std',['../structpulsatrix_1_1TanhGaussianGrad.html#a9d427eb5fa9812562c0b2dc7ff4e6b89',1,'pulsatrix::TanhGaussianGrad']]],
   ['grad_5fmean_10',['grad_mean',['../structpulsatrix_1_1TanhGaussianGrad.html#a96f0991f7c09de7f7918aa0bfe185dd2',1,'pulsatrix::TanhGaussianGrad']]],

@@ -24,11 +24,13 @@ var searchData=
   ['ppoclippedloss_21',['PPOClippedLoss',['../classpulsatrix_1_1PPOClippedLoss.html',1,'pulsatrix']]],
   ['prependnormalizer_22',['PrependNormalizer',['../classpulsatrix_1_1PrependNormalizer.html',1,'pulsatrix']]],
   ['pretokenizer_23',['PreTokenizer',['../classpulsatrix_1_1PreTokenizer.html',1,'pulsatrix']]],
-  ['probeoptions_24',['ProbeOptions',['../structpulsatrix_1_1ProbeOptions.html',1,'pulsatrix']]],
-  ['proberesult_25',['ProbeResult',['../structpulsatrix_1_1ProbeResult.html',1,'pulsatrix']]],
-  ['proteinfeature_26',['ProteinFeature',['../structpulsatrix_1_1ProteinFeature.html',1,'pulsatrix']]],
-  ['proteingymassay_27',['ProteinGymAssay',['../structpulsatrix_1_1ProteinGymAssay.html',1,'pulsatrix']]],
-  ['proteinstructure_28',['ProteinStructure',['../structpulsatrix_1_1ProteinStructure.html',1,'pulsatrix']]],
-  ['provider_29',['Provider',['../classpulsatrix_1_1orch_1_1Provider.html',1,'pulsatrix::orch']]],
-  ['providererror_30',['ProviderError',['../classpulsatrix_1_1orch_1_1ProviderError.html',1,'pulsatrix::orch']]]
+  ['probegain_24',['ProbeGain',['../structpulsatrix_1_1ProbeGain.html',1,'pulsatrix']]],
+  ['probeoptions_25',['ProbeOptions',['../structpulsatrix_1_1ProbeOptions.html',1,'pulsatrix']]],
+  ['proberesult_26',['ProbeResult',['../structpulsatrix_1_1ProbeResult.html',1,'pulsatrix']]],
+  ['probeselectivity_27',['ProbeSelectivity',['../structpulsatrix_1_1ProbeSelectivity.html',1,'pulsatrix']]],
+  ['proteinfeature_28',['ProteinFeature',['../structpulsatrix_1_1ProteinFeature.html',1,'pulsatrix']]],
+  ['proteingymassay_29',['ProteinGymAssay',['../structpulsatrix_1_1ProteinGymAssay.html',1,'pulsatrix']]],
+  ['proteinstructure_30',['ProteinStructure',['../structpulsatrix_1_1ProteinStructure.html',1,'pulsatrix']]],
+  ['provider_31',['Provider',['../classpulsatrix_1_1orch_1_1Provider.html',1,'pulsatrix::orch']]],
+  ['providererror_32',['ProviderError',['../classpulsatrix_1_1orch_1_1ProviderError.html',1,'pulsatrix::orch']]]
 ];
