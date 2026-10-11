@@ -16,13 +16,14 @@ var searchData=
   ['tokenizer_5fjson_2ehpp_13',['tokenizer_json.hpp',['../tokenizer__json_8hpp.html',1,'']]],
   ['tokenizer_5fparity_2ehpp_14',['tokenizer_parity.hpp',['../tokenizer__parity_8hpp.html',1,'']]],
   ['tool_5floop_2ehpp_15',['tool_loop.hpp',['../tool__loop_8hpp.html',1,'']]],
-  ['top_5fk_2ehpp_16',['top_k.hpp',['../top__k_8hpp.html',1,'']]],
-  ['topk_5fsparse_5fautoencoder_2ehpp_17',['topk_sparse_autoencoder.hpp',['../topk__sparse__autoencoder_8hpp.html',1,'']]],
-  ['tpe_2ehpp_18',['tpe.hpp',['../tpe_8hpp.html',1,'']]],
-  ['training_5fdashboard_2ehpp_19',['training_dashboard.hpp',['../training__dashboard_8hpp.html',1,'']]],
-  ['trajectory_5fbalance_5floss_2ehpp_20',['trajectory_balance_loss.hpp',['../trajectory__balance__loss_8hpp.html',1,'']]],
-  ['transcoder_2ehpp_21',['transcoder.hpp',['../transcoder_8hpp.html',1,'']]],
-  ['transform_2ehpp_22',['transform.hpp',['../transform_8hpp.html',1,'']]],
-  ['transformer_5fblock_2ehpp_23',['transformer_block.hpp',['../transformer__block_8hpp.html',1,'']]],
-  ['trial_2ehpp_24',['trial.hpp',['../trial_8hpp.html',1,'']]]
+  ['tool_5fregistry_2ehpp_16',['tool_registry.hpp',['../tool__registry_8hpp.html',1,'']]],
+  ['top_5fk_2ehpp_17',['top_k.hpp',['../top__k_8hpp.html',1,'']]],
+  ['topk_5fsparse_5fautoencoder_2ehpp_18',['topk_sparse_autoencoder.hpp',['../topk__sparse__autoencoder_8hpp.html',1,'']]],
+  ['tpe_2ehpp_19',['tpe.hpp',['../tpe_8hpp.html',1,'']]],
+  ['training_5fdashboard_2ehpp_20',['training_dashboard.hpp',['../training__dashboard_8hpp.html',1,'']]],
+  ['trajectory_5fbalance_5floss_2ehpp_21',['trajectory_balance_loss.hpp',['../trajectory__balance__loss_8hpp.html',1,'']]],
+  ['transcoder_2ehpp_22',['transcoder.hpp',['../transcoder_8hpp.html',1,'']]],
+  ['transform_2ehpp_23',['transform.hpp',['../transform_8hpp.html',1,'']]],
+  ['transformer_5fblock_2ehpp_24',['transformer_block.hpp',['../transformer__block_8hpp.html',1,'']]],
+  ['trial_2ehpp_25',['trial.hpp',['../trial_8hpp.html',1,'']]]
 ];

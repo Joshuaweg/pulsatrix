@@ -1065,6 +1065,23 @@
     </span>
   </a>
   
+    <nav class="md-nav" aria-label="Tools and the tool loop">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#which-schemas-work" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Which schemas work
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
 </li>
         
           <li class="md-nav__item">
@@ -2346,6 +2363,23 @@
     </span>
   </a>
   
+    <nav class="md-nav" aria-label="Tools and the tool loop">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#which-schemas-work" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Which schemas work
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
 </li>
         
           <li class="md-nav__item">
@@ -2423,9 +2457,9 @@ OpenAI-compatible local servers (llama-server, vLLM, Ollama), a tool loop, and l
 that lets Claude and other agents drive pulsatrix's explainers. It needs no Python and no SDK.</p>
 <div class="admonition note">
 <p class="admonition-title">In progress</p>
-<p>So far: the build target, API keys and JSON (AGT-1), HTTP with streaming (AGT-2), and the
-providers with the tool loop (AGT-3). A tool registry that validates the model's tool inputs
-follows as AGT-4, and an MCP server as AGT-5. See the
+<p>So far: the build target, API keys and JSON (AGT-1), HTTP with streaming (AGT-2), the
+providers with the tool loop (AGT-3), and a tool registry that checks the model's tool
+inputs (AGT-4). An MCP server that serves the same registry follows as AGT-5. See the
 <a href="../roadmap/#agt-agents-native-c">roadmap</a>.</p>
 </div>
 <h2 id="building-it">Building it<a class="headerlink" href="#building-it" title="Permanent link">&para;</a></h2>
@@ -2494,31 +2528,89 @@ works with the other:</p>
 <span class="n">request</span><span class="p">.</span><span class="n">model</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">"qwen2.5:7b"</span><span class="p">;</span>
 </code></pre></div>
 <h3 id="tools-and-the-tool-loop">Tools and the tool loop<a class="headerlink" href="#tools-and-the-tool-loop" title="Permanent link">&para;</a></h3>
-<p>Give the model tools with <code>ToolSpec</code> (a name, a description and a JSON Schema for the input), and
-<code>RunToolLoop()</code> does the rest. It asks the model, runs each tool the model calls, sends the
+<p>Define each tool once in a <code>ToolRegistry</code>: a name, a description, a JSON Schema for its input and
+the function that runs it. The registry gives the provider the tool definitions and gives
+<code>RunToolLoop()</code> an executor. The loop asks the model, runs each tool the model calls, sends the
 results back, and repeats until the model answers:</p>
-<div class="highlight"><pre><span></span><code><span class="cp">#include</span><span class="w"> </span><span class="cpf">"pulsatrix/orch/tool_loop.hpp"</span>
+<div class="highlight"><pre><span></span><code><span class="cp">#include</span><span class="w"> </span><span class="cpf">"pulsatrix/orch/tool_registry.hpp"</span>
 
-<span class="n">ToolSpec</span><span class="w"> </span><span class="n">add</span><span class="p">;</span>
-<span class="n">add</span><span class="p">.</span><span class="n">name</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">"add"</span><span class="p">;</span>
-<span class="n">add</span><span class="p">.</span><span class="n">description</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">"Adds two integers a and b and returns their sum."</span><span class="p">;</span>
-<span class="n">add</span><span class="p">.</span><span class="n">input_schema</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">pulsatrix</span><span class="o">::</span><span class="n">ParseJson</span><span class="p">(</span><span class="sa">R</span><span class="s">"</span><span class="dl">(</span><span class="s">{"type": "object",</span>
-<span class="s">    "properties": {"a": {"type": "integer"}, "b": {"type": "integer"}},</span>
-<span class="s">    "required": ["a", "b"], "additionalProperties": false}</span><span class="dl">)</span><span class="s">"</span><span class="p">);</span>
-<span class="n">add</span><span class="p">.</span><span class="n">strict</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">true</span><span class="p">;</span><span class="w">  </span><span class="c1">// Claude guarantees inputs that match the schema</span>
-<span class="n">request</span><span class="p">.</span><span class="n">tools</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="n">add</span><span class="p">};</span>
+<span class="n">ToolRegistry</span><span class="w"> </span><span class="n">tools</span><span class="p">;</span>
+<span class="n">tools</span><span class="p">.</span><span class="n">add</span><span class="p">({</span><span class="s">"add"</span><span class="p">,</span><span class="w"> </span><span class="s">"Adds two integers a and b and returns their sum."</span><span class="p">,</span>
+<span class="w">           </span><span class="n">pulsatrix</span><span class="o">::</span><span class="n">ParseJson</span><span class="p">(</span><span class="sa">R</span><span class="s">"</span><span class="dl">(</span><span class="s">{"type": "object",</span>
+<span class="s">               "properties": {"a": {"type": "integer"}, "b": {"type": "integer"}},</span>
+<span class="s">               "required": ["a", "b"], "additionalProperties": false}</span><span class="dl">)</span><span class="s">"</span><span class="p">),</span>
+<span class="w">           </span><span class="p">[](</span><span class="k">const</span><span class="w"> </span><span class="n">pulsatrix</span><span class="o">::</span><span class="n">JsonValue</span><span class="o">&amp;</span><span class="w"> </span><span class="n">input</span><span class="p">)</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="n">ToolOutcome</span><span class="w"> </span><span class="p">{</span>
+<span class="w">               </span><span class="k">return</span><span class="w"> </span><span class="p">{</span><span class="n">std</span><span class="o">::</span><span class="n">to_string</span><span class="p">(</span><span class="n">input</span><span class="p">.</span><span class="n">find</span><span class="p">(</span><span class="s">"a"</span><span class="p">)</span><span class="o">-&gt;</span><span class="n">as_int64</span><span class="p">()</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">input</span><span class="p">.</span><span class="n">find</span><span class="p">(</span><span class="s">"b"</span><span class="p">)</span><span class="o">-&gt;</span><span class="n">as_int64</span><span class="p">())};</span>
+<span class="w">           </span><span class="p">},</span>
+<span class="w">           </span><span class="cm">/*strict=*/</span><span class="nb">true</span><span class="p">});</span><span class="w">  </span><span class="c1">// Claude guarantees inputs that match the schema</span>
+<span class="n">request</span><span class="p">.</span><span class="n">tools</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">tools</span><span class="p">.</span><span class="n">specs</span><span class="p">();</span>
 
-<span class="n">ToolLoopResult</span><span class="w"> </span><span class="n">result</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">RunToolLoop</span><span class="p">(</span><span class="o">*</span><span class="n">claude</span><span class="p">,</span><span class="w"> </span><span class="n">request</span><span class="p">,</span><span class="w"> </span><span class="p">[](</span><span class="k">const</span><span class="w"> </span><span class="n">ToolCall</span><span class="o">&amp;</span><span class="w"> </span><span class="n">call</span><span class="p">)</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="n">ToolOutcome</span><span class="w"> </span><span class="p">{</span>
-<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">call</span><span class="p">.</span><span class="n">name</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="s">"add"</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
-<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="p">{</span><span class="s">"unknown tool "</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">call</span><span class="p">.</span><span class="n">name</span><span class="p">,</span><span class="w"> </span><span class="cm">/*is_error=*/</span><span class="nb">true</span><span class="p">};</span>
-<span class="w">    </span><span class="p">}</span>
-<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="p">{</span><span class="n">std</span><span class="o">::</span><span class="n">to_string</span><span class="p">(</span><span class="n">call</span><span class="p">.</span><span class="n">input</span><span class="p">.</span><span class="n">find</span><span class="p">(</span><span class="s">"a"</span><span class="p">)</span><span class="o">-&gt;</span><span class="n">as_int64</span><span class="p">()</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">call</span><span class="p">.</span><span class="n">input</span><span class="p">.</span><span class="n">find</span><span class="p">(</span><span class="s">"b"</span><span class="p">)</span><span class="o">-&gt;</span><span class="n">as_int64</span><span class="p">())};</span>
-<span class="p">});</span>
+<span class="n">ToolLoopResult</span><span class="w"> </span><span class="n">result</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">RunToolLoop</span><span class="p">(</span><span class="o">*</span><span class="n">claude</span><span class="p">,</span><span class="w"> </span><span class="n">request</span><span class="p">,</span><span class="w"> </span><span class="n">tools</span><span class="p">.</span><span class="n">executor</span><span class="p">());</span>
 <span class="n">std</span><span class="o">::</span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">result</span><span class="p">.</span><span class="n">last</span><span class="p">.</span><span class="n">message</span><span class="p">.</span><span class="n">text</span><span class="p">()</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">"</span><span class="se">\n</span><span class="s">"</span><span class="p">;</span>
 </code></pre></div>
-<p>A tool that throws is reported to the model as an error, so the model can try again.
-<code>max_turns</code> (20) bounds the loop. AGT-4 will add a registry that checks each input against its
-schema before your function sees it.</p>
+<p>The registry checks every input against its tool's schema before the function sees it, so the
+function above can rely on <code>a</code> and <code>b</code> being integers. Every mistake goes back to the model as
+an error result it can act on, never as an exception:</p>
+<ul>
+<li>an input that doesn't match the schema lists each problem and where it is, for example
+  <code>/a must be an integer, not a string</code>;</li>
+<li>arguments that weren't valid JSON, which small local models sometimes write;</li>
+<li>a tool name that doesn't exist, with the names that do;</li>
+<li>a function that throws, with the exception's message. A function can also return
+  <code>{"message", /*is_error=*/true}</code> itself.</li>
+</ul>
+<p><code>max_turns</code> (20) bounds the loop. <code>RunToolLoop()</code> takes any function from <code>ToolCall</code> to
+<code>ToolOutcome</code>, so a registry is optional.</p>
+<h4 id="which-schemas-work">Which schemas work<a class="headerlink" href="#which-schemas-work" title="Permanent link">&para;</a></h4>
+<p>A schema may use only the JSON Schema keywords that mean the same in draft-7 and 2020-12, so the
+same schema works with Claude, with OpenAI-compatible servers and with MCP clients, whichever
+draft they assume:</p>
+<table>
+<thead>
+<tr>
+<th>For</th>
+<th>Keywords</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>any value</td>
+<td><code>type</code> (a name or an array of names), <code>enum</code>, <code>const</code></td>
+</tr>
+<tr>
+<td>objects</td>
+<td><code>properties</code>, <code>required</code>, <code>additionalProperties</code>, <code>minProperties</code>, <code>maxProperties</code></td>
+</tr>
+<tr>
+<td>arrays</td>
+<td><code>items</code> (one schema for every element), <code>minItems</code>, <code>maxItems</code>, <code>uniqueItems</code></td>
+</tr>
+<tr>
+<td>strings</td>
+<td><code>minLength</code>, <code>maxLength</code> (counted in characters, not bytes)</td>
+</tr>
+<tr>
+<td>numbers</td>
+<td><code>minimum</code>, <code>maximum</code>, <code>exclusiveMinimum</code>, <code>exclusiveMaximum</code>, <code>multipleOf</code></td>
+</tr>
+<tr>
+<td>combining</td>
+<td><code>allOf</code>, <code>anyOf</code>, <code>oneOf</code>, <code>not</code></td>
+</tr>
+<tr>
+<td>notes, not checked</td>
+<td><code>title</code>, <code>description</code>, <code>default</code>, <code>examples</code>, <code>format</code>, <code>$comment</code>, <code>$schema</code></td>
+</tr>
+</tbody>
+</table>
+<p><code>add()</code> refuses any other keyword rather than not enforce it. That includes <code>$ref</code> and
+<code>$defs</code>/<code>definitions</code> (spelled differently in the two drafts; write the schema out), <code>items</code> as
+an array (2020-12 calls it <code>prefixItems</code>), and <code>pattern</code> (check the string in the tool).
+<code>ValidateJson()</code> and <code>CheckSchema()</code> in <code>json_schema.hpp</code> work on their own as well.</p>
+<p><code>strict = true</code> asks Claude to guarantee inputs that match the schema. Strict mode needs
+<code>"additionalProperties": false</code> on every object and doesn't support numeric or length limits,
+<code>oneOf</code> or <code>not</code>, so <code>add()</code> refuses a strict tool whose schema has them, with the reason.
+<code>StrictModeProblem()</code> says the same for any schema. A request may have at most 20 strict tools.</p>
 <h3 id="what-the-providers-handle-for-you">What the providers handle for you<a class="headerlink" href="#what-the-providers-handle-for-you" title="Permanent link">&para;</a></h3>
 <ul>
 <li><strong>Retries.</strong> Overloads (529), server errors (500, 502, 503, 504), timeouts and broken
@@ -2539,8 +2631,8 @@ schema before your function sees it.</p>
   particular tool with HTTP 400, so the providers never do. Set <code>allow_tool_calls = false</code> to
   tell the model not to call any.</li>
 <li><strong>Local models.</strong> A small model sometimes writes tool arguments that aren't valid JSON. The
-  provider keeps them as a string in <code>call.input</code>, so your tool can report the mistake back to
-  the model instead of the loop failing.</li>
+  provider keeps them as a string in <code>call.input</code> instead of failing, and the registry reports
+  the mistake back to the model.</li>
 </ul>
 <h2 id="api-keys">API keys<a class="headerlink" href="#api-keys" title="Permanent link">&para;</a></h2>
 <p><code>orch::Secret</code> holds a credential. It has no <code>operator&lt;&lt;</code> and doesn't convert to a string, so a

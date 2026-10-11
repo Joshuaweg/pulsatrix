@@ -1,6 +1,6 @@
 var searchData=
 [
-  ['handler_0',['Handler',['../classpulsatrix_1_1orch_1_1SseParser.html#adddfed7f931a0bca71932aca39380639',1,'pulsatrix::orch::SseParser']]],
+  ['handler_0',['handler',['../structpulsatrix_1_1orch_1_1Tool.html#a522ee06bf931ac0f6f978e177c60d901',1,'pulsatrix::orch::Tool::handler'],['../classpulsatrix_1_1orch_1_1SseParser.html#adddfed7f931a0bca71932aca39380639',1,'pulsatrix::orch::SseParser::Handler']]],
   ['has_5fgradient_1',['has_gradient',['../classpulsatrix_1_1Autograd.html#a431dd728bc9d2038903e6e4494390350',1,'pulsatrix::Autograd']]],
   ['has_5fkey_5fpadding_5fmask_2',['has_key_padding_mask',['../classpulsatrix_1_1MultiHeadAttentionModule.html#a080f3afd4b26dda8306b7b34a97e61be',1,'pulsatrix::MultiHeadAttentionModule']]],
   ['has_5fskip_3',['has_skip',['../classpulsatrix_1_1CrossLayerTranscoder.html#ab87813fa305e8657d3420eee273efac0',1,'pulsatrix::CrossLayerTranscoder']]],
@@ -20,13 +20,13 @@ var searchData=
   ['hfcheckpoint_17',['HfCheckpoint',['../classpulsatrix_1_1HfCheckpoint.html',1,'pulsatrix']]],
   ['hfmodelconfig_18',['HfModelConfig',['../structpulsatrix_1_1HfModelConfig.html',1,'pulsatrix']]],
   ['hfropescaling_19',['HfRopeScaling',['../structpulsatrix_1_1HfRopeScaling.html',1,'pulsatrix']]],
-  ['hidden_20',['hidden',['../structpulsatrix_1_1VGGConfig.html#a93df2add02085fcab5213633389284cc',1,'pulsatrix::VGGConfig::hidden'],['../structpulsatrix_1_1ResidueEmbeddings.html#ace72c384a2d5e36631ddd2f967bf6051',1,'pulsatrix::ResidueEmbeddings::hidden'],['../structpulsatrix_1_1NodeGene.html#a64663eaaff545087a7584d5dab39b0d4a7acdf85c69cc3c5305456a293524386e',1,'pulsatrix::NodeGene::Hidden']]],
+  ['hidden_20',['hidden',['../structpulsatrix_1_1NodeGene.html#a64663eaaff545087a7584d5dab39b0d4a7acdf85c69cc3c5305456a293524386e',1,'pulsatrix::NodeGene::Hidden'],['../structpulsatrix_1_1VGGConfig.html#a93df2add02085fcab5213633389284cc',1,'pulsatrix::VGGConfig::hidden'],['../structpulsatrix_1_1ResidueEmbeddings.html#ace72c384a2d5e36631ddd2f967bf6051',1,'pulsatrix::ResidueEmbeddings::hidden']]],
   ['hidden_5fact_21',['hidden_act',['../structpulsatrix_1_1HfModelConfig.html#ac802a1a7823830a4a2e088527942feb3',1,'pulsatrix::HfModelConfig']]],
   ['hidden_5fdim_22',['hidden_dim',['../classpulsatrix_1_1SparseAutoencoder.html#aaf8d745803e44e25bf469d24b84433ec',1,'pulsatrix::SparseAutoencoder']]],
   ['hidden_5fsize_23',['hidden_size',['../structpulsatrix_1_1EncoderLMConfig.html#aaa3bcb9d42af40f59662382f1406c7a0',1,'pulsatrix::EncoderLMConfig::hidden_size'],['../structpulsatrix_1_1HfModelConfig.html#a56686b879c679aa4d88aa531e4ce860e',1,'pulsatrix::HfModelConfig::hidden_size']]],
   ['hidden_5fstates_24',['hidden_states',['../classpulsatrix_1_1EncoderLM.html#a6f891751deb596726404c51198083765',1,'pulsatrix::EncoderLM']]],
   ['hiddenstatehook_25',['HiddenStateHook',['../namespacepulsatrix.html#a5418afb94636789e3e253e44cdac5339',1,'pulsatrix']]],
-  ['high_26',['high',['../structpulsatrix_1_1SensitivityDocument_1_1Feature.html#ab0e235e49a42f674d5aff10ac4991bfb',1,'pulsatrix::SensitivityDocument::Feature::high'],['../structpulsatrix_1_1FeatureSensitivity.html#aff896849615052319852b5ffeee9a5ca',1,'pulsatrix::FeatureSensitivity::high'],['../structpulsatrix_1_1SensitivityBounds.html#afe9c554ca2568a695f198201f17954b8',1,'pulsatrix::SensitivityBounds::high'],['../structpulsatrix_1_1LRPRuleConfig.html#ab2d7caeadd3b4bc6ec0f7e10425bd9eb',1,'pulsatrix::LRPRuleConfig::high'],['../structpulsatrix_1_1CounterfactualTarget.html#a7497807ab807cdaf4de88a3706b60fac',1,'pulsatrix::CounterfactualTarget::high']]],
+  ['high_26',['high',['../structpulsatrix_1_1FeatureSensitivity.html#aff896849615052319852b5ffeee9a5ca',1,'pulsatrix::FeatureSensitivity::high'],['../structpulsatrix_1_1SensitivityBounds.html#afe9c554ca2568a695f198201f17954b8',1,'pulsatrix::SensitivityBounds::high'],['../structpulsatrix_1_1LRPRuleConfig.html#ab2d7caeadd3b4bc6ec0f7e10425bd9eb',1,'pulsatrix::LRPRuleConfig::high'],['../structpulsatrix_1_1CounterfactualTarget.html#a7497807ab807cdaf4de88a3706b60fac',1,'pulsatrix::CounterfactualTarget::high'],['../structpulsatrix_1_1SensitivityDocument_1_1Feature.html#ab0e235e49a42f674d5aff10ac4991bfb',1,'pulsatrix::SensitivityDocument::Feature::high']]],
   ['high_5ffreq_5ffactor_27',['high_freq_factor',['../structpulsatrix_1_1HfRopeScaling.html#acec31e2747a6b7924b8a9d690d4695f8',1,'pulsatrix::HfRopeScaling']]],
   ['hip_28',['Hip',['../namespacepulsatrix.html#a5480c8cbe462fe3f5a8eb04a8c579e6eaafcd5ccb84b5c522c66efa7836e17f92',1,'pulsatrix']]],
   ['hip_5fbackend_2ehpp_29',['hip_backend.hpp',['../hip__backend_8hpp.html',1,'']]],
@@ -70,6 +70,6 @@ var searchData=
   ['hyperbandbracket_67',['HyperbandBracket',['../structpulsatrix_1_1HyperbandBracket.html',1,'pulsatrix']]],
   ['hyperbandresult_68',['HyperbandResult',['../structpulsatrix_1_1HyperbandResult.html',1,'pulsatrix']]],
   ['hypergrid_5fenv_2ehpp_69',['hypergrid_env.hpp',['../hypergrid__env_8hpp.html',1,'']]],
-  ['hypergridenv_70',['hypergridenv',['../classpulsatrix_1_1HyperGridEnv.html',1,'pulsatrix::HyperGridEnv'],['../classpulsatrix_1_1HyperGridEnv.html#a05b3e614825178fe75ec70336f284265',1,'pulsatrix::HyperGridEnv::HyperGridEnv()']]],
+  ['hypergridenv_70',['hypergridenv',['../classpulsatrix_1_1HyperGridEnv.html#a05b3e614825178fe75ec70336f284265',1,'pulsatrix::HyperGridEnv::HyperGridEnv()'],['../classpulsatrix_1_1HyperGridEnv.html',1,'pulsatrix::HyperGridEnv']]],
   ['hyperparameter_20optimization_71',['Hyperparameter Optimization',['../group__hyperparameter__optimization.html',1,'']]]
 ];

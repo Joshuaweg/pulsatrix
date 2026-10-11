@@ -99,13 +99,16 @@ $(document).ready(function(){initNavTree('group__orchestrator.html',''); initRes
 </div><!--header-->
 <div class="contents">
 
-<p>The native LLM agent library, <code><a class="el" href="namespacepulsatrix_1_1orch.html">pulsatrix::orch</a></code> (target <code>pulsatrix_orchestrator</code>, opt-in via <code>PULSATRIX_ENABLE_ORCHESTRATOR</code>). So far: orch::Secret for API keys, an HTTP transport with cpp-httplib and libcurl backends (orch::HttpTransport), and a parser for server-sent events (orch::SseParser), and the Anthropic and OpenAI-compatible providers (orch::Provider) with the agent loop (orch::RunToolLoop). The tool registry follows (roadmap AGT-4).  
+<p>The native LLM agent library, <code><a class="el" href="namespacepulsatrix_1_1orch.html">pulsatrix::orch</a></code> (target <code>pulsatrix_orchestrator</code>, opt-in via <code>PULSATRIX_ENABLE_ORCHESTRATOR</code>). So far: orch::Secret for API keys, an HTTP transport with cpp-httplib and libcurl backends (orch::HttpTransport), and a parser for server-sent events (orch::SseParser), and the Anthropic and OpenAI-compatible providers (orch::Provider) with the agent loop (orch::RunToolLoop), and a tool registry (orch::ToolRegistry) that checks inputs with a small JSON Schema validator (orch::ValidateJson).  
 <a href="#details">More...</a></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="files" name="files"></a>
 Files</h2></td></tr>
 <tr class="memitem:http_8hpp" id="r_http_8hpp"><td class="memItemLeft" align="right" valign="top">file &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="http_8hpp.html">http.hpp</a></td></tr>
 <tr class="memdesc:http_8hpp"><td class="mdescLeft">&#160;</td><td class="mdescRight">HTTP for the orchestrator: requests, responses and a transport with two backends. <br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:json__schema_8hpp" id="r_json__schema_8hpp"><td class="memItemLeft" align="right" valign="top">file &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="json__schema_8hpp.html">json_schema.hpp</a></td></tr>
+<tr class="memdesc:json__schema_8hpp"><td class="mdescLeft">&#160;</td><td class="mdescRight">A small JSON Schema validator for tool inputs. <br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:message_8hpp" id="r_message_8hpp"><td class="memItemLeft" align="right" valign="top">file &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="message_8hpp.html">message.hpp</a></td></tr>
 <tr class="memdesc:message_8hpp"><td class="mdescLeft">&#160;</td><td class="mdescRight">The orchestrator's message format, shared by every LLM provider. <br /></td></tr>
@@ -122,9 +125,12 @@ Files</h2></td></tr>
 <tr class="memitem:tool__loop_8hpp" id="r_tool__loop_8hpp"><td class="memItemLeft" align="right" valign="top">file &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="tool__loop_8hpp.html">tool_loop.hpp</a></td></tr>
 <tr class="memdesc:tool__loop_8hpp"><td class="mdescLeft">&#160;</td><td class="mdescRight">The agent loop: ask the model, run the tools it calls, send back the results, repeat. <br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:tool__registry_8hpp" id="r_tool__registry_8hpp"><td class="memItemLeft" align="right" valign="top">file &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="tool__registry_8hpp.html">tool_registry.hpp</a></td></tr>
+<tr class="memdesc:tool__registry_8hpp"><td class="mdescLeft">&#160;</td><td class="mdescRight">Tools defined once: their specs for a provider, and an executor that checks inputs. <br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<p>The native LLM agent library, <code><a class="el" href="namespacepulsatrix_1_1orch.html">pulsatrix::orch</a></code> (target <code>pulsatrix_orchestrator</code>, opt-in via <code>PULSATRIX_ENABLE_ORCHESTRATOR</code>). So far: orch::Secret for API keys, an HTTP transport with cpp-httplib and libcurl backends (orch::HttpTransport), and a parser for server-sent events (orch::SseParser), and the Anthropic and OpenAI-compatible providers (orch::Provider) with the agent loop (orch::RunToolLoop). The tool registry follows (roadmap AGT-4). </p>
+<p>The native LLM agent library, <code><a class="el" href="namespacepulsatrix_1_1orch.html">pulsatrix::orch</a></code> (target <code>pulsatrix_orchestrator</code>, opt-in via <code>PULSATRIX_ENABLE_ORCHESTRATOR</code>). So far: orch::Secret for API keys, an HTTP transport with cpp-httplib and libcurl backends (orch::HttpTransport), and a parser for server-sent events (orch::SseParser), and the Anthropic and OpenAI-compatible providers (orch::Provider) with the agent loop (orch::RunToolLoop), and a tool registry (orch::ToolRegistry) that checks inputs with a small JSON Schema validator (orch::ValidateJson). </p>
 </div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->

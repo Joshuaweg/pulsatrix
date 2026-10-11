@@ -11,7 +11,7 @@ var searchData=
   ['partial_5fdependence_8',['partial_dependence',['../structpulsatrix_1_1PartialDependenceDocument.html#ae944eda6ffb8e3b0a817e2da847255a3',1,'pulsatrix::PartialDependenceDocument']]],
   ['participation_5fratio_9',['participation_ratio',['../structpulsatrix_1_1BlockGeometry.html#a6d8a00cb8414784ab17aab595c0933ea',1,'pulsatrix::BlockGeometry']]],
   ['passed_10',['passed',['../structpulsatrix_1_1AttnLrpReport.html#a82b7c323aa56fc91b377d5fdfb62edcb',1,'pulsatrix::AttnLrpReport::passed'],['../structpulsatrix_1_1GoldenReport.html#a2c669457561d7c7a9480e35434ff6698',1,'pulsatrix::GoldenReport::passed']]],
-  ['path_11',['path',['../structpulsatrix_1_1VizFontFile.html#aa881dfd10f5c076ed7572b58799740eb',1,'pulsatrix::VizFontFile']]],
+  ['path_11',['path',['../structpulsatrix_1_1orch_1_1SchemaError.html#a5cb2897316679fc2470a6be77f2517da',1,'pulsatrix::orch::SchemaError::path'],['../structpulsatrix_1_1VizFontFile.html#aa881dfd10f5c076ed7572b58799740eb',1,'pulsatrix::VizFontFile::path']]],
   ['pci_5fdevice_12',['pci_device',['../structpulsatrix_1_1detail_1_1AmdGpuDevice.html#afc0ef8e91cab0dafef148baf8a74b184',1,'pulsatrix::detail::AmdGpuDevice']]],
   ['peak_5fin_5fuse_5fbytes_13',['peak_in_use_bytes',['../structpulsatrix_1_1CachingAllocator_1_1Stats.html#a04bd4207063f85f5e2020892a0a96466',1,'pulsatrix::CachingAllocator::Stats']]],
   ['perplexity_14',['perplexity',['../structpulsatrix_1_1MaskedLMEvaluation.html#aa77426d1f634f69de0d5e33114d200d1',1,'pulsatrix::MaskedLMEvaluation']]],
