@@ -17,6 +17,7 @@ var group__mech__interp =
     [ "mlp_hook.hpp", "mlp__hook_8hpp.html", null ],
     [ "nearest_neighbors.hpp", "nearest__neighbors_8hpp.html", null ],
     [ "parameter_decomposition.hpp", "parameter__decomposition_8hpp.html", null ],
+    [ "pca.hpp", "pca_8hpp.html", null ],
     [ "probe_controls.hpp", "probe__controls_8hpp.html", null ],
     [ "relevance_graph.hpp", "relevance__graph_8hpp.html", null ],
     [ "representation_geometry.hpp", "representation__geometry_8hpp.html", null ],

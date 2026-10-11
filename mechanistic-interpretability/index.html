@@ -830,6 +830,17 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#pca-projections" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        PCA projections
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#baselines" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -2484,6 +2495,17 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#pca-projections" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        PCA projections
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#baselines" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -2581,6 +2603,11 @@ attribution graphs of a language model's prediction.</p>
 <td>Is cosine similarity meaningful in this layer? How many dimensions does it use?</td>
 <td><code>Anisotropy</code>, <code>MeasureEffectiveRank</code>, <code>TwoNNDimension</code></td>
 <td><a href="#the-shape-of-a-layer">Below</a></td>
+</tr>
+<tr>
+<td>What does a layer look like in 2D or 3D? Which directions vary most?</td>
+<td><code>FitPca</code>, <code>PcaProject</code>, <code>PcaSplitHalfOverlap</code>, <code>RenderProjectionSvg</code></td>
+<td><a href="#pca-projections">Below</a></td>
 </tr>
 <tr>
 <td>Which directions in a layer stand for concepts, found without labels?</td>
@@ -2950,6 +2977,58 @@ compute for every layer.</p>
 <li><strong>Noise raises it.</strong> It measures the nearest neighbors' scale, so noise on a low-dimensional
   surface adds dimensions.</li>
 <li><strong>Cost.</strong> The search is exact, at n² × width.</li>
+</ul>
+<h3 id="pca-projections">PCA projections<a class="headerlink" href="#pca-projections" title="Permanent link">&para;</a></h3>
+<p><code>FitPca()</code> finds the directions along which a layer's representations of a set of inputs vary
+most. <code>PcaProject()</code> places inputs on them, to plot, or to pass fewer dimensions on to another
+method.</p>
+<div class="highlight"><pre><span></span><code><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;fstream&gt;</span>
+
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">"pulsatrix/pca.hpp"</span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">"pulsatrix/viz/svg.hpp"</span>
+
+<span class="c1">// layer: (n, width), a row per input; words and tags: one per input.</span>
+<span class="k">const</span><span class="w"> </span><span class="n">Pca</span><span class="w"> </span><span class="n">pca</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">FitPca</span><span class="p">(</span><span class="n">layer</span><span class="p">,</span><span class="w"> </span><span class="cm">/*components=*/</span><span class="mi">3</span><span class="p">);</span>
+<span class="k">const</span><span class="w"> </span><span class="n">Tensor</span><span class="w"> </span><span class="n">scores</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">PcaProject</span><span class="p">(</span><span class="n">pca</span><span class="p">,</span><span class="w"> </span><span class="n">layer</span><span class="p">);</span><span class="w">  </span><span class="c1">// (n, 3)</span>
+<span class="k">const</span><span class="w"> </span><span class="n">ProjectionDocument</span><span class="w"> </span><span class="n">doc</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">MakeProjectionDocument</span><span class="p">(</span><span class="n">pca</span><span class="p">,</span><span class="w"> </span><span class="n">scores</span><span class="p">,</span><span class="w"> </span><span class="cm">/*labels=*/</span><span class="n">words</span><span class="p">,</span><span class="w"> </span><span class="cm">/*groups=*/</span><span class="n">tags</span><span class="p">);</span>
+<span class="n">std</span><span class="o">::</span><span class="n">ofstream</span><span class="p">(</span><span class="s">"layer.svg"</span><span class="p">)</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">RenderProjectionSvg</span><span class="p">(</span><span class="n">doc</span><span class="p">);</span><span class="w">          </span><span class="c1">// PC1 against PC2</span>
+<span class="n">std</span><span class="o">::</span><span class="n">ofstream</span><span class="p">(</span><span class="s">"layer13.svg"</span><span class="p">)</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">RenderProjectionSvg</span><span class="p">(</span><span class="n">doc</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="mi">2</span><span class="p">);</span><span class="w">  </span><span class="c1">// PC1 against PC3</span>
+<span class="n">std</span><span class="o">::</span><span class="n">ofstream</span><span class="p">(</span><span class="s">"layer.json"</span><span class="p">)</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">ToJson</span><span class="p">(</span><span class="n">doc</span><span class="p">);</span><span class="w">                     </span><span class="c1">// for pulsatrix_svg or HTML</span>
+</code></pre></div>
+<p>It matches scikit-learn's <code>PCA</code> to 1e-10:</p>
+<ul>
+<li>The data are centered.</li>
+<li>Variances divide by n − 1.</li>
+<li>Each component's largest entry is positive, so the same data always give the same picture.</li>
+</ul>
+<p>It runs in double precision, through whichever is smaller of the covariance and the Gram
+matrix.</p>
+<ul>
+<li><strong>Plots.</strong> <code>RenderProjectionSvg</code> draws two axes on one scale, so distances on the page are
+  distances in the projection. Each axis is captioned with its share of the variance.</li>
+<li>Points are colored by group or by value, and show their label on hover.</li>
+<li><code>RenderProjectionHtml</code> is the zoomable version. With three components it shows the three
+    pairs side by side, the views of a 3D projection.</li>
+<li>The <code>pulsatrix.projection.v1</code> document (<code>ToJson</code>) also lets any outside tool draw it.</li>
+<li><strong>Steering directions.</strong> <code>PcaComponent(pca, i)</code> is component i as a unit vector for
+  <code>SteeringHook</code>. One standard deviation along it is <code>sqrt(pca.explained_variance[i])</code>, a
+  natural unit for the coefficient. Then test whether it does anything with <code>MeasureSteering</code>
+  (<a href="steering/">Steering</a>).</li>
+<li><strong>Fewer dimensions.</strong> <code>PcaReconstruct</code> maps coordinates back. <code>PcaProject(pca, x,
+  /*whiten=*/true)</code> gives every axis variance 1.</li>
+</ul>
+<p>Things to know:</p>
+<ul>
+<li><strong>Check that the picture is stable.</strong> Components with close variances can swap or rotate
+  between two samples of the same inputs. <code>PcaSplitHalfOverlap(layer, k)</code> fits each half of
+  the inputs separately and compares the two k-dimensional spans: 1 means the same span, near
+  k / width means unrelated. In the test, points on a plane give 0.9995, the same plane under
+  noise as large as it gives 0.92, and noise alone gives 0.09.</li>
+<li><strong>Most variance isn't most meaning.</strong> In anisotropic layers the first component is often the
+  common direction or a few outlier dimensions (see <a href="#the-shape-of-a-layer">the shape of a layer</a>).
+  Look at the explained variance ratios, and treat a direction as a hypothesis to test.</li>
+<li><strong><code>SubspaceOverlap(a, b, k)</code></strong> compares any two PCAs of the same width, for example the same
+  layer in two models, or before and after fine-tuning.</li>
 </ul>
 <h3 id="baselines">Baselines<a class="headerlink" href="#baselines" title="Permanent link">&para;</a></h3>
 <p><code>NullModelBaseline</code> re-initializes a model randomly, so the same probe, featurizer or

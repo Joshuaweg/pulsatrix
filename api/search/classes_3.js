@@ -19,9 +19,10 @@ var searchData=
   ['diversecounterfactualresult_16',['DiverseCounterfactualResult',['../structpulsatrix_1_1DiverseCounterfactualResult.html',1,'pulsatrix']]],
   ['dmsvariants_17',['DmsVariants',['../structpulsatrix_1_1DmsVariants.html',1,'pulsatrix']]],
   ['dominanteigenresult_18',['DominantEigenResult',['../structpulsatrix_1_1DominantEigenResult.html',1,'pulsatrix']]],
-  ['dqnagent_19',['DQNAgent',['../classpulsatrix_1_1DQNAgent.html',1,'pulsatrix']]],
-  ['dqnloss_20',['DQNLoss',['../classpulsatrix_1_1DQNLoss.html',1,'pulsatrix']]],
-  ['dropoutmodule_21',['DropoutModule',['../classpulsatrix_1_1DropoutModule.html',1,'pulsatrix']]],
-  ['dualnumber_22',['DualNumber',['../structpulsatrix_1_1datalog_1_1DualNumber.html',1,'pulsatrix::datalog']]],
-  ['dualsemiring_23',['DualSemiring',['../structpulsatrix_1_1datalog_1_1DualSemiring.html',1,'pulsatrix::datalog']]]
+  ['doubleeigenresult_19',['DoubleEigenResult',['../structpulsatrix_1_1DoubleEigenResult.html',1,'pulsatrix']]],
+  ['dqnagent_20',['DQNAgent',['../classpulsatrix_1_1DQNAgent.html',1,'pulsatrix']]],
+  ['dqnloss_21',['DQNLoss',['../classpulsatrix_1_1DQNLoss.html',1,'pulsatrix']]],
+  ['dropoutmodule_22',['DropoutModule',['../classpulsatrix_1_1DropoutModule.html',1,'pulsatrix']]],
+  ['dualnumber_23',['DualNumber',['../structpulsatrix_1_1datalog_1_1DualNumber.html',1,'pulsatrix::datalog']]],
+  ['dualsemiring_24',['DualSemiring',['../structpulsatrix_1_1datalog_1_1DualSemiring.html',1,'pulsatrix::datalog']]]
 ];
