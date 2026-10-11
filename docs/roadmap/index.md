@@ -189,7 +189,7 @@ Fine-tune the models from v1.2 and explain what the fine-tuning changed.
 - INT-2 (**done**, [#131](https://github.com/Joshuaweg/pulsatrix/pull/131)): linear CKA
 - INT-1 (**done**, [#132](https://github.com/Joshuaweg/pulsatrix/pull/132)): nearest neighbors, mutual nearest neighbors, mutual-kNN alignment
 - INT-3 (**done**, [#133](https://github.com/Joshuaweg/pulsatrix/pull/133)): probe controls (selectivity, and gain over a baseline)
-- INT-4 (**done**, PR pending): anisotropy, effective rank, TwoNN intrinsic dimension
+- INT-4 (**done**, [#134](https://github.com/Joshuaweg/pulsatrix/pull/134)): anisotropy, effective rank, TwoNN intrinsic dimension
 - INT-5, INT-6: PCA, TCAV and CRP
 - TDA-1 to TDA-8, TDA-11: persistent homology and RTD
 - KS-3, KS-4: uncertainty and adversarial robustness
@@ -784,7 +784,7 @@ network says nothing about what the model learned.
 | INT-1 | Nearest neighbors and mutual nearest neighbors over embeddings or activations, with optional mean-centering | The cheapest useful embedding tool; also a cross-model alignment score | FND-3 | P0 | S | Done, [#132](https://github.com/Joshuaweg/pulsatrix/pull/132) (see below) |
 | INT-2 | Linear CKA (debiased) | Compare layers across models, training runs and backends | — | P0 | S | Done, [#131](https://github.com/Joshuaweg/pulsatrix/pull/131) (see below) |
 | INT-3 | Control tasks for `LinearProbe` (selectivity = probe accuracy minus control accuracy) | High probe accuracy can come from the probe, not the representation | — | P0 | S | Done, [#133](https://github.com/Joshuaweg/pulsatrix/pull/133) (see below) |
-| INT-4 | Anisotropy, effective rank and TwoNN intrinsic dimension | Explains why raw cosine similarity misleads; one number per layer | INT-1 | P1 | S | Done, PR pending (see below) |
+| INT-4 | Anisotropy, effective rank and TwoNN intrinsic dimension | Explains why raw cosine similarity misleads; one number per layer | INT-1 | P1 | S | Done, [#134](https://github.com/Joshuaweg/pulsatrix/pull/134) (see below) |
 | INT-5 | PCA projections | 2D and 3D views, steering directions, preprocessing for TDA | FND-4 | P1 | M | |
 | INT-6 | TCAV (with significance against random concepts) and Concept Relevance Propagation | Concept-level explanations, and CRP reuses pulsatrix's LRP rules | INT-3 | P1 | M | |
 | INT-7 | RSA and SVCCA | Mostly covered by CKA | FND-4 | P2 | — | |
