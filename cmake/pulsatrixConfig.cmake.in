@@ -2,6 +2,7 @@
 #   pulsatrix_INCLUDE_DIR  the installed include directory
 #   pulsatrix_HAS_CUDA     whether this build includes the CUDA backend
 #   pulsatrix_HAS_HIP      whether this build includes the HIP backend
+#   pulsatrix_HAS_ORCHESTRATOR  whether pulsatrix::orchestrator (the LLM agent library) is installed
 @PACKAGE_INIT@
 
 # Resolve paths now: other packages' configs (hip's, for one) also run PACKAGE_INIT and
@@ -12,6 +13,7 @@ include(CMakeFindDependencyMacro)
 
 set(pulsatrix_HAS_CUDA @PULSATRIX_ENABLE_CUDA@)
 set(pulsatrix_HAS_HIP @PULSATRIX_ENABLE_HIP@)
+set(pulsatrix_HAS_ORCHESTRATOR @PULSATRIX_ENABLE_ORCHESTRATOR@)
 
 find_dependency(Threads)
 

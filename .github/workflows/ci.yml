@@ -53,6 +53,7 @@ jobs:
         shell: bash
         run: >
           cmake -S . -B build -G Ninja -DCMAKE_BUILD_TYPE=Release ${{ matrix.compilers }}
+          -DPULSATRIX_ENABLE_ORCHESTRATOR=ON
           -DCMAKE_C_COMPILER_LAUNCHER=${{ matrix.launcher }}
           -DCMAKE_CXX_COMPILER_LAUNCHER=${{ matrix.launcher }}
 

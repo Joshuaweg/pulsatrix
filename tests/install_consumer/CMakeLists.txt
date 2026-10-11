@@ -23,3 +23,7 @@ target_link_libraries(install_consumer PRIVATE pulsatrix::core)
 target_compile_definitions(install_consumer PRIVATE
     EXPECTED_VERSION="${pulsatrix_VERSION}"
     $<$<BOOL:${pulsatrix_HAS_HIP}>:CONSUMER_WITH_HIP>)
+if(pulsatrix_HAS_ORCHESTRATOR)
+    target_link_libraries(install_consumer PRIVATE pulsatrix::orchestrator)
+    target_compile_definitions(install_consumer PRIVATE CONSUMER_WITH_ORCHESTRATOR)
+endif()

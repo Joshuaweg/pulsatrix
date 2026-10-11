@@ -102,4 +102,13 @@ private:
  */
 [[nodiscard]] std::string WriteJson(const JsonValue& value);
 
+/**
+ * @brief Writes @p value as JSON on one line, with no whitespace and no trailing newline.
+ * @note For HTTP request bodies and newline-delimited protocols such as MCP over stdio: newlines
+ *       inside strings are escaped, so the result never contains a newline. Deterministic, like
+ *       WriteJson().
+ * @throws std::invalid_argument if a string isn't valid UTF-8.
+ */
+[[nodiscard]] std::string WriteJsonCompact(const JsonValue& value);
+
 }  // namespace pulsatrix
