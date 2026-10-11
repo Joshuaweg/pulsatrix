@@ -14,12 +14,17 @@ jobs:
       fail-fast: false
       matrix:
         include:
+          # The orchestrator's HTTP: Linux builds both backends with TLS (OpenSSL, libcurl). Windows
+          # builds cpp-httplib without TLS, so the tests don't depend on whichever OpenSSL DLLs the
+          # runner image happens to have.
           - os: windows-latest
             launcher: sccache
             compilers: -DCMAKE_C_COMPILER=cl -DCMAKE_CXX_COMPILER=cl
+            orchestrator: -DPULSATRIX_ORCHESTRATOR_OPENSSL=OFF
           - os: ubuntu-latest
             launcher: ccache
             compilers: ""
+            orchestrator: -DPULSATRIX_ORCHESTRATOR_OPENSSL=ON -DPULSATRIX_ORCHESTRATOR_CURL=ON
     runs-on: ${{ matrix.os }}
     steps:
       - uses: actions/checkout@v4
@@ -40,6 +45,10 @@ jobs:
           fi
           ninja --version
 
+      - name: Install OpenSSL and libcurl
+        if: runner.os == 'Linux'
+        run: sudo apt-get update -qq && sudo apt-get install -y -qq libssl-dev libcurl4-openssl-dev
+
       # Restores the object cache from this branch, or master's for a new branch, and saves it
       # after the job. A PR that touches a few files recompiles only those.
       - name: Compiler cache
@@ -53,7 +62,7 @@ jobs:
         shell: bash
         run: >
           cmake -S . -B build -G Ninja -DCMAKE_BUILD_TYPE=Release ${{ matrix.compilers }}
-          -DPULSATRIX_ENABLE_ORCHESTRATOR=ON
+          -DPULSATRIX_ENABLE_ORCHESTRATOR=ON ${{ matrix.orchestrator }}
           -DCMAKE_C_COMPILER_LAUNCHER=${{ matrix.launcher }}
           -DCMAKE_CXX_COMPILER_LAUNCHER=${{ matrix.launcher }}
 
