@@ -205,6 +205,22 @@ TEST(JsonWriteTest, ParseOfWriteIsTheSameValue) {
     EXPECT_EQ(WriteJson(ParseJson(text)), text);
 }
 
+TEST(JsonWriteTest, CompactIsOneLineWithNoWhitespace) {
+    JsonValue v = ParseJson(R"({"a": [1, -0.5, null, [], {}], "b": {"c": "x\ny", "d": [{"e": true}]}, "f": ""})");
+    EXPECT_EQ(WriteJsonCompact(v), R"({"a":[1,-0.5,null,[],{}],"b":{"c":"x\ny","d":[{"e":true}]},"f":""})");
+    EXPECT_EQ(WriteJsonCompact(JsonValue(3)), "3");
+    EXPECT_EQ(WriteJsonCompact(JsonValue("s")), "\"s\"");
+    EXPECT_EQ(WriteJsonCompact(JsonValue{JsonValue::Object{}}), "{}");
+}
+
+TEST(JsonWriteTest, CompactReadsBackAsTheSameValue) {
+    std::string text = "{\n  \"a\": [1, -0.5, null],\n  \"b\": {\n    \"c\": \"\xE2\x82\xAC\\n\"\n  }\n}\n";
+    const std::string compact = WriteJsonCompact(ParseJson(text));
+    EXPECT_EQ(compact.find('\n'), std::string::npos);  // the string's newline stays escaped
+    EXPECT_EQ(WriteJson(ParseJson(compact)), text);
+    EXPECT_THROW((void)WriteJsonCompact(JsonValue(std::string("\xFF"))), std::invalid_argument);
+}
+
 TEST(JsonValueTest, BuildersCheckTheirType) {
     JsonValue o{JsonValue::Object{}};
     o.add("a", 1);
