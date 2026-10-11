@@ -17,6 +17,7 @@ attribution graphs of a language model's prediction.
 |---|---|---|
 | Is concept X linearly readable from layer L? | `LinearProbe` | [Below](#probing-a-layer-for-a-concept) |
 | How similar are two layers, two models, or a model before and after fine-tuning? | `LinearCka`, `LinearCkaMatrix` | [Below](#comparing-representations-cka) |
+| Which inputs does a layer treat as alike? Do two models agree on it? | `NearestNeighbors`, `MutualKnnAlignment`, `MutualNearestNeighbors`, `MeasureHubness` | [Below](#nearest-neighbors) |
 | Which directions in a layer stand for concepts, found without labels? | Sparse autoencoders: `TopKSparseAutoencoder`, `JumpReLUSparseAutoencoder`, `SparseAutoencoder` | [Finding features](featurizers.md) |
 | Which concepts take more than one dimension, such as an angle or a position? | `BlockSparseFeaturizer` | [Finding features](featurizers.md#block-sparse-featurizers) |
 | What does an MLP compute, step by step? | `Transcoder` | [Finding features](featurizers.md#transcoders) |
@@ -182,6 +183,58 @@ Things to know:
 
 The implementation matches the reference code of Kornblith et al. (ICML 2019) to 12 decimal
 places for both estimators.
+
+### Nearest neighbors
+
+`NearestNeighbors()` finds, for each input, the k inputs a layer represents most alike, by cosine
+similarity (the default) or Euclidean distance:
+
+```cpp
+#include "pulsatrix/nearest_neighbors.hpp"
+
+// embeddings: (n, width), a row per input.
+NeighborOptions options;
+options.k = 5;
+options.center = true;  // subtract the mean first; see below
+const Neighbors near = NearestNeighbors(embeddings, options);
+for (int64_t r = 0; r < near.k; ++r) {
+    std::cout << near.index(0, r) << " " << near.score(0, r) << "\n";  // input 0's neighbors, nearest first
+}
+```
+
+- **Search another set** with `NearestNeighbors(queries, points, options)`, for example new
+  inputs against a labelled reference set.
+- **Match items across two sets** with `MutualNearestNeighbors(a, b, options)`: the pairs
+  (i, j) where each is among the other's k nearest.
+- **Compare two models** with `MutualKnnAlignment(a, b, options)`: for each input, the
+  fraction of its k neighbors under one representation that are also its neighbors under the
+  other, averaged. The two can have different widths. With the default options it is the
+  mutual-kNN alignment of Huh et al.'s "Platonic Representation Hypothesis" (2024), and it
+  matches their code exactly. Unrelated representations score about k / (n − 1) by chance, so
+  read a score against that, not against 0. It complements CKA (above): CKA compares the whole
+  geometry, mutual kNN only who is close to whom.
+
+The search is exact, in double precision on the host. It costs about n² × width multiply-adds, so
+it suits up to tens of thousands of inputs. Ties keep the lower index first.
+
+Things to know:
+
+- **Center cosine similarities.** Activations often share a large common component, so every
+  pair's cosine is high and the ranking follows that component. `center = true` subtracts the
+  points' mean first. It doesn't change Euclidean distances.
+- **Check for hubs.** In high dimensions a few points become almost everyone's neighbor, and
+  many become nobody's (Radovanović et al., 2010). Neighbor lists, and scores built on them,
+  then say more about the hubs than about the inputs. `MeasureHubness(neighbors, n)` reports
+  how often each point is a neighbor, and the skewness of those counts: near 0 is even, well
+  above 1 means hubs. For 300 random Gaussian points and k = 5:
+
+    | Dimension | Skewness | The biggest hub is in | Never a neighbor |
+    |---|---|---|---|
+    | 3 | −0.04 | 3% of lists | 2% of points |
+    | 30 | 2.05 | 12% of lists | 21% of points |
+    | 300 | 3.52 | 20% of lists | 36% of points |
+
+    Centering also reduces hubness for cosine similarity (Suzuki et al., 2013).
 
 ### Baselines
 
