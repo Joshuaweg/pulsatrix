@@ -162,7 +162,8 @@ Load SmolLM2-135M and ResNet18, run them, and match the reference implementation
 - NB-1 (**done**): native rich display
 - NB-2 (**done**): the `.ipynb`/HTML report writer
 - AGT-1 (**done**, [#126](https://github.com/Joshuaweg/pulsatrix/pull/126)): the optional orchestrator target
-- AGT-2 to AGT-4: the native orchestrator core: HTTP transport, providers and the tool loop, the tool registry
+- AGT-2 (**done**, [#127](https://github.com/Joshuaweg/pulsatrix/pull/127)): HTTP transport and server-sent events
+- AGT-3, AGT-4: providers and the tool loop, the tool registry
 - KS-8 (**done**): GPU CI on gfx1151
 - KS-9 (**done**): a model zoo, ResNet18 and VGG16 with heatmaps checked against Zennit
   (SmolLM2's against LXT came with LLM-7)
@@ -1324,7 +1325,7 @@ LLM agents live in `pulsatrix::orch` (target `pulsatrix_orchestrator`), because
 | ID | Item | Why | Depends on | P | Effort | Status |
 |---|---|---|---|---|---|---|
 | AGT-1 | An optional `PULSATRIX_ENABLE_ORCHESTRATOR` target, off by default, with nlohmann/json (MIT). The same JSON library serves VIZ-1 and NB-1 | Keeps the core free of networking dependencies | — | P1 | S | Done, [#126](https://github.com/Joshuaweg/pulsatrix/pull/126) (see below) |
-| AGT-2 | An `HttpTransport` interface. cpp-httplib by default, with an optional libcurl backend that uses the operating system's TLS on Windows. A shared server-sent-events parser that ignores unknown event types | Streaming LLM responses | AGT-1 | P1 | M | |
+| AGT-2 | An `HttpTransport` interface. cpp-httplib by default, with an optional libcurl backend that uses the operating system's TLS on Windows. A shared server-sent-events parser that ignores unknown event types | Streaming LLM responses | AGT-1 | P1 | M | Done, [#127](https://github.com/Joshuaweg/pulsatrix/pull/127) (see below) |
 | AGT-3 | Providers and the tool loop: an Anthropic provider and an OpenAI-compatible provider (llama-server, vLLM, Ollama), with one internal message format | The orchestrator itself | AGT-2 | P1 | M | |
 | AGT-4 | A tool registry: name, description, input schema and a `std::function`. Schemas use only the keywords that mean the same in JSON Schema draft-7 and 2020-12, checked by a small built-in validator. The MCP server and the in-process loop share one registry | Define a tool once, use it everywhere | AGT-1 | P1 | S–M | |
 | AGT-5 | A native MCP server over stdio (2026-07-28 specification, with a fallback for older clients) that exposes explain, attribute, logit lens, patching and featurizer tools | Lets Claude and other agents drive pulsatrix | AGT-4, IO-1 | P2 | M | |
@@ -1366,6 +1367,29 @@ AGT-5 has to follow these security rules:
     test linking it from a separate project.
 
   CI's build-and-test job turns the option on, so it is built and tested on Linux and Windows.
+
+- **AGT-2** follows the plan: an `HttpTransport` with a cpp-httplib backend (0.57.1, fetched by
+  hash) and an optional libcurl one, and an `SseParser` written to the WHATWG specification.
+  - **TLS.** cpp-httplib does HTTPS through OpenSSL 3, which CMake finds by default
+    (`PULSATRIX_ORCHESTRATOR_OPENSSL=AUTO`). With it, cpp-httplib also checks certificates
+    against the Windows and macOS stores, so libcurl matters only on Windows without OpenSSL,
+    where it uses Schannel.
+  - **Safety.** Certificate checks can't be turned off; `ca_cert_file` replaces the trust store
+    for a company proxy or a local server. Redirects are never followed, so a key only goes to
+    the URL it was sent to. Header values with CR or LF are refused, and responses are capped
+    at `max_response_bytes`. `Secret` headers are redacted by `HttpRequest::describe()`.
+  - **"Ignores unknown event types"** is the provider's job: the parser passes every type on,
+    and ignores unknown fields as the specification requires.
+  - **Tests** run both backends against a cpp-httplib server in the test process, including
+    TLS with a CA made at run time. With certificate checks turned off, the TLS tests fail, as
+    they should.
+
+### Follow-ups the AGT work surfaced
+
+| Follow-up | Found in | Belongs with |
+|---|---|---|
+| HTTPS on Windows isn't tested in CI: the Windows job builds cpp-httplib without OpenSSL, and libcurl isn't installed there | AGT-2 | KS-8-style CI work |
+| A connection is opened per request. Reusing one would save a TLS handshake per call in a long tool loop | AGT-2 | AGT-3, if it measures slow |
 
 ## KS: Kitchen sink
 

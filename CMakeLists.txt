@@ -486,17 +486,69 @@ endif()
 
 # pulsatrix_orchestrator (AGT): LLM agents in C++, in namespace pulsatrix::orch because
 # pulsatrix::Agent already names the reinforcement-learning policy. A separate, optional target
-# so pulsatrix_core never takes on the networking dependencies the later AGT items add. JSON is
-# pulsatrix's own (json.hpp): strict, depth-limited and deterministic, which is what parsing a
-# remote server's responses needs, so the orchestrator adds no JSON library.
+# so pulsatrix_core never takes on the networking dependencies. JSON is pulsatrix's own
+# (json.hpp): strict, depth-limited and deterministic, which is what parsing a remote server's
+# responses needs, so the orchestrator adds no JSON library.
 set(PULSATRIX_ORCHESTRATOR_SOURCES
     src/orch/secret.cpp
+    src/orch/http.cpp
+    src/orch/sse.cpp
+    src/orch/httplib_transport.cpp
 )
 if(PULSATRIX_ENABLE_ORCHESTRATOR)
+    # HTTP (AGT-2). cpp-httplib (MIT, one header) is always built in; it does HTTPS with OpenSSL 3
+    # and then checks certificates against the system store, including Windows' and macOS'.
+    # AUTO uses OpenSSL when CMake finds it. libcurl is the optional second backend, for its own
+    # TLS: Schannel on Windows, where OpenSSL is rarely installed.
+    set(PULSATRIX_ORCHESTRATOR_OPENSSL AUTO CACHE STRING "HTTPS through OpenSSL 3 for cpp-httplib: AUTO, ON or OFF")
+    set_property(CACHE PULSATRIX_ORCHESTRATOR_OPENSSL PROPERTY STRINGS AUTO ON OFF)
+    option(PULSATRIX_ORCHESTRATOR_CURL "Also build the libcurl HTTP backend (needs libcurl)" OFF)
+
+    include(FetchContent)
+    FetchContent_Declare(
+        cpp_httplib
+        URL https://raw.githubusercontent.com/yhirose/cpp-httplib/v0.57.1/httplib.h
+        URL_HASH SHA256=9bd590b04d9a73848f280e01799d0e08692c0ba454c9d362c9b626dce1c23171
+        DOWNLOAD_NO_EXTRACT TRUE
+    )
+    FetchContent_MakeAvailable(cpp_httplib)
+    set(PULSATRIX_HTTPLIB_INCLUDE_DIR "${cpp_httplib_SOURCE_DIR}")
+
+    set(pulsatrix_orch_openssl OFF)
+    if(PULSATRIX_ORCHESTRATOR_OPENSSL STREQUAL "ON")
+        find_package(OpenSSL 3.0 REQUIRED)
+        set(pulsatrix_orch_openssl ON)
+    elseif(PULSATRIX_ORCHESTRATOR_OPENSSL STREQUAL "AUTO")
+        find_package(OpenSSL 3.0 QUIET)
+        set(pulsatrix_orch_openssl ${OPENSSL_FOUND})
+    endif()
+
     add_library(pulsatrix_orchestrator ${PULSATRIX_ORCHESTRATOR_SOURCES})
     add_library(pulsatrix::orchestrator ALIAS pulsatrix_orchestrator)
     set_target_properties(pulsatrix_orchestrator PROPERTIES EXPORT_NAME orchestrator)
     target_link_libraries(pulsatrix_orchestrator PUBLIC pulsatrix_core)
+    target_include_directories(pulsatrix_orchestrator SYSTEM PRIVATE "${PULSATRIX_HTTPLIB_INCLUDE_DIR}")
+    target_compile_definitions(pulsatrix_orchestrator PRIVATE PULSATRIX_ORCH_VERSION="${PROJECT_VERSION}")
+    if(WIN32)
+        target_link_libraries(pulsatrix_orchestrator PRIVATE ws2_32 crypt32)
+    endif()
+    if(pulsatrix_orch_openssl)
+        target_compile_definitions(pulsatrix_orchestrator PRIVATE CPPHTTPLIB_OPENSSL_SUPPORT)
+        target_link_libraries(pulsatrix_orchestrator PRIVATE OpenSSL::SSL OpenSSL::Crypto)
+        if(APPLE)
+            target_link_libraries(pulsatrix_orchestrator PRIVATE "-framework CoreFoundation" "-framework Security")
+        endif()
+        message(STATUS "pulsatrix_orchestrator: HTTPS through OpenSSL ${OPENSSL_VERSION}")
+    else()
+        message(STATUS "pulsatrix_orchestrator: cpp-httplib without TLS (plain HTTP only)")
+    endif()
+    if(PULSATRIX_ORCHESTRATOR_CURL)
+        find_package(CURL REQUIRED)
+        target_sources(pulsatrix_orchestrator PRIVATE src/orch/curl_transport.cpp)
+        target_compile_definitions(pulsatrix_orchestrator PRIVATE PULSATRIX_ORCH_WITH_CURL)
+        target_link_libraries(pulsatrix_orchestrator PRIVATE CURL::libcurl)
+        message(STATUS "pulsatrix_orchestrator: libcurl ${CURL_VERSION_STRING} backend")
+    endif()
 endif()
 
 find_package(Doxygen QUIET)
