@@ -140,6 +140,7 @@ add_library(pulsatrix_core
     src/featurizer.cpp
     src/featurizer_metrics.cpp
     src/representation_similarity.cpp
+    src/nearest_neighbors.cpp
     src/topk_sparse_autoencoder.cpp
     src/jumprelu_sparse_autoencoder.cpp
     src/transcoder.cpp

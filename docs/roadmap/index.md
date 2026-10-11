@@ -187,7 +187,8 @@ Fine-tune the models from v1.2 and explain what the fine-tuning changed.
 - XAI-1 to XAI-4: the question-driven planner, explanation reports, counterfactuals, surrogates,
   Anchors
 - INT-2 (**done**, [#131](https://github.com/Joshuaweg/pulsatrix/pull/131)): linear CKA
-- INT-1, INT-3 to INT-6: neighbors, probe controls, intrinsic dimension, PCA, TCAV and CRP
+- INT-1 (**done**, [#132](https://github.com/Joshuaweg/pulsatrix/pull/132)): nearest neighbors, mutual nearest neighbors, mutual-kNN alignment
+- INT-3 to INT-6: probe controls, intrinsic dimension, PCA, TCAV and CRP
 - TDA-1 to TDA-8, TDA-11: persistent homology and RTD
 - KS-3, KS-4: uncertainty and adversarial robustness
 - Llama-3.2-1B and Qwen2.5-0.5B pass the golden-logit test
@@ -778,7 +779,7 @@ network says nothing about what the model learned.
 
 | ID | Item | Why | Depends on | P | Effort | Status |
 |---|---|---|---|---|---|---|
-| INT-1 | Nearest neighbors and mutual nearest neighbors over embeddings or activations, with optional mean-centering | The cheapest useful embedding tool; also a cross-model alignment score | FND-3 | P0 | S | |
+| INT-1 | Nearest neighbors and mutual nearest neighbors over embeddings or activations, with optional mean-centering | The cheapest useful embedding tool; also a cross-model alignment score | FND-3 | P0 | S | Done, [#132](https://github.com/Joshuaweg/pulsatrix/pull/132) (see below) |
 | INT-2 | Linear CKA (debiased) | Compare layers across models, training runs and backends | — | P0 | S | Done, [#131](https://github.com/Joshuaweg/pulsatrix/pull/131) (see below) |
 | INT-3 | Control tasks for `LinearProbe` (selectivity = probe accuracy minus control accuracy) | High probe accuracy can come from the probe, not the representation | — | P0 | S | |
 | INT-4 | Anisotropy, effective rank and TwoNN intrinsic dimension | Explains why raw cosine similarity misleads; one number per layer | INT-1 | P1 | S | |
@@ -788,6 +789,19 @@ network says nothing about what the model learned.
 | INT-8 | UMAP and t-SNE: export the data only, don't implement | Expensive, and they distort distances and cluster sizes | VIZ-1 | P3 | — | |
 
 ### How the INT work departed from the plan
+
+- **INT-1** follows the plan: `NearestNeighbors()` (cosine or Euclidean, with optional
+  mean-centering, within one set or against another), `MutualNearestNeighbors()` across two
+  sets, and `MutualKnnAlignment()` between two representations of the same inputs.
+  - **Checked against** PyTorch for the neighbor lists, and against Huh et al.'s `mutual_knn`
+    (platonic-rep's metrics.py) for the alignment, exactly.
+    `tools/generate_neighbors_reference_values.py` makes the values.
+  - **The known failure, hubness, is measured** rather than only documented:
+    `MeasureHubness()` gives each point's k-occurrence and its skewness (Radovanović et al.).
+    A test shows it grow with dimension.
+  - **Exact search on the host, in double precision,** not FND-3's device top-k: the scores
+    stay in double, and ties break the same way (lower index first). An approximate index
+    isn't needed at the sizes interpretability uses; it would be a follow-up if it were.
 
 - **INT-2** follows the plan: `LinearCka()` with the debiased estimator as the default and the
   biased one on request, and `LinearCkaMatrix()` for every pair of layers.
