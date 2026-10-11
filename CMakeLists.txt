@@ -8,6 +8,7 @@ option(PULSATRIX_ENABLE_CUDA "Build the CUDA DeviceBackend" OFF)
 option(PULSATRIX_ENABLE_HIP "Build the HIP/ROCm DeviceBackend" OFF)
 option(PULSATRIX_ENABLE_PYTHON "Build Python bindings via pybind11" OFF)
 option(PULSATRIX_ENABLE_VIZ "Build the Dear ImGui + ImPlot native visualization module" OFF)
+option(PULSATRIX_ENABLE_ORCHESTRATOR "Build pulsatrix_orchestrator, the native LLM agent library (pulsatrix::orch)" OFF)
 option(PULSATRIX_BUILD_TESTS "Build the GoogleTest suite" ON)
 option(PULSATRIX_BUILD_EXAMPLES "Build standalone example executables (examples/)" ON)
 option(PULSATRIX_BUILD_FUZZERS "Build fuzz targets (tools/fuzz/); add sanitizer flags yourself" OFF)
@@ -483,6 +484,21 @@ if(PULSATRIX_ENABLE_VIZ)
     target_include_directories(mnist_viz_gallery SYSTEM PRIVATE ${stb_SOURCE_DIR})
 endif()
 
+# pulsatrix_orchestrator (AGT): LLM agents in C++, in namespace pulsatrix::orch because
+# pulsatrix::Agent already names the reinforcement-learning policy. A separate, optional target
+# so pulsatrix_core never takes on the networking dependencies the later AGT items add. JSON is
+# pulsatrix's own (json.hpp): strict, depth-limited and deterministic, which is what parsing a
+# remote server's responses needs, so the orchestrator adds no JSON library.
+set(PULSATRIX_ORCHESTRATOR_SOURCES
+    src/orch/secret.cpp
+)
+if(PULSATRIX_ENABLE_ORCHESTRATOR)
+    add_library(pulsatrix_orchestrator ${PULSATRIX_ORCHESTRATOR_SOURCES})
+    add_library(pulsatrix::orchestrator ALIAS pulsatrix_orchestrator)
+    set_target_properties(pulsatrix_orchestrator PROPERTIES EXPORT_NAME orchestrator)
+    target_link_libraries(pulsatrix_orchestrator PUBLIC pulsatrix_core)
+endif()
+
 find_package(Doxygen QUIET)
 if(DOXYGEN_FOUND)
     set(DOXYGEN_EXTRACT_ALL YES)
@@ -752,7 +768,8 @@ endif()
 
 # KS-1: `cmake --install` and find_package(pulsatrix). Installs pulsatrix_core as
 # pulsatrix::core with its headers and a package config that finds the same dependencies
-# (threads, and the CUDA or ROCm libraries when this build has those backends). pulsatrix_viz
+# (threads, and the CUDA or ROCm libraries when this build has those backends), plus
+# pulsatrix_orchestrator as pulsatrix::orchestrator when this build has it. pulsatrix_viz
 # and the Python module aren't installed: viz would also have to install its fetched
 # ImGui, ImPlot and GLFW, and the Python module is loaded from the build tree.
 if(PULSATRIX_INSTALL)
@@ -764,6 +781,9 @@ if(PULSATRIX_INSTALL)
         get_filename_component(name "${source}" NAME_WE)
         list(APPEND excluded_headers PATTERN "viz/${name}.hpp" EXCLUDE)
     endforeach()
+    if(NOT PULSATRIX_ENABLE_ORCHESTRATOR)
+        list(APPEND excluded_headers PATTERN "orch" EXCLUDE)
+    endif()
     # A backend's headers include its SDK's, so they ship only with that backend.
     if(NOT PULSATRIX_ENABLE_CUDA)
         foreach(header cuda_backend cuda_check cublas_check)
@@ -781,7 +801,11 @@ if(PULSATRIX_INSTALL)
         ${excluded_headers})
 
     install(TARGETS pulsatrix_svg pulsatrix_bench pulsatrix_golden pulsatrix_attnlrp pulsatrix_tokenizer_parity pulsatrix_explain_text pulsatrix_proteingym pulsatrix_contacts pulsatrix_protein_views pulsatrix_explain_protein pulsatrix_train_esm pulsatrix_finetune_esm pulsatrix_probe_esm pulsatrix_steer_esm pulsatrix_diff_lm pulsatrix_spd_toy RUNTIME DESTINATION "${CMAKE_INSTALL_BINDIR}")
-    install(TARGETS pulsatrix_core
+    set(pulsatrix_installed_libraries pulsatrix_core)
+    if(PULSATRIX_ENABLE_ORCHESTRATOR)
+        list(APPEND pulsatrix_installed_libraries pulsatrix_orchestrator)
+    endif()
+    install(TARGETS ${pulsatrix_installed_libraries}
         EXPORT pulsatrixTargets
         ARCHIVE DESTINATION "${CMAKE_INSTALL_LIBDIR}"
         LIBRARY DESTINATION "${CMAKE_INSTALL_LIBDIR}"

@@ -281,6 +281,11 @@ if(PULSATRIX_ENABLE_HIP)
                                        safetensors_hip_test.cpp)
 endif()
 
+if(PULSATRIX_ENABLE_ORCHESTRATOR)
+    target_sources(pulsatrix_tests PRIVATE orch_secret_test.cpp)
+    target_link_libraries(pulsatrix_tests PRIVATE pulsatrix_orchestrator)
+endif()
+
 # The direct CUDA<->HIP arm of the charter's three-way gate. Compiled only when both vendor
 # backends are on, which no machine available to this project can currently satisfy -- see
 # the file's own header. Guarded rather than omitted so the gate is satisfiable unchanged the

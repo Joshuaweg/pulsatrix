@@ -11,6 +11,9 @@
 #ifdef CONSUMER_WITH_HIP
 #include "pulsatrix/hip_backend.hpp"
 #endif
+#ifdef CONSUMER_WITH_ORCHESTRATOR
+#include "pulsatrix/orch/secret.hpp"
+#endif
 
 int main() {
     using namespace pulsatrix;
@@ -43,6 +46,14 @@ int main() {
         }
     }
     const float after = mean_loss();
+
+#ifdef CONSUMER_WITH_ORCHESTRATOR
+    // Links pulsatrix::orchestrator, not just its headers.
+    if (orch::Secret("key").redacted() != "<secret, 3 characters>") {
+        std::fprintf(stderr, "pulsatrix::orchestrator is broken\n");
+        return 1;
+    }
+#endif
 
     std::printf("pulsatrix %s: XOR loss %.4f -> %.4f\n", EXPECTED_VERSION, before, after);
     if (!(after < before)) {
