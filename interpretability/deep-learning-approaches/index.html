@@ -2656,7 +2656,7 @@ background instances: a valid counterfactual far from all real data may describe
 <ul>
 <li>Call <code>model.set_training(false)</code> first if the model has BatchNorm or Dropout. Otherwise each
   sample's gradients, and so its explanation, depend on the rest of its batch.</li>
-<li>To save or plot a result, see <a href="../../visualization/documents/#json-documents">Visualization</a>. A
+<li>To save or plot a result, see <a href="../../visualization/documents/">Visualization</a>. A
   Grad-CAM map goes through <code>ToSaliencyHeatmap()</code>, then <code>ToHeatmapDocument()</code> for JSON or
   <code>RenderHeatmapSvg()</code> for an SVG figure.</li>
 </ul>

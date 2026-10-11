@@ -2596,7 +2596,7 @@ network's predictions. The core of it looks like this (full source:
   speed on every backend in your build.</li>
 </ul>
 <h2 id="build-options">Build options<a class="headerlink" href="#build-options" title="Permanent link">&para;</a></h2>
-<p>Pass <code>-D&lt;OPTION&gt;=ON</code> or <code>OFF</code> when you configure.</p>
+<p>Pass <code>-D&lt;OPTION&gt;=ON</code> or <code>OFF</code> when you configure (<code>AUTO</code> too, where an option's default is <code>AUTO</code>).</p>
 <table>
 <thead>
 <tr>
@@ -2644,7 +2644,7 @@ network's predictions. The core of it looks like this (full source:
 <tr>
 <td><code>PULSATRIX_ENABLE_ORCHESTRATOR</code></td>
 <td><code>OFF</code></td>
-<td>Builds <code>pulsatrix_orchestrator</code>, the native LLM agent library (in progress). See <a href="../agents/">LLM Agents</a>.</td>
+<td>Builds <code>pulsatrix_orchestrator</code>, the native LLM agent library. See <a href="../agents/">LLM Agents</a>.</td>
 </tr>
 <tr>
 <td><code>PULSATRIX_ORCHESTRATOR_OPENSSL</code></td>
@@ -2742,6 +2742,8 @@ cmake<span class="w"> </span>--install<span class="w"> </span>build<span class="
 </code></pre></div>
 <div class="highlight"><pre><span></span><code><span class="nb">find_package</span><span class="p">(</span><span class="s">pulsatrix</span><span class="w"> </span><span class="s">1.1</span><span class="w"> </span><span class="s">REQUIRED</span><span class="p">)</span>
 <span class="nb">target_link_libraries</span><span class="p">(</span><span class="s">my_app</span><span class="w"> </span><span class="s">PRIVATE</span><span class="w"> </span><span class="s">pulsatrix::core</span><span class="p">)</span>
+<span class="c"># the optional LLM-agent library, when pulsatrix was built with it:</span>
+<span class="c"># target_link_libraries(my_app PRIVATE pulsatrix::orchestrator)</span>
 </code></pre></div>
 <p>Configure your project with <code>-DCMAKE_PREFIX_PATH=/path/to/prefix</code>. The package installs the core
 library, its headers and the command-line tools:

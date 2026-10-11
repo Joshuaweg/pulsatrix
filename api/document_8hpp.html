@@ -556,7 +556,7 @@ Variables</h2></td></tr>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Versioned JSON documents (<code>pulsatrix.&lt;kind&gt;.v1</code>) that every renderer reads. </p>
 <p>Each kind is a plain struct with a writer (ToJson) and a reader (Parse&lt;Kind&gt;Document). The structs hold data only, never colors or layout, so the ImGui widgets, the SVG renderer and anything outside pulsatrix draw the same numbers.</p>
-<p><b>Format rules</b> (docs/visualization/index.md has the full schema):</p><ul>
+<p><b>Format rules</b> (docs/visualization/documents.md has the full schema):</p><ul>
 <li>Every document is a JSON object whose <code>"schema"</code> member is <code>"pulsatrix.&lt;kind&gt;.v&lt;N&gt;"</code>.</li>
 <li><b>Versioning.</b> A reader accepts its own major version only. Within a version, fields are only ever added, and readers ignore fields they don't know, so an older reader can read a newer v1 file. Anything else is a new version.</li>
 <li><b>NaN and infinity.</b> JSON has no literal for them. A non-finite number is written as <code>null</code>, and the document's top-level <code>"nonfinite"</code> object maps that number's JSON Pointer (RFC 6901, for example <code>"/values/3"</code>) to <code>"nan"</code>, <code>"inf"</code> or <code>"-inf"</code>. The member is present only when the document has a non-finite number. A <code>null</code> where a number belongs and no <code>"nonfinite"</code> entry for it is an error, so data is never silently lost.</li>

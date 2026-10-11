@@ -1057,6 +1057,17 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
+  <a href="#local-servers" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Local servers
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#tools-and-the-tool-loop" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -1085,10 +1096,32 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#a-complete-program" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        A complete program
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#what-the-providers-handle-for-you" class="md-nav__link">
     <span class="md-ellipsis">
       
         What the providers handle for you
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#threads" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Threads
       
     </span>
   </a>
@@ -2355,6 +2388,17 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
+  <a href="#local-servers" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Local servers
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#tools-and-the-tool-loop" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -2383,10 +2427,32 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#a-complete-program" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        A complete program
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#what-the-providers-handle-for-you" class="md-nav__link">
     <span class="md-ellipsis">
       
         What the providers handle for you
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#threads" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Threads
       
     </span>
   </a>
@@ -2452,15 +2518,15 @@
 
 
 <h1 id="llm-agents-orchestrator">LLM Agents (Orchestrator)<a class="headerlink" href="#llm-agents-orchestrator" title="Permanent link">&para;</a></h1>
-<p>pulsatrix is getting a native C++ library for LLM agents: a client for the Anthropic API and for
-OpenAI-compatible local servers (llama-server, vLLM, Ollama), a tool loop, and later an MCP server
-that lets Claude and other agents drive pulsatrix's explainers. It needs no Python and no SDK.</p>
+<p>pulsatrix has a native C++ library for LLM agents. It is a client for the Anthropic API (Claude)
+and for OpenAI-compatible local servers (llama-server, vLLM, Ollama), with streaming and
+retries, a tool loop, and a tool registry that checks the model's inputs. It needs no Python
+and no SDK.</p>
 <div class="admonition note">
-<p class="admonition-title">In progress</p>
-<p>So far: the build target, API keys and JSON (AGT-1), HTTP with streaming (AGT-2), the
-providers with the tool loop (AGT-3), and a tool registry that checks the model's tool
-inputs (AGT-4). An MCP server that serves the same registry follows as AGT-5. See the
-<a href="../roadmap/#agt-agents-native-c">roadmap</a>.</p>
+<p class="admonition-title">Planned</p>
+<p>An <a href="https://modelcontextprotocol.io">MCP</a> (Model Context Protocol) server, which will let
+Claude and other agents call pulsatrix's explainers as tools, serving the same tool
+registry. See the <a href="../roadmap/#agt-agents-native-c">roadmap</a>.</p>
 </div>
 <h2 id="building-it">Building it<a class="headerlink" href="#building-it" title="Permanent link">&para;</a></h2>
 <p>The orchestrator is a separate library, off by default, so the core library never takes on
@@ -2491,12 +2557,26 @@ at a pinned version). Two settings control TLS:</p>
 </tr>
 </tbody>
 </table>
-<p>Plain HTTP is enough for a local server such as llama-server or Ollama. The Anthropic API needs
+<p>Plain HTTP is enough for a local server such as llama-server or Ollama. The Claude API needs
 HTTPS.</p>
-<p>Link <code>pulsatrix_orchestrator</code> in the same build, or <code>pulsatrix::orchestrator</code> from an installed
-pulsatrix (<code>find_package(pulsatrix)</code> sets <code>pulsatrix_HAS_ORCHESTRATOR</code>). Its headers are under
-<code>pulsatrix/orch/</code> and its names in <code>pulsatrix::orch</code>, since <code>pulsatrix::Agent</code> already names the
-reinforcement-learning policy.</p>
+<div class="admonition warning">
+<p class="admonition-title">Without OpenSSL, <code>AUTO</code> builds anyway</p>
+<p>If CMake doesn't find OpenSSL, <code>AUTO</code> only prints a status line, and every <code>https://</code>
+request (every Claude call) then fails at run time with an <code>HttpError</code> of kind <code>Tls</code>. Pass
+<code>-DPULSATRIX_ORCHESTRATOR_OPENSSL=ON</code> to make a missing OpenSSL a configure error instead.
+<code>HttpsSupported(HttpBackend::Httplib)</code> tells a program at run time.</p>
+</div>
+<p>To use it from your own CMake project, link <code>pulsatrix_orchestrator</code> in the same build, or
+<code>pulsatrix::orchestrator</code> from an installed pulsatrix:</p>
+<div class="highlight"><pre><span></span><code><span class="nb">find_package</span><span class="p">(</span><span class="s">pulsatrix</span><span class="w"> </span><span class="s">1.1</span><span class="w"> </span><span class="s">REQUIRED</span><span class="p">)</span>
+<span class="nb">if</span><span class="p">(</span><span class="s">pulsatrix_HAS_ORCHESTRATOR</span><span class="p">)</span>
+<span class="w">    </span><span class="nb">target_link_libraries</span><span class="p">(</span><span class="s">my_app</span><span class="w"> </span><span class="s">PRIVATE</span><span class="w"> </span><span class="s">pulsatrix::orchestrator</span><span class="p">)</span>
+<span class="nb">endif</span><span class="p">()</span>
+</code></pre></div>
+<p>The package finds OpenSSL and libcurl for you. Linking the static libraries by hand needs
+<code>-lssl -lcrypto</code> too (and <code>-lcurl</code> with the libcurl backend).</p>
+<p>Its headers are under <code>pulsatrix/orch/</code> and its names in <code>pulsatrix::orch</code>, since
+<code>pulsatrix::Agent</code> already names the reinforcement-learning policy.</p>
 <h2 id="talking-to-a-model">Talking to a model<a class="headerlink" href="#talking-to-a-model" title="Permanent link">&para;</a></h2>
 <p>A <code>Provider</code> sends a conversation to a model and streams the answer back. There are two:</p>
 <ul>
@@ -2520,51 +2600,79 @@ works with the other:</p>
 <span class="n">ChatResponse</span><span class="w"> </span><span class="n">answer</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">claude</span><span class="o">-&gt;</span><span class="n">chat</span><span class="p">(</span><span class="n">request</span><span class="p">,</span><span class="w"> </span><span class="p">{[](</span><span class="n">std</span><span class="o">::</span><span class="n">string_view</span><span class="w"> </span><span class="n">text</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">text</span><span class="p">;</span><span class="w"> </span><span class="p">}});</span>
 <span class="n">std</span><span class="o">::</span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">"</span><span class="se">\n</span><span class="s">"</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">answer</span><span class="p">.</span><span class="n">usage</span><span class="p">.</span><span class="n">output_tokens</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">" tokens</span><span class="se">\n</span><span class="s">"</span><span class="p">;</span>
 </code></pre></div>
-<p>The callback prints the answer as it arrives. <code>answer.message</code> holds the whole thing.</p>
-<p>For a local model, only the provider changes:</p>
+<p>The callback prints the answer as it arrives. <code>answer.message</code> holds the whole thing.
+<code>max_tokens</code>, the longest answer allowed, is 4096 unless you set it.</p>
+<h3 id="local-servers">Local servers<a class="headerlink" href="#local-servers" title="Permanent link">&para;</a></h3>
+<p>For a local model, only the provider and the model name change:</p>
 <div class="highlight"><pre><span></span><code><span class="n">OpenAiCompatibleOptions</span><span class="w"> </span><span class="n">local</span><span class="p">;</span>
 <span class="n">local</span><span class="p">.</span><span class="n">base_url</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">"http://127.0.0.1:11434/v1"</span><span class="p">;</span><span class="w">  </span><span class="c1">// Ollama; llama-server's default is http://127.0.0.1:8080/v1</span>
 <span class="n">std</span><span class="o">::</span><span class="n">unique_ptr</span><span class="o">&lt;</span><span class="n">Provider</span><span class="o">&gt;</span><span class="w"> </span><span class="n">model</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">MakeOpenAiCompatibleProvider</span><span class="p">(</span><span class="n">local</span><span class="p">);</span>
-<span class="n">request</span><span class="p">.</span><span class="n">model</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">"qwen2.5:7b"</span><span class="p">;</span>
+<span class="n">request</span><span class="p">.</span><span class="n">model</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">"qwen2.5:7b"</span><span class="p">;</span><span class="w">  </span><span class="c1">// a model the server has, for example one pulled with `ollama pull`</span>
 </code></pre></div>
+<ul>
+<li>A server that wants a token (vLLM started with <code>--api-key</code>, or a hosted endpoint) gets it
+  from <code>local.api_key = Secret("...")</code>; it's sent as a bearer token.</li>
+<li>Tool calls need a model that was trained for them, and a server set up to parse them; check
+  your server's documentation.</li>
+<li>A tool's <code>strict</code> flag is passed on to the server, which may ignore it. The tool registry
+  below checks inputs either way.</li>
+</ul>
 <h3 id="tools-and-the-tool-loop">Tools and the tool loop<a class="headerlink" href="#tools-and-the-tool-loop" title="Permanent link">&para;</a></h3>
-<p>Define each tool once in a <code>ToolRegistry</code>: a name, a description, a JSON Schema for its input and
-the function that runs it. The registry gives the provider the tool definitions and gives
-<code>RunToolLoop()</code> an executor. The loop asks the model, runs each tool the model calls, sends the
-results back, and repeats until the model answers:</p>
+<p>Define each tool once in a <code>ToolRegistry</code>: a name, a description, a
+<a href="https://json-schema.org">JSON Schema</a> for its input and the function that runs it. The registry
+gives the provider the tool definitions and gives <code>RunToolLoop()</code> an executor. The loop asks the
+model, runs each tool the model calls, sends the results back, and repeats until the model
+answers:</p>
 <div class="highlight"><pre><span></span><code><span class="cp">#include</span><span class="w"> </span><span class="cpf">"pulsatrix/orch/tool_registry.hpp"</span>
 
 <span class="n">ToolRegistry</span><span class="w"> </span><span class="n">tools</span><span class="p">;</span>
-<span class="n">tools</span><span class="p">.</span><span class="n">add</span><span class="p">({</span><span class="s">"add"</span><span class="p">,</span><span class="w"> </span><span class="s">"Adds two integers a and b and returns their sum."</span><span class="p">,</span>
+<span class="n">tools</span><span class="p">.</span><span class="n">add</span><span class="p">({</span><span class="s">"add"</span><span class="p">,</span><span class="w"> </span><span class="s">"Adds two numbers a and b and returns their sum."</span><span class="p">,</span>
 <span class="w">           </span><span class="n">pulsatrix</span><span class="o">::</span><span class="n">ParseJson</span><span class="p">(</span><span class="sa">R</span><span class="s">"</span><span class="dl">(</span><span class="s">{"type": "object",</span>
-<span class="s">               "properties": {"a": {"type": "integer"}, "b": {"type": "integer"}},</span>
+<span class="s">               "properties": {"a": {"type": "number"}, "b": {"type": "number"}},</span>
 <span class="s">               "required": ["a", "b"], "additionalProperties": false}</span><span class="dl">)</span><span class="s">"</span><span class="p">),</span>
 <span class="w">           </span><span class="p">[](</span><span class="k">const</span><span class="w"> </span><span class="n">pulsatrix</span><span class="o">::</span><span class="n">JsonValue</span><span class="o">&amp;</span><span class="w"> </span><span class="n">input</span><span class="p">)</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="n">ToolOutcome</span><span class="w"> </span><span class="p">{</span>
-<span class="w">               </span><span class="k">return</span><span class="w"> </span><span class="p">{</span><span class="n">std</span><span class="o">::</span><span class="n">to_string</span><span class="p">(</span><span class="n">input</span><span class="p">.</span><span class="n">find</span><span class="p">(</span><span class="s">"a"</span><span class="p">)</span><span class="o">-&gt;</span><span class="n">as_int64</span><span class="p">()</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">input</span><span class="p">.</span><span class="n">find</span><span class="p">(</span><span class="s">"b"</span><span class="p">)</span><span class="o">-&gt;</span><span class="n">as_int64</span><span class="p">())};</span>
+<span class="w">               </span><span class="k">const</span><span class="w"> </span><span class="kt">double</span><span class="w"> </span><span class="n">sum</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">input</span><span class="p">.</span><span class="n">find</span><span class="p">(</span><span class="s">"a"</span><span class="p">)</span><span class="o">-&gt;</span><span class="n">as_double</span><span class="p">()</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">input</span><span class="p">.</span><span class="n">find</span><span class="p">(</span><span class="s">"b"</span><span class="p">)</span><span class="o">-&gt;</span><span class="n">as_double</span><span class="p">();</span>
+<span class="w">               </span><span class="k">return</span><span class="w"> </span><span class="p">{</span><span class="n">pulsatrix</span><span class="o">::</span><span class="n">WriteJsonCompact</span><span class="p">(</span><span class="n">sum</span><span class="p">)};</span>
 <span class="w">           </span><span class="p">},</span>
-<span class="w">           </span><span class="cm">/*strict=*/</span><span class="nb">true</span><span class="p">});</span><span class="w">  </span><span class="c1">// Claude guarantees inputs that match the schema</span>
+<span class="w">           </span><span class="cm">/*strict=*/</span><span class="nb">true</span><span class="p">});</span><span class="w">  </span><span class="c1">// strict tool use: Claude only writes inputs that match the schema</span>
 <span class="n">request</span><span class="p">.</span><span class="n">tools</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">tools</span><span class="p">.</span><span class="n">specs</span><span class="p">();</span>
 
 <span class="n">ToolLoopResult</span><span class="w"> </span><span class="n">result</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">RunToolLoop</span><span class="p">(</span><span class="o">*</span><span class="n">claude</span><span class="p">,</span><span class="w"> </span><span class="n">request</span><span class="p">,</span><span class="w"> </span><span class="n">tools</span><span class="p">.</span><span class="n">executor</span><span class="p">());</span>
 <span class="n">std</span><span class="o">::</span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">result</span><span class="p">.</span><span class="n">last</span><span class="p">.</span><span class="n">message</span><span class="p">.</span><span class="n">text</span><span class="p">()</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">"</span><span class="se">\n</span><span class="s">"</span><span class="p">;</span>
 </code></pre></div>
 <p>The registry checks every input against its tool's schema before the function sees it, so the
-function above can rely on <code>a</code> and <code>b</code> being integers. Every mistake goes back to the model as
-an error result it can act on, never as an exception:</p>
+function above can rely on <code>a</code> and <code>b</code> being there and being numbers. (A schema's <code>"integer"</code>
+admits <code>1.0</code> and numbers too large for <code>int64_t</code>, as JSON Schema says it should, so a function
+that calls <code>as_int64()</code> can still throw.) Every mistake goes back to the model as an error
+result it can act on, never as an exception in your program:</p>
 <ul>
-<li>an input that doesn't match the schema lists each problem and where it is, for example
-  <code>/a must be an integer, not a string</code>;</li>
+<li>an input that doesn't match the schema lists each problem and where it is, as a
+  <a href="https://www.rfc-editor.org/rfc/rfc6901">JSON Pointer</a> (<code>/a</code> is member <code>a</code>, <code>/items/0</code> the
+  first element): <code>The input for add doesn't match its schema: - /a must be a number, not a
+  string</code>;</li>
 <li>arguments that weren't valid JSON, which small local models sometimes write;</li>
-<li>a tool name that doesn't exist, with the names that do;</li>
-<li>a function that throws, with the exception's message. A function can also return
-  <code>{"message", /*is_error=*/true}</code> itself.</li>
+<li>a tool name that doesn't exist: <code>There is no tool named "sub". The tools are: add.</code>;</li>
+<li>a function that throws: <code>The tool failed:</code> and the exception's message. A function can also
+  return <code>{"message", /*is_error=*/true}</code> itself.</li>
 </ul>
-<p><code>max_turns</code> (20) bounds the loop. <code>RunToolLoop()</code> takes any function from <code>ToolCall</code> to
-<code>ToolOutcome</code>, so a registry is optional.</p>
+<p>The messages never quote the model's values back to it.</p>
+<p><code>executor()</code> refers to the registry, so keep the registry alive while the loop runs.
+<code>RunToolLoop()</code> takes any function from <code>ToolCall</code> to <code>ToolOutcome</code>, so a registry is optional.</p>
+<p>The loop's fourth argument, <code>ToolLoopOptions</code>, has:</p>
+<ul>
+<li><code>max_turns</code> (20): the most requests the loop makes. If the model still wants tools then,
+  <code>result.hit_turn_limit</code> is true and the conversation ends on tool results, so
+  <code>result.last.message.text()</code> may be empty.</li>
+<li><code>stream</code>: callbacks for the streamed text and thinking, as in <code>chat()</code>.</li>
+<li><code>on_message</code>: called with each message the loop adds, the model's answers and the tool
+  results, for logging or showing progress.</li>
+</ul>
+<p><code>result.messages</code> is the whole conversation, ready to continue with another request, and
+<code>result.usage</code> adds up the tokens of every request.</p>
 <h4 id="which-schemas-work">Which schemas work<a class="headerlink" href="#which-schemas-work" title="Permanent link">&para;</a></h4>
-<p>A schema may use only the JSON Schema keywords that mean the same in draft-7 and 2020-12, so the
-same schema works with Claude, with OpenAI-compatible servers and with MCP clients, whichever
-draft they assume:</p>
+<p>JSON Schema has several versions ("drafts"). Claude, OpenAI-compatible servers and MCP clients
+don't all assume the same one, so a schema may use only the keywords that mean the same in
+draft-7 and 2020-12, the two in use:</p>
 <table>
 <thead>
 <tr>
@@ -2607,33 +2715,128 @@ draft they assume:</p>
 <code>$defs</code>/<code>definitions</code> (spelled differently in the two drafts; write the schema out), <code>items</code> as
 an array (2020-12 calls it <code>prefixItems</code>), and <code>pattern</code> (check the string in the tool).
 <code>ValidateJson()</code> and <code>CheckSchema()</code> in <code>json_schema.hpp</code> work on their own as well.</p>
-<p><code>strict = true</code> asks Claude to guarantee inputs that match the schema. Strict mode needs
-<code>"additionalProperties": false</code> on every object and doesn't support numeric or length limits,
-<code>oneOf</code> or <code>not</code>, so <code>add()</code> refuses a strict tool whose schema has them, with the reason.
-<code>StrictModeProblem()</code> says the same for any schema. A request may have at most 20 strict tools.</p>
+<p><strong>Strict tool use.</strong> With <code>strict = true</code>, Claude's sampling is constrained so that it can only
+write inputs that match the schema. Strict mode supports fewer schemas, and <code>add()</code> refuses a
+strict tool whose schema it can't take, with the reason. A strict schema needs
+<code>"additionalProperties": false</code> on every object, and can't have:</p>
+<ul>
+<li><code>minimum</code>, <code>maximum</code>, <code>exclusiveMinimum</code>, <code>exclusiveMaximum</code> or <code>multipleOf</code>;</li>
+<li><code>minLength</code> or <code>maxLength</code>;</li>
+<li><code>maxItems</code>, <code>uniqueItems</code>, or <code>minItems</code> above 1;</li>
+<li><code>minProperties</code> or <code>maxProperties</code>;</li>
+<li><code>oneOf</code> or <code>not</code>;</li>
+<li><code>enum</code> values that are arrays or objects, or <code>true</code>/<code>false</code> in place of a schema.</li>
+</ul>
+<p><code>StrictModeProblem()</code> says the same for any schema. The API also limits a whole request to 20
+strict tools, 24 optional parameters and 16 parameters with a choice of types (<code>anyOf</code> or a
+<code>type</code> array) across its strict tools. Those aren't checked here; the API answers 400.</p>
+<h3 id="a-complete-program">A complete program<a class="headerlink" href="#a-complete-program" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;csignal&gt;</span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;iostream&gt;</span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;memory&gt;</span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;string&gt;</span>
+
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">"pulsatrix/orch/provider.hpp"</span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">"pulsatrix/orch/tool_registry.hpp"</span>
+
+<span class="k">using</span><span class="w"> </span><span class="k">namespace</span><span class="w"> </span><span class="nn">pulsatrix</span><span class="o">::</span><span class="nn">orch</span><span class="p">;</span>
+
+<span class="kt">int</span><span class="w"> </span><span class="nf">main</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">argc</span><span class="p">,</span><span class="w"> </span><span class="kt">char</span><span class="o">**</span><span class="w"> </span><span class="n">argv</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="cp">#ifndef _WIN32</span>
+<span class="w">    </span><span class="n">std</span><span class="o">::</span><span class="n">signal</span><span class="p">(</span><span class="n">SIGPIPE</span><span class="p">,</span><span class="w"> </span><span class="n">SIG_IGN</span><span class="p">);</span><span class="w">  </span><span class="c1">// see "HTTP and streaming" below</span>
+<span class="cp">#endif</span>
+<span class="w">    </span><span class="k">const</span><span class="w"> </span><span class="kt">bool</span><span class="w"> </span><span class="n">local</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">argc</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="p">(</span><span class="n">argv</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="s">"--local"</span><span class="p">;</span>
+<span class="w">    </span><span class="k">try</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="n">std</span><span class="o">::</span><span class="n">unique_ptr</span><span class="o">&lt;</span><span class="n">Provider</span><span class="o">&gt;</span><span class="w"> </span><span class="n">model</span><span class="p">;</span>
+<span class="w">        </span><span class="n">ChatRequest</span><span class="w"> </span><span class="n">request</span><span class="p">;</span>
+<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">local</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">            </span><span class="n">OpenAiCompatibleOptions</span><span class="w"> </span><span class="n">options</span><span class="p">;</span>
+<span class="w">            </span><span class="n">options</span><span class="p">.</span><span class="n">base_url</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">"http://127.0.0.1:11434/v1"</span><span class="p">;</span><span class="w">  </span><span class="c1">// Ollama</span>
+<span class="w">            </span><span class="n">model</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">MakeOpenAiCompatibleProvider</span><span class="p">(</span><span class="n">options</span><span class="p">);</span>
+<span class="w">            </span><span class="n">request</span><span class="p">.</span><span class="n">model</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">"qwen2.5:7b"</span><span class="p">;</span>
+<span class="w">        </span><span class="p">}</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="p">{</span>
+<span class="w">            </span><span class="n">model</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">MakeAnthropicProvider</span><span class="p">(</span><span class="n">AnthropicOptions</span><span class="o">::</span><span class="n">FromEnv</span><span class="p">());</span>
+<span class="w">            </span><span class="n">request</span><span class="p">.</span><span class="n">model</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">"claude-opus-5-5"</span><span class="p">;</span>
+<span class="w">        </span><span class="p">}</span>
+
+<span class="w">        </span><span class="n">ToolRegistry</span><span class="w"> </span><span class="n">tools</span><span class="p">;</span>
+<span class="w">        </span><span class="n">tools</span><span class="p">.</span><span class="n">add</span><span class="p">({</span><span class="s">"add"</span><span class="p">,</span><span class="w"> </span><span class="s">"Adds two numbers a and b and returns their sum."</span><span class="p">,</span>
+<span class="w">                   </span><span class="n">pulsatrix</span><span class="o">::</span><span class="n">ParseJson</span><span class="p">(</span><span class="sa">R</span><span class="s">"</span><span class="dl">(</span><span class="s">{"type": "object",</span>
+<span class="s">                       "properties": {"a": {"type": "number"}, "b": {"type": "number"}},</span>
+<span class="s">                       "required": ["a", "b"], "additionalProperties": false}</span><span class="dl">)</span><span class="s">"</span><span class="p">),</span>
+<span class="w">                   </span><span class="p">[](</span><span class="k">const</span><span class="w"> </span><span class="n">pulsatrix</span><span class="o">::</span><span class="n">JsonValue</span><span class="o">&amp;</span><span class="w"> </span><span class="n">input</span><span class="p">)</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="n">ToolOutcome</span><span class="w"> </span><span class="p">{</span>
+<span class="w">                       </span><span class="k">return</span><span class="w"> </span><span class="p">{</span><span class="n">pulsatrix</span><span class="o">::</span><span class="n">WriteJsonCompact</span><span class="p">(</span><span class="n">input</span><span class="p">.</span><span class="n">find</span><span class="p">(</span><span class="s">"a"</span><span class="p">)</span><span class="o">-&gt;</span><span class="n">as_double</span><span class="p">()</span><span class="w"> </span><span class="o">+</span>
+<span class="w">                                                           </span><span class="n">input</span><span class="p">.</span><span class="n">find</span><span class="p">(</span><span class="s">"b"</span><span class="p">)</span><span class="o">-&gt;</span><span class="n">as_double</span><span class="p">())};</span>
+<span class="w">                   </span><span class="p">}});</span>
+<span class="w">        </span><span class="n">request</span><span class="p">.</span><span class="n">tools</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">tools</span><span class="p">.</span><span class="n">specs</span><span class="p">();</span>
+<span class="w">        </span><span class="n">request</span><span class="p">.</span><span class="n">messages</span><span class="p">.</span><span class="n">push_back</span><span class="p">(</span><span class="n">Message</span><span class="o">::</span><span class="n">User</span><span class="p">(</span><span class="s">"What is 1234.5 + 6789.25? Use the add tool."</span><span class="p">));</span>
+
+<span class="w">        </span><span class="n">ToolLoopOptions</span><span class="w"> </span><span class="n">options</span><span class="p">;</span>
+<span class="w">        </span><span class="n">options</span><span class="p">.</span><span class="n">stream</span><span class="p">.</span><span class="n">on_text</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[](</span><span class="n">std</span><span class="o">::</span><span class="n">string_view</span><span class="w"> </span><span class="n">text</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">text</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">flush</span><span class="p">;</span><span class="w"> </span><span class="p">};</span>
+<span class="w">        </span><span class="k">const</span><span class="w"> </span><span class="n">ToolLoopResult</span><span class="w"> </span><span class="n">result</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">RunToolLoop</span><span class="p">(</span><span class="o">*</span><span class="n">model</span><span class="p">,</span><span class="w"> </span><span class="n">request</span><span class="p">,</span><span class="w"> </span><span class="n">tools</span><span class="p">.</span><span class="n">executor</span><span class="p">(),</span><span class="w"> </span><span class="n">options</span><span class="p">);</span>
+<span class="w">        </span><span class="n">std</span><span class="o">::</span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">"</span><span class="se">\n</span><span class="s">("</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">result</span><span class="p">.</span><span class="n">turns</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">" requests, "</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">result</span><span class="p">.</span><span class="n">usage</span><span class="p">.</span><span class="n">input_tokens</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">" tokens in, "</span>
+<span class="w">                  </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">result</span><span class="p">.</span><span class="n">usage</span><span class="p">.</span><span class="n">output_tokens</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">" out)</span><span class="se">\n</span><span class="s">"</span><span class="p">;</span>
+<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="n">result</span><span class="p">.</span><span class="n">hit_turn_limit</span><span class="w"> </span><span class="o">?</span><span class="w"> </span><span class="mi">2</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+<span class="w">    </span><span class="p">}</span><span class="w"> </span><span class="k">catch</span><span class="w"> </span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="n">ProviderError</span><span class="o">&amp;</span><span class="w"> </span><span class="n">e</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="n">std</span><span class="o">::</span><span class="n">cerr</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">"the provider failed: "</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">e</span><span class="p">.</span><span class="n">what</span><span class="p">()</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">"</span><span class="se">\n</span><span class="s">"</span><span class="p">;</span>
+<span class="w">    </span><span class="p">}</span><span class="w"> </span><span class="k">catch</span><span class="w"> </span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="n">HttpError</span><span class="o">&amp;</span><span class="w"> </span><span class="n">e</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="n">std</span><span class="o">::</span><span class="n">cerr</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">"the request couldn't be sent: "</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">e</span><span class="p">.</span><span class="n">what</span><span class="p">()</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">"</span><span class="se">\n</span><span class="s">"</span><span class="p">;</span>
+<span class="w">    </span><span class="p">}</span><span class="w"> </span><span class="k">catch</span><span class="w"> </span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">exception</span><span class="o">&amp;</span><span class="w"> </span><span class="n">e</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w">  </span><span class="c1">// a missing key, or a bad request</span>
+<span class="w">        </span><span class="n">std</span><span class="o">::</span><span class="n">cerr</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">e</span><span class="p">.</span><span class="n">what</span><span class="p">()</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">"</span><span class="se">\n</span><span class="s">"</span><span class="p">;</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div>
 <h3 id="what-the-providers-handle-for-you">What the providers handle for you<a class="headerlink" href="#what-the-providers-handle-for-you" title="Permanent link">&para;</a></h3>
 <ul>
-<li><strong>Retries.</strong> Overloads (529), server errors (500, 502, 503, 504), timeouts and broken
-  connections are retried twice, with a random wait that doubles each time. A rate limit (429)
-  waits as long as the server's <code>retry-after</code> says. A 429 without <code>retry-after</code> from the Claude
-  API is the monthly spend cap, which retrying can't fix, so it fails at once. Nothing is
-  retried once part of the answer has reached your callback, since a retry would repeat it.</li>
-<li><strong>Errors.</strong> <code>ProviderError</code> carries the HTTP status, the API's error type (for example
-  <code>overloaded_error</code>) and the request ID to quote to support.</li>
-<li><strong>Prompt caching</strong> (Claude). The tool definitions, the system prompt and the conversation so
-  far are cached, so each turn of a tool loop pays full price only for what's new.
-  <code>answer.usage.cache_read_input_tokens</code> shows it working. Prompts under 512 tokens aren't
-  cached.</li>
-<li><strong>Thinking.</strong> Current Claude models think before answering. Their thinking blocks have to be
-  sent back unchanged in a tool loop, and they are; <code>on_thinking</code> shows the thinking as it
-  streams.</li>
-<li><strong>Tool choice.</strong> Current Claude models (Opus 5.5, Sonnet 5.5, Fable 5.1) reject forcing a
-  particular tool with HTTP 400, so the providers never do. Set <code>allow_tool_calls = false</code> to
-  tell the model not to call any.</li>
-<li><strong>Local models.</strong> A small model sometimes writes tool arguments that aren't valid JSON. The
-  provider keeps them as a string in <code>call.input</code> instead of failing, and the registry reports
-  the mistake back to the model.</li>
+<li>
+<p><strong>Retries.</strong> These are retried, by default twice:</p>
+<ul>
+<li>overloads (529) and server errors (500, 502, 503, 504);</li>
+<li>request timeouts (408);</li>
+<li>rate limits (429);</li>
+<li>connections that fail, time out or break;</li>
+<li>an overload or server error reported partway through Claude's stream.</li>
 </ul>
+<p>A retry waits a random time up to 1 s, then up to 2 s, doubling to at most 30 s, so many
+clients don't retry in step. When the server sends <code>retry-after</code>, the retry waits that long
+instead, but a <code>retry-after</code> over 60 s fails at once. A 429 without <code>retry-after</code> from the
+Claude API is the monthly spend cap, which retrying can't fix, so it fails at once too.
+Nothing is retried once part of the answer has reached your callback, since a retry would
+repeat it. <code>AnthropicOptions::retry</code> and <code>OpenAiCompatibleOptions::retry</code> (a <code>RetryPolicy</code>)
+change all of this; <code>max_retries = 0</code> turns it off.
+- <strong>Errors.</strong> <code>chat()</code> and <code>RunToolLoop()</code> throw:
+- <code>ProviderError</code> for an error response, or when the retries run out. It carries the HTTP
+  <code>status()</code>, the API's error <code>type()</code> (for example <code>overloaded_error</code>) and the
+  <code>request_id()</code> to quote to support. A connection that kept failing has status 0 and type
+  <code>transport</code>.
+- <code>HttpError</code> for a request that can't be sent at all: no TLS in this build (<code>Tls</code>), a bad
+  URL or header (<code>InvalidRequest</code>), or a response over the size limit (<code>TooLarge</code>).
+- <code>std::invalid_argument</code> for a request without a model or messages, or with <code>max_tokens</code>
+  below 1.</p>
+<p>Making the provider can fail too: <code>AnthropicOptions::FromEnv()</code> throws <code>std::runtime_error</code>
+when <code>ANTHROPIC_API_KEY</code> isn't set, and <code>MakeAnthropicProvider()</code> throws
+<code>std::invalid_argument</code> for an empty key.
+- <strong>Prompt caching</strong> (Claude). The API can reuse the start of a prompt it saw recently, which
+  makes it cheaper and faster. The providers mark the tool definitions, the system prompt and
+  the conversation so far for caching, so each turn of a tool loop pays full price only for
+  what's new. <code>answer.usage.cache_read_input_tokens</code> shows it working. Prompts under 512 tokens
+  aren't cached.
+- <strong>Thinking.</strong> Current Claude models reason before answering, and send that reasoning as
+  "thinking" blocks. In a tool loop they have to be sent back unchanged, and they are;
+  <code>on_thinking</code> shows the thinking as it streams.
+- <strong>Tool choice.</strong> Current Claude models (Opus 5.5, Sonnet 5.5, Fable 5.1) reject forcing a
+  particular tool with HTTP 400, so the providers never do. Set <code>allow_tool_calls = false</code> to
+  tell the model not to call any.
+- <strong>Local models.</strong> A small model sometimes writes tool arguments that aren't valid JSON. The
+  OpenAI-compatible provider keeps them as a string in <code>call.input</code> instead of failing, and the
+  registry reports the mistake back to the model.</p>
+</li>
+</ul>
+<h3 id="threads">Threads<a class="headerlink" href="#threads" title="Permanent link">&para;</a></h3>
+<p>A provider handles one request at a time: give each thread its own. A <code>ToolRegistry</code> may run
+tools from several threads at once, as long as your functions allow it, but finish adding tools
+before any loop starts.</p>
 <h2 id="api-keys">API keys<a class="headerlink" href="#api-keys" title="Permanent link">&para;</a></h2>
 <p><code>orch::Secret</code> holds a credential. It has no <code>operator&lt;&lt;</code> and doesn't convert to a string, so a
 key can't reach a log line or an error message by accident. The one way to read it is <code>reveal()</code>:</p>
@@ -2651,9 +2854,10 @@ key can't reach a log line or an error message by accident. The one way to read 
 <h2 id="http-and-streaming">HTTP and streaming<a class="headerlink" href="#http-and-streaming" title="Permanent link">&para;</a></h2>
 <p>The providers are built on this layer. Use it directly for an API they don't cover.</p>
 <p><code>MakeHttpTransport()</code> returns a transport: libcurl when the build has it, cpp-httplib otherwise.
-<code>send()</code> waits for the whole response; <code>stream()</code> passes a successful response's body to a
-callback as it arrives, which is how LLM APIs stream their answers. <code>SseParser</code> turns those chunks
-into server-sent events:</p>
+<code>MakeHttpTransport(HttpBackend::Httplib)</code> or <code>(HttpBackend::Curl)</code> picks one. <code>send()</code> waits for
+the whole response; <code>stream()</code> passes a successful response's body to a callback as it arrives,
+which is how LLM APIs stream their answers. <code>SseParser</code> turns those chunks into server-sent
+events (SSE), the <code>text/event-stream</code> format the APIs stream in:</p>
 <div class="highlight"><pre><span></span><code><span class="cp">#include</span><span class="w"> </span><span class="cpf">"pulsatrix/orch/http.hpp"</span>
 <span class="cp">#include</span><span class="w"> </span><span class="cpf">"pulsatrix/orch/sse.hpp"</span>
 
@@ -2691,15 +2895,17 @@ into server-sent events:</p>
   stops a server that never stops sending.</li>
 <li><strong>Certificate checks can't be turned off.</strong> To trust a company proxy or your own server,
   pass its CA certificate: <code>MakeHttpTransport({"/path/to/ca.pem"})</code>. It replaces the system's
-  trust store.</li>
+  trust store. A provider takes the transport as its second argument:
+  <code>MakeAnthropicProvider(options, MakeHttpTransport({"/path/to/ca.pem"}))</code>.</li>
 <li><strong>Errors.</strong> A response with a 4xx or 5xx status is a response. A request that got no
   response throws <code>HttpError</code>, whose <code>kind()</code> says why: <code>Connect</code>, <code>Tls</code>, <code>Timeout</code>, <code>TooLarge</code>,
-  <code>Protocol</code> or <code>InvalidRequest</code>. A header value with a CR or LF is refused before anything is
-  sent, so a value can't inject headers of its own.</li>
+  <code>Protocol</code>, <code>InvalidRequest</code> or <code>Other</code>. A header value with a CR or LF is refused before
+  anything is sent, so a value can't inject headers of its own.</li>
+<li><strong>Threads.</strong> A transport handles one request at a time.</li>
 </ul>
-<p>The parser follows the WHATWG specification: any line ending, chunks split anywhere, comments,
-<code>id</code> and <code>retry</code>. It passes every event type on; skip the ones you don't handle, since APIs add
-new ones.</p>
+<p>The parser follows the SSE specification (part of the WHATWG HTML standard): any line ending,
+chunks split anywhere, comments, <code>id</code> and <code>retry</code>. It passes every event type on; skip the ones
+you don't handle, since APIs add new ones.</p>
 <p>On Linux and macOS, a server that closes the connection while OpenSSL is writing can raise
 <code>SIGPIPE</code>, which ends the process by default. A program that streams should ignore it:
 <code>std::signal(SIGPIPE, SIG_IGN);</code>.</p>

@@ -2365,15 +2365,16 @@ self-hosted runner on the maintainer's gfx1151 (Strix Halo). The workflow is
 <tbody>
 <tr>
 <td><code>hip-tests</code></td>
-<td>The host kernel check, a Debug build in the ROCm 10.0.0 container, the full test suite, then the GPU tests again with a wait after every op (<code>PULSATRIX_HIP_SYNC_DEBUG=1</code>), so a faulting kernel is reported at the op that caused it</td>
+<td>The host kernel check, a Debug build in the ROCm 10.0.0 container, the full test suite (without the optional LLM-agent library, which the hosted Linux and Windows jobs test), then the GPU tests again with a wait after every op (<code>PULSATRIX_HIP_SYNC_DEBUG=1</code>), so a faulting kernel is reported at the op that caused it</td>
 </tr>
 <tr>
 <td><code>hip-bench</code></td>
-<td>A Release build of <code>pulsatrix_bench</code>, the benchmarks on the GPU with the LRP conservation gate (<code>--check</code>), and the report as an artifact</td>
+<td>A Release build of <code>pulsatrix_bench</code>, the benchmarks on the GPU with the LRP conservation gate (<code>--check</code>, which fails if relevance stops adding up to the output; see <a href="../benchmarks/">Benchmarks</a>), and the report as an artifact</td>
 </tr>
 </tbody>
 </table>
-<p>Builds are incremental: the runner keeps its build directories between runs. A pull request
+<p>Builds are incremental: the runner keeps its build directories between runs. A new push to a
+branch cancels that branch's run in progress. A pull request
 from a branch of this repository shows the results on its commits. Pull requests from forks
 don't run on the GPU; see below.</p>
 <h2 id="security">Security<a class="headerlink" href="#security" title="Permanent link">&para;</a></h2>
@@ -2418,13 +2419,16 @@ names a directory holding them (see the
 in a container that sees only the checkout, so the directory must be inside the runner's checkout
 (<code>build-ci-hip</code> survives between runs), given relative to it:</p>
 <div class="highlight"><pre><span></span><code>sudo<span class="w"> </span>-u<span class="w"> </span>pulsatrix-runner<span class="w"> </span>mkdir<span class="w"> </span>-p<span class="w"> </span>~pulsatrix-runner/actions-runner/_work/pulsatrix/pulsatrix/build-ci-hip/tv
-<span class="c1"># copy resnet18.safetensors, vgg16.safetensors and their *_golden.safetensors there, then:</span>
+<span class="c1"># the runner's home isn't readable by other users, so copy the files in as that user:</span>
+sudo<span class="w"> </span>-u<span class="w"> </span>pulsatrix-runner<span class="w"> </span>cp<span class="w"> </span>resnet18.safetensors<span class="w"> </span>resnet18_golden.safetensors<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>vgg16.safetensors<span class="w"> </span>vgg16_golden.safetensors<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>~pulsatrix-runner/actions-runner/_work/pulsatrix/pulsatrix/build-ci-hip/tv/
 <span class="nb">echo</span><span class="w"> </span><span class="s1">'PULSATRIX_TORCHVISION_DIR=build-ci-hip/tv'</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>sudo<span class="w"> </span>-u<span class="w"> </span>pulsatrix-runner<span class="w"> </span>tee<span class="w"> </span>-a<span class="w"> </span>~pulsatrix-runner/actions-runner/.env
 sudo<span class="w"> </span>systemctl<span class="w"> </span>restart<span class="w"> </span><span class="s1">'actions.runner.*'</span>
 </code></pre></div>
 <h2 id="removing-the-runner">Removing the runner<a class="headerlink" href="#removing-the-runner" title="Permanent link">&para;</a></h2>
 <p>Remove it under <strong>Settings → Actions → Runners</strong>, then on the machine:</p>
-<div class="highlight"><pre><span></span><code><span class="nb">cd</span><span class="w"> </span>~pulsatrix-runner/actions-runner<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span>sudo<span class="w"> </span>./svc.sh<span class="w"> </span>stop<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span>sudo<span class="w"> </span>./svc.sh<span class="w"> </span>uninstall
+<div class="highlight"><pre><span></span><code>sudo<span class="w"> </span>bash<span class="w"> </span>-c<span class="w"> </span><span class="s1">'cd ~pulsatrix-runner/actions-runner &amp;&amp; ./svc.sh stop &amp;&amp; ./svc.sh uninstall'</span>
 sudo<span class="w"> </span>userdel<span class="w"> </span>-r<span class="w"> </span>pulsatrix-runner
 </code></pre></div>
 

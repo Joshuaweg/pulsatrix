@@ -2666,7 +2666,7 @@ mixed-sign inputs:</p>
 </ul>
 <p><strong>LXT</strong>, using its explicit AttnLRP rules on <code>MultiHeadAttentionModule</code> and <code>TransformerBlock</code>
 (RoPE and QK-Norm off), each followed by Flatten → Linear.</p>
-<p><strong>Zennit on ResNet and VGG</strong> (KS-9): <code>tests/vision_models_test.cpp</code> (and its HIP and CUDA
+<p><strong>Zennit on ResNet and VGG</strong>: <code>tests/vision_models_test.cpp</code> (and its HIP and CUDA
 counterparts) compares a small torchvision ResNet (BatchNorm with non-trivial statistics, a
 downsampling shortcut) and VGG with Zennit's three presets. The ResNet uses Zennit's
 <code>ResNetCanonizer</code>; pulsatrix folds the BatchNorms and splits relevance at each residual sum in
@@ -2675,7 +2675,7 @@ proportion to the two branches, which is the same thing. The values are written 
 the published ResNet18 and VGG16; their heatmaps agree to 2e-3 of the largest value.</p>
 <p>The tolerance is <code>1e-4 · max(1, |ref|)</code> (float32 vs float32); the largest observed error is
 under 1e-5. Matching needs <code>epsilon_bias_in_denominator = true</code> (see <a href="#bias-handling">Bias handling</a>).</p>
-<p><strong>LXT on whole language models</strong> (LLM-7): <code>CompareToAttnLrp</code> (<code>attnlrp_parity.hpp</code>) and
+<p><strong>LXT on whole language models</strong>: <code>CompareToAttnLrp</code> (<code>attnlrp_parity.hpp</code>) and
 <code>pulsatrix_attnlrp</code> compare a <code>CausalLM</code> loaded from Hugging Face with LXT's own AttnLRP
 (<code>lxt.efficient</code>, the transformers patch) on the same model and tokens. The references are written
 by <code>tools/golden/make_attnlrp_reference.py</code> in the same Docker image. Each text is explained from
@@ -2728,7 +2728,7 @@ through <code>PULSATRIX_GOLDEN_DIR</code>.</p>
 <ul>
 <li>LXT stabilizes with <code>z + ε</code> for every sign of <code>z</code>; pulsatrix and Zennit use <code>z + ε·sign(z)</code>.
   They differ only where <code>|z|</code> is on the order of ε.</li>
-<li>LayerNorm is covered through ESM-2 (PLM-6, <a href="../../protein-models/#explaining-residue-by-residue">Protein language models</a>):
+<li>LayerNorm is covered through ESM-2 (<a href="../../protein-models/#explaining-residue-by-residue">Protein language models</a>):
   4.8e-5 against LXT's rules on the 650M model.</li>
 <li>Not covered by the reference tests: the recurrent and state-space rules.</li>
 </ul>
@@ -2738,7 +2738,7 @@ through <code>PULSATRIX_GOLDEN_DIR</code>.</p>
 <li><a href="../../recipes/neuro-symbolic/datalog_lrp_bridge/">Recipe: tracing relevance through a Datalog derivation</a></li>
 <li><a href="../../customization/#adding-a-new-layer">Customization</a>: writing <code>propagate_relevance()</code> for your own layer</li>
 <li><a href="../#checking-an-explanation">Checking an explanation</a>: deletion and insertion curves, the randomization test and the null-model baseline, for any LRP result</li>
-<li><a href="../../visualization/documents/#json-documents">Visualization</a>: saving relevance as JSON and drawing it as SVG</li>
+<li><a href="../../visualization/documents/">Visualization</a>: saving relevance as JSON and drawing it as SVG</li>
 <li><a href="../api/group__interpretability__lrp.html">API reference: Layer-wise Relevance Propagation</a></li>
 </ul>
 
