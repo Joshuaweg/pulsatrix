@@ -22,6 +22,7 @@ magnitudes.
 | `RenderSequenceLogoSvg(doc)` | A sequence logo: letters stacked to each position's information content | `SequenceLogoDocument` |
 | `RenderContactMapSvg(doc)` | Predicted contacts above the diagonal; the structure's contacts and the top L predictions, right or wrong, below | `ContactMapDocument` |
 | `RenderResidueTracksSvg(doc)` | Per-residue tracks and annotated features under the sequence | `ResidueTracksDocument` |
+| `RenderProjectionSvg(doc, x_axis, y_axis)` | Two axes of a projection, such as PC1 and PC2, on one scale: points colored by group (with a legend) or by value (with a color bar), each with its label on hover | `ProjectionDocument` |
 
 ```cpp
 #include <fstream>
@@ -56,9 +57,10 @@ pulsatrix_svg cf.json -o cf.svg                            # counterfactual: wha
 pulsatrix_svg cf1.json cf2.json cf3.json -o set.svg        # several counterfactuals side by side
 pulsatrix_svg morris.json -o morris.svg                    # Morris screening scatter
 pulsatrix_svg sobol.json -o sobol.svg                      # Sobol index bars
+pulsatrix_svg pca.json --axes 1,3 -o pca13.svg             # projection: PC1 against PC3
 ```
 
-Other options: `--top-k N`, `--width W`, `--font-size N`, `--title TEXT`.
+Other options: `--top-k N`, `--axes I,J` (a projection's axes, from 1), `--width W`, `--font-size N`, `--title TEXT`.
 
 **Details:**
 

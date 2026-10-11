@@ -34,6 +34,7 @@
 #include "pulsatrix/global_sensitivity.hpp"
 #include "pulsatrix/ice.hpp"
 #include "pulsatrix/metrics_sink.hpp"
+#include "pulsatrix/pca.hpp"
 #include "pulsatrix/sensitivity.hpp"
 #include "pulsatrix/viz/implot_metrics_sink.hpp"
 #include "pulsatrix/viz/plot_data.hpp"
@@ -386,5 +387,48 @@ struct SobolDocument {
 [[nodiscard]] MorrisDocument ParseMorrisDocument(std::string_view json);
 [[nodiscard]] std::string ToJson(const SobolDocument& doc);
 [[nodiscard]] SobolDocument ParseSobolDocument(std::string_view json);
+
+// ---- projection ----------------------------------------------------------------------------
+
+/**
+ * @brief `pulsatrix.projection.v1`: inputs placed in a few dimensions (INT-5), such as their first
+ *        principal components, for a scatter plot. Each point can carry a label (shown on hover),
+ *        a group (drawn as a color) and a value (drawn on a color scale when there are no groups).
+ */
+struct ProjectionDocument {
+    std::string title;
+    /** @brief How the coordinates were made, for example `"pca"`. Optional. */
+    std::string method;
+    /** @brief One name per dimension, for example `"PC1"`. At least two. */
+    std::vector<std::string> axes;
+    /** @brief Each axis's share of the variance, or empty when it has none. */
+    std::vector<float> explained_variance_ratio;
+    /** @brief Row-major `(points, axes)`. */
+    std::vector<float> coordinates;
+    /** @brief One per point, or empty. */
+    std::vector<std::string> labels;
+    /** @brief One per point, or empty. */
+    std::vector<std::string> groups;
+    /** @brief One per point, or empty. */
+    std::vector<float> values;
+
+    [[nodiscard]] int64_t num_points() const {
+        return axes.empty() ? 0 : static_cast<int64_t>(coordinates.size() / axes.size());
+    }
+};
+
+/**
+ * @brief A projection document from PcaProject()'s @p scores: axes `PC1`, `PC2`, ... with the
+ *        PCA's explained variance ratios.
+ * @throws std::invalid_argument if scores isn't (n, pca.num_components()) with at least two
+ *         components, or labels, groups or values is neither empty nor one per row.
+ */
+[[nodiscard]] ProjectionDocument MakeProjectionDocument(const Pca& pca, const Tensor& scores, std::vector<std::string> labels = {},
+                                                        std::vector<std::string> groups = {}, std::vector<float> values = {},
+                                                        std::string title = "");
+/** @throws std::invalid_argument if there are fewer than two axes, coordinates isn't whole rows of
+ *          them, a coordinate isn't finite, or a per-point list or the ratios have the wrong length. */
+[[nodiscard]] std::string ToJson(const ProjectionDocument& doc);
+[[nodiscard]] ProjectionDocument ParseProjectionDocument(std::string_view json);
 
 }  // namespace pulsatrix

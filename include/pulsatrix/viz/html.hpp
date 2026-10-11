@@ -81,6 +81,10 @@ struct HtmlOptions {
 [[nodiscard]] JsonValue ToVegaLiteMorris(const MorrisDocument& doc, const HtmlOptions& options = {});
 /** @brief Sobol indices: first-order bars in front of total-order ones, with confidence whiskers. */
 [[nodiscard]] JsonValue ToVegaLiteSobol(const SobolDocument& doc, int top_k = 10, const HtmlOptions& options = {});
+/** @brief A projection as a zoomable scatter plot, colored as RenderProjectionSvg colors it, with
+ *         each point's label on hover. With three or more axes, three panels: PC1 against PC2,
+ *         PC1 against PC3 and PC2 against PC3, the views of a 3D projection. */
+[[nodiscard]] JsonValue ToVegaLiteProjection(const ProjectionDocument& doc, const HtmlOptions& options = {});
 /** @brief A training log: one zoomable line chart per scalar tag, and one histogram per
  *         histogram tag. */
 [[nodiscard]] JsonValue ToVegaLiteTrainingLog(const TrainingLogDocument& doc, const HtmlOptions& options = {});
@@ -112,6 +116,7 @@ struct HtmlOptions {
                                                       const HtmlOptions& options = {});
 [[nodiscard]] std::string RenderMorrisHtml(const MorrisDocument& doc, const HtmlOptions& options = {});
 [[nodiscard]] std::string RenderSobolHtml(const SobolDocument& doc, int top_k = 10, const HtmlOptions& options = {});
+[[nodiscard]] std::string RenderProjectionHtml(const ProjectionDocument& doc, const HtmlOptions& options = {});
 [[nodiscard]] std::string RenderTrainingLogHtml(const TrainingLogDocument& doc, const HtmlOptions& options = {});
 /** @brief The feature's statistics, its activation histogram, and its top examples with each
  *         token shaded by its activation. @p extra_html is appended as is, such as a structure

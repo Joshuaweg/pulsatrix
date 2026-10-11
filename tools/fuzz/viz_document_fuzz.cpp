@@ -70,6 +70,7 @@ extern "C" int LLVMFuzzerTestOneInput(const uint8_t* data, size_t size) {
     ReadAndRewrite(text, pulsatrix::ParseSequenceLogoDocument);
     ReadAndRewrite(text, pulsatrix::ParseContactMapDocument);
     ReadAndRewrite(text, pulsatrix::ParseResidueTracksDocument);
+    ReadAndRewrite(text, pulsatrix::ParseProjectionDocument);
     // Whatever reads must also render, or be refused with std::invalid_argument (VIZ-2).
     try {
         pulsatrix::AttributionDocument a = pulsatrix::ParseAttributionDocument(text);
@@ -100,6 +101,10 @@ extern "C" int LLVMFuzzerTestOneInput(const uint8_t* data, size_t size) {
     }
     try {
         (void)pulsatrix::RenderResidueTracksSvg(pulsatrix::ParseResidueTracksDocument(text));
+    } catch (const std::invalid_argument&) {
+    }
+    try {
+        (void)pulsatrix::RenderProjectionSvg(pulsatrix::ParseProjectionDocument(text));
     } catch (const std::invalid_argument&) {
     }
     return 0;
@@ -144,7 +149,13 @@ std::vector<std::string> seeds() {
     rt.tracks = {{"x", {1.0f, nan, -1.0f}, true}};
     rt.features = {{"f", 10, 11, "site"}};
     rt.residue_ids = {"10", "11", "11A"};
-    return {ToJson(a), ToJson(h), ToJson(t), ToJson(c), ToJson(l), ToJson(f), ToJson(mm), ToJson(lg), ToJson(cm), ToJson(rt)};
+    ProjectionDocument pr;
+    pr.axes = {"PC1", "PC2"};
+    pr.explained_variance_ratio = {0.5f, 0.25f};
+    pr.coordinates = {1.0f, -1.0f, 0.0f, 2.0f};
+    pr.groups = {"a", "b"};
+    pr.values = {1.0f, nan};
+    return {ToJson(a), ToJson(h), ToJson(t), ToJson(c), ToJson(l), ToJson(f), ToJson(mm), ToJson(lg), ToJson(cm), ToJson(rt), ToJson(pr)};
 }
 
 }  // namespace
