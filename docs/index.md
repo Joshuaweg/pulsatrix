@@ -93,6 +93,11 @@ export, attribution graphs for Neuronpedia's and circuit-tracer's viewers, and t
 HTML from C++; and, optionally, native Dear ImGui + ImPlot windows with a live training dashboard and a
 token relevance view.
 
+**[LLM Agents](agents.md)** (optional): talk to Claude or to a local model served by
+llama-server, vLLM or Ollama from C++, with streaming and retries, and let it call your
+functions as tools. A tool registry checks each input against its JSON Schema before your
+function runs. No Python or SDK; turn it on with `-DPULSATRIX_ENABLE_ORCHESTRATOR=ON`.
+
 **[System Monitoring](system-monitoring.md)**: log CPU/GPU utilization, memory and
 temperatures while you train.
 
@@ -104,7 +109,7 @@ LRP conservation, with an A/B comparison between two builds.
 Python. See [Getting Started](getting-started.md#python-bindings).
 
 Everything is implemented in C++ with no Python dependency at runtime, and covered by about
-2,700 CPU tests (2,850 with the HIP backend) that run in CI on Windows and Linux.
+2,750 CPU tests (2,850 with the HIP backend) that run in CI on Windows and Linux.
 
 ## More resources
 

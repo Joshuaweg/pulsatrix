@@ -66,13 +66,14 @@ trained: loss 0.0058, accuracy 100.0%
 wrote out/xor_report.ipynb and out/xor_report.html (11 cells)
 ```
 
-The program runs in well under a second. In the report:
+The count leaves out the title, so the `.ipynb` file has 12 cells. The program runs in well
+under a second. In the report:
 
 - **The training curve** reaches 100% accuracy after about 120 of the 400 steps.
 - **The probability map** shows the XOR pattern: class 1 in the top-left and bottom-right
   quadrants, with sharp boundaries at 0.5.
 - **The LRP heatmap** explains class 1 at one point in each quadrant. At (0.2, 0.8), the high `y`
-  is the evidence for class 1 (red). At (0.8, 0.2) it's the high `x`. At (0.2, 0.2) and
-  (0.8, 0.8), the inputs count against it (blue).
+  is the evidence for class 1 (red). At (0.8, 0.2) it's the high `x`. At (0.2, 0.2) the low `x`
+  counts against class 1 (blue), and at (0.8, 0.8) the high `y` does.
 
 The exact numbers can differ slightly between compilers.

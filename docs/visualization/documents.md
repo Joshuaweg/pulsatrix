@@ -4,11 +4,8 @@ Every view in pulsatrix reads from a versioned JSON document, so an explanation 
 redrawn later, or drawn by a program outside pulsatrix. The documents are part of
 `pulsatrix_core` and need no build flag.
 
-## JSON documents
-
-Interactive viewers go stale faster than file formats do, so every view reads from a versioned
-JSON document. The ImGui widgets, the SVG renderer (VIZ-2) and any tool outside pulsatrix all
-read the same data. The documents are part of `pulsatrix_core` and need no flag.
+The ImGui widgets, the SVG renderer and any tool outside pulsatrix all read the same data, and
+a file format outlasts any one viewer.
 
 ```cpp
 #include <fstream>
@@ -29,7 +26,7 @@ if (VizDocumentKind(text.str()) == "attribution") {
 }
 ```
 
-There are six kinds. Each has a struct, a writer (`ToJson`) and a reader (`Parse<Kind>Document`):
+There are fifteen kinds. Each has a struct, a writer (`ToJson`) and a reader (`Parse<Kind>Document`):
 
 | Schema | Struct | Holds | Converts from and to |
 |---|---|---|---|
@@ -60,7 +57,7 @@ pieces read as the original text:
   unscored context. BOS and other inserted tokens appear as their token strings, or go to
   `unassigned` when left out.
 - **`MakeWordRelevanceDocument(text, word_scores, method, target)`** takes the output of
-  `AggregateToWords` (TOK-4): each word is scored, and the spaces between words are unscored
+  `AggregateToWords` ([per-word scores](../data-pipeline/index.md#per-word-scores)): each word is scored, and the spaces between words are unscored
   context.
 
 The document grows three optional fields, all backward compatible, each written only when it

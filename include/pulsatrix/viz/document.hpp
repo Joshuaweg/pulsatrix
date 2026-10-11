@@ -6,7 +6,7 @@
  *  structs hold data only, never colors or layout, so the ImGui widgets, the SVG renderer and
  *  anything outside pulsatrix draw the same numbers.
  *
- *  **Format rules** (docs/visualization/index.md has the full schema):
+ *  **Format rules** (docs/visualization/documents.md has the full schema):
  *  - Every document is a JSON object whose `"schema"` member is `"pulsatrix.<kind>.v<N>"`.
  *  - **Versioning.** A reader accepts its own major version only. Within a version, fields are
  *    only ever added, and readers ignore fields they don't know, so an older reader can read a
