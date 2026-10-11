@@ -662,6 +662,9 @@ Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpulsatrix_1_1HtmlOptions.html">HtmlOptions</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Options for every HTML view.  <a href="structpulsatrix_1_1HtmlOptions.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpulsatrix_1_1Hubness.html">Hubness</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">How unevenly points appear in each other's neighbor lists.  <a href="structpulsatrix_1_1Hubness.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpulsatrix_1_1HyperbandBracket.html">HyperbandBracket</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">One bracket's own (num_configs, initial_budget) trade-off point; s is the bracket index (s_max = most configs/smallest budget, down to s=0 = fewest configs/largest budget, matching the original paper's own naming).  <a href="structpulsatrix_1_1HyperbandBracket.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -861,6 +864,12 @@ Classes</h2></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1NegationModule.html">NegationModule</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight"><code>y = 1 - x</code>, elementwise. No parameters, no parameter gradients.  <a href="classpulsatrix_1_1NegationModule.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpulsatrix_1_1NeighborOptions.html">NeighborOptions</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Settings for the neighbor searches.  <a href="structpulsatrix_1_1NeighborOptions.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpulsatrix_1_1Neighbors.html">Neighbors</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Each query's k nearest points, nearest first.  <a href="structpulsatrix_1_1Neighbors.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1NfcNormalizer.html">NfcNormalizer</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Unicode Normalization Form C (canonical composition), keeping offsets.  <a href="classpulsatrix_1_1NfcNormalizer.html#details">More...</a><br /></td></tr>
@@ -1616,6 +1625,11 @@ Enumerations</h2></td></tr>
  }</td></tr>
 <tr class="memdesc:aa4c5ed2bc6fef2b50c34076c222872aa"><td class="mdescLeft">&#160;</td><td class="mdescRight">The LRP rule family a module applies. Semantics follow Zennit 1.0.0 exactly (Anders et al. 2021); every rule other than Epsilon is defined only for affine layers (LinearModule, Conv2DModule) &ndash; see Module::supports_lrp_rule().  <a href="namespacepulsatrix.html#aa4c5ed2bc6fef2b50c34076c222872aa">More...</a><br /></td></tr>
 <tr class="separator:aa4c5ed2bc6fef2b50c34076c222872aa"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a96073a2b00a00be59e3a764fa4b671e7" id="r_a96073a2b00a00be59e3a764fa4b671e7"><td class="memItemLeft" align="right" valign="top">enum class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#a96073a2b00a00be59e3a764fa4b671e7">NeighborMetric</a> { <a class="el" href="namespacepulsatrix.html#a96073a2b00a00be59e3a764fa4b671e7a46ff06ae696616afdf3a695efd3db84c">Cosine</a>
+, <a class="el" href="namespacepulsatrix.html#a96073a2b00a00be59e3a764fa4b671e7a3e43207685247008d9e1ae53ecf8cab3">Euclidean</a>
+ }</td></tr>
+<tr class="memdesc:a96073a2b00a00be59e3a764fa4b671e7"><td class="mdescLeft">&#160;</td><td class="mdescRight">How nearness is measured.  <a href="namespacepulsatrix.html#a96073a2b00a00be59e3a764fa4b671e7">More...</a><br /></td></tr>
+<tr class="separator:a96073a2b00a00be59e3a764fa4b671e7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a94d9ac6240473b5362d1e8e5c11157bb" id="r_a94d9ac6240473b5362d1e8e5c11157bb"><td class="memItemLeft" align="right" valign="top">enum class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#a94d9ac6240473b5362d1e8e5c11157bb">OpType</a> { <br />
 &#160;&#160;<a class="el" href="namespacepulsatrix.html#a94d9ac6240473b5362d1e8e5c11157bba32a843da6ea40ab3b17a3421ccdf671b">Linear</a>
 , <a class="el" href="namespacepulsatrix.html#a94d9ac6240473b5362d1e8e5c11157bbacc31a669f6d086f816852dda3290a3ef">Conv</a>
@@ -2260,6 +2274,21 @@ Functions</h2></td></tr>
 <tr class="memitem:ab5faa119bd4e92d60678ede26e52edf0"><td class="memTemplItemLeft" align="right" valign="top">std::vector&lt; double &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#ab5faa119bd4e92d60678ede26e52edf0">PolynomialMutation</a> (const std::vector&lt; double &gt; &amp;genotype, const std::vector&lt; double &gt; &amp;lower_bounds, const std::vector&lt; double &gt; &amp;upper_bounds, double eta, double mutation_probability, RNG &amp;rng)</td></tr>
 <tr class="memdesc:ab5faa119bd4e92d60678ede26e52edf0"><td class="mdescLeft">&#160;</td><td class="mdescRight">RNG-driven wrapper: each gene independently mutates (via PolynomialMutationByDraw) with probability mutation_probability.  <br /></td></tr>
 <tr class="separator:ab5faa119bd4e92d60678ede26e52edf0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a62381283d7f7efd2714c41ec0afdaccc" id="r_a62381283d7f7efd2714c41ec0afdaccc"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structpulsatrix_1_1Neighbors.html">Neighbors</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#a62381283d7f7efd2714c41ec0afdaccc">NearestNeighbors</a> (const <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp;points, const <a class="el" href="structpulsatrix_1_1NeighborOptions.html">NeighborOptions</a> &amp;options={})</td></tr>
+<tr class="memdesc:a62381283d7f7efd2714c41ec0afdaccc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Each point's k nearest other points (a point is never its own neighbor).  <br /></td></tr>
+<tr class="separator:a62381283d7f7efd2714c41ec0afdaccc"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad032d190f590bccb1e29e88c466a0fc2" id="r_ad032d190f590bccb1e29e88c466a0fc2"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structpulsatrix_1_1Neighbors.html">Neighbors</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#ad032d190f590bccb1e29e88c466a0fc2">NearestNeighbors</a> (const <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp;queries, const <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp;points, const <a class="el" href="structpulsatrix_1_1NeighborOptions.html">NeighborOptions</a> &amp;options={})</td></tr>
+<tr class="memdesc:ad032d190f590bccb1e29e88c466a0fc2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Each query's k nearest points from another set of the same width, for example new inputs against a reference set. With <code>center</code>, both are centered on the points' mean.  <br /></td></tr>
+<tr class="separator:ad032d190f590bccb1e29e88c466a0fc2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1a33454f9fda6b77641780f25e44732c" id="r_a1a33454f9fda6b77641780f25e44732c"><td class="memItemLeft" align="right" valign="top">std::vector&lt; std::pair&lt; int64_t, int64_t &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#a1a33454f9fda6b77641780f25e44732c">MutualNearestNeighbors</a> (const <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp;a, const <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp;b, const <a class="el" href="structpulsatrix_1_1NeighborOptions.html">NeighborOptions</a> &amp;options={})</td></tr>
+<tr class="memdesc:a1a33454f9fda6b77641780f25e44732c"><td class="mdescLeft">&#160;</td><td class="mdescRight">The pairs (i, j), a[i] from <code>a</code> and b[j] from <code>b</code>, where b[j] is among a[i]'s k nearest in b and a[i] is among b[j]'s k nearest in a. Used to match items across two sets in the same space, such as the same concepts in two batches.  <br /></td></tr>
+<tr class="separator:a1a33454f9fda6b77641780f25e44732c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad955fb5ca8fe22266e8fc96e732f76e3" id="r_ad955fb5ca8fe22266e8fc96e732f76e3"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#ad955fb5ca8fe22266e8fc96e732f76e3">MutualKnnAlignment</a> (const <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp;a, const <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp;b, const <a class="el" href="structpulsatrix_1_1NeighborOptions.html">NeighborOptions</a> &amp;options={})</td></tr>
+<tr class="memdesc:ad955fb5ca8fe22266e8fc96e732f76e3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Mutual-kNN alignment (Huh et al. 2024): how far two representations of the same inputs agree on which inputs are alike. For each input, the fraction of its k nearest neighbors under <code>a</code> that are also among its k nearest under <code>b</code>, averaged over the inputs.  <br /></td></tr>
+<tr class="separator:ad955fb5ca8fe22266e8fc96e732f76e3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3f849ad157f996aeb477a536c6fe643b" id="r_a3f849ad157f996aeb477a536c6fe643b"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structpulsatrix_1_1Hubness.html">Hubness</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#a3f849ad157f996aeb477a536c6fe643b">MeasureHubness</a> (const <a class="el" href="structpulsatrix_1_1Neighbors.html">Neighbors</a> &amp;neighbors, int64_t num_points)</td></tr>
+<tr class="memdesc:a3f849ad157f996aeb477a536c6fe643b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Measures hubness in <code>neighbors</code>, which name points 0 to <code>num_points</code> - 1.  <br /></td></tr>
+<tr class="separator:a3f849ad157f996aeb477a536c6fe643b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aba26bb47a841c985070a3d37cff2a423" id="r_aba26bb47a841c985070a3d37cff2a423"><td class="memItemLeft" align="right" valign="top">std::vector&lt; int &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#aba26bb47a841c985070a3d37cff2a423">AllocateOffspringCounts</a> (const std::vector&lt; double &gt; &amp;species_adjusted_fitness_sums, int population_size)</td></tr>
 <tr class="memdesc:aba26bb47a841c985070a3d37cff2a423"><td class="mdescLeft">&#160;</td><td class="mdescRight">Pure core: allocates population_size offspring slots across species proportionally to each species' own adjusted-fitness sum, using the largest-remainder (Hamilton) apportionment method so the total always sums to exactly population_size (ties in fractional remainder broken by species index, earliest first). Falls back to an equal split (remainder to the earliest species, by index) if every species sum is non-positive, rather than dividing by zero.  <br /></td></tr>
 <tr class="separator:aba26bb47a841c985070a3d37cff2a423"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -3945,6 +3974,36 @@ Every op here computes the <em>forward</em> value only &ndash; no derivative var
 <tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="ab997921e8dd2fcb16daefdcc05ce6550a380c18e239f03cf9c0a846c7defd029b" name="ab997921e8dd2fcb16daefdcc05ce6550a380c18e239f03cf9c0a846c7defd029b"></a>Minimax&#160;</td><td class="fielddoc"></td></tr>
 <tr><td class="fieldname"><a id="ab997921e8dd2fcb16daefdcc05ce6550a271aa2fdaeb524af30faf88584424763" name="ab997921e8dd2fcb16daefdcc05ce6550a271aa2fdaeb524af30faf88584424763"></a>Heuristic&#160;</td><td class="fielddoc"></td></tr>
 <tr><td class="fieldname"><a id="ab997921e8dd2fcb16daefdcc05ce6550ad143c366b3274edc1e5496e302795a46" name="ab997921e8dd2fcb16daefdcc05ce6550ad143c366b3274edc1e5496e302795a46"></a>LeastSquares&#160;</td><td class="fielddoc"></td></tr>
+</table>
+
+</div>
+</div>
+<a id="a96073a2b00a00be59e3a764fa4b671e7" name="a96073a2b00a00be59e3a764fa4b671e7"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a96073a2b00a00be59e3a764fa4b671e7">&#9670;&#160;</a></span>NeighborMetric</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">enum class <a class="el" href="namespacepulsatrix.html#a96073a2b00a00be59e3a764fa4b671e7">pulsatrix::NeighborMetric</a></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">strong</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>How nearness is measured. </p>
+<table class="fieldtable">
+<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="a96073a2b00a00be59e3a764fa4b671e7a46ff06ae696616afdf3a695efd3db84c" name="a96073a2b00a00be59e3a764fa4b671e7a46ff06ae696616afdf3a695efd3db84c"></a>Cosine&#160;</td><td class="fielddoc"><p>Cosine similarity: the angle between vectors, ignoring their lengths. Higher is nearer. A zero vector has similarity 0 with everything. </p>
+</td></tr>
+<tr><td class="fieldname"><a id="a96073a2b00a00be59e3a764fa4b671e7a3e43207685247008d9e1ae53ecf8cab3" name="a96073a2b00a00be59e3a764fa4b671e7a3e43207685247008d9e1ae53ecf8cab3"></a>Euclidean&#160;</td><td class="fielddoc"><p>Euclidean distance. Lower is nearer. </p>
+</td></tr>
 </table>
 
 </div>
@@ -11195,6 +11254,42 @@ template&lt;typename Genotype , typename FitnessT &gt; </div>
 
 </div>
 </div>
+<a id="a3f849ad157f996aeb477a536c6fe643b" name="a3f849ad157f996aeb477a536c6fe643b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3f849ad157f996aeb477a536c6fe643b">&#9670;&#160;</a></span>MeasureHubness()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="structpulsatrix_1_1Hubness.html">Hubness</a> pulsatrix::MeasureHubness </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="structpulsatrix_1_1Neighbors.html">Neighbors</a> &amp;&#160;</td>
+          <td class="paramname"><em>neighbors</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int64_t&#160;</td>
+          <td class="paramname"><em>num_points</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Measures hubness in <code>neighbors</code>, which name points 0 to <code>num_points</code> - 1. </p>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname">std::invalid_argument</td><td>if num_points &lt; 1 or an index is outside it. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
 <a id="a079b8968a218c9d388782bce4428add1" name="a079b8968a218c9d388782bce4428add1"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a079b8968a218c9d388782bce4428add1">&#9670;&#160;</a></span>MeasureImportance()</h2>
 
@@ -12071,6 +12166,99 @@ template&lt;typename Genotype , typename FitnessT &gt; </div>
 
 </div>
 </div>
+<a id="ad955fb5ca8fe22266e8fc96e732f76e3" name="ad955fb5ca8fe22266e8fc96e732f76e3"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad955fb5ca8fe22266e8fc96e732f76e3">&#9670;&#160;</a></span>MutualKnnAlignment()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">double pulsatrix::MutualKnnAlignment </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp;&#160;</td>
+          <td class="paramname"><em>a</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp;&#160;</td>
+          <td class="paramname"><em>b</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="structpulsatrix_1_1NeighborOptions.html">NeighborOptions</a> &amp;&#160;</td>
+          <td class="paramname"><em>options</em> = <code>{}</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Mutual-kNN alignment (Huh et al. 2024): how far two representations of the same inputs agree on which inputs are alike. For each input, the fraction of its k nearest neighbors under <code>a</code> that are also among its k nearest under <code>b</code>, averaged over the inputs. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">a,b</td><td>the same n inputs in the same order, of any widths. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>Between 0 and 1. Two unrelated representations score about k / (n - 1) by chance. </dd></dl>
+<dl class="section note"><dt>Note</dt><dd>With the default options (cosine, no centering) this is Huh et al.'s <code>mutual_knn</code>. </dd></dl>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname">std::invalid_argument</td><td>as <a class="el" href="namespacepulsatrix.html#a62381283d7f7efd2714c41ec0afdaccc" title="Each point&#39;s k nearest other points (a point is never its own neighbor).">NearestNeighbors()</a> does, or if the row counts differ. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="a1a33454f9fda6b77641780f25e44732c" name="a1a33454f9fda6b77641780f25e44732c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1a33454f9fda6b77641780f25e44732c">&#9670;&#160;</a></span>MutualNearestNeighbors()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::vector&lt; std::pair&lt; int64_t, int64_t &gt; &gt; pulsatrix::MutualNearestNeighbors </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp;&#160;</td>
+          <td class="paramname"><em>a</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp;&#160;</td>
+          <td class="paramname"><em>b</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="structpulsatrix_1_1NeighborOptions.html">NeighborOptions</a> &amp;&#160;</td>
+          <td class="paramname"><em>options</em> = <code>{}</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>The pairs (i, j), a[i] from <code>a</code> and b[j] from <code>b</code>, where b[j] is among a[i]'s k nearest in b and a[i] is among b[j]'s k nearest in a. Used to match items across two sets in the same space, such as the same concepts in two batches. </p>
+<dl class="section return"><dt>Returns</dt><dd>The pairs sorted by i, then j. With <code>center</code>, both sets are centered on the mean of the two together. </dd></dl>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname">std::invalid_argument</td><td>as <a class="el" href="namespacepulsatrix.html#a62381283d7f7efd2714c41ec0afdaccc" title="Each point&#39;s k nearest other points (a point is never its own neighbor).">NearestNeighbors()</a> does, or if the widths differ. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
 <a id="a053defb68cf20b8bbd61c3dccfcb6fb6" name="a053defb68cf20b8bbd61c3dccfcb6fb6"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a053defb68cf20b8bbd61c3dccfcb6fb6">&#9670;&#160;</a></span>Ndcg()</h2>
 
@@ -12105,6 +12293,91 @@ template&lt;typename Genotype , typename FitnessT &gt; </div>
 
 <p>ProteinGym's NDCG: gains are the true scores min-max scaled to [0, 1]; the variants the model ranks in the top <code>top_percent</code> (floor of the count) contribute gain / log2(rank + 1), normalized by the same sum for the truly best ones. Zero gains are dropped. </p>
 <dl class="section note"><dt>Note</dt><dd>Tied predicted scores are ranked in input order (a stable sort). numpy's default argsort isn't stable, so ProteinGym may order exact ties differently. </dd></dl>
+
+</div>
+</div>
+<a id="a62381283d7f7efd2714c41ec0afdaccc" name="a62381283d7f7efd2714c41ec0afdaccc"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a62381283d7f7efd2714c41ec0afdaccc">&#9670;&#160;</a></span>NearestNeighbors() <span class="overload">[1/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="structpulsatrix_1_1Neighbors.html">Neighbors</a> pulsatrix::NearestNeighbors </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp;&#160;</td>
+          <td class="paramname"><em>points</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="structpulsatrix_1_1NeighborOptions.html">NeighborOptions</a> &amp;&#160;</td>
+          <td class="paramname"><em>options</em> = <code>{}</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Each point's k nearest other points (a point is never its own neighbor). </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">points</td><td>shape (n, ...): a row per point. Dimensions after the first are flattened. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section note"><dt>Note</dt><dd>Ties keep the lower index first, as <a class="el" href="namespacepulsatrix.html#a307af1ed1935c2c78f7e2aead3f70c45" title="Selects the k largest (or smallest) entries of every row along the last dimension.">top_k()</a> does, so results are the same everywhere. </dd></dl>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname">std::invalid_argument</td><td>if points has rank below 2 or a NaN or infinity, or k is not between 1 and n - 1. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="ad032d190f590bccb1e29e88c466a0fc2" name="ad032d190f590bccb1e29e88c466a0fc2"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad032d190f590bccb1e29e88c466a0fc2">&#9670;&#160;</a></span>NearestNeighbors() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="structpulsatrix_1_1Neighbors.html">Neighbors</a> pulsatrix::NearestNeighbors </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp;&#160;</td>
+          <td class="paramname"><em>queries</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp;&#160;</td>
+          <td class="paramname"><em>points</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="structpulsatrix_1_1NeighborOptions.html">NeighborOptions</a> &amp;&#160;</td>
+          <td class="paramname"><em>options</em> = <code>{}</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Each query's k nearest points from another set of the same width, for example new inputs against a reference set. With <code>center</code>, both are centered on the points' mean. </p>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname">std::invalid_argument</td><td>as the one-set version does, if the widths differ, or if k is not between 1 and the number of points. </td></tr>
+  </table>
+  </dd>
+</dl>
 
 </div>
 </div>

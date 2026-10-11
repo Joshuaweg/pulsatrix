@@ -19,7 +19,8 @@ var searchData=
   ['httptransport_16',['HttpTransport',['../classpulsatrix_1_1orch_1_1HttpTransport.html',1,'pulsatrix::orch']]],
   ['httptransportoptions_17',['HttpTransportOptions',['../structpulsatrix_1_1orch_1_1HttpTransportOptions.html',1,'pulsatrix::orch']]],
   ['httpurl_18',['HttpUrl',['../structpulsatrix_1_1orch_1_1HttpUrl.html',1,'pulsatrix::orch']]],
-  ['hyperbandbracket_19',['HyperbandBracket',['../structpulsatrix_1_1HyperbandBracket.html',1,'pulsatrix']]],
-  ['hyperbandresult_20',['HyperbandResult',['../structpulsatrix_1_1HyperbandResult.html',1,'pulsatrix']]],
-  ['hypergridenv_21',['HyperGridEnv',['../classpulsatrix_1_1HyperGridEnv.html',1,'pulsatrix']]]
+  ['hubness_19',['Hubness',['../structpulsatrix_1_1Hubness.html',1,'pulsatrix']]],
+  ['hyperbandbracket_20',['HyperbandBracket',['../structpulsatrix_1_1HyperbandBracket.html',1,'pulsatrix']]],
+  ['hyperbandresult_21',['HyperbandResult',['../structpulsatrix_1_1HyperbandResult.html',1,'pulsatrix']]],
+  ['hypergridenv_22',['HyperGridEnv',['../classpulsatrix_1_1HyperGridEnv.html',1,'pulsatrix']]]
 ];

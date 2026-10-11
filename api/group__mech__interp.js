@@ -15,6 +15,7 @@ var group__mech__interp =
     [ "learnable_scalar.hpp", "learnable__scalar_8hpp.html", null ],
     [ "linear_probe.hpp", "linear__probe_8hpp.html", null ],
     [ "mlp_hook.hpp", "mlp__hook_8hpp.html", null ],
+    [ "nearest_neighbors.hpp", "nearest__neighbors_8hpp.html", null ],
     [ "parameter_decomposition.hpp", "parameter__decomposition_8hpp.html", null ],
     [ "relevance_graph.hpp", "relevance__graph_8hpp.html", null ],
     [ "representation_similarity.hpp", "representation__similarity_8hpp.html", null ],
