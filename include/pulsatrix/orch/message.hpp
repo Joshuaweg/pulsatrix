@@ -63,7 +63,7 @@ struct Message {
     [[nodiscard]] std::vector<const ContentBlock*> tool_uses() const;
 };
 
-/** @brief A tool the model may call. AGT-4's tool registry makes these from its tools. */
+/** @brief A tool the model may call. ToolRegistry::specs() makes these from its tools. */
 struct ToolSpec {
     std::string name;  ///< letters, digits, `_` and `-`, 1 to 128 characters
     std::string description;

@@ -6,10 +6,11 @@ self-hosted runner on the maintainer's gfx1151 (Strix Halo). The workflow is
 
 | Job | What it runs |
 |---|---|
-| `hip-tests` | The host kernel check, a Debug build in the ROCm 10.0.0 container, the full test suite, then the GPU tests again with a wait after every op (`PULSATRIX_HIP_SYNC_DEBUG=1`), so a faulting kernel is reported at the op that caused it |
-| `hip-bench` | A Release build of `pulsatrix_bench`, the benchmarks on the GPU with the LRP conservation gate (`--check`), and the report as an artifact |
+| `hip-tests` | The host kernel check, a Debug build in the ROCm 10.0.0 container, the full test suite (without the optional LLM-agent library, which the hosted Linux and Windows jobs test), then the GPU tests again with a wait after every op (`PULSATRIX_HIP_SYNC_DEBUG=1`), so a faulting kernel is reported at the op that caused it |
+| `hip-bench` | A Release build of `pulsatrix_bench`, the benchmarks on the GPU with the LRP conservation gate (`--check`, which fails if relevance stops adding up to the output; see [Benchmarks](benchmarks.md)), and the report as an artifact |
 
-Builds are incremental: the runner keeps its build directories between runs. A pull request
+Builds are incremental: the runner keeps its build directories between runs. A new push to a
+branch cancels that branch's run in progress. A pull request
 from a branch of this repository shows the results on its commits. Pull requests from forks
 don't run on the GPU; see below.
 
@@ -62,7 +63,10 @@ in a container that sees only the checkout, so the directory must be inside the 
 
 ```bash
 sudo -u pulsatrix-runner mkdir -p ~pulsatrix-runner/actions-runner/_work/pulsatrix/pulsatrix/build-ci-hip/tv
-# copy resnet18.safetensors, vgg16.safetensors and their *_golden.safetensors there, then:
+# the runner's home isn't readable by other users, so copy the files in as that user:
+sudo -u pulsatrix-runner cp resnet18.safetensors resnet18_golden.safetensors \
+    vgg16.safetensors vgg16_golden.safetensors \
+    ~pulsatrix-runner/actions-runner/_work/pulsatrix/pulsatrix/build-ci-hip/tv/
 echo 'PULSATRIX_TORCHVISION_DIR=build-ci-hip/tv' | sudo -u pulsatrix-runner tee -a ~pulsatrix-runner/actions-runner/.env
 sudo systemctl restart 'actions.runner.*'
 ```
@@ -72,6 +76,6 @@ sudo systemctl restart 'actions.runner.*'
 Remove it under **Settings → Actions → Runners**, then on the machine:
 
 ```bash
-cd ~pulsatrix-runner/actions-runner && sudo ./svc.sh stop && sudo ./svc.sh uninstall
+sudo bash -c 'cd ~pulsatrix-runner/actions-runner && ./svc.sh stop && ./svc.sh uninstall'
 sudo userdel -r pulsatrix-runner
 ```

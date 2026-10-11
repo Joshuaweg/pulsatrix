@@ -162,6 +162,7 @@ starts with which tool answers which question, and reports what each method foun
 | Visualization | Versioned JSON documents and dependency-free SVG charts (bar, waterfall, heatmap, token and word relevance for text, beeswarm) and interactive Vega-Lite HTML pages (hover, zoom, export) in the core library; opt-in Dear ImGui + ImPlot windows, a live training dashboard and a token relevance view | [Visualization](https://joshuaweg.github.io/pulsatrix/visualization/) |
 | Notebooks and reports | Write results as a Jupyter notebook or an HTML page from C++ (markdown, code, figures, tensors), with no Python or kernel; rich display for the xeus-cpp notebook kernel (experimental) | [Notebooks and Reports](https://joshuaweg.github.io/pulsatrix/visualization/notebooks/) |
 | System monitoring | Live CPU/GPU utilization, memory and temperature logging | [System monitoring](https://joshuaweg.github.io/pulsatrix/system-monitoring/) |
+| LLM agents (optional) | A native C++ client for the Claude API and OpenAI-compatible local servers (llama-server, vLLM, Ollama) with streaming and retries, a tool loop, and a tool registry that checks the model's inputs against JSON Schema; no Python or SDK; off by default (`-DPULSATRIX_ENABLE_ORCHESTRATOR=ON`) | [LLM agents](https://joshuaweg.github.io/pulsatrix/agents/) |
 | Python bindings | `Tensor`, core layers, LRP and every explainer, `SystemMonitor`, `set_seed` and deterministic mode | [Getting Started](https://joshuaweg.github.io/pulsatrix/getting-started/#python-bindings) |
 | Performance tools | `pulsatrix_bench` (step time, explanation time, LRP conservation; A/B comparison of builds), `scripts/profile_hip.sh` (per-op GPU kernel time) | [Benchmarks](https://joshuaweg.github.io/pulsatrix/benchmarks/), [GPU profiling](https://joshuaweg.github.io/pulsatrix/gpu-profiling/) |
 
@@ -229,11 +230,11 @@ target_link_libraries(my_app PRIVATE pulsatrix::core)
 
 ## Status
 
-- Version 1.1: the v1.1 "Foundations and trust" milestone is complete. The API may still change
-  between minor versions.
+- The v1.2 "Real pretrained models" milestone is complete (the CMake project version is still
+  1.1.0). The API may still change between minor versions.
 - What's planned next, and why, is in the
   [Roadmap](https://joshuaweg.github.io/pulsatrix/roadmap/).
-- About 2,700 tests on the CPU, and 2,850 with the HIP backend. CI builds and tests every push
+- About 2,750 tests on the CPU, and 2,850 with the HIP backend. CI builds and tests every push
   and pull request on Windows (MSVC) and Linux (GCC), runs the Python binding tests, and
   compiles the CUDA and HIP backends.
 - macOS with Clang should work but isn't tested in CI.

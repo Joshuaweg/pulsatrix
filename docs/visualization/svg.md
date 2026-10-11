@@ -1,7 +1,5 @@
 # SVG Figures
 
-## SVG figures
-
 For papers, reports and CI, `viz/svg.hpp` draws documents as standalone SVG files. It needs no
 GPU, display, font library or ImGui, and it is part of `pulsatrix_core`. Colors come from
 `colormap.hpp`, the same as the ImGui widgets: blue-white-red for signed values and Viridis for
@@ -74,4 +72,4 @@ Other options: `--top-k N`, `--width W`, `--font-size N`, `--title TEXT`.
   because there's no honest bar length for them.
 - **Text widths are estimated** at 0.6 em per character, since there is no font library. Token
   strips use a monospace font, so their widths are exact. Long labels are shortened with an
-  ellipsis. For exact layout of any script, use the [HTML](html.md#interactive-html) token view.
+  ellipsis. For exact layout of any script, use the [HTML](html.md) token view.

@@ -192,7 +192,7 @@ mixed-sign inputs:
 **LXT**, using its explicit AttnLRP rules on `MultiHeadAttentionModule` and `TransformerBlock`
 (RoPE and QK-Norm off), each followed by Flatten → Linear.
 
-**Zennit on ResNet and VGG** (KS-9): `tests/vision_models_test.cpp` (and its HIP and CUDA
+**Zennit on ResNet and VGG**: `tests/vision_models_test.cpp` (and its HIP and CUDA
 counterparts) compares a small torchvision ResNet (BatchNorm with non-trivial statistics, a
 downsampling shortcut) and VGG with Zennit's three presets. The ResNet uses Zennit's
 `ResNetCanonizer`; pulsatrix folds the BatchNorms and splits relevance at each residual sum in
@@ -203,7 +203,7 @@ the published ResNet18 and VGG16; their heatmaps agree to 2e-3 of the largest va
 The tolerance is `1e-4 · max(1, |ref|)` (float32 vs float32); the largest observed error is
 under 1e-5. Matching needs `epsilon_bias_in_denominator = true` (see [Bias handling](#bias-handling)).
 
-**LXT on whole language models** (LLM-7): `CompareToAttnLrp` (`attnlrp_parity.hpp`) and
+**LXT on whole language models**: `CompareToAttnLrp` (`attnlrp_parity.hpp`) and
 `pulsatrix_attnlrp` compare a `CausalLM` loaded from Hugging Face with LXT's own AttnLRP
 (`lxt.efficient`, the transformers patch) on the same model and tokens. The references are written
 by `tools/golden/make_attnlrp_reference.py` in the same Docker image. Each text is explained from
@@ -234,7 +234,7 @@ Known differences and gaps:
 
 - LXT stabilizes with `z + ε` for every sign of `z`; pulsatrix and Zennit use `z + ε·sign(z)`.
   They differ only where `|z|` is on the order of ε.
-- LayerNorm is covered through ESM-2 (PLM-6, [Protein language models](../protein-models/index.md#explaining-residue-by-residue)):
+- LayerNorm is covered through ESM-2 ([Protein language models](../protein-models/index.md#explaining-residue-by-residue)):
   4.8e-5 against LXT's rules on the 650M model.
 - Not covered by the reference tests: the recurrent and state-space rules.
 
@@ -244,5 +244,5 @@ Known differences and gaps:
 - [Recipe: tracing relevance through a Datalog derivation](../recipes/neuro-symbolic/datalog_lrp_bridge.md)
 - [Customization](../customization/index.md#adding-a-new-layer): writing `propagate_relevance()` for your own layer
 - [Checking an explanation](index.md#checking-an-explanation): deletion and insertion curves, the randomization test and the null-model baseline, for any LRP result
-- [Visualization](../visualization/documents.md#json-documents): saving relevance as JSON and drawing it as SVG
+- [Visualization](../visualization/documents.md): saving relevance as JSON and drawing it as SVG
 - [API reference: Layer-wise Relevance Propagation](../api/group__interpretability__lrp.html)

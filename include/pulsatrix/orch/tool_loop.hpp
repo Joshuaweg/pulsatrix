@@ -27,7 +27,7 @@ struct ToolOutcome {
 };
 
 /**
- * @brief Runs one tool call. AGT-4's tool registry provides one; any function works.
+ * @brief Runs one tool call. ToolRegistry::executor() provides one; any function works.
  * @note An exception is caught and sent to the model as an error result with its message.
  */
 using ToolExecutor = std::function<ToolOutcome(const ToolCall&)>;
