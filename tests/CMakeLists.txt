@@ -233,6 +233,7 @@ add_executable(pulsatrix_tests
     representation_geometry_test.cpp
     pca_test.cpp
     projection_view_test.cpp
+    tcav_test.cpp
     sparse_autoencoder_test.cpp
     saliency_test.cpp
     lrp_test.cpp

@@ -144,6 +144,7 @@ add_library(pulsatrix_core
     src/probe_controls.cpp
     src/representation_geometry.cpp
     src/pca.cpp
+    src/tcav.cpp
     src/topk_sparse_autoencoder.cpp
     src/jumprelu_sparse_autoencoder.cpp
     src/transcoder.cpp
