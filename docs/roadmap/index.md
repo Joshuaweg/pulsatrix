@@ -189,7 +189,8 @@ Fine-tune the models from v1.2 and explain what the fine-tuning changed.
 - INT-2 (**done**, [#131](https://github.com/Joshuaweg/pulsatrix/pull/131)): linear CKA
 - INT-1 (**done**, [#132](https://github.com/Joshuaweg/pulsatrix/pull/132)): nearest neighbors, mutual nearest neighbors, mutual-kNN alignment
 - INT-3 (**done**, [#133](https://github.com/Joshuaweg/pulsatrix/pull/133)): probe controls (selectivity, and gain over a baseline)
-- INT-4 to INT-6: intrinsic dimension, PCA, TCAV and CRP
+- INT-4 (**done**, [#134](https://github.com/Joshuaweg/pulsatrix/pull/134)): anisotropy, effective rank, TwoNN intrinsic dimension
+- INT-5, INT-6: PCA, TCAV and CRP
 - TDA-1 to TDA-8, TDA-11: persistent homology and RTD
 - KS-3, KS-4: uncertainty and adversarial robustness
 - Llama-3.2-1B and Qwen2.5-0.5B pass the golden-logit test
@@ -783,13 +784,31 @@ network says nothing about what the model learned.
 | INT-1 | Nearest neighbors and mutual nearest neighbors over embeddings or activations, with optional mean-centering | The cheapest useful embedding tool; also a cross-model alignment score | FND-3 | P0 | S | Done, [#132](https://github.com/Joshuaweg/pulsatrix/pull/132) (see below) |
 | INT-2 | Linear CKA (debiased) | Compare layers across models, training runs and backends | — | P0 | S | Done, [#131](https://github.com/Joshuaweg/pulsatrix/pull/131) (see below) |
 | INT-3 | Control tasks for `LinearProbe` (selectivity = probe accuracy minus control accuracy) | High probe accuracy can come from the probe, not the representation | — | P0 | S | Done, [#133](https://github.com/Joshuaweg/pulsatrix/pull/133) (see below) |
-| INT-4 | Anisotropy, effective rank and TwoNN intrinsic dimension | Explains why raw cosine similarity misleads; one number per layer | INT-1 | P1 | S | |
+| INT-4 | Anisotropy, effective rank and TwoNN intrinsic dimension | Explains why raw cosine similarity misleads; one number per layer | INT-1 | P1 | S | Done, [#134](https://github.com/Joshuaweg/pulsatrix/pull/134) (see below) |
 | INT-5 | PCA projections | 2D and 3D views, steering directions, preprocessing for TDA | FND-4 | P1 | M | |
 | INT-6 | TCAV (with significance against random concepts) and Concept Relevance Propagation | Concept-level explanations, and CRP reuses pulsatrix's LRP rules | INT-3 | P1 | M | |
 | INT-7 | RSA and SVCCA | Mostly covered by CKA | FND-4 | P2 | — | |
 | INT-8 | UMAP and t-SNE: export the data only, don't implement | Expensive, and they distort distances and cluster sizes | VIZ-1 | P3 | — | |
 
 ### How the INT work departed from the plan
+
+- **INT-4** follows the plan in `representation_geometry.hpp`.
+  - **`Anisotropy()`** is the exact mean cosine over every pair, raw or centered.
+  - **`MeasureEffectiveRank()`** gives Roy and Vetterli's effective rank and the participation
+    ratio.
+  - **`TwoNNDimension()`** gives Facco et al.'s fit and the maximum-likelihood variant.
+  - **Checked against** numpy for anisotropy and effective rank, and against scikit-dimension
+    0.3.7's and DADApy 0.3.4's TwoNN code, transcribed into
+    `tools/generate_geometry_reference_values.py`, to 1e-10.
+  - **The falsifiers** are tests:
+    - A shared offset raises anisotropy from 0.001 to 0.63, and centering returns it to
+      −0.003.
+    - Points filling a 2- and a 5-dimensional cube, written in 40 dimensions, give TwoNN
+      estimates of 1.91 and 4.53.
+  - **Duplicates are dropped**, as DADApy's `remove_identical_points()` does, and counted.
+  - **Effective rank needs precise small singular values**, so `SymmetricEigenvalues()` was
+    added to FND-4's decompositions. It works in double precision throughout; the existing
+    routines return float tensors.
 
 - **INT-3** adds `probe_controls.hpp`, and covers more than `LinearProbe`'s control task.
   - **Hewitt and Liang's control task:** `ControlTaskLabels()` gives each token type a fixed

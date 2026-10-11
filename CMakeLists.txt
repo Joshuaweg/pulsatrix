@@ -142,6 +142,7 @@ add_library(pulsatrix_core
     src/representation_similarity.cpp
     src/nearest_neighbors.cpp
     src/probe_controls.cpp
+    src/representation_geometry.cpp
     src/topk_sparse_autoencoder.cpp
     src/jumprelu_sparse_autoencoder.cpp
     src/transcoder.cpp
