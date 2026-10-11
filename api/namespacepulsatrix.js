@@ -191,6 +191,7 @@ var namespacepulsatrix =
     [ "HistogramBins", "structpulsatrix_1_1HistogramBins.html", "structpulsatrix_1_1HistogramBins" ],
     [ "HorizontalFlipTransform", "classpulsatrix_1_1HorizontalFlipTransform.html", "classpulsatrix_1_1HorizontalFlipTransform" ],
     [ "HtmlOptions", "structpulsatrix_1_1HtmlOptions.html", "structpulsatrix_1_1HtmlOptions" ],
+    [ "Hubness", "structpulsatrix_1_1Hubness.html", "structpulsatrix_1_1Hubness" ],
     [ "HyperbandBracket", "structpulsatrix_1_1HyperbandBracket.html", "structpulsatrix_1_1HyperbandBracket" ],
     [ "HyperbandResult", "structpulsatrix_1_1HyperbandResult.html", "structpulsatrix_1_1HyperbandResult" ],
     [ "HyperGridEnv", "classpulsatrix_1_1HyperGridEnv.html", "classpulsatrix_1_1HyperGridEnv" ],
@@ -258,6 +259,8 @@ var namespacepulsatrix =
     [ "NEATEvolutionResult", "structpulsatrix_1_1NEATEvolutionResult.html", "structpulsatrix_1_1NEATEvolutionResult" ],
     [ "NEATGenome", "classpulsatrix_1_1NEATGenome.html", "classpulsatrix_1_1NEATGenome" ],
     [ "NegationModule", "classpulsatrix_1_1NegationModule.html", "classpulsatrix_1_1NegationModule" ],
+    [ "NeighborOptions", "structpulsatrix_1_1NeighborOptions.html", "structpulsatrix_1_1NeighborOptions" ],
+    [ "Neighbors", "structpulsatrix_1_1Neighbors.html", "structpulsatrix_1_1Neighbors" ],
     [ "NfcNormalizer", "classpulsatrix_1_1NfcNormalizer.html", "classpulsatrix_1_1NfcNormalizer" ],
     [ "Node", "classpulsatrix_1_1Node.html", "classpulsatrix_1_1Node" ],
     [ "NodeGene", "structpulsatrix_1_1NodeGene.html", "structpulsatrix_1_1NodeGene" ],
@@ -561,6 +564,10 @@ var namespacepulsatrix =
       [ "Heuristic", "namespacepulsatrix.html#ab997921e8dd2fcb16daefdcc05ce6550a271aa2fdaeb524af30faf88584424763", null ],
       [ "LeastSquares", "namespacepulsatrix.html#ab997921e8dd2fcb16daefdcc05ce6550ad143c366b3274edc1e5496e302795a46", null ]
     ] ],
+    [ "NeighborMetric", "namespacepulsatrix.html#a96073a2b00a00be59e3a764fa4b671e7", [
+      [ "Cosine", "namespacepulsatrix.html#a96073a2b00a00be59e3a764fa4b671e7a46ff06ae696616afdf3a695efd3db84c", null ],
+      [ "Euclidean", "namespacepulsatrix.html#a96073a2b00a00be59e3a764fa4b671e7a3e43207685247008d9e1ae53ecf8cab3", null ]
+    ] ],
     [ "NormPosition", "namespacepulsatrix.html#af006dd0a5403341bfc3ad106ea4a4077", [
       [ "Pre", "namespacepulsatrix.html#af006dd0a5403341bfc3ad106ea4a4077afb55a965b77791b31ffd2bb548f71080", null ],
       [ "Post", "namespacepulsatrix.html#af006dd0a5403341bfc3ad106ea4a4077a03d947a2158373c3b9d74325850cb8b9", null ]
@@ -844,6 +851,7 @@ var namespacepulsatrix =
     [ "MeanSubstitutionScore", "namespacepulsatrix.html#afca9e26f5552eb9f6779daab739f59a1", null ],
     [ "MeasureBlockGeometry", "namespacepulsatrix.html#a3c327b66f98c42b444d2cd79d260b628", null ],
     [ "MeasureDescriptionLength", "namespacepulsatrix.html#a73f2520d8735527576929fd5740651cb", null ],
+    [ "MeasureHubness", "namespacepulsatrix.html#a3f849ad157f996aeb477a536c6fe643b", null ],
     [ "MeasureImportance", "namespacepulsatrix.html#a079b8968a218c9d388782bce4428add1", null ],
     [ "MeasureLatentScaling", "namespacepulsatrix.html#a45ac85992cf6aa6e2f91ee22fe87c1a5", null ],
     [ "MeasureLossRecovered", "namespacepulsatrix.html#a0f041cc2b4d0f3b20771c2277381febe", null ],
@@ -875,7 +883,11 @@ var namespacepulsatrix =
     [ "MorrisSample", "namespacepulsatrix.html#ab5888d78b55639ed08f0a47e82286570", null ],
     [ "MuCommaLambdaReplacement", "namespacepulsatrix.html#a469c1dd8905840b1f89ec4f05ff821b3", null ],
     [ "MuPlusLambdaReplacement", "namespacepulsatrix.html#ac8f3350b7e825b6d2397348086341e3d", null ],
+    [ "MutualKnnAlignment", "namespacepulsatrix.html#ad955fb5ca8fe22266e8fc96e732f76e3", null ],
+    [ "MutualNearestNeighbors", "namespacepulsatrix.html#a1a33454f9fda6b77641780f25e44732c", null ],
     [ "Ndcg", "namespacepulsatrix.html#a053defb68cf20b8bbd61c3dccfcb6fb6", null ],
+    [ "NearestNeighbors", "namespacepulsatrix.html#a62381283d7f7efd2714c41ec0afdaccc", null ],
+    [ "NearestNeighbors", "namespacepulsatrix.html#ad032d190f590bccb1e29e88c466a0fc2", null ],
     [ "NeuronCodes", "namespacepulsatrix.html#a7a4c27ec86fc821d228e8c898b9e2fd9", null ],
     [ "next_seed", "namespacepulsatrix.html#a197aabe57442bbda9ca90932d761964b", null ],
     [ "NormalizeSigned", "namespacepulsatrix.html#a1284dd5415f64b3b45d4cc1156fe5d01", null ],

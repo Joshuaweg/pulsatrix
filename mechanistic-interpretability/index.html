@@ -791,6 +791,17 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#nearest-neighbors" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Nearest neighbors
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#baselines" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -2406,6 +2417,17 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#nearest-neighbors" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Nearest neighbors
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#baselines" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -2493,6 +2515,11 @@ attribution graphs of a language model's prediction.</p>
 <td>How similar are two layers, two models, or a model before and after fine-tuning?</td>
 <td><code>LinearCka</code>, <code>LinearCkaMatrix</code></td>
 <td><a href="#comparing-representations-cka">Below</a></td>
+</tr>
+<tr>
+<td>Which inputs does a layer treat as alike? Do two models agree on it?</td>
+<td><code>NearestNeighbors</code>, <code>MutualKnnAlignment</code>, <code>MutualNearestNeighbors</code>, <code>MeasureHubness</code></td>
+<td><a href="#nearest-neighbors">Below</a></td>
 </tr>
 <tr>
 <td>Which directions in a layer stand for concepts, found without labels?</td>
@@ -2691,6 +2718,79 @@ another, reusing each layer's work across its row or column. Draw the result as 
 </ul>
 <p>The implementation matches the reference code of Kornblith et al. (ICML 2019) to 12 decimal
 places for both estimators.</p>
+<h3 id="nearest-neighbors">Nearest neighbors<a class="headerlink" href="#nearest-neighbors" title="Permanent link">&para;</a></h3>
+<p><code>NearestNeighbors()</code> finds, for each input, the k inputs a layer represents most alike, by cosine
+similarity (the default) or Euclidean distance:</p>
+<div class="highlight"><pre><span></span><code><span class="cp">#include</span><span class="w"> </span><span class="cpf">"pulsatrix/nearest_neighbors.hpp"</span>
+
+<span class="c1">// embeddings: (n, width), a row per input.</span>
+<span class="n">NeighborOptions</span><span class="w"> </span><span class="n">options</span><span class="p">;</span>
+<span class="n">options</span><span class="p">.</span><span class="n">k</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">5</span><span class="p">;</span>
+<span class="n">options</span><span class="p">.</span><span class="n">center</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">true</span><span class="p">;</span><span class="w">  </span><span class="c1">// subtract the mean first; see below</span>
+<span class="k">const</span><span class="w"> </span><span class="n">Neighbors</span><span class="w"> </span><span class="n">near</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">NearestNeighbors</span><span class="p">(</span><span class="n">embeddings</span><span class="p">,</span><span class="w"> </span><span class="n">options</span><span class="p">);</span>
+<span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">int64_t</span><span class="w"> </span><span class="n">r</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">r</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">near</span><span class="p">.</span><span class="n">k</span><span class="p">;</span><span class="w"> </span><span class="o">++</span><span class="n">r</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">std</span><span class="o">::</span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">near</span><span class="p">.</span><span class="n">index</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="n">r</span><span class="p">)</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">" "</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">near</span><span class="p">.</span><span class="n">score</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="n">r</span><span class="p">)</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">"</span><span class="se">\n</span><span class="s">"</span><span class="p">;</span><span class="w">  </span><span class="c1">// input 0's neighbors, nearest first</span>
+<span class="p">}</span>
+</code></pre></div>
+<ul>
+<li><strong>Search another set</strong> with <code>NearestNeighbors(queries, points, options)</code>, for example new
+  inputs against a labelled reference set.</li>
+<li><strong>Match items across two sets</strong> with <code>MutualNearestNeighbors(a, b, options)</code>: the pairs
+  (i, j) where each is among the other's k nearest.</li>
+<li><strong>Compare two models</strong> with <code>MutualKnnAlignment(a, b, options)</code>: for each input, the
+  fraction of its k neighbors under one representation that are also its neighbors under the
+  other, averaged. The two can have different widths. With the default options it is the
+  mutual-kNN alignment of Huh et al.'s "Platonic Representation Hypothesis" (2024), and it
+  matches their code exactly. Unrelated representations score about k / (n − 1) by chance, so
+  read a score against that, not against 0. It complements CKA (above): CKA compares the whole
+  geometry, mutual kNN only who is close to whom.</li>
+</ul>
+<p>The search is exact, in double precision on the host. It costs about n² × width multiply-adds, so
+it suits up to tens of thousands of inputs. Ties keep the lower index first.</p>
+<p>Things to know:</p>
+<ul>
+<li><strong>Center cosine similarities.</strong> Activations often share a large common component, so every
+  pair's cosine is high and the ranking follows that component. <code>center = true</code> subtracts the
+  points' mean first. It doesn't change Euclidean distances.</li>
+<li>
+<p><strong>Check for hubs.</strong> In high dimensions a few points become almost everyone's neighbor, and
+  many become nobody's (Radovanović et al., 2010). Neighbor lists, and scores built on them,
+  then say more about the hubs than about the inputs. <code>MeasureHubness(neighbors, n)</code> reports
+  how often each point is a neighbor, and the skewness of those counts: near 0 is even, well
+  above 1 means hubs. For 300 random Gaussian points and k = 5:</p>
+<table>
+<thead>
+<tr>
+<th>Dimension</th>
+<th>Skewness</th>
+<th>The biggest hub is in</th>
+<th>Never a neighbor</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>3</td>
+<td>−0.04</td>
+<td>3% of lists</td>
+<td>2% of points</td>
+</tr>
+<tr>
+<td>30</td>
+<td>2.05</td>
+<td>12% of lists</td>
+<td>21% of points</td>
+</tr>
+<tr>
+<td>300</td>
+<td>3.52</td>
+<td>20% of lists</td>
+<td>36% of points</td>
+</tr>
+</tbody>
+</table>
+<p>Centering also reduces hubness for cosine similarity (Suzuki et al., 2013).</p>
+</li>
+</ul>
 <h3 id="baselines">Baselines<a class="headerlink" href="#baselines" title="Permanent link">&para;</a></h3>
 <p><code>NullModelBaseline</code> re-initializes a model randomly, so the same probe, featurizer or
 explanation can run on it (<a href="../interpretability/#the-null-model-baseline">Interpretability</a>).

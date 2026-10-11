@@ -145,6 +145,7 @@ var dir_549639eb5e09d856a0d6449a002be6ea =
     [ "mse_loss.hpp", "mse__loss_8hpp.html", "mse__loss_8hpp" ],
     [ "multihead_attention_module.hpp", "multihead__attention__module_8hpp.html", "multihead__attention__module_8hpp" ],
     [ "mutation.hpp", "mutation_8hpp.html", "mutation_8hpp" ],
+    [ "nearest_neighbors.hpp", "nearest__neighbors_8hpp.html", "nearest__neighbors_8hpp" ],
     [ "neat_evolution.hpp", "neat__evolution_8hpp.html", "neat__evolution_8hpp" ],
     [ "neat_genome.hpp", "neat__genome_8hpp.html", "neat__genome_8hpp" ],
     [ "neat_phenotype.hpp", "neat__phenotype_8hpp.html", "neat__phenotype_8hpp" ],
