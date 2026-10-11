@@ -186,7 +186,7 @@ Fine-tune the models from v1.2 and explain what the fine-tuning changed.
 - KD-1, KD-2: distillation and teacher–student explanation agreement
 - XAI-1 to XAI-4: the question-driven planner, explanation reports, counterfactuals, surrogates,
   Anchors
-- INT-2 (**done**, PR pending): linear CKA
+- INT-2 (**done**, [#131](https://github.com/Joshuaweg/pulsatrix/pull/131)): linear CKA
 - INT-1, INT-3 to INT-6: neighbors, probe controls, intrinsic dimension, PCA, TCAV and CRP
 - TDA-1 to TDA-8, TDA-11: persistent homology and RTD
 - KS-3, KS-4: uncertainty and adversarial robustness
@@ -779,7 +779,7 @@ network says nothing about what the model learned.
 | ID | Item | Why | Depends on | P | Effort | Status |
 |---|---|---|---|---|---|---|
 | INT-1 | Nearest neighbors and mutual nearest neighbors over embeddings or activations, with optional mean-centering | The cheapest useful embedding tool; also a cross-model alignment score | FND-3 | P0 | S | |
-| INT-2 | Linear CKA (debiased) | Compare layers across models, training runs and backends | — | P0 | S | Done, PR pending (see below) |
+| INT-2 | Linear CKA (debiased) | Compare layers across models, training runs and backends | — | P0 | S | Done, [#131](https://github.com/Joshuaweg/pulsatrix/pull/131) (see below) |
 | INT-3 | Control tasks for `LinearProbe` (selectivity = probe accuracy minus control accuracy) | High probe accuracy can come from the probe, not the representation | — | P0 | S | |
 | INT-4 | Anisotropy, effective rank and TwoNN intrinsic dimension | Explains why raw cosine similarity misleads; one number per layer | INT-1 | P1 | S | |
 | INT-5 | PCA projections | 2D and 3D views, steering directions, preprocessing for TDA | FND-4 | P1 | M | |
