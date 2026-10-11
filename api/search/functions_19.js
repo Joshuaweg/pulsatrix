@@ -22,11 +22,12 @@ var searchData=
   ['_7epretokenizer_19',['~PreTokenizer',['../classpulsatrix_1_1PreTokenizer.html#acf1dc4298a88485a5fec1898e569737a',1,'pulsatrix::PreTokenizer']]],
   ['_7eresumabletrial_20',['~ResumableTrial',['../classpulsatrix_1_1ResumableTrial.html#af932576b9615280b8fc7d253c366e864',1,'pulsatrix::ResumableTrial']]],
   ['_7esampler_21',['~Sampler',['../classpulsatrix_1_1Sampler.html#ad66a2ce7685160289151eca01299eef7',1,'pulsatrix::Sampler']]],
-  ['_7esystemmonitor_22',['~SystemMonitor',['../classpulsatrix_1_1SystemMonitor.html#a3478b0acf4887f5425cdb842121bde97',1,'pulsatrix::SystemMonitor']]],
-  ['_7etensor_23',['~Tensor',['../classpulsatrix_1_1Tensor.html#ac2343e739ce1f79370db2101fe563367',1,'pulsatrix::Tensor']]],
-  ['_7etexturecache_24',['~TextureCache',['../classpulsatrix_1_1TextureCache.html#a631a6a08f474232801eba06be1cd4e9b',1,'pulsatrix::TextureCache']]],
-  ['_7etokenmodel_25',['~TokenModel',['../classpulsatrix_1_1TokenModel.html#a1646be3cfed5b62dd9f60b5b3ab3b157',1,'pulsatrix::TokenModel']]],
-  ['_7etransform_26',['~Transform',['../classpulsatrix_1_1Transform.html#a52f2f6911828171ce40be1f4444cd271',1,'pulsatrix::Transform']]],
-  ['_7eunicoderegex_27',['~UnicodeRegex',['../classpulsatrix_1_1UnicodeRegex.html#a8a12dfb2d10af7af0b9688f72f58d63d',1,'pulsatrix::UnicodeRegex']]],
-  ['_7evizwindow_28',['~VizWindow',['../classpulsatrix_1_1VizWindow.html#a639c868d13074d1914ab7e2a9dfa6410',1,'pulsatrix::VizWindow']]]
+  ['_7esecret_22',['~Secret',['../classpulsatrix_1_1orch_1_1Secret.html#ad7ababd4831115fe594949cd507651d2',1,'pulsatrix::orch::Secret']]],
+  ['_7esystemmonitor_23',['~SystemMonitor',['../classpulsatrix_1_1SystemMonitor.html#a3478b0acf4887f5425cdb842121bde97',1,'pulsatrix::SystemMonitor']]],
+  ['_7etensor_24',['~Tensor',['../classpulsatrix_1_1Tensor.html#ac2343e739ce1f79370db2101fe563367',1,'pulsatrix::Tensor']]],
+  ['_7etexturecache_25',['~TextureCache',['../classpulsatrix_1_1TextureCache.html#a631a6a08f474232801eba06be1cd4e9b',1,'pulsatrix::TextureCache']]],
+  ['_7etokenmodel_26',['~TokenModel',['../classpulsatrix_1_1TokenModel.html#a1646be3cfed5b62dd9f60b5b3ab3b157',1,'pulsatrix::TokenModel']]],
+  ['_7etransform_27',['~Transform',['../classpulsatrix_1_1Transform.html#a52f2f6911828171ce40be1f4444cd271',1,'pulsatrix::Transform']]],
+  ['_7eunicoderegex_28',['~UnicodeRegex',['../classpulsatrix_1_1UnicodeRegex.html#a8a12dfb2d10af7af0b9688f72f58d63d',1,'pulsatrix::UnicodeRegex']]],
+  ['_7evizwindow_29',['~VizWindow',['../classpulsatrix_1_1VizWindow.html#a639c868d13074d1914ab7e2a9dfa6410',1,'pulsatrix::VizWindow']]]
 ];

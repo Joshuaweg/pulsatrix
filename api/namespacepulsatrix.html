@@ -116,6 +116,8 @@ Namespaces</h2></td></tr>
 <tr class="memitem:namespacepulsatrix_1_1lrp__composite" id="r_namespacepulsatrix_1_1lrp__composite"><td class="memItemLeft" align="right" valign="top">namespace &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix_1_1lrp__composite.html">lrp_composite</a></td></tr>
 <tr class="memdesc:namespacepulsatrix_1_1lrp__composite"><td class="mdescLeft">&#160;</td><td class="mdescRight">Zennit 1.0.0's composite presets (zennit.composites), mapped onto pulsatrix modules by type: <a class="el" href="classpulsatrix_1_1LinearModule.html" title="y = x @ W + b, batched (x is (N, in_features), y is (N, out_features)) – migrated from the original u...">LinearModule</a> = torch Linear, <a class="el" href="classpulsatrix_1_1Conv2DModule.html" title="2D convolution, batched (input/output are rank-4: N x channels x H x W) – migrated from the original ...">Conv2DModule</a> = torch Conv2d; every other module gets the epsilon rule (the pass-through modules &ndash; ReLU, Flatten, Dropout, MaxPool &ndash; ignore it, as Zennit's Pass rule / plain gradient does). <br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:namespacepulsatrix_1_1orch" id="r_namespacepulsatrix_1_1orch"><td class="memItemLeft" align="right" valign="top">namespace &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix_1_1orch.html">orch</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:namespacepulsatrix_1_1param__select" id="r_namespacepulsatrix_1_1param__select"><td class="memItemLeft" align="right" valign="top">namespace &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix_1_1param__select.html">param_select</a></td></tr>
 <tr class="memdesc:namespacepulsatrix_1_1param__select"><td class="mdescLeft">&#160;</td><td class="mdescRight">Common selectors. <br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -2196,6 +2198,9 @@ Functions</h2></td></tr>
 <tr class="memitem:a51dcbd978f9f3b0414c53736b071512d" id="r_a51dcbd978f9f3b0414c53736b071512d"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#a51dcbd978f9f3b0414c53736b071512d">WriteJson</a> (const <a class="el" href="classpulsatrix_1_1JsonValue.html">JsonValue</a> &amp;value)</td></tr>
 <tr class="memdesc:a51dcbd978f9f3b0414c53736b071512d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Writes <code>value</code> as JSON, indented by two spaces and ending with a newline.  <br /></td></tr>
 <tr class="separator:a51dcbd978f9f3b0414c53736b071512d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:adebe05440de121e54cb2437642152e9a" id="r_adebe05440de121e54cb2437642152e9a"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#adebe05440de121e54cb2437642152e9a">WriteJsonCompact</a> (const <a class="el" href="classpulsatrix_1_1JsonValue.html">JsonValue</a> &amp;value)</td></tr>
+<tr class="memdesc:adebe05440de121e54cb2437642152e9a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Writes <code>value</code> as JSON on one line, with no whitespace and no trailing newline.  <br /></td></tr>
+<tr class="separator:adebe05440de121e54cb2437642152e9a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:abc312204e032ea8f6f81f09aeae4d9e2" id="r_abc312204e032ea8f6f81f09aeae4d9e2"><td class="memItemLeft" align="right" valign="top">std::vector&lt; float &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#abc312204e032ea8f6f81f09aeae4d9e2">SolveLinearSystem</a> (std::vector&lt; std::vector&lt; float &gt; &gt; a, std::vector&lt; float &gt; b)</td></tr>
 <tr class="memdesc:abc312204e032ea8f6f81f09aeae4d9e2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Solves A*x = b via Gaussian elimination with partial pivoting.  <br /></td></tr>
 <tr class="separator:abc312204e032ea8f6f81f09aeae4d9e2"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -21048,6 +21053,33 @@ template&lt;typename T &gt; </div>
 
 <p>Writes <code>value</code> as JSON, indented by two spaces and ending with a newline. </p>
 <dl class="section note"><dt>Note</dt><dd>Deterministic: the same value always gives the same bytes on every platform. Arrays that hold only numbers, booleans and nulls go on one line, so long value arrays stay compact. Strings are written as UTF-8, with <code>"</code>, <code>\</code> and control characters escaped. </dd></dl>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname">std::invalid_argument</td><td>if a string isn't valid UTF-8. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="adebe05440de121e54cb2437642152e9a" name="adebe05440de121e54cb2437642152e9a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#adebe05440de121e54cb2437642152e9a">&#9670;&#160;</a></span>WriteJsonCompact()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::string pulsatrix::WriteJsonCompact </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classpulsatrix_1_1JsonValue.html">JsonValue</a> &amp;&#160;</td>
+          <td class="paramname"><em>value</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Writes <code>value</code> as JSON on one line, with no whitespace and no trailing newline. </p>
+<dl class="section note"><dt>Note</dt><dd>For HTTP request bodies and newline-delimited protocols such as MCP over stdio: newlines inside strings are escaped, so the result never contains a newline. Deterministic, like <a class="el" href="namespacepulsatrix.html#a51dcbd978f9f3b0414c53736b071512d" title="Writes value as JSON, indented by two spaces and ending with a newline.">WriteJson()</a>. </dd></dl>
 <dl class="exception"><dt>Exceptions</dt><dd>
   <table class="exception">
     <tr><td class="paramname">std::invalid_argument</td><td>if a string isn't valid UTF-8. </td></tr>

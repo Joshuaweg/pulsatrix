@@ -403,6 +403,7 @@ var hierarchy =
     [ "pulsatrix::ScalarSeries", "structpulsatrix_1_1ScalarSeries.html", null ],
     [ "pulsatrix::ScoreCardScaleContext", "structpulsatrix_1_1ScoreCardScaleContext.html", null ],
     [ "pulsatrix::SearchSpace", "classpulsatrix_1_1SearchSpace.html", null ],
+    [ "pulsatrix::orch::Secret", "classpulsatrix_1_1orch_1_1Secret.html", null ],
     [ "pulsatrix::SensitivityBounds", "structpulsatrix_1_1SensitivityBounds.html", null ],
     [ "pulsatrix::SensitivityDocument", "structpulsatrix_1_1SensitivityDocument.html", null ],
     [ "pulsatrix::SeparationRange", "structpulsatrix_1_1SeparationRange.html", null ],

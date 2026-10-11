@@ -1,5 +1,6 @@
 var dir_549639eb5e09d856a0d6449a002be6ea =
 [
+    [ "orch", "dir_f5349243a5310704119372b87a5b2f4a.html", "dir_f5349243a5310704119372b87a5b2f4a" ],
     [ "viz", "dir_1df8ff9027259fc5f483c2d1b9c2e5ad.html", "dir_1df8ff9027259fc5f483c2d1b9c2e5ad" ],
     [ "acquisition_functions.hpp", "acquisition__functions_8hpp.html", "acquisition__functions_8hpp" ],
     [ "activation_module.hpp", "activation__module_8hpp.html", "activation__module_8hpp" ],

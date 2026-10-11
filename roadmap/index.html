@@ -973,6 +973,33 @@
   
   
   
+    <li class="md-nav__item">
+      <a href="../agents/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    LLM Agents
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
     
     
     
@@ -982,10 +1009,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_13" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_14" >
         
           
-          <label class="md-nav__link" for="__nav_13" id="__nav_13_label" tabindex="0">
+          <label class="md-nav__link" for="__nav_14" id="__nav_14_label" tabindex="0">
             
   
   
@@ -1003,8 +1030,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_13_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_13">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_14_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_14">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -1367,10 +1394,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_19" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_20" >
         
           
-          <label class="md-nav__link" for="__nav_19" id="__nav_19_label" tabindex="0">
+          <label class="md-nav__link" for="__nav_20" id="__nav_20_label" tabindex="0">
             
   
   
@@ -1388,8 +1415,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_19_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_19">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_20_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_20">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -1983,10 +2010,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_20" checked>
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_21" checked>
         
           
-          <label class="md-nav__link" for="__nav_20" id="__nav_20_label" tabindex="0">
+          <label class="md-nav__link" for="__nav_21" id="__nav_21_label" tabindex="0">
             
   
   
@@ -2004,8 +2031,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_20_label" aria-expanded="true">
-          <label class="md-nav__title" for="__nav_20">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_21_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_21">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -2700,6 +2727,23 @@
       
     </span>
   </a>
+  
+    <nav class="md-nav" aria-label="AGT: Agents, native C++">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#how-the-agt-work-departed-from-the-plan" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        How the AGT work departed from the plan
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
   
 </li>
       
@@ -3537,6 +3581,23 @@
     </span>
   </a>
   
+    <nav class="md-nav" aria-label="AGT: Agents, native C++">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#how-the-agt-work-departed-from-the-plan" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        How the AGT work departed from the plan
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
 </li>
       
         <li class="md-nav__item">
@@ -3837,7 +3898,8 @@ machine, and explain it with the tools pulsatrix already has. Items on that path
 <li>VIZ-3, VIZ-6a (<strong>done</strong>): Vega-Lite HTML and the token relevance view</li>
 <li>NB-1 (<strong>done</strong>): native rich display</li>
 <li>NB-2 (<strong>done</strong>): the <code>.ipynb</code>/HTML report writer</li>
-<li>AGT-1 to AGT-4: the native orchestrator core</li>
+<li>AGT-1 (<strong>done</strong>, <a href="https://github.com/Joshuaweg/pulsatrix/pull/126">#126</a>): the optional orchestrator target</li>
+<li>AGT-2 to AGT-4: the native orchestrator core: HTTP transport, providers and the tool loop, the tool registry</li>
 <li>KS-8 (<strong>done</strong>): GPU CI on gfx1151</li>
 <li>KS-9 (<strong>done</strong>): a model zoo, ResNet18 and VGG16 with heatmaps checked against Zennit
   (SmolLM2's against LXT came with LLM-7)</li>
@@ -6593,6 +6655,7 @@ that only offers tools is small. The genuinely hard parts are narrow:</p>
 <th>Depends on</th>
 <th>P</th>
 <th>Effort</th>
+<th>Status</th>
 </tr>
 </thead>
 <tbody>
@@ -6603,6 +6666,7 @@ that only offers tools is small. The genuinely hard parts are narrow:</p>
 <td>—</td>
 <td>P1</td>
 <td>S</td>
+<td>Done, <a href="https://github.com/Joshuaweg/pulsatrix/pull/126">#126</a> (see below)</td>
 </tr>
 <tr>
 <td>AGT-2</td>
@@ -6611,6 +6675,7 @@ that only offers tools is small. The genuinely hard parts are narrow:</p>
 <td>AGT-1</td>
 <td>P1</td>
 <td>M</td>
+<td></td>
 </tr>
 <tr>
 <td>AGT-3</td>
@@ -6619,6 +6684,7 @@ that only offers tools is small. The genuinely hard parts are narrow:</p>
 <td>AGT-2</td>
 <td>P1</td>
 <td>M</td>
+<td></td>
 </tr>
 <tr>
 <td>AGT-4</td>
@@ -6627,6 +6693,7 @@ that only offers tools is small. The genuinely hard parts are narrow:</p>
 <td>AGT-1</td>
 <td>P1</td>
 <td>S–M</td>
+<td></td>
 </tr>
 <tr>
 <td>AGT-5</td>
@@ -6635,6 +6702,7 @@ that only offers tools is small. The genuinely hard parts are narrow:</p>
 <td>AGT-4, IO-1</td>
 <td>P2</td>
 <td>M</td>
+<td></td>
 </tr>
 <tr>
 <td>AGT-6</td>
@@ -6643,6 +6711,7 @@ that only offers tools is small. The genuinely hard parts are narrow:</p>
 <td>LLM-1 to LLM-5, AGT-4</td>
 <td>P3</td>
 <td>M</td>
+<td></td>
 </tr>
 <tr>
 <td>AGT-7</td>
@@ -6651,6 +6720,7 @@ that only offers tools is small. The genuinely hard parts are narrow:</p>
 <td>AGT-6, LLM-7</td>
 <td>P3</td>
 <td>L</td>
+<td></td>
 </tr>
 <tr>
 <td>AGT-8</td>
@@ -6659,6 +6729,7 @@ that only offers tools is small. The genuinely hard parts are narrow:</p>
 <td>AGT-3, FEAT-1</td>
 <td>P2</td>
 <td>M</td>
+<td></td>
 </tr>
 <tr>
 <td>AGT-9</td>
@@ -6667,6 +6738,7 @@ that only offers tools is small. The genuinely hard parts are narrow:</p>
 <td>AGT-3, AGT-4</td>
 <td>P3</td>
 <td>L</td>
+<td></td>
 </tr>
 </tbody>
 </table>
@@ -6689,6 +6761,20 @@ that only offers tools is small. The genuinely hard parts are narrow:</p>
 <li>Use opaque handles that expire.</li>
 <li>Treat tool output as untrusted.</li>
 </ul>
+<h3 id="how-the-agt-work-departed-from-the-plan">How the AGT work departed from the plan<a class="headerlink" href="#how-the-agt-work-departed-from-the-plan" title="Permanent link">&para;</a></h3>
+<ul>
+<li><strong>AGT-1</strong> builds on pulsatrix's own JSON (<code>json.hpp</code>, from VIZ-1), not nlohmann/json. The plan
+  chose nlohmann so that VIZ-1 and NB-1 could share it, but both shipped without it. The parser in
+  <code>json.hpp</code> is already strict, depth-limited and fuzzed, which is what parsing a remote server's
+  responses needs, so the orchestrator adds no dependency. AGT-1 adds:</li>
+<li><code>WriteJsonCompact()</code> in the core library, for request bodies and MCP's newline-delimited
+    messages;</li>
+<li><code>orch::Secret</code>, a holder for API keys with no way to print it, from AGT-3's rule that a key is
+    never logged;</li>
+<li>the install rules: <code>pulsatrix::orchestrator</code>, <code>pulsatrix_HAS_ORCHESTRATOR</code>, and the install
+    test linking it from a separate project.</li>
+</ul>
+<p>CI's build-and-test job turns the option on, so it is built and tested on Linux and Windows.</p>
 <h2 id="ks-kitchen-sink">KS: Kitchen sink<a class="headerlink" href="#ks-kitchen-sink" title="Permanent link">&para;</a></h2>
 <table>
 <thead>
