@@ -164,7 +164,7 @@ Load SmolLM2-135M and ResNet18, run them, and match the reference implementation
 - AGT-1 (**done**, [#126](https://github.com/Joshuaweg/pulsatrix/pull/126)): the optional orchestrator target
 - AGT-2 (**done**, [#127](https://github.com/Joshuaweg/pulsatrix/pull/127)): HTTP transport and server-sent events
 - AGT-3 (**done**, [#128](https://github.com/Joshuaweg/pulsatrix/pull/128)): providers and the tool loop
-- AGT-4: the tool registry
+- AGT-4 (**done**, [#129](https://github.com/Joshuaweg/pulsatrix/pull/129)): the tool registry
 - KS-8 (**done**): GPU CI on gfx1151
 - KS-9 (**done**): a model zoo, ResNet18 and VGG16 with heatmaps checked against Zennit
   (SmolLM2's against LXT came with LLM-7)
@@ -1328,7 +1328,7 @@ LLM agents live in `pulsatrix::orch` (target `pulsatrix_orchestrator`), because
 | AGT-1 | An optional `PULSATRIX_ENABLE_ORCHESTRATOR` target, off by default, with nlohmann/json (MIT). The same JSON library serves VIZ-1 and NB-1 | Keeps the core free of networking dependencies | — | P1 | S | Done, [#126](https://github.com/Joshuaweg/pulsatrix/pull/126) (see below) |
 | AGT-2 | An `HttpTransport` interface. cpp-httplib by default, with an optional libcurl backend that uses the operating system's TLS on Windows. A shared server-sent-events parser that ignores unknown event types | Streaming LLM responses | AGT-1 | P1 | M | Done, [#127](https://github.com/Joshuaweg/pulsatrix/pull/127) (see below) |
 | AGT-3 | Providers and the tool loop: an Anthropic provider and an OpenAI-compatible provider (llama-server, vLLM, Ollama), with one internal message format | The orchestrator itself | AGT-2 | P1 | M | Done, [#128](https://github.com/Joshuaweg/pulsatrix/pull/128) (see below) |
-| AGT-4 | A tool registry: name, description, input schema and a `std::function`. Schemas use only the keywords that mean the same in JSON Schema draft-7 and 2020-12, checked by a small built-in validator. The MCP server and the in-process loop share one registry | Define a tool once, use it everywhere | AGT-1 | P1 | S–M | |
+| AGT-4 | A tool registry: name, description, input schema and a `std::function`. Schemas use only the keywords that mean the same in JSON Schema draft-7 and 2020-12, checked by a small built-in validator. The MCP server and the in-process loop share one registry | Define a tool once, use it everywhere | AGT-1 | P1 | S–M | Done, [#129](https://github.com/Joshuaweg/pulsatrix/pull/129) (see below) |
 | AGT-5 | A native MCP server over stdio (2026-07-28 specification, with a fallback for older clients) that exposes explain, attribute, logit lens, patching and featurizer tools | Lets Claude and other agents drive pulsatrix | AGT-4, IO-1 | P2 | M | |
 | AGT-6 | A local provider that runs pulsatrix's own LLM, with tool calls constrained by a token-level mask | Agents with no network, and a model pulsatrix can explain | LLM-1 to LLM-5, AGT-4 | P3 | M | |
 | AGT-7 | **Explain an agent's tool choice:** run AttnLRP from the logit of the first token that distinguishes the chosen tool, back over the prompt, the tool descriptions and the history. It passes if deleting the top-attributed tokens flips the choice more often than deleting random tokens | No other library can explain why an agent picked a tool | AGT-6, LLM-7 | P3 | L | |
@@ -1401,10 +1401,29 @@ AGT-5 has to follow these security rules:
     callback isn't retried, since a retry would show that part twice. The docs' recovery
     recipe (ask the model to continue) is left to the caller.
   - **Strict tools** are opt-in per `ToolSpec`, since a schema must follow strict mode's rules.
-    AGT-4's registry can turn it on for schemas that do.
+    AGT-4's registry checks that a strict tool's schema suits it.
   - **Tests** replay streams shaped like the API docs' examples through a scripted transport,
     so they need no key and no network. One test calls the real API when
     `PULSATRIX_ORCH_LIVE=1` and `ANTHROPIC_API_KEY` are set; it hasn't run in CI.
+
+- **AGT-4** follows the plan: a `ToolRegistry` of tools (name, description, input schema,
+  function) that gives the providers their `ToolSpec`s and `RunToolLoop()` its executor, and that
+  AGT-5's MCP server will serve as well.
+  - **The validator** (`json_schema.hpp`) supports only the keywords that mean the same in
+    draft-7 and 2020-12, and `add()` refuses any other keyword rather than not enforce it. Left
+    out: `$ref` and `$defs`/`definitions` (spelled differently in the two drafts), `items` as
+    an array (2020-12's `prefixItems`), `dependencies`, and `pattern`. `pattern` needs an
+    ECMA-262 regular expression engine that is safe on input a model wrote, which `std::regex`
+    isn't (it recurses per character and backtracks without limit).
+  - **Errors go to the model.** An input that fails its schema, arguments that weren't JSON, an
+    unknown tool and a function that throws all become error results the model can act on.
+    Messages say where each problem is but never quote the model's values, and a property name
+    the model made up is repeated only if it is short and plain.
+  - **Strict mode** stays opt-in per tool, as in AGT-3, but `add()` now refuses a strict tool
+    whose schema strict mode can't take (an object without `"additionalProperties": false`,
+    numeric or length limits, `oneOf`, `not`), checked against the API docs on 2026-10-10. The
+    request-wide limits (20 strict tools, 24 optional parameters, 16 union-typed parameters)
+    aren't checked; the API reports them.
 
 ### Follow-ups the AGT work surfaced
 
@@ -1414,6 +1433,7 @@ AGT-5 has to follow these security rules:
 | A connection is opened per request. Reusing one would save a TLS handshake per call in a long tool loop | AGT-2 | AGT-3, if it measures slow |
 | The live Anthropic test runs only by hand (`PULSATRIX_ORCH_LIVE=1`). A CI secret would run it on each merge, at a few cents a run | AGT-3 | CI |
 | Resuming an interrupted stream (the docs' "continue from where you left off" message) | AGT-3 | when an agent needs it |
+| `pattern` in tool schemas, which needs a regular expression engine that is linear-time on hostile input (RE2-style) | AGT-4 | when a tool needs it |
 
 ## KS: Kitchen sink
 
