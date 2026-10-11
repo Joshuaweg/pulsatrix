@@ -28,5 +28,7 @@ var searchData=
   ['proberesult_25',['ProbeResult',['../structpulsatrix_1_1ProbeResult.html',1,'pulsatrix']]],
   ['proteinfeature_26',['ProteinFeature',['../structpulsatrix_1_1ProteinFeature.html',1,'pulsatrix']]],
   ['proteingymassay_27',['ProteinGymAssay',['../structpulsatrix_1_1ProteinGymAssay.html',1,'pulsatrix']]],
-  ['proteinstructure_28',['ProteinStructure',['../structpulsatrix_1_1ProteinStructure.html',1,'pulsatrix']]]
+  ['proteinstructure_28',['ProteinStructure',['../structpulsatrix_1_1ProteinStructure.html',1,'pulsatrix']]],
+  ['provider_29',['Provider',['../classpulsatrix_1_1orch_1_1Provider.html',1,'pulsatrix::orch']]],
+  ['providererror_30',['ProviderError',['../classpulsatrix_1_1orch_1_1ProviderError.html',1,'pulsatrix::orch']]]
 ];

@@ -3922,7 +3922,8 @@ machine, and explain it with the tools pulsatrix already has. Items on that path
 <li>NB-2 (<strong>done</strong>): the <code>.ipynb</code>/HTML report writer</li>
 <li>AGT-1 (<strong>done</strong>, <a href="https://github.com/Joshuaweg/pulsatrix/pull/126">#126</a>): the optional orchestrator target</li>
 <li>AGT-2 (<strong>done</strong>, <a href="https://github.com/Joshuaweg/pulsatrix/pull/127">#127</a>): HTTP transport and server-sent events</li>
-<li>AGT-3, AGT-4: providers and the tool loop, the tool registry</li>
+<li>AGT-3 (<strong>done</strong>, <a href="https://github.com/Joshuaweg/pulsatrix/pull/128">#128</a>): providers and the tool loop</li>
+<li>AGT-4: the tool registry</li>
 <li>KS-8 (<strong>done</strong>): GPU CI on gfx1151</li>
 <li>KS-9 (<strong>done</strong>): a model zoo, ResNet18 and VGG16 with heatmaps checked against Zennit
   (SmolLM2's against LXT came with LLM-7)</li>
@@ -6707,7 +6708,7 @@ that only offers tools is small. The genuinely hard parts are narrow:</p>
 <td>AGT-2</td>
 <td>P1</td>
 <td>M</td>
-<td></td>
+<td>Done, <a href="https://github.com/Joshuaweg/pulsatrix/pull/128">#128</a> (see below)</td>
 </tr>
 <tr>
 <td>AGT-4</td>
@@ -6811,9 +6812,33 @@ that only offers tools is small. The genuinely hard parts are narrow:</p>
     at <code>max_response_bytes</code>. <code>Secret</code> headers are redacted by <code>HttpRequest::describe()</code>.</li>
 <li><strong>"Ignores unknown event types"</strong> is the provider's job: the parser passes every type on,
     and ignores unknown fields as the specification requires.</li>
-<li><strong>Tests</strong> run both backends against a cpp-httplib server in the test process, including
+<li>
+<p><strong>Tests</strong> run both backends against a cpp-httplib server in the test process, including
     TLS with a CA made at run time. With certificate checks turned off, the TLS tests fail, as
-    they should.</li>
+    they should.</p>
+</li>
+<li>
+<p><strong>AGT-3</strong> follows the plan: an Anthropic provider and an OpenAI-compatible one behind one
+  <code>Provider</code> interface and one message format, and <code>RunToolLoop()</code>. Both stream.</p>
+</li>
+<li><strong>The API rules</strong> were checked again against the current docs (2026-10-10): no forced tool
+    choice; tool results first in the next user message; a 429 without <code>retry-after</code> (the spend
+    cap, <code>enforced_spend_limit_reached</code>) is never retried; 5xx, 529, timeouts and mid-stream
+    <code>overloaded_error</code> back off with full jitter; the key is a <code>Secret</code>.</li>
+<li><strong>Caching</strong> uses explicit breakpoints on the last tool and the system prompt, plus automatic
+    caching for the conversation: three of the four slots.</li>
+<li><strong>Thinking.</strong> Current Claude models think by default, and a tool loop must send their
+    thinking blocks back unchanged or the API returns 400. So the message format keeps any
+    block it doesn't model (thinking, redacted thinking, server tool calls) as the raw JSON it
+    arrived as, tagged with its provider, and sends it back only to that provider.</li>
+<li><strong>Not retried after streaming.</strong> A failure after part of the answer reached the caller's
+    callback isn't retried, since a retry would show that part twice. The docs' recovery
+    recipe (ask the model to continue) is left to the caller.</li>
+<li><strong>Strict tools</strong> are opt-in per <code>ToolSpec</code>, since a schema must follow strict mode's rules.
+    AGT-4's registry can turn it on for schemas that do.</li>
+<li><strong>Tests</strong> replay streams shaped like the API docs' examples through a scripted transport,
+    so they need no key and no network. One test calls the real API when
+    <code>PULSATRIX_ORCH_LIVE=1</code> and <code>ANTHROPIC_API_KEY</code> are set; it hasn't run in CI.</li>
 </ul>
 <h3 id="follow-ups-the-agt-work-surfaced">Follow-ups the AGT work surfaced<a class="headerlink" href="#follow-ups-the-agt-work-surfaced" title="Permanent link">&para;</a></h3>
 <table>
@@ -6834,6 +6859,16 @@ that only offers tools is small. The genuinely hard parts are narrow:</p>
 <td>A connection is opened per request. Reusing one would save a TLS handshake per call in a long tool loop</td>
 <td>AGT-2</td>
 <td>AGT-3, if it measures slow</td>
+</tr>
+<tr>
+<td>The live Anthropic test runs only by hand (<code>PULSATRIX_ORCH_LIVE=1</code>). A CI secret would run it on each merge, at a few cents a run</td>
+<td>AGT-3</td>
+<td>CI</td>
+</tr>
+<tr>
+<td>Resuming an interrupted stream (the docs' "continue from where you left off" message)</td>
+<td>AGT-3</td>
+<td>when an agent needs it</td>
 </tr>
 </tbody>
 </table>

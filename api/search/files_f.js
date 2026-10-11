@@ -17,5 +17,6 @@ var searchData=
   ['protein_5fstructure_2ehpp_14',['protein_structure.hpp',['../protein__structure_8hpp.html',1,'']]],
   ['protein_5ftraining_2ehpp_15',['protein_training.hpp',['../protein__training_8hpp.html',1,'']]],
   ['protein_5fviews_2ehpp_16',['protein_views.hpp',['../protein__views_8hpp.html',1,'']]],
-  ['proteingym_2ehpp_17',['proteingym.hpp',['../proteingym_8hpp.html',1,'']]]
+  ['proteingym_2ehpp_17',['proteingym.hpp',['../proteingym_8hpp.html',1,'']]],
+  ['provider_2ehpp_18',['provider.hpp',['../provider_8hpp.html',1,'']]]
 ];

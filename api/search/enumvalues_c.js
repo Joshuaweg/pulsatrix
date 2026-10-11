@@ -8,11 +8,12 @@ var searchData=
   ['maskedtoken_5',['MaskedToken',['../structpulsatrix_1_1EncoderTarget.html#a86c31c5e38672e75042f220cb00d9d58afdc72a467c93b24e594839c054705fe4',1,'pulsatrix::EncoderTarget']]],
   ['max_6',['Max',['../namespacepulsatrix.html#aaf1d7cc456b87e2b0713eff66fc17954a6a061313d22e51e0f25b7cd4dc065233',1,'pulsatrix']]],
   ['maxabs_7',['MaxAbs',['../namespacepulsatrix.html#aaf1d7cc456b87e2b0713eff66fc17954a70daa745cdfcc8f37de05539bc55d60d',1,'pulsatrix']]],
-  ['mean_8',['mean',['../classpulsatrix_1_1SequenceHead.html#ae86bd8d09472070c3db97423e5ce5649a3d6c9ac08ada31c184094bbc67afe00d',1,'pulsatrix::SequenceHead::Mean'],['../namespacepulsatrix.html#aaf1d7cc456b87e2b0713eff66fc17954a3d6c9ac08ada31c184094bbc67afe00d',1,'pulsatrix::Mean']]],
-  ['meansquarederror_9',['MeanSquaredError',['../namespacepulsatrix.html#a610ac9f626db0e8067e0ab821a25656cac9485718dbb9bad98903eed8bee75deb',1,'pulsatrix']]],
-  ['mergedwithnext_10',['MergedWithNext',['../namespacepulsatrix.html#ae6aaf6ae4d4aeddc14425e5de53d6ed2aecc60e23642b3ec8bfd26424582da64a',1,'pulsatrix']]],
-  ['mergedwithprevious_11',['MergedWithPrevious',['../namespacepulsatrix.html#ae6aaf6ae4d4aeddc14425e5de53d6ed2ac2fb8a18e9ed53f7a4adb62487d2ada6',1,'pulsatrix']]],
-  ['metric_12',['Metric',['../structpulsatrix_1_1BenchmarkRecord.html#a1531ec2e7875d40e2de46644cbaac300a216ab40cda5c7c00ff42a4efb1827d89',1,'pulsatrix::BenchmarkRecord']]],
-  ['minimax_13',['Minimax',['../namespacepulsatrix.html#ab997921e8dd2fcb16daefdcc05ce6550a380c18e239f03cf9c0a846c7defd029b',1,'pulsatrix']]],
-  ['mutation_14',['Mutation',['../structpulsatrix_1_1EncoderTarget.html#a86c31c5e38672e75042f220cb00d9d58a59016373e3e4440ecf76c1d4b6bcd97d',1,'pulsatrix::EncoderTarget']]]
+  ['maxtokens_8',['MaxTokens',['../namespacepulsatrix_1_1orch.html#a564085b8c3bca36f49e6c4076b0b955aaaf0e6be419dc2af93d93caca768aed99',1,'pulsatrix::orch']]],
+  ['mean_9',['mean',['../classpulsatrix_1_1SequenceHead.html#ae86bd8d09472070c3db97423e5ce5649a3d6c9ac08ada31c184094bbc67afe00d',1,'pulsatrix::SequenceHead::Mean'],['../namespacepulsatrix.html#aaf1d7cc456b87e2b0713eff66fc17954a3d6c9ac08ada31c184094bbc67afe00d',1,'pulsatrix::Mean']]],
+  ['meansquarederror_10',['MeanSquaredError',['../namespacepulsatrix.html#a610ac9f626db0e8067e0ab821a25656cac9485718dbb9bad98903eed8bee75deb',1,'pulsatrix']]],
+  ['mergedwithnext_11',['MergedWithNext',['../namespacepulsatrix.html#ae6aaf6ae4d4aeddc14425e5de53d6ed2aecc60e23642b3ec8bfd26424582da64a',1,'pulsatrix']]],
+  ['mergedwithprevious_12',['MergedWithPrevious',['../namespacepulsatrix.html#ae6aaf6ae4d4aeddc14425e5de53d6ed2ac2fb8a18e9ed53f7a4adb62487d2ada6',1,'pulsatrix']]],
+  ['metric_13',['Metric',['../structpulsatrix_1_1BenchmarkRecord.html#a1531ec2e7875d40e2de46644cbaac300a216ab40cda5c7c00ff42a4efb1827d89',1,'pulsatrix::BenchmarkRecord']]],
+  ['minimax_14',['Minimax',['../namespacepulsatrix.html#ab997921e8dd2fcb16daefdcc05ce6550a380c18e239f03cf9c0a846c7defd029b',1,'pulsatrix']]],
+  ['mutation_15',['Mutation',['../structpulsatrix_1_1EncoderTarget.html#a86c31c5e38672e75042f220cb00d9d58a59016373e3e4440ecf76c1d4b6bcd97d',1,'pulsatrix::EncoderTarget']]]
 ];

@@ -1,5 +1,9 @@
 var namespacepulsatrix_1_1orch =
 [
+    [ "AnthropicOptions", "structpulsatrix_1_1orch_1_1AnthropicOptions.html", "structpulsatrix_1_1orch_1_1AnthropicOptions" ],
+    [ "ChatRequest", "structpulsatrix_1_1orch_1_1ChatRequest.html", "structpulsatrix_1_1orch_1_1ChatRequest" ],
+    [ "ChatResponse", "structpulsatrix_1_1orch_1_1ChatResponse.html", "structpulsatrix_1_1orch_1_1ChatResponse" ],
+    [ "ContentBlock", "structpulsatrix_1_1orch_1_1ContentBlock.html", "structpulsatrix_1_1orch_1_1ContentBlock" ],
     [ "HttpError", "classpulsatrix_1_1orch_1_1HttpError.html", "classpulsatrix_1_1orch_1_1HttpError" ],
     [ "HttpHeader", "structpulsatrix_1_1orch_1_1HttpHeader.html", "structpulsatrix_1_1orch_1_1HttpHeader" ],
     [ "HttpRequest", "structpulsatrix_1_1orch_1_1HttpRequest.html", "structpulsatrix_1_1orch_1_1HttpRequest" ],
@@ -7,17 +11,43 @@ var namespacepulsatrix_1_1orch =
     [ "HttpTransport", "classpulsatrix_1_1orch_1_1HttpTransport.html", "classpulsatrix_1_1orch_1_1HttpTransport" ],
     [ "HttpTransportOptions", "structpulsatrix_1_1orch_1_1HttpTransportOptions.html", "structpulsatrix_1_1orch_1_1HttpTransportOptions" ],
     [ "HttpUrl", "structpulsatrix_1_1orch_1_1HttpUrl.html", "structpulsatrix_1_1orch_1_1HttpUrl" ],
+    [ "Message", "structpulsatrix_1_1orch_1_1Message.html", "structpulsatrix_1_1orch_1_1Message" ],
+    [ "OpenAiCompatibleOptions", "structpulsatrix_1_1orch_1_1OpenAiCompatibleOptions.html", "structpulsatrix_1_1orch_1_1OpenAiCompatibleOptions" ],
+    [ "Provider", "classpulsatrix_1_1orch_1_1Provider.html", "classpulsatrix_1_1orch_1_1Provider" ],
+    [ "ProviderError", "classpulsatrix_1_1orch_1_1ProviderError.html", "classpulsatrix_1_1orch_1_1ProviderError" ],
+    [ "RetryPolicy", "structpulsatrix_1_1orch_1_1RetryPolicy.html", "structpulsatrix_1_1orch_1_1RetryPolicy" ],
     [ "Secret", "classpulsatrix_1_1orch_1_1Secret.html", "classpulsatrix_1_1orch_1_1Secret" ],
     [ "SseEvent", "structpulsatrix_1_1orch_1_1SseEvent.html", "structpulsatrix_1_1orch_1_1SseEvent" ],
     [ "SseParser", "classpulsatrix_1_1orch_1_1SseParser.html", "classpulsatrix_1_1orch_1_1SseParser" ],
+    [ "StreamCallbacks", "structpulsatrix_1_1orch_1_1StreamCallbacks.html", "structpulsatrix_1_1orch_1_1StreamCallbacks" ],
+    [ "ToolCall", "structpulsatrix_1_1orch_1_1ToolCall.html", "structpulsatrix_1_1orch_1_1ToolCall" ],
+    [ "ToolLoopOptions", "structpulsatrix_1_1orch_1_1ToolLoopOptions.html", "structpulsatrix_1_1orch_1_1ToolLoopOptions" ],
+    [ "ToolLoopResult", "structpulsatrix_1_1orch_1_1ToolLoopResult.html", "structpulsatrix_1_1orch_1_1ToolLoopResult" ],
+    [ "ToolOutcome", "structpulsatrix_1_1orch_1_1ToolOutcome.html", "structpulsatrix_1_1orch_1_1ToolOutcome" ],
+    [ "ToolSpec", "structpulsatrix_1_1orch_1_1ToolSpec.html", "structpulsatrix_1_1orch_1_1ToolSpec" ],
+    [ "Usage", "structpulsatrix_1_1orch_1_1Usage.html", "structpulsatrix_1_1orch_1_1Usage" ],
     [ "HttpChunkHandler", "namespacepulsatrix_1_1orch.html#a0391722362a15ec3d4fc0764ef325d3b", null ],
+    [ "ToolExecutor", "namespacepulsatrix_1_1orch.html#a0b12f555fda7e4fe333673a2937de23a", null ],
     [ "HttpBackend", "namespacepulsatrix_1_1orch.html#a765c26f70e26c83078a483eb602ed2a6", [
       [ "Httplib", "namespacepulsatrix_1_1orch.html#a765c26f70e26c83078a483eb602ed2a6ac09dd353163bfb3b8fa9d892ba77938b", null ],
       [ "Curl", "namespacepulsatrix_1_1orch.html#a765c26f70e26c83078a483eb602ed2a6a66b29b9f2bdc949a7545046fbe59fcef", null ]
     ] ],
+    [ "StopReason", "namespacepulsatrix_1_1orch.html#a564085b8c3bca36f49e6c4076b0b955a", [
+      [ "EndTurn", "namespacepulsatrix_1_1orch.html#a564085b8c3bca36f49e6c4076b0b955aa0f5830c168fdb5396f4c2eff1fc48aeb", null ],
+      [ "ToolUse", "namespacepulsatrix_1_1orch.html#a564085b8c3bca36f49e6c4076b0b955aa56b93ae8e6095a2bb1e8ad98b4c17d20", null ],
+      [ "MaxTokens", "namespacepulsatrix_1_1orch.html#a564085b8c3bca36f49e6c4076b0b955aaaf0e6be419dc2af93d93caca768aed99", null ],
+      [ "StopSequence", "namespacepulsatrix_1_1orch.html#a564085b8c3bca36f49e6c4076b0b955aa298e6493861e637a4dc9286d898d814e", null ],
+      [ "PauseTurn", "namespacepulsatrix_1_1orch.html#a564085b8c3bca36f49e6c4076b0b955aa8c8053647510e45496e79211fa31e8b4", null ],
+      [ "Refusal", "namespacepulsatrix_1_1orch.html#a564085b8c3bca36f49e6c4076b0b955aa923d783c5bfd830e43964b953a65327f", null ],
+      [ "Other", "namespacepulsatrix_1_1orch.html#a564085b8c3bca36f49e6c4076b0b955aa6311ae17c1ee52b36e68aaf4ad066387", null ]
+    ] ],
     [ "HttpBackendAvailable", "namespacepulsatrix_1_1orch.html#a6831d578a80f89e4a14552616263db54", null ],
     [ "HttpsSupported", "namespacepulsatrix_1_1orch.html#a0a47b5ca62f0d085a928776a6d3a6217", null ],
+    [ "IsValidToolName", "namespacepulsatrix_1_1orch.html#aa4db7d6568e1d5d9fab8e832f08e4eb3", null ],
+    [ "MakeAnthropicProvider", "namespacepulsatrix_1_1orch.html#a50c1108594cb3e1dc78fc51aab620fac", null ],
     [ "MakeHttpTransport", "namespacepulsatrix_1_1orch.html#a78097a3e47a5ce6ffc1759bdc4510cc2", null ],
     [ "MakeHttpTransport", "namespacepulsatrix_1_1orch.html#a37124dc0edd398c70803d295f19cacf9", null ],
-    [ "ParseHttpUrl", "namespacepulsatrix_1_1orch.html#a4f55e2bcec9448d4043e7fd5c728ff2b", null ]
+    [ "MakeOpenAiCompatibleProvider", "namespacepulsatrix_1_1orch.html#ac119827f93ddce08ca5fdec6cd5d4cb8", null ],
+    [ "ParseHttpUrl", "namespacepulsatrix_1_1orch.html#a4f55e2bcec9448d4043e7fd5c728ff2b", null ],
+    [ "RunToolLoop", "namespacepulsatrix_1_1orch.html#a7dc8c979832324fb2b4063131ed95c2b", null ]
 ];
