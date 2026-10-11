@@ -163,7 +163,7 @@ Load SmolLM2-135M and ResNet18, run them, and match the reference implementation
 - NB-2 (**done**): the `.ipynb`/HTML report writer
 - AGT-1 (**done**, [#126](https://github.com/Joshuaweg/pulsatrix/pull/126)): the optional orchestrator target
 - AGT-2 (**done**, [#127](https://github.com/Joshuaweg/pulsatrix/pull/127)): HTTP transport and server-sent events
-- AGT-3 (**done**): providers and the tool loop
+- AGT-3 (**done**, [#128](https://github.com/Joshuaweg/pulsatrix/pull/128)): providers and the tool loop
 - AGT-4: the tool registry
 - KS-8 (**done**): GPU CI on gfx1151
 - KS-9 (**done**): a model zoo, ResNet18 and VGG16 with heatmaps checked against Zennit
@@ -1327,7 +1327,7 @@ LLM agents live in `pulsatrix::orch` (target `pulsatrix_orchestrator`), because
 |---|---|---|---|---|---|---|
 | AGT-1 | An optional `PULSATRIX_ENABLE_ORCHESTRATOR` target, off by default, with nlohmann/json (MIT). The same JSON library serves VIZ-1 and NB-1 | Keeps the core free of networking dependencies | — | P1 | S | Done, [#126](https://github.com/Joshuaweg/pulsatrix/pull/126) (see below) |
 | AGT-2 | An `HttpTransport` interface. cpp-httplib by default, with an optional libcurl backend that uses the operating system's TLS on Windows. A shared server-sent-events parser that ignores unknown event types | Streaming LLM responses | AGT-1 | P1 | M | Done, [#127](https://github.com/Joshuaweg/pulsatrix/pull/127) (see below) |
-| AGT-3 | Providers and the tool loop: an Anthropic provider and an OpenAI-compatible provider (llama-server, vLLM, Ollama), with one internal message format | The orchestrator itself | AGT-2 | P1 | M | Done, PR pending (see below) |
+| AGT-3 | Providers and the tool loop: an Anthropic provider and an OpenAI-compatible provider (llama-server, vLLM, Ollama), with one internal message format | The orchestrator itself | AGT-2 | P1 | M | Done, [#128](https://github.com/Joshuaweg/pulsatrix/pull/128) (see below) |
 | AGT-4 | A tool registry: name, description, input schema and a `std::function`. Schemas use only the keywords that mean the same in JSON Schema draft-7 and 2020-12, checked by a small built-in validator. The MCP server and the in-process loop share one registry | Define a tool once, use it everywhere | AGT-1 | P1 | S–M | |
 | AGT-5 | A native MCP server over stdio (2026-07-28 specification, with a fallback for older clients) that exposes explain, attribute, logit lens, patching and featurizer tools | Lets Claude and other agents drive pulsatrix | AGT-4, IO-1 | P2 | M | |
 | AGT-6 | A local provider that runs pulsatrix's own LLM, with tool calls constrained by a token-level mask | Agents with no network, and a model pulsatrix can explain | LLM-1 to LLM-5, AGT-4 | P3 | M | |
