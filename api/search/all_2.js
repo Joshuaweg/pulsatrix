@@ -66,7 +66,7 @@ var searchData=
   ['classifier_5fweight_63',['classifier_weight',['../classpulsatrix_1_1MnistConvNet.html#a59f018c5008b98d48f49d73c06f37f7e',1,'pulsatrix::MnistConvNet']]],
   ['classifylatent_64',['ClassifyLatent',['../namespacepulsatrix.html#a2e875d0cc73f959cf7eb96b1c4ed0572',1,'pulsatrix']]],
   ['clean_65',['clean',['../structpulsatrix_1_1LossRecovered.html#a5d73a1ae930f3e2c8865b16467fd25fa',1,'pulsatrix::LossRecovered']]],
-  ['clear_66',['clear',['../classpulsatrix_1_1TextureCache.html#ae0796cf3fe6f089ba63b472f7bd8d4d8',1,'pulsatrix::TextureCache::Clear()'],['../classpulsatrix_1_1RolloutBuffer.html#a4ea617cbcf9cb4c07f8ada4c4bee2208',1,'pulsatrix::RolloutBuffer::clear()']]],
+  ['clear_66',['clear',['../classpulsatrix_1_1RolloutBuffer.html#a4ea617cbcf9cb4c07f8ada4c4bee2208',1,'pulsatrix::RolloutBuffer::clear()'],['../classpulsatrix_1_1TextureCache.html#ae0796cf3fe6f089ba63b472f7bd8d4d8',1,'pulsatrix::TextureCache::Clear()']]],
   ['clear_5fkey_5fpadding_5fmask_67',['clear_key_padding_mask',['../classpulsatrix_1_1MultiHeadAttentionModule.html#ab5958a2006d36f76933182b3bdeb9693',1,'pulsatrix::MultiHeadAttentionModule']]],
   ['clear_5fpadding_5fmask_68',['clear_padding_mask',['../classpulsatrix_1_1EncoderLM.html#acd008e79de3b150be0ea4401eb12b30f',1,'pulsatrix::EncoderLM']]],
   ['clerp_69',['clerp',['../structpulsatrix_1_1AttributionGraph_1_1Node.html#af3e0fcc33e49645bd50d17acc79c4c0c',1,'pulsatrix::AttributionGraph::Node']]],

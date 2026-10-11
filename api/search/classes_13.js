@@ -45,5 +45,6 @@ var searchData=
   ['transformdataset_42',['TransformDataset',['../classpulsatrix_1_1TransformDataset.html',1,'pulsatrix']]],
   ['transformerblock_43',['TransformerBlock',['../classpulsatrix_1_1TransformerBlock.html',1,'pulsatrix']]],
   ['transformerblockoptions_44',['TransformerBlockOptions',['../structpulsatrix_1_1TransformerBlockOptions.html',1,'pulsatrix']]],
-  ['trial_45',['Trial',['../classpulsatrix_1_1Trial.html',1,'pulsatrix']]]
+  ['trial_45',['Trial',['../classpulsatrix_1_1Trial.html',1,'pulsatrix']]],
+  ['twonnresult_46',['TwoNNResult',['../structpulsatrix_1_1TwoNNResult.html',1,'pulsatrix']]]
 ];

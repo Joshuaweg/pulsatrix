@@ -502,6 +502,9 @@ Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1DropoutModule.html">DropoutModule</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">y = (mask_i ? x_i / (1 - p) : 0) at training time (inverted dropout &ndash; scaling happens at training time so eval-time forward needs no rescaling); y = x at eval time or when p == 0. No parameters.  <a href="classpulsatrix_1_1DropoutModule.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpulsatrix_1_1EffectiveRank.html">EffectiveRank</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="namespacepulsatrix.html#a33ecc209926bc462e6b7e5f6fbe8e860" title="How many directions the rows spread along, from the singular values of x.">MeasureEffectiveRank()</a>'s result.  <a href="structpulsatrix_1_1EffectiveRank.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpulsatrix_1_1EigenResult.html">EigenResult</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="namespacepulsatrix.html#a2a4553c7cd6e8241e1046381cca92ed6" title="All eigenvalues and eigenvectors of a symmetric matrix, by Householder reduction to tridiagonal form ...">SymmetricEigen()</a>'s result.  <a href="structpulsatrix_1_1EigenResult.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -1335,6 +1338,9 @@ Classes</h2></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1Trial.html">Trial</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">A configuration paired with the metric history observed while evaluating it (instantiate a network under this configuration, train it, record whatever metrics the training loop reports). Deliberately decoupled from <a class="el" href="classpulsatrix_1_1SearchSpace.html" title="Describes a hyperparameter search space as an ordered list of named, typed parameters....">SearchSpace</a> &ndash; a <a class="el" href="classpulsatrix_1_1Trial.html" title="A configuration paired with the metric history observed while evaluating it (instantiate a network un...">Trial</a> records what actually happened, a <a class="el" href="classpulsatrix_1_1SearchSpace.html" title="Describes a hyperparameter search space as an ordered list of named, typed parameters....">SearchSpace</a> describes what could be proposed; neither needs to reference the other directly.  <a href="classpulsatrix_1_1Trial.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpulsatrix_1_1TwoNNResult.html">TwoNNResult</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="namespacepulsatrix.html#aa8f5a465cad9f1a4542aad834172f955" title="TwoNN intrinsic dimension (Facco, d&#39;Errico, Rodriguez and Laio, Scientific Reports 2017): from each p...">TwoNNDimension()</a>'s result.  <a href="structpulsatrix_1_1TwoNNResult.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1UnicodeRegex.html">UnicodeRegex</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">A compiled pattern, matched leftmost-first with backtracking as Oniguruma (which Hugging Face <code>tokenizers</code> uses) and Perl do.  <a href="classpulsatrix_1_1UnicodeRegex.html#details">More...</a><br /></td></tr>
@@ -2241,6 +2247,9 @@ Functions</h2></td></tr>
 <tr class="memitem:a2a4553c7cd6e8241e1046381cca92ed6" id="r_a2a4553c7cd6e8241e1046381cca92ed6"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structpulsatrix_1_1EigenResult.html">EigenResult</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#a2a4553c7cd6e8241e1046381cca92ed6">SymmetricEigen</a> (const <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp;a)</td></tr>
 <tr class="memdesc:a2a4553c7cd6e8241e1046381cca92ed6"><td class="mdescLeft">&#160;</td><td class="mdescRight">All eigenvalues and eigenvectors of a symmetric matrix, by Householder reduction to tridiagonal form followed by QL with implicit shifts.  <br /></td></tr>
 <tr class="separator:a2a4553c7cd6e8241e1046381cca92ed6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a981659cb1cf572547d84f3ea6a764a9a" id="r_a981659cb1cf572547d84f3ea6a764a9a"><td class="memItemLeft" align="right" valign="top">std::vector&lt; double &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#a981659cb1cf572547d84f3ea6a764a9a">SymmetricEigenvalues</a> (std::vector&lt; double &gt; a, int64_t n)</td></tr>
+<tr class="memdesc:a981659cb1cf572547d84f3ea6a764a9a"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="namespacepulsatrix.html#a2a4553c7cd6e8241e1046381cca92ed6" title="All eigenvalues and eigenvectors of a symmetric matrix, by Householder reduction to tridiagonal form ...">SymmetricEigen()</a>'s eigenvalues, in double precision from end to end: for a matrix computed in double, such as a Gram matrix, whose small eigenvalues a float copy would lose.  <br /></td></tr>
+<tr class="separator:a981659cb1cf572547d84f3ea6a764a9a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:abd341561ba3ab500db9ee6888d176cfe" id="r_abd341561ba3ab500db9ee6888d176cfe"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structpulsatrix_1_1DominantEigenResult.html">DominantEigenResult</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#abd341561ba3ab500db9ee6888d176cfe">PowerIteration</a> (const <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp;a, int64_t max_iterations=1000, float tolerance=1e-6f, uint64_t seed=0)</td></tr>
 <tr class="memdesc:abd341561ba3ab500db9ee6888d176cfe"><td class="mdescLeft">&#160;</td><td class="mdescRight">The dominant eigenpair of a symmetric matrix by power iteration &ndash; cheaper than <a class="el" href="namespacepulsatrix.html#a2a4553c7cd6e8241e1046381cca92ed6" title="All eigenvalues and eigenvectors of a symmetric matrix, by Householder reduction to tridiagonal form ...">SymmetricEigen()</a> when only the top eigenpair is needed (spectral norm, stable rank).  <br /></td></tr>
 <tr class="separator:abd341561ba3ab500db9ee6888d176cfe"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -2509,6 +2518,15 @@ Functions</h2></td></tr>
 <tr class="memitem:ae7086aa42f9ed760fa08b132212f3d3a" id="r_ae7086aa42f9ed760fa08b132212f3d3a"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structpulsatrix_1_1AttributionGraph.html">AttributionGraph</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#ae7086aa42f9ed760fa08b132212f3d3a">BuildRelevanceGraph</a> (<a class="el" href="classpulsatrix_1_1CausalLM.html">CausalLM</a> &amp;model, <a class="el" href="classpulsatrix_1_1DeviceBackend.html">DeviceBackend</a> *backend, const std::vector&lt; int64_t &gt; &amp;ids, int64_t target, const <a class="el" href="structpulsatrix_1_1RelevanceGraphOptions.html">RelevanceGraphOptions</a> &amp;options)</td></tr>
 <tr class="memdesc:ae7086aa42f9ed760fa08b132212f3d3a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Explains the model's logit for <code>target</code> at the last position with <a class="el" href="classpulsatrix_1_1LRP.html" title="Whole-model LRP: runs the forward pass, seeds relevance at the chosen output(s), and propagates it to...">LRP</a> and returns the relevance flow as an attribution graph.  <br /></td></tr>
 <tr class="separator:ae7086aa42f9ed760fa08b132212f3d3a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad0fb981b927a721ca21aed909e8f55b9" id="r_ad0fb981b927a721ca21aed909e8f55b9"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#ad0fb981b927a721ca21aed909e8f55b9">Anisotropy</a> (const <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp;x, bool center=false)</td></tr>
+<tr class="memdesc:ad0fb981b927a721ca21aed909e8f55b9"><td class="mdescLeft">&#160;</td><td class="mdescRight">The mean cosine similarity over all pairs of different rows: about 0 for directions spread evenly, near 1 when every row points the same way.  <br /></td></tr>
+<tr class="separator:ad0fb981b927a721ca21aed909e8f55b9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a33ecc209926bc462e6b7e5f6fbe8e860" id="r_a33ecc209926bc462e6b7e5f6fbe8e860"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structpulsatrix_1_1EffectiveRank.html">EffectiveRank</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#a33ecc209926bc462e6b7e5f6fbe8e860">MeasureEffectiveRank</a> (const <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp;x, bool center=true)</td></tr>
+<tr class="memdesc:a33ecc209926bc462e6b7e5f6fbe8e860"><td class="mdescLeft">&#160;</td><td class="mdescRight">How many directions the rows spread along, from the singular values of x.  <br /></td></tr>
+<tr class="separator:a33ecc209926bc462e6b7e5f6fbe8e860"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa8f5a465cad9f1a4542aad834172f955" id="r_aa8f5a465cad9f1a4542aad834172f955"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structpulsatrix_1_1TwoNNResult.html">TwoNNResult</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#aa8f5a465cad9f1a4542aad834172f955">TwoNNDimension</a> (const <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp;x, double discard_fraction=0.1)</td></tr>
+<tr class="memdesc:aa8f5a465cad9f1a4542aad834172f955"><td class="mdescLeft">&#160;</td><td class="mdescRight">TwoNN intrinsic dimension (Facco, d'Errico, Rodriguez and Laio, Scientific Reports 2017): from each point's distances to its two nearest neighbors, mu = r2 / r1, whose distribution depends only on the dimension the points vary in locally.  <br /></td></tr>
+<tr class="separator:aa8f5a465cad9f1a4542aad834172f955"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a20006889a282e5fa1d7d864597ef08d4" id="r_a20006889a282e5fa1d7d864597ef08d4"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#a20006889a282e5fa1d7d864597ef08d4">LinearCka</a> (const <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp;x, const <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp;y, <a class="el" href="namespacepulsatrix.html#ac793506d330b9f7e81f562eed3ab8539">CkaEstimator</a> estimator=<a class="el" href="namespacepulsatrix.html#ac793506d330b9f7e81f562eed3ab8539a3b04dd98f4b6bfb00045042467cc909b">CkaEstimator::Debiased</a>)</td></tr>
 <tr class="memdesc:a20006889a282e5fa1d7d864597ef08d4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Linear CKA between two representations of the same inputs.  <br /></td></tr>
 <tr class="separator:a20006889a282e5fa1d7d864597ef08d4"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -4947,6 +4965,50 @@ Every op here computes the <em>forward</em> value only &ndash; no derivative var
 <dl class="exception"><dt>Exceptions</dt><dd>
   <table class="exception">
     <tr><td class="paramname">std::invalid_argument</td><td>if the outputs don't form whole blocks or an option is invalid. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="ad0fb981b927a721ca21aed909e8f55b9" name="ad0fb981b927a721ca21aed909e8f55b9"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad0fb981b927a721ca21aed909e8f55b9">&#9670;&#160;</a></span>Anisotropy()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">double pulsatrix::Anisotropy </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp;&#160;</td>
+          <td class="paramname"><em>x</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>center</em> = <code>false</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>The mean cosine similarity over all pairs of different rows: about 0 for directions spread evenly, near 1 when every row points the same way. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">x</td><td>shape (n, ...): a row per input. Dimensions after the first are flattened. </td></tr>
+    <tr><td class="paramname">center</td><td>Subtract the mean row first. Centering removes the common direction, so the result drops to about -1/(n - 1) when nothing but that direction was shared. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section note"><dt>Note</dt><dd>Exact over all n(n - 1) pairs, at the cost of one pass: the sum of unit vectors u gives <code>(|sum u|^2 - n) / (n (n - 1))</code>. </dd></dl>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname">std::invalid_argument</td><td>if x has rank below 2, fewer than 2 rows, a NaN or infinity, or a row of zeros (after centering, if centering). </td></tr>
   </table>
   </dd>
 </dl>
@@ -11403,6 +11465,49 @@ template&lt;typename Genotype , typename FitnessT &gt; </div>
 <dl class="exception"><dt>Exceptions</dt><dd>
   <table class="exception">
     <tr><td class="paramname">std::invalid_argument</td><td>for a batch that isn't (N, input_dim) with N &gt;= 2, or a distortion_fraction outside (0, 1). </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="a33ecc209926bc462e6b7e5f6fbe8e860" name="a33ecc209926bc462e6b7e5f6fbe8e860"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a33ecc209926bc462e6b7e5f6fbe8e860">&#9670;&#160;</a></span>MeasureEffectiveRank()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="structpulsatrix_1_1EffectiveRank.html">EffectiveRank</a> pulsatrix::MeasureEffectiveRank </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp;&#160;</td>
+          <td class="paramname"><em>x</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>center</em> = <code>true</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>How many directions the rows spread along, from the singular values of x. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">center</td><td>Subtract the mean row first (the default). Without it, a large common direction, the anisotropy, takes up a share of the spectrum and lowers the effective rank. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section note"><dt>Note</dt><dd>The singular values come from the smaller Gram matrix, x x^T or x^T x, in double precision. </dd></dl>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname">std::invalid_argument</td><td>if x has rank below 2, fewer than 2 rows, a NaN or infinity, or is all zeros (after centering, if centering). </td></tr>
   </table>
   </dd>
 </dl>
@@ -18805,6 +18910,49 @@ Scoped to the small, dense, well-conditioned systems this codebase's callers act
 
 </div>
 </div>
+<a id="a981659cb1cf572547d84f3ea6a764a9a" name="a981659cb1cf572547d84f3ea6a764a9a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a981659cb1cf572547d84f3ea6a764a9a">&#9670;&#160;</a></span>SymmetricEigenvalues()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::vector&lt; double &gt; pulsatrix::SymmetricEigenvalues </td>
+          <td>(</td>
+          <td class="paramtype">std::vector&lt; double &gt;&#160;</td>
+          <td class="paramname"><em>a</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int64_t&#160;</td>
+          <td class="paramname"><em>n</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p><a class="el" href="namespacepulsatrix.html#a2a4553c7cd6e8241e1046381cca92ed6" title="All eigenvalues and eigenvectors of a symmetric matrix, by Householder reduction to tridiagonal form ...">SymmetricEigen()</a>'s eigenvalues, in double precision from end to end: for a matrix computed in double, such as a Gram matrix, whose small eigenvalues a float copy would lose. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">a</td><td>Row-major <code>(n, n)</code>, symmetric to within a relative 1e-5, all finite. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>The n eigenvalues, largest first. </dd></dl>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname">std::invalid_argument</td><td>if <code>a</code> doesn't hold n * n values, n &lt; 1, it has a non-finite entry, or it isn't symmetric. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
 <a id="a38de2549fafa7ece476360793b7b1ccb" name="a38de2549fafa7ece476360793b7b1ccb"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a38de2549fafa7ece476360793b7b1ccb">&#9670;&#160;</a></span>SyncTargetNetwork()</h2>
 
@@ -21235,6 +21383,52 @@ template&lt;typename Optimizer &gt; </div>
 </div><div class="memdoc">
 
 <p>True contacts: 1 where two residues are closer than <code>threshold</code> (8 Å by convention), 0 where they aren't, and NaN where a distance is unknown. </p>
+
+</div>
+</div>
+<a id="aa8f5a465cad9f1a4542aad834172f955" name="aa8f5a465cad9f1a4542aad834172f955"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa8f5a465cad9f1a4542aad834172f955">&#9670;&#160;</a></span>TwoNNDimension()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="structpulsatrix_1_1TwoNNResult.html">TwoNNResult</a> pulsatrix::TwoNNDimension </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp;&#160;</td>
+          <td class="paramname"><em>x</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">double&#160;</td>
+          <td class="paramname"><em>discard_fraction</em> = <code>0.1</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>TwoNN intrinsic dimension (Facco, d'Errico, Rodriguez and Laio, Scientific Reports 2017): from each point's distances to its two nearest neighbors, mu = r2 / r1, whose distribution depends only on the dimension the points vary in locally. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">x</td><td>shape (n, ...): a row per point, under Euclidean distance. </td></tr>
+    <tr><td class="paramname">discard_fraction</td><td>The share of the largest mu values the fit leaves out, 0.1 in the paper. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section note"><dt>Note</dt><dd>Repeated rows are removed first, as DADApy's remove_identical_points() does: a zero distance makes mu infinite. The search is exact, at n^2 x width multiply-adds. </dd>
+<dd>
+The estimate is biased low when the dimension is high for the number of points (tens of dimensions need thousands of points), and it measures the scale of the nearest neighbors only: noise on a low-dimensional manifold raises it. </dd></dl>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname">std::invalid_argument</td><td>if x has rank below 2, a NaN or infinity, fewer than 3 distinct rows, or discard_fraction isn't in (0, 1), or leaves fewer than 2 points to fit. </td></tr>
+  </table>
+  </dd>
+</dl>
 
 </div>
 </div>

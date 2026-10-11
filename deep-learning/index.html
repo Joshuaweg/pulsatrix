@@ -2699,7 +2699,8 @@ whole network, see <a href="../interpretability/lrp/">Layer-wise Relevance Propa
 <li><strong>Matrix decompositions</strong> (CPU, for matrices up to a few hundred wide): <code>SymmetricEigen</code>,
   <code>PowerIteration</code>, <code>QR</code> and <code>SVD</code>, the building blocks for PCA, stable rank and orthonormal
   projections. Vector signs are fixed (each vector's largest entry is positive) and values come
-  largest first, so the same matrix always gives the same answer.</li>
+  largest first, so the same matrix always gives the same answer. <code>SymmetricEigenvalues</code> takes
+  and returns doubles, for when the smallest eigenvalues matter.</li>
 <li><strong>Ready-made examples</strong>: <code>XorNetwork</code> (a tiny MLP that learns XOR), <code>MnistConvNet</code> (a
   Conv2D MNIST classifier) and <code>MnistIdxLoader</code> (reads the MNIST IDX files)</li>
 </ul>

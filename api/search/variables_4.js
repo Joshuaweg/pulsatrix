@@ -2,7 +2,7 @@ var searchData=
 [
   ['edge_5fthreshold_0',['edge_threshold',['../structpulsatrix_1_1RelevanceGraphOptions.html#a4999dc4a13400c10ef04e920ed0b0da2',1,'pulsatrix::RelevanceGraphOptions::edge_threshold'],['../structpulsatrix_1_1CircuitTraceOptions.html#a22fd9bfb6a5662a6c329d899d309abaf',1,'pulsatrix::CircuitTraceOptions::edge_threshold']]],
   ['edges_1',['edges',['../structpulsatrix_1_1AleResult.html#af6ac965ef7f5c6e8b788a6988b210064',1,'pulsatrix::AleResult::edges'],['../structpulsatrix_1_1CircuitGraphDocument.html#a0550a31e00e69b8320504507765fd816',1,'pulsatrix::CircuitGraphDocument::edges']]],
-  ['effective_5frank_2',['effective_rank',['../structpulsatrix_1_1BlockGeometry.html#a6a78f5abf730922b110649a99758fa2a',1,'pulsatrix::BlockGeometry']]],
+  ['effective_5frank_2',['effective_rank',['../structpulsatrix_1_1BlockGeometry.html#a6a78f5abf730922b110649a99758fa2a',1,'pulsatrix::BlockGeometry::effective_rank'],['../structpulsatrix_1_1EffectiveRank.html#a52e41f515b09ea3cd15d921f9f7cf190',1,'pulsatrix::EffectiveRank::effective_rank']]],
   ['effects_3',['effects',['../structpulsatrix_1_1AleResult.html#ae93793c823c7615f9b40e06f1cc04ce3',1,'pulsatrix::AleResult']]],
   ['elapsed_5fseconds_4',['elapsed_seconds',['../structpulsatrix_1_1SystemSample.html#a24f5ddfd403268ca24ca5775faa3f827',1,'pulsatrix::SystemSample']]],
   ['embed_5fscale_5',['embed_scale',['../structpulsatrix_1_1HfModelConfig.html#a01fe2a845efbb645784bf7528af86006',1,'pulsatrix::HfModelConfig']]],
