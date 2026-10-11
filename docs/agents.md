@@ -5,9 +5,9 @@ OpenAI-compatible local servers (llama-server, vLLM, Ollama), a tool loop, and l
 that lets Claude and other agents drive pulsatrix's explainers. It needs no Python and no SDK.
 
 !!! note "In progress"
-    So far: the build target, API keys and JSON (AGT-1), HTTP with streaming (AGT-2), and the
-    providers with the tool loop (AGT-3). A tool registry that validates the model's tool inputs
-    follows as AGT-4, and an MCP server as AGT-5. See the
+    So far: the build target, API keys and JSON (AGT-1), HTTP with streaming (AGT-2), the
+    providers with the tool loop (AGT-3), and a tool registry that checks the model's tool
+    inputs (AGT-4). An MCP server that serves the same registry follows as AGT-5. See the
     [roadmap](roadmap/index.md#agt-agents-native-c).
 
 ## Building it
@@ -76,34 +76,68 @@ request.model = "qwen2.5:7b";
 
 ### Tools and the tool loop
 
-Give the model tools with `ToolSpec` (a name, a description and a JSON Schema for the input), and
-`RunToolLoop()` does the rest. It asks the model, runs each tool the model calls, sends the
+Define each tool once in a `ToolRegistry`: a name, a description, a JSON Schema for its input and
+the function that runs it. The registry gives the provider the tool definitions and gives
+`RunToolLoop()` an executor. The loop asks the model, runs each tool the model calls, sends the
 results back, and repeats until the model answers:
 
 ```cpp
-#include "pulsatrix/orch/tool_loop.hpp"
+#include "pulsatrix/orch/tool_registry.hpp"
 
-ToolSpec add;
-add.name = "add";
-add.description = "Adds two integers a and b and returns their sum.";
-add.input_schema = pulsatrix::ParseJson(R"({"type": "object",
-    "properties": {"a": {"type": "integer"}, "b": {"type": "integer"}},
-    "required": ["a", "b"], "additionalProperties": false})");
-add.strict = true;  // Claude guarantees inputs that match the schema
-request.tools = {add};
+ToolRegistry tools;
+tools.add({"add", "Adds two integers a and b and returns their sum.",
+           pulsatrix::ParseJson(R"({"type": "object",
+               "properties": {"a": {"type": "integer"}, "b": {"type": "integer"}},
+               "required": ["a", "b"], "additionalProperties": false})"),
+           [](const pulsatrix::JsonValue& input) -> ToolOutcome {
+               return {std::to_string(input.find("a")->as_int64() + input.find("b")->as_int64())};
+           },
+           /*strict=*/true});  // Claude guarantees inputs that match the schema
+request.tools = tools.specs();
 
-ToolLoopResult result = RunToolLoop(*claude, request, [](const ToolCall& call) -> ToolOutcome {
-    if (call.name != "add") {
-        return {"unknown tool " + call.name, /*is_error=*/true};
-    }
-    return {std::to_string(call.input.find("a")->as_int64() + call.input.find("b")->as_int64())};
-});
+ToolLoopResult result = RunToolLoop(*claude, request, tools.executor());
 std::cout << result.last.message.text() << "\n";
 ```
 
-A tool that throws is reported to the model as an error, so the model can try again.
-`max_turns` (20) bounds the loop. AGT-4 will add a registry that checks each input against its
-schema before your function sees it.
+The registry checks every input against its tool's schema before the function sees it, so the
+function above can rely on `a` and `b` being integers. Every mistake goes back to the model as
+an error result it can act on, never as an exception:
+
+- an input that doesn't match the schema lists each problem and where it is, for example
+  `/a must be an integer, not a string`;
+- arguments that weren't valid JSON, which small local models sometimes write;
+- a tool name that doesn't exist, with the names that do;
+- a function that throws, with the exception's message. A function can also return
+  `{"message", /*is_error=*/true}` itself.
+
+`max_turns` (20) bounds the loop. `RunToolLoop()` takes any function from `ToolCall` to
+`ToolOutcome`, so a registry is optional.
+
+#### Which schemas work
+
+A schema may use only the JSON Schema keywords that mean the same in draft-7 and 2020-12, so the
+same schema works with Claude, with OpenAI-compatible servers and with MCP clients, whichever
+draft they assume:
+
+| For | Keywords |
+|---|---|
+| any value | `type` (a name or an array of names), `enum`, `const` |
+| objects | `properties`, `required`, `additionalProperties`, `minProperties`, `maxProperties` |
+| arrays | `items` (one schema for every element), `minItems`, `maxItems`, `uniqueItems` |
+| strings | `minLength`, `maxLength` (counted in characters, not bytes) |
+| numbers | `minimum`, `maximum`, `exclusiveMinimum`, `exclusiveMaximum`, `multipleOf` |
+| combining | `allOf`, `anyOf`, `oneOf`, `not` |
+| notes, not checked | `title`, `description`, `default`, `examples`, `format`, `$comment`, `$schema` |
+
+`add()` refuses any other keyword rather than not enforce it. That includes `$ref` and
+`$defs`/`definitions` (spelled differently in the two drafts; write the schema out), `items` as
+an array (2020-12 calls it `prefixItems`), and `pattern` (check the string in the tool).
+`ValidateJson()` and `CheckSchema()` in `json_schema.hpp` work on their own as well.
+
+`strict = true` asks Claude to guarantee inputs that match the schema. Strict mode needs
+`"additionalProperties": false` on every object and doesn't support numeric or length limits,
+`oneOf` or `not`, so `add()` refuses a strict tool whose schema has them, with the reason.
+`StrictModeProblem()` says the same for any schema. A request may have at most 20 strict tools.
 
 ### What the providers handle for you
 
@@ -125,8 +159,8 @@ schema before your function sees it.
   particular tool with HTTP 400, so the providers never do. Set `allow_tool_calls = false` to
   tell the model not to call any.
 - **Local models.** A small model sometimes writes tool arguments that aren't valid JSON. The
-  provider keeps them as a string in `call.input`, so your tool can report the mistake back to
-  the model instead of the loop failing.
+  provider keeps them as a string in `call.input` instead of failing, and the registry reports
+  the mistake back to the model.
 
 ## API keys
 

@@ -498,6 +498,8 @@ set(PULSATRIX_ORCHESTRATOR_SOURCES
     src/orch/anthropic_provider.cpp
     src/orch/openai_provider.cpp
     src/orch/tool_loop.cpp
+    src/orch/json_schema.cpp
+    src/orch/tool_registry.cpp
 )
 if(PULSATRIX_ENABLE_ORCHESTRATOR)
     # HTTP (AGT-2). cpp-httplib (MIT, one header) is always built in; it does HTTPS with OpenSSL 3

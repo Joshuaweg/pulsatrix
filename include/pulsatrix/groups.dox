@@ -112,6 +112,7 @@
  *        opt-in via `PULSATRIX_ENABLE_ORCHESTRATOR`). So far: orch::Secret for API keys, an HTTP
  *        transport with cpp-httplib and libcurl backends (orch::HttpTransport), and a parser for
  *        server-sent events (orch::SseParser), and the Anthropic and OpenAI-compatible providers
- *        (orch::Provider) with the agent loop (orch::RunToolLoop). The tool registry follows
- *        (roadmap AGT-4).
+ *        (orch::Provider) with the agent loop (orch::RunToolLoop), and a tool registry
+ *        (orch::ToolRegistry) that checks inputs with a small JSON Schema validator
+ *        (orch::ValidateJson).
  */
