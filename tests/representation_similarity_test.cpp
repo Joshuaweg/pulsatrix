@@ -128,7 +128,7 @@ TEST_F(CkaTest, IsOneForRotatedScaledAndShiftedCopies) {
 TEST_F(CkaTest, IsSymmetricAndNotInvariantToStretchingOneFeature) {
     const Tensor x = Gaussian(30, 5, 4);
     const Tensor y = Gaussian(30, 7, 5);
-    EXPECT_DOUBLE_EQ(LinearCka(x, y), LinearCka(y, x));
+    EXPECT_NEAR(LinearCka(x, y), LinearCka(y, x), 1e-12);  // equal up to summation order
     // CKA is invariant to rotation and uniform scale only: stretching one feature changes it.
     std::vector<float> v = x.to_host_vector();
     for (std::size_t i = 0; i < v.size(); i += 5) {
