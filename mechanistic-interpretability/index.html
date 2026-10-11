@@ -819,6 +819,17 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#the-shape-of-a-layer" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The shape of a layer
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#baselines" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -2462,6 +2473,17 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#the-shape-of-a-layer" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The shape of a layer
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#baselines" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -2554,6 +2576,11 @@ attribution graphs of a language model's prediction.</p>
 <td>Which inputs does a layer treat as alike? Do two models agree on it?</td>
 <td><code>NearestNeighbors</code>, <code>MutualKnnAlignment</code>, <code>MutualNearestNeighbors</code>, <code>MeasureHubness</code></td>
 <td><a href="#nearest-neighbors">Below</a></td>
+</tr>
+<tr>
+<td>Is cosine similarity meaningful in this layer? How many dimensions does it use?</td>
+<td><code>Anisotropy</code>, <code>MeasureEffectiveRank</code>, <code>TwoNNDimension</code></td>
+<td><a href="#the-shape-of-a-layer">Below</a></td>
 </tr>
 <tr>
 <td>Which directions in a layer stand for concepts, found without labels?</td>
@@ -2884,6 +2911,45 @@ it suits up to tens of thousands of inputs. Ties keep the lower index first.</p>
 </table>
 <p>Centering also reduces hubness for cosine similarity (Suzuki et al., 2013).</p>
 </li>
+</ul>
+<h3 id="the-shape-of-a-layer">The shape of a layer<a class="headerlink" href="#the-shape-of-a-layer" title="Permanent link">&para;</a></h3>
+<p>Three numbers describe a layer's representations of a set of inputs. Each is cheap enough to
+compute for every layer.</p>
+<div class="highlight"><pre><span></span><code><span class="cp">#include</span><span class="w"> </span><span class="cpf">"pulsatrix/representation_geometry.hpp"</span>
+
+<span class="c1">// layer: (n, width), a row per input.</span>
+<span class="k">const</span><span class="w"> </span><span class="kt">double</span><span class="w"> </span><span class="n">raw</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Anisotropy</span><span class="p">(</span><span class="n">layer</span><span class="p">);</span><span class="w">                     </span><span class="c1">// mean cosine over all pairs</span>
+<span class="k">const</span><span class="w"> </span><span class="kt">double</span><span class="w"> </span><span class="n">centered</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Anisotropy</span><span class="p">(</span><span class="n">layer</span><span class="p">,</span><span class="w"> </span><span class="cm">/*center=*/</span><span class="nb">true</span><span class="p">);</span>
+<span class="k">const</span><span class="w"> </span><span class="n">EffectiveRank</span><span class="w"> </span><span class="n">rank</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">MeasureEffectiveRank</span><span class="p">(</span><span class="n">layer</span><span class="p">);</span><span class="w">  </span><span class="c1">// .effective_rank, .participation_ratio</span>
+<span class="k">const</span><span class="w"> </span><span class="n">TwoNNResult</span><span class="w"> </span><span class="n">id</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">TwoNNDimension</span><span class="p">(</span><span class="n">layer</span><span class="p">);</span><span class="w">            </span><span class="c1">// .dimension, .mle_dimension</span>
+</code></pre></div>
+<ul>
+<li><strong>Anisotropy</strong> is the mean cosine similarity between different inputs. Spread-out
+  directions score about 0. Language models' layers often score 0.5 or more (Ethayarajh,
+  2019): they share a few large directions, so any two inputs look alike by cosine. If raw
+  anisotropy is high and centered anisotropy is near 0, the similarity was the shared
+  direction. Center before comparing by cosine (<code>NeighborOptions::center</code>, above). The test
+  data shows this: rows spread evenly score 0.001, shifting them all along one axis raises that
+  to 0.63, and centering brings it back to −0.003.</li>
+<li><strong>Effective rank</strong> (Roy and Vetterli, 2007) is how many directions the inputs spread along.
+  It's the exponential of the entropy of the normalized singular values, between 1 and the
+  smaller of n and the width. The participation ratio is a coarser count that the largest
+  directions dominate more. Both center by default, because a shared direction would otherwise
+  take up part of the count.</li>
+<li><strong>TwoNN intrinsic dimension</strong> (Facco et al., 2017) is how many dimensions the inputs vary in
+  locally, which can be far below the width. It uses only each point's two nearest neighbors.
+  <code>dimension</code> is the paper's fit and matches scikit-dimension and DADApy. <code>mle_dimension</code> is
+  DADApy's maximum-likelihood version. Exact repeated rows are dropped first and counted in
+  <code>duplicates</code>. In the test, points filling a 2- and a 5-dimensional cube, written in 40
+  dimensions, give 1.91 and 4.53.</li>
+</ul>
+<p>Things to know about TwoNN:</p>
+<ul>
+<li><strong>Low with too few points.</strong> It reads low when the dimension is high for the number of
+  points: tens of dimensions need thousands.</li>
+<li><strong>Noise raises it.</strong> It measures the nearest neighbors' scale, so noise on a low-dimensional
+  surface adds dimensions.</li>
+<li><strong>Cost.</strong> The search is exact, at n² × width.</li>
 </ul>
 <h3 id="baselines">Baselines<a class="headerlink" href="#baselines" title="Permanent link">&para;</a></h3>
 <p><code>NullModelBaseline</code> re-initializes a model randomly, so the same probe, featurizer or

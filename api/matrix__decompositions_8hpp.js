@@ -7,5 +7,6 @@ var matrix__decompositions_8hpp =
     [ "PowerIteration", "matrix__decompositions_8hpp.html#abd341561ba3ab500db9ee6888d176cfe", null ],
     [ "QR", "matrix__decompositions_8hpp.html#a281ea330d1061f3fdd9fd8578e3b2c2f", null ],
     [ "SVD", "matrix__decompositions_8hpp.html#abc53b2e7d83b52abb7bc264dc5ab1c44", null ],
-    [ "SymmetricEigen", "matrix__decompositions_8hpp.html#a2a4553c7cd6e8241e1046381cca92ed6", null ]
+    [ "SymmetricEigen", "matrix__decompositions_8hpp.html#a2a4553c7cd6e8241e1046381cca92ed6", null ],
+    [ "SymmetricEigenvalues", "matrix__decompositions_8hpp.html#a981659cb1cf572547d84f3ea6a764a9a", null ]
 ];

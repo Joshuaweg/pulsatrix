@@ -3981,7 +3981,8 @@ machine, and explain it with the tools pulsatrix already has. Items on that path
 <li>INT-2 (<strong>done</strong>, <a href="https://github.com/Joshuaweg/pulsatrix/pull/131">#131</a>): linear CKA</li>
 <li>INT-1 (<strong>done</strong>, <a href="https://github.com/Joshuaweg/pulsatrix/pull/132">#132</a>): nearest neighbors, mutual nearest neighbors, mutual-kNN alignment</li>
 <li>INT-3 (<strong>done</strong>, <a href="https://github.com/Joshuaweg/pulsatrix/pull/133">#133</a>): probe controls (selectivity, and gain over a baseline)</li>
-<li>INT-4 to INT-6: intrinsic dimension, PCA, TCAV and CRP</li>
+<li>INT-4 (<strong>done</strong>, <a href="https://github.com/Joshuaweg/pulsatrix/pull/134">#134</a>): anisotropy, effective rank, TwoNN intrinsic dimension</li>
+<li>INT-5, INT-6: PCA, TCAV and CRP</li>
 <li>TDA-1 to TDA-8, TDA-11: persistent homology and RTD</li>
 <li>KS-3, KS-4: uncertainty and adversarial robustness</li>
 <li>Llama-3.2-1B and Qwen2.5-0.5B pass the golden-logit test</li>
@@ -5411,7 +5412,7 @@ network says nothing about what the model learned.</p>
 <td>INT-1</td>
 <td>P1</td>
 <td>S</td>
-<td></td>
+<td>Done, <a href="https://github.com/Joshuaweg/pulsatrix/pull/134">#134</a> (see below)</td>
 </tr>
 <tr>
 <td>INT-5</td>
@@ -5453,7 +5454,30 @@ network says nothing about what the model learned.</p>
 </table>
 <h3 id="how-the-int-work-departed-from-the-plan">How the INT work departed from the plan<a class="headerlink" href="#how-the-int-work-departed-from-the-plan" title="Permanent link">&para;</a></h3>
 <ul>
-<li><strong>INT-3</strong> adds <code>probe_controls.hpp</code>, and covers more than <code>LinearProbe</code>'s control task.</li>
+<li><strong>INT-4</strong> follows the plan in <code>representation_geometry.hpp</code>.</li>
+<li><strong><code>Anisotropy()</code></strong> is the exact mean cosine over every pair, raw or centered.</li>
+<li><strong><code>MeasureEffectiveRank()</code></strong> gives Roy and Vetterli's effective rank and the participation
+    ratio.</li>
+<li><strong><code>TwoNNDimension()</code></strong> gives Facco et al.'s fit and the maximum-likelihood variant.</li>
+<li><strong>Checked against</strong> numpy for anisotropy and effective rank, and against scikit-dimension
+    0.3.7's and DADApy 0.3.4's TwoNN code, transcribed into
+    <code>tools/generate_geometry_reference_values.py</code>, to 1e-10.</li>
+<li><strong>The falsifiers</strong> are tests:<ul>
+<li>A shared offset raises anisotropy from 0.001 to 0.63, and centering returns it to
+  −0.003.</li>
+<li>Points filling a 2- and a 5-dimensional cube, written in 40 dimensions, give TwoNN
+  estimates of 1.91 and 4.53.</li>
+</ul>
+</li>
+<li><strong>Duplicates are dropped</strong>, as DADApy's <code>remove_identical_points()</code> does, and counted.</li>
+<li>
+<p><strong>Effective rank needs precise small singular values</strong>, so <code>SymmetricEigenvalues()</code> was
+    added to FND-4's decompositions. It works in double precision throughout; the existing
+    routines return float tensors.</p>
+</li>
+<li>
+<p><strong>INT-3</strong> adds <code>probe_controls.hpp</code>, and covers more than <code>LinearProbe</code>'s control task.</p>
+</li>
 <li><strong>Hewitt and Liang's control task:</strong> <code>ControlTaskLabels()</code> gives each token type a fixed
     label drawn from the real labels' distribution. <code>MeasureSelectivity()</code> trains the same
     probe on both and reports selectivity.</li>

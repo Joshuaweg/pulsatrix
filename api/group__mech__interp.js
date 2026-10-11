@@ -19,6 +19,7 @@ var group__mech__interp =
     [ "parameter_decomposition.hpp", "parameter__decomposition_8hpp.html", null ],
     [ "probe_controls.hpp", "probe__controls_8hpp.html", null ],
     [ "relevance_graph.hpp", "relevance__graph_8hpp.html", null ],
+    [ "representation_geometry.hpp", "representation__geometry_8hpp.html", null ],
     [ "representation_similarity.hpp", "representation__similarity_8hpp.html", null ],
     [ "sparse_autoencoder.hpp", "sparse__autoencoder_8hpp.html", null ],
     [ "steering.hpp", "steering_8hpp.html", null ],
