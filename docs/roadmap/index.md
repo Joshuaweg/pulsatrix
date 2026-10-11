@@ -188,7 +188,8 @@ Fine-tune the models from v1.2 and explain what the fine-tuning changed.
   Anchors
 - INT-2 (**done**, [#131](https://github.com/Joshuaweg/pulsatrix/pull/131)): linear CKA
 - INT-1 (**done**, [#132](https://github.com/Joshuaweg/pulsatrix/pull/132)): nearest neighbors, mutual nearest neighbors, mutual-kNN alignment
-- INT-3 to INT-6: probe controls, intrinsic dimension, PCA, TCAV and CRP
+- INT-3 (**done**, PR pending): probe controls (selectivity, and gain over a baseline)
+- INT-4 to INT-6: intrinsic dimension, PCA, TCAV and CRP
 - TDA-1 to TDA-8, TDA-11: persistent homology and RTD
 - KS-3, KS-4: uncertainty and adversarial robustness
 - Llama-3.2-1B and Qwen2.5-0.5B pass the golden-logit test
@@ -710,7 +711,7 @@ The reason changes the defaults:
 |---|---|---|
 | Per-pixel aggregation across channels; metrics treat each input element as a feature today | XAI-5 | VIZ-2 or XAI-3 |
 | Quantus's localisation, robustness and axiomatic families | XAI-5 | KS-4 (robustness), or its own item |
-| A built-in plain-linear-probe comparison, the second half of the baseline rule | XAI-6 | INT-3 (probe controls) |
+| A built-in plain-linear-probe comparison, the second half of the baseline rule | XAI-6 | Done in INT-3 (`CompareToBaseline`) |
 | Running the null-model baseline and the metrics from the report planner | XAI-6 | XAI-2, XAI-3 |
 
 ## CFS: Counterfactuals and sensitivity
@@ -781,7 +782,7 @@ network says nothing about what the model learned.
 |---|---|---|---|---|---|---|
 | INT-1 | Nearest neighbors and mutual nearest neighbors over embeddings or activations, with optional mean-centering | The cheapest useful embedding tool; also a cross-model alignment score | FND-3 | P0 | S | Done, [#132](https://github.com/Joshuaweg/pulsatrix/pull/132) (see below) |
 | INT-2 | Linear CKA (debiased) | Compare layers across models, training runs and backends | — | P0 | S | Done, [#131](https://github.com/Joshuaweg/pulsatrix/pull/131) (see below) |
-| INT-3 | Control tasks for `LinearProbe` (selectivity = probe accuracy minus control accuracy) | High probe accuracy can come from the probe, not the representation | — | P0 | S | |
+| INT-3 | Control tasks for `LinearProbe` (selectivity = probe accuracy minus control accuracy) | High probe accuracy can come from the probe, not the representation | — | P0 | S | Done, PR pending (see below) |
 | INT-4 | Anisotropy, effective rank and TwoNN intrinsic dimension | Explains why raw cosine similarity misleads; one number per layer | INT-1 | P1 | S | |
 | INT-5 | PCA projections | 2D and 3D views, steering directions, preprocessing for TDA | FND-4 | P1 | M | |
 | INT-6 | TCAV (with significance against random concepts) and Concept Relevance Propagation | Concept-level explanations, and CRP reuses pulsatrix's LRP rules | INT-3 | P1 | M | |
@@ -789,6 +790,19 @@ network says nothing about what the model learned.
 | INT-8 | UMAP and t-SNE: export the data only, don't implement | Expensive, and they distort distances and cluster sizes | VIZ-1 | P3 | — | |
 
 ### How the INT work departed from the plan
+
+- **INT-3** adds `probe_controls.hpp`, and covers more than `LinearProbe`'s control task.
+  - **Hewitt and Liang's control task:** `ControlTaskLabels()` gives each token type a fixed
+    label drawn from the real labels' distribution. `MeasureSelectivity()` trains the same
+    probe on both and reports selectivity.
+  - **A baseline comparison:** `CompareToBaseline()` trains the same probe on a baseline
+    representation and reports the gain. PLM-8 found the control task meaningless with 20
+    amino acids, and XAI-6 asked for a plain-probe comparison; this answers both.
+  - **`TrainLinearProbe()` moved** from `protein_concepts.hpp`, which includes the new header,
+    so existing code still compiles.
+  - **The falsifier** is a test. On 100 token types, a structured 8-dimensional representation
+    and a one-hot one both read the task at 0.96. The control task scores 0.61 and 0.98, giving
+    selectivity +0.35 and −0.02.
 
 - **INT-1** follows the plan: `NearestNeighbors()` (cosine or Euclidean, with optional
   mean-centering, within one set or against another), `MutualNearestNeighbors()` across two
@@ -1757,7 +1771,7 @@ sources are in [Protein language models: research and plan](protein-language-mod
 | TEM-1's K73S explanation keeps most of its residue ranking while the top 14 of 33 layers are randomized | PLM-6 | Research: which residue explanations depend on the whole model |
 | Training needs bf16 and token-budget batches to scale past toy runs | PLM-7 | HIP-11 |
 | Mean-pooled heads don't beat zero-shot on single mutants of long proteins | PLM-7 | A per-residue or difference head, if wanted |
-| Solvent-accessibility labels (computed from structures), and probe splits that keep homologs apart. Also, Hewitt and Liang's control task is trivial with few token types: on 20 amino acids a linear probe learns it perfectly, so INT-3 should offer a sequence-window control | PLM-8 | INT-3 (probe controls) |
+| Solvent-accessibility labels (computed from structures), and probe splits that keep homologs apart. Also, Hewitt and Liang's control task is trivial with few token types: on 20 amino acids a linear probe learns it perfectly, so INT-3 should offer a sequence-window control | PLM-8 | Control: done in INT-3 (`CompareToBaseline`). Accessibility labels and homolog-aware splits: open |
 
 Later, if wanted: ESM C and AMPLIFY weight mappings, SaProt's structure tokens, autoregressive
 pLMs (ProGen2, through CausalLM), MSA-conditioned models and ESMFold.

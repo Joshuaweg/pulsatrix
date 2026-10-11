@@ -19,6 +19,7 @@
 
 #include "pulsatrix/encoder_lm.hpp"
 #include "pulsatrix/featurizer.hpp"
+#include "pulsatrix/probe_controls.hpp"
 #include "pulsatrix/text_tokenizer.hpp"
 
 namespace pulsatrix {
@@ -97,41 +98,15 @@ struct ResidueEmbeddings {
  *        zeros past the ends and for other letters). A linear probe that reads a concept from a
  *        layer no better than from this hasn't shown the model adds anything beyond nearby
  *        sequence.
- * @note Hewitt and Liang's control task, labels fixed per token type, is no control here: with
- *       only 20 amino acids, a linear probe on any representation that encodes identity learns
- *       it perfectly. Local sequence plays its role instead.
+ * @note Hewitt and Liang's control task (ControlTaskLabels()), labels fixed per token type, is no
+ *       control here: with only 20 amino acids, a linear probe on any representation that encodes
+ *       identity learns it perfectly. Local sequence plays its role instead, through
+ *       CompareToBaseline().
  * @return `residues x 20 (2 window + 1)`, the sequences' residues one after another.
  */
 [[nodiscard]] std::vector<float> SequenceWindowFeatures(const std::vector<std::string>& sequences, int64_t window);
 
-struct ProbeOptions {
-    int64_t epochs = 20;
-    int64_t batch = 1024;
-    float learning_rate = 1e-2f;
-    float weight_decay = 1e-4f;
-    uint64_t seed = 0;
-};
-
-/** @brief A probe's quality on held-out residues. */
-struct ProbeResult {
-    double accuracy = 0;
-    /** @brief The mean recall over classes, so a rare class counts as much as a common one. */
-    double balanced_accuracy = 0;
-    /** @brief For two classes, the ROC AUC of class 1's probability; NaN otherwise. */
-    double auc = 0;
-    int64_t train = 0;
-    int64_t test = 0;
-};
-
-/**
- * @brief Trains a linear softmax probe (standardized features, AdamW, cross-entropy) on the
- *        residues marked in @p train and scores it on those marked in @p test.
- * @param features `residues x dim`, row-major. @param labels one class in [0, classes) per residue.
- * @throws std::invalid_argument if the sizes don't agree, classes < 2, or either set is empty.
- */
-[[nodiscard]] ProbeResult TrainLinearProbe(const std::vector<float>& features, int64_t dim, const std::vector<int>& labels, int classes,
-                                           const std::vector<bool>& train, const std::vector<bool>& test, DeviceBackend* backend,
-                                           const ProbeOptions& options = {});
+// ProbeOptions, ProbeResult and TrainLinearProbe() are in probe_controls.hpp.
 
 // ---- features ----------------------------------------------------------------------------------
 
