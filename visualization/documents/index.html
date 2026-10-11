@@ -1222,18 +1222,6 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#json-documents_1" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        JSON documents
-      
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="JSON documents">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
   <a href="#token-relevance-for-text" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -1243,8 +1231,8 @@
   </a>
   
 </li>
-        
-          <li class="md-nav__item">
+      
+        <li class="md-nav__item">
   <a href="#format-rules" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -1252,11 +1240,6 @@
       
     </span>
   </a>
-  
-</li>
-        
-      </ul>
-    </nav>
   
 </li>
       
@@ -2273,18 +2256,6 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#json-documents_1" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        JSON documents
-      
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="JSON documents">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
   <a href="#token-relevance-for-text" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -2294,8 +2265,8 @@
   </a>
   
 </li>
-        
-          <li class="md-nav__item">
+      
+        <li class="md-nav__item">
   <a href="#format-rules" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -2303,11 +2274,6 @@
       
     </span>
   </a>
-  
-</li>
-        
-      </ul>
-    </nav>
   
 </li>
       
@@ -2335,10 +2301,8 @@
 <p>Every view in pulsatrix reads from a versioned JSON document, so an explanation can be saved,
 redrawn later, or drawn by a program outside pulsatrix. The documents are part of
 <code>pulsatrix_core</code> and need no build flag.</p>
-<h2 id="json-documents_1">JSON documents<a class="headerlink" href="#json-documents_1" title="Permanent link">&para;</a></h2>
-<p>Interactive viewers go stale faster than file formats do, so every view reads from a versioned
-JSON document. The ImGui widgets, the SVG renderer (VIZ-2) and any tool outside pulsatrix all
-read the same data. The documents are part of <code>pulsatrix_core</code> and need no flag.</p>
+<p>The ImGui widgets, the SVG renderer and any tool outside pulsatrix all read the same data, and
+a file format outlasts any one viewer.</p>
 <div class="highlight"><pre><span></span><code><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;fstream&gt;</span>
 <span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;sstream&gt;</span>
 
@@ -2356,7 +2320,7 @@ read the same data. The documents are part of <code>pulsatrix_core</code> and ne
 <span class="w">    </span><span class="n">AttributionBarChart</span><span class="o">::</span><span class="n">Draw</span><span class="p">(</span><span class="s">"Top features"</span><span class="p">,</span><span class="w"> </span><span class="n">ParseAttributionDocument</span><span class="p">(</span><span class="n">text</span><span class="p">.</span><span class="n">str</span><span class="p">()));</span>
 <span class="p">}</span>
 </code></pre></div>
-<p>There are six kinds. Each has a struct, a writer (<code>ToJson</code>) and a reader (<code>Parse&lt;Kind&gt;Document</code>):</p>
+<p>There are fifteen kinds. Each has a struct, a writer (<code>ToJson</code>) and a reader (<code>Parse&lt;Kind&gt;Document</code>):</p>
 <table>
 <thead>
 <tr>
@@ -2469,7 +2433,7 @@ pieces read as the original text:</p>
   unscored context. BOS and other inserted tokens appear as their token strings, or go to
   <code>unassigned</code> when left out.</li>
 <li><strong><code>MakeWordRelevanceDocument(text, word_scores, method, target)</code></strong> takes the output of
-  <code>AggregateToWords</code> (TOK-4): each word is scored, and the spaces between words are unscored
+  <code>AggregateToWords</code> (<a href="../../data-pipeline/#per-word-scores">per-word scores</a>): each word is scored, and the spaces between words are unscored
   context.</li>
 </ul>
 <p>The document grows three optional fields, all backward compatible, each written only when it

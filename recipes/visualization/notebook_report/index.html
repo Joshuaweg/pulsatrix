@@ -2351,14 +2351,15 @@ See <a href="../../../visualization/notebooks/">Notebooks and Reports</a> for wh
 <div class="highlight"><pre><span></span><code>trained: loss 0.0058, accuracy 100.0%
 wrote out/xor_report.ipynb and out/xor_report.html (11 cells)
 </code></pre></div>
-<p>The program runs in well under a second. In the report:</p>
+<p>The count leaves out the title, so the <code>.ipynb</code> file has 12 cells. The program runs in well
+under a second. In the report:</p>
 <ul>
 <li><strong>The training curve</strong> reaches 100% accuracy after about 120 of the 400 steps.</li>
 <li><strong>The probability map</strong> shows the XOR pattern: class 1 in the top-left and bottom-right
   quadrants, with sharp boundaries at 0.5.</li>
 <li><strong>The LRP heatmap</strong> explains class 1 at one point in each quadrant. At (0.2, 0.8), the high <code>y</code>
-  is the evidence for class 1 (red). At (0.8, 0.2) it's the high <code>x</code>. At (0.2, 0.2) and
-  (0.8, 0.8), the inputs count against it (blue).</li>
+  is the evidence for class 1 (red). At (0.8, 0.2) it's the high <code>x</code>. At (0.2, 0.2) the low <code>x</code>
+  counts against class 1 (blue), and at (0.8, 0.8) the high <code>y</code> does.</li>
 </ul>
 <p>The exact numbers can differ slightly between compilers.</p>
 

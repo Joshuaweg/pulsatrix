@@ -1143,24 +1143,6 @@
         
       
       
-        <label class="md-nav__link md-nav__link--active" for="__toc">
-          
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Interactive HTML
-  
-
-    
-  </span>
-  
-  
-
-          <span class="md-nav__icon md-icon"></span>
-        </label>
-      
       <a href="./" class="md-nav__link md-nav__link--active">
         
   
@@ -1177,36 +1159,6 @@
   
 
       </a>
-      
-        
-
-<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
-  
-  
-  
-    
-  
-  
-    <label class="md-nav__title" for="__toc">
-      <span class="md-nav__icon md-icon"></span>
-      Table of contents
-    </label>
-    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
-      
-        <li class="md-nav__item">
-  <a href="#interactive-html_1" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Interactive HTML
-      
-    </span>
-  </a>
-  
-</li>
-      
-    </ul>
-  
-</nav>
       
     </li>
   
@@ -2238,25 +2190,6 @@
     
   
   
-    <label class="md-nav__title" for="__toc">
-      <span class="md-nav__icon md-icon"></span>
-      Table of contents
-    </label>
-    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
-      
-        <li class="md-nav__item">
-  <a href="#interactive-html_1" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Interactive HTML
-      
-    </span>
-  </a>
-  
-</li>
-      
-    </ul>
-  
 </nav>
                   </div>
                 </div>
@@ -2276,7 +2209,6 @@
 
 
 <h1 id="interactive-html">Interactive HTML<a class="headerlink" href="#interactive-html" title="Permanent link">&para;</a></h1>
-<h2 id="interactive-html_1">Interactive HTML<a class="headerlink" href="#interactive-html_1" title="Permanent link">&para;</a></h2>
 <p><code>viz/html.hpp</code> writes the same views as self-contained HTML pages, drawn in the browser by
 <a href="https://vega.github.io/vega-lite/">Vega-Lite</a>. Hover any bar, point or cell to see its exact
 value. Zoom continuous charts with the mouse wheel and pan by dragging. Save a PNG or SVG from
@@ -2294,11 +2226,11 @@ histogram and top examples.</p>
 <tbody>
 <tr>
 <td><code>RenderBarChartHtml</code>, <code>RenderWaterfallHtml</code>, <code>RenderHeatmapHtml</code>, <code>RenderBeeswarmHtml</code></td>
-<td>The attribution and heatmap views, as above</td>
+<td>The attribution and heatmap views, as on <a href="../svg/">SVG Figures</a></td>
 </tr>
 <tr>
 <td><code>RenderPartialDependenceHtml</code>, <code>RenderTornadoHtml</code>, <code>RenderCounterfactualHtml</code>, <code>RenderCounterfactualSetHtml</code>, <code>RenderMorrisHtml</code>, <code>RenderSobolHtml</code></td>
-<td>The CFS views, as above</td>
+<td>The partial dependence, ICE and ALE, sensitivity (tornado), counterfactual, Morris and Sobol views, as on <a href="../svg/">SVG Figures</a></td>
 </tr>
 <tr>
 <td><code>RenderTrainingLogHtml(doc)</code></td>
@@ -2328,7 +2260,7 @@ and so on) that you can embed in your own page, or wrap with <code>VegaLitePage(
 make the browser refuse any changed file. The page is a few kilobytes, but viewing it needs a
 network connection. For a page that works offline, or that you can mail as one file, copy the
 scripts in (about 830 KB more):</p>
-<div class="highlight"><pre><span></span><code>tools/render/fetch_vega.sh<span class="w"> </span>~/vega<span class="w">                     </span><span class="c1"># downloads and checks the three files once</span>
+<div class="highlight"><pre><span></span><code>tools/render/fetch_vega.sh<span class="w"> </span>~/vega<span class="w">                     </span><span class="c1"># downloads and checks the scripts once</span>
 pulsatrix_svg<span class="w"> </span>x.json<span class="w"> </span>-o<span class="w"> </span>x.html<span class="w"> </span>--inline-js<span class="w"> </span>~/vega<span class="w">     </span><span class="c1"># or set PULSATRIX_VEGA_DIR=~/vega</span>
 </code></pre></div>
 <p>In C++, set <code>options.scripts = HtmlScripts::Inline</code> and <code>options.script_dir</code>. <code>--offline</code> finds

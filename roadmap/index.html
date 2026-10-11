@@ -3744,7 +3744,9 @@ mistake, and how it is known to fail, lives in <a href="research-notes/">Researc
 <strong>The PLM epic, protein language models, is complete</strong> (2026-10-08): every item in
 <a href="#plm-protein-language-models">PLM</a> is done.
 <strong>The FEAT epic, featurizers and feature-level interpretability, is complete</strong> (2026-10-09):
-every item in <a href="#feat-featurizers-sparse-autoencoders-and-goodfire-bsf">FEAT</a> is done.</p>
+every item in <a href="#feat-featurizers-sparse-autoencoders-and-goodfire-bsf">FEAT</a> is done.
+<strong>v1.2, "Real pretrained models", is complete</strong> (2026-10-10): every item in its
+<a href="#v12-real-pretrained-models">milestone</a> is done.</p>
 <ul>
 <li><strong>Strong.</strong> LRP covers every layer and is checked against Zennit and LXT. Saliency, Integrated
   Gradients and Grad-CAM are checked against Captum. LIME, KernelSHAP, PDP, logit lens,
@@ -3762,7 +3764,7 @@ every item in <a href="#feat-featurizers-sparse-autoencoders-and-goodfire-bsf">F
   for every view and dependency-free SVG figures (<a href="#viz-visualization-pack">VIZ-1, VIZ-2</a>).
   <code>cmake --install</code> with <code>find_package(pulsatrix)</code>, and a benchmark suite that compares builds
   and gates LRP conservation (<a href="#ks-kitchen-sink">KS-1, KS-2</a>).</li>
-<li><strong>v1.2 so far.</strong> Attention that loads current small LLMs
+<li><strong>v1.2.</strong> Attention that loads current small LLMs
   (<a href="#llm-running-real-language-models">LLM-1</a>): grouped-query attention, causal and padding
   masks, "rotate half" RoPE with a configurable base, QK-Norm and bias-free projections, checked
   against Hugging Face's Llama, Qwen2 and Qwen3 attention. A language-model head that shares the
@@ -3771,7 +3773,13 @@ every item in <a href="#feat-featurizers-sparse-autoencoders-and-goodfire-bsf">F
   real SmolLM2-135M runs and matches transformers. torchvision's ResNet18 and VGG16 load from
   their published weights, and their LRP heatmaps match Zennit's (KS-9). Fused training kernels
   and a bounded-memory Conv2D (HIP-6, HIP-7). Rich notebook display and reports written as
-  <code>.ipynb</code> or HTML (NB-1, NB-2).</li>
+  <code>.ipynb</code> or HTML (NB-1, NB-2). Tokenizers loaded from <code>tokenizer.json</code>, with offsets and
+  word-level scores (LLM-3, TOK-1 to TOK-4). A golden-logit harness, and AttnLRP checked against
+  LXT (LLM-6, LLM-7). A converter for PyTorch checkpoints (IO-3). ICE, ALE,
+  sensitivity analysis and counterfactuals (<a href="#cfs-counterfactuals-and-sensitivity">CFS-1 to CFS-7</a>).
+  The core of a native LLM-agent library: Anthropic and OpenAI-compatible providers, a tool loop
+  and a schema-checked tool registry (<a href="#agt-agents-native-c">AGT-1 to AGT-4</a>). GPU CI on a
+  self-hosted gfx1151 runner (KS-8).</li>
 <li><strong>Protein language models</strong> (<a href="#plm-protein-language-models">PLM-1 to PLM-9</a>). ESM-2 8M to
   650M load from Hugging Face and match transformers to float precision. On top of that:</li>
 <li>zero-shot variant scoring that reproduces ProteinGym's published numbers;</li>
@@ -3906,7 +3914,8 @@ machine, and explain it with the tools pulsatrix already has. Items on that path
 <li>HIP-9 (<strong>done</strong>): a ROCm 10.0 evaluation image, now the default, and a host-kernel check</li>
 </ul>
 <h3 id="v12-real-pretrained-models">v1.2 "Real pretrained models"<a class="headerlink" href="#v12-real-pretrained-models" title="Permanent link">&para;</a></h3>
-<p>Load SmolLM2-135M and ResNet18, run them, and match the reference implementations.</p>
+<p>Load SmolLM2-135M and ResNet18, run them, and match the reference implementations.
+<strong>Complete</strong> (2026-10-10; the last item was <a href="https://github.com/Joshuaweg/pulsatrix/pull/129">#129</a>).</p>
 <ul>
 <li>IO-3 to IO-6 (<strong>done</strong>): the pickle converter, name mapping, Hugging Face configs, bf16 upcast</li>
 <li>LLM-1 to LLM-7 (<strong>done</strong>): attention upgrade, tied LM head, native tokenizers, generation, KV
@@ -6880,7 +6889,7 @@ that only offers tools is small. The genuinely hard parts are narrow:</p>
 <tr>
 <td>A connection is opened per request. Reusing one would save a TLS handshake per call in a long tool loop</td>
 <td>AGT-2</td>
-<td>AGT-3, if it measures slow</td>
+<td>AGT-5, or when a tool loop measures slow</td>
 </tr>
 <tr>
 <td>The live Anthropic test runs only by hand (<code>PULSATRIX_ORCH_LIVE=1</code>). A CI secret would run it on each merge, at a few cents a run</td>

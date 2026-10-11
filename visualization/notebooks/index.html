@@ -2342,7 +2342,7 @@ or as one HTML page, from C++, with no Python and no kernel:</p>
 </ul>
 <div class="highlight"><pre><span></span><code><span class="n">HtmlOptions</span><span class="w"> </span><span class="n">options</span><span class="p">;</span>
 <span class="n">options</span><span class="p">.</span><span class="n">scripts</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">HtmlScripts</span><span class="o">::</span><span class="n">Inline</span><span class="p">;</span>
-<span class="n">options</span><span class="p">.</span><span class="n">script_dir</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">"vega"</span><span class="p">;</span><span class="w">  </span><span class="c1">// tools/render/fetch_vega.sh downloads the three files</span>
+<span class="n">options</span><span class="p">.</span><span class="n">script_dir</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">"vega"</span><span class="p">;</span><span class="w">  </span><span class="c1">// tools/render/fetch_vega.sh downloads the scripts</span>
 <span class="n">report</span><span class="p">.</span><span class="n">save_html</span><span class="p">(</span><span class="s">"resnet18.html"</span><span class="p">,</span><span class="w"> </span><span class="n">options</span><span class="p">);</span>
 </code></pre></div>
 <p><code>Report</code> uses only these two options. A report without charts has no scripts at all.
@@ -2416,7 +2416,7 @@ cells through Clang's interpreter (<code>conda install -c conda-forge xeus-cpp</
 <code>xcpp::display(x)</code> finds pulsatrix's <code>mime_bundle_repr</code> automatically, and pulsatrix doesn't
 depend on xeus. The tests check that lookup with a copy of xeus-cpp 0.10's display code, but
 pulsatrix hasn't been run inside a live kernel yet: loading the library into one is a planned
-roadmap item. Until then, write notebooks with <code>Report</code> below.</p>
+roadmap item. Until then, write notebooks with <a href="#reports"><code>Report</code></a> above.</p>
 <div class="highlight"><pre><span></span><code><span class="c1">// in a xeus-cpp cell, once the library is loaded</span>
 <span class="cp">#include</span><span class="w"> </span><span class="cpf">"pulsatrix/viz/mime_bundle.hpp"</span>
 <span class="n">xcpp</span><span class="o">::</span><span class="n">display</span><span class="p">(</span><span class="n">lrp</span><span class="p">.</span><span class="n">explain</span><span class="p">(</span><span class="n">ctx</span><span class="p">,</span><span class="w"> </span><span class="n">x</span><span class="p">,</span><span class="w"> </span><span class="n">target</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">backend</span><span class="p">));</span><span class="w">  </span><span class="c1">// a heatmap</span>

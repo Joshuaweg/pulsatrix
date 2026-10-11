@@ -100,7 +100,7 @@ $(document).ready(function(){initNavTree('classpulsatrix_1_1orch_1_1ToolRegistry
 </div><!--header-->
 <div class="contents">
 
-<p>The tools an agent may use. <a class="el" href="namespacepulsatrix_1_1orch.html#a7dc8c979832324fb2b4063131ed95c2b" title="Sends request, runs each tool the model calls with execute, and sends the results back,...">RunToolLoop()</a> takes <a class="el" href="classpulsatrix_1_1orch_1_1ToolRegistry.html#abffb28577b613d17c759c26f0322df70" title="An executor for RunToolLoop() that calls call(). It refers to this registry, which must outlive it.">executor()</a> and the MCP server (AGT-5) serves the same registry, so a tool is defined once.  
+<p>The tools an agent may use. <a class="el" href="namespacepulsatrix_1_1orch.html#a7dc8c979832324fb2b4063131ed95c2b" title="Sends request, runs each tool the model calls with execute, and sends the results back,...">RunToolLoop()</a> takes <a class="el" href="classpulsatrix_1_1orch_1_1ToolRegistry.html#abffb28577b613d17c759c26f0322df70" title="An executor for RunToolLoop() that calls call(). It refers to this registry, which must outlive it.">executor()</a>, and a planned MCP server will serve the same registry, so a tool is defined once.  
  <a href="classpulsatrix_1_1orch_1_1ToolRegistry.html#details">More...</a></p>
 
 <p><code>#include &lt;<a class="el" href="tool__registry_8hpp_source.html">tool_registry.hpp</a>&gt;</code></p>
@@ -131,7 +131,7 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:abffb28577b613d17c759c26f0322df70"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p>The tools an agent may use. <a class="el" href="namespacepulsatrix_1_1orch.html#a7dc8c979832324fb2b4063131ed95c2b" title="Sends request, runs each tool the model calls with execute, and sends the results back,...">RunToolLoop()</a> takes <a class="el" href="classpulsatrix_1_1orch_1_1ToolRegistry.html#abffb28577b613d17c759c26f0322df70" title="An executor for RunToolLoop() that calls call(). It refers to this registry, which must outlive it.">executor()</a> and the MCP server (AGT-5) serves the same registry, so a tool is defined once. </p>
+<div class="textblock"><p>The tools an agent may use. <a class="el" href="namespacepulsatrix_1_1orch.html#a7dc8c979832324fb2b4063131ed95c2b" title="Sends request, runs each tool the model calls with execute, and sends the results back,...">RunToolLoop()</a> takes <a class="el" href="classpulsatrix_1_1orch_1_1ToolRegistry.html#abffb28577b613d17c759c26f0322df70" title="An executor for RunToolLoop() that calls call(). It refers to this registry, which must outlive it.">executor()</a>, and a planned MCP server will serve the same registry, so a tool is defined once. </p>
 <dl class="section note"><dt>Note</dt><dd>Calls are const and may run concurrently if the handlers allow it; <a class="el" href="classpulsatrix_1_1orch_1_1ToolRegistry.html#a44e5d7cb7f5307b2149e7c60299bfe61" title="Adds tool.">add()</a> may not. </dd></dl>
 </div><h2 class="groupheader">Member Function Documentation</h2>
 <a id="a44e5d7cb7f5307b2149e7c60299bfe61" name="a44e5d7cb7f5307b2149e7c60299bfe61"></a>

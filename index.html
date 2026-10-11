@@ -2372,6 +2372,10 @@ export, attribution graphs for Neuronpedia's and circuit-tracer's viewers, and t
 <code>pulsatrix_svg</code> tool; <a href="visualization/notebooks/">notebooks and reports</a> written as <code>.ipynb</code> or
 HTML from C++; and, optionally, native Dear ImGui + ImPlot windows with a live training dashboard and a
 token relevance view.</p>
+<p><strong><a href="agents/">LLM Agents</a></strong> (optional): talk to Claude or to a local model served by
+llama-server, vLLM or Ollama from C++, with streaming and retries, and let it call your
+functions as tools. A tool registry checks each input against its JSON Schema before your
+function runs. No Python or SDK; turn it on with <code>-DPULSATRIX_ENABLE_ORCHESTRATOR=ON</code>.</p>
 <p><strong><a href="system-monitoring/">System Monitoring</a></strong>: log CPU/GPU utilization, memory and
 temperatures while you train.</p>
 <p><strong><a href="gpu-profiling/">GPU Profiling</a></strong> and <strong><a href="benchmarks/">Benchmarks</a></strong>: per-op GPU kernel
@@ -2380,7 +2384,7 @@ LRP conservation, with an A/B comparison between two builds.</p>
 <p><strong>Python bindings</strong>: <code>Tensor</code>, the core layers, LRP and the other explainers, and seeding from
 Python. See <a href="getting-started/#python-bindings">Getting Started</a>.</p>
 <p>Everything is implemented in C++ with no Python dependency at runtime, and covered by about
-2,700 CPU tests (2,850 with the HIP backend) that run in CI on Windows and Linux.</p>
+2,750 CPU tests (2,850 with the HIP backend) that run in CI on Windows and Linux.</p>
 <h2 id="more-resources">More resources<a class="headerlink" href="#more-resources" title="Permanent link">&para;</a></h2>
 <ul>
 <li><strong><a href="getting-started/#using-pulsatrix-in-your-own-project">Using pulsatrix in your project</a></strong>:
