@@ -77,6 +77,7 @@ var namespacepulsatrix =
     [ "CircuitScores", "structpulsatrix_1_1CircuitScores.html", "structpulsatrix_1_1CircuitScores" ],
     [ "CircuitTrace", "structpulsatrix_1_1CircuitTrace.html", "structpulsatrix_1_1CircuitTrace" ],
     [ "CircuitTraceOptions", "structpulsatrix_1_1CircuitTraceOptions.html", "structpulsatrix_1_1CircuitTraceOptions" ],
+    [ "CkaMatrix", "structpulsatrix_1_1CkaMatrix.html", "structpulsatrix_1_1CkaMatrix" ],
     [ "ClusterSampler", "classpulsatrix_1_1ClusterSampler.html", "classpulsatrix_1_1ClusterSampler" ],
     [ "CMAES", "classpulsatrix_1_1CMAES.html", "classpulsatrix_1_1CMAES" ],
     [ "CMAESState", "structpulsatrix_1_1CMAESState.html", "structpulsatrix_1_1CMAESState" ],
@@ -462,6 +463,10 @@ var namespacepulsatrix =
       [ "Grassmannian", "namespacepulsatrix.html#a056ad7d81b2ee20acdbf7f6f7a1e7a9ca7865867e192c85f94cb5cbf96923b41a", null ],
       [ "GroupLasso", "namespacepulsatrix.html#a056ad7d81b2ee20acdbf7f6f7a1e7a9cae3f1dee6b41cf7ad97e79b39791cb10c", null ]
     ] ],
+    [ "CkaEstimator", "namespacepulsatrix.html#ac793506d330b9f7e81f562eed3ab8539", [
+      [ "Debiased", "namespacepulsatrix.html#ac793506d330b9f7e81f562eed3ab8539a3b04dd98f4b6bfb00045042467cc909b", null ],
+      [ "Biased", "namespacepulsatrix.html#ac793506d330b9f7e81f562eed3ab8539a218fddd7a527a321c8a7ef68d25f1260", null ]
+    ] ],
     [ "ContactAtom", "namespacepulsatrix.html#a73a0c4c4eb2de07fef8d33c69e4618cc", [
       [ "Beta", "namespacepulsatrix.html#a73a0c4c4eb2de07fef8d33c69e4618cca0b87d66b88c72957dfea8c9605016442", null ],
       [ "Alpha", "namespacepulsatrix.html#a73a0c4c4eb2de07fef8d33c69e4618cca6132295fcf5570fb8b0a944ef322a598", null ],
@@ -802,6 +807,8 @@ var namespacepulsatrix =
     [ "InitializeEsm", "namespacepulsatrix.html#afe78015ff3c42983850d99d06c472687", null ],
     [ "InitTagger", "namespacepulsatrix.html#a30c958ae5a99df9dd3b742c74911b541", null ],
     [ "InsertionCurve", "namespacepulsatrix.html#a165ca5a11779f2081a18fc5d7657c5cc", null ],
+    [ "LinearCka", "namespacepulsatrix.html#a20006889a282e5fa1d7d864597ef08d4", null ],
+    [ "LinearCkaMatrix", "namespacepulsatrix.html#a8b250634e4925e7e6a75808694e96f1a", null ],
     [ "LoadCausalLM", "namespacepulsatrix.html#ab41209346909acb22907cfbbd3eea8a4", null ],
     [ "LoadCheckpoint", "namespacepulsatrix.html#a862a61bf00880ccd8d58cdbb43eaae15", null ],
     [ "LoadCheckpoint", "namespacepulsatrix.html#abd2d723852104374608e931b7e4bb326", null ],

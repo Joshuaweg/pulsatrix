@@ -2528,6 +2528,23 @@
     </span>
   </a>
   
+    <nav class="md-nav" aria-label="INT: Embedding and representation analysis">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#how-the-int-work-departed-from-the-plan" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        How the INT work departed from the plan
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
 </li>
       
         <li class="md-nav__item">
@@ -3392,6 +3409,23 @@
     </span>
   </a>
   
+    <nav class="md-nav" aria-label="INT: Embedding and representation analysis">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#how-the-int-work-departed-from-the-plan" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        How the INT work departed from the plan
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
 </li>
       
         <li class="md-nav__item">
@@ -3944,7 +3978,8 @@ machine, and explain it with the tools pulsatrix already has. Items on that path
 <li>KD-1, KD-2: distillation and teacher–student explanation agreement</li>
 <li>XAI-1 to XAI-4: the question-driven planner, explanation reports, counterfactuals, surrogates,
   Anchors</li>
-<li>INT-1 to INT-6: neighbors, CKA, probe controls, intrinsic dimension, PCA, TCAV and CRP</li>
+<li>INT-2 (<strong>done</strong>, <a href="https://github.com/Joshuaweg/pulsatrix/pull/131">#131</a>): linear CKA</li>
+<li>INT-1, INT-3 to INT-6: neighbors, probe controls, intrinsic dimension, PCA, TCAV and CRP</li>
 <li>TDA-1 to TDA-8, TDA-11: persistent homology and RTD</li>
 <li>KS-3, KS-4: uncertainty and adversarial robustness</li>
 <li>Llama-3.2-1B and Qwen2.5-0.5B pass the golden-logit test</li>
@@ -5336,6 +5371,7 @@ network says nothing about what the model learned.</p>
 <th>Depends on</th>
 <th>P</th>
 <th>Effort</th>
+<th>Status</th>
 </tr>
 </thead>
 <tbody>
@@ -5346,6 +5382,7 @@ network says nothing about what the model learned.</p>
 <td>FND-3</td>
 <td>P0</td>
 <td>S</td>
+<td></td>
 </tr>
 <tr>
 <td>INT-2</td>
@@ -5354,6 +5391,7 @@ network says nothing about what the model learned.</p>
 <td>—</td>
 <td>P0</td>
 <td>S</td>
+<td>Done, <a href="https://github.com/Joshuaweg/pulsatrix/pull/131">#131</a> (see below)</td>
 </tr>
 <tr>
 <td>INT-3</td>
@@ -5362,6 +5400,7 @@ network says nothing about what the model learned.</p>
 <td>—</td>
 <td>P0</td>
 <td>S</td>
+<td></td>
 </tr>
 <tr>
 <td>INT-4</td>
@@ -5370,6 +5409,7 @@ network says nothing about what the model learned.</p>
 <td>INT-1</td>
 <td>P1</td>
 <td>S</td>
+<td></td>
 </tr>
 <tr>
 <td>INT-5</td>
@@ -5378,6 +5418,7 @@ network says nothing about what the model learned.</p>
 <td>FND-4</td>
 <td>P1</td>
 <td>M</td>
+<td></td>
 </tr>
 <tr>
 <td>INT-6</td>
@@ -5386,6 +5427,7 @@ network says nothing about what the model learned.</p>
 <td>INT-3</td>
 <td>P1</td>
 <td>M</td>
+<td></td>
 </tr>
 <tr>
 <td>INT-7</td>
@@ -5394,6 +5436,7 @@ network says nothing about what the model learned.</p>
 <td>FND-4</td>
 <td>P2</td>
 <td>—</td>
+<td></td>
 </tr>
 <tr>
 <td>INT-8</td>
@@ -5402,9 +5445,25 @@ network says nothing about what the model learned.</p>
 <td>VIZ-1</td>
 <td>P3</td>
 <td>—</td>
+<td></td>
 </tr>
 </tbody>
 </table>
+<h3 id="how-the-int-work-departed-from-the-plan">How the INT work departed from the plan<a class="headerlink" href="#how-the-int-work-departed-from-the-plan" title="Permanent link">&para;</a></h3>
+<ul>
+<li><strong>INT-2</strong> follows the plan: <code>LinearCka()</code> with the debiased estimator as the default and the
+  biased one on request, and <code>LinearCkaMatrix()</code> for every pair of layers.</li>
+<li><strong>Checked against</strong> the reference code of Kornblith et al. (the notebook that goes with
+    the paper), to 12 decimal places for both estimators, on inputs with more rows than
+    features and with fewer. <code>tools/generate_cka_reference_values.py</code> makes the values.</li>
+<li><strong>The falsifier</strong> is a test: the second hidden layers of two small networks trained from
+    different seeds score 0.68, and one of them against an untrained network of the same
+    architecture scores 0.10.</li>
+<li><strong>Why debiased by default:</strong> two unrelated random representations of 50 inputs with 1,000
+    features score 0.95 biased and −0.02 debiased.</li>
+<li><strong>Double precision on the host,</strong> through n × n Gram matrices or through the features,
+    whichever is cheaper. The matrix computes each layer's Gram matrix once.</li>
+</ul>
 <h2 id="tda-topological-data-analysis">TDA: Topological data analysis<a class="headerlink" href="#tda-topological-data-analysis" title="Permanent link">&para;</a></h2>
 <p>Persistent homology measures the shape of a point cloud: its clusters (H0), loops (H1) and
 voids (H2), and how long each one lasts as the scale grows. The plan treats it as a typed

@@ -61,6 +61,7 @@ var hierarchy =
     [ "pulsatrix::CircuitScores", "structpulsatrix_1_1CircuitScores.html", null ],
     [ "pulsatrix::CircuitTrace", "structpulsatrix_1_1CircuitTrace.html", null ],
     [ "pulsatrix::CircuitTraceOptions", "structpulsatrix_1_1CircuitTraceOptions.html", null ],
+    [ "pulsatrix::CkaMatrix", "structpulsatrix_1_1CkaMatrix.html", null ],
     [ "pulsatrix::ClusterSampler", "classpulsatrix_1_1ClusterSampler.html", null ],
     [ "pulsatrix::CMAES", "classpulsatrix_1_1CMAES.html", null ],
     [ "pulsatrix::CMAESState", "structpulsatrix_1_1CMAESState.html", null ],

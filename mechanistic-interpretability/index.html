@@ -780,6 +780,17 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#comparing-representations-cka" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Comparing representations (CKA)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#baselines" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -2384,6 +2395,17 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#comparing-representations-cka" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Comparing representations (CKA)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#baselines" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -2466,6 +2488,11 @@ attribution graphs of a language model's prediction.</p>
 <td>Is concept X linearly readable from layer L?</td>
 <td><code>LinearProbe</code></td>
 <td><a href="#probing-a-layer-for-a-concept">Below</a></td>
+</tr>
+<tr>
+<td>How similar are two layers, two models, or a model before and after fine-tuning?</td>
+<td><code>LinearCka</code>, <code>LinearCkaMatrix</code></td>
+<td><a href="#comparing-representations-cka">Below</a></td>
 </tr>
 <tr>
 <td>Which directions in a layer stand for concepts, found without labels?</td>
@@ -2616,6 +2643,54 @@ pairs.</p>
   are as easy to probe from local sequence alone.</li>
 </ul>
 <p>Recipe: <a href="../recipes/mechanistic-interpretability/sparse_autoencoder_probe/">Sparse autoencoder + linear probe</a>.</p>
+<h3 id="comparing-representations-cka">Comparing representations (CKA)<a class="headerlink" href="#comparing-representations-cka" title="Permanent link">&para;</a></h3>
+<p>Centered kernel alignment (CKA) measures how similar two representations of the same inputs
+are: one layer of two models, two layers of one model, a model before and after fine-tuning, or
+the same layer computed on the CPU and the GPU. Run the same n inputs through both, collect one
+row per input from each, and compare:</p>
+<div class="highlight"><pre><span></span><code><span class="cp">#include</span><span class="w"> </span><span class="cpf">"pulsatrix/representation_similarity.hpp"</span>
+
+<span class="c1">// layer_a: (n, 768) activations from one model; layer_b: (n, 1024) from another, same n inputs.</span>
+<span class="k">const</span><span class="w"> </span><span class="kt">double</span><span class="w"> </span><span class="n">similarity</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">LinearCka</span><span class="p">(</span><span class="n">layer_a</span><span class="p">,</span><span class="w"> </span><span class="n">layer_b</span><span class="p">);</span>
+</code></pre></div>
+<ul>
+<li><strong>1</strong> means one representation is a rotation and uniform scaling of the other, plus an offset.
+  The two layers don't need the same width, and their neurons don't need to line up.</li>
+<li><strong>Near 0</strong> means they are unrelated.</li>
+<li>Dimensions after the first are flattened, so a convolution's (n, channels, height, width)
+  activations are n vectors. The tensors can be on any device; CKA is computed in double
+  precision on the host.</li>
+</ul>
+<p><code>LinearCkaMatrix(layers_a, layers_b)</code> compares every layer of one model with every layer of
+another, reusing each layer's work across its row or column. Draw the result as a heatmap:</p>
+<div class="highlight"><pre><span></span><code><span class="cp">#include</span><span class="w"> </span><span class="cpf">"pulsatrix/viz/svg.hpp"</span>
+
+<span class="k">const</span><span class="w"> </span><span class="n">CkaMatrix</span><span class="w"> </span><span class="n">m</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">LinearCkaMatrix</span><span class="p">(</span><span class="n">layers_a</span><span class="p">,</span><span class="w"> </span><span class="n">layers_b</span><span class="p">);</span>
+<span class="n">HeatmapDocument</span><span class="w"> </span><span class="n">doc</span><span class="p">;</span>
+<span class="n">doc</span><span class="p">.</span><span class="n">title</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">"CKA, model A layers × model B layers"</span><span class="p">;</span>
+<span class="n">doc</span><span class="p">.</span><span class="n">rows</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">m</span><span class="p">.</span><span class="n">rows</span><span class="p">;</span>
+<span class="n">doc</span><span class="p">.</span><span class="n">cols</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">m</span><span class="p">.</span><span class="n">cols</span><span class="p">;</span>
+<span class="n">doc</span><span class="p">.</span><span class="n">values</span><span class="p">.</span><span class="n">assign</span><span class="p">(</span><span class="n">m</span><span class="p">.</span><span class="n">values</span><span class="p">.</span><span class="n">begin</span><span class="p">(),</span><span class="w"> </span><span class="n">m</span><span class="p">.</span><span class="n">values</span><span class="p">.</span><span class="n">end</span><span class="p">());</span>
+<span class="n">std</span><span class="o">::</span><span class="n">ofstream</span><span class="p">(</span><span class="s">"cka.svg"</span><span class="p">)</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">RenderHeatmapSvg</span><span class="p">(</span><span class="n">doc</span><span class="p">);</span>
+</code></pre></div>
+<p>Things to know:</p>
+<ul>
+<li><strong>Use the default, debiased estimator.</strong> The original estimator is pulled towards 1 when
+  there are few inputs for the width: two unrelated random representations of 50 inputs with
+  1,000 features each score 0.95 with it and −0.02 debiased. Pass <code>CkaEstimator::Biased</code> to
+  reproduce numbers from papers that used it. The debiased value can be slightly negative, and
+  needs at least 4 inputs.</li>
+<li><strong>Compare against an untrained model.</strong> Two layers can look similar because of the
+  architecture or the input, not what was learned. In the tests, the second hidden layers of two
+  small networks trained from different seeds score 0.68; one of them against the same network
+  untrained scores 0.10. Run the comparison on a <code>NullModelBaseline</code> too (below).</li>
+<li><strong>Outliers move it.</strong> A few inputs with very large activations can dominate, and CKA can be
+  pushed up or down on purpose (Davari et al., 2022). Check that a result holds on a second set
+  of inputs.</li>
+<li>A representation that is constant over the inputs has no CKA: the result is NaN.</li>
+</ul>
+<p>The implementation matches the reference code of Kornblith et al. (ICML 2019) to 12 decimal
+places for both estimators.</p>
 <h3 id="baselines">Baselines<a class="headerlink" href="#baselines" title="Permanent link">&para;</a></h3>
 <p><code>NullModelBaseline</code> re-initializes a model randomly, so the same probe, featurizer or
 explanation can run on it (<a href="../interpretability/#the-null-model-baseline">Interpretability</a>).
