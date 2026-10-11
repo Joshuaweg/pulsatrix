@@ -2647,6 +2647,16 @@ network's predictions. The core of it looks like this (full source:
 <td>Builds <code>pulsatrix_orchestrator</code>, the native LLM agent library (in progress). See <a href="../agents/">LLM Agents</a>.</td>
 </tr>
 <tr>
+<td><code>PULSATRIX_ORCHESTRATOR_OPENSSL</code></td>
+<td><code>AUTO</code></td>
+<td>With the orchestrator, HTTPS through OpenSSL 3 (<code>AUTO</code>, <code>ON</code> or <code>OFF</code>). See <a href="../agents/#building-it">Building it</a>.</td>
+</tr>
+<tr>
+<td><code>PULSATRIX_ORCHESTRATOR_CURL</code></td>
+<td><code>OFF</code></td>
+<td>With the orchestrator, also builds the libcurl HTTP backend, which uses Schannel for HTTPS on Windows.</td>
+</tr>
+<tr>
 <td><code>PULSATRIX_INSTALL</code></td>
 <td><code>ON</code> at the top level, <code>OFF</code> as a subproject</td>
 <td>Generates the <code>cmake --install</code> rules. See <a href="#using-pulsatrix-in-your-own-project">Using pulsatrix in your own project</a>.</td>

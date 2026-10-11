@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['kind_0',['kind',['../structpulsatrix_1_1BenchmarkRecord.html#a1531ec2e7875d40e2de46644cbaac300',1,'pulsatrix::BenchmarkRecord::Kind'],['../structpulsatrix_1_1CounterfactualTarget.html#a28845e930b59a47419dd94047287fe46',1,'pulsatrix::CounterfactualTarget::Kind'],['../structpulsatrix_1_1Imputation.html#a295743774684f4e01cfa7ead34138deb',1,'pulsatrix::Imputation::Kind'],['../structpulsatrix_1_1EncoderTarget.html#a86c31c5e38672e75042f220cb00d9d58',1,'pulsatrix::EncoderTarget::Kind']]]
+  ['kind_0',['kind',['../structpulsatrix_1_1BenchmarkRecord.html#a1531ec2e7875d40e2de46644cbaac300',1,'pulsatrix::BenchmarkRecord::Kind'],['../structpulsatrix_1_1CounterfactualTarget.html#a28845e930b59a47419dd94047287fe46',1,'pulsatrix::CounterfactualTarget::Kind'],['../structpulsatrix_1_1Imputation.html#a295743774684f4e01cfa7ead34138deb',1,'pulsatrix::Imputation::Kind'],['../classpulsatrix_1_1orch_1_1HttpError.html#a52a20f658bca430e8bec642446e1ccfe',1,'pulsatrix::orch::HttpError::Kind'],['../structpulsatrix_1_1EncoderTarget.html#a86c31c5e38672e75042f220cb00d9d58',1,'pulsatrix::EncoderTarget::Kind']]]
 ];

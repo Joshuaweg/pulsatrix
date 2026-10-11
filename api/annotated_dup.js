@@ -27,7 +27,16 @@ var annotated_dup =
         [ "RawReading", "structpulsatrix_1_1detail_1_1RawReading.html", "structpulsatrix_1_1detail_1_1RawReading" ]
       ] ],
       [ "orch", "namespacepulsatrix_1_1orch.html", [
-        [ "Secret", "classpulsatrix_1_1orch_1_1Secret.html", "classpulsatrix_1_1orch_1_1Secret" ]
+        [ "HttpError", "classpulsatrix_1_1orch_1_1HttpError.html", "classpulsatrix_1_1orch_1_1HttpError" ],
+        [ "HttpHeader", "structpulsatrix_1_1orch_1_1HttpHeader.html", "structpulsatrix_1_1orch_1_1HttpHeader" ],
+        [ "HttpRequest", "structpulsatrix_1_1orch_1_1HttpRequest.html", "structpulsatrix_1_1orch_1_1HttpRequest" ],
+        [ "HttpResponse", "structpulsatrix_1_1orch_1_1HttpResponse.html", "structpulsatrix_1_1orch_1_1HttpResponse" ],
+        [ "HttpTransport", "classpulsatrix_1_1orch_1_1HttpTransport.html", "classpulsatrix_1_1orch_1_1HttpTransport" ],
+        [ "HttpTransportOptions", "structpulsatrix_1_1orch_1_1HttpTransportOptions.html", "structpulsatrix_1_1orch_1_1HttpTransportOptions" ],
+        [ "HttpUrl", "structpulsatrix_1_1orch_1_1HttpUrl.html", "structpulsatrix_1_1orch_1_1HttpUrl" ],
+        [ "Secret", "classpulsatrix_1_1orch_1_1Secret.html", "classpulsatrix_1_1orch_1_1Secret" ],
+        [ "SseEvent", "structpulsatrix_1_1orch_1_1SseEvent.html", "structpulsatrix_1_1orch_1_1SseEvent" ],
+        [ "SseParser", "classpulsatrix_1_1orch_1_1SseParser.html", "classpulsatrix_1_1orch_1_1SseParser" ]
       ] ],
       [ "AbsorptionOptions", "structpulsatrix_1_1AbsorptionOptions.html", "structpulsatrix_1_1AbsorptionOptions" ],
       [ "AbsorptionResult", "structpulsatrix_1_1AbsorptionResult.html", "structpulsatrix_1_1AbsorptionResult" ],

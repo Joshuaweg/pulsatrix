@@ -12,7 +12,14 @@ var searchData=
   ['histogrambins_9',['HistogramBins',['../structpulsatrix_1_1HistogramBins.html',1,'pulsatrix']]],
   ['horizontalfliptransform_10',['HorizontalFlipTransform',['../classpulsatrix_1_1HorizontalFlipTransform.html',1,'pulsatrix']]],
   ['htmloptions_11',['HtmlOptions',['../structpulsatrix_1_1HtmlOptions.html',1,'pulsatrix']]],
-  ['hyperbandbracket_12',['HyperbandBracket',['../structpulsatrix_1_1HyperbandBracket.html',1,'pulsatrix']]],
-  ['hyperbandresult_13',['HyperbandResult',['../structpulsatrix_1_1HyperbandResult.html',1,'pulsatrix']]],
-  ['hypergridenv_14',['HyperGridEnv',['../classpulsatrix_1_1HyperGridEnv.html',1,'pulsatrix']]]
+  ['httperror_12',['HttpError',['../classpulsatrix_1_1orch_1_1HttpError.html',1,'pulsatrix::orch']]],
+  ['httpheader_13',['HttpHeader',['../structpulsatrix_1_1orch_1_1HttpHeader.html',1,'pulsatrix::orch']]],
+  ['httprequest_14',['HttpRequest',['../structpulsatrix_1_1orch_1_1HttpRequest.html',1,'pulsatrix::orch']]],
+  ['httpresponse_15',['HttpResponse',['../structpulsatrix_1_1orch_1_1HttpResponse.html',1,'pulsatrix::orch']]],
+  ['httptransport_16',['HttpTransport',['../classpulsatrix_1_1orch_1_1HttpTransport.html',1,'pulsatrix::orch']]],
+  ['httptransportoptions_17',['HttpTransportOptions',['../structpulsatrix_1_1orch_1_1HttpTransportOptions.html',1,'pulsatrix::orch']]],
+  ['httpurl_18',['HttpUrl',['../structpulsatrix_1_1orch_1_1HttpUrl.html',1,'pulsatrix::orch']]],
+  ['hyperbandbracket_19',['HyperbandBracket',['../structpulsatrix_1_1HyperbandBracket.html',1,'pulsatrix']]],
+  ['hyperbandresult_20',['HyperbandResult',['../structpulsatrix_1_1HyperbandResult.html',1,'pulsatrix']]],
+  ['hypergridenv_21',['HyperGridEnv',['../classpulsatrix_1_1HyperGridEnv.html',1,'pulsatrix']]]
 ];
