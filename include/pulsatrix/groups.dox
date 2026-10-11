@@ -111,6 +111,7 @@
  * @brief The native LLM agent library, `pulsatrix::orch` (target `pulsatrix_orchestrator`,
  *        opt-in via `PULSATRIX_ENABLE_ORCHESTRATOR`). So far: orch::Secret for API keys, an HTTP
  *        transport with cpp-httplib and libcurl backends (orch::HttpTransport), and a parser for
- *        server-sent events (orch::SseParser). Providers, the tool loop and the tool registry
- *        follow (roadmap AGT-3 and AGT-4).
+ *        server-sent events (orch::SseParser), and the Anthropic and OpenAI-compatible providers
+ *        (orch::Provider) with the agent loop (orch::RunToolLoop). The tool registry follows
+ *        (roadmap AGT-4).
  */
