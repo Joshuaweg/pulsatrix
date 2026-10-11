@@ -15,7 +15,7 @@ attribution graphs of a language model's prediction.
 
 | Your question | Tool | Page |
 |---|---|---|
-| Is concept X linearly readable from layer L? | `LinearProbe` | [Below](#probing-a-layer-for-a-concept) |
+| Is concept X linearly readable from layer L? | `LinearProbe`, `TrainLinearProbe()`, with `MeasureSelectivity()` or `CompareToBaseline()` as the control | [Below](#probing-a-layer-for-a-concept) |
 | How similar are two layers, two models, or a model before and after fine-tuning? | `LinearCka`, `LinearCkaMatrix` | [Below](#comparing-representations-cka) |
 | Which inputs does a layer treat as alike? Do two models agree on it? | `NearestNeighbors`, `MutualKnnAlignment`, `MutualNearestNeighbors`, `MeasureHubness` | [Below](#nearest-neighbors) |
 | Which directions in a layer stand for concepts, found without labels? | Sparse autoencoders: `TopKSparseAutoencoder`, `JumpReLUSparseAutoencoder`, `SparseAutoencoder` | [Finding features](featurizers.md) |
@@ -122,10 +122,63 @@ const float accuracy = probe.accuracy(held_out_activations, held_out_labels);
 
 - **High held-out accuracy** means the concept is linearly readable.
 - **Chance accuracy** means it isn't, at least not linearly.
-- **A probe reads; it doesn't show the model *uses* the information.** Compare against a probe
-  on a randomly initialized model, and on the raw input. The
-  [Protein language models guide](../protein-models/index.md) shows why: some protein concepts
-  are as easy to probe from local sequence alone.
+- **A probe reads; it doesn't show the model *uses* the information.**
+- **High accuracy can come from the probe rather than the representation.** Run a control
+  (below).
+
+#### Controls: the representation or the probe?
+
+`probe_controls.hpp` trains a multi-class probe, `TrainLinearProbe()` (standardized features,
+AdamW, cross-entropy, scored on held-out rows), and gives it two kinds of control.
+
+**Hewitt and Liang's control task** (EMNLP 2019) gives each token type, such as each word, a
+random label and keeps it fixed. The labels are drawn from the real labels' distribution. A
+probe can only learn that by memorizing types, so **selectivity**, task accuracy minus control
+accuracy, is what the representation adds beyond memorization.
+
+```cpp
+#include "pulsatrix/probe_controls.hpp"
+
+// features: rows x dim; labels: one class per row; token_types: which word each row is.
+const ProbeSelectivity s = MeasureSelectivity(features, dim, labels, /*classes=*/2, token_types,
+                                              train, test, &backend);
+// s.task.accuracy, s.control.accuracy, s.selectivity, s.train_types
+```
+
+The test shows the difference on two representations of the same 100 token types. In the
+structured one, each type's label is a linear function of an 8-dimensional vector. The one-hot
+one only names the type:
+
+| Representation | Task accuracy | Control accuracy | Selectivity |
+|---|---|---|---|
+| Structured (8 dimensions) | 0.96 | 0.61 | +0.35 |
+| One-hot type (100 dimensions) | 0.96 | 0.98 | −0.02 |
+
+Both read the task equally well. Only the structured representation does it without being able
+to memorize arbitrary labels.
+
+`ControlTaskLabels()` makes the control labels on their own, for example for a `LinearProbe`.
+
+**When there are few types, compare against a baseline representation.** With no more types
+than dimensions, a linear probe learns any control task. On 20 amino acids it scores 1.0 at
+every layer of a protein model. `CompareToBaseline()` trains the same probe on the
+representation and on a baseline, with the same rows and split, and reports the gain.
+
+Good baselines:
+
+- one-hot local sequence, `SequenceWindowFeatures()`;
+- the same layer of a randomly initialized model;
+- the raw input.
+
+```cpp
+const std::vector<float> window = SequenceWindowFeatures(sequences, /*window=*/3);
+const ProbeGain g = CompareToBaseline(layer, hidden, window, 20 * 7, labels, 2, train, test, &backend);
+// g.gain, g.balanced_gain, g.auc_gain (two classes)
+```
+
+The [Protein language models guide](../protein-models/index.md) uses this. Disulfide probes show
+no gain over local sequence, because they find cysteines. Secondary structure gains 0.20 to
+0.25 balanced accuracy.
 
 Recipe: [Sparse autoencoder + linear probe](../recipes/mechanistic-interpretability/sparse_autoencoder_probe.md).
 
