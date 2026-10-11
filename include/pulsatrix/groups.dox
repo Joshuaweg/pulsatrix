@@ -105,3 +105,10 @@
  *        Lines / CSV log (SystemMonitor). Every metric a platform cannot read is reported as
  *        missing (std::nullopt) with a discoverable reason -- never as a fabricated zero.
  */
+
+/**
+ * @defgroup orchestrator LLM Agents
+ * @brief The native LLM agent library, `pulsatrix::orch` (target `pulsatrix_orchestrator`,
+ *        opt-in via `PULSATRIX_ENABLE_ORCHESTRATOR`). So far: orch::Secret for API keys. The
+ *        HTTP transport, providers, tool loop and tool registry follow (roadmap AGT-2 to AGT-4).
+ */

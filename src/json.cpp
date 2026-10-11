@@ -613,6 +613,44 @@ bool IsScalar(const JsonValue& v) {
     return v.type() == JsonValue::Type::Null || v.type() == JsonValue::Type::Bool || v.type() == JsonValue::Type::Number;
 }
 
+void WriteValue(std::string& out, const JsonValue& v, int indent);
+
+// No whitespace at all, so the result is one line.
+void WriteCompact(std::string& out, const JsonValue& v) {
+    switch (v.type()) {
+        case JsonValue::Type::Null:
+        case JsonValue::Type::Bool:
+        case JsonValue::Type::Number:
+        case JsonValue::Type::String:
+            break;
+        case JsonValue::Type::Array: {
+            out += '[';
+            bool first = true;
+            for (const JsonValue& e : v.as_array()) {
+                out += first ? "" : ",";
+                first = false;
+                WriteCompact(out, e);
+            }
+            out += ']';
+            return;
+        }
+        case JsonValue::Type::Object: {
+            out += '{';
+            bool first = true;
+            for (const auto& [key, member] : v.as_object()) {
+                out += first ? "" : ",";
+                first = false;
+                WriteString(out, key);
+                out += ':';
+                WriteCompact(out, member);
+            }
+            out += '}';
+            return;
+        }
+    }
+    WriteValue(out, v, 0);  // a scalar is written the same either way
+}
+
 void WriteValue(std::string& out, const JsonValue& v, int indent) {
     const std::string pad(static_cast<size_t>(indent) * 2, ' ');
     const std::string inner(static_cast<size_t>(indent + 1) * 2, ' ');
@@ -686,6 +724,12 @@ std::string WriteJson(const JsonValue& value) {
     std::string out;
     WriteValue(out, value, 0);
     out += '\n';
+    return out;
+}
+
+std::string WriteJsonCompact(const JsonValue& value) {
+    std::string out;
+    WriteCompact(out, value);
     return out;
 }
 

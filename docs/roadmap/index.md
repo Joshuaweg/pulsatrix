@@ -161,7 +161,8 @@ Load SmolLM2-135M and ResNet18, run them, and match the reference implementation
 - VIZ-3, VIZ-6a (**done**): Vega-Lite HTML and the token relevance view
 - NB-1 (**done**): native rich display
 - NB-2 (**done**): the `.ipynb`/HTML report writer
-- AGT-1 to AGT-4: the native orchestrator core
+- AGT-1 (**done**, [#126](https://github.com/Joshuaweg/pulsatrix/pull/126)): the optional orchestrator target
+- AGT-2 to AGT-4: the native orchestrator core: HTTP transport, providers and the tool loop, the tool registry
 - KS-8 (**done**): GPU CI on gfx1151
 - KS-9 (**done**): a model zoo, ResNet18 and VGG16 with heatmaps checked against Zennit
   (SmolLM2's against LXT came with LLM-7)
@@ -1320,17 +1321,17 @@ that only offers tools is small. The genuinely hard parts are narrow:
 LLM agents live in `pulsatrix::orch` (target `pulsatrix_orchestrator`), because
 `pulsatrix::Agent` already names the reinforcement-learning policy contract.
 
-| ID | Item | Why | Depends on | P | Effort |
-|---|---|---|---|---|---|
-| AGT-1 | An optional `PULSATRIX_ENABLE_ORCHESTRATOR` target, off by default, with nlohmann/json (MIT). The same JSON library serves VIZ-1 and NB-1 | Keeps the core free of networking dependencies | — | P1 | S |
-| AGT-2 | An `HttpTransport` interface. cpp-httplib by default, with an optional libcurl backend that uses the operating system's TLS on Windows. A shared server-sent-events parser that ignores unknown event types | Streaming LLM responses | AGT-1 | P1 | M |
-| AGT-3 | Providers and the tool loop: an Anthropic provider and an OpenAI-compatible provider (llama-server, vLLM, Ollama), with one internal message format | The orchestrator itself | AGT-2 | P1 | M |
-| AGT-4 | A tool registry: name, description, input schema and a `std::function`. Schemas use only the keywords that mean the same in JSON Schema draft-7 and 2020-12, checked by a small built-in validator. The MCP server and the in-process loop share one registry | Define a tool once, use it everywhere | AGT-1 | P1 | S–M |
-| AGT-5 | A native MCP server over stdio (2026-07-28 specification, with a fallback for older clients) that exposes explain, attribute, logit lens, patching and featurizer tools | Lets Claude and other agents drive pulsatrix | AGT-4, IO-1 | P2 | M |
-| AGT-6 | A local provider that runs pulsatrix's own LLM, with tool calls constrained by a token-level mask | Agents with no network, and a model pulsatrix can explain | LLM-1 to LLM-5, AGT-4 | P3 | M |
-| AGT-7 | **Explain an agent's tool choice:** run AttnLRP from the logit of the first token that distinguishes the chosen tool, back over the prompt, the tool descriptions and the history. It passes if deleting the top-attributed tokens flips the choice more often than deleting random tokens | No other library can explain why an agent picked a tool | AGT-6, LLM-7 | P3 | L |
-| AGT-8 | Automated descriptions of featurizer latents: an LLM describes the top activations, then the description is scored by how well it predicts activations | Labels thousands of features | AGT-3, FEAT-1 | P2 | M |
-| AGT-9 | An interpretability agent that runs experiments on the model (MAIA-style) | Research-grade | AGT-3, AGT-4 | P3 | L |
+| ID | Item | Why | Depends on | P | Effort | Status |
+|---|---|---|---|---|---|---|
+| AGT-1 | An optional `PULSATRIX_ENABLE_ORCHESTRATOR` target, off by default, with nlohmann/json (MIT). The same JSON library serves VIZ-1 and NB-1 | Keeps the core free of networking dependencies | — | P1 | S | Done, [#126](https://github.com/Joshuaweg/pulsatrix/pull/126) (see below) |
+| AGT-2 | An `HttpTransport` interface. cpp-httplib by default, with an optional libcurl backend that uses the operating system's TLS on Windows. A shared server-sent-events parser that ignores unknown event types | Streaming LLM responses | AGT-1 | P1 | M | |
+| AGT-3 | Providers and the tool loop: an Anthropic provider and an OpenAI-compatible provider (llama-server, vLLM, Ollama), with one internal message format | The orchestrator itself | AGT-2 | P1 | M | |
+| AGT-4 | A tool registry: name, description, input schema and a `std::function`. Schemas use only the keywords that mean the same in JSON Schema draft-7 and 2020-12, checked by a small built-in validator. The MCP server and the in-process loop share one registry | Define a tool once, use it everywhere | AGT-1 | P1 | S–M | |
+| AGT-5 | A native MCP server over stdio (2026-07-28 specification, with a fallback for older clients) that exposes explain, attribute, logit lens, patching and featurizer tools | Lets Claude and other agents drive pulsatrix | AGT-4, IO-1 | P2 | M | |
+| AGT-6 | A local provider that runs pulsatrix's own LLM, with tool calls constrained by a token-level mask | Agents with no network, and a model pulsatrix can explain | LLM-1 to LLM-5, AGT-4 | P3 | M | |
+| AGT-7 | **Explain an agent's tool choice:** run AttnLRP from the logit of the first token that distinguishes the chosen tool, back over the prompt, the tool descriptions and the history. It passes if deleting the top-attributed tokens flips the choice more often than deleting random tokens | No other library can explain why an agent picked a tool | AGT-6, LLM-7 | P3 | L | |
+| AGT-8 | Automated descriptions of featurizer latents: an LLM describes the top activations, then the description is scored by how well it predicts activations | Labels thousands of features | AGT-3, FEAT-1 | P2 | M | |
+| AGT-9 | An interpretability agent that runs experiments on the model (MAIA-style) | Research-grade | AGT-3, AGT-4 | P3 | L | |
 
 AGT-3 has to follow the current Anthropic API rules:
 
@@ -1350,6 +1351,21 @@ AGT-5 has to follow these security rules:
 - Cap tensor and request sizes.
 - Use opaque handles that expire.
 - Treat tool output as untrusted.
+
+### How the AGT work departed from the plan
+
+- **AGT-1** builds on pulsatrix's own JSON (`json.hpp`, from VIZ-1), not nlohmann/json. The plan
+  chose nlohmann so that VIZ-1 and NB-1 could share it, but both shipped without it. The parser in
+  `json.hpp` is already strict, depth-limited and fuzzed, which is what parsing a remote server's
+  responses needs, so the orchestrator adds no dependency. AGT-1 adds:
+  - `WriteJsonCompact()` in the core library, for request bodies and MCP's newline-delimited
+    messages;
+  - `orch::Secret`, a holder for API keys with no way to print it, from AGT-3's rule that a key is
+    never logged;
+  - the install rules: `pulsatrix::orchestrator`, `pulsatrix_HAS_ORCHESTRATOR`, and the install
+    test linking it from a separate project.
+
+  CI's build-and-test job turns the option on, so it is built and tested on Linux and Windows.
 
 ## KS: Kitchen sink
 
