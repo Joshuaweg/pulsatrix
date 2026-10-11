@@ -283,7 +283,7 @@ endif()
 
 if(PULSATRIX_ENABLE_ORCHESTRATOR)
     target_sources(pulsatrix_tests PRIVATE orch_secret_test.cpp orch_sse_test.cpp orch_http_test.cpp
-                                           orch_provider_test.cpp)
+                                           orch_provider_test.cpp orch_tool_registry_test.cpp)
     target_link_libraries(pulsatrix_tests PRIVATE pulsatrix_orchestrator)
     # The HTTP tests run a cpp-httplib server, built the same way as the library's client: one
     # header compiled with different TLS settings in two places would break the ODR.
