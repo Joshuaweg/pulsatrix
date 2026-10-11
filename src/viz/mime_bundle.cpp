@@ -467,6 +467,10 @@ MimeBundle mime_bundle_repr(const CounterfactualDocument& doc) {
                  ToVegaLiteCounterfactual(doc));
 }
 
+MimeBundle mime_bundle_repr(const ProjectionDocument& doc) {
+    return Chart(doc.title.empty() ? "Projection" : doc.title, RenderProjectionSvg(doc), ToVegaLiteProjection(doc));
+}
+
 MimeBundle mime_bundle_repr(const MorrisDocument& doc) {
     return Chart("Morris screening of " + doc.target, RenderMorrisSvg(doc), ToVegaLiteMorris(doc));
 }

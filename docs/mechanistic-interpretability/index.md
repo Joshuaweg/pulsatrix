@@ -19,6 +19,7 @@ attribution graphs of a language model's prediction.
 | How similar are two layers, two models, or a model before and after fine-tuning? | `LinearCka`, `LinearCkaMatrix` | [Below](#comparing-representations-cka) |
 | Which inputs does a layer treat as alike? Do two models agree on it? | `NearestNeighbors`, `MutualKnnAlignment`, `MutualNearestNeighbors`, `MeasureHubness` | [Below](#nearest-neighbors) |
 | Is cosine similarity meaningful in this layer? How many dimensions does it use? | `Anisotropy`, `MeasureEffectiveRank`, `TwoNNDimension` | [Below](#the-shape-of-a-layer) |
+| What does a layer look like in 2D or 3D? Which directions vary most? | `FitPca`, `PcaProject`, `PcaSplitHalfOverlap`, `RenderProjectionSvg` | [Below](#pca-projections) |
 | Which directions in a layer stand for concepts, found without labels? | Sparse autoencoders: `TopKSparseAutoencoder`, `JumpReLUSparseAutoencoder`, `SparseAutoencoder` | [Finding features](featurizers.md) |
 | Which concepts take more than one dimension, such as an angle or a position? | `BlockSparseFeaturizer` | [Finding features](featurizers.md#block-sparse-featurizers) |
 | What does an MLP compute, step by step? | `Transcoder` | [Finding features](featurizers.md#transcoders) |
@@ -331,6 +332,62 @@ Things to know about TwoNN:
 - **Noise raises it.** It measures the nearest neighbors' scale, so noise on a low-dimensional
   surface adds dimensions.
 - **Cost.** The search is exact, at n² × width.
+
+### PCA projections
+
+`FitPca()` finds the directions along which a layer's representations of a set of inputs vary
+most. `PcaProject()` places inputs on them, to plot, or to pass fewer dimensions on to another
+method.
+
+```cpp
+#include <fstream>
+
+#include "pulsatrix/pca.hpp"
+#include "pulsatrix/viz/svg.hpp"
+
+// layer: (n, width), a row per input; words and tags: one per input.
+const Pca pca = FitPca(layer, /*components=*/3);
+const Tensor scores = PcaProject(pca, layer);  // (n, 3)
+const ProjectionDocument doc = MakeProjectionDocument(pca, scores, /*labels=*/words, /*groups=*/tags);
+std::ofstream("layer.svg") << RenderProjectionSvg(doc);          // PC1 against PC2
+std::ofstream("layer13.svg") << RenderProjectionSvg(doc, 0, 2);  // PC1 against PC3
+std::ofstream("layer.json") << ToJson(doc);                     // for pulsatrix_svg or HTML
+```
+
+It matches scikit-learn's `PCA` to 1e-10:
+
+- The data are centered.
+- Variances divide by n − 1.
+- Each component's largest entry is positive, so the same data always give the same picture.
+
+It runs in double precision, through whichever is smaller of the covariance and the Gram
+matrix.
+
+- **Plots.** `RenderProjectionSvg` draws two axes on one scale, so distances on the page are
+  distances in the projection. Each axis is captioned with its share of the variance.
+  - Points are colored by group or by value, and show their label on hover.
+  - `RenderProjectionHtml` is the zoomable version. With three components it shows the three
+    pairs side by side, the views of a 3D projection.
+  - The `pulsatrix.projection.v1` document (`ToJson`) also lets any outside tool draw it.
+- **Steering directions.** `PcaComponent(pca, i)` is component i as a unit vector for
+  `SteeringHook`. One standard deviation along it is `sqrt(pca.explained_variance[i])`, a
+  natural unit for the coefficient. Then test whether it does anything with `MeasureSteering`
+  ([Steering](steering.md)).
+- **Fewer dimensions.** `PcaReconstruct` maps coordinates back. `PcaProject(pca, x,
+  /*whiten=*/true)` gives every axis variance 1.
+
+Things to know:
+
+- **Check that the picture is stable.** Components with close variances can swap or rotate
+  between two samples of the same inputs. `PcaSplitHalfOverlap(layer, k)` fits each half of
+  the inputs separately and compares the two k-dimensional spans: 1 means the same span, near
+  k / width means unrelated. In the test, points on a plane give 0.9995, the same plane under
+  noise as large as it gives 0.92, and noise alone gives 0.09.
+- **Most variance isn't most meaning.** In anisotropic layers the first component is often the
+  common direction or a few outlier dimensions (see [the shape of a layer](#the-shape-of-a-layer)).
+  Look at the explained variance ratios, and treat a direction as a hypothesis to test.
+- **`SubspaceOverlap(a, b, k)`** compares any two PCAs of the same width, for example the same
+  layer in two models, or before and after fine-tuning.
 
 ### Baselines
 

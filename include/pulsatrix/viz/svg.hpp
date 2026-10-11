@@ -166,6 +166,19 @@ struct PartialDependenceSvgOptions {
 [[nodiscard]] std::string RenderSobolSvg(const SobolDocument& doc, int top_k = 10, const SvgOptions& options = {});
 
 /**
+ * @brief A projection as a scatter plot of two of its axes (INT-5), both on one scale so distances
+ *        on the page are distances in the projection. Points are colored by group with a legend,
+ *        else by value on Viridis with a color bar (gray where a value isn't finite), and each has
+ *        a tooltip with its label and coordinates. Lines mark zero, the mean of a PCA.
+ * @param x_axis, y_axis Which of the document's axes to plot: PC1 against PC2 by default. For a
+ *        third dimension, draw the other pairs too.
+ * @throws std::invalid_argument for a document ToJson() rejects, one with no points, or axes that
+ *         aren't two different axes of the document.
+ */
+[[nodiscard]] std::string RenderProjectionSvg(const ProjectionDocument& doc, int x_axis = 0, int y_axis = 1,
+                                              const SvgOptions& options = {});
+
+/**
  * @brief Several counterfactuals of one input side by side (CFS-7): a column for the input and one
  *        per counterfactual (headed by whether it reaches the target), and a row for every feature
  *        that at least one of them changes. Changed values are on a background colored by the
