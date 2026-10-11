@@ -26,6 +26,9 @@ var annotated_dup =
         [ "PlatformSources", "classpulsatrix_1_1detail_1_1PlatformSources.html", "classpulsatrix_1_1detail_1_1PlatformSources" ],
         [ "RawReading", "structpulsatrix_1_1detail_1_1RawReading.html", "structpulsatrix_1_1detail_1_1RawReading" ]
       ] ],
+      [ "orch", "namespacepulsatrix_1_1orch.html", [
+        [ "Secret", "classpulsatrix_1_1orch_1_1Secret.html", "classpulsatrix_1_1orch_1_1Secret" ]
+      ] ],
       [ "AbsorptionOptions", "structpulsatrix_1_1AbsorptionOptions.html", "structpulsatrix_1_1AbsorptionOptions" ],
       [ "AbsorptionResult", "structpulsatrix_1_1AbsorptionResult.html", "structpulsatrix_1_1AbsorptionResult" ],
       [ "ActivationModule", "classpulsatrix_1_1ActivationModule.html", "classpulsatrix_1_1ActivationModule" ],

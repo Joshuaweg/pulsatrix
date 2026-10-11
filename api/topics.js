@@ -9,5 +9,6 @@ var topics =
     [ "Evolutionary Computation", "group__evolutionary.html", "group__evolutionary" ],
     [ "Visualization", "group__visualization.html", "group__visualization" ],
     [ "Hyperparameter Optimization", "group__hyperparameter__optimization.html", "group__hyperparameter__optimization" ],
-    [ "System Monitoring", "group__system__monitoring.html", "group__system__monitoring" ]
+    [ "System Monitoring", "group__system__monitoring.html", "group__system__monitoring" ],
+    [ "LLM Agents", "group__orchestrator.html", "group__orchestrator" ]
 ];

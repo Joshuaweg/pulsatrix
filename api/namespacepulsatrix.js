@@ -6,6 +6,7 @@ var namespacepulsatrix =
       [ "backend_beside", "namespacepulsatrix_1_1explainer__detail.html#a35309abfd652dbb89c6d1bab85169af9", null ]
     ] ],
     [ "lrp_composite", "namespacepulsatrix_1_1lrp__composite.html", "namespacepulsatrix_1_1lrp__composite" ],
+    [ "orch", "namespacepulsatrix_1_1orch.html", "namespacepulsatrix_1_1orch" ],
     [ "param_select", "namespacepulsatrix_1_1param__select.html", [
       [ "name_prefix", "namespacepulsatrix_1_1param__select.html#a7d2f00502eca507d1ffb53131f2ccf17", null ],
       [ "one_dimensional", "namespacepulsatrix_1_1param__select.html#a422efd2f5dbe491c49e41ee6cfb7ada3", null ]
@@ -1112,6 +1113,7 @@ var namespacepulsatrix =
     [ "VizFontsUseFreeType", "namespacepulsatrix.html#a7e4fa77e8760ee4959256234cac168c2", null ],
     [ "WriteFasta", "namespacepulsatrix.html#a06c45a1d14fc6e146990c4f6e40e19e9", null ],
     [ "WriteJson", "namespacepulsatrix.html#a51dcbd978f9f3b0414c53736b071512d", null ],
+    [ "WriteJsonCompact", "namespacepulsatrix.html#adebe05440de121e54cb2437642152e9a", null ],
     [ "WriteSafetensors", "namespacepulsatrix.html#ae2f426e066a256c2ca12b2b8a5ec3d0b", null ],
     [ "XORFitness", "namespacepulsatrix.html#abfe03e4b59e544ec28edddfd5afd1ad6", null ],
     [ "ZeroModuleGradients", "namespacepulsatrix.html#ab80c96d8d4b45a6185d821cb5c24804a", null ],
