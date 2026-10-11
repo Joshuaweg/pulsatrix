@@ -282,8 +282,16 @@ if(PULSATRIX_ENABLE_HIP)
 endif()
 
 if(PULSATRIX_ENABLE_ORCHESTRATOR)
-    target_sources(pulsatrix_tests PRIVATE orch_secret_test.cpp)
+    target_sources(pulsatrix_tests PRIVATE orch_secret_test.cpp orch_sse_test.cpp orch_http_test.cpp)
     target_link_libraries(pulsatrix_tests PRIVATE pulsatrix_orchestrator)
+    # The HTTP tests run a cpp-httplib server, built the same way as the library's client: one
+    # header compiled with different TLS settings in two places would break the ODR.
+    target_include_directories(pulsatrix_tests SYSTEM PRIVATE "${PULSATRIX_HTTPLIB_INCLUDE_DIR}")
+    target_compile_definitions(pulsatrix_tests PRIVATE PULSATRIX_TEST_VERSION="${PROJECT_VERSION}")
+    if(pulsatrix_orch_openssl)
+        target_compile_definitions(pulsatrix_tests PRIVATE CPPHTTPLIB_OPENSSL_SUPPORT)
+        target_link_libraries(pulsatrix_tests PRIVATE OpenSSL::SSL OpenSSL::Crypto)
+    endif()
 endif()
 
 # The direct CUDA<->HIP arm of the charter's three-way gate. Compiled only when both vendor

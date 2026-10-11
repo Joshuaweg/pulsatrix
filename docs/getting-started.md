@@ -100,6 +100,8 @@ Pass `-D<OPTION>=ON` or `OFF` when you configure.
 | `PULSATRIX_ENABLE_VIZ` | `OFF` | Builds the Dear ImGui + ImPlot visualization module and its GUI demos. JSON documents and SVG figures are always built. See [Visualization](visualization/index.md). |
 | `PULSATRIX_VIZ_FREETYPE` | `ON` | With `PULSATRIX_ENABLE_VIZ`, draws ImGui text with FreeType when it's installed, for color emoji. See [Fonts and languages](visualization/desktop.md#fonts-and-languages). |
 | `PULSATRIX_ENABLE_ORCHESTRATOR` | `OFF` | Builds `pulsatrix_orchestrator`, the native LLM agent library (in progress). See [LLM Agents](agents.md). |
+| `PULSATRIX_ORCHESTRATOR_OPENSSL` | `AUTO` | With the orchestrator, HTTPS through OpenSSL 3 (`AUTO`, `ON` or `OFF`). See [Building it](agents.md#building-it). |
+| `PULSATRIX_ORCHESTRATOR_CURL` | `OFF` | With the orchestrator, also builds the libcurl HTTP backend, which uses Schannel for HTTPS on Windows. |
 | `PULSATRIX_INSTALL` | `ON` at the top level, `OFF` as a subproject | Generates the `cmake --install` rules. See [Using pulsatrix in your own project](#using-pulsatrix-in-your-own-project). |
 | `PULSATRIX_BUILD_FUZZERS` | `OFF` | Builds the fuzz targets in `tools/fuzz/` (safetensors and JSON documents). |
 

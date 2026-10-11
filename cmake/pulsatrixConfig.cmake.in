@@ -17,6 +17,16 @@ set(pulsatrix_HAS_ORCHESTRATOR @PULSATRIX_ENABLE_ORCHESTRATOR@)
 
 find_dependency(Threads)
 
+# A static pulsatrix_orchestrator still needs its HTTP libraries at link time.
+if(pulsatrix_HAS_ORCHESTRATOR)
+    if("@pulsatrix_orch_openssl@")
+        find_dependency(OpenSSL 3.0)
+    endif()
+    if("@PULSATRIX_ORCHESTRATOR_CURL@")
+        find_dependency(CURL)
+    endif()
+endif()
+
 if(pulsatrix_HAS_CUDA)
     find_dependency(CUDAToolkit)
 endif()
