@@ -20,6 +20,7 @@ attribution graphs of a language model's prediction.
 | Which inputs does a layer treat as alike? Do two models agree on it? | `NearestNeighbors`, `MutualKnnAlignment`, `MutualNearestNeighbors`, `MeasureHubness` | [Below](#nearest-neighbors) |
 | Is cosine similarity meaningful in this layer? How many dimensions does it use? | `Anisotropy`, `MeasureEffectiveRank`, `TwoNNDimension` | [Below](#the-shape-of-a-layer) |
 | What does a layer look like in 2D or 3D? Which directions vary most? | `FitPca`, `PcaProject`, `PcaSplitHalfOverlap`, `RenderProjectionSvg` | [Below](#pca-projections) |
+| Does a concept, given by examples, push the model towards a class? | `RunTcav`, `TrainCav` | [Below](#concepts-tcav) |
 | Which directions in a layer stand for concepts, found without labels? | Sparse autoencoders: `TopKSparseAutoencoder`, `JumpReLUSparseAutoencoder`, `SparseAutoencoder` | [Finding features](featurizers.md) |
 | Which concepts take more than one dimension, such as an angle or a position? | `BlockSparseFeaturizer` | [Finding features](featurizers.md#block-sparse-featurizers) |
 | What does an MLP compute, step by step? | `Transcoder` | [Finding features](featurizers.md#transcoders) |
@@ -388,6 +389,58 @@ Things to know:
   Look at the explained variance ratios, and treat a direction as a hypothesis to test.
 - **`SubspaceOverlap(a, b, k)`** compares any two PCAs of the same width, for example the same
   layer in two models, or before and after fine-tuning.
+
+### Concepts (TCAV)
+
+TCAV (Kim et al., 2018) asks whether a human concept, given only by examples (striped images,
+say), pushes a model towards a class. It works in three steps:
+
+1. **A concept activation vector (CAV).** `TrainCav` fits a linear classifier that separates a
+   layer's activations on the concept's examples from its activations on random examples. Its
+   normal, pointing towards the concept, is the CAV.
+2. **Sensitivity.** Each input's sensitivity is the class logit's gradient at that layer,
+   dotted with the CAV.
+3. **The TCAV score.** It's the fraction of the class's inputs with positive sensitivity.
+
+```cpp
+#include "pulsatrix/tcav.hpp"
+
+ExplainerContext ctx({&conv1, &relu1, &conv2, &relu2, &flatten, &fc});
+// Node i + 1 is module i's output: 4 is relu2's.
+const TcavResult r = RunTcav(ctx, /*layer=*/4, /*target=*/zebra, zebra_images, striped_images,
+                             random_image_sets, &backend);
+// r.mean_score, r.significant, r.test.p_value, r.cav_accuracies
+```
+
+**One score means little.** A CAV trained against one random set can point anywhere that
+separates the two sets, and a meaningless direction scores anywhere from 0 to 1. `RunTcav`
+follows Kim et al.:
+
+- It trains a CAV against each of several random sets (at least 3; Kim et al. use many more).
+- It does the same with random sets in place of the concept.
+- A two-sided t-test (`StudentTTest`) compares the two lists of scores.
+
+A concept is significant at `alpha` (0.05; divide it by the number of concepts, layers and
+classes you test). A score near 0 is as significant as one near 1: the concept pushes away from
+the class.
+
+In the test's network, class 0's logit is 2 h0 − h1. Concepts that raise h0 score 1, and those
+that raise h1 score 0. Both are significant. A concept that raises only h2, which the logit
+ignores, isn't, even though its CAVs separate it at over 85%.
+
+Things to know:
+
+- **Use plenty of concept examples.** Every CAV of a concept shares its examples, so their
+  sampling noise tilts every CAV the same way. In the test, an ignored concept passed the test
+  in 8 of 40 trials with 30 concept examples, where about 2 are expected by chance. With 300
+  examples it passed in none.
+- **Check the CAV's accuracy.** `cav_accuracies` are measured on held-out examples. Near 0.5,
+  the layer doesn't separate the concept and the CAV means nothing.
+- **Logistic regression or difference of means.** `CavOptions::method` chooses. Logistic
+  regression is Kim et al.'s. `DifferenceOfMeans` needs no fitting and doesn't tilt towards
+  dimensions that separate the two samples only by chance.
+- **Models.** The models are `ExplainerContext` chains. TCAV needs the gradient at an inner
+  layer, which the language models don't expose yet.
 
 ### Baselines
 
