@@ -265,6 +265,43 @@ public:
         return relevance;
     }
 
+    /**
+     * @brief relevance_pass() through modules `[begin, end)` only, in reverse: @p relevance is the
+     *        relevance at node `end` (module end - 1's output), and the result is the relevance at
+     *        node `begin`. Splitting a pass at a node lets a caller change the relevance there and
+     *        continue, as Concept Relevance Propagation does (concept_relevance.hpp).
+     * @note Modules propagate from what the most recent forward pass cached and don't change it,
+     *       so the same forward pass can be propagated through any number of times.
+     * @throws std::invalid_argument if configs.size() != number of modules, `begin > end` or
+     *         `end` is past the last module, or a module in the range does not implement its rule;
+     *         std::logic_error as relevance_pass() does.
+     */
+    Tensor relevance_pass_through(const Tensor& relevance, const std::vector<LRPRuleConfig>& configs, size_t begin, size_t end) {
+        if (last_forward_was_patched_) {
+            throw std::logic_error(
+                "ExplainerContext::relevance_pass_through: the most recent forward pass was forward_pass_with_patch(); "
+                "run an unpatched forward_pass() first.");
+        }
+        if (configs.size() != modules_.size()) {
+            throw std::invalid_argument("ExplainerContext::relevance_pass_through: need exactly one LRPRuleConfig per module");
+        }
+        if (begin > end || end > modules_.size()) {
+            throw std::invalid_argument("ExplainerContext::relevance_pass_through: need begin <= end <= the number of modules");
+        }
+        for (size_t i = begin; i < end; ++i) {
+            if (!modules_[i]->supports_lrp_rule(configs[i].rule)) {
+                throw std::invalid_argument("ExplainerContext::relevance_pass_through: module " + std::to_string(i) + " (" +
+                                            detail::module_type_name(*modules_[i]) + ") does not implement the " +
+                                            lrp_rule_name(configs[i].rule) + " LRP rule");
+            }
+        }
+        Tensor out = relevance;
+        for (size_t i = end; i-- > begin;) {
+            out = modules_[i]->propagate_relevance(out, configs[i]);
+        }
+        return out;
+    }
+
     /** @brief The module chain, in forward order (not owned). */
     [[nodiscard]] const std::vector<Module*>& modules() const { return modules_; }
 
