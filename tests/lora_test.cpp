@@ -394,9 +394,12 @@ TEST_F(PeftParityTest, SavingWritesPeftsFile) {
         EXPECT_EQ(ours.info(key).shape, peft.info(key).shape) << key;
         EXPECT_EQ(ours.tensor(key, &backend).to_host_vector(), peft.tensor(key, &backend).to_host_vector()) << key;
     }
-    std::ifstream in(dir + "/adapter_config.json");
     std::stringstream text;
-    text << in.rdbuf();
+    {
+        // Closed before remove_all below: Windows won't delete a file that is still open.
+        std::ifstream in(dir + "/adapter_config.json");
+        text << in.rdbuf();
+    }
     const JsonValue config = ParseJson(text.str());
     EXPECT_EQ(config.find("r")->as_int64(), 4);
     EXPECT_EQ(config.find("lora_alpha")->as_float(), 8.0f);
