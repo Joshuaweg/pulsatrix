@@ -238,6 +238,7 @@ add_executable(pulsatrix_tests
     rsa_svcca_test.cpp
     embedding_export_test.cpp
     point_cloud_test.cpp
+    distance_matrix_test.cpp
     sparse_autoencoder_test.cpp
     saliency_test.cpp
     lrp_test.cpp
@@ -289,7 +290,7 @@ if(PULSATRIX_ENABLE_HIP)
                                        backend_equivalence_hip_test.cpp forward_pass_equivalence_hip_test.cpp
                                        vision_models_hip_test.cpp conv2d_chunking_hip_test.cpp
                                        fused_ops_hip_test.cpp
-                                       safetensors_hip_test.cpp)
+                                       safetensors_hip_test.cpp distance_matrix_hip_test.cpp)
 endif()
 
 if(PULSATRIX_ENABLE_ORCHESTRATOR)
