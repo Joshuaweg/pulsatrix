@@ -193,6 +193,7 @@ Fine-tune the models from v1.2 and explain what the fine-tuning changed.
 - INT-5 (**done**, [#135](https://github.com/Joshuaweg/pulsatrix/pull/135)): PCA, projection plots, split-half stability
 - INT-6 (**done**): TCAV ([#136](https://github.com/Joshuaweg/pulsatrix/pull/136)) and CRP ([#137](https://github.com/Joshuaweg/pulsatrix/pull/137))
 - INT-7 (**done**, [#138](https://github.com/Joshuaweg/pulsatrix/pull/138)): RSA with a permutation test, SVCCA
+- INT-8 (**done**, [#139](https://github.com/Joshuaweg/pulsatrix/pull/139)): `.npy` and Embedding Projector export for UMAP and t-SNE, and their coordinates back as projection documents
 - TDA-1 to TDA-8, TDA-11: persistent homology and RTD
 - KS-3, KS-4: uncertainty and adversarial robustness
 - Llama-3.2-1B and Qwen2.5-0.5B pass the golden-logit test
@@ -232,7 +233,7 @@ Its own epic, started 2026-10-07 after VIZ-4. **Complete** (2026-10-08, PRs
 ### Backlog, not yet scheduled
 
 These P2 and P3 items wait until a milestone needs them or someone asks: TRN-12, TRN-13, IO-10,
-IO-11, INT-7 (**done**), INT-8, TDA-13 to TDA-19, KD-3, KD-4, FEAT-8 (**done**), ARCH-4 to ARCH-10, VIZ-7, HIP-10,
+IO-11, INT-7 (**done**), INT-8 (**done**), TDA-13 to TDA-19, KD-3, KD-4, FEAT-8 (**done**), ARCH-4 to ARCH-10, VIZ-7, HIP-10,
 AGT-6, AGT-7, AGT-9, NB-4, NB-5, KS-6 and KS-7.
 
 ### v2.0
@@ -790,9 +791,27 @@ network says nothing about what the model learned.
 | INT-5 | PCA projections | 2D and 3D views, steering directions, preprocessing for TDA | FND-4 | P1 | M | Done, [#135](https://github.com/Joshuaweg/pulsatrix/pull/135) (see below) |
 | INT-6 | TCAV (with significance against random concepts) and Concept Relevance Propagation | Concept-level explanations, and CRP reuses pulsatrix's LRP rules | INT-3 | P1 | M | Done: TCAV [#136](https://github.com/Joshuaweg/pulsatrix/pull/136), CRP [#137](https://github.com/Joshuaweg/pulsatrix/pull/137) (see below) |
 | INT-7 | RSA and SVCCA | Mostly covered by CKA | FND-4 | P2 | — | Done, [#138](https://github.com/Joshuaweg/pulsatrix/pull/138) (see below) |
-| INT-8 | UMAP and t-SNE: export the data only, don't implement | Expensive, and they distort distances and cluster sizes | VIZ-1 | P3 | — | |
+| INT-8 | UMAP and t-SNE: export the data only, don't implement | Expensive, and they distort distances and cluster sizes | VIZ-1 | P3 | — | Done, [#139](https://github.com/Joshuaweg/pulsatrix/pull/139) (see below) |
 
 ### How the INT work departed from the plan
+
+- **INT-8** follows the plan in `embedding_export.hpp`: export, not an implementation.
+  - **The formats:**
+    - `.npy` (`SerializeNpy`, `WriteNpy`) for umap-learn, openTSNE and scikit-learn. It matches
+      numpy's own files byte for byte.
+    - The Embedding Projector's `vectors.tsv` and `metadata.tsv`, which run UMAP and t-SNE in
+      the browser.
+    - `ExportEmbeddings()` writes all three.
+  - **Added beyond the plan: the way back.**
+    - `ParseNpy()` and `ReadNpy()` read float32 or float64 in C or Fortran order, in format
+      versions 1 to 3. They're checked against files numpy wrote
+      (`tools/generate_npy_fixtures.py`) and fuzzed (`tools/fuzz/npy_fuzz.cpp`, 4 million inputs
+      under ASan and UBSan).
+    - `MakeProjectionDocument(coordinates, method)` makes the coordinates a projection document.
+  - **The views say what's distorted.** On a UMAP or t-SNE document the SVG and HTML views say
+    that neighbors are kept but distances, cluster sizes and densities aren't. Before, the HTML
+    subtitle said distances on the page were distances in the projection, which is true only
+    for PCA.
 
 - **INT-7** adds RSA and SVCCA to `representation_similarity.hpp`, next to CKA.
   - **RSA:** `RepresentationalDissimilarity()` (correlation, Euclidean or cosine distance, stored

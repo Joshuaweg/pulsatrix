@@ -44,7 +44,7 @@ There are sixteen kinds. Each has a struct, a writer (`ToJson`) and a reader (`P
 | `pulsatrix.mutation_map.v1` | `MutationMapDocument` | `title`, `sequence`, `first_position`, `method`, `alphabet`, and row-major `values` (residues × alphabet) | `VariantScorer::single_mutant_scan` |
 | `pulsatrix.sequence_logo.v1` | `SequenceLogoDocument` | `title`, `sequence`, `first_position`, `method`, `alphabet`, and row-major `probabilities` (positions × alphabet, each row a distribution) | `ResidueLogProbs` |
 | `pulsatrix.contact_map.v1` | `ContactMapDocument` | `title`, `sequence`, `first_position`, `method`, `predicted` (L × L) and `truth` (L × L of 0, 1 and NaN, or empty) | `ContactMap` |
-| `pulsatrix.projection.v1` | `ProjectionDocument` | `title`, `method`, `axes`, `explained_variance_ratio` (one per axis, or empty), row-major `coordinates` (points × axes), and optional per-point `labels`, `groups` and `values` | `MakeProjectionDocument(pca, scores)` |
+| `pulsatrix.projection.v1` | `ProjectionDocument` | `title`, `method`, `axes`, `explained_variance_ratio` (one per axis, or empty), row-major `coordinates` (points × axes), and optional per-point `labels`, `groups` and `values` | `MakeProjectionDocument(pca, scores)`, or `MakeProjectionDocument(coordinates, "umap")` for UMAP or t-SNE output |
 | `pulsatrix.residue_tracks.v1` | `ResidueTracksDocument` | `title`, `sequence`, `first_position`, `tracks` (`name`, one value per residue, `signed`), `features` (`name`, `start`, `end`, `category`) and `residue_ids` | — |
 
 ### Token relevance for text

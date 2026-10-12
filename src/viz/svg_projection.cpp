@@ -148,6 +148,11 @@ std::string RenderProjectionSvg(const ProjectionDocument& doc, int x_axis, int y
         ColorBar(f, lx, y_top, std::min(side, fs * 14), vlo, vhi, [](float t) { return ViridisColormap(t); }, "projection-values");
         right = lx + legend_w;
     }
+    if (IsNeighborEmbedding(doc)) {
+        const char* note = "Neighbors are kept; distances, cluster sizes and densities aren't";
+        f.text("projection-note", x0, y_bottom + fs * 4.2, note, "start", kMutedColor);
+        return f.finish(y_bottom + fs * 5.4, std::max(right, x0 + TextWidth(note, fs)));
+    }
     return f.finish(y_bottom + fs * 4.0, right);
 }
 

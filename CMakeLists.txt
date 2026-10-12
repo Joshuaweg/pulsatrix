@@ -148,6 +148,7 @@ add_library(pulsatrix_core
     src/concept_relevance.cpp
     src/rsa.cpp
     src/svcca.cpp
+    src/embedding_export.cpp
     src/topk_sparse_autoencoder.cpp
     src/jumprelu_sparse_autoencoder.cpp
     src/transcoder.cpp
@@ -824,7 +825,7 @@ if(PULSATRIX_ENABLE_HIP)
 endif()
 
 if(PULSATRIX_BUILD_FUZZERS)
-    foreach(fuzzer safetensors_fuzz viz_document_fuzz)
+    foreach(fuzzer safetensors_fuzz viz_document_fuzz npy_fuzz)
         add_executable(${fuzzer} tools/fuzz/${fuzzer}.cpp)
         target_link_libraries(${fuzzer} PRIVATE pulsatrix_core)
         if(PULSATRIX_FUZZ_STANDALONE)
