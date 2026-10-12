@@ -2585,6 +2585,9 @@ fine-tune, or several layers of one model. Each feature has a single code, and i
 direction in each source. The decoders' norms say where a feature writes:
 - about equal norms: a feature both models share;
 - a near-zero norm in one model: a feature only the other model has.</p>
+<p>For a fine-tune made with LoRA, IA³ or LoReFT, or for two models of the same architecture, there
+is a simpler first look: <a href="../../deep-learning/fine-tuning/#what-did-the-fine-tune-change">the relevance before and after, and intruder dimensions in the
+weights</a>.</p>
 <h2 id="quick-start-diff-a-base-model-and-its-chat-fine-tune">Quick start: diff a base model and its chat fine-tune<a class="headerlink" href="#quick-start-diff-a-base-model-and-its-chat-fine-tune" title="Permanent link">&para;</a></h2>
 <p><code>pulsatrix_diff_lm</code> does the whole thing:
 1. reads the same text through both models;

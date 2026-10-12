@@ -1,16 +1,19 @@
 var searchData=
 [
-  ['iceresult_0',['IceResult',['../structpulsatrix_1_1IceResult.html',1,'pulsatrix']]],
-  ['imagedecoder_1',['ImageDecoder',['../classpulsatrix_1_1ImageDecoder.html',1,'pulsatrix']]],
-  ['imagefolderdataset_2',['ImageFolderDataset',['../classpulsatrix_1_1ImageFolderDataset.html',1,'pulsatrix']]],
-  ['imagegridview_3',['ImageGridView',['../classpulsatrix_1_1ImageGridView.html',1,'pulsatrix']]],
-  ['implotmetricssink_4',['ImPlotMetricsSink',['../classpulsatrix_1_1ImPlotMetricsSink.html',1,'pulsatrix']]],
-  ['importancestats_5',['ImportanceStats',['../structpulsatrix_1_1ImportanceStats.html',1,'pulsatrix']]],
-  ['imputation_6',['Imputation',['../structpulsatrix_1_1Imputation.html',1,'pulsatrix']]],
-  ['individual_7',['Individual',['../structpulsatrix_1_1Individual.html',1,'pulsatrix']]],
-  ['innovationtracker_8',['InnovationTracker',['../classpulsatrix_1_1InnovationTracker.html',1,'pulsatrix']]],
-  ['input_9',['Input',['../structpulsatrix_1_1ExplanationScoreCard_1_1Input.html',1,'pulsatrix::ExplanationScoreCard']]],
-  ['integratedgradients_10',['IntegratedGradients',['../classpulsatrix_1_1IntegratedGradients.html',1,'pulsatrix']]],
-  ['item_11',['Item',['../structpulsatrix_1_1TemplatePostProcessor_1_1Item.html',1,'pulsatrix::TemplatePostProcessor']]],
-  ['iterabledataset_12',['IterableDataset',['../classpulsatrix_1_1IterableDataset.html',1,'pulsatrix']]]
+  ['ia3adapter_0',['IA3Adapter',['../classpulsatrix_1_1IA3Adapter.html',1,'pulsatrix']]],
+  ['ia3config_1',['IA3Config',['../structpulsatrix_1_1IA3Config.html',1,'pulsatrix']]],
+  ['iceresult_2',['IceResult',['../structpulsatrix_1_1IceResult.html',1,'pulsatrix']]],
+  ['imagedecoder_3',['ImageDecoder',['../classpulsatrix_1_1ImageDecoder.html',1,'pulsatrix']]],
+  ['imagefolderdataset_4',['ImageFolderDataset',['../classpulsatrix_1_1ImageFolderDataset.html',1,'pulsatrix']]],
+  ['imagegridview_5',['ImageGridView',['../classpulsatrix_1_1ImageGridView.html',1,'pulsatrix']]],
+  ['implotmetricssink_6',['ImPlotMetricsSink',['../classpulsatrix_1_1ImPlotMetricsSink.html',1,'pulsatrix']]],
+  ['importancestats_7',['ImportanceStats',['../structpulsatrix_1_1ImportanceStats.html',1,'pulsatrix']]],
+  ['imputation_8',['Imputation',['../structpulsatrix_1_1Imputation.html',1,'pulsatrix']]],
+  ['individual_9',['Individual',['../structpulsatrix_1_1Individual.html',1,'pulsatrix']]],
+  ['innovationtracker_10',['InnovationTracker',['../classpulsatrix_1_1InnovationTracker.html',1,'pulsatrix']]],
+  ['input_11',['Input',['../structpulsatrix_1_1ExplanationScoreCard_1_1Input.html',1,'pulsatrix::ExplanationScoreCard']]],
+  ['integratedgradients_12',['IntegratedGradients',['../classpulsatrix_1_1IntegratedGradients.html',1,'pulsatrix']]],
+  ['intruderresult_13',['IntruderResult',['../structpulsatrix_1_1IntruderResult.html',1,'pulsatrix']]],
+  ['item_14',['Item',['../structpulsatrix_1_1TemplatePostProcessor_1_1Item.html',1,'pulsatrix::TemplatePostProcessor']]],
+  ['iterabledataset_15',['IterableDataset',['../classpulsatrix_1_1IterableDataset.html',1,'pulsatrix']]]
 ];

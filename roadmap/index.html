@@ -4219,7 +4219,8 @@ machine, and explain it with the tools pulsatrix already has. Items on that path
 <h3 id="v13-tune-and-explain">v1.3 "Tune and explain"<a class="headerlink" href="#v13-tune-and-explain" title="Permanent link">&para;</a></h3>
 <p>Fine-tune the models from v1.2 and explain what the fine-tuning changed.</p>
 <ul>
-<li>TRN-7 to TRN-11: LoRA, LRP through LoRA, LoReFT, IA³, model diffing</li>
+<li>TRN-7 to TRN-11 (<strong>done</strong>, <a href="https://github.com/Joshuaweg/pulsatrix/pull/151">#151</a> to
+  <a href="https://github.com/Joshuaweg/pulsatrix/pull/155">#155</a>): LoRA, LRP through LoRA, LoReFT, IA³, model diffing</li>
 <li>KD-1, KD-2: distillation and teacher–student explanation agreement</li>
 <li>XAI-1 to XAI-4: the question-driven planner, explanation reports, counterfactuals, surrogates,
   Anchors</li>
@@ -4733,7 +4734,7 @@ rate is tuned, plain LoRA matches or beats most of them.</p>
 <td>FND-2</td>
 <td>P2</td>
 <td>S</td>
-<td></td>
+<td>Done (see below)</td>
 </tr>
 <tr>
 <td>TRN-11</td>
@@ -4742,7 +4743,7 @@ rate is tuned, plain LoRA matches or beats most of them.</p>
 <td>TRN-8, FND-4</td>
 <td>P2</td>
 <td>M</td>
-<td></td>
+<td>Done (see below)</td>
 </tr>
 <tr>
 <td>TRN-12</td>
@@ -4806,7 +4807,20 @@ rate is tuned, plain LoRA matches or beats most of them.</p>
 <li>The relevance is split into the identity's part and the edit's part, as for LoRA.</li>
 </ul>
 <p>Checked against pyreft 0.1.0's own <code>LoreftIntervention</code>, installed without its dependencies
-  because pyreft pins transformers 4.45.1: logits, gradients and generation on a tiny Qwen2.</p>
+  because pyreft pins transformers 4.45.1: logits, gradients and generation on a tiny Qwen2.
+- <strong>TRN-10</strong> follows the plan in <code>ia3.hpp</code>. As with LoRA, the vector lives inside <code>LinearModule</code>.
+  <code>ApplyIA3()</code> defaults to the paper's layers: keys, values, and the MLP's down projection as a
+  feedforward module. PEFT's Qwen2 default rescales queries instead of keys. LRP runs on the
+  rescaled layer exactly. Checked against PEFT 0.21.0: logits, gradients, merging and the saved
+  file. PEFT's file helpers, shared with LoRA, moved to <code>src/peft_util.hpp</code>.
+- <strong>TRN-11</strong> follows the plan in <code>fine_tune_diff.hpp</code>:
+  - <code>DiffAdapterRelevance()</code> switches LoRA, IA³ and LoReFT off and on, adding
+    <code>CausalLM::set_interventions_enabled()</code>.
+  - <code>DiffRelevance()</code> compares two separate models.
+  - <code>TokenRelevanceShift</code> aggregates the differences by token over a dataset.
+  - Intruder dimensions follow Shuttleworth et al.'s Definition 3.1. They use |cos| because a
+    singular vector's sign is arbitrary, and the default ε = 0.6 is a starting point, since the
+    paper sweeps ε.</p>
 <h3 id="follow-ups-the-trn-work-surfaced">Follow-ups the TRN work surfaced<a class="headerlink" href="#follow-ups-the-trn-work-surfaced" title="Permanent link">&para;</a></h3>
 <table>
 <thead>

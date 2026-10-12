@@ -163,6 +163,11 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a536d5b52bc411d1a276d8e35e476e5a7" id="r_a536d5b52bc411d1a276d8e35e476e5a7"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1CausalLM.html#a536d5b52bc411d1a276d8e35e476e5a7">set_intervention</a> (int64_t <a class="el" href="classpulsatrix_1_1CausalLM.html#a146c289c429c1bf98cd36169f6249850">layer</a>, std::unique_ptr&lt; <a class="el" href="classpulsatrix_1_1ResidualIntervention.html">ResidualIntervention</a> &gt; <a class="el" href="classpulsatrix_1_1CausalLM.html#ab90ab6267dfc2cb48cbfb683a57832ec">intervention</a>)</td></tr>
 <tr class="memdesc:a536d5b52bc411d1a276d8e35e476e5a7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Runs <code>intervention</code> on block <code>layer's</code> output, in <a class="el" href="classpulsatrix_1_1Module.html#a5cb3b4aac3d2364c973009413fde6a21" title="Runs this module&#39;s forward computation.">forward()</a>, <a class="el" href="classpulsatrix_1_1CausalLM.html#a82afb7cb87d18d116e764f036c1b7029" title="Computes the gradient w.r.t. this module&#39;s input, given the gradient w.r.t. its output....">backward()</a>, the relevance passes and cached generation (TRN-9). Its parameters join <a class="el" href="classpulsatrix_1_1CausalLM.html#a3f05f65d21f65a6d2448da9b600396c2" title="This module&#39;s trainable parameters, each with its hierarchical name – the one place a module declares...">named_parameters()</a> as <code>interventions.&lt;layer&gt;.*</code>. nullptr removes it.  <br /></td></tr>
 <tr class="separator:a536d5b52bc411d1a276d8e35e476e5a7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8011fec6de5c98ae1d35e5fe4970c68e" id="r_a8011fec6de5c98ae1d35e5fe4970c68e"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1CausalLM.html#a8011fec6de5c98ae1d35e5fe4970c68e">set_interventions_enabled</a> (bool enabled)</td></tr>
+<tr class="memdesc:a8011fec6de5c98ae1d35e5fe4970c68e"><td class="mdescLeft">&#160;</td><td class="mdescRight">false runs the model as if it had no interventions, everywhere they would run; true (the default) runs them again (TRN-11: the base model's relevance).  <br /></td></tr>
+<tr class="separator:a8011fec6de5c98ae1d35e5fe4970c68e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad4af5cb63a2ef4b965fa9473e08964ce" id="r_ad4af5cb63a2ef4b965fa9473e08964ce"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1CausalLM.html#ad4af5cb63a2ef4b965fa9473e08964ce">interventions_enabled</a> () const</td></tr>
+<tr class="separator:ad4af5cb63a2ef4b965fa9473e08964ce"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab90ab6267dfc2cb48cbfb683a57832ec" id="r_ab90ab6267dfc2cb48cbfb683a57832ec"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classpulsatrix_1_1ResidualIntervention.html">ResidualIntervention</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1CausalLM.html#ab90ab6267dfc2cb48cbfb683a57832ec">intervention</a> (int64_t <a class="el" href="classpulsatrix_1_1CausalLM.html#a146c289c429c1bf98cd36169f6249850">layer</a>)</td></tr>
 <tr class="memdesc:ab90ab6267dfc2cb48cbfb683a57832ec"><td class="mdescLeft">&#160;</td><td class="mdescRight">Block <code>layer's</code> intervention, or nullptr.  <br /></td></tr>
 <tr class="separator:ab90ab6267dfc2cb48cbfb683a57832ec"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -448,6 +453,31 @@ Protected Member Functions</h2></td></tr>
   </table>
   </dd>
 </dl>
+
+</div>
+</div>
+<a id="ad4af5cb63a2ef4b965fa9473e08964ce" name="ad4af5cb63a2ef4b965fa9473e08964ce"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad4af5cb63a2ef4b965fa9473e08964ce">&#9670;&#160;</a></span>interventions_enabled()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool pulsatrix::CausalLM::interventions_enabled </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
 
 </div>
 </div>
@@ -840,6 +870,34 @@ Protected Member Functions</h2></td></tr>
   </table>
   </dd>
 </dl>
+
+</div>
+</div>
+<a id="a8011fec6de5c98ae1d35e5fe4970c68e" name="a8011fec6de5c98ae1d35e5fe4970c68e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8011fec6de5c98ae1d35e5fe4970c68e">&#9670;&#160;</a></span>set_interventions_enabled()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void pulsatrix::CausalLM::set_interventions_enabled </td>
+          <td>(</td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>enabled</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>false runs the model as if it had no interventions, everywhere they would run; true (the default) runs them again (TRN-11: the base model's relevance). </p>
 
 </div>
 </div>
