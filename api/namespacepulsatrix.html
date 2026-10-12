@@ -489,6 +489,12 @@ Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1DisjunctionModule.html">DisjunctionModule</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight"><code>y = a S b</code> for a selected t-conorm S, over two independent fuzzy-truth-valued operand tensors (values intended in [0,1]; out-of-range values are not rejected &ndash; see <a class="el" href="conjunction__module_8hpp.html" title="Differentiable fuzzy conjunction (t-norm) – Phase 1 Mission 0 of campaign_exai_dl_library_neuro_symbo...">conjunction_module.hpp</a>'s identical note).  <a href="classpulsatrix_1_1DisjunctionModule.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpulsatrix_1_1DistanceMatrix.html">DistanceMatrix</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The distances between every pair of n points, condensed.  <a href="structpulsatrix_1_1DistanceMatrix.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpulsatrix_1_1DistanceOptions.html">DistanceOptions</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="namespacepulsatrix.html#a38e9b82e739fc4c0df68b10cb6e3a642" title="Euclidean distances between every pair of rows.">PairwiseDistances()</a>'s settings.  <a href="structpulsatrix_1_1DistanceOptions.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpulsatrix_1_1DiverseCounterfactualOptions.html">DiverseCounterfactualOptions</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Settings for FindDiverseCounterfactuals.  <a href="structpulsatrix_1_1DiverseCounterfactualOptions.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -1815,6 +1821,11 @@ Enumerations</h2></td></tr>
  }</td></tr>
 <tr class="memdesc:ae6ebe8206389518eb092b7e2e120f3f8"><td class="mdescLeft">&#160;</td><td class="mdescRight">How TrainCav() finds the concept direction.  <a href="namespacepulsatrix.html#ae6ebe8206389518eb092b7e2e120f3f8">More...</a><br /></td></tr>
 <tr class="separator:ae6ebe8206389518eb092b7e2e120f3f8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6aec8b41f4e464852c7d0b56cfee6843" id="r_a6aec8b41f4e464852c7d0b56cfee6843"><td class="memItemLeft" align="right" valign="top">enum class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#a6aec8b41f4e464852c7d0b56cfee6843">DistanceMethod</a> { <a class="el" href="namespacepulsatrix.html#a6aec8b41f4e464852c7d0b56cfee6843a67d92e041230138abff74328d18b03a1">Gemm</a>
+, <a class="el" href="namespacepulsatrix.html#a6aec8b41f4e464852c7d0b56cfee6843a1649aed298f99d587e2eb30c1db5946b">Exact</a>
+ }</td></tr>
+<tr class="memdesc:a6aec8b41f4e464852c7d0b56cfee6843"><td class="mdescLeft">&#160;</td><td class="mdescRight">How PairwiseDistances() computes the distances.  <a href="namespacepulsatrix.html#a6aec8b41f4e464852c7d0b56cfee6843">More...</a><br /></td></tr>
+<tr class="separator:a6aec8b41f4e464852c7d0b56cfee6843"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:afac97d73c04740a34d6f4ce4298789d8" id="r_afac97d73c04740a34d6f4ce4298789d8"><td class="memItemLeft" align="right" valign="top">enum class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#afac97d73c04740a34d6f4ce4298789d8">PointPooling</a> { <br />
 &#160;&#160;<a class="el" href="namespacepulsatrix.html#afac97d73c04740a34d6f4ce4298789d8a4adae1c15e93fd1abd85fcdd8b948e10">Flatten</a>
 , <a class="el" href="namespacepulsatrix.html#afac97d73c04740a34d6f4ce4298789d8a8b60e95cb5137cc1c45c4dd2f475a4b6">PerPosition</a>
@@ -2803,6 +2814,12 @@ Functions</h2></td></tr>
 <tr class="memitem:ad2bb179db23384a5ae77b15279842ddb" id="r_ad2bb179db23384a5ae77b15279842ddb"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structpulsatrix_1_1TcavResult.html">TcavResult</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#ad2bb179db23384a5ae77b15279842ddb">RunTcav</a> (<a class="el" href="classpulsatrix_1_1ExplainerContext.html">ExplainerContext</a> &amp;ctx, <a class="el" href="namespacepulsatrix.html#a2b8dc3d7d2cef35f192d191f09156e67">NodeId</a> layer, int64_t target, const <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp;class_inputs, const <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp;concept_inputs, const std::vector&lt; <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &gt; &amp;random_inputs, <a class="el" href="classpulsatrix_1_1DeviceBackend.html">DeviceBackend</a> *backend, const <a class="el" href="structpulsatrix_1_1TcavOptions.html">TcavOptions</a> &amp;options={})</td></tr>
 <tr class="memdesc:ad2bb179db23384a5ae77b15279842ddb"><td class="mdescLeft">&#160;</td><td class="mdescRight">TCAV with Kim et al.'s significance test, for one concept, layer and class.  <br /></td></tr>
 <tr class="separator:ad2bb179db23384a5ae77b15279842ddb"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a38e9b82e739fc4c0df68b10cb6e3a642" id="r_a38e9b82e739fc4c0df68b10cb6e3a642"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structpulsatrix_1_1DistanceMatrix.html">DistanceMatrix</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#a38e9b82e739fc4c0df68b10cb6e3a642">PairwiseDistances</a> (const <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp;points, const <a class="el" href="structpulsatrix_1_1DistanceOptions.html">DistanceOptions</a> &amp;options={})</td></tr>
+<tr class="memdesc:a38e9b82e739fc4c0df68b10cb6e3a642"><td class="mdescLeft">&#160;</td><td class="mdescRight">Euclidean distances between every pair of rows.  <br /></td></tr>
+<tr class="separator:a38e9b82e739fc4c0df68b10cb6e3a642"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a86a26fa0d020dc0b17de5a589f6a4d50" id="r_a86a26fa0d020dc0b17de5a589f6a4d50"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structpulsatrix_1_1DistanceMatrix.html">DistanceMatrix</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#a86a26fa0d020dc0b17de5a589f6a4d50">PairwiseDistances</a> (const <a class="el" href="classpulsatrix_1_1PointCloud.html">PointCloud</a> &amp;cloud, <a class="el" href="classpulsatrix_1_1DeviceBackend.html">DeviceBackend</a> *backend, const <a class="el" href="structpulsatrix_1_1DistanceOptions.html">DistanceOptions</a> &amp;options={})</td></tr>
+<tr class="memdesc:a86a26fa0d020dc0b17de5a589f6a4d50"><td class="mdescLeft">&#160;</td><td class="mdescRight">Euclidean distances between every pair of a cloud's points, on the given backend.  <br /></td></tr>
+<tr class="separator:a86a26fa0d020dc0b17de5a589f6a4d50"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab4f5bdf3a37346ad36a611ab03d0a85e" id="r_ab4f5bdf3a37346ad36a611ab03d0a85e"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classpulsatrix_1_1PointCloud.html">PointCloud</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#ab4f5bdf3a37346ad36a611ab03d0a85e">MakePointCloud</a> (const std::vector&lt; <a class="el" href="classpulsatrix_1_1ActivationSnapshot.html">ActivationSnapshot</a> &gt; &amp;snapshots, <a class="el" href="namespacepulsatrix.html#a2b8dc3d7d2cef35f192d191f09156e67">NodeId</a> node, <a class="el" href="structpulsatrix_1_1PointCloudOptions.html">PointCloudOptions</a> options={})</td></tr>
 <tr class="memdesc:ab4f5bdf3a37346ad36a611ab03d0a85e"><td class="mdescLeft">&#160;</td><td class="mdescRight">A cloud from one node of several forward passes, such as one snapshot per batch.  <br /></td></tr>
 <tr class="separator:ab4f5bdf3a37346ad36a611ab03d0a85e"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -3873,6 +3890,36 @@ Applied to the <a class="el" href="classpulsatrix_1_1ExplainerContext.html" titl
 <tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="a5480c8cbe462fe3f5a8eb04a8c579e6ea54c82ef76ecbbd4c2293e09bae01b54e" name="a5480c8cbe462fe3f5a8eb04a8c579e6ea54c82ef76ecbbd4c2293e09bae01b54e"></a>Cpu&#160;</td><td class="fielddoc"></td></tr>
 <tr><td class="fieldname"><a id="a5480c8cbe462fe3f5a8eb04a8c579e6ea8b95dcff7397d0693c03e394af5552aa" name="a5480c8cbe462fe3f5a8eb04a8c579e6ea8b95dcff7397d0693c03e394af5552aa"></a>Cuda&#160;</td><td class="fielddoc"></td></tr>
 <tr><td class="fieldname"><a id="a5480c8cbe462fe3f5a8eb04a8c579e6eaafcd5ccb84b5c522c66efa7836e17f92" name="a5480c8cbe462fe3f5a8eb04a8c579e6eaafcd5ccb84b5c522c66efa7836e17f92"></a>Hip&#160;</td><td class="fielddoc"></td></tr>
+</table>
+
+</div>
+</div>
+<a id="a6aec8b41f4e464852c7d0b56cfee6843" name="a6aec8b41f4e464852c7d0b56cfee6843"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6aec8b41f4e464852c7d0b56cfee6843">&#9670;&#160;</a></span>DistanceMethod</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">enum class <a class="el" href="namespacepulsatrix.html#a6aec8b41f4e464852c7d0b56cfee6843">pulsatrix::DistanceMethod</a></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">strong</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>How <a class="el" href="namespacepulsatrix.html#a38e9b82e739fc4c0df68b10cb6e3a642" title="Euclidean distances between every pair of rows.">PairwiseDistances()</a> computes the distances. </p>
+<table class="fieldtable">
+<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="a6aec8b41f4e464852c7d0b56cfee6843a67d92e041230138abff74328d18b03a1" name="a6aec8b41f4e464852c7d0b56cfee6843a67d92e041230138abff74328d18b03a1"></a>Gemm&#160;</td><td class="fielddoc"><p>|x|^2 + |y|^2 - 2 x.y, with the dot products from the backend's float32 GEMM and the rest in double on the host. O(n^2 d) on the device. </p>
+</td></tr>
+<tr><td class="fieldname"><a id="a6aec8b41f4e464852c7d0b56cfee6843a1649aed298f99d587e2eb30c1db5946b" name="a6aec8b41f4e464852c7d0b56cfee6843a1649aed298f99d587e2eb30c1db5946b"></a>Exact&#160;</td><td class="fielddoc"><p>The sum of squared differences, in double on the host. Slower, with an error bound near double precision: a reference, or for clouds whose points nearly coincide. </p>
+</td></tr>
 </table>
 
 </div>
@@ -14371,6 +14418,90 @@ template&lt;typename T &gt; </div>
 <dl class="exception"><dt>Exceptions</dt><dd>
   <table class="exception">
     <tr><td class="paramname">std::invalid_argument</td><td>(from the returned CollateFn, at call time) if samples is empty &ndash; matching DefaultCollate's own external-boundary convention. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="a86a26fa0d020dc0b17de5a589f6a4d50" name="a86a26fa0d020dc0b17de5a589f6a4d50"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a86a26fa0d020dc0b17de5a589f6a4d50">&#9670;&#160;</a></span>PairwiseDistances() <span class="overload">[1/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="structpulsatrix_1_1DistanceMatrix.html">DistanceMatrix</a> pulsatrix::PairwiseDistances </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classpulsatrix_1_1PointCloud.html">PointCloud</a> &amp;&#160;</td>
+          <td class="paramname"><em>cloud</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="classpulsatrix_1_1DeviceBackend.html">DeviceBackend</a> *&#160;</td>
+          <td class="paramname"><em>backend</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="structpulsatrix_1_1DistanceOptions.html">DistanceOptions</a> &amp;&#160;</td>
+          <td class="paramname"><em>options</em> = <code>{}</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Euclidean distances between every pair of a cloud's points, on the given backend. </p>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname">std::invalid_argument</td><td>as above. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="a38e9b82e739fc4c0df68b10cb6e3a642" name="a38e9b82e739fc4c0df68b10cb6e3a642"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a38e9b82e739fc4c0df68b10cb6e3a642">&#9670;&#160;</a></span>PairwiseDistances() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="structpulsatrix_1_1DistanceMatrix.html">DistanceMatrix</a> pulsatrix::PairwiseDistances </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp;&#160;</td>
+          <td class="paramname"><em>points</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="structpulsatrix_1_1DistanceOptions.html">DistanceOptions</a> &amp;&#160;</td>
+          <td class="paramname"><em>options</em> = <code>{}</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Euclidean distances between every pair of rows. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">points</td><td>shape (n, ...): a row per point, dimensions after the first flattened. With <a class="el" href="namespacepulsatrix.html#a6aec8b41f4e464852c7d0b56cfee6843a67d92e041230138abff74328d18b03a1" title="|x|^2 + |y|^2 - 2 x.y, with the dot products from the backend&#39;s float32 GEMM and the rest in double o...">DistanceMethod::Gemm</a> the products run on points' own backend. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname">std::invalid_argument</td><td>if points has rank below 2, fewer than 2 rows, a NaN or infinity, block_rows below 0, or (with normalize) a row of zeros after centering. </td></tr>
   </table>
   </dd>
 </dl>

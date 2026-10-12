@@ -134,6 +134,8 @@ var namespacepulsatrix =
     [ "DeviceBackend", "classpulsatrix_1_1DeviceBackend.html", "classpulsatrix_1_1DeviceBackend" ],
     [ "DigitsPreTokenizer", "classpulsatrix_1_1DigitsPreTokenizer.html", "classpulsatrix_1_1DigitsPreTokenizer" ],
     [ "DisjunctionModule", "classpulsatrix_1_1DisjunctionModule.html", "classpulsatrix_1_1DisjunctionModule" ],
+    [ "DistanceMatrix", "structpulsatrix_1_1DistanceMatrix.html", "structpulsatrix_1_1DistanceMatrix" ],
+    [ "DistanceOptions", "structpulsatrix_1_1DistanceOptions.html", "structpulsatrix_1_1DistanceOptions" ],
     [ "DiverseCounterfactualOptions", "structpulsatrix_1_1DiverseCounterfactualOptions.html", "structpulsatrix_1_1DiverseCounterfactualOptions" ],
     [ "DiverseCounterfactualResult", "structpulsatrix_1_1DiverseCounterfactualResult.html", "structpulsatrix_1_1DiverseCounterfactualResult" ],
     [ "DmsVariants", "structpulsatrix_1_1DmsVariants.html", "structpulsatrix_1_1DmsVariants" ],
@@ -519,6 +521,10 @@ var namespacepulsatrix =
       [ "Cpu", "namespacepulsatrix.html#a5480c8cbe462fe3f5a8eb04a8c579e6ea54c82ef76ecbbd4c2293e09bae01b54e", null ],
       [ "Cuda", "namespacepulsatrix.html#a5480c8cbe462fe3f5a8eb04a8c579e6ea8b95dcff7397d0693c03e394af5552aa", null ],
       [ "Hip", "namespacepulsatrix.html#a5480c8cbe462fe3f5a8eb04a8c579e6eaafcd5ccb84b5c522c66efa7836e17f92", null ]
+    ] ],
+    [ "DistanceMethod", "namespacepulsatrix.html#a6aec8b41f4e464852c7d0b56cfee6843", [
+      [ "Gemm", "namespacepulsatrix.html#a6aec8b41f4e464852c7d0b56cfee6843a67d92e041230138abff74328d18b03a1", null ],
+      [ "Exact", "namespacepulsatrix.html#a6aec8b41f4e464852c7d0b56cfee6843a1649aed298f99d587e2eb30c1db5946b", null ]
     ] ],
     [ "ElementwiseOp", "namespacepulsatrix.html#afec27fa326532e4ad62b32d54558b503", [
       [ "Relu", "namespacepulsatrix.html#afec27fa326532e4ad62b32d54558b503a7bfde445daa113a9903d4eaa43b41e2b", null ],
@@ -970,6 +976,8 @@ var namespacepulsatrix =
     [ "OpTypeFromName", "namespacepulsatrix.html#ac1c33aa9a2b67a0120c5e7fc4d0b14f3", null ],
     [ "OpTypeName", "namespacepulsatrix.html#a7c635a852f51924540b97ef096c1e8cf", null ],
     [ "PadCollate", "namespacepulsatrix.html#afaf7be0b67a415f9361e7420a36b906e", null ],
+    [ "PairwiseDistances", "namespacepulsatrix.html#a86a26fa0d020dc0b17de5a589f6a4d50", null ],
+    [ "PairwiseDistances", "namespacepulsatrix.html#a38e9b82e739fc4c0df68b10cb6e3a642", null ],
     [ "ParseAnnotatedProteins", "namespacepulsatrix.html#afd7250f5a22146178d37dc309a6992ab", null ],
     [ "ParseAttributionDocument", "namespacepulsatrix.html#a177d1a1467c8c927d18acc281a52a095", null ],
     [ "ParseBenchmarkReport", "namespacepulsatrix.html#af4187151c737c99736c9e56a42cde0a3", null ],
