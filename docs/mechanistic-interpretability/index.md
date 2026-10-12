@@ -22,6 +22,7 @@ attribution graphs of a language model's prediction.
 | Which inputs does a layer treat as alike? Do two models agree on it? | `NearestNeighbors`, `MutualKnnAlignment`, `MutualNearestNeighbors`, `MeasureHubness` | [Below](#nearest-neighbors) |
 | Is cosine similarity meaningful in this layer? How many dimensions does it use? | `Anisotropy`, `MeasureEffectiveRank`, `TwoNNDimension` | [Below](#the-shape-of-a-layer) |
 | What does a layer look like in 2D or 3D? Which directions vary most? | `FitPca`, `PcaProject`, `PcaSplitHalfOverlap`, `RenderProjectionSvg` | [Below](#pca-projections) |
+| How do I look at a layer with UMAP or t-SNE? | `ExportEmbeddings`, `WriteNpy`, `ReadNpy`, `MakeProjectionDocument(coordinates, "umap")` | [Below](#umap-and-t-sne) |
 | Does a concept, given by examples, push the model towards a class? | `RunTcav`, `TrainCav` | [Below](#concepts-tcav) |
 | Which of a layer's channels does an LRP explanation pass through, and where in the input is each? | `ChannelRelevance`, `ConditionalHeatmaps`, `ConceptReferenceSamples` (CRP) | [LRP](../interpretability/lrp.md#concepts-concept-relevance-propagation) |
 | Which directions in a layer stand for concepts, found without labels? | Sparse autoencoders: `TopKSparseAutoencoder`, `JumpReLUSparseAutoencoder`, `SparseAutoencoder` | [Finding features](featurizers.md) |
@@ -449,6 +450,49 @@ Things to know:
   Look at the explained variance ratios, and treat a direction as a hypothesis to test.
 - **`SubspaceOverlap(a, b, k)`** compares any two PCAs of the same width, for example the same
   layer in two models, or before and after fine-tuning.
+
+### UMAP and t-SNE
+
+pulsatrix doesn't run UMAP or t-SNE. It writes a layer's representations in the formats the
+tools that do run them read, and reads their coordinates back for its own plots.
+
+```cpp
+#include "pulsatrix/embedding_export.hpp"
+
+// layer: (n, width); words and tags: one per input. The directory must exist.
+ExportEmbeddings("layer6", layer, {{"word", words}, {"tag", tags}});
+// layer6/vectors.npy, layer6/vectors.tsv, layer6/metadata.tsv
+```
+
+- **In Python:** `np.load("layer6/vectors.npy")` goes straight into `umap.UMAP().fit_transform`,
+  `openTSNE.TSNE().fit` or scikit-learn's `TSNE`. `WriteNpy` and `SerializeNpy` write any tensor
+  the same way, float32 with its shape.
+- **In the browser, with nothing to install:** load `vectors.tsv` and `metadata.tsv` into the
+  Embedding Projector (projector.tensorflow.org), which runs UMAP, t-SNE and PCA and colors
+  points by any metadata column.
+- **Back in pulsatrix:** save the coordinates with `np.save`, read them with `ReadNpy`, and make
+  a projection document, which the [PCA views](#pca-projections) draw:
+
+```cpp
+const Tensor xy = ReadNpy("layer6/umap.npy", &backend);  // (n, 2), from Python
+const ProjectionDocument doc = MakeProjectionDocument(xy, "umap", words, tags);
+std::ofstream("layer6_umap.svg") << RenderProjectionSvg(doc);
+```
+
+Things to know:
+
+- **These plots keep neighbors, not distances.** The gaps between clusters, the clusters' sizes
+  and their densities carry little meaning, and shapes can come from the settings alone
+  (perplexity, `n_neighbors`, `min_dist`). The views say so under every plot whose method is
+  `umap`, `tsne`, `t-sne` or `opentsne`. Ask questions about distances of PCA, and about
+  neighbors of [nearest neighbors](#nearest-neighbors), which measures them directly.
+- **Run them more than once.** Both start from random positions. A cluster that appears in one
+  run and not another, or under one perplexity and not another, isn't evidence of anything.
+- **Reduce first if the layer is wide.** Running PCA to about 50 dimensions first (`FitPca`,
+  `PcaProject`, then export the scores) is standard for t-SNE, and makes both faster.
+- **The reader takes what numpy writes for float arrays:** float32 or float64, C or Fortran
+  order, format versions 1 to 3. It rejects anything else, including pickled objects, with an
+  error rather than a guess, and is fuzzed (`tools/fuzz/npy_fuzz.cpp`).
 
 ### Concepts (TCAV)
 

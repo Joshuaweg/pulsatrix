@@ -426,6 +426,26 @@ struct ProjectionDocument {
 [[nodiscard]] ProjectionDocument MakeProjectionDocument(const Pca& pca, const Tensor& scores, std::vector<std::string> labels = {},
                                                         std::vector<std::string> groups = {}, std::vector<float> values = {},
                                                         std::string title = "");
+/**
+ * @brief A projection document from coordinates made elsewhere, such as UMAP or t-SNE output read
+ *        with ReadNpy() (embedding_export.hpp): axes `<method> 1`, `<method> 2`, ..., and no
+ *        variance shares.
+ * @param coordinates (n, axes), at least two axes.
+ * @param method What made them, for example `"umap"` or `"tsne"`; IsNeighborEmbedding() reads it.
+ * @throws std::invalid_argument if coordinates isn't (n, 2 or more), method is empty, or as
+ *         ToJson() does.
+ */
+[[nodiscard]] ProjectionDocument MakeProjectionDocument(const Tensor& coordinates, std::string method, std::vector<std::string> labels = {},
+                                                        std::vector<std::string> groups = {}, std::vector<float> values = {},
+                                                        std::string title = "");
+
+/**
+ * @brief Whether the document's method is UMAP or t-SNE (`umap`, `tsne`, `t-sne` or `opentsne`,
+ *        any case), whose plots keep neighbors but not distances, cluster sizes or densities.
+ *        The views say so on such plots.
+ */
+[[nodiscard]] bool IsNeighborEmbedding(const ProjectionDocument& doc);
+
 /** @throws std::invalid_argument if there are fewer than two axes, coordinates isn't whole rows of
  *          them, a coordinate isn't finite, or a per-point list or the ratios have the wrong length. */
 [[nodiscard]] std::string ToJson(const ProjectionDocument& doc);

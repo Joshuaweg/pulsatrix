@@ -1,5 +1,6 @@
 // The projection document (INT-5): inputs placed in a few dimensions, for a scatter plot.
 
+#include <cctype>
 #include <cmath>
 #include <stdexcept>
 #include <string>
@@ -55,6 +56,31 @@ ProjectionDocument MakeProjectionDocument(const Pca& pca, const Tensor& scores, 
     const std::string problem = ProjectionProblem(doc);
     if (!problem.empty()) throw std::invalid_argument("MakeProjectionDocument: " + problem);
     return doc;
+}
+
+ProjectionDocument MakeProjectionDocument(const Tensor& coordinates, std::string method, std::vector<std::string> labels,
+                                          std::vector<std::string> groups, std::vector<float> values, std::string title) {
+    if (coordinates.rank() != 2 || coordinates.shape().dim(1) < 2) {
+        throw std::invalid_argument("MakeProjectionDocument: coordinates must be (n, axes) with at least two axes");
+    }
+    if (method.empty()) throw std::invalid_argument("MakeProjectionDocument: say which method made the coordinates");
+    ProjectionDocument doc;
+    doc.title = std::move(title);
+    for (int64_t a = 0; a < coordinates.shape().dim(1); ++a) doc.axes.push_back(method + " " + std::to_string(a + 1));
+    doc.method = std::move(method);
+    doc.coordinates = coordinates.to_host_vector();
+    doc.labels = std::move(labels);
+    doc.groups = std::move(groups);
+    doc.values = std::move(values);
+    const std::string problem = ProjectionProblem(doc);
+    if (!problem.empty()) throw std::invalid_argument("MakeProjectionDocument: " + problem);
+    return doc;
+}
+
+bool IsNeighborEmbedding(const ProjectionDocument& doc) {
+    std::string m;
+    for (char c : doc.method) m += static_cast<char>(std::tolower(static_cast<unsigned char>(c)));
+    return m == "umap" || m == "tsne" || m == "t-sne" || m == "opentsne";
 }
 
 std::string ToJson(const ProjectionDocument& doc) {
