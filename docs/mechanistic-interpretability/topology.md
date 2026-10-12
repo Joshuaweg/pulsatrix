@@ -12,7 +12,7 @@ pulsatrix builds this as a pipeline, one stage at a time:
 PointCloud → distances → filtration → persistence diagram → numbers and plots
 ```
 
-This page grows with each stage. So far it covers the point cloud, the distances, the diagrams (H0, then loops, voids and higher), how to compare diagrams, how to turn them into numbers, and landmarks for large clouds.
+This page grows with each stage. So far it covers the point cloud, the distances, the diagrams (H0, then loops, voids and higher), how to compare diagrams, how to turn them into numbers, landmarks for large clouds, and whether a feature is real.
 
 ## From activations to a point cloud
 
@@ -307,5 +307,58 @@ const PersistenceDiagram loops = WithSubsamplingBound(r.diagrams[1], l);
 In the tests, 50 landmarks of a noisy circle of 300 points give an H1 diagram within its
 certified bound of the full diagram, and the circle's loop persists more than four times longer
 than the bound.
+
+## Is a feature real?
+
+A diagram of pure noise is full of short-lived loops, and some always live longer than the rest.
+Before reporting a loop, test it. `tda/significance.hpp` has three tests, each answering a
+slightly different question.
+
+**The universal null: one diagram, a p-value per feature.** Bobrowski and Skraba (2023) found
+that the death/birth ratios of noise follow one distribution, whatever the noise came from,
+once normalized: ℓ = log log(death / birth) − L̄ − γ, where L̄ is the diagram's mean of
+log log(death / birth) and γ is Euler's constant. Under the null, ℓ follows a left-skewed
+Gumbel distribution, so a feature's p-value is exp(−e^ℓ). Bonferroni's correction then splits α
+over the features.
+
+```cpp
+#include "pulsatrix/tda/significance.hpp"
+
+const UniversalNullResult u = UniversalNullTest(r.diagrams[1], /*alpha=*/0.05);
+for (const FeatureSignificance& f : u.features) {
+    if (f.significant) { /* r.features[1][f.index] is a real loop */ }
+}
+```
+
+- **It's a conjecture,** supported by the authors' experiments on many distributions and real
+  data, not a theorem. The constants are theirs for Rips filtrations (A = 1).
+- **It needs a mostly-noise diagram.** L̄ comes from the diagram itself, so use diagrams with
+  hundreds of features or more. Point sets spaced too evenly, such as lattices, don't follow it.
+- **In the tests,** the p-values of the loops of uniform noise are calibrated (about a tenth fall
+  below 0.1, and half below 0.5), and Bonferroni flags at most one of their 300-odd loops. A
+  ring with clutter around it is flagged; the same ring with uniform points inside it isn't,
+  since those points fill the loop in at once.
+
+**The bootstrap band: how far the diagram moves under resampling.** `BootstrapBand()` resamples
+the points with replacement, computes each resample's diagram, and takes the 1 − α quantile c
+of their bottleneck distances to the original (Fasy et al., 2014). Features with persistence
+above 2c lie outside the band. Resamples reuse the distance matrix, so nothing is recomputed,
+but each one is a full Rips computation. Fasy et al. prove coverage for distance-function
+filtrations; for Rips diagrams the band is the standard heuristic.
+
+**Baselines: is this more structure than a cloud with nothing in it?** Compute a statistic, such
+as `MaxPersistence()` of H1, on the data and on clouds with no structure, then take
+`BaselinePValue()`, the rank p-value:
+
+- `GaussianBaseline(points, count, seed)` draws a Gaussian cloud with the same mean and
+  covariance (one GEMM, and the covariance's rank is kept, so a cloud in a plane gives a
+  baseline in the same plane);
+- for a random-network baseline, collect the same layer's activations from a
+  `NullModelBaseline` copy of the model.
+
+With m baselines the smallest p-value is 1 / (m + 1): use 19 for p = 0.05, 99 for 0.01.
+
+Use more than one. The universal null is cheapest, and the bootstrap needs no conjecture. The
+random-network baseline is the one that asks whether the structure was *learned*.
 
 Full API reference: [Doxygen: Topological Data Analysis](../api/group__tda.html)
