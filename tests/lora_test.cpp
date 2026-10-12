@@ -221,10 +221,13 @@ TEST_F(LoraLayerTest, RelevanceIsThatOfTheAdaptedWeight) {
     plain.set_weight(l.lora()->effective_weight(l.weight()).to_host_vector());
     const Tensor x = Input(20);
     const Tensor r(Shape({n, out}), &backend, Random(static_cast<std::size_t>(n * out), 21));
-    LRPRuleConfig gamma;
+    // LoRARelevance::Merged: the layer as its adapted weight. (The default, Split, is TRN-8's.)
+    LRPRuleConfig epsilon;
+    epsilon.lora_relevance = LoRARelevance::Merged;
+    LRPRuleConfig gamma = epsilon;
     gamma.rule = LRPRule::Gamma;
     gamma.gamma = 0.25f;
-    for (const LRPRuleConfig& config : {LRPRuleConfig{}, gamma}) {
+    for (const LRPRuleConfig& config : {epsilon, gamma}) {
         (void)l.forward(x);
         (void)plain.forward(x);
         const std::vector<float> want = plain.propagate_relevance(r, config).to_host_vector();

@@ -10,6 +10,36 @@
 
 namespace pulsatrix {
 
+namespace {
+
+// The rule's input relevance for x (n, in) through w (in, out), with the cached pre-bias output z.
+Tensor LinearRelevance(DeviceBackend* be, DeviceType device, const Tensor& x, const Tensor& w, const Tensor& bias,
+                       const Tensor& z, const Tensor& relevance_out, size_t n, size_t in, size_t out,
+                       const LRPRuleConfig& config) {
+    Tensor relevance_in(Shape({static_cast<int64_t>(n), static_cast<int64_t>(in)}), be, device);
+    if (!lrp_rules::is_legacy_epsilon(config)) {
+        // Zennit-compatible rules (LRP-rules Mission 2), composed from gemm/elementwise primitives.
+        lrp_rules::AffineOp op;
+        op.backend = be;
+        op.device = device;
+        op.input_numel = n * in;
+        op.output_numel = n * out;
+        op.weight_numel = in * out;
+        op.bias_numel = out;
+        op.forward = [=](const float* xs, const float* ws, float* y) { be->gemm(xs, ws, y, n, in, out); };
+        op.backward = [=](const float* g, const float* ws, float* gx) { be->gemm_ex(g, false, ws, true, gx, n, out, in, 0.0f); };
+        op.add_bias = [=](const float* y, const float* b, float* o) { be->add_row_vector(y, b, o, n, out); };
+        lrp_rules::apply(op, x.data(), w.data(), bias.data(), z.data(), relevance_out.data(), relevance_in.data(), config);
+        return relevance_in;
+    }
+    // Device-generic (GPU-native-kernels Mission 3): one output element per GPU thread, each
+    // summing over out_features in the original loop's order.
+    be->lrp_linear(x.data(), w.data(), z.data(), relevance_out.data(), relevance_in.data(), n, in, out, config.epsilon);
+    return relevance_in;
+}
+
+}  // namespace
+
 LinearModule::LinearModule(int64_t in_features, int64_t out_features, DeviceBackend* backend, bool use_bias)
     : LinearModule(in_features, out_features, backend, backend->device(), use_bias) {}
 
@@ -116,6 +146,7 @@ Tensor LinearModule::forward_impl(const Tensor& input) {
     backend_->gemm(input.data(), weight_.data(), pre_bias.data(), static_cast<size_t>(N),
                     static_cast<size_t>(in_features_), static_cast<size_t>(out_features_));
 
+    if (lora_) lora_->clear_relevance();
     if (lora_active()) lora_->add_forward(input, pre_bias, is_training());
 
     // bias_ is (out_features,), broadcast-added per row on the device. (The batch migration
@@ -135,7 +166,7 @@ Tensor LinearModule::forward_impl(const Tensor& input) {
 }
 
 Tensor LinearModule::forward_with_relu(const Tensor& input, ReluModule& relu) {
-    if (!use_bias_ || lora_active() || relu.compute_device() != std::optional<DeviceType>(weight_.device())) {
+    if (!use_bias_ || lora_ || relu.compute_device() != std::optional<DeviceType>(weight_.device())) {
         return relu.forward(forward(input));
     }
     // Module::forward()'s checks on the input, then the gemm as forward_impl() does it.
@@ -219,38 +250,38 @@ Tensor LinearModule::propagate_relevance(const Tensor& relevance_out, const LRPR
     }
 
     lrp_rules::validate(config, "LinearModule");
-    // An unmerged adapter's layer is the linear map W + (alpha / r) A B, which the rules see whole.
-    const Tensor adapted = lora_active() ? lora_->effective_weight(weight_) : Tensor(Shape({0}), backend_, weight_.device());
-    const Tensor& weight = lora_active() ? adapted : weight_;
-
-    Tensor relevance_in(Shape({N, in_features_}), backend_, weight_.device());
-    if (!lrp_rules::is_legacy_epsilon(config)) {
-        // Zennit-compatible rules (LRP-rules Mission 2), composed from gemm/elementwise primitives.
-        const auto n = static_cast<size_t>(N), in = static_cast<size_t>(in_features_),
-                   out = static_cast<size_t>(out_features_);
-        DeviceBackend* be = backend_;
-        lrp_rules::AffineOp op;
-        op.backend = be;
-        op.device = weight_.device();
-        op.input_numel = n * in;
-        op.output_numel = n * out;
-        op.weight_numel = in * out;
-        op.bias_numel = out;
-        op.forward = [=](const float* x, const float* w, float* y) { be->gemm(x, w, y, n, in, out); };
-        op.backward = [=](const float* g, const float* w, float* gx) {
-            be->gemm_ex(g, false, w, true, gx, n, out, in, 0.0f);
-        };
-        op.add_bias = [=](const float* y, const float* b, float* o) { be->add_row_vector(y, b, o, n, out); };
-        lrp_rules::apply(op, last_input_.data(), weight.data(), bias_.data(), last_pre_bias_output_.data(),
-                         relevance_out.data(), relevance_in.data(), config);
-        return relevance_in;
+    const auto n = static_cast<size_t>(N), in = static_cast<size_t>(in_features_), out = static_cast<size_t>(out_features_);
+    if (!lora_active()) {
+        if (lora_) lora_->clear_relevance();
+        return LinearRelevance(backend_, weight_.device(), last_input_, weight_, bias_, last_pre_bias_output_, relevance_out,
+                               n, in, out, config);
     }
-
-    // Device-generic (GPU-native-kernels Mission 3): one output element per GPU thread, each
-    // summing over out_features in the original loop's order.
-    backend_->lrp_linear(last_input_.data(), weight.data(), last_pre_bias_output_.data(), relevance_out.data(),
-                         relevance_in.data(), static_cast<size_t>(N), static_cast<size_t>(in_features_),
-                         static_cast<size_t>(out_features_), config.epsilon);
+    const Tensor update = lora_->update();
+    if (config.lora_relevance == LoRARelevance::Merged) {
+        Tensor adapted(weight_.shape(), backend_, weight_.device());
+        backend_->add(weight_.data(), update.data(), adapted.data(), in * out);
+        lora_->clear_relevance();
+        return LinearRelevance(backend_, weight_.device(), last_input_, adapted, bias_, last_pre_bias_output_, relevance_out,
+                               n, in, out, config);
+    }
+    // TRN-8: the base and adapter paths as one Linear layer on [x, x] with the weights [W; (alpha / r) A B]
+    // stacked, so every rule's denominator sees both paths, then the input relevance split in two.
+    const DeviceType device = weight_.device();
+    Tensor doubled(Shape({N, 2 * in_features_}), backend_, device);
+    backend_->copy_2d(doubled.data(), 2 * in, last_input_.data(), in, n, in);
+    backend_->copy_2d(doubled.data() + in, 2 * in, last_input_.data(), in, n, in);
+    Tensor stacked(Shape({2 * in_features_, out_features_}), backend_, device);
+    backend_->copy(stacked.data(), weight_.data(), in * out * sizeof(float), CopyDirection::DeviceToDevice);
+    backend_->copy(stacked.data() + in * out, update.data(), in * out * sizeof(float), CopyDirection::DeviceToDevice);
+    const Tensor both = LinearRelevance(backend_, device, doubled, stacked, bias_, last_pre_bias_output_, relevance_out, n,
+                                        2 * in, out, config);
+    Tensor base(Shape({N, in_features_}), backend_, device), adapter(Shape({N, in_features_}), backend_, device);
+    backend_->copy_2d(base.data(), in, both.data(), 2 * in, n, in);
+    backend_->copy_2d(adapter.data(), in, both.data() + in, 2 * in, n, in);
+    Tensor relevance_in(Shape({N, in_features_}), backend_, device);
+    backend_->add(base.data(), adapter.data(), relevance_in.data(), n * in);
+    lora_->last_base_relevance_ = std::move(base);
+    lora_->last_adapter_relevance_ = std::move(adapter);
     return relevance_in;
 }
 

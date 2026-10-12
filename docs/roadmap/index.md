@@ -397,7 +397,7 @@ rate is tuned, plain LoRA matches or beats most of them.
 | TRN-5 | Gradient accumulation that divides by the total token count, not the mean of micro-batch means | Averaging micro-batch means is wrong when sequence lengths vary | — | P0 | S | Done, [#50](https://github.com/Joshuaweg/pulsatrix/pull/50) |
 | TRN-6 | A full fine-tuning recipe on a small pretrained model | The baseline every other method is compared against | FND-2, IO-2 | P0 | S | Done, [#51](https://github.com/Joshuaweg/pulsatrix/pull/51) (see below) |
 | TRN-7 | `LoRALinear`: a frozen base weight plus a low-rank update, with merge and unmerge, adapter save and load using PEFT key names, and PEFT's defaults. Documentation follows "LoRA Without Regret": apply it to all layers, use about 10× the full fine-tuning learning rate | The main fine-tuning method | FND-2, IO-1 | P1 | M | Done (see below) |
-| TRN-8 | LRP through LoRA that splits relevance between the base path and the adapter path. Document that the gamma and z+ rules give different results for merged and unmerged adapters | Shows what the fine-tuning changed, per input. No other library does this | TRN-7 | P1 | M | |
+| TRN-8 | LRP through LoRA that splits relevance between the base path and the adapter path. Document that the gamma and z+ rules give different results for merged and unmerged adapters | Shows what the fine-tuning changed, per input. No other library does this | TRN-7 | P1 | M |  Done (see below) |
 | TRN-9 | LoReFT (representation fine-tuning) and LRP through it. The intervention is affine, so the epsilon rule is exact | Fine-tuning that is itself an interpretable subspace | FND-4 | P1 | M | |
 | TRN-10 | IA³ (learned rescaling vectors) | Tiny and trivially explainable | FND-2 | P2 | S | |
 | TRN-11 | Model diffing: relevance of the fine-tuned model minus relevance of the base model, plus an intruder-dimension check on the weights | Shows what a fine-tune changed across a dataset | TRN-8, FND-4 | P2 | M | |
@@ -423,6 +423,12 @@ rate is tuned, plain LoRA matches or beats most of them.
   Regret". Also added: `SetLoraEnabled()`, to run the base model without removing the adapter,
   which TRN-8 and TRN-11 need. Checked against PEFT 0.21.0 on a tiny Qwen2: logits, all 28
   adapter gradients, merging, and the saved file's keys and values.
+- **TRN-8** follows the plan. The rule runs on the base and adapter paths at once, as one Linear
+  layer on the input repeated twice with W and (alpha / r) A B stacked, so each rule's
+  denominator sees both paths. Under epsilon the two parts sum exactly to the merged relevance.
+  Under gamma and z⁺ they don't, and the docs explain why. `LRPRuleConfig::lora_relevance`
+  chooses Split (the default) or Merged, and `LoraRelevanceSplit()` reports each layer's parts.
+  Not done: relevance for each of the r rank directions of an adapter.
 
 ### Follow-ups the TRN work surfaced
 

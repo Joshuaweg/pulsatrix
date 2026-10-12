@@ -1,5 +1,5 @@
 // TRN-7 on the GPU: a PEFT adapter on the tiny Qwen2 gives PEFT's logits through hipBLAS, and an
-// adapter's gradients and merge agree with the CPU's.
+// adapter's gradients, merge and split relevance (TRN-8) agree with the CPU's.
 #include <gtest/gtest.h>
 
 #include <algorithm>
@@ -47,7 +47,7 @@ TEST(LoraHip, PeftAdapterGivesPeftsLogits) {
     EXPECT_LT(MaxAbsDiff(model->forward(tokens).to_host_vector(), expected), 1e-4f);
 }
 
-TEST(LoraHip, GradientsAndMergeMatchTheCpu) {
+TEST(LoraHip, GradientsMergeAndRelevanceMatchTheCpu) {
     HIPBackend hip;
     CPUBackend cpu;
     const int64_t n = 64, in = 96, out = 80;
@@ -70,6 +70,15 @@ TEST(LoraHip, GradientsAndMergeMatchTheCpu) {
         r.push_back(l.backward(Tensor(Shape({n, out}), backend, g, device)).to_host_vector());
         r.push_back(l.lora()->a_grad().to_host_vector());
         r.push_back(l.lora()->b_grad().to_host_vector());
+        LRPRuleConfig gamma;
+        gamma.rule = LRPRule::Gamma;
+        // epsilon 0.1: with the default 1e-6, a z near 0 amplifies the backends' different rounding.
+        for (const LRPRuleConfig& rule : {LRPRuleConfig{0.1f}, gamma}) {
+            const Tensor relevance(Shape({n, out}), backend, g, device);
+            (void)l.forward(input);
+            r.push_back(l.propagate_relevance(relevance, rule).to_host_vector());
+            r.push_back(l.lora()->last_adapter_relevance().to_host_vector());
+        }
         l.merge_lora();
         r.push_back(l.forward(input).to_host_vector());
     }
