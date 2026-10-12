@@ -316,6 +316,15 @@ std::vector<NamedParamRef> EncoderLM::named_parameters() {
     return out;
 }
 
+std::vector<NamedModuleRef> EncoderLM::named_children() {
+    std::vector<NamedModuleRef> out{{"embed_tokens", &embed_}};
+    for (size_t i = 0; i < layers_.size(); ++i) out.push_back({"layers." + std::to_string(i), layers_[i].get()});
+    out.push_back({"norm", &norm_});
+    out.push_back({"lm_head.dense", &lm_dense_});
+    out.push_back({"lm_head.norm", &lm_norm_});
+    return out;
+}
+
 std::vector<NamedBufferRef> EncoderLM::named_buffers() {
     std::vector<NamedBufferRef> out;
     for (size_t i = 0; i < layers_.size(); ++i) append_named_buffers(out, "layers." + std::to_string(i), *layers_[i]);

@@ -76,6 +76,10 @@ std::vector<NamedParamRef> TinyTagger::named_parameters() {
     return out;
 }
 
+std::vector<NamedModuleRef> TinyTagger::named_children() {
+    return {{"embed", &embed_}, {"block", &block_}, {"head", &head_}};
+}
+
 std::vector<NamedBufferRef> TinyTagger::named_buffers() {
     std::vector<NamedBufferRef> out;
     append_named_buffers(out, "embed", embed_);
