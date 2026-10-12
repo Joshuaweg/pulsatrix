@@ -3984,6 +3984,7 @@ machine, and explain it with the tools pulsatrix already has. Items on that path
 <li>INT-4 (<strong>done</strong>, <a href="https://github.com/Joshuaweg/pulsatrix/pull/134">#134</a>): anisotropy, effective rank, TwoNN intrinsic dimension</li>
 <li>INT-5 (<strong>done</strong>, <a href="https://github.com/Joshuaweg/pulsatrix/pull/135">#135</a>): PCA, projection plots, split-half stability</li>
 <li>INT-6 (<strong>done</strong>): TCAV (<a href="https://github.com/Joshuaweg/pulsatrix/pull/136">#136</a>) and CRP (<a href="https://github.com/Joshuaweg/pulsatrix/pull/137">#137</a>)</li>
+<li>INT-7 (<strong>done</strong>, <a href="https://github.com/Joshuaweg/pulsatrix/pull/138">#138</a>): RSA with a permutation test, SVCCA</li>
 <li>TDA-1 to TDA-8, TDA-11: persistent homology and RTD</li>
 <li>KS-3, KS-4: uncertainty and adversarial robustness</li>
 <li>Llama-3.2-1B and Qwen2.5-0.5B pass the golden-logit test</li>
@@ -4020,7 +4021,7 @@ machine, and explain it with the tools pulsatrix already has. Items on that path
 </ul>
 <h3 id="backlog-not-yet-scheduled">Backlog, not yet scheduled<a class="headerlink" href="#backlog-not-yet-scheduled" title="Permanent link">&para;</a></h3>
 <p>These P2 and P3 items wait until a milestone needs them or someone asks: TRN-12, TRN-13, IO-10,
-IO-11, INT-7, INT-8, TDA-13 to TDA-19, KD-3, KD-4, FEAT-8 (<strong>done</strong>), ARCH-4 to ARCH-10, VIZ-7, HIP-10,
+IO-11, INT-7 (<strong>done</strong>), INT-8, TDA-13 to TDA-19, KD-3, KD-4, FEAT-8 (<strong>done</strong>), ARCH-4 to ARCH-10, VIZ-7, HIP-10,
 AGT-6, AGT-7, AGT-9, NB-4, NB-5, KS-6 and KS-7.</p>
 <h3 id="v20">v2.0<a class="headerlink" href="#v20" title="Permanent link">&para;</a></h3>
 <p>Larger changes that touch every module or backend.</p>
@@ -5440,7 +5441,7 @@ network says nothing about what the model learned.</p>
 <td>FND-4</td>
 <td>P2</td>
 <td>—</td>
-<td></td>
+<td>Done, <a href="https://github.com/Joshuaweg/pulsatrix/pull/138">#138</a> (see below)</td>
 </tr>
 <tr>
 <td>INT-8</td>
@@ -5455,8 +5456,31 @@ network says nothing about what the model learned.</p>
 </table>
 <h3 id="how-the-int-work-departed-from-the-plan">How the INT work departed from the plan<a class="headerlink" href="#how-the-int-work-departed-from-the-plan" title="Permanent link">&para;</a></h3>
 <ul>
-<li><strong>INT-6</strong> is split in two. TCAV comes first, in <code>tcav.hpp</code>; Concept Relevance Propagation
-  follows in its own PR.</li>
+<li><strong>INT-7</strong> adds RSA and SVCCA to <code>representation_similarity.hpp</code>, next to CKA.</li>
+<li><strong>RSA:</strong> <code>RepresentationalDissimilarity()</code> (correlation, Euclidean or cosine distance, stored
+    in scipy's <code>pdist</code> order), <code>CompareRdms()</code> (Spearman or Pearson) and <code>Rsa()</code>.</li>
+<li><strong>Added beyond the plan: <code>RsaPermutationTest()</code>,</strong> the Mantel test RSA uses. A correlation's
+    own p-value is wrong for RDMs, whose entries aren't independent. Unrelated representations
+    reach p &lt; 0.05 in 3 of 40 trials in the tests (2 expected; the test allows 6).</li>
+<li><strong>SVCCA:</strong> <code>Svcca()</code> keeps 99% of the variance by scikit-learn's rule, or a fixed number of
+    directions, and <code>CanonicalCorrelations()</code> is plain CCA.</li>
+<li><strong>Checked against</strong> numpy transcriptions of scipy's definitions (scipy isn't in the pinned
+    image) and a numpy SVCCA that gets the correlations by QR, as Kornblith et al.'s notebook
+    does; pulsatrix uses eigendecompositions. They agree to 1e-12 and 1e-9.</li>
+<li><strong>A reference case that had to change:</strong> the first wide example had singular values equal to
+    seven digits, so its "top 8 directions" were arbitrary and the two implementations agreed
+    only to 1e-8. The case is now low rank plus noise, with the gap asserted in the generator.</li>
+<li><strong>SVCCA refuses</strong> when the kept directions add up to the number of inputs, where some
+    correlations are 1 whatever the data. Its upward bias with fewer inputs is measured and
+    documented: 0.50 for unrelated representations with 60 inputs, 0.09 with 2,000.</li>
+<li>
+<p><strong>Not done:</strong> PWCCA (Morcos et al., 2018), whose weighting couldn't be checked against its
+    package here.</p>
+</li>
+<li>
+<p><strong>INT-6</strong> is split in two. TCAV comes first, in <code>tcav.hpp</code>; Concept Relevance Propagation
+  follows in its own PR.</p>
+</li>
 <li><strong>The functions:</strong><ul>
 <li><code>TrainCav</code> uses logistic regression (Kim et al.'s choice) or a difference of means, with
   held-out accuracy.</li>

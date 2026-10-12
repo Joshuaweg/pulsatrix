@@ -49,9 +49,11 @@ var searchData=
   ['structureresidue_46',['StructureResidue',['../structpulsatrix_1_1StructureResidue.html',1,'pulsatrix']]],
   ['subtbloss_47',['SubTBLoss',['../classpulsatrix_1_1SubTBLoss.html',1,'pulsatrix']]],
   ['successivehalvingresult_48',['SuccessiveHalvingResult',['../structpulsatrix_1_1SuccessiveHalvingResult.html',1,'pulsatrix']]],
-  ['svdresult_49',['SVDResult',['../structpulsatrix_1_1SVDResult.html',1,'pulsatrix']]],
-  ['svgoptions_50',['SvgOptions',['../structpulsatrix_1_1SvgOptions.html',1,'pulsatrix']]],
-  ['swiglumodule_51',['SwiGLUModule',['../classpulsatrix_1_1SwiGLUModule.html',1,'pulsatrix']]],
-  ['systemmonitor_52',['SystemMonitor',['../classpulsatrix_1_1SystemMonitor.html',1,'pulsatrix']]],
-  ['systemsample_53',['SystemSample',['../structpulsatrix_1_1SystemSample.html',1,'pulsatrix']]]
+  ['svccaoptions_49',['SvccaOptions',['../structpulsatrix_1_1SvccaOptions.html',1,'pulsatrix']]],
+  ['svccaresult_50',['SvccaResult',['../structpulsatrix_1_1SvccaResult.html',1,'pulsatrix']]],
+  ['svdresult_51',['SVDResult',['../structpulsatrix_1_1SVDResult.html',1,'pulsatrix']]],
+  ['svgoptions_52',['SvgOptions',['../structpulsatrix_1_1SvgOptions.html',1,'pulsatrix']]],
+  ['swiglumodule_53',['SwiGLUModule',['../classpulsatrix_1_1SwiGLUModule.html',1,'pulsatrix']]],
+  ['systemmonitor_54',['SystemMonitor',['../classpulsatrix_1_1SystemMonitor.html',1,'pulsatrix']]],
+  ['systemsample_55',['SystemSample',['../structpulsatrix_1_1SystemSample.html',1,'pulsatrix']]]
 ];

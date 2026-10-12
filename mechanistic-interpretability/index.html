@@ -808,6 +808,17 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#rsa-and-svcca" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        RSA and SVCCA
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#nearest-neighbors" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -2484,6 +2495,17 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#rsa-and-svcca" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        RSA and SVCCA
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#nearest-neighbors" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -2615,6 +2637,16 @@ attribution graphs of a language model's prediction.</p>
 <td>How similar are two layers, two models, or a model before and after fine-tuning?</td>
 <td><code>LinearCka</code>, <code>LinearCkaMatrix</code></td>
 <td><a href="#comparing-representations-cka">Below</a></td>
+</tr>
+<tr>
+<td>Does a model order the inputs as a brain recording or a model of the categories does? Is the agreement chance?</td>
+<td><code>RepresentationalDissimilarity</code>, <code>CompareRdms</code>, <code>RsaPermutationTest</code> (RSA)</td>
+<td><a href="#rsa-and-svcca">Below</a></td>
+</tr>
+<tr>
+<td>Which directions do two layers share? Reproduce a result reported with SVCCA.</td>
+<td><code>Svcca</code>, <code>CanonicalCorrelations</code></td>
+<td><a href="#rsa-and-svcca">Below</a></td>
 </tr>
 <tr>
 <td>Which inputs does a layer treat as alike? Do two models agree on it?</td>
@@ -2898,6 +2930,55 @@ another, reusing each layer's work across its row or column. Draw the result as 
 </ul>
 <p>The implementation matches the reference code of Kornblith et al. (ICML 2019) to 12 decimal
 places for both estimators.</p>
+<h3 id="rsa-and-svcca">RSA and SVCCA<a class="headerlink" href="#rsa-and-svcca" title="Permanent link">&para;</a></h3>
+<p>Two older ways to compare representations are in the same header. Use CKA unless you need one
+of them.</p>
+<p><strong>RSA</strong> (representational similarity analysis) describes a representation by how far apart it
+puts every pair of inputs, its representational dissimilarity matrix (RDM), and correlates two
+RDMs. Because only the RDM is compared, the other side can be anything that orders the same
+inputs: another model, a brain recording, or a hand-made matrix that says which inputs share a
+category.</p>
+<div class="highlight"><pre><span></span><code><span class="cp">#include</span><span class="w"> </span><span class="cpf">"pulsatrix/representation_similarity.hpp"</span>
+
+<span class="k">const</span><span class="w"> </span><span class="n">Rdm</span><span class="w"> </span><span class="n">model</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">RepresentationalDissimilarity</span><span class="p">(</span><span class="n">layer</span><span class="p">,</span><span class="w"> </span><span class="n">RdmMetric</span><span class="o">::</span><span class="n">Correlation</span><span class="p">);</span><span class="w">  </span><span class="c1">// 1 − Pearson</span>
+<span class="k">const</span><span class="w"> </span><span class="n">Rdm</span><span class="w"> </span><span class="n">categories</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">...;</span><span class="w">  </span><span class="c1">// e.g. 0 within a category, 1 across, in the same pair order</span>
+<span class="k">const</span><span class="w"> </span><span class="n">RsaTestResult</span><span class="w"> </span><span class="n">r</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">RsaPermutationTest</span><span class="p">(</span><span class="n">model</span><span class="p">,</span><span class="w"> </span><span class="n">categories</span><span class="p">,</span><span class="w"> </span><span class="n">RdmComparison</span><span class="o">::</span><span class="n">Spearman</span><span class="p">,</span><span class="w"> </span><span class="mi">999</span><span class="p">);</span>
+<span class="c1">// r.similarity: Spearman's correlation of the two RDMs; r.p_value: how often relabeled inputs</span>
+<span class="c1">// agree as well.</span>
+</code></pre></div>
+<ul>
+<li><strong>The metrics</strong> are correlation distance (the RSA default), Euclidean and cosine. RDMs are
+  stored as scipy's <code>pdist</code> stores them, pairs (0, 1), (0, 2), ..., so they can go to or come
+  from Python unchanged; <code>Rdm::at(i, j)</code> reads one.</li>
+<li><strong>Compare with Spearman</strong> (the default) when the two RDMs are on different scales, which is
+  almost always; only the order of the distances counts. <code>Rsa(x, y)</code> does both steps.</li>
+<li><strong>Test with <code>RsaPermutationTest()</code>, not a correlation's p-value.</strong> The distances in an RDM
+  aren't independent (one input's row moves n − 1 of them), so the usual p-value is too small.
+  The test relabels the inputs of one RDM instead. In the tests, two noisy views of four
+  categories agree at 0.83 with p = 1/200, the smallest 199 relabelings can give, and unrelated
+  representations reach p &lt; 0.05 in 3 of 40 trials, about the one in 20 they should.</li>
+</ul>
+<p><strong>SVCCA</strong> keeps each representation's top singular directions, 99% of the variance by default,
+and finds the pairs of directions, one in each, that correlate most. The mean of those canonical
+correlations is the similarity.</p>
+<div class="highlight"><pre><span></span><code><span class="k">const</span><span class="w"> </span><span class="n">SvccaResult</span><span class="w"> </span><span class="n">r</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Svcca</span><span class="p">(</span><span class="n">layer_a</span><span class="p">,</span><span class="w"> </span><span class="n">layer_b</span><span class="p">);</span><span class="w">  </span><span class="c1">// r.similarity, r.correlations (largest first)</span>
+<span class="k">const</span><span class="w"> </span><span class="n">SvccaResult</span><span class="w"> </span><span class="n">fixed</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Svcca</span><span class="p">(</span><span class="n">layer_a</span><span class="p">,</span><span class="w"> </span><span class="n">layer_b</span><span class="p">,</span><span class="w"> </span><span class="n">SvccaOptions</span><span class="p">{</span><span class="mf">0.99</span><span class="p">,</span><span class="w"> </span><span class="mi">20</span><span class="p">});</span><span class="w">  </span><span class="c1">// 20 directions each</span>
+</code></pre></div>
+<p>Things to know:</p>
+<ul>
+<li><strong>It is biased upwards, more than CKA.</strong> Canonical correlations are fitted to the inputs. Two
+  unrelated 20-dimensional representations score 0.50 with 60 inputs, against −0.02 for
+  debiased CKA, and still 0.09 with 2,000. Use many more inputs than kept directions.</li>
+<li><strong>It refuses too few inputs.</strong> When the kept directions of both add up to the number of inputs
+  or more, some correlations are 1 whatever the data, and <code>Svcca()</code> throws rather than report
+  them. Ask for fewer directions with <code>SvccaOptions::directions</code>.</li>
+<li><strong>It ignores how a layer weights its directions.</strong> CCA is invariant to any invertible linear
+  map: stretching one axis of a layer ten times and shearing another leaves SVCCA at 1, and
+  drops CKA to 0.48 in the tests. Kornblith et al. found CKA better at matching corresponding layers for this reason.</li>
+<li><code>CanonicalCorrelations(x, y)</code> is plain CCA, on every direction with variance.</li>
+</ul>
+<p>RSA matches independent numpy implementations of scipy's <code>pdist</code> and <code>spearmanr</code> to 12 decimal
+places, and SVCCA and CCA one written with numpy's SVD and QR to 9.</p>
 <h3 id="nearest-neighbors">Nearest neighbors<a class="headerlink" href="#nearest-neighbors" title="Permanent link">&para;</a></h3>
 <p><code>NearestNeighbors()</code> finds, for each input, the k inputs a layer represents most alike, by cosine
 similarity (the default) or Euclidean distance:</p>
