@@ -194,6 +194,8 @@ builds on them:
 
 | To | Use | Guide |
 |---|---|---|
+| Compare a layer across models or checkpoints, or plot it in 2D | `LinearCka`, `MutualKnnAlignment`, `FitPca` | [Analyzing representations](../mechanistic-interpretability/representations.md) |
+| Test whether a layer holds a concept you have labels for | `TrainLinearProbe`, `MeasureSelectivity` | [Probes and concepts](../mechanistic-interpretability/probes-and-concepts.md) |
 | Collect activations, then find the features a layer uses | Hooks, then a TopK sparse autoencoder | [Finding features](../mechanistic-interpretability/featurizers.md) |
 | See what chat tuning changed | `pulsatrix_diff_lm` (a crosscoder between the two models) | [Model diffing](../mechanistic-interpretability/model-diffing.md) |
 | Push the model's behavior along a direction | `SteeringHook`, `MeasureSteering` | [Steering](../mechanistic-interpretability/steering.md) |

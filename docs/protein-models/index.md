@@ -556,7 +556,7 @@ active sites, disulfides, signal peptides, transmembrane spans and more come alo
   - `EmbedResidues` keeps each residue's representation at chosen layers.
   - `TrainLinearProbe` trains a softmax probe and scores held-out proteins. It and
     `CompareToBaseline` are in `probe_controls.hpp`, which the
-    [mechanistic interpretability guide](../mechanistic-interpretability/index.md#controls-the-representation-or-the-probe)
+    [mechanistic interpretability guide](../mechanistic-interpretability/probes-and-concepts.md#controls-the-representation-or-the-probe)
     describes.
 
   Every probe comes with two controls:

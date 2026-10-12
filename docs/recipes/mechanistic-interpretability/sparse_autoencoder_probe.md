@@ -71,4 +71,4 @@ activations. A negative control, with labels independent of every feature, would
 chance. `tests/linear_probe_test.cpp` runs that paired comparison. The control is what shows the
 probe isn't just fitting noise.
 
-See also: [Mechanistic Interpretability](../../mechanistic-interpretability/index.md#probing-a-layer-for-a-concept).
+See also: [Mechanistic Interpretability](../../mechanistic-interpretability/probes-and-concepts.md#probing-a-layer-for-a-concept).
