@@ -247,6 +247,7 @@ var hierarchy =
     [ "pulsatrix::MaskedLMOptions", "structpulsatrix_1_1MaskedLMOptions.html", null ],
     [ "pulsatrix::UnicodeRegex::Match", "structpulsatrix_1_1UnicodeRegex_1_1Match.html", null ],
     [ "pulsatrix::orch::Message", "structpulsatrix_1_1orch_1_1Message.html", null ],
+    [ "pulsatrix::MetadataColumn", "structpulsatrix_1_1MetadataColumn.html", null ],
     [ "pulsatrix::MetricCapability", "structpulsatrix_1_1MetricCapability.html", null ],
     [ "pulsatrix::MetricRecord", "structpulsatrix_1_1MetricRecord.html", null ],
     [ "pulsatrix::MetricsSink", "classpulsatrix_1_1MetricsSink.html", [

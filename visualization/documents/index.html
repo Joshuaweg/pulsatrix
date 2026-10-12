@@ -2419,7 +2419,7 @@ a file format outlasts any one viewer.</p>
 <td><code>pulsatrix.projection.v1</code></td>
 <td><code>ProjectionDocument</code></td>
 <td><code>title</code>, <code>method</code>, <code>axes</code>, <code>explained_variance_ratio</code> (one per axis, or empty), row-major <code>coordinates</code> (points × axes), and optional per-point <code>labels</code>, <code>groups</code> and <code>values</code></td>
-<td><code>MakeProjectionDocument(pca, scores)</code></td>
+<td><code>MakeProjectionDocument(pca, scores)</code>, or <code>MakeProjectionDocument(coordinates, "umap")</code> for UMAP or t-SNE output</td>
 </tr>
 <tr>
 <td><code>pulsatrix.residue_tracks.v1</code></td>

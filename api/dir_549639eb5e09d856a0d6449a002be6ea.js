@@ -74,6 +74,7 @@ var dir_549639eb5e09d856a0d6449a002be6ea =
     [ "dropout_module.hpp", "dropout__module_8hpp.html", "dropout__module_8hpp" ],
     [ "egan_mutation.hpp", "egan__mutation_8hpp.html", "egan__mutation_8hpp" ],
     [ "egan_training.hpp", "egan__training_8hpp.html", "egan__training_8hpp" ],
+    [ "embedding_export.hpp", "embedding__export_8hpp.html", "embedding__export_8hpp" ],
     [ "embedding_module.hpp", "embedding__module_8hpp.html", "embedding__module_8hpp" ],
     [ "encoder_block.hpp", "encoder__block_8hpp.html", "encoder__block_8hpp" ],
     [ "encoder_lm.hpp", "encoder__lm_8hpp.html", "encoder__lm_8hpp" ],

@@ -804,6 +804,9 @@ Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1MaxPool2DModule.html">MaxPool2DModule</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Max pooling, rank-4 (N, channels, H, W), matching <a class="el" href="classpulsatrix_1_1Conv2DModule.html" title="2D convolution, batched (input/output are rank-4: N x channels x H x W) – migrated from the original ...">Conv2DModule</a>'s convention, as PyTorch's MaxPool2d without dilation: out = (n + 2 padding - kernel) / stride + 1. Windows may overlap (stride &lt; kernel), as in ResNet's stem (3x3, stride 2, padding 1); padded positions never win. No dilation or ceil mode.  <a href="classpulsatrix_1_1MaxPool2DModule.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpulsatrix_1_1MetadataColumn.html">MetadataColumn</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">One column of per-point metadata: a label, a class, a value as text.  <a href="structpulsatrix_1_1MetadataColumn.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1MetaspaceDecoder.html">MetaspaceDecoder</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The replacement character back to spaces (Hugging Face's Metaspace decoder). Unless the scheme is Never, every replacement in the first token is dropped, as Hugging Face does, not only the one the pre-tokenizer put in front.  <a href="classpulsatrix_1_1MetaspaceDecoder.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -2054,6 +2057,27 @@ Functions</h2></td></tr>
 <tr class="memitem:a3184f58066a6c639cae2e009f6a8c8f9"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#a3184f58066a6c639cae2e009f6a8c8f9">RunEGANTraining</a> (<a class="el" href="classpulsatrix_1_1GeneratorPopulation.html">GeneratorPopulation</a> &amp;population, <a class="el" href="classpulsatrix_1_1Module.html">Module</a> &amp;discriminator, const <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp;real_batch, int num_generations, int64_t noise_dim, int64_t per_generator_batch, const std::vector&lt; <a class="el" href="namespacepulsatrix.html#ab997921e8dd2fcb16daefdcc05ce6550">MutationObjective</a> &gt; &amp;objectives, MakeGenerator make_generator, float g_learning_rate, DOptimizerT &amp;d_optimizer, <a class="el" href="classpulsatrix_1_1DeviceBackend.html">DeviceBackend</a> *backend, RNG &amp;rng, float gamma=0.05f)</td></tr>
 <tr class="memdesc:a3184f58066a6c639cae2e009f6a8c8f9"><td class="mdescLeft">&#160;</td><td class="mdescRight">RNG-driven wrapper: draws fresh standard-normal noise for every population member every generation, then runs RunEGANGeneration num_generations times.  <br /></td></tr>
 <tr class="separator:a3184f58066a6c639cae2e009f6a8c8f9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a12b873e69b698cd40649f4ec49dc3cde" id="r_a12b873e69b698cd40649f4ec49dc3cde"><td class="memItemLeft" align="right" valign="top">std::vector&lt; uint8_t &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#a12b873e69b698cd40649f4ec49dc3cde">SerializeNpy</a> (const <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp;x)</td></tr>
+<tr class="memdesc:a12b873e69b698cd40649f4ec49dc3cde"><td class="mdescLeft">&#160;</td><td class="mdescRight">A tensor as a <code>.npy</code> file: format version 1.0, little-endian float32 (<code>&lt;f4</code>), C order, with the tensor's shape.  <br /></td></tr>
+<tr class="separator:a12b873e69b698cd40649f4ec49dc3cde"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a084f46fd17eda84ca5c986d32510528e" id="r_a084f46fd17eda84ca5c986d32510528e"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#a084f46fd17eda84ca5c986d32510528e">WriteNpy</a> (const std::string &amp;path, const <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp;x)</td></tr>
+<tr class="memdesc:a084f46fd17eda84ca5c986d32510528e"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="namespacepulsatrix.html#a12b873e69b698cd40649f4ec49dc3cde" title="A tensor as a .npy file: format version 1.0, little-endian float32 (&lt;f4), C order,...">SerializeNpy()</a> written to <code>path</code>.  <br /></td></tr>
+<tr class="separator:a084f46fd17eda84ca5c986d32510528e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad293d2522ebb4550ae28d3a636367881" id="r_ad293d2522ebb4550ae28d3a636367881"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#ad293d2522ebb4550ae28d3a636367881">ParseNpy</a> (const std::vector&lt; uint8_t &gt; &amp;bytes, <a class="el" href="classpulsatrix_1_1DeviceBackend.html">DeviceBackend</a> *backend)</td></tr>
+<tr class="memdesc:ad293d2522ebb4550ae28d3a636367881"><td class="mdescLeft">&#160;</td><td class="mdescRight">A <code>.npy</code> file as a float32 tensor on <code>backend</code>, with the file's shape.  <br /></td></tr>
+<tr class="separator:ad293d2522ebb4550ae28d3a636367881"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae564154db51b2593d10f5f1e075165e0" id="r_ae564154db51b2593d10f5f1e075165e0"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#ae564154db51b2593d10f5f1e075165e0">ReadNpy</a> (const std::string &amp;path, <a class="el" href="classpulsatrix_1_1DeviceBackend.html">DeviceBackend</a> *backend)</td></tr>
+<tr class="memdesc:ae564154db51b2593d10f5f1e075165e0"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="namespacepulsatrix.html#ad293d2522ebb4550ae28d3a636367881" title="A .npy file as a float32 tensor on backend, with the file&#39;s shape.">ParseNpy()</a> of the file at <code>path</code>.  <br /></td></tr>
+<tr class="separator:ae564154db51b2593d10f5f1e075165e0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab1b3a3b7a316f653dbded01288efe2df" id="r_ab1b3a3b7a316f653dbded01288efe2df"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#ab1b3a3b7a316f653dbded01288efe2df">ProjectorVectorsTsv</a> (const <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp;x)</td></tr>
+<tr class="memdesc:ab1b3a3b7a316f653dbded01288efe2df"><td class="mdescLeft">&#160;</td><td class="mdescRight">The Embedding Projector's tensor file: a line per row of <code>x</code>, its values separated by tabs. Dimensions after the first are flattened.  <br /></td></tr>
+<tr class="separator:ab1b3a3b7a316f653dbded01288efe2df"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a308d581bdc1225258523f7967abccb5f" id="r_a308d581bdc1225258523f7967abccb5f"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#a308d581bdc1225258523f7967abccb5f">ProjectorMetadataTsv</a> (const std::vector&lt; <a class="el" href="structpulsatrix_1_1MetadataColumn.html">MetadataColumn</a> &gt; &amp;columns)</td></tr>
+<tr class="memdesc:a308d581bdc1225258523f7967abccb5f"><td class="mdescLeft">&#160;</td><td class="mdescRight">The Embedding Projector's metadata file: a line per point, a column per entry of <code>columns</code>, separated by tabs.  <br /></td></tr>
+<tr class="separator:a308d581bdc1225258523f7967abccb5f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1168a3fbd17aa6d974a2ede8b8ea1f55" id="r_a1168a3fbd17aa6d974a2ede8b8ea1f55"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#a1168a3fbd17aa6d974a2ede8b8ea1f55">ExportEmbeddings</a> (const std::string &amp;directory, const <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp;x, const std::vector&lt; <a class="el" href="structpulsatrix_1_1MetadataColumn.html">MetadataColumn</a> &gt; &amp;columns={})</td></tr>
+<tr class="memdesc:a1168a3fbd17aa6d974a2ede8b8ea1f55"><td class="mdescLeft">&#160;</td><td class="mdescRight">Writes <code>x</code> for UMAP and t-SNE tools into <code>directory</code>, which must exist: <code>vectors.npy</code>, <code>vectors.tsv</code>, and <code>metadata.tsv</code> when there are columns.  <br /></td></tr>
+<tr class="separator:a1168a3fbd17aa6d974a2ede8b8ea1f55"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa620e985a52f1c4f6977c3d0473c1ae6" id="r_aa620e985a52f1c4f6977c3d0473c1ae6"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structpulsatrix_1_1EncoderLMConfig.html">EncoderLMConfig</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#aa620e985a52f1c4f6977c3d0473c1ae6">ParseEsmConfig</a> (std::string_view json)</td></tr>
 <tr class="memdesc:aa620e985a52f1c4f6977c3d0473c1ae6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Reads an ESM <code>config.json</code>.  <br /></td></tr>
 <tr class="separator:aa620e985a52f1c4f6977c3d0473c1ae6"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -2946,6 +2970,12 @@ Functions</h2></td></tr>
 <tr class="memitem:a5cf7cc57faf4b605b2c5c243511d54cc" id="r_a5cf7cc57faf4b605b2c5c243511d54cc"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structpulsatrix_1_1ProjectionDocument.html">ProjectionDocument</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#a5cf7cc57faf4b605b2c5c243511d54cc">MakeProjectionDocument</a> (const <a class="el" href="structpulsatrix_1_1Pca.html">Pca</a> &amp;pca, const <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp;scores, std::vector&lt; std::string &gt; labels={}, std::vector&lt; std::string &gt; groups={}, std::vector&lt; float &gt; values={}, std::string title=&quot;&quot;)</td></tr>
 <tr class="memdesc:a5cf7cc57faf4b605b2c5c243511d54cc"><td class="mdescLeft">&#160;</td><td class="mdescRight">A projection document from <a class="el" href="namespacepulsatrix.html#a571fe26775b77bed555f15a79131c511" title="Each row&#39;s coordinates on the components: (x - mean) components^T, shape (n, components),...">PcaProject()</a>'s <code>scores:</code> axes <code>PC1</code>, <code>PC2</code>, ... with the PCA's explained variance ratios.  <br /></td></tr>
 <tr class="separator:a5cf7cc57faf4b605b2c5c243511d54cc"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8e46929c57dbec09bdcdfb1524d0db93" id="r_a8e46929c57dbec09bdcdfb1524d0db93"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structpulsatrix_1_1ProjectionDocument.html">ProjectionDocument</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#a8e46929c57dbec09bdcdfb1524d0db93">MakeProjectionDocument</a> (const <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp;coordinates, std::string method, std::vector&lt; std::string &gt; labels={}, std::vector&lt; std::string &gt; groups={}, std::vector&lt; float &gt; values={}, std::string title=&quot;&quot;)</td></tr>
+<tr class="memdesc:a8e46929c57dbec09bdcdfb1524d0db93"><td class="mdescLeft">&#160;</td><td class="mdescRight">A projection document from coordinates made elsewhere, such as UMAP or t-SNE output read with <a class="el" href="namespacepulsatrix.html#ae564154db51b2593d10f5f1e075165e0" title="ParseNpy() of the file at path.">ReadNpy()</a> (<a class="el" href="embedding__export_8hpp.html" title="Hand embeddings or activations to UMAP and t-SNE tools, and bring their coordinates back as a project...">embedding_export.hpp</a>): axes <code>&lt;method&gt; 1</code>, <code>&lt;method&gt; 2</code>, ..., and no variance shares.  <br /></td></tr>
+<tr class="separator:a8e46929c57dbec09bdcdfb1524d0db93"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:adc6cb2ad1249e7198a9814cd81a4b65b" id="r_adc6cb2ad1249e7198a9814cd81a4b65b"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#adc6cb2ad1249e7198a9814cd81a4b65b">IsNeighborEmbedding</a> (const <a class="el" href="structpulsatrix_1_1ProjectionDocument.html">ProjectionDocument</a> &amp;doc)</td></tr>
+<tr class="memdesc:adc6cb2ad1249e7198a9814cd81a4b65b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Whether the document's method is UMAP or t-SNE (<code>umap</code>, <code>tsne</code>, <code>t-sne</code> or <code>opentsne</code>, any case), whose plots keep neighbors but not distances, cluster sizes or densities. The views say so on such plots.  <br /></td></tr>
+<tr class="separator:adc6cb2ad1249e7198a9814cd81a4b65b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a511eca3c55a2af484ab7b0848552baab" id="r_a511eca3c55a2af484ab7b0848552baab"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#a511eca3c55a2af484ab7b0848552baab">ToJson</a> (const <a class="el" href="structpulsatrix_1_1ProjectionDocument.html">ProjectionDocument</a> &amp;doc)</td></tr>
 <tr class="separator:a511eca3c55a2af484ab7b0848552baab"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a4735dadd5cb633a258b6ba6fc5c0097a" id="r_a4735dadd5cb633a258b6ba6fc5c0097a"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structpulsatrix_1_1ProjectionDocument.html">ProjectionDocument</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#a4735dadd5cb633a258b6ba6fc5c0097a">ParseProjectionDocument</a> (std::string_view json)</td></tr>
@@ -9401,6 +9431,48 @@ template&lt;typename RNG &gt; </div>
 
 </div>
 </div>
+<a id="a1168a3fbd17aa6d974a2ede8b8ea1f55" name="a1168a3fbd17aa6d974a2ede8b8ea1f55"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1168a3fbd17aa6d974a2ede8b8ea1f55">&#9670;&#160;</a></span>ExportEmbeddings()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void pulsatrix::ExportEmbeddings </td>
+          <td>(</td>
+          <td class="paramtype">const std::string &amp;&#160;</td>
+          <td class="paramname"><em>directory</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp;&#160;</td>
+          <td class="paramname"><em>x</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const std::vector&lt; <a class="el" href="structpulsatrix_1_1MetadataColumn.html">MetadataColumn</a> &gt; &amp;&#160;</td>
+          <td class="paramname"><em>columns</em> = <code>{}</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Writes <code>x</code> for UMAP and t-SNE tools into <code>directory</code>, which must exist: <code>vectors.npy</code>, <code>vectors.tsv</code>, and <code>metadata.tsv</code> when there are columns. </p>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname">std::invalid_argument</td><td>if a column doesn't have one value per row of x, or as <a class="el" href="namespacepulsatrix.html#ab1b3a3b7a316f653dbded01288efe2df" title="The Embedding Projector&#39;s tensor file: a line per row of x, its values separated by tabs....">ProjectorVectorsTsv()</a> and <a class="el" href="namespacepulsatrix.html#a308d581bdc1225258523f7967abccb5f" title="The Embedding Projector&#39;s metadata file: a line per point, a column per entry of columns,...">ProjectorMetadataTsv()</a> do; std::runtime_error if a file can't be written. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
 <a id="aaa378dea6ffac99ce61ce6a8237be8db" name="aaa378dea6ffac99ce61ce6a8237be8db"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#aaa378dea6ffac99ce61ce6a8237be8db">&#9670;&#160;</a></span>FastNonDominatedSort()</h2>
 
@@ -10630,6 +10702,26 @@ template&lt;typename Genotype , typename FitnessT &gt; </div>
 
 </div>
 </div>
+<a id="adc6cb2ad1249e7198a9814cd81a4b65b" name="adc6cb2ad1249e7198a9814cd81a4b65b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#adc6cb2ad1249e7198a9814cd81a4b65b">&#9670;&#160;</a></span>IsNeighborEmbedding()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool pulsatrix::IsNeighborEmbedding </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="structpulsatrix_1_1ProjectionDocument.html">ProjectionDocument</a> &amp;&#160;</td>
+          <td class="paramname"><em>doc</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Whether the document's method is UMAP or t-SNE (<code>umap</code>, <code>tsne</code>, <code>t-sne</code> or <code>opentsne</code>, any case), whose plots keep neighbors but not distances, cluster sizes or densities. The views say so on such plots. </p>
+
+</div>
+</div>
 <a id="a10a2657b8fe49a0800177afbb2d4602f" name="a10a2657b8fe49a0800177afbb2d4602f"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a10a2657b8fe49a0800177afbb2d4602f">&#9670;&#160;</a></span>LayerActivations()</h2>
 
@@ -11698,7 +11790,7 @@ template&lt;typename Genotype , typename FitnessT &gt; </div>
 </div>
 </div>
 <a id="a5cf7cc57faf4b605b2c5c243511d54cc" name="a5cf7cc57faf4b605b2c5c243511d54cc"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a5cf7cc57faf4b605b2c5c243511d54cc">&#9670;&#160;</a></span>MakeProjectionDocument()</h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a5cf7cc57faf4b605b2c5c243511d54cc">&#9670;&#160;</a></span>MakeProjectionDocument() <span class="overload">[1/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -11751,6 +11843,73 @@ template&lt;typename Genotype , typename FitnessT &gt; </div>
 <dl class="exception"><dt>Exceptions</dt><dd>
   <table class="exception">
     <tr><td class="paramname">std::invalid_argument</td><td>if scores isn't (n, pca.num_components()) with at least two components, or labels, groups or values is neither empty nor one per row. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="a8e46929c57dbec09bdcdfb1524d0db93" name="a8e46929c57dbec09bdcdfb1524d0db93"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8e46929c57dbec09bdcdfb1524d0db93">&#9670;&#160;</a></span>MakeProjectionDocument() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="structpulsatrix_1_1ProjectionDocument.html">ProjectionDocument</a> pulsatrix::MakeProjectionDocument </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp;&#160;</td>
+          <td class="paramname"><em>coordinates</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">std::string&#160;</td>
+          <td class="paramname"><em>method</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">std::vector&lt; std::string &gt;&#160;</td>
+          <td class="paramname"><em>labels</em> = <code>{}</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">std::vector&lt; std::string &gt;&#160;</td>
+          <td class="paramname"><em>groups</em> = <code>{}</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">std::vector&lt; float &gt;&#160;</td>
+          <td class="paramname"><em>values</em> = <code>{}</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">std::string&#160;</td>
+          <td class="paramname"><em>title</em> = <code>&quot;&quot;</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>A projection document from coordinates made elsewhere, such as UMAP or t-SNE output read with <a class="el" href="namespacepulsatrix.html#ae564154db51b2593d10f5f1e075165e0" title="ParseNpy() of the file at path.">ReadNpy()</a> (<a class="el" href="embedding__export_8hpp.html" title="Hand embeddings or activations to UMAP and t-SNE tools, and bring their coordinates back as a project...">embedding_export.hpp</a>): axes <code>&lt;method&gt; 1</code>, <code>&lt;method&gt; 2</code>, ..., and no variance shares. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">coordinates</td><td>(n, axes), at least two axes. </td></tr>
+    <tr><td class="paramname">method</td><td>What made them, for example <code>"umap"</code> or <code>"tsne"</code>; <a class="el" href="namespacepulsatrix.html#adc6cb2ad1249e7198a9814cd81a4b65b" title="Whether the document&#39;s method is UMAP or t-SNE (umap, tsne, t-sne or opentsne, any case),...">IsNeighborEmbedding()</a> reads it. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname">std::invalid_argument</td><td>if coordinates isn't (n, 2 or more), method is empty, or as <a class="el" href="namespacepulsatrix.html#a013e5eb67a4e009e0c77adfe60ca3799">ToJson()</a> does. </td></tr>
   </table>
   </dd>
 </dl>
@@ -14490,6 +14649,42 @@ template&lt;typename T &gt; </div>
 
 </div>
 </div>
+<a id="ad293d2522ebb4550ae28d3a636367881" name="ad293d2522ebb4550ae28d3a636367881"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad293d2522ebb4550ae28d3a636367881">&#9670;&#160;</a></span>ParseNpy()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> pulsatrix::ParseNpy </td>
+          <td>(</td>
+          <td class="paramtype">const std::vector&lt; uint8_t &gt; &amp;&#160;</td>
+          <td class="paramname"><em>bytes</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="classpulsatrix_1_1DeviceBackend.html">DeviceBackend</a> *&#160;</td>
+          <td class="paramname"><em>backend</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>A <code>.npy</code> file as a float32 tensor on <code>backend</code>, with the file's shape. </p>
+<p>Reads what numpy writes for a float array: format versions 1.0, 2.0 and 3.0, little-endian float32 (<code>&lt;f4</code>) or float64 (<code>&lt;f8</code>, rounded to float32), in C or Fortran order, with up to 8 dimensions. </p><dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname">std::invalid_argument</td><td>for anything else: another dtype or byte order, a pickled object array, a malformed header, a size that doesn't match the data, or a float64 value too large for float32. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
 <a id="a73aaf9d248d18472edb0c12895562858" name="a73aaf9d248d18472edb0c12895562858"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a73aaf9d248d18472edb0c12895562858">&#9670;&#160;</a></span>ParsePartialDependenceDocument()</h2>
 
@@ -15372,6 +15567,59 @@ template&lt;typename RNG &gt; </div>
 
 </div>
 </div>
+<a id="a308d581bdc1225258523f7967abccb5f" name="a308d581bdc1225258523f7967abccb5f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a308d581bdc1225258523f7967abccb5f">&#9670;&#160;</a></span>ProjectorMetadataTsv()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::string pulsatrix::ProjectorMetadataTsv </td>
+          <td>(</td>
+          <td class="paramtype">const std::vector&lt; <a class="el" href="structpulsatrix_1_1MetadataColumn.html">MetadataColumn</a> &gt; &amp;&#160;</td>
+          <td class="paramname"><em>columns</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>The Embedding Projector's metadata file: a line per point, a column per entry of <code>columns</code>, separated by tabs. </p>
+<p>With two or more columns the first line holds their names, as the projector expects; with one, it doesn't, since the projector would read the name as a point. Tabs and line breaks in a value or name are replaced by spaces. </p><dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname">std::invalid_argument</td><td>if there are no columns, or they hold different numbers of values. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="ab1b3a3b7a316f653dbded01288efe2df" name="ab1b3a3b7a316f653dbded01288efe2df"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab1b3a3b7a316f653dbded01288efe2df">&#9670;&#160;</a></span>ProjectorVectorsTsv()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::string pulsatrix::ProjectorVectorsTsv </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp;&#160;</td>
+          <td class="paramname"><em>x</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>The Embedding Projector's tensor file: a line per row of <code>x</code>, its values separated by tabs. Dimensions after the first are flattened. </p>
+<dl class="section note"><dt>Note</dt><dd>Values are written with 9 significant digits, enough to read back the same float32. </dd></dl>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname">std::invalid_argument</td><td>if x has rank below 2 or a NaN or infinite value, which the projector can't read. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
 <a id="a12d0c673c45bc5f12e46041c1b3d2a14" name="a12d0c673c45bc5f12e46041c1b3d2a14"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a12d0c673c45bc5f12e46041c1b3d2a14">&#9670;&#160;</a></span>PruneLinks()</h2>
 
@@ -15835,6 +16083,42 @@ template&lt;typename Genotype , typename FitnessT &gt; </div>
 <dl class="exception"><dt>Exceptions</dt><dd>
   <table class="exception">
     <tr><td class="paramname">std::runtime_error</td><td>if it can't be read. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="ae564154db51b2593d10f5f1e075165e0" name="ae564154db51b2593d10f5f1e075165e0"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae564154db51b2593d10f5f1e075165e0">&#9670;&#160;</a></span>ReadNpy()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> pulsatrix::ReadNpy </td>
+          <td>(</td>
+          <td class="paramtype">const std::string &amp;&#160;</td>
+          <td class="paramname"><em>path</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="classpulsatrix_1_1DeviceBackend.html">DeviceBackend</a> *&#160;</td>
+          <td class="paramname"><em>backend</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p><a class="el" href="namespacepulsatrix.html#ad293d2522ebb4550ae28d3a636367881" title="A .npy file as a float32 tensor on backend, with the file&#39;s shape.">ParseNpy()</a> of the file at <code>path</code>. </p>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname">std::runtime_error</td><td>if the file can't be read; otherwise as <a class="el" href="namespacepulsatrix.html#ad293d2522ebb4550ae28d3a636367881" title="A .npy file as a float32 tensor on backend, with the file&#39;s shape.">ParseNpy()</a>. </td></tr>
   </table>
   </dd>
 </dl>
@@ -19379,6 +19663,27 @@ template&lt;typename ObjectiveFn , typename RNG &gt; </div>
 <p>The control a residue probe has to beat: each residue's local sequence, one-hot over the 20 amino acids at every position within <code>window</code> of it (<code>20 * (2 window + 1)</code> values, zeros past the ends and for other letters). A linear probe that reads a concept from a layer no better than from this hasn't shown the model adds anything beyond nearby sequence. </p>
 <dl class="section note"><dt>Note</dt><dd>Hewitt and Liang's control task (<a class="el" href="namespacepulsatrix.html#a2e9c1c46653240bbf1556762b96a6208" title="Hewitt and Liang&#39;s control labels: each distinct value in token_types gets one label,...">ControlTaskLabels()</a>), labels fixed per token type, is no control here: with only 20 amino acids, a linear probe on any representation that encodes identity learns it perfectly. Local sequence plays its role instead, through <a class="el" href="namespacepulsatrix.html#a07c6d5d366e4264b31cc2533ec02f8e3" title="Trains the same probe on features and on baseline, rows matched, and reports how much better the repr...">CompareToBaseline()</a>. </dd></dl>
 <dl class="section return"><dt>Returns</dt><dd><code>residues x 20 (2 window + 1)</code>, the sequences' residues one after another. </dd></dl>
+
+</div>
+</div>
+<a id="a12b873e69b698cd40649f4ec49dc3cde" name="a12b873e69b698cd40649f4ec49dc3cde"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a12b873e69b698cd40649f4ec49dc3cde">&#9670;&#160;</a></span>SerializeNpy()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::vector&lt; uint8_t &gt; pulsatrix::SerializeNpy </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp;&#160;</td>
+          <td class="paramname"><em>x</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>A tensor as a <code>.npy</code> file: format version 1.0, little-endian float32 (<code>&lt;f4</code>), C order, with the tensor's shape. </p>
+<dl class="section note"><dt>Note</dt><dd>Copies the tensor to the host first, whatever device it is on. </dd></dl>
 
 </div>
 </div>
@@ -23563,6 +23868,42 @@ template&lt;typename T &gt; </div>
 <dl class="exception"><dt>Exceptions</dt><dd>
   <table class="exception">
     <tr><td class="paramname">std::invalid_argument</td><td>if a string isn't valid UTF-8. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="a084f46fd17eda84ca5c986d32510528e" name="a084f46fd17eda84ca5c986d32510528e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a084f46fd17eda84ca5c986d32510528e">&#9670;&#160;</a></span>WriteNpy()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void pulsatrix::WriteNpy </td>
+          <td>(</td>
+          <td class="paramtype">const std::string &amp;&#160;</td>
+          <td class="paramname"><em>path</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp;&#160;</td>
+          <td class="paramname"><em>x</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p><a class="el" href="namespacepulsatrix.html#a12b873e69b698cd40649f4ec49dc3cde" title="A tensor as a .npy file: format version 1.0, little-endian float32 (&lt;f4), C order,...">SerializeNpy()</a> written to <code>path</code>. </p>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname">std::runtime_error</td><td>if the file can't be written. </td></tr>
   </table>
   </dd>
 </dl>

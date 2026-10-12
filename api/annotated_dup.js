@@ -285,6 +285,7 @@ var annotated_dup =
       [ "MaskedLMEvaluation", "structpulsatrix_1_1MaskedLMEvaluation.html", "structpulsatrix_1_1MaskedLMEvaluation" ],
       [ "MaskedLMOptions", "structpulsatrix_1_1MaskedLMOptions.html", "structpulsatrix_1_1MaskedLMOptions" ],
       [ "MaxPool2DModule", "classpulsatrix_1_1MaxPool2DModule.html", "classpulsatrix_1_1MaxPool2DModule" ],
+      [ "MetadataColumn", "structpulsatrix_1_1MetadataColumn.html", "structpulsatrix_1_1MetadataColumn" ],
       [ "MetaspaceDecoder", "classpulsatrix_1_1MetaspaceDecoder.html", "classpulsatrix_1_1MetaspaceDecoder" ],
       [ "MetaspacePreTokenizer", "classpulsatrix_1_1MetaspacePreTokenizer.html", "classpulsatrix_1_1MetaspacePreTokenizer" ],
       [ "MetricCapability", "structpulsatrix_1_1MetricCapability.html", "structpulsatrix_1_1MetricCapability" ],

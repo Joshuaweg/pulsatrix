@@ -852,6 +852,17 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#umap-and-t-sne" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        UMAP and t-SNE
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#concepts-tcav" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -2539,6 +2550,17 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#umap-and-t-sne" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        UMAP and t-SNE
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#concepts-tcav" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -2662,6 +2684,11 @@ attribution graphs of a language model's prediction.</p>
 <td>What does a layer look like in 2D or 3D? Which directions vary most?</td>
 <td><code>FitPca</code>, <code>PcaProject</code>, <code>PcaSplitHalfOverlap</code>, <code>RenderProjectionSvg</code></td>
 <td><a href="#pca-projections">Below</a></td>
+</tr>
+<tr>
+<td>How do I look at a layer with UMAP or t-SNE?</td>
+<td><code>ExportEmbeddings</code>, <code>WriteNpy</code>, <code>ReadNpy</code>, <code>MakeProjectionDocument(coordinates, "umap")</code></td>
+<td><a href="#umap-and-t-sne">Below</a></td>
 </tr>
 <tr>
 <td>Does a concept, given by examples, push the model towards a class?</td>
@@ -3142,6 +3169,44 @@ matrix.</p>
   Look at the explained variance ratios, and treat a direction as a hypothesis to test.</li>
 <li><strong><code>SubspaceOverlap(a, b, k)</code></strong> compares any two PCAs of the same width, for example the same
   layer in two models, or before and after fine-tuning.</li>
+</ul>
+<h3 id="umap-and-t-sne">UMAP and t-SNE<a class="headerlink" href="#umap-and-t-sne" title="Permanent link">&para;</a></h3>
+<p>pulsatrix doesn't run UMAP or t-SNE. It writes a layer's representations in the formats the
+tools that do run them read, and reads their coordinates back for its own plots.</p>
+<div class="highlight"><pre><span></span><code><span class="cp">#include</span><span class="w"> </span><span class="cpf">"pulsatrix/embedding_export.hpp"</span>
+
+<span class="c1">// layer: (n, width); words and tags: one per input. The directory must exist.</span>
+<span class="n">ExportEmbeddings</span><span class="p">(</span><span class="s">"layer6"</span><span class="p">,</span><span class="w"> </span><span class="n">layer</span><span class="p">,</span><span class="w"> </span><span class="p">{{</span><span class="s">"word"</span><span class="p">,</span><span class="w"> </span><span class="n">words</span><span class="p">},</span><span class="w"> </span><span class="p">{</span><span class="s">"tag"</span><span class="p">,</span><span class="w"> </span><span class="n">tags</span><span class="p">}});</span>
+<span class="c1">// layer6/vectors.npy, layer6/vectors.tsv, layer6/metadata.tsv</span>
+</code></pre></div>
+<ul>
+<li><strong>In Python:</strong> <code>np.load("layer6/vectors.npy")</code> goes straight into <code>umap.UMAP().fit_transform</code>,
+  <code>openTSNE.TSNE().fit</code> or scikit-learn's <code>TSNE</code>. <code>WriteNpy</code> and <code>SerializeNpy</code> write any tensor
+  the same way, float32 with its shape.</li>
+<li><strong>In the browser, with nothing to install:</strong> load <code>vectors.tsv</code> and <code>metadata.tsv</code> into the
+  Embedding Projector (projector.tensorflow.org), which runs UMAP, t-SNE and PCA and colors
+  points by any metadata column.</li>
+<li><strong>Back in pulsatrix:</strong> save the coordinates with <code>np.save</code>, read them with <code>ReadNpy</code>, and make
+  a projection document, which the <a href="#pca-projections">PCA views</a> draw:</li>
+</ul>
+<div class="highlight"><pre><span></span><code><span class="k">const</span><span class="w"> </span><span class="n">Tensor</span><span class="w"> </span><span class="n">xy</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">ReadNpy</span><span class="p">(</span><span class="s">"layer6/umap.npy"</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">backend</span><span class="p">);</span><span class="w">  </span><span class="c1">// (n, 2), from Python</span>
+<span class="k">const</span><span class="w"> </span><span class="n">ProjectionDocument</span><span class="w"> </span><span class="n">doc</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">MakeProjectionDocument</span><span class="p">(</span><span class="n">xy</span><span class="p">,</span><span class="w"> </span><span class="s">"umap"</span><span class="p">,</span><span class="w"> </span><span class="n">words</span><span class="p">,</span><span class="w"> </span><span class="n">tags</span><span class="p">);</span>
+<span class="n">std</span><span class="o">::</span><span class="n">ofstream</span><span class="p">(</span><span class="s">"layer6_umap.svg"</span><span class="p">)</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">RenderProjectionSvg</span><span class="p">(</span><span class="n">doc</span><span class="p">);</span>
+</code></pre></div>
+<p>Things to know:</p>
+<ul>
+<li><strong>These plots keep neighbors, not distances.</strong> The gaps between clusters, the clusters' sizes
+  and their densities carry little meaning, and shapes can come from the settings alone
+  (perplexity, <code>n_neighbors</code>, <code>min_dist</code>). The views say so under every plot whose method is
+  <code>umap</code>, <code>tsne</code>, <code>t-sne</code> or <code>opentsne</code>. Ask questions about distances of PCA, and about
+  neighbors of <a href="#nearest-neighbors">nearest neighbors</a>, which measures them directly.</li>
+<li><strong>Run them more than once.</strong> Both start from random positions. A cluster that appears in one
+  run and not another, or under one perplexity and not another, isn't evidence of anything.</li>
+<li><strong>Reduce first if the layer is wide.</strong> Running PCA to about 50 dimensions first (<code>FitPca</code>,
+  <code>PcaProject</code>, then export the scores) is standard for t-SNE, and makes both faster.</li>
+<li><strong>The reader takes what numpy writes for float arrays:</strong> float32 or float64, C or Fortran
+  order, format versions 1 to 3. It rejects anything else, including pickled objects, with an
+  error rather than a guess, and is fuzzed (<code>tools/fuzz/npy_fuzz.cpp</code>).</li>
 </ul>
 <h3 id="concepts-tcav">Concepts (TCAV)<a class="headerlink" href="#concepts-tcav" title="Permanent link">&para;</a></h3>
 <p>TCAV (Kim et al., 2018) asks whether a human concept, given only by examples (striped images,
