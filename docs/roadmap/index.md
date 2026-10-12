@@ -192,6 +192,7 @@ Fine-tune the models from v1.2 and explain what the fine-tuning changed.
 - INT-4 (**done**, [#134](https://github.com/Joshuaweg/pulsatrix/pull/134)): anisotropy, effective rank, TwoNN intrinsic dimension
 - INT-5 (**done**, [#135](https://github.com/Joshuaweg/pulsatrix/pull/135)): PCA, projection plots, split-half stability
 - INT-6 (**done**): TCAV ([#136](https://github.com/Joshuaweg/pulsatrix/pull/136)) and CRP ([#137](https://github.com/Joshuaweg/pulsatrix/pull/137))
+- INT-7 (**done**, [#138](https://github.com/Joshuaweg/pulsatrix/pull/138)): RSA with a permutation test, SVCCA
 - TDA-1 to TDA-8, TDA-11: persistent homology and RTD
 - KS-3, KS-4: uncertainty and adversarial robustness
 - Llama-3.2-1B and Qwen2.5-0.5B pass the golden-logit test
@@ -231,7 +232,7 @@ Its own epic, started 2026-10-07 after VIZ-4. **Complete** (2026-10-08, PRs
 ### Backlog, not yet scheduled
 
 These P2 and P3 items wait until a milestone needs them or someone asks: TRN-12, TRN-13, IO-10,
-IO-11, INT-7, INT-8, TDA-13 to TDA-19, KD-3, KD-4, FEAT-8 (**done**), ARCH-4 to ARCH-10, VIZ-7, HIP-10,
+IO-11, INT-7 (**done**), INT-8, TDA-13 to TDA-19, KD-3, KD-4, FEAT-8 (**done**), ARCH-4 to ARCH-10, VIZ-7, HIP-10,
 AGT-6, AGT-7, AGT-9, NB-4, NB-5, KS-6 and KS-7.
 
 ### v2.0
@@ -788,10 +789,30 @@ network says nothing about what the model learned.
 | INT-4 | Anisotropy, effective rank and TwoNN intrinsic dimension | Explains why raw cosine similarity misleads; one number per layer | INT-1 | P1 | S | Done, [#134](https://github.com/Joshuaweg/pulsatrix/pull/134) (see below) |
 | INT-5 | PCA projections | 2D and 3D views, steering directions, preprocessing for TDA | FND-4 | P1 | M | Done, [#135](https://github.com/Joshuaweg/pulsatrix/pull/135) (see below) |
 | INT-6 | TCAV (with significance against random concepts) and Concept Relevance Propagation | Concept-level explanations, and CRP reuses pulsatrix's LRP rules | INT-3 | P1 | M | Done: TCAV [#136](https://github.com/Joshuaweg/pulsatrix/pull/136), CRP [#137](https://github.com/Joshuaweg/pulsatrix/pull/137) (see below) |
-| INT-7 | RSA and SVCCA | Mostly covered by CKA | FND-4 | P2 | — | |
+| INT-7 | RSA and SVCCA | Mostly covered by CKA | FND-4 | P2 | — | Done, [#138](https://github.com/Joshuaweg/pulsatrix/pull/138) (see below) |
 | INT-8 | UMAP and t-SNE: export the data only, don't implement | Expensive, and they distort distances and cluster sizes | VIZ-1 | P3 | — | |
 
 ### How the INT work departed from the plan
+
+- **INT-7** adds RSA and SVCCA to `representation_similarity.hpp`, next to CKA.
+  - **RSA:** `RepresentationalDissimilarity()` (correlation, Euclidean or cosine distance, stored
+    in scipy's `pdist` order), `CompareRdms()` (Spearman or Pearson) and `Rsa()`.
+  - **Added beyond the plan: `RsaPermutationTest()`,** the Mantel test RSA uses. A correlation's
+    own p-value is wrong for RDMs, whose entries aren't independent. Unrelated representations
+    reach p < 0.05 in 3 of 40 trials in the tests (2 expected; the test allows 6).
+  - **SVCCA:** `Svcca()` keeps 99% of the variance by scikit-learn's rule, or a fixed number of
+    directions, and `CanonicalCorrelations()` is plain CCA.
+  - **Checked against** numpy transcriptions of scipy's definitions (scipy isn't in the pinned
+    image) and a numpy SVCCA that gets the correlations by QR, as Kornblith et al.'s notebook
+    does; pulsatrix uses eigendecompositions. They agree to 1e-12 and 1e-9.
+  - **A reference case that had to change:** the first wide example had singular values equal to
+    seven digits, so its "top 8 directions" were arbitrary and the two implementations agreed
+    only to 1e-8. The case is now low rank plus noise, with the gap asserted in the generator.
+  - **SVCCA refuses** when the kept directions add up to the number of inputs, where some
+    correlations are 1 whatever the data. Its upward bias with fewer inputs is measured and
+    documented: 0.50 for unrelated representations with 60 inputs, 0.09 with 2,000.
+  - **Not done:** PWCCA (Morcos et al., 2018), whose weighting couldn't be checked against its
+    package here.
 
 - **INT-6** is split in two. TCAV comes first, in `tcav.hpp`; Concept Relevance Propagation
   follows in its own PR.
