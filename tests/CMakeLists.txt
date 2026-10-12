@@ -239,6 +239,7 @@ add_executable(pulsatrix_tests
     embedding_export_test.cpp
     point_cloud_test.cpp
     distance_matrix_test.cpp
+    h0_test.cpp
     sparse_autoencoder_test.cpp
     saliency_test.cpp
     lrp_test.cpp

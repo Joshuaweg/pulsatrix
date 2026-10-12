@@ -151,6 +151,7 @@ add_library(pulsatrix_core
     src/embedding_export.cpp
     src/tda/point_cloud.cpp
     src/tda/distance_matrix.cpp
+    src/tda/h0.cpp
     src/topk_sparse_autoencoder.cpp
     src/jumprelu_sparse_autoencoder.cpp
     src/transcoder.cpp
