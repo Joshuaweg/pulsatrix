@@ -16,7 +16,7 @@ var searchData=
   ['w_5fq_5fgrad_13',['W_Q_grad',['../classpulsatrix_1_1RetNetModule.html#a3a7b5689752ccf080d2381a3c235de8f',1,'pulsatrix::RetNetModule']]],
   ['w_5fr_14',['W_r',['../classpulsatrix_1_1RWKVModule.html#a80d448b2b0b2b1857db1fcd03dd46373',1,'pulsatrix::RWKVModule']]],
   ['w_5fr_5fgrad_15',['W_r_grad',['../classpulsatrix_1_1RWKVModule.html#a207d65e7faf34c7c3a92b82157e90e6c',1,'pulsatrix::RWKVModule']]],
-  ['w_5fv_16',['w_v',['../classpulsatrix_1_1RetNetModule.html#acf0ef91ab5f972a44bf29da8ecc32c19',1,'pulsatrix::RetNetModule::W_V()'],['../classpulsatrix_1_1RWKVModule.html#a254679fad46eae00f031b0eb93c520e7',1,'pulsatrix::RWKVModule::W_v() const']]],
+  ['w_5fv_16',['w_v',['../classpulsatrix_1_1RWKVModule.html#a254679fad46eae00f031b0eb93c520e7',1,'pulsatrix::RWKVModule::W_v()'],['../classpulsatrix_1_1RetNetModule.html#acf0ef91ab5f972a44bf29da8ecc32c19',1,'pulsatrix::RetNetModule::W_V()']]],
   ['w_5fv_5fgrad_17',['w_v_grad',['../classpulsatrix_1_1RWKVModule.html#a15ba4c3181bbb39a786a179322ea35ef',1,'pulsatrix::RWKVModule::W_v_grad()'],['../classpulsatrix_1_1RetNetModule.html#a098aa3d40fc1e20f17361b4c2e9dafbe',1,'pulsatrix::RetNetModule::W_V_grad()']]],
   ['wassersteindistance_18',['WassersteinDistance',['../namespacepulsatrix.html#a8c5d99678b999e2bc910cf161231d9e8',1,'pulsatrix']]],
   ['weight_19',['weight',['../classpulsatrix_1_1LinearModule.html#a29fa2150e40fca9d7af1b9efa4ca097c',1,'pulsatrix::LinearModule::weight()'],['../classpulsatrix_1_1EmbeddingModule.html#aa6703211c219623ce0470e3c79228c18',1,'pulsatrix::EmbeddingModule::weight()']]],
@@ -58,11 +58,12 @@ var searchData=
   ['weight_5fxz_5fgrad_55',['weight_xz_grad',['../classpulsatrix_1_1GRUModule.html#a050cbef48c9f03e5a074f701dac3827c',1,'pulsatrix::GRUModule']]],
   ['weightedfactdatabase_56',['weightedfactdatabase',['../classpulsatrix_1_1datalog_1_1WeightedFactDatabase.html#a85d57bfe92d822575eec57d91c570976',1,'pulsatrix::datalog::WeightedFactDatabase::WeightedFactDatabase()=default'],['../classpulsatrix_1_1datalog_1_1WeightedFactDatabase.html#a6cabbbc3e358b14ed284a65656514fbb',1,'pulsatrix::datalog::WeightedFactDatabase::WeightedFactDatabase(WeightedFactSet&lt; T &gt; facts)']]],
   ['wild_5ftype_5fmarginals_57',['wild_type_marginals',['../classpulsatrix_1_1VariantScorer.html#aa3caf1b4d7d6c9eaf6e9b0417ff6dde1',1,'pulsatrix::VariantScorer']]],
-  ['wordlevelmodel_58',['WordLevelModel',['../classpulsatrix_1_1WordLevelModel.html#ab37c2c129c125a8263e8161689d14a64',1,'pulsatrix::WordLevelModel']]],
-  ['write_5felement_59',['write_element',['../classpulsatrix_1_1Tensor.html#acbbf07280c7edc4d610b94c94dba3e9b',1,'pulsatrix::Tensor']]],
-  ['writefasta_60',['WriteFasta',['../namespacepulsatrix.html#a06c45a1d14fc6e146990c4f6e40e19e9',1,'pulsatrix']]],
-  ['writejson_61',['WriteJson',['../namespacepulsatrix.html#a51dcbd978f9f3b0414c53736b071512d',1,'pulsatrix']]],
-  ['writejsoncompact_62',['WriteJsonCompact',['../namespacepulsatrix.html#adebe05440de121e54cb2437642152e9a',1,'pulsatrix']]],
-  ['writenpy_63',['WriteNpy',['../namespacepulsatrix.html#a084f46fd17eda84ca5c986d32510528e',1,'pulsatrix']]],
-  ['writesafetensors_64',['WriteSafetensors',['../namespacepulsatrix.html#ae2f426e066a256c2ca12b2b8a5ec3d0b',1,'pulsatrix']]]
+  ['withsubsamplingbound_58',['WithSubsamplingBound',['../namespacepulsatrix.html#a2488b91553c1abeea3a3958e15c330c6',1,'pulsatrix']]],
+  ['wordlevelmodel_59',['WordLevelModel',['../classpulsatrix_1_1WordLevelModel.html#ab37c2c129c125a8263e8161689d14a64',1,'pulsatrix::WordLevelModel']]],
+  ['write_5felement_60',['write_element',['../classpulsatrix_1_1Tensor.html#acbbf07280c7edc4d610b94c94dba3e9b',1,'pulsatrix::Tensor']]],
+  ['writefasta_61',['WriteFasta',['../namespacepulsatrix.html#a06c45a1d14fc6e146990c4f6e40e19e9',1,'pulsatrix']]],
+  ['writejson_62',['WriteJson',['../namespacepulsatrix.html#a51dcbd978f9f3b0414c53736b071512d',1,'pulsatrix']]],
+  ['writejsoncompact_63',['WriteJsonCompact',['../namespacepulsatrix.html#adebe05440de121e54cb2437642152e9a',1,'pulsatrix']]],
+  ['writenpy_64',['WriteNpy',['../namespacepulsatrix.html#a084f46fd17eda84ca5c986d32510528e',1,'pulsatrix']]],
+  ['writesafetensors_65',['WriteSafetensors',['../namespacepulsatrix.html#ae2f426e066a256c2ca12b2b8a5ec3d0b',1,'pulsatrix']]]
 ];

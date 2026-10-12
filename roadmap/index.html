@@ -5858,7 +5858,7 @@ GUDHI's GPL-licensed parts and giotto-ph (AGPL) are avoided.</p>
 <td>FND-3</td>
 <td>P0</td>
 <td>S</td>
-<td></td>
+<td>Done (see below)</td>
 </tr>
 <tr>
 <td>TDA-8</td>
@@ -5867,7 +5867,7 @@ GUDHI's GPL-licensed parts and giotto-ph (AGPL) are avoided.</p>
 <td>TDA-5</td>
 <td>P0</td>
 <td>M</td>
-<td></td>
+<td>Done (see below)</td>
 </tr>
 <tr>
 <td>TDA-9</td>
@@ -5999,7 +5999,24 @@ GUDHI's GPL-licensed parts and giotto-ph (AGPL) are avoided.</p>
   1-Lipschitz in the bottleneck distance, and a property test checks that on random diagrams.
   Persistence images use Adams et al.'s linear weight and integrate the Gaussian over each pixel
   (with <code>erf</code>) rather than sampling it at the centre, so values don't depend on how finely the
-  pixels sample a narrow Gaussian.</p>
+  pixels sample a narrow Gaussian.
+- <strong>TDA-7</strong> follows the plan in <code>tda/landmarks.hpp</code>. Each step is one GEMM of all the points
+  against the new landmark on the backend, so the n × n matrix is never formed. The covering
+  radius is a <code>Certified&lt;double&gt;</code> whose term is the float32 error of those distances; the error
+  analysis is now shared with TDA-2 (<code>src/tda/float_error.hpp</code>). <code>WithSubsamplingBound()</code> adds
+  twice the certified radius to a landmark diagram's bound. Additions: the insertion radii, to
+  choose a count, and each point's nearest landmark.
+- <strong>TDA-8</strong> follows the plan in <code>tda/significance.hpp</code>:
+  - <code>UniversalNullTest()</code>: Bobrowski and Skraba's ℓ with A = 1 and B = −γ − L̄ for Rips, a
+    left-skewed Gumbel null and Bonferroni. The constants were checked against the paper.
+  - <code>BootstrapBand()</code>: Fasy et al.'s band, with resamples that reuse the distance matrix
+    (<code>SubDistanceMatrix()</code>).
+  - <code>GaussianBaseline()</code>: matched mean and covariance through one GEMM, with no decomposition.
+  - <code>BaselinePValue()</code>: rank p-values for any statistic.</p>
+<p>The random-network baseline is <code>NullModelBaseline</code> plus <code>BaselinePValue()</code> rather than a new
+  function, since only the caller can run its model. The random numbers come from mt19937's raw
+  output (Box–Muller, multiply-shift), not the standard distributions, so results match across
+  standard libraries.</p>
 <p>Not planned: "neural persistence" on weight graphs. A 2023 follow-up showed it mostly measures
 weight variance.</p>
 <h2 id="kd-surrogates-and-student-teacher">KD: Surrogates and student-teacher<a class="headerlink" href="#kd-surrogates-and-student-teacher" title="Permanent link">&para;</a></h2>
