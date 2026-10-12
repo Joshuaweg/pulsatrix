@@ -146,6 +146,8 @@ add_library(pulsatrix_core
     src/pca.cpp
     src/tcav.cpp
     src/concept_relevance.cpp
+    src/rsa.cpp
+    src/svcca.cpp
     src/topk_sparse_autoencoder.cpp
     src/jumprelu_sparse_autoencoder.cpp
     src/transcoder.cpp

@@ -17,6 +17,8 @@ attribution graphs of a language model's prediction.
 |---|---|---|
 | Is concept X linearly readable from layer L? | `LinearProbe`, `TrainLinearProbe()`, with `MeasureSelectivity()` or `CompareToBaseline()` as the control | [Below](#probing-a-layer-for-a-concept) |
 | How similar are two layers, two models, or a model before and after fine-tuning? | `LinearCka`, `LinearCkaMatrix` | [Below](#comparing-representations-cka) |
+| Does a model order the inputs as a brain recording or a model of the categories does? Is the agreement chance? | `RepresentationalDissimilarity`, `CompareRdms`, `RsaPermutationTest` (RSA) | [Below](#rsa-and-svcca) |
+| Which directions do two layers share? Reproduce a result reported with SVCCA. | `Svcca`, `CanonicalCorrelations` | [Below](#rsa-and-svcca) |
 | Which inputs does a layer treat as alike? Do two models agree on it? | `NearestNeighbors`, `MutualKnnAlignment`, `MutualNearestNeighbors`, `MeasureHubness` | [Below](#nearest-neighbors) |
 | Is cosine similarity meaningful in this layer? How many dimensions does it use? | `Anisotropy`, `MeasureEffectiveRank`, `TwoNNDimension` | [Below](#the-shape-of-a-layer) |
 | What does a layer look like in 2D or 3D? Which directions vary most? | `FitPca`, `PcaProject`, `PcaSplitHalfOverlap`, `RenderProjectionSvg` | [Below](#pca-projections) |
@@ -240,6 +242,63 @@ Things to know:
 
 The implementation matches the reference code of Kornblith et al. (ICML 2019) to 12 decimal
 places for both estimators.
+
+### RSA and SVCCA
+
+Two older ways to compare representations are in the same header. Use CKA unless you need one
+of them.
+
+**RSA** (representational similarity analysis) describes a representation by how far apart it
+puts every pair of inputs, its representational dissimilarity matrix (RDM), and correlates two
+RDMs. Because only the RDM is compared, the other side can be anything that orders the same
+inputs: another model, a brain recording, or a hand-made matrix that says which inputs share a
+category.
+
+```cpp
+#include "pulsatrix/representation_similarity.hpp"
+
+const Rdm model = RepresentationalDissimilarity(layer, RdmMetric::Correlation);  // 1 − Pearson
+const Rdm categories = ...;  // e.g. 0 within a category, 1 across, in the same pair order
+const RsaTestResult r = RsaPermutationTest(model, categories, RdmComparison::Spearman, 999);
+// r.similarity: Spearman's correlation of the two RDMs; r.p_value: how often relabeled inputs
+// agree as well.
+```
+
+- **The metrics** are correlation distance (the RSA default), Euclidean and cosine. RDMs are
+  stored as scipy's `pdist` stores them, pairs (0, 1), (0, 2), ..., so they can go to or come
+  from Python unchanged; `Rdm::at(i, j)` reads one.
+- **Compare with Spearman** (the default) when the two RDMs are on different scales, which is
+  almost always; only the order of the distances counts. `Rsa(x, y)` does both steps.
+- **Test with `RsaPermutationTest()`, not a correlation's p-value.** The distances in an RDM
+  aren't independent (one input's row moves n − 1 of them), so the usual p-value is too small.
+  The test relabels the inputs of one RDM instead. In the tests, two noisy views of four
+  categories agree at 0.83 with p = 1/200, the smallest 199 relabelings can give, and unrelated
+  representations reach p < 0.05 in 3 of 40 trials, about the one in 20 they should.
+
+**SVCCA** keeps each representation's top singular directions, 99% of the variance by default,
+and finds the pairs of directions, one in each, that correlate most. The mean of those canonical
+correlations is the similarity.
+
+```cpp
+const SvccaResult r = Svcca(layer_a, layer_b);  // r.similarity, r.correlations (largest first)
+const SvccaResult fixed = Svcca(layer_a, layer_b, SvccaOptions{0.99, 20});  // 20 directions each
+```
+
+Things to know:
+
+- **It is biased upwards, more than CKA.** Canonical correlations are fitted to the inputs. Two
+  unrelated 20-dimensional representations score 0.50 with 60 inputs, against −0.02 for
+  debiased CKA, and still 0.09 with 2,000. Use many more inputs than kept directions.
+- **It refuses too few inputs.** When the kept directions of both add up to the number of inputs
+  or more, some correlations are 1 whatever the data, and `Svcca()` throws rather than report
+  them. Ask for fewer directions with `SvccaOptions::directions`.
+- **It ignores how a layer weights its directions.** CCA is invariant to any invertible linear
+  map: stretching one axis of a layer ten times and shearing another leaves SVCCA at 1, and
+  drops CKA to 0.48 in the tests. Kornblith et al. found CKA better at matching corresponding layers for this reason.
+- `CanonicalCorrelations(x, y)` is plain CCA, on every direction with variance.
+
+RSA matches independent numpy implementations of scipy's `pdist` and `spearmanr` to 12 decimal
+places, and SVCCA and CCA one written with numpy's SVD and QR to 9.
 
 ### Nearest neighbors
 
