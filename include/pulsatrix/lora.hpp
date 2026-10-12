@@ -86,6 +86,21 @@ public:
 
     /** @brief The adapted weight W + scale() A B, as a new tensor. */
     [[nodiscard]] Tensor effective_weight(const Tensor& weight) const;
+    /** @brief The update scale() A B alone, `(in, out)`. */
+    [[nodiscard]] Tensor update() const;
+
+    /**
+     * @brief True after a relevance pass that split this layer (LoRARelevance::Split, adapter
+     *        enabled and unmerged), until the next forward().
+     */
+    [[nodiscard]] bool has_relevance() const { return last_adapter_relevance_.numel() > 0; }
+    /** @brief The last split's input relevance through the base weight W, `(N, in)`.
+     *  @throws std::logic_error unless has_relevance(). */
+    [[nodiscard]] const Tensor& last_base_relevance() const;
+    /** @brief The last split's input relevance through the adapter, `(N, in)`: what the
+     *         fine-tuning contributes to this layer's explanation. The two parts sum to the layer's
+     *         input relevance. @throws std::logic_error unless has_relevance(). */
+    [[nodiscard]] const Tensor& last_adapter_relevance() const;
 
 private:
     friend class LinearModule;
@@ -96,6 +111,7 @@ private:
     /** @brief W += sign * scale() A B. */
     void add_update(Tensor& weight, float sign) const;
     void release_activations();
+    void clear_relevance();
 
     int64_t in_features_;
     int64_t out_features_;
@@ -110,6 +126,8 @@ private:
     DropoutModule dropout_;
     Tensor last_input_;   // the adapter's input, after dropout
     Tensor last_hidden_;  // scale() x A, (N, r)
+    Tensor last_base_relevance_;
+    Tensor last_adapter_relevance_;
     bool used_dropout_ = false;
     bool merged_ = false;
     bool enabled_ = true;
@@ -128,6 +146,29 @@ std::vector<std::string> ApplyLora(Module& model, const LoRAConfig& config = {})
 
 /** @brief The model's LinearModules that have an adapter, by name, in the model's order. */
 [[nodiscard]] std::vector<std::pair<std::string, LinearModule*>> LoraLayers(Module& model);
+
+/** @brief One adapted layer's share of a relevance pass (TRN-8). */
+struct LoraLayerRelevance {
+    /** @brief The layer's name, as LoraLayers() gives it. */
+    std::string name;
+    /** @brief Input relevance through the base weight, `(N, in)`. */
+    Tensor base;
+    /** @brief Input relevance through the adapter, `(N, in)`. */
+    Tensor adapter;
+    /** @brief Sums over everything: the layer's relevance carried by each path. */
+    double base_total = 0;
+    double adapter_total = 0;
+};
+
+/**
+ * @brief How much of each adapted layer's relevance went through its adapter in the model's last
+ *        relevance pass (LoRARelevance::Split, the default), in the model's order: where, and for
+ *        which inputs, the fine-tuning changed the explanation.
+ * @note Layers the pass didn't split (disabled or merged adapters, LoRARelevance::Merged) are left
+ *       out.
+ * @throws std::logic_error if no layer was split.
+ */
+[[nodiscard]] std::vector<LoraLayerRelevance> LoraRelevanceSplit(Module& model);
 
 /** @brief Merges every adapter into its base weight (LinearModule::merge_lora()). */
 void MergeLora(Module& model);
