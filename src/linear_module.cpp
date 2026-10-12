@@ -10,36 +10,6 @@
 
 namespace pulsatrix {
 
-namespace {
-
-// The rule's input relevance for x (n, in) through w (in, out), with the cached pre-bias output z.
-Tensor LinearRelevance(DeviceBackend* be, DeviceType device, const Tensor& x, const Tensor& w, const Tensor& bias,
-                       const Tensor& z, const Tensor& relevance_out, size_t n, size_t in, size_t out,
-                       const LRPRuleConfig& config) {
-    Tensor relevance_in(Shape({static_cast<int64_t>(n), static_cast<int64_t>(in)}), be, device);
-    if (!lrp_rules::is_legacy_epsilon(config)) {
-        // Zennit-compatible rules (LRP-rules Mission 2), composed from gemm/elementwise primitives.
-        lrp_rules::AffineOp op;
-        op.backend = be;
-        op.device = device;
-        op.input_numel = n * in;
-        op.output_numel = n * out;
-        op.weight_numel = in * out;
-        op.bias_numel = out;
-        op.forward = [=](const float* xs, const float* ws, float* y) { be->gemm(xs, ws, y, n, in, out); };
-        op.backward = [=](const float* g, const float* ws, float* gx) { be->gemm_ex(g, false, ws, true, gx, n, out, in, 0.0f); };
-        op.add_bias = [=](const float* y, const float* b, float* o) { be->add_row_vector(y, b, o, n, out); };
-        lrp_rules::apply(op, x.data(), w.data(), bias.data(), z.data(), relevance_out.data(), relevance_in.data(), config);
-        return relevance_in;
-    }
-    // Device-generic (GPU-native-kernels Mission 3): one output element per GPU thread, each
-    // summing over out_features in the original loop's order.
-    be->lrp_linear(x.data(), w.data(), z.data(), relevance_out.data(), relevance_in.data(), n, in, out, config.epsilon);
-    return relevance_in;
-}
-
-}  // namespace
-
 LinearModule::LinearModule(int64_t in_features, int64_t out_features, DeviceBackend* backend, bool use_bias)
     : LinearModule(in_features, out_features, backend, backend->device(), use_bias) {}
 
@@ -253,7 +223,7 @@ Tensor LinearModule::propagate_relevance(const Tensor& relevance_out, const LRPR
     const auto n = static_cast<size_t>(N), in = static_cast<size_t>(in_features_), out = static_cast<size_t>(out_features_);
     if (!lora_active()) {
         if (lora_) lora_->clear_relevance();
-        return LinearRelevance(backend_, weight_.device(), last_input_, weight_, bias_, last_pre_bias_output_, relevance_out,
+        return lrp_rules::linear(backend_, weight_.device(), last_input_, weight_, bias_, last_pre_bias_output_, relevance_out,
                                n, in, out, config);
     }
     const Tensor update = lora_->update();
@@ -261,7 +231,7 @@ Tensor LinearModule::propagate_relevance(const Tensor& relevance_out, const LRPR
         Tensor adapted(weight_.shape(), backend_, weight_.device());
         backend_->add(weight_.data(), update.data(), adapted.data(), in * out);
         lora_->clear_relevance();
-        return LinearRelevance(backend_, weight_.device(), last_input_, adapted, bias_, last_pre_bias_output_, relevance_out,
+        return lrp_rules::linear(backend_, weight_.device(), last_input_, adapted, bias_, last_pre_bias_output_, relevance_out,
                                n, in, out, config);
     }
     // TRN-8: the base and adapter paths as one Linear layer on [x, x] with the weights [W; (alpha / r) A B]
@@ -273,7 +243,7 @@ Tensor LinearModule::propagate_relevance(const Tensor& relevance_out, const LRPR
     Tensor stacked(Shape({2 * in_features_, out_features_}), backend_, device);
     backend_->copy(stacked.data(), weight_.data(), in * out * sizeof(float), CopyDirection::DeviceToDevice);
     backend_->copy(stacked.data() + in * out, update.data(), in * out * sizeof(float), CopyDirection::DeviceToDevice);
-    const Tensor both = LinearRelevance(backend_, device, doubled, stacked, bias_, last_pre_bias_output_, relevance_out, n,
+    const Tensor both = lrp_rules::linear(backend_, device, doubled, stacked, bias_, last_pre_bias_output_, relevance_out, n,
                                         2 * in, out, config);
     Tensor base(Shape({N, in_features_}), backend_, device), adapter(Shape({N, in_features_}), backend_, device);
     backend_->copy_2d(base.data(), in, both.data(), 2 * in, n, in);

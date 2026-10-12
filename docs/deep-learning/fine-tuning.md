@@ -178,7 +178,7 @@ on a tiny Qwen2 model, on every projection. Loaded into pulsatrix:
 
 `ApplyLora()`'s default selects the same layers as PEFT's `"all-linear"`.
 
-### Limits
+### LoRA's limits
 
 - Only `LinearModule` layers take adapters: not convolutions, embeddings or the tied
   language-model head.
@@ -187,3 +187,93 @@ on a tiny Qwen2 model, on every projection. Loaded into pulsatrix:
   `SequentialModule` and `ResidualModule`. A custom container can override `named_children()`
   the same way.
 - rsLoRA, LoRA+ and DoRA are roadmap item TRN-13.
+
+## LoReFT
+
+LoReFT (Wu et al., 2024, "ReFT: Representation Finetuning for Language Models") leaves every weight
+of the model alone. It trains a small edit of the hidden states instead, at a few positions after
+chosen layers. At each edited position, the residual stream h after a block becomes
+
+```
+h' = h + Rᵀ (W h + b − R h)
+```
+
+R is `(r, d)` with orthonormal rows. In the r-dimensional subspace that R spans, the edit replaces
+the hidden state's coordinates R h with learned ones, W h + b. Outside the subspace, h doesn't
+move. That makes the fine-tune an interpretable object in its own right: a few directions in
+representation space and what is written into them. It is also very small, 2rd + r values per
+layer.
+
+```cpp
+#include "pulsatrix/loreft.hpp"
+
+LoReFTConfig reft;
+reft.rank = 4;
+reft.layers = {4, 8};            // empty: every layer
+reft.first = 3;                  // edit the first 3 and the last 3 prompt positions:
+reft.last = 3;                   // pyreft's "f3+l3"
+std::vector<LoReFTIntervention*> edits = ApplyLoReFT(*model, reft);  // and freezes the model
+
+for (/* each batch */;;) {
+    opt.zero_grad(*model);
+    const float value = loss.forward(model->forward(tokens), targets);
+    (void)model->backward(loss.backward());
+    opt.step(*model);
+    OrthonormalizeLoReFT(*model);  // put R back on the orthonormal set
+}
+SaveLoReFT(*model, "reft.safetensors");
+```
+
+The interventions belong to the `CausalLM` (`set_intervention()`, `intervention()`). Their
+parameters join `named_parameters()` as `interventions.<layer>.rotate_layer`,
+`interventions.<layer>.learned_source.weight` and `interventions.<layer>.learned_source.bias`.
+They run in `forward()`, `backward()` and the relevance passes. They also run in generation, which
+edits the prompt's positions only, as pyreft does: tokens the model generates aren't edited.
+
+**Keeping R orthonormal.** A gradient step moves R off the set of orthonormal matrices, so call
+`OrthonormalizeLoReFT(model)` (or `orthonormalize()` on one intervention) after each optimizer
+step. pyreft keeps R orthonormal with PyTorch's orthogonal parametrization instead. For the same
+R, the edit, its gradient with respect to R and its relevance are identical, but a training run
+takes a different path through parameter space than pyreft's.
+
+**Initialization.** As in pyreft, R starts orthonormal and W and b start like an `nn.Linear`
+layer, uniform on ±1/√d. Unlike LoRA, the edit is not zero at the start. The values come from
+`LoReFTConfig::seed` through raw `mt19937_64` output.
+
+### Explaining a LoReFT model
+
+The edit is affine in h: h' = h (I + (Wᵀ − Rᵀ) R) + b R. LRP therefore propagates through it
+exactly with the epsilon rule. The bias b R takes no relevance, as with every Linear layer here.
+
+Like a split LoRA layer, the edit is treated as two paths: the identity, which keeps h, and the
+edit, which rewrites the subspace. The rule runs on both together. `last_edit_relevance()` returns
+the edit's part, `(N, L, d)`, which is zero at positions the intervention didn't touch. Large
+values show where the fine-tune's rewrite drives the explanation.
+
+### Files
+
+`SaveLoReFT()` writes one safetensors file with, for each layer i, pyreft's state dict in pyreft's
+layouts:
+- `layer.<i>.rotate_layer` (`(d, r)`);
+- `layer.<i>.learned_source.weight` (`(r, d)`);
+- `layer.<i>.learned_source.bias`.
+
+The positions are stored as `first` and `last` in the file's metadata. `LoadLoReFT()` reads such a
+file. pyreft saves each intervention as a PyTorch `.bin` state dict: convert those with
+`tools/convert/pickle_to_safetensors.py`, rename the keys as above, and add the metadata.
+
+**Checked against pyreft.** `tools/golden/make_loreft_golden.py` uses pyreft 0.1.0's own
+`LoreftIntervention` on a tiny Qwen2 model, with rank 2 at layers 0 and 1 and positions
+"f1+l2". Loaded into pulsatrix:
+
+- the logits match to 1e-4, on the CPU and on the GPU;
+- the gradients of R, W and b match;
+- greedy generation gives pyreft's tokens, which differ from the base model's.
+
+### LoReFT's limits
+
+- Interventions run on `CausalLM` only, after a block. Other places pyreft can intervene, such as
+  attention outputs, aren't supported.
+- Every sequence in a batch is edited at the same positions, so batches must not be padded.
+- Only the linear activation, pyreft's default, is supported; it is what keeps LRP exact.
+- pyreft's dropout on the intervention isn't supported.

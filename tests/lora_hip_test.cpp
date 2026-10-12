@@ -1,5 +1,6 @@
 // TRN-7 on the GPU: a PEFT adapter on the tiny Qwen2 gives PEFT's logits through hipBLAS, and an
-// adapter's gradients, merge and split relevance (TRN-8) agree with the CPU's.
+// adapter's gradients, merge and split relevance (TRN-8) agree with the CPU's; pyreft's LoReFT
+// interventions (TRN-9) give pyreft's logits and gradients.
 #include <gtest/gtest.h>
 
 #include <algorithm>
@@ -12,6 +13,7 @@
 #include "pulsatrix/cpu_backend.hpp"
 #include "pulsatrix/hip_backend.hpp"
 #include "pulsatrix/linear_module.hpp"
+#include "pulsatrix/loreft.hpp"
 #include "pulsatrix/lora.hpp"
 #include "pulsatrix/safetensors.hpp"
 
@@ -87,6 +89,20 @@ TEST(LoraHip, GradientsMergeAndRelevanceMatchTheCpu) {
         for (float v : results[0][i]) largest = std::max(largest, std::fabs(v));
         EXPECT_LT(MaxAbsDiff(results[0][i], results[1][i]), 1e-5f * largest + 1e-5f) << "result " << i;
     }
+}
+
+TEST(LoReFTHip, PyreftInterventionsGivePyreftsLogitsAndGradients) {
+    HIPBackend hip;
+    CPUBackend cpu;
+    std::unique_ptr<CausalLM> model = LoadCausalLM(Fixture("qwen2"), &hip);
+    const std::vector<LoReFTIntervention*> edits = LoadLoReFT(*model, Fixture("qwen2_loreft") + "/loreft.safetensors");
+    const SafetensorsFile reference = SafetensorsFile::Read(Fixture("qwen2_loreft") + "/reference.safetensors");
+    const Tensor tokens(Shape({1, 6}), &hip, std::vector<float>{3, 17, 42, 5, 60, 8}, DeviceType::Hip);
+    EXPECT_LT(MaxAbsDiff(model->forward(tokens).to_host_vector(), reference.tensor("logits", &cpu).to_host_vector()), 1e-4f);
+    (void)model->backward(reference.tensor("upstream", &hip));
+    EXPECT_LT(MaxAbsDiff(edits[0]->named_parameters()[0].ref.grad->to_host_vector(),
+                         reference.tensor("grad.layer.0.rotate_layer", &cpu).to_host_vector()),
+              1e-3f);
 }
 
 }  // namespace

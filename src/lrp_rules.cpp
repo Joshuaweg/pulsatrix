@@ -193,5 +193,31 @@ void apply(const AffineOp& op, const float* x, const float* w, const float* b, c
     throw std::invalid_argument("lrp_rules::apply: unknown LRPRule");
 }
 
+// The rule's input relevance for x (n, in) through w (in, out), with the cached pre-bias output z.
+Tensor linear(DeviceBackend* be, DeviceType device, const Tensor& x, const Tensor& w, const Tensor& bias,
+                       const Tensor& z, const Tensor& relevance_out, size_t n, size_t in, size_t out,
+                       const LRPRuleConfig& config) {
+    Tensor relevance_in(Shape({static_cast<int64_t>(n), static_cast<int64_t>(in)}), be, device);
+    if (!lrp_rules::is_legacy_epsilon(config)) {
+        // Zennit-compatible rules (LRP-rules Mission 2), composed from gemm/elementwise primitives.
+        lrp_rules::AffineOp op;
+        op.backend = be;
+        op.device = device;
+        op.input_numel = n * in;
+        op.output_numel = n * out;
+        op.weight_numel = in * out;
+        op.bias_numel = out;
+        op.forward = [=](const float* xs, const float* ws, float* y) { be->gemm(xs, ws, y, n, in, out); };
+        op.backward = [=](const float* g, const float* ws, float* gx) { be->gemm_ex(g, false, ws, true, gx, n, out, in, 0.0f); };
+        op.add_bias = [=](const float* y, const float* b, float* o) { be->add_row_vector(y, b, o, n, out); };
+        lrp_rules::apply(op, x.data(), w.data(), bias.data(), z.data(), relevance_out.data(), relevance_in.data(), config);
+        return relevance_in;
+    }
+    // Device-generic (GPU-native-kernels Mission 3): one output element per GPU thread, each
+    // summing over out_features in the original loop's order.
+    be->lrp_linear(x.data(), w.data(), z.data(), relevance_out.data(), relevance_in.data(), n, in, out, config.epsilon);
+    return relevance_in;
+}
+
 }  // namespace lrp_rules
 }  // namespace pulsatrix

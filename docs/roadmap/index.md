@@ -398,7 +398,7 @@ rate is tuned, plain LoRA matches or beats most of them.
 | TRN-6 | A full fine-tuning recipe on a small pretrained model | The baseline every other method is compared against | FND-2, IO-2 | P0 | S | Done, [#51](https://github.com/Joshuaweg/pulsatrix/pull/51) (see below) |
 | TRN-7 | `LoRALinear`: a frozen base weight plus a low-rank update, with merge and unmerge, adapter save and load using PEFT key names, and PEFT's defaults. Documentation follows "LoRA Without Regret": apply it to all layers, use about 10× the full fine-tuning learning rate | The main fine-tuning method | FND-2, IO-1 | P1 | M | Done (see below) |
 | TRN-8 | LRP through LoRA that splits relevance between the base path and the adapter path. Document that the gamma and z+ rules give different results for merged and unmerged adapters | Shows what the fine-tuning changed, per input. No other library does this | TRN-7 | P1 | M |  Done (see below) |
-| TRN-9 | LoReFT (representation fine-tuning) and LRP through it. The intervention is affine, so the epsilon rule is exact | Fine-tuning that is itself an interpretable subspace | FND-4 | P1 | M | |
+| TRN-9 | LoReFT (representation fine-tuning) and LRP through it. The intervention is affine, so the epsilon rule is exact | Fine-tuning that is itself an interpretable subspace | FND-4 | P1 | M |  Done (see below) |
 | TRN-10 | IA³ (learned rescaling vectors) | Tiny and trivially explainable | FND-2 | P2 | S | |
 | TRN-11 | Model diffing: relevance of the fine-tuned model minus relevance of the base model, plus an intruder-dimension check on the weights | Shows what a fine-tune changed across a dataset | TRN-8, FND-4 | P2 | M | |
 | TRN-12 | Activation checkpointing per block. Off in explain mode, because LRP needs the cached activations | Memory for 1B-parameter models | — | P2 | M | |
@@ -429,6 +429,16 @@ rate is tuned, plain LoRA matches or beats most of them.
   Under gamma and z⁺ they don't, and the docs explain why. `LRPRuleConfig::lora_relevance`
   chooses Split (the default) or Merged, and `LoraRelevanceSplit()` reports each layer's parts.
   Not done: relevance for each of the r rank directions of an adapter.
+- **TRN-9** follows the plan in `loreft.hpp`. `CausalLM` gains `ResidualIntervention` slots after
+  each block. These run in training, in the relevance passes, and through a new block-output hook
+  in cached generation, which edits only the prompt's positions, as pyreft does. Two departures:
+  - R is kept orthonormal by re-orthonormalizing after each step (`OrthonormalizeLoReFT()`), not by
+    PyTorch's orthogonal parametrization. The edit, its gradients and its relevance are the same
+    for the same R.
+  - The relevance is split into the identity's part and the edit's part, as for LoRA.
+
+  Checked against pyreft 0.1.0's own `LoreftIntervention`, installed without its dependencies
+  because pyreft pins transformers 4.45.1: logits, gradients and generation on a tiny Qwen2.
 
 ### Follow-ups the TRN work surfaced
 
