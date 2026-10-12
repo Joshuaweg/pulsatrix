@@ -12,7 +12,7 @@ pulsatrix builds this as a pipeline, one stage at a time:
 PointCloud → distances → filtration → persistence diagram → numbers and plots
 ```
 
-This page grows with each stage. So far it covers the first two.
+This page grows with each stage. So far it covers the point cloud, the distances, and the first diagram: H0.
 
 ## From activations to a point cloud
 
@@ -99,5 +99,40 @@ Other options:
 
 Storing n (n − 1) / 2 float32 values takes 50 MB for 5,000 points. Persistent homology above H0
 can't use many more points than that anyway; landmarks (coming) choose which ones to keep.
+
+## Clusters across scales (H0)
+
+Grow a ball around every point. At scale 0 each point is its own component. As the scale grows,
+two components merge when the shortest edge between them appears, until one is left. H0
+persistence records those merges: one pair (born at 0, dies at the merge scale) per merge, and
+one pair that never dies.
+
+That is single-linkage clustering, and the merge scales are the edge lengths of a minimum
+spanning tree. `ComputeH0()` finds the tree exactly with Prim's algorithm, in O(n²) time:
+
+```cpp
+#include "pulsatrix/tda/h0.hpp"
+
+const H0Result h0 = ComputeH0(PairwiseDistances(cloud, &backend));
+// h0.diagram.pairs: (0, merge scale) per merge, then (0, ∞). h0.diagram.error_bound is the
+// distances' bound: the diagram is within it of the exact one, in bottleneck distance.
+// h0.edges: the tree's n − 1 edges, shortest first; edge k is the k-th merge.
+const std::vector<int64_t> clusters = SingleLinkageClusters(h0.edges, cloud.size(), /*threshold=*/0.5);
+```
+
+- **Long-lived pairs are clusters.** A pair that dies late means a group that stays apart from
+  the rest over a wide range of scales. `SingleLinkageClusters()` cuts the tree at a scale and
+  labels the groups. Each edge's endpoints, through `cloud.origins()`, name the inputs a merge
+  joins.
+- **Duplicate points** give zero-length edges. They stay in `edges` but not in the diagram,
+  which leaves out zero-persistence pairs as Ripser does.
+- **Ties** in length break by the lower point index, so the tree is the same on every platform.
+  Its lengths, which are all the diagram uses, are the same for every minimum tree.
+
+**H0 alone says little.** It is a function of the minimum spanning tree, so it sees roughly what
+nearest-neighbor distances see. Many recent papers on the topology of language models use only
+H0. Before trusting such a result, check it against plain
+[nearest-neighbor statistics](representations.md#nearest-neighbors). Loops and voids (H1, H2)
+are where persistent homology sees something new; they come next.
 
 Full API reference: [Doxygen: Topological Data Analysis](../api/group__tda.html)

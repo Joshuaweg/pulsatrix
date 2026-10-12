@@ -982,7 +982,7 @@ GPL-licensed parts and giotto-ph (AGPL) are avoided.
 |---|---|---|---|---|---|---|
 | TDA-1 | A `PointCloud` built from `ActivationSnapshot`s, with flatten and pooling options, concatenated across batches | The input to everything below | — | P0 | S | Done (see below) |
 | TDA-2 | Pairwise distances via GEMM on every backend, with an fp32 error bound | Distances are the only part that touches the model's dimension | TDA-1 | P0 | S | Done (see below) |
-| TDA-3 | H0 as a minimum spanning tree | Exact, fast and GPU-friendly | TDA-2 | P0 | S |  |
+| TDA-3 | H0 as a minimum spanning tree | Exact, fast and GPU-friendly | TDA-2 | P0 | S | Done (see below) |
 | TDA-4 | Vendored Ripser for H1 and H2, returning critical edges and cocycles | Loops and voids | TDA-2 | P0 | M |  |
 | TDA-5 | `Diagram`, bottleneck and Wasserstein distances, `Certified<T>`, and property tests for stability | Compare layers, models and seeds with certified error | TDA-3, TDA-4 | P0 | M |  |
 | TDA-6 | Betti curves, persistence landscapes, persistence images, persistent entropy | Turn diagrams into numbers for probes and plots | TDA-5 | P0 | S |  |
@@ -1014,6 +1014,12 @@ GPL-licensed parts and giotto-ph (AGPL) are avoided.
   magnitude when points share an offset), `normalize`, an `Exact` method in double, and blocked
   GEMMs over the upper triangle so device memory stays bounded. Distances are stored condensed in
   scipy's pdist order, which Ripser (TDA-4) reads as an upper-triangular matrix.
+- **TDA-3** computes H0 with Prim's algorithm on the host (`tda/h0.hpp`), not on the GPU. The
+  dense tree takes O(n²) reads of the distance matrix, the same as reading it once, while the
+  distances themselves (TDA-2, O(n²d)) are what the GPU is for, so a GPU tree would save
+  little. It also returns the tree's edges, shortest first, and `SingleLinkageClusters()` cuts
+  them at a scale. `PersistenceDiagram` (`tda/persistence_diagram.hpp`) starts here as a plain
+  list of pairs with an error bound; TDA-5 adds its distances.
 
 Not planned: "neural persistence" on weight graphs. A 2023 follow-up showed it mostly measures
 weight variance.
