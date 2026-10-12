@@ -16,7 +16,7 @@
         <link rel="prev" href="../getting-started/">
       
       
-        <link rel="next" href="../data-pipeline/">
+        <link rel="next" href="fine-tuning/">
       
       
         
@@ -27,7 +27,7 @@
     
     
       
-        <title>Deep Learning Modules and Layers - Pulsatrix</title>
+        <title>Overview - Pulsatrix</title>
       
     
     
@@ -115,7 +115,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Deep Learning Modules and Layers
+              Overview
             
           </span>
         </div>
@@ -315,6 +315,55 @@
   
   
   
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Deep Learning Modules and Layers
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Deep Learning Modules and Layers
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+    
+  
+  
+  
     <li class="md-nav__item md-nav__item--active">
       
       <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
@@ -330,7 +379,7 @@
   <span class="md-ellipsis">
     
   
-    Deep Learning Modules and Layers
+    Overview
   
 
     
@@ -348,7 +397,7 @@
   <span class="md-ellipsis">
     
   
-    Deep Learning Modules and Layers
+    Overview
   
 
     
@@ -558,6 +607,42 @@
     </ul>
   
 </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="fine-tuning/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Parameter-Efficient Fine-Tuning
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
       
     </li>
   
@@ -3091,6 +3176,9 @@ parameters by name. A name selects that parameter and everything under it:</p>
 as without freezing. <code>LinearModule</code>, <code>Conv2DModule</code> and <code>EmbeddingModule</code> skip computing a
 frozen weight's gradient altogether, which is where fine-tuning saves time. A name that matches
 nothing throws <code>std::invalid_argument</code>, so a typo can't leave the model silently trainable.</p>
+<p>To train a small low-rank update instead of the weights themselves, see
+<a href="fine-tuning/">Parameter-Efficient Fine-Tuning</a>: <code>ApplyLora()</code> adds LoRA adapters and freezes
+the rest.</p>
 <h3 id="encoder-layers">Encoder layers<a class="headerlink" href="#encoder-layers" title="Permanent link">&para;</a></h3>
 <p><code>EncoderBlock</code> is one transformer encoder layer whose layout is chosen with
 <code>EncoderBlockOptions</code>:</p>
@@ -3150,6 +3238,7 @@ what it normalizes over:</p>
 <li><a href="../recipes/deep-learning/sequence_models_rnn_lstm_gru/">RNN vs. LSTM vs. GRU on a parity task</a></li>
 <li><a href="../recipes/deep-learning/residual_and_norm_layers/">Residual connections and normalization layers</a></li>
 <li><a href="../recipes/deep-learning/tagger_finetune/">Full fine-tuning: pretrain, save, reload, fine-tune</a></li>
+<li><a href="fine-tuning/">Parameter-efficient fine-tuning with LoRA</a></li>
 </ul>
 
 

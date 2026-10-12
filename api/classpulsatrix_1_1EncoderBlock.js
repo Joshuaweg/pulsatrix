@@ -8,6 +8,7 @@ var classpulsatrix_1_1EncoderBlock =
     [ "mha", "classpulsatrix_1_1EncoderBlock.html#a2c0cfb1c16bba0f2245a3d454b43dcf8", null ],
     [ "mlp", "classpulsatrix_1_1EncoderBlock.html#a828dffd2abe5bdd5416d386656f6d1fa", null ],
     [ "named_buffers", "classpulsatrix_1_1EncoderBlock.html#aa8e8b8e313b91eae68e902e993eaa3df", null ],
+    [ "named_children", "classpulsatrix_1_1EncoderBlock.html#a87e1fce89fad5f122e09fafa99971973", null ],
     [ "named_parameters", "classpulsatrix_1_1EncoderBlock.html#ae320c39f21f1ee089ebbc12b94cd76b0", null ],
     [ "norm1", "classpulsatrix_1_1EncoderBlock.html#a72d9f2785f29e05f449c2202c4583464", null ],
     [ "norm2", "classpulsatrix_1_1EncoderBlock.html#a8e05fe718309d933067ce87a96de52b7", null ],

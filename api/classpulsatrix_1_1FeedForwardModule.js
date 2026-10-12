@@ -8,6 +8,7 @@ var classpulsatrix_1_1FeedForwardModule =
     [ "fc2", "classpulsatrix_1_1FeedForwardModule.html#a5e874c6edaec8dc10f302947d346353b", null ],
     [ "forward_impl", "classpulsatrix_1_1FeedForwardModule.html#ad39dd090d7bc0e486f81c812f9b0f397", null ],
     [ "named_buffers", "classpulsatrix_1_1FeedForwardModule.html#af1f237b257da2d0794b6455bea26aa14", null ],
+    [ "named_children", "classpulsatrix_1_1FeedForwardModule.html#a7d724b8e0180a5fb739c67f9599830dc", null ],
     [ "named_parameters", "classpulsatrix_1_1FeedForwardModule.html#ac3ece80060e402e0867d02ac5070e577", null ],
     [ "op_type", "classpulsatrix_1_1FeedForwardModule.html#ab826a7fb761f2f40541f3965736a778d", null ],
     [ "propagate_relevance", "classpulsatrix_1_1FeedForwardModule.html#ab15de3fce8877ec528fe89639536da6f", null ],

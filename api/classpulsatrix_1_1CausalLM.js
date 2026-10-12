@@ -9,6 +9,7 @@ var classpulsatrix_1_1CausalLM =
     [ "layer", "classpulsatrix_1_1CausalLM.html#a146c289c429c1bf98cd36169f6249850", null ],
     [ "lm_head", "classpulsatrix_1_1CausalLM.html#a7a04d91fc2f2179d49b1af7082964b95", null ],
     [ "named_buffers", "classpulsatrix_1_1CausalLM.html#a4a50100e51aaf0c37def6e393bcb3fe9", null ],
+    [ "named_children", "classpulsatrix_1_1CausalLM.html#a8748fa15c99a92526917428c600cf61e", null ],
     [ "named_parameters", "classpulsatrix_1_1CausalLM.html#a3f05f65d21f65a6d2448da9b600396c2", null ],
     [ "next_token_logits", "classpulsatrix_1_1CausalLM.html#ae51ea44ac86b795d537c158aaff5921f", null ],
     [ "norm", "classpulsatrix_1_1CausalLM.html#adb92631da8bdbb3afd77f3a804e93a23", null ],

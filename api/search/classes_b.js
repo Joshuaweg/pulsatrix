@@ -13,11 +13,13 @@ var searchData=
   ['link_10',['Link',['../structpulsatrix_1_1AttributionGraph_1_1Link.html',1,'pulsatrix::AttributionGraph']]],
   ['linuxsources_11',['LinuxSources',['../classpulsatrix_1_1detail_1_1LinuxSources.html',1,'pulsatrix::detail']]],
   ['localsensitivityresult_12',['LocalSensitivityResult',['../structpulsatrix_1_1LocalSensitivityResult.html',1,'pulsatrix']]],
-  ['lossrecovered_13',['LossRecovered',['../structpulsatrix_1_1LossRecovered.html',1,'pulsatrix']]],
-  ['lrp_14',['LRP',['../classpulsatrix_1_1LRP.html',1,'pulsatrix']]],
-  ['lrpruleconfig_15',['LRPRuleConfig',['../structpulsatrix_1_1LRPRuleConfig.html',1,'pulsatrix']]],
-  ['lrptarget_16',['LRPTarget',['../structpulsatrix_1_1LRPTarget.html',1,'pulsatrix']]],
-  ['lrschedule_17',['LRSchedule',['../classpulsatrix_1_1LRSchedule.html',1,'pulsatrix']]],
-  ['lrscheduler_18',['LRScheduler',['../classpulsatrix_1_1LRScheduler.html',1,'pulsatrix']]],
-  ['lstmmodule_19',['LSTMModule',['../classpulsatrix_1_1LSTMModule.html',1,'pulsatrix']]]
+  ['loraadapter_13',['LoRAAdapter',['../classpulsatrix_1_1LoRAAdapter.html',1,'pulsatrix']]],
+  ['loraconfig_14',['LoRAConfig',['../structpulsatrix_1_1LoRAConfig.html',1,'pulsatrix']]],
+  ['lossrecovered_15',['LossRecovered',['../structpulsatrix_1_1LossRecovered.html',1,'pulsatrix']]],
+  ['lrp_16',['LRP',['../classpulsatrix_1_1LRP.html',1,'pulsatrix']]],
+  ['lrpruleconfig_17',['LRPRuleConfig',['../structpulsatrix_1_1LRPRuleConfig.html',1,'pulsatrix']]],
+  ['lrptarget_18',['LRPTarget',['../structpulsatrix_1_1LRPTarget.html',1,'pulsatrix']]],
+  ['lrschedule_19',['LRSchedule',['../classpulsatrix_1_1LRSchedule.html',1,'pulsatrix']]],
+  ['lrscheduler_20',['LRScheduler',['../classpulsatrix_1_1LRScheduler.html',1,'pulsatrix']]],
+  ['lstmmodule_21',['LSTMModule',['../classpulsatrix_1_1LSTMModule.html',1,'pulsatrix']]]
 ];

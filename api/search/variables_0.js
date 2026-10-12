@@ -2,7 +2,7 @@ var searchData=
 [
   ['a_0',['a',['../structpulsatrix_1_1MstEdge.html#af292bb789324bacc31ba2bb058f1e726',1,'pulsatrix::MstEdge']]],
   ['ablated_1',['ablated',['../structpulsatrix_1_1LossRecovered.html#ae4bf760b87f2659a2cde1240e8d79136',1,'pulsatrix::LossRecovered']]],
-  ['ablation_5feffect_2',['ablation_effect',['../structpulsatrix_1_1CircuitGraphDocument_1_1Node.html#a479ce59da4c3972bcffbeb7c15125815',1,'pulsatrix::CircuitGraphDocument::Node::ablation_effect'],['../structpulsatrix_1_1CircuitNode.html#a1f94bfdd9448bdae4f6d529da9688232',1,'pulsatrix::CircuitNode::ablation_effect']]],
+  ['ablation_5feffect_2',['ablation_effect',['../structpulsatrix_1_1CircuitNode.html#a1f94bfdd9448bdae4f6d529da9688232',1,'pulsatrix::CircuitNode::ablation_effect'],['../structpulsatrix_1_1CircuitGraphDocument_1_1Node.html#a479ce59da4c3972bcffbeb7c15125815',1,'pulsatrix::CircuitGraphDocument::Node::ablation_effect']]],
   ['absorbed_3',['absorbed',['../structpulsatrix_1_1AbsorptionResult.html#ab167e15736a52900524e1152e31b2c95',1,'pulsatrix::AbsorptionResult']]],
   ['absorbing_5ffeatures_4',['absorbing_features',['../structpulsatrix_1_1AbsorptionResult.html#ae4d9c315c773c482e899c16e130f2a96',1,'pulsatrix::AbsorptionResult']]],
   ['absorption_5frate_5',['absorption_rate',['../structpulsatrix_1_1AbsorptionResult.html#a55a61807136214827dc8f160c53c8af3',1,'pulsatrix::AbsorptionResult']]],
@@ -21,7 +21,7 @@ var searchData=
   ['alive_18',['alive',['../structpulsatrix_1_1ImportanceStats.html#af7862bc8ba552c1cc79d418236b46589',1,'pulsatrix::ImportanceStats']]],
   ['all_5fatoms_19',['all_atoms',['../structpulsatrix_1_1datalog_1_1RelevanceResult.html#a5f3a0dc1a760aca4f35f902f00797b9f',1,'pulsatrix::datalog::RelevanceResult']]],
   ['allow_5ftool_5fcalls_20',['allow_tool_calls',['../structpulsatrix_1_1orch_1_1ChatRequest.html#a4d37f53b009d634acfa5523cef04e0bb',1,'pulsatrix::orch::ChatRequest']]],
-  ['alpha_21',['alpha',['../structpulsatrix_1_1TcavOptions.html#aef8e86c0317439bc996613ec6db1fc37',1,'pulsatrix::TcavOptions::alpha'],['../structpulsatrix_1_1BootstrapOptions.html#a8e76f8ef84f23a66014ae890c4d783fa',1,'pulsatrix::BootstrapOptions::alpha'],['../structpulsatrix_1_1LRPRuleConfig.html#acdf40c00ebb6e7ff9d6372ae9a66d0f3',1,'pulsatrix::LRPRuleConfig::alpha']]],
+  ['alpha_21',['alpha',['../structpulsatrix_1_1BootstrapOptions.html#a8e76f8ef84f23a66014ae890c4d783fa',1,'pulsatrix::BootstrapOptions::alpha'],['../structpulsatrix_1_1LoRAConfig.html#aa558b508d5e6e12aa1d240b9ee20964d',1,'pulsatrix::LoRAConfig::alpha'],['../structpulsatrix_1_1LRPRuleConfig.html#acdf40c00ebb6e7ff9d6372ae9a66d0f3',1,'pulsatrix::LRPRuleConfig::alpha'],['../structpulsatrix_1_1TcavOptions.html#aef8e86c0317439bc996613ec6db1fc37',1,'pulsatrix::TcavOptions::alpha']]],
   ['alphabet_22',['alphabet',['../structpulsatrix_1_1MutationMapDocument.html#a520fa760db74bbc2fe48635a742c5327',1,'pulsatrix::MutationMapDocument::alphabet'],['../structpulsatrix_1_1SequenceLogoDocument.html#a589d6a13442c0656f5ba29cd2a196e47',1,'pulsatrix::SequenceLogoDocument::alphabet']]],
   ['anti_5fsteerable_5ffraction_23',['anti_steerable_fraction',['../structpulsatrix_1_1SteeringReport.html#a8b2dcd83ea516a0682ea509d17980330',1,'pulsatrix::SteeringReport']]],
   ['api_5fkey_24',['api_key',['../structpulsatrix_1_1orch_1_1AnthropicOptions.html#a1c1671b6d04e3deeaabc400f42a098ca',1,'pulsatrix::orch::AnthropicOptions::api_key'],['../structpulsatrix_1_1orch_1_1OpenAiCompatibleOptions.html#a1bd6c12f3db19ff689e16fe4000993a4',1,'pulsatrix::orch::OpenAiCompatibleOptions::api_key']]],

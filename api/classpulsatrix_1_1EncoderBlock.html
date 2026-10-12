@@ -140,6 +140,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:ae320c39f21f1ee089ebbc12b94cd76b0" id="r_ae320c39f21f1ee089ebbc12b94cd76b0"><td class="memItemLeft" align="right" valign="top">std::vector&lt; <a class="el" href="structpulsatrix_1_1NamedParamRef.html">NamedParamRef</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1EncoderBlock.html#ae320c39f21f1ee089ebbc12b94cd76b0">named_parameters</a> () override</td></tr>
 <tr class="memdesc:ae320c39f21f1ee089ebbc12b94cd76b0"><td class="mdescLeft">&#160;</td><td class="mdescRight">This module's trainable parameters, each with its hierarchical name &ndash; the one place a module declares its parameters (roadmap FND-1).  <br /></td></tr>
 <tr class="separator:ae320c39f21f1ee089ebbc12b94cd76b0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a87e1fce89fad5f122e09fafa99971973" id="r_a87e1fce89fad5f122e09fafa99971973"><td class="memItemLeft" align="right" valign="top">std::vector&lt; <a class="el" href="structpulsatrix_1_1NamedModuleRef.html">NamedModuleRef</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1EncoderBlock.html#a87e1fce89fad5f122e09fafa99971973">named_children</a> () override</td></tr>
+<tr class="memdesc:a87e1fce89fad5f122e09fafa99971973"><td class="mdescLeft">&#160;</td><td class="mdescRight">This module's direct sub-modules, each under the prefix its parameters carry in <a class="el" href="classpulsatrix_1_1EncoderBlock.html#ae320c39f21f1ee089ebbc12b94cd76b0" title="This module&#39;s trainable parameters, each with its hierarchical name – the one place a module declares...">named_parameters()</a>, in the same order (TRN-7: how <a class="el" href="namespacepulsatrix.html#ae40b041766846ad8286558e270c8f261" title="Attaches a LoRA adapter to each LinearModule that config.target_modules selects, then freezes everyth...">ApplyLora()</a> finds a model's Linear layers). Default: none. <a class="el" href="namespacepulsatrix.html#aed40084881fde6ed5e4249b725383a77" title="Every module under root, depth first with each parent before its children, named by their full dotted...">NamedModules()</a> walks the whole tree.  <br /></td></tr>
+<tr class="separator:a87e1fce89fad5f122e09fafa99971973"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa8e8b8e313b91eae68e902e993eaa3df" id="r_aa8e8b8e313b91eae68e902e993eaa3df"><td class="memItemLeft" align="right" valign="top">std::vector&lt; <a class="el" href="structpulsatrix_1_1NamedBufferRef.html">NamedBufferRef</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1EncoderBlock.html#aa8e8b8e313b91eae68e902e993eaa3df">named_buffers</a> () override</td></tr>
 <tr class="memdesc:aa8e8b8e313b91eae68e902e993eaa3df"><td class="mdescLeft">&#160;</td><td class="mdescRight">This module's buffers: state a checkpoint must save that no optimizer updates.  <br /></td></tr>
 <tr class="separator:aa8e8b8e313b91eae68e902e993eaa3df"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -457,6 +460,36 @@ Protected Member Functions</h2></td></tr>
 <dl class="section return"><dt>Returns</dt><dd>{name, tensor} entries, named like <a class="el" href="classpulsatrix_1_1EncoderBlock.html#ae320c39f21f1ee089ebbc12b94cd76b0" title="This module&#39;s trainable parameters, each with its hierarchical name – the one place a module declares...">named_parameters()</a>, in a fixed order. Default: empty. <a class="el" href="classpulsatrix_1_1BatchNormModule.html" title="y_{n,c,h,w} = gamma_c * (x_{n,c,h,w} - mu_c)/std_c + beta_c, mu_c/std_c computed per channel c over e...">BatchNormModule</a> reports its running statistics; containers prefix their layers' buffers the way they prefix parameters. </dd></dl>
 
 <p>Reimplemented from <a class="el" href="classpulsatrix_1_1Module.html#a05e4c9483d5577e3da94df3ee55e7699">pulsatrix::Module</a>.</p>
+
+</div>
+</div>
+<a id="a87e1fce89fad5f122e09fafa99971973" name="a87e1fce89fad5f122e09fafa99971973"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a87e1fce89fad5f122e09fafa99971973">&#9670;&#160;</a></span>named_children()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::vector&lt; <a class="el" href="structpulsatrix_1_1NamedModuleRef.html">NamedModuleRef</a> &gt; pulsatrix::EncoderBlock::named_children </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">override</span><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>This module's direct sub-modules, each under the prefix its parameters carry in <a class="el" href="classpulsatrix_1_1EncoderBlock.html#ae320c39f21f1ee089ebbc12b94cd76b0" title="This module&#39;s trainable parameters, each with its hierarchical name – the one place a module declares...">named_parameters()</a>, in the same order (TRN-7: how <a class="el" href="namespacepulsatrix.html#ae40b041766846ad8286558e270c8f261" title="Attaches a LoRA adapter to each LinearModule that config.target_modules selects, then freezes everyth...">ApplyLora()</a> finds a model's Linear layers). Default: none. <a class="el" href="namespacepulsatrix.html#aed40084881fde6ed5e4249b725383a77" title="Every module under root, depth first with each parent before its children, named by their full dotted...">NamedModules()</a> walks the whole tree. </p>
+<dl class="section note"><dt>Note</dt><dd>The containers that build language models and their layers report their children: <a class="el" href="classpulsatrix_1_1SequentialModule.html" title="Composes layers_[0..n-1] in forward() order; backward()/propagate_relevance() chain layers_[n-1....">SequentialModule</a>, <a class="el" href="classpulsatrix_1_1ResidualModule.html" title="y = x + inner-&gt;forward(x) for an arbitrary already-built Module. The classic ResNet shortcut connecti...">ResidualModule</a>, the attention, MLP and transformer blocks, <a class="el" href="classpulsatrix_1_1CausalLM.html" title="Token embedding, num_hidden_layers pre-norm transformer blocks, a final RMSNorm and a language-model ...">CausalLM</a> and <a class="el" href="classpulsatrix_1_1EncoderLM.html" title="An ESM-2 masked language model: token embeddings (with ESM&#39;s token-dropout scaling),...">EncoderLM</a>. A module that doesn't is a leaf to <a class="el" href="namespacepulsatrix.html#aed40084881fde6ed5e4249b725383a77" title="Every module under root, depth first with each parent before its children, named by their full dotted...">NamedModules()</a>. </dd></dl>
+
+<p>Reimplemented from <a class="el" href="classpulsatrix_1_1Module.html#af8c82be7b5d20ceba973a2d03d2b19a5">pulsatrix::Module</a>.</p>
 
 </div>
 </div>

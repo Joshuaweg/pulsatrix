@@ -18,6 +18,7 @@ var classpulsatrix_1_1MultiHeadAttentionModule =
     [ "last_attention_weights", "classpulsatrix_1_1MultiHeadAttentionModule.html#a403e6584eb71aedadccf2ea8071f637e", null ],
     [ "MakeKVCache", "classpulsatrix_1_1MultiHeadAttentionModule.html#a225357f7e75f0654e61e60becc036830", null ],
     [ "named_buffers", "classpulsatrix_1_1MultiHeadAttentionModule.html#a6f8fe74c035b9cca41fece7f8151df81", null ],
+    [ "named_children", "classpulsatrix_1_1MultiHeadAttentionModule.html#a4259a7db3c4897a22f5035932abecaed", null ],
     [ "named_parameters", "classpulsatrix_1_1MultiHeadAttentionModule.html#a4efee768d212c6f9990b85ba1f070a47", null ],
     [ "num_heads", "classpulsatrix_1_1MultiHeadAttentionModule.html#a64f3e2c31c91c88da3fcfedaa47fa588", null ],
     [ "num_kv_heads", "classpulsatrix_1_1MultiHeadAttentionModule.html#a5b6d53a4aed28054ce1058afb62374ee", null ],

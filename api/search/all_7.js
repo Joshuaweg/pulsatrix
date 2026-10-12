@@ -2,7 +2,7 @@ var searchData=
 [
   ['h0_2ehpp_0',['h0.hpp',['../h0_8hpp.html',1,'']]],
   ['h0result_1',['H0Result',['../structpulsatrix_1_1H0Result.html',1,'pulsatrix']]],
-  ['handler_2',['handler',['../structpulsatrix_1_1orch_1_1Tool.html#a522ee06bf931ac0f6f978e177c60d901',1,'pulsatrix::orch::Tool::handler'],['../classpulsatrix_1_1orch_1_1SseParser.html#adddfed7f931a0bca71932aca39380639',1,'pulsatrix::orch::SseParser::Handler']]],
+  ['handler_2',['handler',['../classpulsatrix_1_1orch_1_1SseParser.html#adddfed7f931a0bca71932aca39380639',1,'pulsatrix::orch::SseParser::Handler'],['../structpulsatrix_1_1orch_1_1Tool.html#a522ee06bf931ac0f6f978e177c60d901',1,'pulsatrix::orch::Tool::handler']]],
   ['has_5fgradient_3',['has_gradient',['../classpulsatrix_1_1Autograd.html#a431dd728bc9d2038903e6e4494390350',1,'pulsatrix::Autograd']]],
   ['has_5fkey_5fpadding_5fmask_4',['has_key_padding_mask',['../classpulsatrix_1_1MultiHeadAttentionModule.html#a080f3afd4b26dda8306b7b34a97e61be',1,'pulsatrix::MultiHeadAttentionModule']]],
   ['has_5fskip_5',['has_skip',['../classpulsatrix_1_1CrossLayerTranscoder.html#ab87813fa305e8657d3420eee273efac0',1,'pulsatrix::CrossLayerTranscoder']]],
@@ -22,7 +22,7 @@ var searchData=
   ['hfcheckpoint_19',['HfCheckpoint',['../classpulsatrix_1_1HfCheckpoint.html',1,'pulsatrix']]],
   ['hfmodelconfig_20',['HfModelConfig',['../structpulsatrix_1_1HfModelConfig.html',1,'pulsatrix']]],
   ['hfropescaling_21',['HfRopeScaling',['../structpulsatrix_1_1HfRopeScaling.html',1,'pulsatrix']]],
-  ['hidden_22',['hidden',['../structpulsatrix_1_1VGGConfig.html#a93df2add02085fcab5213633389284cc',1,'pulsatrix::VGGConfig::hidden'],['../structpulsatrix_1_1NodeGene.html#a64663eaaff545087a7584d5dab39b0d4a7acdf85c69cc3c5305456a293524386e',1,'pulsatrix::NodeGene::Hidden'],['../structpulsatrix_1_1ResidueEmbeddings.html#ace72c384a2d5e36631ddd2f967bf6051',1,'pulsatrix::ResidueEmbeddings::hidden']]],
+  ['hidden_22',['hidden',['../structpulsatrix_1_1NodeGene.html#a64663eaaff545087a7584d5dab39b0d4a7acdf85c69cc3c5305456a293524386e',1,'pulsatrix::NodeGene::Hidden'],['../structpulsatrix_1_1ResidueEmbeddings.html#ace72c384a2d5e36631ddd2f967bf6051',1,'pulsatrix::ResidueEmbeddings::hidden'],['../structpulsatrix_1_1VGGConfig.html#a93df2add02085fcab5213633389284cc',1,'pulsatrix::VGGConfig::hidden']]],
   ['hidden_5fact_23',['hidden_act',['../structpulsatrix_1_1HfModelConfig.html#ac802a1a7823830a4a2e088527942feb3',1,'pulsatrix::HfModelConfig']]],
   ['hidden_5fdim_24',['hidden_dim',['../classpulsatrix_1_1SparseAutoencoder.html#aaf8d745803e44e25bf469d24b84433ec',1,'pulsatrix::SparseAutoencoder']]],
   ['hidden_5fsize_25',['hidden_size',['../structpulsatrix_1_1HfModelConfig.html#a56686b879c679aa4d88aa531e4ce860e',1,'pulsatrix::HfModelConfig::hidden_size'],['../structpulsatrix_1_1EncoderLMConfig.html#aaa3bcb9d42af40f59662382f1406c7a0',1,'pulsatrix::EncoderLMConfig::hidden_size']]],

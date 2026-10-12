@@ -5,6 +5,7 @@ var classpulsatrix_1_1SequentialModule =
     [ "forward_impl", "classpulsatrix_1_1SequentialModule.html#a2128aeab335d52571b15980bf588081c", null ],
     [ "layers", "classpulsatrix_1_1SequentialModule.html#a4ff671e35c39f5a954b532ce7bf7ce17", null ],
     [ "named_buffers", "classpulsatrix_1_1SequentialModule.html#af85fe76ef5837ae25c5a63ce7317cc28", null ],
+    [ "named_children", "classpulsatrix_1_1SequentialModule.html#abe0234d7489f0291f4ed8dc8d18271d9", null ],
     [ "named_parameters", "classpulsatrix_1_1SequentialModule.html#a4e19fb5edefe41f299248330196ffd8b", null ],
     [ "op_type", "classpulsatrix_1_1SequentialModule.html#a2f07479ad5fac146a93be8305b20316c", null ],
     [ "propagate_relevance", "classpulsatrix_1_1SequentialModule.html#aa47cc87098f611d4f7222654b2f60f8c", null ],
