@@ -12,6 +12,10 @@ direction in each source. The decoders' norms say where a feature writes:
 - about equal norms: a feature both models share;
 - a near-zero norm in one model: a feature only the other model has.
 
+For a fine-tune made with LoRA, IA³ or LoReFT, or for two models of the same architecture, there
+is a simpler first look: [the relevance before and after, and intruder dimensions in the
+weights](../deep-learning/fine-tuning.md#what-did-the-fine-tune-change).
+
 ## Quick start: diff a base model and its chat fine-tune
 
 `pulsatrix_diff_lm` does the whole thing:
