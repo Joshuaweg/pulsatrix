@@ -7,6 +7,7 @@ var dir_ca264b647ed931f47b76cb1b0bcf1459 =
     [ "persistence_diagram.hpp", "persistence__diagram_8hpp.html", "persistence__diagram_8hpp" ],
     [ "point_cloud.hpp", "point__cloud_8hpp.html", "point__cloud_8hpp" ],
     [ "rips_persistence.hpp", "rips__persistence_8hpp.html", "rips__persistence_8hpp" ],
+    [ "rtd.hpp", "rtd_8hpp.html", "rtd_8hpp" ],
     [ "significance.hpp", "significance_8hpp.html", "significance_8hpp" ],
     [ "vectorization.hpp", "vectorization_8hpp.html", "vectorization_8hpp" ]
 ];

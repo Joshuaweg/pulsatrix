@@ -423,6 +423,8 @@ var hierarchy =
     [ "pulsatrix::ReplayBatch", "structpulsatrix_1_1ReplayBatch.html", null ],
     [ "pulsatrix::ReplayBuffer", "classpulsatrix_1_1ReplayBuffer.html", null ],
     [ "pulsatrix::Report", "classpulsatrix_1_1Report.html", null ],
+    [ "pulsatrix::RepresentationComparison", "structpulsatrix_1_1RepresentationComparison.html", null ],
+    [ "pulsatrix::RepresentationComparisonOptions", "structpulsatrix_1_1RepresentationComparisonOptions.html", null ],
     [ "pulsatrix::ResidueAgreement", "structpulsatrix_1_1ResidueAgreement.html", null ],
     [ "pulsatrix::ResidueDeletionCurve", "structpulsatrix_1_1ResidueDeletionCurve.html", null ],
     [ "pulsatrix::ResidueEmbeddings", "structpulsatrix_1_1ResidueEmbeddings.html", null ],
@@ -443,6 +445,8 @@ var hierarchy =
     [ "pulsatrix::RolloutBatch", "structpulsatrix_1_1RolloutBatch.html", null ],
     [ "pulsatrix::RolloutBuffer", "classpulsatrix_1_1RolloutBuffer.html", null ],
     [ "pulsatrix::RsaTestResult", "structpulsatrix_1_1RsaTestResult.html", null ],
+    [ "pulsatrix::RtdOptions", "structpulsatrix_1_1RtdOptions.html", null ],
+    [ "pulsatrix::RtdResult", "structpulsatrix_1_1RtdResult.html", null ],
     [ "pulsatrix::datalog::Rule", "classpulsatrix_1_1datalog_1_1Rule.html", null ],
     [ "std::runtime_error", null, [
       [ "pulsatrix::orch::HttpError", "classpulsatrix_1_1orch_1_1HttpError.html", null ],
