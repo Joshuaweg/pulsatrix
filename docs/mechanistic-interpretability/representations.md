@@ -18,6 +18,8 @@ must come from the same n inputs, in the same order.
 | What does a layer look like in 2D or 3D? | `FitPca`, `RenderProjectionSvg` | [PCA](#pca-projections) |
 | How do I run UMAP or t-SNE on a layer? | `ExportEmbeddings`, `ReadNpy` | [UMAP and t-SNE](#umap-and-t-sne) |
 
+For clusters, loops and voids, see [Topology of representations](topology.md).
+
 **Compare against an untrained model.** Every number on this page can come from the architecture
 or the inputs rather than what was learned. Compute it on a
 [`NullModelBaseline`](index.md#baselines) too.
