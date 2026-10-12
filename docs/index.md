@@ -61,7 +61,11 @@ fixed score on CartPole.
 
 **[Mechanistic Interpretability](mechanistic-interpretability/index.md)**: look inside a
 network.
-- **Read and probe activations** with hooks and linear probes.
+- **Read activations** with hooks, patch them, and apply the logit lens.
+- **Compare and describe representations**: CKA, RSA, SVCCA and mutual nearest neighbors across
+  layers and models; anisotropy, effective rank and intrinsic dimension; PCA plots, and export
+  for UMAP and t-SNE.
+- **Test for named concepts** with linear probes and their controls, and with TCAV.
 - **Find features** with sparse autoencoders (TopK, BatchTopK, Matryoshka, JumpReLU),
   block-sparse featurizers and transcoders, and **evaluate** them against random-model
   baselines.
