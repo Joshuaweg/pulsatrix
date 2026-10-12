@@ -249,6 +249,8 @@ var hierarchy =
     [ "pulsatrix::LocalSensitivityResult", "structpulsatrix_1_1LocalSensitivityResult.html", null ],
     [ "pulsatrix::LoRAAdapter", "classpulsatrix_1_1LoRAAdapter.html", null ],
     [ "pulsatrix::LoRAConfig", "structpulsatrix_1_1LoRAConfig.html", null ],
+    [ "pulsatrix::LoraLayerRelevance", "structpulsatrix_1_1LoraLayerRelevance.html", null ],
+    [ "pulsatrix::LoReFTConfig", "structpulsatrix_1_1LoReFTConfig.html", null ],
     [ "pulsatrix::LossRecovered", "structpulsatrix_1_1LossRecovered.html", null ],
     [ "pulsatrix::LRP", "classpulsatrix_1_1LRP.html", null ],
     [ "pulsatrix::LRPRuleConfig", "structpulsatrix_1_1LRPRuleConfig.html", null ],
@@ -306,6 +308,9 @@ var hierarchy =
       [ "pulsatrix::RNNModule", "classpulsatrix_1_1RNNModule.html", null ],
       [ "pulsatrix::RWKVModule", "classpulsatrix_1_1RWKVModule.html", null ],
       [ "pulsatrix::ReluModule", "classpulsatrix_1_1ReluModule.html", null ],
+      [ "pulsatrix::ResidualIntervention", "classpulsatrix_1_1ResidualIntervention.html", [
+        [ "pulsatrix::LoReFTIntervention", "classpulsatrix_1_1LoReFTIntervention.html", null ]
+      ] ],
       [ "pulsatrix::ResidualModule", "classpulsatrix_1_1ResidualModule.html", null ],
       [ "pulsatrix::RetNetModule", "classpulsatrix_1_1RetNetModule.html", null ],
       [ "pulsatrix::RoPEModule", "classpulsatrix_1_1RoPEModule.html", null ],

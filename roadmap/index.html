@@ -4715,7 +4715,7 @@ rate is tuned, plain LoRA matches or beats most of them.</p>
 <td>TRN-7</td>
 <td>P1</td>
 <td>M</td>
-<td></td>
+<td>Done (see below)</td>
 </tr>
 <tr>
 <td>TRN-9</td>
@@ -4724,7 +4724,7 @@ rate is tuned, plain LoRA matches or beats most of them.</p>
 <td>FND-4</td>
 <td>P1</td>
 <td>M</td>
-<td></td>
+<td>Done (see below)</td>
 </tr>
 <tr>
 <td>TRN-10</td>
@@ -4791,7 +4791,22 @@ rate is tuned, plain LoRA matches or beats most of them.</p>
   Regret". Also added: <code>SetLoraEnabled()</code>, to run the base model without removing the adapter,
   which TRN-8 and TRN-11 need. Checked against PEFT 0.21.0 on a tiny Qwen2: logits, all 28
   adapter gradients, merging, and the saved file's keys and values.</li>
+<li><strong>TRN-8</strong> follows the plan. The rule runs on the base and adapter paths at once, as one Linear
+  layer on the input repeated twice with W and (alpha / r) A B stacked, so each rule's
+  denominator sees both paths. Under epsilon the two parts sum exactly to the merged relevance.
+  Under gamma and z⁺ they don't, and the docs explain why. <code>LRPRuleConfig::lora_relevance</code>
+  chooses Split (the default) or Merged, and <code>LoraRelevanceSplit()</code> reports each layer's parts.
+  Not done: relevance for each of the r rank directions of an adapter.</li>
+<li><strong>TRN-9</strong> follows the plan in <code>loreft.hpp</code>. <code>CausalLM</code> gains <code>ResidualIntervention</code> slots after
+  each block. These run in training, in the relevance passes, and through a new block-output hook
+  in cached generation, which edits only the prompt's positions, as pyreft does. Two departures:</li>
+<li>R is kept orthonormal by re-orthonormalizing after each step (<code>OrthonormalizeLoReFT()</code>), not by
+    PyTorch's orthogonal parametrization. The edit, its gradients and its relevance are the same
+    for the same R.</li>
+<li>The relevance is split into the identity's part and the edit's part, as for LoRA.</li>
 </ul>
+<p>Checked against pyreft 0.1.0's own <code>LoreftIntervention</code>, installed without its dependencies
+  because pyreft pins transformers 4.45.1: logits, gradients and generation on a tiny Qwen2.</p>
 <h3 id="follow-ups-the-trn-work-surfaced">Follow-ups the TRN work surfaced<a class="headerlink" href="#follow-ups-the-trn-work-surfaced" title="Permanent link">&para;</a></h3>
 <table>
 <thead>

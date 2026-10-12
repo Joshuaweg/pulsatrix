@@ -6,6 +6,7 @@ var classpulsatrix_1_1CausalLM =
     [ "config", "classpulsatrix_1_1CausalLM.html#a91ca6afb6c75aac837ecf1c062057de4", null ],
     [ "embed_tokens", "classpulsatrix_1_1CausalLM.html#afd56ae0478d49c9fe14323a83d8de17c", null ],
     [ "forward_impl", "classpulsatrix_1_1CausalLM.html#abf0b56f0bbec7741133bff0b23f57860", null ],
+    [ "intervention", "classpulsatrix_1_1CausalLM.html#ab90ab6267dfc2cb48cbfb683a57832ec", null ],
     [ "layer", "classpulsatrix_1_1CausalLM.html#a146c289c429c1bf98cd36169f6249850", null ],
     [ "lm_head", "classpulsatrix_1_1CausalLM.html#a7a04d91fc2f2179d49b1af7082964b95", null ],
     [ "named_buffers", "classpulsatrix_1_1CausalLM.html#a4a50100e51aaf0c37def6e393bcb3fe9", null ],
@@ -18,5 +19,6 @@ var classpulsatrix_1_1CausalLM =
     [ "propagate_relevance", "classpulsatrix_1_1CausalLM.html#acb5aec59b9ca77c9573953bb5ca38d01", null ],
     [ "propagate_relevance_by_layer", "classpulsatrix_1_1CausalLM.html#a100f79a58e72ef35559b72e47cb89f6b", null ],
     [ "set_hidden_state_hook", "classpulsatrix_1_1CausalLM.html#a78167d4cedaa787b7ef25ebc24817a0f", null ],
+    [ "set_intervention", "classpulsatrix_1_1CausalLM.html#a536d5b52bc411d1a276d8e35e476e5a7", null ],
     [ "set_training", "classpulsatrix_1_1CausalLM.html#a99f307bff531cf6235f9bfe8a6ab63bc", null ]
 ];

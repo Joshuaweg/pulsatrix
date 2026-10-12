@@ -1,6 +1,10 @@
 var lrp__rule__config_8hpp =
 [
     [ "pulsatrix::LRPRuleConfig", "structpulsatrix_1_1LRPRuleConfig.html", "structpulsatrix_1_1LRPRuleConfig" ],
+    [ "LoRARelevance", "lrp__rule__config_8hpp.html#aa3ee8f8c714e3eed498aa7575f844f30", [
+      [ "Split", "lrp__rule__config_8hpp.html#aa3ee8f8c714e3eed498aa7575f844f30a8a9e64d86ed12ad40de129bc7f4683b2", null ],
+      [ "Merged", "lrp__rule__config_8hpp.html#aa3ee8f8c714e3eed498aa7575f844f30a63911b0b34ebf2a1fbc8f960d1d5cbcb", null ]
+    ] ],
     [ "LRPRule", "lrp__rule__config_8hpp.html#aa4c5ed2bc6fef2b50c34076c222872aa", [
       [ "Epsilon", "lrp__rule__config_8hpp.html#aa4c5ed2bc6fef2b50c34076c222872aaa99f2b3f30bec5a8826333eaec7ce7044", null ],
       [ "Gamma", "lrp__rule__config_8hpp.html#aa4c5ed2bc6fef2b50c34076c222872aaad9cdb0f6e0d556347c10a8695545a4b5", null ],
