@@ -17,7 +17,8 @@ var searchData=
   ['eps_14',['eps',['../structpulsatrix_1_1RecurrentCellArgs.html#a06f5a6fe94693e0ea2c07ea2bfb12d1d',1,'pulsatrix::RecurrentCellArgs::eps'],['../structpulsatrix_1_1SsmPassArgs.html#a4a2d4d6fe8a614f6fd5333aa7e5c3a15',1,'pulsatrix::SsmPassArgs::eps']]],
   ['epsilon_15',['epsilon',['../structpulsatrix_1_1LRPRuleConfig.html#a41a03360ab748cd978bea186731a1750',1,'pulsatrix::LRPRuleConfig']]],
   ['epsilon_5fbias_5fin_5fdenominator_16',['epsilon_bias_in_denominator',['../structpulsatrix_1_1LRPRuleConfig.html#ace420e2114f01fc83687eeed487884fc',1,'pulsatrix::LRPRuleConfig']]],
-  ['examples_17',['examples',['../structpulsatrix_1_1TokenizerParityReport.html#a25f928483f9eadf98c6b04aa60853c5d',1,'pulsatrix::TokenizerParityReport']]],
-  ['explained_5fvariance_18',['explained_variance',['../structpulsatrix_1_1ReconstructionMetrics.html#a9f876fa9d1ba14a9bb8cca0ae8113c5e',1,'pulsatrix::ReconstructionMetrics::explained_variance'],['../structpulsatrix_1_1Pca.html#a13769d1a558bf12a4e05c8ec40b80395',1,'pulsatrix::Pca::explained_variance']]],
-  ['explained_5fvariance_5fratio_19',['explained_variance_ratio',['../structpulsatrix_1_1Pca.html#a6b224b1e2fd4d5de5ee1cd6d1dcc9d7e',1,'pulsatrix::Pca::explained_variance_ratio'],['../structpulsatrix_1_1ProjectionDocument.html#a1c2dd7b3f93020c3a9f20e98fa44a018',1,'pulsatrix::ProjectionDocument::explained_variance_ratio']]]
+  ['error_5fbound_17',['error_bound',['../structpulsatrix_1_1DistanceMatrix.html#a1961963526561d2049ac11bcb1fcf9dc',1,'pulsatrix::DistanceMatrix']]],
+  ['examples_18',['examples',['../structpulsatrix_1_1TokenizerParityReport.html#a25f928483f9eadf98c6b04aa60853c5d',1,'pulsatrix::TokenizerParityReport']]],
+  ['explained_5fvariance_19',['explained_variance',['../structpulsatrix_1_1ReconstructionMetrics.html#a9f876fa9d1ba14a9bb8cca0ae8113c5e',1,'pulsatrix::ReconstructionMetrics::explained_variance'],['../structpulsatrix_1_1Pca.html#a13769d1a558bf12a4e05c8ec40b80395',1,'pulsatrix::Pca::explained_variance']]],
+  ['explained_5fvariance_5fratio_20',['explained_variance_ratio',['../structpulsatrix_1_1Pca.html#a6b224b1e2fd4d5de5ee1cd6d1dcc9d7e',1,'pulsatrix::Pca::explained_variance_ratio'],['../structpulsatrix_1_1ProjectionDocument.html#a1c2dd7b3f93020c3a9f20e98fa44a018',1,'pulsatrix::ProjectionDocument::explained_variance_ratio']]]
 ];

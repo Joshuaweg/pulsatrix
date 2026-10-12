@@ -1,5 +1,6 @@
 var NAVTREEINDEX18 =
 {
+"dqn__target_8hpp.html":[2,2,6],
 "dropout__module_8hpp.html":[2,0,23],
 "egan__mutation_8hpp.html":[2,7,2],
 "egan__training_8hpp.html":[2,7,3],
@@ -30,8 +31,8 @@ var NAVTREEINDEX18 =
 "functions_e.html":[4,3,0,4],
 "functions_enum.html":[4,3,4],
 "functions_f.html":[4,3,0,5],
-"functions_func.html":[4,3,1],
 "functions_func.html":[4,3,1,0],
+"functions_func.html":[4,3,1],
 "functions_func_b.html":[4,3,1,1],
 "functions_func_c.html":[4,3,1,2],
 "functions_func_d.html":[4,3,1,3],
@@ -75,8 +76,8 @@ var NAVTREEINDEX18 =
 "functions_type.html":[4,3,3],
 "functions_u.html":[4,3,0,20],
 "functions_v.html":[4,3,0,21],
-"functions_vars.html":[4,3,2],
 "functions_vars.html":[4,3,2,0],
+"functions_vars.html":[4,3,2],
 "functions_vars_b.html":[4,3,2,1],
 "functions_vars_c.html":[4,3,2,2],
 "functions_vars_d.html":[4,3,2,3],
@@ -248,6 +249,5 @@ var NAVTREEINDEX18 =
 "namespacemembers_vars.html":[3,1,2],
 "namespacemembers_w.html":[3,1,0,22],
 "namespacemembers_x.html":[3,1,0,23],
-"namespacemembers_z.html":[3,1,0,24],
-"namespacepulsatrix.html":[3,0,0]
+"namespacemembers_z.html":[3,1,0,24]
 };

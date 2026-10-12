@@ -5813,7 +5813,7 @@ GPL-licensed parts and giotto-ph (AGPL) are avoided.</p>
 <td>TDA-1</td>
 <td>P0</td>
 <td>S</td>
-<td></td>
+<td>Done (see below)</td>
 </tr>
 <tr>
 <td>TDA-3</td>
@@ -5960,6 +5960,14 @@ GPL-licensed parts and giotto-ph (AGPL) are avoided.</p>
   over every axis but a configurable feature axis, so a convolution's pixels and a sequence
   model's tokens use the same code. Points stay on the host as float32; <code>ToTensor()</code> places them
   on a backend for TDA-2.</li>
+<li><strong>TDA-2</strong> follows the plan in <code>tda/distance_matrix.hpp</code>. The error bound is rigorous: the
+  float32 dot-product bound γ_d ‖x‖ ‖y‖ (Higham), plus the double-precision norms and
+  combination, the rounding of centered or normalized points, and the final rounding, as an
+  interval on each squared distance. <code>error_bound</code> is the maximum over pairs, which is what
+  stability needs (d_B ≤ ‖D − D′‖∞). Additions: <code>center</code> (it cuts the bound by orders of
+  magnitude when points share an offset), <code>normalize</code>, an <code>Exact</code> method in double, and blocked
+  GEMMs over the upper triangle so device memory stays bounded. Distances are stored condensed in
+  scipy's pdist order, which Ripser (TDA-4) reads as an upper-triangular matrix.</li>
 </ul>
 <p>Not planned: "neural persistence" on weight graphs. A 2023 follow-up showed it mostly measures
 weight variance.</p>

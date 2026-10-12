@@ -818,6 +818,17 @@
   
 </li>
       
+        <li class="md-nav__item">
+  <a href="#distances-with-an-error-bar" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Distances, with an error bar
+      
+    </span>
+  </a>
+  
+</li>
+      
     </ul>
   
 </nav>
@@ -2339,6 +2350,17 @@
   
 </li>
       
+        <li class="md-nav__item">
+  <a href="#distances-with-an-error-bar" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Distances, with an error bar
+      
+    </span>
+  </a>
+  
+</li>
+      
     </ul>
   
 </nav>
@@ -2368,7 +2390,7 @@ noise and a random-network control?</p>
 <p>pulsatrix builds this as a pipeline, one stage at a time:</p>
 <div class="highlight"><pre><span></span><code>PointCloud → distances → filtration → persistence diagram → numbers and plots
 </code></pre></div>
-<p>This page grows with each stage. So far it covers the first.</p>
+<p>This page grows with each stage. So far it covers the first two.</p>
 <h2 id="from-activations-to-a-point-cloud">From activations to a point cloud<a class="headerlink" href="#from-activations-to-a-point-cloud" title="Permanent link">&para;</a></h2>
 <p><code>PointCloud</code> gathers a layer's activations, batch by batch, into one set of points. Each point
 remembers the sample and position it came from, so a loop found later can be traced back to the
@@ -2431,6 +2453,44 @@ inputs that form it.</p>
 </ul>
 <p><code>cloud.ToTensor(&amp;backend)</code> gives the points as an <code>(n, dimension)</code> tensor for the stages that
 follow.</p>
+<h2 id="distances-with-an-error-bar">Distances, with an error bar<a class="headerlink" href="#distances-with-an-error-bar" title="Permanent link">&para;</a></h2>
+<p>Persistent homology sees the points only through their pairwise distances. <code>PairwiseDistances()</code>
+computes them as |x|² + |y|² − 2 x·y, with the dot products from one GEMM on the cloud's backend
+(CPU, HIP or CUDA):</p>
+<div class="highlight"><pre><span></span><code><span class="cp">#include</span><span class="w"> </span><span class="cpf">"pulsatrix/tda/distance_matrix.hpp"</span>
+
+<span class="k">const</span><span class="w"> </span><span class="n">DistanceMatrix</span><span class="w"> </span><span class="n">d</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">PairwiseDistances</span><span class="p">(</span><span class="n">cloud</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">backend</span><span class="p">);</span>
+<span class="c1">// d.values: the n (n − 1) / 2 distances, in scipy's pdist order; d.at(i, j) reads one.</span>
+<span class="c1">// d.error_bound: every stored distance is within this of the exact one.</span>
+</code></pre></div>
+<p><strong>Why the error bound.</strong> In float32 that formula cancels for points close together, relative to
+their distance from the origin. The result can be wrong in every digit, and since persistent
+homology is all about small distances (when do two points join?), that matters. So every
+<code>DistanceMatrix</code> carries a certified bound: |stored − exact| ≤ <code>error_bound</code> for every pair.</p>
+<ul>
+<li><strong>It's rigorous.</strong> It comes from the standard error analysis of a float32 dot product
+  (at most γ_d ‖x‖ ‖y‖, whatever order the GEMM sums in), plus the double-precision steps and
+  the final rounding. It assumes the GEMM accumulates in float32, not TF32 or bf16.</li>
+<li><strong>It carries through.</strong> Persistence diagrams are stable: a diagram computed from these
+  distances is within <code>error_bound</code>, in bottleneck distance, of the exact one. Later stages add
+  their own errors to it.</li>
+<li><strong>When it's large, center.</strong> Points sharing a large offset, as in an anisotropic layer, make
+  the bound large. <code>DistanceOptions::center</code> subtracts the mean first, which leaves the
+  distances unchanged. In the tests, points spread by 0.01 per coordinate, sitting 1,000 from the
+  origin, get a bound bigger than a tenth of their distances. Centered, it shrinks over a hundredfold, to under a
+  thousandth.</li>
+<li><strong>Or compute exactly.</strong> <code>DistanceMethod::Exact</code> sums squared differences in double on the
+  host. Its bound is the float32 rounding of the result, but it costs n² × d on the CPU.</li>
+</ul>
+<p>Other options:</p>
+<ul>
+<li><code>normalize</code> scales every point to unit length first. The distance is then √(2 − 2 cos), a
+  metric that orders pairs as cosine similarity does.</li>
+<li><code>block_rows</code> sets how many rows each GEMM computes. The device holds the points and one block
+  at a time; by default a block has at most 2²⁴ entries.</li>
+</ul>
+<p>Storing n (n − 1) / 2 float32 values takes 50 MB for 5,000 points. Persistent homology above H0
+can't use many more points than that anyway; landmarks (coming) choose which ones to keep.</p>
 <p>Full API reference: <a href="../api/group__tda.html">Doxygen: Topological Data Analysis</a></p>
 
 

@@ -180,6 +180,8 @@ var annotated_dup =
       [ "DeviceBackend", "classpulsatrix_1_1DeviceBackend.html", "classpulsatrix_1_1DeviceBackend" ],
       [ "DigitsPreTokenizer", "classpulsatrix_1_1DigitsPreTokenizer.html", "classpulsatrix_1_1DigitsPreTokenizer" ],
       [ "DisjunctionModule", "classpulsatrix_1_1DisjunctionModule.html", "classpulsatrix_1_1DisjunctionModule" ],
+      [ "DistanceMatrix", "structpulsatrix_1_1DistanceMatrix.html", "structpulsatrix_1_1DistanceMatrix" ],
+      [ "DistanceOptions", "structpulsatrix_1_1DistanceOptions.html", "structpulsatrix_1_1DistanceOptions" ],
       [ "DiverseCounterfactualOptions", "structpulsatrix_1_1DiverseCounterfactualOptions.html", "structpulsatrix_1_1DiverseCounterfactualOptions" ],
       [ "DiverseCounterfactualResult", "structpulsatrix_1_1DiverseCounterfactualResult.html", "structpulsatrix_1_1DiverseCounterfactualResult" ],
       [ "DmsVariants", "structpulsatrix_1_1DmsVariants.html", "structpulsatrix_1_1DmsVariants" ],
