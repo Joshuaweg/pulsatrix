@@ -978,25 +978,34 @@ Pulsatrix writes H0 itself (a minimum spanning tree, on CPU and GPU), vendors Ri
 and H2, and writes the distances, vectorizations and significance tests itself. GUDHI's
 GPL-licensed parts and giotto-ph (AGPL) are avoided.
 
-| ID | Item | Why | Depends on | P | Effort |
-|---|---|---|---|---|---|
-| TDA-1 | A `PointCloud` built from `ActivationSnapshot`s, with flatten and pooling options, concatenated across batches | The input to everything below | — | P0 | S |
-| TDA-2 | Pairwise distances via GEMM on every backend, with an fp32 error bound | Distances are the only part that touches the model's dimension | TDA-1 | P0 | S |
-| TDA-3 | H0 as a minimum spanning tree | Exact, fast and GPU-friendly | TDA-2 | P0 | S |
-| TDA-4 | Vendored Ripser for H1 and H2, returning critical edges and cocycles | Loops and voids | TDA-2 | P0 | M |
-| TDA-5 | `Diagram`, bottleneck and Wasserstein distances, `Certified<T>`, and property tests for stability | Compare layers, models and seeds with certified error | TDA-3, TDA-4 | P0 | M |
-| TDA-6 | Betti curves, persistence landscapes, persistence images, persistent entropy | Turn diagrams into numbers for probes and plots | TDA-5 | P0 | S |
-| TDA-7 | Farthest-point landmarks, which give the subsampling error bound | Persistent homology can't run on 100,000 activations | FND-3 | P0 | S |
-| TDA-8 | Significance tests: a universal null distribution, bootstrap confidence bands, Gaussian and random-network baselines | Every reported loop needs a p-value | TDA-5 | P0 | M |
-| TDA-9 | Barcode, persistence diagram and Betti curve views, with JSON and SVG export | See the result | TDA-5, VIZ-1 | P1 | M |
-| TDA-10 | **A manifold verifier for featurizer blocks:** decide whether a BSF or SAE block forms a circle or a torus, and recover a circular coordinate to steer along. It passes by reproducing the GPT-2 day-of-week circle (Engels et al.) against a random-network control | Goodfire measures block dimension with a linear method. Nobody has published a topological check, so this is new | TDA-4, TDA-7, TDA-8, FEAT-6 | P1 | M |
-| TDA-11 | Representation Topology Divergence next to CKA in one `compare_representations()` report | Catches clusters and loops that CKA misses | TDA-4, INT-2 | P1 | S |
-| TDA-12 | Betti numbers layer by layer through a network, with a random-network baseline | Reproduces "topology simplifies through the layers" (Naitzat et al., 2020) | TDA-7, TDA-8 | P1 | M |
-| TDA-13 | Spectral and distance-to-measure distances | Raw distances concentrate in high dimensions and hide loops | INT-1, FND-4 | P2 | M |
-| TDA-14 | Mapper, with an instability score and a parameter sweep, never a single graph | Mapper output depends heavily on its parameters | FND-4, TDA-3 | P2 | M |
-| TDA-15 | A differentiable persistence loss | Topology as a training signal | TDA-4 | P2 | M |
-| TDA-16 | Probes on diagram features for out-of-distribution and trojan detection, compared against non-topological features | Only worth it if it beats simpler statistics | TDA-6 | P2 | M |
-| TDA-17 to TDA-19 | Image/kernel persistence across layers, zigzag persistence, multiparameter persistence | Research-grade | TDA-4 | P3 | L–XL |
+| ID | Item | Why | Depends on | P | Effort | Status |
+|---|---|---|---|---|---|---|
+| TDA-1 | A `PointCloud` built from `ActivationSnapshot`s, with flatten and pooling options, concatenated across batches | The input to everything below | — | P0 | S | Done (see below) |
+| TDA-2 | Pairwise distances via GEMM on every backend, with an fp32 error bound | Distances are the only part that touches the model's dimension | TDA-1 | P0 | S |  |
+| TDA-3 | H0 as a minimum spanning tree | Exact, fast and GPU-friendly | TDA-2 | P0 | S |  |
+| TDA-4 | Vendored Ripser for H1 and H2, returning critical edges and cocycles | Loops and voids | TDA-2 | P0 | M |  |
+| TDA-5 | `Diagram`, bottleneck and Wasserstein distances, `Certified<T>`, and property tests for stability | Compare layers, models and seeds with certified error | TDA-3, TDA-4 | P0 | M |  |
+| TDA-6 | Betti curves, persistence landscapes, persistence images, persistent entropy | Turn diagrams into numbers for probes and plots | TDA-5 | P0 | S |  |
+| TDA-7 | Farthest-point landmarks, which give the subsampling error bound | Persistent homology can't run on 100,000 activations | FND-3 | P0 | S |  |
+| TDA-8 | Significance tests: a universal null distribution, bootstrap confidence bands, Gaussian and random-network baselines | Every reported loop needs a p-value | TDA-5 | P0 | M |  |
+| TDA-9 | Barcode, persistence diagram and Betti curve views, with JSON and SVG export | See the result | TDA-5, VIZ-1 | P1 | M |  |
+| TDA-10 | **A manifold verifier for featurizer blocks:** decide whether a BSF or SAE block forms a circle or a torus, and recover a circular coordinate to steer along. It passes by reproducing the GPT-2 day-of-week circle (Engels et al.) against a random-network control | Goodfire measures block dimension with a linear method. Nobody has published a topological check, so this is new | TDA-4, TDA-7, TDA-8, FEAT-6 | P1 | M |  |
+| TDA-11 | Representation Topology Divergence next to CKA in one `compare_representations()` report | Catches clusters and loops that CKA misses | TDA-4, INT-2 | P1 | S |  |
+| TDA-12 | Betti numbers layer by layer through a network, with a random-network baseline | Reproduces "topology simplifies through the layers" (Naitzat et al., 2020) | TDA-7, TDA-8 | P1 | M |  |
+| TDA-13 | Spectral and distance-to-measure distances | Raw distances concentrate in high dimensions and hide loops | INT-1, FND-4 | P2 | M |  |
+| TDA-14 | Mapper, with an instability score and a parameter sweep, never a single graph | Mapper output depends heavily on its parameters | FND-4, TDA-3 | P2 | M |  |
+| TDA-15 | A differentiable persistence loss | Topology as a training signal | TDA-4 | P2 | M |  |
+| TDA-16 | Probes on diagram features for out-of-distribution and trojan detection, compared against non-topological features | Only worth it if it beats simpler statistics | TDA-6 | P2 | M |  |
+| TDA-17 to TDA-19 | Image/kernel persistence across layers, zigzag persistence, multiparameter persistence | Research-grade | TDA-4 | P3 | L–XL |  |
+
+### How the TDA work departed from the plan
+
+- **TDA-1** follows the plan in `tda/point_cloud.hpp`, with one addition: every point records the
+  sample and position it came from (`PointOrigin`), so later stages can name the inputs that form
+  a loop. Pooling is a `PointPooling` choice (`Flatten`, `PerPosition`, `Mean`, `Max`, `Last`)
+  over every axis but a configurable feature axis, so a convolution's pixels and a sequence
+  model's tokens use the same code. Points stay on the host as float32; `ToTensor()` places them
+  on a backend for TDA-2.
 
 Not planned: "neural persistence" on weight graphs. A 2023 follow-up showed it mostly measures
 weight variance.
