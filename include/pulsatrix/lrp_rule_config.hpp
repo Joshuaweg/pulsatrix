@@ -33,6 +33,19 @@ enum class LRPRule {
     ZBox
 };
 
+/** @brief How a LinearModule with an unmerged LoRA adapter (TRN-7, TRN-8) propagates relevance. */
+enum class LoRARelevance {
+    /// The layer is two parallel paths, the base weight W and the adapter's (alpha / r) A B, and the
+    /// rule runs on both at once, as one Linear layer on the input repeated twice with the two
+    /// weights stacked. The input relevance is the sum of the two paths' parts, which the adapter
+    /// keeps (LoRAAdapter::last_adapter_relevance()). For the epsilon rule the sum equals Merged's
+    /// result; Gamma and AlphaBeta treat the paths' positive and negative parts separately, so it
+    /// differs.
+    Split,
+    /// The rule runs on the adapted weight W + (alpha / r) A B, exactly as on a merged adapter.
+    Merged
+};
+
 /** @brief Lower-case rule name ("epsilon", "gamma", "alpha_beta", "zbox") for messages/metadata. */
 inline std::string lrp_rule_name(LRPRule rule) {
     switch (rule) {
@@ -95,6 +108,10 @@ struct LRPRuleConfig {
      *        use this config.
      */
     std::shared_ptr<const LRPRuleConfig> conv_rule;
+    /** @brief LinearModule with an unmerged, enabled LoRA adapter only: split the relevance between
+     *         the base and adapter paths (the default) or treat the layer as merged. A merged
+     *         adapter can't be split: its update is part of W. */
+    LoRARelevance lora_relevance = LoRARelevance::Split;
 };
 
 }  // namespace pulsatrix

@@ -94,13 +94,54 @@ PyTorch's values: a run seeded the same way in PEFT starts from different A matr
 The same calls exist per layer on `LinearModule`: `merge_lora()`, `unmerge_lora()`,
 `set_lora_enabled()`, `detach_lora()` and `lora()`.
 
-### Explaining an adapted model
+### Explaining an adapted model: what did the fine-tuning add?
 
-An adapted layer's `propagate_relevance()` treats it as the single linear map
-W + (alpha / r) A B, so every LRP rule, AttnLRP and the other explainers run on a LoRA model
-unchanged. The relevance is the same whether the adapter is merged or not, up to float32
-rounding. Splitting relevance between the base path and the adapter path, to see what the
-fine-tuning changed, is the next roadmap item (TRN-8).
+Every LRP rule, AttnLRP and the other explainers run on a LoRA model unchanged. An adapted layer
+also splits its relevance in two parts:
+- the part that reaches its input through the base weight W;
+- the part that reaches it through the adapter (alpha / r) A B.
+
+The two parts sum to the layer's input relevance. After a relevance pass, `LoraRelevanceSplit()`
+reports each adapted layer's split. A layer with a large adapter share is one whose explanation
+the fine-tuning changed. Within a layer, the adapter's `(N, in)` tensor shows which inputs and
+which features changed.
+
+```cpp
+LoadLoraAdapter(*model, "my-adapter", HuggingFaceMapping(model->config()));
+const Tensor logits = model->forward(tokens);
+(void)model->propagate_relevance(target_relevance, LRPRuleConfig{});
+for (const LoraLayerRelevance& layer : LoraRelevanceSplit(*model)) {
+    std::cout << layer.name << ": base " << layer.base_total << ", adapter " << layer.adapter_total << "\n";
+}
+```
+
+To read one layer directly, use `LoRAAdapter::last_base_relevance()` and
+`last_adapter_relevance()`. Both are cleared by the next `forward()`.
+
+**How the split is computed.** The layer is treated as two parallel paths. The rule runs on both
+at once, as on a single Linear layer whose input is x repeated twice and whose weight is W and
+(alpha / r) A B stacked. Every rule's denominator therefore sees both paths. What that means
+depends on the rule:
+
+- **Epsilon** (the default). Each path gets x_i w_ij R_j / z_j, where z is the whole layer's
+  output. The two parts add up exactly to the relevance of the merged layer, so splitting changes
+  nothing about the explanation itself.
+- **Gamma and AlphaBeta (z⁺).** These rules favour positive weights. The positive part of the
+  merged weight, (W + sAB)⁺, is not W⁺ + (sAB)⁺, so the split relevance differs from the merged
+  layer's, sometimes by a lot. Both are conservative. They answer different questions: the split
+  treats the fine-tune as a separate circuit added next to the base model, and the merged form
+  treats the fine-tuned model as one new model.
+
+`LRPRuleConfig::lora_relevance` chooses between them:
+- `LoRARelevance::Split` (the default) splits the layer as above.
+- `LoRARelevance::Merged` runs the rule on the adapted weight, so an unmerged adapter gives
+  exactly the relevance a merged one does.
+
+A merged adapter (`MergeLora()`) can't be split, because its update is already part of W. A
+disabled adapter isn't split either. Neither reports a split.
+
+To see what a fine-tune changed, compare the relevance with the adapters off
+(`SetLoraEnabled(model, false)`) and on.
 
 ### PEFT adapter files
 
