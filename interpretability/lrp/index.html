@@ -642,6 +642,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#concepts-concept-relevance-propagation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Concepts: Concept Relevance Propagation
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#see-also" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -2411,6 +2422,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#concepts-concept-relevance-propagation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Concepts: Concept Relevance Propagation
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#see-also" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -2732,11 +2754,57 @@ through <code>PULSATRIX_GOLDEN_DIR</code>.</p>
   4.8e-5 against LXT's rules on the 650M model.</li>
 <li>Not covered by the reference tests: the recurrent and state-space rules.</li>
 </ul>
+<h2 id="concepts-concept-relevance-propagation">Concepts: Concept Relevance Propagation<a class="headerlink" href="#concepts-concept-relevance-propagation" title="Permanent link">&para;</a></h2>
+<p>A heatmap says where the evidence for a class is, not what it is. Concept Relevance
+Propagation (CRP; Achtibat et al., Nature Machine Intelligence 2023) works at a hidden layer,
+where each channel (a convolution's filter, a dense layer's unit) stands for a learned concept.
+It answers three questions, with the same <code>LRP</code> object and rules as <code>explain()</code>:</p>
+<div class="highlight"><pre><span></span><code><span class="cp">#include</span><span class="w"> </span><span class="cpf">"pulsatrix/concept_relevance.hpp"</span>
+
+<span class="k">const</span><span class="w"> </span><span class="n">LRP</span><span class="w"> </span><span class="n">lrp</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">LRP</span><span class="o">::</span><span class="n">epsilon_plus</span><span class="p">();</span>
+<span class="c1">// Node i + 1 is module i's output: 2 is the first ReLU's.</span>
+<span class="k">const</span><span class="w"> </span><span class="n">Tensor</span><span class="w"> </span><span class="n">at_layer</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">LayerRelevance</span><span class="p">(</span><span class="n">lrp</span><span class="p">,</span><span class="w"> </span><span class="n">ctx</span><span class="p">,</span><span class="w"> </span><span class="n">image</span><span class="p">,</span><span class="w"> </span><span class="n">LRPTarget</span><span class="p">{{</span><span class="n">cat</span><span class="p">}},</span><span class="w"> </span><span class="cm">/*layer=*/</span><span class="mi">2</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">backend</span><span class="p">);</span>
+<span class="k">const</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">double</span><span class="o">&gt;</span><span class="w"> </span><span class="n">per_channel</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">ChannelRelevance</span><span class="p">(</span><span class="n">at_layer</span><span class="p">);</span><span class="w">  </span><span class="c1">// (N, C)</span>
+
+<span class="c1">// Where in the image are concepts 7 and 12?</span>
+<span class="k">const</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="n">Attribution</span><span class="o">&gt;</span><span class="w"> </span><span class="n">maps</span><span class="w"> </span><span class="o">=</span>
+<span class="w">    </span><span class="n">ConditionalHeatmaps</span><span class="p">(</span><span class="n">lrp</span><span class="p">,</span><span class="w"> </span><span class="n">ctx</span><span class="p">,</span><span class="w"> </span><span class="n">image</span><span class="p">,</span><span class="w"> </span><span class="n">LRPTarget</span><span class="p">{{</span><span class="n">cat</span><span class="p">}},</span><span class="w"> </span><span class="p">{{{</span><span class="mi">2</span><span class="p">,</span><span class="w"> </span><span class="p">{</span><span class="mi">7</span><span class="p">}}},</span><span class="w"> </span><span class="p">{{</span><span class="mi">2</span><span class="p">,</span><span class="w"> </span><span class="p">{</span><span class="mi">12</span><span class="p">}}}},</span><span class="w"> </span><span class="o">&amp;</span><span class="n">backend</span><span class="p">);</span>
+
+<span class="c1">// What is concept 7? The images where it does most for "cat".</span>
+<span class="k">const</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">int64_t</span><span class="o">&gt;</span><span class="w"> </span><span class="n">examples</span><span class="w"> </span><span class="o">=</span>
+<span class="w">    </span><span class="n">ConceptReferenceSamples</span><span class="p">(</span><span class="n">lrp</span><span class="p">,</span><span class="w"> </span><span class="n">ctx</span><span class="p">,</span><span class="w"> </span><span class="n">dataset</span><span class="p">,</span><span class="w"> </span><span class="n">cat</span><span class="p">,</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span><span class="w"> </span><span class="mi">7</span><span class="p">,</span><span class="w"> </span><span class="cm">/*k=*/</span><span class="mi">8</span><span class="p">,</span><span class="w"> </span><span class="n">ReferenceMode</span><span class="o">::</span><span class="n">Relevance</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">backend</span><span class="p">);</span>
+</code></pre></div>
+<ul>
+<li><strong>How much each concept matters.</strong> <code>ChannelRelevance</code> sums the relevance at the layer per
+  channel. With a conserving rule, the channels add up to the explained output.</li>
+<li><strong>Where each concept is.</strong> <code>ConditionalHeatmaps</code> runs LRP with the relevance at the layer
+  zeroed outside a concept's channels. The rules are linear in the relevance they pass on, so
+  the heatmaps of all a layer's channels add up to the plain heatmap (tested under three
+  presets, to 1e-5).</li>
+<li>A condition can mask several layers, for a concept and a sub-concept below it.</li>
+<li>The forward pass and the seed are computed once for all conditions.</li>
+<li><strong>What each concept is.</strong> <code>ConceptReferenceSamples</code> ranks a set of inputs by how relevant a
+  channel is in each for the class (relevance maximization), or by its largest activation
+  (activation maximization).</li>
+<li>Activation shows everything that excites the channel.</li>
+<li>Relevance shows when the channel actually does something for the class. In the test, the
+    input with the highest activation contributes nothing, because a later unit blocks it, so
+    relevance maximization passes it over.</li>
+</ul>
+<p>The pieces underneath are public too:</p>
+<ul>
+<li><code>LRP::seed_relevance</code> and <code>LRP::rule_configs</code> are the two halves of <code>explain()</code>.</li>
+<li><code>ExplainerContext::relevance_pass_through(relevance, configs, begin, end)</code> propagates through
+  a range of modules. A pass can stop at any layer, change the relevance there and continue.</li>
+</ul>
+<p>CRP works on <code>ExplainerContext</code> chains. A <code>SequentialModule</code> counts as one layer, so to condition
+inside it, list its modules in the context directly.</p>
 <h2 id="see-also">See also<a class="headerlink" href="#see-also" title="Permanent link">&para;</a></h2>
 <ul>
 <li><a href="../../recipes/interpretability/mnist_lrp/">Recipe: LRP on a trained MNIST classifier</a></li>
 <li><a href="../../recipes/neuro-symbolic/datalog_lrp_bridge/">Recipe: tracing relevance through a Datalog derivation</a></li>
 <li><a href="../../customization/#adding-a-new-layer">Customization</a>: writing <code>propagate_relevance()</code> for your own layer</li>
+<li><a href="../../mechanistic-interpretability/#concepts-tcav">Concepts given by examples (TCAV)</a>: the other way to explain with concepts</li>
 <li><a href="../#checking-an-explanation">Checking an explanation</a>: deletion and insertion curves, the randomization test and the null-model baseline, for any LRP result</li>
 <li><a href="../../visualization/documents/">Visualization</a>: saving relevance as JSON and drawing it as SVG</li>
 <li><a href="../api/group__interpretability__lrp.html">API reference: Layer-wise Relevance Propagation</a></li>

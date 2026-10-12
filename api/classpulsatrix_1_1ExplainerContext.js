@@ -14,5 +14,6 @@ var classpulsatrix_1_1ExplainerContext =
     [ "logit_lens", "classpulsatrix_1_1ExplainerContext.html#a02eb3a3c5c8302a0beaa6dd3740451df", null ],
     [ "modules", "classpulsatrix_1_1ExplainerContext.html#ae3dcf514789cfbb8cf982888270f82a7", null ],
     [ "relevance_pass", "classpulsatrix_1_1ExplainerContext.html#aa2523c0bf46521532e9aa406efc7558b", null ],
-    [ "relevance_pass", "classpulsatrix_1_1ExplainerContext.html#afa1f8a65fa88e5799e8b750c65de51f9", null ]
+    [ "relevance_pass", "classpulsatrix_1_1ExplainerContext.html#afa1f8a65fa88e5799e8b750c65de51f9", null ],
+    [ "relevance_pass_through", "classpulsatrix_1_1ExplainerContext.html#a982abe9959d20cf6b47f2b6dce11fe01", null ]
 ];

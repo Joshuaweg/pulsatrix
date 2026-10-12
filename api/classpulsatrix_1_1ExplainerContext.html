@@ -125,6 +125,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:afa1f8a65fa88e5799e8b750c65de51f9" id="r_afa1f8a65fa88e5799e8b750c65de51f9"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1ExplainerContext.html#afa1f8a65fa88e5799e8b750c65de51f9">relevance_pass</a> (const <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp;output_relevance, const std::vector&lt; <a class="el" href="structpulsatrix_1_1LRPRuleConfig.html">LRPRuleConfig</a> &gt; &amp;configs)</td></tr>
 <tr class="memdesc:afa1f8a65fa88e5799e8b750c65de51f9"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="classpulsatrix_1_1ExplainerContext.html#aa2523c0bf46521532e9aa406efc7558b" title="Propagates LRP relevance from the network output back to the input through every module&#39;s own propaga...">relevance_pass()</a> with a per-module rule choice: <code>configs[i]</code> is handed to the i-th module (forward order) &ndash; e.g. <a class="el" href="classpulsatrix_1_1LRP.html" title="Whole-model LRP: runs the forward pass, seeds relevance at the chosen output(s), and propagates it to...">LRP</a> composites (<a class="el" href="lrp_8hpp.html" title="LRP – whole-model Layer-wise Relevance Propagation explainer.">lrp.hpp</a>).  <br /></td></tr>
 <tr class="separator:afa1f8a65fa88e5799e8b750c65de51f9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a982abe9959d20cf6b47f2b6dce11fe01" id="r_a982abe9959d20cf6b47f2b6dce11fe01"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1ExplainerContext.html#a982abe9959d20cf6b47f2b6dce11fe01">relevance_pass_through</a> (const <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp;relevance, const std::vector&lt; <a class="el" href="structpulsatrix_1_1LRPRuleConfig.html">LRPRuleConfig</a> &gt; &amp;configs, size_t begin, size_t end)</td></tr>
+<tr class="memdesc:a982abe9959d20cf6b47f2b6dce11fe01"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="classpulsatrix_1_1ExplainerContext.html#aa2523c0bf46521532e9aa406efc7558b" title="Propagates LRP relevance from the network output back to the input through every module&#39;s own propaga...">relevance_pass()</a> through modules <code>[begin, end)</code> only, in reverse: <code>relevance</code> is the relevance at node <code>end</code> (module end - 1's output), and the result is the relevance at node <code>begin</code>. Splitting a pass at a node lets a caller change the relevance there and continue, as Concept Relevance Propagation does (<a class="el" href="concept__relevance_8hpp.html" title="Concept Relevance Propagation (INT-6): which of a layer&#39;s channels an LRP explanation passes through,...">concept_relevance.hpp</a>).  <br /></td></tr>
+<tr class="separator:a982abe9959d20cf6b47f2b6dce11fe01"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae3dcf514789cfbb8cf982888270f82a7" id="r_ae3dcf514789cfbb8cf982888270f82a7"><td class="memItemLeft" align="right" valign="top">const std::vector&lt; <a class="el" href="classpulsatrix_1_1Module.html">Module</a> * &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1ExplainerContext.html#ae3dcf514789cfbb8cf982888270f82a7">modules</a> () const</td></tr>
 <tr class="memdesc:ae3dcf514789cfbb8cf982888270f82a7"><td class="mdescLeft">&#160;</td><td class="mdescRight">The module chain, in forward order (not owned).  <br /></td></tr>
 <tr class="separator:ae3dcf514789cfbb8cf982888270f82a7"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -764,6 +767,63 @@ The head is the chain's literal last module, not a separately designated "unembe
 <dl class="exception"><dt>Exceptions</dt><dd>
   <table class="exception">
     <tr><td class="paramname">std::invalid_argument</td><td>if configs.size() != number of modules, or a module does not implement its rule; std::logic_error as for the uniform overload. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="a982abe9959d20cf6b47f2b6dce11fe01" name="a982abe9959d20cf6b47f2b6dce11fe01"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a982abe9959d20cf6b47f2b6dce11fe01">&#9670;&#160;</a></span>relevance_pass_through()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> pulsatrix::ExplainerContext::relevance_pass_through </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp;&#160;</td>
+          <td class="paramname"><em>relevance</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const std::vector&lt; <a class="el" href="structpulsatrix_1_1LRPRuleConfig.html">LRPRuleConfig</a> &gt; &amp;&#160;</td>
+          <td class="paramname"><em>configs</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">size_t&#160;</td>
+          <td class="paramname"><em>begin</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">size_t&#160;</td>
+          <td class="paramname"><em>end</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p><a class="el" href="classpulsatrix_1_1ExplainerContext.html#aa2523c0bf46521532e9aa406efc7558b" title="Propagates LRP relevance from the network output back to the input through every module&#39;s own propaga...">relevance_pass()</a> through modules <code>[begin, end)</code> only, in reverse: <code>relevance</code> is the relevance at node <code>end</code> (module end - 1's output), and the result is the relevance at node <code>begin</code>. Splitting a pass at a node lets a caller change the relevance there and continue, as Concept Relevance Propagation does (<a class="el" href="concept__relevance_8hpp.html" title="Concept Relevance Propagation (INT-6): which of a layer&#39;s channels an LRP explanation passes through,...">concept_relevance.hpp</a>). </p>
+<dl class="section note"><dt>Note</dt><dd>Modules propagate from what the most recent forward pass cached and don't change it, so the same forward pass can be propagated through any number of times. </dd></dl>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname">std::invalid_argument</td><td>if configs.size() != number of modules, <code>begin &gt; end</code> or <code>end</code> is past the last module, or a module in the range does not implement its rule; std::logic_error as <a class="el" href="classpulsatrix_1_1ExplainerContext.html#aa2523c0bf46521532e9aa406efc7558b" title="Propagates LRP relevance from the network output back to the input through every module&#39;s own propaga...">relevance_pass()</a> does. </td></tr>
   </table>
   </dd>
 </dl>

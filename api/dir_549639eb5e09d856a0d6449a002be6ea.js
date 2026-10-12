@@ -36,6 +36,7 @@ var dir_549639eb5e09d856a0d6449a002be6ea =
     [ "cma_es.hpp", "cma__es_8hpp.html", "cma__es_8hpp" ],
     [ "collate.hpp", "collate_8hpp.html", "collate_8hpp" ],
     [ "computation_graph.hpp", "computation__graph_8hpp.html", "computation__graph_8hpp" ],
+    [ "concept_relevance.hpp", "concept__relevance_8hpp.html", "concept__relevance_8hpp" ],
     [ "conjunction_module.hpp", "conjunction__module_8hpp.html", "conjunction__module_8hpp" ],
     [ "continuous_cartpole_env.hpp", "continuous__cartpole__env_8hpp.html", "continuous__cartpole__env_8hpp" ],
     [ "conv2d_module.hpp", "conv2d__module_8hpp.html", "conv2d__module_8hpp" ],

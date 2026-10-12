@@ -134,6 +134,7 @@ var annotated_dup =
       [ "ComponentLinear", "classpulsatrix_1_1ComponentLinear.html", "classpulsatrix_1_1ComponentLinear" ],
       [ "Compose", "classpulsatrix_1_1Compose.html", "classpulsatrix_1_1Compose" ],
       [ "ComputationGraph", "classpulsatrix_1_1ComputationGraph.html", "classpulsatrix_1_1ComputationGraph" ],
+      [ "ConceptMask", "structpulsatrix_1_1ConceptMask.html", "structpulsatrix_1_1ConceptMask" ],
       [ "ConceptMatch", "structpulsatrix_1_1ConceptMatch.html", "structpulsatrix_1_1ConceptMatch" ],
       [ "ConfidenceMeter", "classpulsatrix_1_1ConfidenceMeter.html", null ],
       [ "ConjunctionModule", "classpulsatrix_1_1ConjunctionModule.html", "classpulsatrix_1_1ConjunctionModule" ],

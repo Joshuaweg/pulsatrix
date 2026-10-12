@@ -120,6 +120,12 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a9dd1211ba1782bfbdd05fb1a5b69b91b" id="r_a9dd1211ba1782bfbdd05fb1a5b69b91b"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structpulsatrix_1_1Attribution.html">Attribution</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1LRP.html#a9dd1211ba1782bfbdd05fb1a5b69b91b">explain</a> (<a class="el" href="classpulsatrix_1_1ExplainerContext.html">ExplainerContext</a> &amp;ctx, const <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp;input, const <a class="el" href="structpulsatrix_1_1LRPTarget.html">LRPTarget</a> &amp;target, <a class="el" href="classpulsatrix_1_1DeviceBackend.html">DeviceBackend</a> *backend) const</td></tr>
 <tr class="memdesc:a9dd1211ba1782bfbdd05fb1a5b69b91b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Explains the given target(s) / contrast(s).  <br /></td></tr>
 <tr class="separator:a9dd1211ba1782bfbdd05fb1a5b69b91b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3a7cd656cf00c58bb490223000c3852f" id="r_a3a7cd656cf00c58bb490223000c3852f"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1LRP.html#a3a7cd656cf00c58bb490223000c3852f">seed_relevance</a> (<a class="el" href="classpulsatrix_1_1ExplainerContext.html">ExplainerContext</a> &amp;ctx, const <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp;input, const <a class="el" href="structpulsatrix_1_1LRPTarget.html">LRPTarget</a> &amp;target, <a class="el" href="classpulsatrix_1_1DeviceBackend.html">DeviceBackend</a> *backend, float *relevance_out_sum=nullptr) const</td></tr>
+<tr class="memdesc:a3a7cd656cf00c58bb490223000c3852f"><td class="mdescLeft">&#160;</td><td class="mdescRight">The first half of <a class="el" href="classpulsatrix_1_1LRP.html#aecd0567125d3e4bb778c71366b681fde" title="Explains target_index for every row, OutputValue seed.">explain()</a>: runs the forward pass and builds the relevance it seeds at the output, shape (N, num_classes). With <a class="el" href="classpulsatrix_1_1LRP.html#a45be12db06ffa07a5dbc74e84a93e196" title="The rule each of ctx&#39;s modules applies, in forward order, as explain() uses them.">rule_configs()</a>, this lets a caller run the relevance pass itself, for example in pieces (<a class="el" href="classpulsatrix_1_1ExplainerContext.html#a982abe9959d20cf6b47f2b6dce11fe01" title="relevance_pass() through modules [begin, end) only, in reverse: relevance is the relevance at node en...">ExplainerContext::relevance_pass_through</a>).  <br /></td></tr>
+<tr class="separator:a3a7cd656cf00c58bb490223000c3852f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a45be12db06ffa07a5dbc74e84a93e196" id="r_a45be12db06ffa07a5dbc74e84a93e196"><td class="memItemLeft" align="right" valign="top">std::vector&lt; <a class="el" href="structpulsatrix_1_1LRPRuleConfig.html">LRPRuleConfig</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1LRP.html#a45be12db06ffa07a5dbc74e84a93e196">rule_configs</a> (const <a class="el" href="classpulsatrix_1_1ExplainerContext.html">ExplainerContext</a> &amp;ctx) const</td></tr>
+<tr class="memdesc:a45be12db06ffa07a5dbc74e84a93e196"><td class="mdescLeft">&#160;</td><td class="mdescRight">The rule each of <code>ctx's</code> modules applies, in forward order, as <a class="el" href="classpulsatrix_1_1LRP.html#aecd0567125d3e4bb778c71366b681fde" title="Explains target_index for every row, OutputValue seed.">explain()</a> uses them.  <br /></td></tr>
+<tr class="separator:a45be12db06ffa07a5dbc74e84a93e196"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af224aaf3c5d9e98b6482eb2a65685621" id="r_af224aaf3c5d9e98b6482eb2a65685621"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="structpulsatrix_1_1LRPRuleConfig.html">LRPRuleConfig</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1LRP.html#af224aaf3c5d9e98b6482eb2a65685621">config</a> () const</td></tr>
 <tr class="memdesc:af224aaf3c5d9e98b6482eb2a65685621"><td class="mdescLeft">&#160;</td><td class="mdescRight">The uniform config (default-constructed when this <a class="el" href="classpulsatrix_1_1LRP.html" title="Whole-model LRP: runs the forward pass, seeds relevance at the chosen output(s), and propagates it to...">LRP</a> uses a composite).  <br /></td></tr>
 <tr class="separator:af224aaf3c5d9e98b6482eb2a65685621"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -483,6 +489,102 @@ Device-generic: the seed is assembled on the host (one device-&gt;host copy of t
 </div><div class="memdoc">
 
 <p>Explains <code>target_index</code> for every row, OutputValue seed. </p>
+
+</div>
+</div>
+<a id="a45be12db06ffa07a5dbc74e84a93e196" name="a45be12db06ffa07a5dbc74e84a93e196"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a45be12db06ffa07a5dbc74e84a93e196">&#9670;&#160;</a></span>rule_configs()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::vector&lt; <a class="el" href="structpulsatrix_1_1LRPRuleConfig.html">LRPRuleConfig</a> &gt; pulsatrix::LRP::rule_configs </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classpulsatrix_1_1ExplainerContext.html">ExplainerContext</a> &amp;&#160;</td>
+          <td class="paramname"><em>ctx</em></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>The rule each of <code>ctx's</code> modules applies, in forward order, as <a class="el" href="classpulsatrix_1_1LRP.html#aecd0567125d3e4bb778c71366b681fde" title="Explains target_index for every row, OutputValue seed.">explain()</a> uses them. </p>
+
+</div>
+</div>
+<a id="a3a7cd656cf00c58bb490223000c3852f" name="a3a7cd656cf00c58bb490223000c3852f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3a7cd656cf00c58bb490223000c3852f">&#9670;&#160;</a></span>seed_relevance()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> pulsatrix::LRP::seed_relevance </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classpulsatrix_1_1ExplainerContext.html">ExplainerContext</a> &amp;&#160;</td>
+          <td class="paramname"><em>ctx</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp;&#160;</td>
+          <td class="paramname"><em>input</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="structpulsatrix_1_1LRPTarget.html">LRPTarget</a> &amp;&#160;</td>
+          <td class="paramname"><em>target</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="classpulsatrix_1_1DeviceBackend.html">DeviceBackend</a> *&#160;</td>
+          <td class="paramname"><em>backend</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">float *&#160;</td>
+          <td class="paramname"><em>relevance_out_sum</em> = <code>nullptr</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>The first half of <a class="el" href="classpulsatrix_1_1LRP.html#aecd0567125d3e4bb778c71366b681fde" title="Explains target_index for every row, OutputValue seed.">explain()</a>: runs the forward pass and builds the relevance it seeds at the output, shape (N, num_classes). With <a class="el" href="classpulsatrix_1_1LRP.html#a45be12db06ffa07a5dbc74e84a93e196" title="The rule each of ctx&#39;s modules applies, in forward order, as explain() uses them.">rule_configs()</a>, this lets a caller run the relevance pass itself, for example in pieces (<a class="el" href="classpulsatrix_1_1ExplainerContext.html#a982abe9959d20cf6b47f2b6dce11fe01" title="relevance_pass() through modules [begin, end) only, in reverse: relevance is the relevance at node en...">ExplainerContext::relevance_pass_through</a>). </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">relevance_out_sum</td><td>If not null, set to the seed's total. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname">std::invalid_argument</td><td>as <a class="el" href="classpulsatrix_1_1LRP.html#aecd0567125d3e4bb778c71366b681fde" title="Explains target_index for every row, OutputValue seed.">explain()</a> does for the output and the target. </td></tr>
+  </table>
+  </dd>
+</dl>
 
 </div>
 </div>

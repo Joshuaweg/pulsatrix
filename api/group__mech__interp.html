@@ -99,7 +99,7 @@ $(document).ready(function(){initNavTree('group__mech__interp.html',''); initRes
 </div><!--header-->
 <div class="contents">
 
-<p>Tools for inspecting and probing a model's internal computation directly &ndash; activation caching, linear probes and their controls, representation similarity (linear CKA), nearest neighbors and mutual-kNN alignment, representation geometry (anisotropy, effective rank, intrinsic dimension), PCA projections, TCAV, sparse autoencoders, circuit graphs &ndash; plus the GFlowNet-based non-goal-directed training objectives motivated by the Scientist AI research direction.  
+<p>Tools for inspecting and probing a model's internal computation directly &ndash; activation caching, linear probes and their controls, representation similarity (linear CKA), nearest neighbors and mutual-kNN alignment, representation geometry (anisotropy, effective rank, intrinsic dimension), PCA projections, TCAV and CRP, sparse autoencoders, circuit graphs &ndash; plus the GFlowNet-based non-goal-directed training objectives motivated by the Scientist AI research direction.  
 <a href="#details">More...</a></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="files" name="files"></a>
@@ -116,6 +116,9 @@ Files</h2></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:circuit__tracing_8hpp" id="r_circuit__tracing_8hpp"><td class="memItemLeft" align="right" valign="top">file &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="circuit__tracing_8hpp.html">circuit_tracing.hpp</a></td></tr>
 <tr class="memdesc:circuit__tracing_8hpp"><td class="mdescLeft">&#160;</td><td class="mdescRight">Attribution graphs with cross-layer transcoders (FEAT-10), after Ameisen, Lindsey et al., "Circuit Tracing: Revealing Computational Graphs in Language Models" (Transformer Circuits, 2025) and its open implementation, circuit-tracer (github.com/decoderesearch/circuit-tracer). Each MLP is replaced by a transcoder's features plus an error term, attention patterns and normalization scales are frozen, and what is left is linear: the graph's edges are exact attributions between features, errors, token embeddings and output logits. <br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:concept__relevance_8hpp" id="r_concept__relevance_8hpp"><td class="memItemLeft" align="right" valign="top">file &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="concept__relevance_8hpp.html">concept_relevance.hpp</a></td></tr>
+<tr class="memdesc:concept__relevance_8hpp"><td class="mdescLeft">&#160;</td><td class="mdescRight">Concept Relevance Propagation (INT-6): which of a layer's channels an LRP explanation passes through, where each one looks in the input, and which inputs show it at work. <br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:crosscoder_8hpp" id="r_crosscoder_8hpp"><td class="memItemLeft" align="right" valign="top">file &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="crosscoder_8hpp.html">crosscoder.hpp</a></td></tr>
 <tr class="memdesc:crosscoder_8hpp"><td class="mdescLeft">&#160;</td><td class="mdescRight">Crosscoders (FEAT-8): one sparse dictionary read from and written to several sources at once, such as the residual stream at several layers, or the same layer in a base model and its fine-tune (Lindsey et al., "Sparse Crosscoders for Cross-Layer Features and
@@ -200,7 +203,7 @@ Files</h2></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<p>Tools for inspecting and probing a model's internal computation directly &ndash; activation caching, linear probes and their controls, representation similarity (linear CKA), nearest neighbors and mutual-kNN alignment, representation geometry (anisotropy, effective rank, intrinsic dimension), PCA projections, TCAV, sparse autoencoders, circuit graphs &ndash; plus the GFlowNet-based non-goal-directed training objectives motivated by the Scientist AI research direction. </p>
+<p>Tools for inspecting and probing a model's internal computation directly &ndash; activation caching, linear probes and their controls, representation similarity (linear CKA), nearest neighbors and mutual-kNN alignment, representation geometry (anisotropy, effective rank, intrinsic dimension), PCA projections, TCAV and CRP, sparse autoencoders, circuit graphs &ndash; plus the GFlowNet-based non-goal-directed training objectives motivated by the Scientist AI research direction. </p>
 </div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->

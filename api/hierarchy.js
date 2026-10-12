@@ -70,6 +70,7 @@ var hierarchy =
     [ "pulsatrix::CompareOptions", "structpulsatrix_1_1CompareOptions.html", null ],
     [ "pulsatrix::ComponentAlignment", "structpulsatrix_1_1ComponentAlignment.html", null ],
     [ "pulsatrix::ComputationGraph", "classpulsatrix_1_1ComputationGraph.html", null ],
+    [ "pulsatrix::ConceptMask", "structpulsatrix_1_1ConceptMask.html", null ],
     [ "pulsatrix::ConceptMatch", "structpulsatrix_1_1ConceptMatch.html", null ],
     [ "pulsatrix::ConfidenceMeter", "classpulsatrix_1_1ConfidenceMeter.html", null ],
     [ "pulsatrix::ConnectionGene", "structpulsatrix_1_1ConnectionGene.html", null ],
