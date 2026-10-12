@@ -88,6 +88,7 @@ var namespacepulsatrix =
     [ "ComponentLinear", "classpulsatrix_1_1ComponentLinear.html", "classpulsatrix_1_1ComponentLinear" ],
     [ "Compose", "classpulsatrix_1_1Compose.html", "classpulsatrix_1_1Compose" ],
     [ "ComputationGraph", "classpulsatrix_1_1ComputationGraph.html", "classpulsatrix_1_1ComputationGraph" ],
+    [ "ConceptMask", "structpulsatrix_1_1ConceptMask.html", "structpulsatrix_1_1ConceptMask" ],
     [ "ConceptMatch", "structpulsatrix_1_1ConceptMatch.html", "structpulsatrix_1_1ConceptMatch" ],
     [ "ConfidenceMeter", "classpulsatrix_1_1ConfidenceMeter.html", null ],
     [ "ConjunctionModule", "classpulsatrix_1_1ConjunctionModule.html", "classpulsatrix_1_1ConjunctionModule" ],
@@ -451,6 +452,7 @@ var namespacepulsatrix =
     [ "WordScores", "structpulsatrix_1_1WordScores.html", "structpulsatrix_1_1WordScores" ],
     [ "XorNetwork", "classpulsatrix_1_1XorNetwork.html", "classpulsatrix_1_1XorNetwork" ],
     [ "CollateFn", "namespacepulsatrix.html#a062f52068d0980a5b3771b192f0f0250", null ],
+    [ "ConceptCondition", "namespacepulsatrix.html#a2b65dc3fe55bab87a30e8005cd254ac2", null ],
     [ "Configuration", "namespacepulsatrix.html#a58099b24d92ae2c4916748b60ecf36e3", null ],
     [ "ConfigValue", "namespacepulsatrix.html#aad466513340f64023a5c7749a62e4d66", null ],
     [ "ExplainFn", "namespacepulsatrix.html#af0e563c5452d92e9003dedfe6a588b6a", null ],
@@ -628,6 +630,10 @@ var namespacepulsatrix =
       [ "GruBackward", "namespacepulsatrix.html#ac55b0127cfe9bf4ce7793fef9db97400ab250d5c399d7c2349e16a8f2ecd36185", null ],
       [ "GruLrp", "namespacepulsatrix.html#ac55b0127cfe9bf4ce7793fef9db97400aeb5497c21260ca12facce3759273ab44", null ]
     ] ],
+    [ "ReferenceMode", "namespacepulsatrix.html#a0048291a9ea7445b289cccee1075996d", [
+      [ "Relevance", "namespacepulsatrix.html#a0048291a9ea7445b289cccee1075996daad24ffca4f9e9c0c7e80fe1512df6db9", null ],
+      [ "Activation", "namespacepulsatrix.html#a0048291a9ea7445b289cccee1075996daa9a62e70841c4d06dd16306a85700d36", null ]
+    ] ],
     [ "RlRowOp", "namespacepulsatrix.html#af72bbbb89c154b30ca26561ab2f87930", [
       [ "DqnLoss", "namespacepulsatrix.html#af72bbbb89c154b30ca26561ab2f87930a968bf24ac72a6aace6ce47990ee9787f", null ],
       [ "DqnGrad", "namespacepulsatrix.html#af72bbbb89c154b30ca26561ab2f87930ab3bad3db141dca05dac2e9ec9067afe1", null ],
@@ -736,6 +742,7 @@ var namespacepulsatrix =
     [ "ByteLevelAlphabet", "namespacepulsatrix.html#a576b276dd82c852f80a4e69764137dc0", null ],
     [ "ByteToCharOffset", "namespacepulsatrix.html#a2655d2ea18cc56f09839c5bb32c58b93", null ],
     [ "CategoricalDensity", "namespacepulsatrix.html#ad5747459ab099cde6c83f25f09dcece7", null ],
+    [ "ChannelRelevance", "namespacepulsatrix.html#a33ed8e215e7b13a13e0a6a01cf8fff87", null ],
     [ "check_deterministic_allowed", "namespacepulsatrix.html#a3aa6f8f77e253906541c671902ea6b23", null ],
     [ "check_optimizer_setting", "namespacepulsatrix.html#a91c49223bc2b354ad8ed7a7c4f2c6ef1", null ],
     [ "CircuitNodeDisplayLabel", "namespacepulsatrix.html#a1753b46ac2c61a1b20581a38bc7d3d1b", null ],
@@ -769,7 +776,9 @@ var namespacepulsatrix =
     [ "ComputeTruncationGroups", "namespacepulsatrix.html#a4ef297c503c00b8d2a318edb5c498bd0", null ],
     [ "ConceptCounts", "namespacepulsatrix.html#adfb58052d3b853089749db6c07f94882", null ],
     [ "ConceptLabels", "namespacepulsatrix.html#a5f71b96d7325b539335f0c1fe77c0715", null ],
+    [ "ConceptReferenceSamples", "namespacepulsatrix.html#a4d6c37e42b136dac4cb98ee7084b0b2b", null ],
     [ "ConceptualSensitivities", "namespacepulsatrix.html#a814df8e95fb21fa89eaaf4726862e822", null ],
+    [ "ConditionalHeatmaps", "namespacepulsatrix.html#a1b34804b6f02e9ec2ebb63527663920b", null ],
     [ "ContactFeatures", "namespacepulsatrix.html#a7ccbd3a48e5c96acac0e21de5b8b2056", null ],
     [ "ContactPrecision", "namespacepulsatrix.html#aa95c438c499597f405850e6b95d5c8a7", null ],
     [ "ControlTaskLabels", "namespacepulsatrix.html#a2e9c1c46653240bbf1556762b96a6208", null ],
@@ -837,6 +846,7 @@ var namespacepulsatrix =
     [ "InsertionCurve", "namespacepulsatrix.html#a165ca5a11779f2081a18fc5d7657c5cc", null ],
     [ "LayerActivations", "namespacepulsatrix.html#a10a2657b8fe49a0800177afbb2d4602f", null ],
     [ "LayerGradients", "namespacepulsatrix.html#a17c91655ead2141e47b74fefbf5dce1f", null ],
+    [ "LayerRelevance", "namespacepulsatrix.html#a5285804ce25285165235fd22e2123c86", null ],
     [ "LinearCka", "namespacepulsatrix.html#a20006889a282e5fa1d7d864597ef08d4", null ],
     [ "LinearCkaMatrix", "namespacepulsatrix.html#a8b250634e4925e7e6a75808694e96f1a", null ],
     [ "LoadCausalLM", "namespacepulsatrix.html#ab41209346909acb22907cfbbd3eea8a4", null ],

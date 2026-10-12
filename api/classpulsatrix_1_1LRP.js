@@ -5,5 +5,7 @@ var classpulsatrix_1_1LRP =
     [ "composite", "classpulsatrix_1_1LRP.html#a97476550eec9c971173e891a43fe35d8", null ],
     [ "config", "classpulsatrix_1_1LRP.html#af224aaf3c5d9e98b6482eb2a65685621", null ],
     [ "explain", "classpulsatrix_1_1LRP.html#a9dd1211ba1782bfbdd05fb1a5b69b91b", null ],
-    [ "explain", "classpulsatrix_1_1LRP.html#aecd0567125d3e4bb778c71366b681fde", null ]
+    [ "explain", "classpulsatrix_1_1LRP.html#aecd0567125d3e4bb778c71366b681fde", null ],
+    [ "rule_configs", "classpulsatrix_1_1LRP.html#a45be12db06ffa07a5dbc74e84a93e196", null ],
+    [ "seed_relevance", "classpulsatrix_1_1LRP.html#a3a7cd656cf00c58bb490223000c3852f", null ]
 ];

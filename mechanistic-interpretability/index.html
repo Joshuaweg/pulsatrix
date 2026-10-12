@@ -2637,6 +2637,11 @@ attribution graphs of a language model's prediction.</p>
 <td><a href="#concepts-tcav">Below</a></td>
 </tr>
 <tr>
+<td>Which of a layer's channels does an LRP explanation pass through, and where in the input is each?</td>
+<td><code>ChannelRelevance</code>, <code>ConditionalHeatmaps</code>, <code>ConceptReferenceSamples</code> (CRP)</td>
+<td><a href="../interpretability/lrp/#concepts-concept-relevance-propagation">LRP</a></td>
+</tr>
+<tr>
 <td>Which directions in a layer stand for concepts, found without labels?</td>
 <td>Sparse autoencoders: <code>TopKSparseAutoencoder</code>, <code>JumpReLUSparseAutoencoder</code>, <code>SparseAutoencoder</code></td>
 <td><a href="featurizers/">Finding features</a></td>
@@ -3104,6 +3109,10 @@ ignores, isn't, even though its CAVs separate it at over 85%.</p>
 <li><strong>Models.</strong> The models are <code>ExplainerContext</code> chains. TCAV needs the gradient at an inner
   layer, which the language models don't expose yet.</li>
 </ul>
+<p>TCAV starts from concepts people name and asks whether the model uses them.
+<a href="../interpretability/lrp/#concepts-concept-relevance-propagation">Concept Relevance Propagation</a>
+goes the other way: it starts from the concepts a layer has learned (its channels) and shows
+where each one is in an input and what it responds to.</p>
 <h3 id="baselines">Baselines<a class="headerlink" href="#baselines" title="Permanent link">&para;</a></h3>
 <p><code>NullModelBaseline</code> re-initializes a model randomly, so the same probe, featurizer or
 explanation can run on it (<a href="../interpretability/#the-null-model-baseline">Interpretability</a>).

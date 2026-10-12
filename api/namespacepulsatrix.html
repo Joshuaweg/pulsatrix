@@ -352,6 +352,9 @@ Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1ComputationGraph.html">ComputationGraph</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Owns every <a class="el" href="classpulsatrix_1_1Node.html" title="A single computation graph node. Owned exclusively by its ComputationGraph (see computation_graph....">Node</a> in a computation graph and exposes read access for graph-walking code (autograd's backward pass, Phase 2+ explainers).  <a href="classpulsatrix_1_1ComputationGraph.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpulsatrix_1_1ConceptMask.html">ConceptMask</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Keep the relevance of these channels at this layer, and zero the rest.  <a href="structpulsatrix_1_1ConceptMask.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpulsatrix_1_1ConceptMatch.html">ConceptMatch</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The feature that best matches one concept.  <a href="structpulsatrix_1_1ConceptMatch.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -1441,6 +1444,9 @@ Typedefs</h2></td></tr>
 <tr class="memitem:a062f52068d0980a5b3771b192f0f0250" id="r_a062f52068d0980a5b3771b192f0f0250"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#a062f52068d0980a5b3771b192f0f0250">CollateFn</a> = std::function&lt; <a class="el" href="structpulsatrix_1_1Batch.html">Batch</a>(std::vector&lt; <a class="el" href="structpulsatrix_1_1Sample.html">Sample</a> &gt;, <a class="el" href="classpulsatrix_1_1DeviceBackend.html">DeviceBackend</a> *)&gt;</td></tr>
 <tr class="memdesc:a062f52068d0980a5b3771b192f0f0250"><td class="mdescLeft">&#160;</td><td class="mdescRight">A function assembling a list of Samples into one <a class="el" href="structpulsatrix_1_1Batch.html" title="One collated batch: one stacked Tensor per Sample field position.">Batch</a> &ndash; pulsatrix's analogue of PyTorch's collate_fn. The standard extension point for ragged/variable-length modalities (text padding, variable-length audio): a caller-supplied CollateFn replacing DefaultCollate, not a subclass hierarchy.  <br /></td></tr>
 <tr class="separator:a062f52068d0980a5b3771b192f0f0250"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2b65dc3fe55bab87a30e8005cd254ac2" id="r_a2b65dc3fe55bab87a30e8005cd254ac2"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#a2b65dc3fe55bab87a30e8005cd254ac2">ConceptCondition</a> = std::vector&lt; <a class="el" href="structpulsatrix_1_1ConceptMask.html">ConceptMask</a> &gt;</td></tr>
+<tr class="memdesc:a2b65dc3fe55bab87a30e8005cd254ac2"><td class="mdescLeft">&#160;</td><td class="mdescRight">One conditional heatmap's masks, at most one per layer.  <br /></td></tr>
+<tr class="separator:a2b65dc3fe55bab87a30e8005cd254ac2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0cfe98a4b9d257145af8f113d714d226" id="r_a0cfe98a4b9d257145af8f113d714d226"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#a0cfe98a4b9d257145af8f113d714d226">PredictFn</a> = std::function&lt; <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a>(const <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp;input)&gt;</td></tr>
 <tr class="memdesc:a0cfe98a4b9d257145af8f113d714d226"><td class="mdescLeft">&#160;</td><td class="mdescRight">The model as a function: input (with a leading batch dimension of 1) to outputs.  <br /></td></tr>
 <tr class="separator:a0cfe98a4b9d257145af8f113d714d226"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -1504,6 +1510,11 @@ Enumerations</h2></td></tr>
  }</td></tr>
 <tr class="memdesc:ae7ceb8ee1ca517e2ce811f4f6761d779"><td class="mdescLeft">&#160;</td><td class="mdescRight">How a source tensor becomes a target parameter.  <a href="namespacepulsatrix.html#ae7ceb8ee1ca517e2ce811f4f6761d779">More...</a><br /></td></tr>
 <tr class="separator:ae7ceb8ee1ca517e2ce811f4f6761d779"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0048291a9ea7445b289cccee1075996d" id="r_a0048291a9ea7445b289cccee1075996d"><td class="memItemLeft" align="right" valign="top">enum class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#a0048291a9ea7445b289cccee1075996d">ReferenceMode</a> { <a class="el" href="namespacepulsatrix.html#a0048291a9ea7445b289cccee1075996daad24ffca4f9e9c0c7e80fe1512df6db9">Relevance</a>
+, <a class="el" href="namespacepulsatrix.html#a0048291a9ea7445b289cccee1075996daa9a62e70841c4d06dd16306a85700d36">Activation</a>
+ }</td></tr>
+<tr class="memdesc:a0048291a9ea7445b289cccee1075996d"><td class="mdescLeft">&#160;</td><td class="mdescRight">How ConceptReferenceSamples() ranks inputs.  <a href="namespacepulsatrix.html#a0048291a9ea7445b289cccee1075996d">More...</a><br /></td></tr>
+<tr class="separator:a0048291a9ea7445b289cccee1075996d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2bdea6033ff2f2ff94e5f71059a33843" id="r_a2bdea6033ff2f2ff94e5f71059a33843"><td class="memItemLeft" align="right" valign="top">enum class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#a2bdea6033ff2f2ff94e5f71059a33843">CrosscoderSparsity</a> { <a class="el" href="namespacepulsatrix.html#a2bdea6033ff2f2ff94e5f71059a33843a9ec4c0afd450ceac7adb81c3bcfc9732">L1</a>
 , <a class="el" href="namespacepulsatrix.html#a2bdea6033ff2f2ff94e5f71059a33843a0c321645fe3e9519e78096c360674da9">BatchTopK</a>
  }</td></tr>
@@ -1895,6 +1906,18 @@ Functions</h2></td></tr>
 <tr class="memitem:a0034be345e6f18cfc824460160d5cdf5" id="r_a0034be345e6f18cfc824460160d5cdf5"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structpulsatrix_1_1Batch.html">Batch</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#a0034be345e6f18cfc824460160d5cdf5">DefaultCollate</a> (std::vector&lt; <a class="el" href="structpulsatrix_1_1Sample.html">Sample</a> &gt; samples, <a class="el" href="classpulsatrix_1_1DeviceBackend.html">DeviceBackend</a> *backend)</td></tr>
 <tr class="memdesc:a0034be345e6f18cfc824460160d5cdf5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Stacks a list of samples into one <a class="el" href="structpulsatrix_1_1Batch.html" title="One collated batch: one stacked Tensor per Sample field position.">Batch</a>, field-by-field, via <a class="el" href="classpulsatrix_1_1Tensor.html#a15c8264d40dc71b5a5295b1b78098496" title="Concatenates N tensors along their leading dimension into one batch Tensor – pulsatrix&#39;s collate-time...">Tensor::Stack</a> &ndash; pulsatrix's default CollateFn (PyTorch's default_collate analogue).  <br /></td></tr>
 <tr class="separator:a0034be345e6f18cfc824460160d5cdf5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5285804ce25285165235fd22e2123c86" id="r_a5285804ce25285165235fd22e2123c86"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#a5285804ce25285165235fd22e2123c86">LayerRelevance</a> (const <a class="el" href="classpulsatrix_1_1LRP.html">LRP</a> &amp;lrp, <a class="el" href="classpulsatrix_1_1ExplainerContext.html">ExplainerContext</a> &amp;ctx, const <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp;input, const <a class="el" href="structpulsatrix_1_1LRPTarget.html">LRPTarget</a> &amp;target, <a class="el" href="namespacepulsatrix.html#a2b8dc3d7d2cef35f192d191f09156e67">NodeId</a> layer, <a class="el" href="classpulsatrix_1_1DeviceBackend.html">DeviceBackend</a> *backend)</td></tr>
+<tr class="memdesc:a5285804ce25285165235fd22e2123c86"><td class="mdescLeft">&#160;</td><td class="mdescRight">The relevance at <code>layer</code> for explaining <code>target:</code> the layer's shape, (N, C, ...).  <br /></td></tr>
+<tr class="separator:a5285804ce25285165235fd22e2123c86"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a33ed8e215e7b13a13e0a6a01cf8fff87" id="r_a33ed8e215e7b13a13e0a6a01cf8fff87"><td class="memItemLeft" align="right" valign="top">std::vector&lt; double &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#a33ed8e215e7b13a13e0a6a01cf8fff87">ChannelRelevance</a> (const <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp;layer_relevance)</td></tr>
+<tr class="memdesc:a33ed8e215e7b13a13e0a6a01cf8fff87"><td class="mdescLeft">&#160;</td><td class="mdescRight">Each row's relevance per channel, summed over the remaining dimensions: (N, C) values, row-major. With a conserving rule they add up to the explained output.  <br /></td></tr>
+<tr class="separator:a33ed8e215e7b13a13e0a6a01cf8fff87"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1b34804b6f02e9ec2ebb63527663920b" id="r_a1b34804b6f02e9ec2ebb63527663920b"><td class="memItemLeft" align="right" valign="top">std::vector&lt; <a class="el" href="structpulsatrix_1_1Attribution.html">Attribution</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#a1b34804b6f02e9ec2ebb63527663920b">ConditionalHeatmaps</a> (const <a class="el" href="classpulsatrix_1_1LRP.html">LRP</a> &amp;lrp, <a class="el" href="classpulsatrix_1_1ExplainerContext.html">ExplainerContext</a> &amp;ctx, const <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp;input, const <a class="el" href="structpulsatrix_1_1LRPTarget.html">LRPTarget</a> &amp;target, const std::vector&lt; <a class="el" href="namespacepulsatrix.html#a2b65dc3fe55bab87a30e8005cd254ac2">ConceptCondition</a> &gt; &amp;conditions, <a class="el" href="classpulsatrix_1_1DeviceBackend.html">DeviceBackend</a> *backend)</td></tr>
+<tr class="memdesc:a1b34804b6f02e9ec2ebb63527663920b"><td class="mdescLeft">&#160;</td><td class="mdescRight">One input heatmap per condition: <a class="el" href="classpulsatrix_1_1LRP.html" title="Whole-model LRP: runs the forward pass, seeds relevance at the chosen output(s), and propagates it to...">LRP</a> from <code>target</code> with the relevance zeroed, at each masked layer, outside the mask's channels.  <br /></td></tr>
+<tr class="separator:a1b34804b6f02e9ec2ebb63527663920b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4d6c37e42b136dac4cb98ee7084b0b2b" id="r_a4d6c37e42b136dac4cb98ee7084b0b2b"><td class="memItemLeft" align="right" valign="top">std::vector&lt; int64_t &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#a4d6c37e42b136dac4cb98ee7084b0b2b">ConceptReferenceSamples</a> (const <a class="el" href="classpulsatrix_1_1LRP.html">LRP</a> &amp;lrp, <a class="el" href="classpulsatrix_1_1ExplainerContext.html">ExplainerContext</a> &amp;ctx, const <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp;candidates, int64_t target, <a class="el" href="namespacepulsatrix.html#a2b8dc3d7d2cef35f192d191f09156e67">NodeId</a> layer, int64_t channel, int64_t k, <a class="el" href="namespacepulsatrix.html#a0048291a9ea7445b289cccee1075996d">ReferenceMode</a> mode, <a class="el" href="classpulsatrix_1_1DeviceBackend.html">DeviceBackend</a> *backend)</td></tr>
+<tr class="memdesc:a4d6c37e42b136dac4cb98ee7084b0b2b"><td class="mdescLeft">&#160;</td><td class="mdescRight">The <code>k</code> inputs of <code>candidates</code> that show a channel best, best first: the reference samples by which CRP shows what a concept is.  <br /></td></tr>
+<tr class="separator:a4d6c37e42b136dac4cb98ee7084b0b2b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1b0b92b9316f35e591eef693d59fa911" id="r_a1b0b92b9316f35e591eef693d59fa911"><td class="memItemLeft" align="right" valign="top">std::vector&lt; float &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#a1b0b92b9316f35e591eef693d59fa911">MedianAbsoluteDeviation</a> (const std::vector&lt; <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &gt; &amp;background)</td></tr>
 <tr class="memdesc:a1b0b92b9316f35e591eef693d59fa911"><td class="mdescLeft">&#160;</td><td class="mdescRight">Each feature's median absolute deviation over <code>background</code> (flat order), the distance scale Wachter et al. recommend for tabular data. A feature with zero MAD gets 1, as in DiCE, so it can still move.  <br /></td></tr>
 <tr class="separator:a1b0b92b9316f35e591eef693d59fa911"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -3236,6 +3259,22 @@ Variables</h2></td></tr>
 
 </div>
 </div>
+<a id="a2b65dc3fe55bab87a30e8005cd254ac2" name="a2b65dc3fe55bab87a30e8005cd254ac2"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2b65dc3fe55bab87a30e8005cd254ac2">&#9670;&#160;</a></span>ConceptCondition</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">using <a class="el" href="namespacepulsatrix.html#a2b65dc3fe55bab87a30e8005cd254ac2">pulsatrix::ConceptCondition</a> = typedef std::vector&lt;<a class="el" href="structpulsatrix_1_1ConceptMask.html">ConceptMask</a>&gt;</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>One conditional heatmap's masks, at most one per layer. </p>
+
+</div>
+</div>
 <a id="a58099b24d92ae2c4916748b60ecf36e3" name="a58099b24d92ae2c4916748b60ecf36e3"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a58099b24d92ae2c4916748b60ecf36e3">&#9670;&#160;</a></span>Configuration</h2>
 
@@ -4382,6 +4421,36 @@ Every op here computes the <em>forward</em> value only &ndash; no derivative var
 <tr><td class="fieldname"><a id="ac55b0127cfe9bf4ce7793fef9db97400a651b9b5b61c6f9c608a91c977f1d1731" name="ac55b0127cfe9bf4ce7793fef9db97400a651b9b5b61c6f9c608a91c977f1d1731"></a>LstmLrp&#160;</td><td class="fielddoc"></td></tr>
 <tr><td class="fieldname"><a id="ac55b0127cfe9bf4ce7793fef9db97400ab250d5c399d7c2349e16a8f2ecd36185" name="ac55b0127cfe9bf4ce7793fef9db97400ab250d5c399d7c2349e16a8f2ecd36185"></a>GruBackward&#160;</td><td class="fielddoc"></td></tr>
 <tr><td class="fieldname"><a id="ac55b0127cfe9bf4ce7793fef9db97400aeb5497c21260ca12facce3759273ab44" name="ac55b0127cfe9bf4ce7793fef9db97400aeb5497c21260ca12facce3759273ab44"></a>GruLrp&#160;</td><td class="fielddoc"></td></tr>
+</table>
+
+</div>
+</div>
+<a id="a0048291a9ea7445b289cccee1075996d" name="a0048291a9ea7445b289cccee1075996d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0048291a9ea7445b289cccee1075996d">&#9670;&#160;</a></span>ReferenceMode</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">enum class <a class="el" href="namespacepulsatrix.html#a0048291a9ea7445b289cccee1075996d">pulsatrix::ReferenceMode</a></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">strong</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>How <a class="el" href="namespacepulsatrix.html#a4d6c37e42b136dac4cb98ee7084b0b2b" title="The k inputs of candidates that show a channel best, best first: the reference samples by which CRP s...">ConceptReferenceSamples()</a> ranks inputs. </p>
+<table class="fieldtable">
+<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="a0048291a9ea7445b289cccee1075996daad24ffca4f9e9c0c7e80fe1512df6db9" name="a0048291a9ea7445b289cccee1075996daad24ffca4f9e9c0c7e80fe1512df6db9"></a>Relevance&#160;</td><td class="fielddoc"><p>By the channel's relevance for the target class, summed over positions. </p>
+</td></tr>
+<tr><td class="fieldname"><a id="a0048291a9ea7445b289cccee1075996daa9a62e70841c4d06dd16306a85700d36" name="a0048291a9ea7445b289cccee1075996daa9a62e70841c4d06dd16306a85700d36"></a>Activation&#160;</td><td class="fielddoc"><p>By the channel's largest activation over positions. </p>
+</td></tr>
 </table>
 
 </div>
@@ -5801,6 +5870,32 @@ template&lt;typename RNG &gt; </div>
   </dd>
 </dl>
 <dl class="section note"><dt>Note</dt><dd>observations may be empty (probability reduces to the uniform prior 1/num_categories). </dd></dl>
+
+</div>
+</div>
+<a id="a33ed8e215e7b13a13e0a6a01cf8fff87" name="a33ed8e215e7b13a13e0a6a01cf8fff87"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a33ed8e215e7b13a13e0a6a01cf8fff87">&#9670;&#160;</a></span>ChannelRelevance()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::vector&lt; double &gt; pulsatrix::ChannelRelevance </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp;&#160;</td>
+          <td class="paramname"><em>layer_relevance</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Each row's relevance per channel, summed over the remaining dimensions: (N, C) values, row-major. With a conserving rule they add up to the explained output. </p>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname">std::invalid_argument</td><td>if <code>layer_relevance</code> has rank below 2. </td></tr>
+  </table>
+  </dd>
+</dl>
 
 </div>
 </div>
@@ -7363,6 +7458,92 @@ Host boundary (GPU-native-kernels Mission 7): a strictly sequential reverse recu
 
 </div>
 </div>
+<a id="a4d6c37e42b136dac4cb98ee7084b0b2b" name="a4d6c37e42b136dac4cb98ee7084b0b2b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4d6c37e42b136dac4cb98ee7084b0b2b">&#9670;&#160;</a></span>ConceptReferenceSamples()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::vector&lt; int64_t &gt; pulsatrix::ConceptReferenceSamples </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classpulsatrix_1_1LRP.html">LRP</a> &amp;&#160;</td>
+          <td class="paramname"><em>lrp</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="classpulsatrix_1_1ExplainerContext.html">ExplainerContext</a> &amp;&#160;</td>
+          <td class="paramname"><em>ctx</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp;&#160;</td>
+          <td class="paramname"><em>candidates</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int64_t&#160;</td>
+          <td class="paramname"><em>target</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="namespacepulsatrix.html#a2b8dc3d7d2cef35f192d191f09156e67">NodeId</a>&#160;</td>
+          <td class="paramname"><em>layer</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int64_t&#160;</td>
+          <td class="paramname"><em>channel</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int64_t&#160;</td>
+          <td class="paramname"><em>k</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="namespacepulsatrix.html#a0048291a9ea7445b289cccee1075996d">ReferenceMode</a>&#160;</td>
+          <td class="paramname"><em>mode</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="classpulsatrix_1_1DeviceBackend.html">DeviceBackend</a> *&#160;</td>
+          <td class="paramname"><em>backend</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>The <code>k</code> inputs of <code>candidates</code> that show a channel best, best first: the reference samples by which CRP shows what a concept is. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">candidates</td><td>A batch of inputs, the model's input shape with a leading batch dimension. </td></tr>
+    <tr><td class="paramname">target</td><td>The class the relevance explains; unused for <a class="el" href="namespacepulsatrix.html#a0048291a9ea7445b289cccee1075996daa9a62e70841c4d06dd16306a85700d36" title="By the channel&#39;s largest activation over positions.">ReferenceMode::Activation</a>. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section note"><dt>Note</dt><dd>Ties keep the lower index first. </dd></dl>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname">std::invalid_argument</td><td>if k is below 1, the channel is outside the layer, or for what <a class="el" href="namespacepulsatrix.html#a5285804ce25285165235fd22e2123c86" title="The relevance at layer for explaining target: the layer&#39;s shape, (N, C, ...).">LayerRelevance()</a> rejects. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
 <a id="a814df8e95fb21fa89eaaf4726862e822" name="a814df8e95fb21fa89eaaf4726862e822"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a814df8e95fb21fa89eaaf4726862e822">&#9670;&#160;</a></span>ConceptualSensitivities()</h2>
 
@@ -7399,6 +7580,67 @@ Host boundary (GPU-native-kernels Mission 7): a strictly sequential reverse recu
 <dl class="exception"><dt>Exceptions</dt><dd>
   <table class="exception">
     <tr><td class="paramname">std::invalid_argument</td><td>if the rows aren't the CAV's width. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="a1b34804b6f02e9ec2ebb63527663920b" name="a1b34804b6f02e9ec2ebb63527663920b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1b34804b6f02e9ec2ebb63527663920b">&#9670;&#160;</a></span>ConditionalHeatmaps()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::vector&lt; <a class="el" href="structpulsatrix_1_1Attribution.html">Attribution</a> &gt; pulsatrix::ConditionalHeatmaps </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classpulsatrix_1_1LRP.html">LRP</a> &amp;&#160;</td>
+          <td class="paramname"><em>lrp</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="classpulsatrix_1_1ExplainerContext.html">ExplainerContext</a> &amp;&#160;</td>
+          <td class="paramname"><em>ctx</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp;&#160;</td>
+          <td class="paramname"><em>input</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="structpulsatrix_1_1LRPTarget.html">LRPTarget</a> &amp;&#160;</td>
+          <td class="paramname"><em>target</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const std::vector&lt; <a class="el" href="namespacepulsatrix.html#a2b65dc3fe55bab87a30e8005cd254ac2">ConceptCondition</a> &gt; &amp;&#160;</td>
+          <td class="paramname"><em>conditions</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="classpulsatrix_1_1DeviceBackend.html">DeviceBackend</a> *&#160;</td>
+          <td class="paramname"><em>backend</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>One input heatmap per condition: <a class="el" href="classpulsatrix_1_1LRP.html" title="Whole-model LRP: runs the forward pass, seeds relevance at the chosen output(s), and propagates it to...">LRP</a> from <code>target</code> with the relevance zeroed, at each masked layer, outside the mask's channels. </p>
+<dl class="section return"><dt>Returns</dt><dd><a class="el" href="structpulsatrix_1_1Attribution.html" title="An explanation result: the raw attribution values, the method that produced them, and any relevant me...">Attribution</a>{"crp", the input's shape, metadata: <code>condition</code> (<code>layer:c,c;...</code>), <code>relevance_in_sum</code>}. </dd></dl>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname">std::invalid_argument</td><td>if a condition is empty, masks a layer twice, names a layer outside [1, number of modules] or a channel outside the layer, or for what <a class="el" href="classpulsatrix_1_1LRP.html#aecd0567125d3e4bb778c71366b681fde" title="Explains target_index for every row, OutputValue seed.">LRP::explain()</a> rejects. </td></tr>
   </table>
   </dd>
 </dl>
@@ -10286,6 +10528,66 @@ template&lt;typename Genotype , typename FitnessT &gt; </div>
 </div><div class="memdoc">
 
 <p>The gradient of logit <code>target</code> with respect to the layer, for each of <code>inputs:</code> shape (n, width). </p>
+
+</div>
+</div>
+<a id="a5285804ce25285165235fd22e2123c86" name="a5285804ce25285165235fd22e2123c86"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5285804ce25285165235fd22e2123c86">&#9670;&#160;</a></span>LayerRelevance()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> pulsatrix::LayerRelevance </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classpulsatrix_1_1LRP.html">LRP</a> &amp;&#160;</td>
+          <td class="paramname"><em>lrp</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="classpulsatrix_1_1ExplainerContext.html">ExplainerContext</a> &amp;&#160;</td>
+          <td class="paramname"><em>ctx</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp;&#160;</td>
+          <td class="paramname"><em>input</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="structpulsatrix_1_1LRPTarget.html">LRPTarget</a> &amp;&#160;</td>
+          <td class="paramname"><em>target</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="namespacepulsatrix.html#a2b8dc3d7d2cef35f192d191f09156e67">NodeId</a>&#160;</td>
+          <td class="paramname"><em>layer</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="classpulsatrix_1_1DeviceBackend.html">DeviceBackend</a> *&#160;</td>
+          <td class="paramname"><em>backend</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>The relevance at <code>layer</code> for explaining <code>target:</code> the layer's shape, (N, C, ...). </p>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname">std::invalid_argument</td><td>if layer isn't between 1 and the number of modules, or for what <a class="el" href="classpulsatrix_1_1LRP.html#aecd0567125d3e4bb778c71366b681fde" title="Explains target_index for every row, OutputValue seed.">LRP::explain()</a> rejects. </td></tr>
+  </table>
+  </dd>
+</dl>
 
 </div>
 </div>
