@@ -76,6 +76,15 @@ in [INT](#int-embedding-and-representation-analysis) is done.
   - **Tested on real models:** ESM-2, SmolLM2 and Gemma 3. Negative results are reported too:
     a steering vector that fails its checks, block-sparse featurizers that don't pay off on
     ESM-2, and decoder norms that miss rare fine-tune features.
+- **Topological data analysis** ([TDA-1 to TDA-8, TDA-11](#tda-topological-data-analysis)).
+  - **The pipeline:** activations to point clouds, GEMM distances with a certified float32
+    error bound, H0 from the minimum spanning tree, and Vietoris–Rips persistence in any
+    dimension (Ripser's algorithm, written for pulsatrix) with critical edges and cocycles.
+  - **Certified results:** bottleneck distances, landscapes and landmark subsampling carry
+    `Certified` error bounds that compose.
+  - **Is it real?:** the universal null distribution, bootstrap bands, and Gaussian or
+    random-network baselines.
+  - **Comparing representations:** RTD next to CKA in `CompareRepresentations()`.
 - **Representation analysis** ([INT-1 to INT-8](#int-embedding-and-representation-analysis)).
   - **Comparing representations:** debiased linear CKA, RSA with a permutation test, SVCCA, and
     mutual-kNN alignment, each matched to its reference code.
@@ -200,7 +209,8 @@ Fine-tune the models from v1.2 and explain what the fine-tuning changed.
 - INT-1 to INT-8 (**done**, [#131](https://github.com/Joshuaweg/pulsatrix/pull/131) to
   [#139](https://github.com/Joshuaweg/pulsatrix/pull/139)): CKA, RSA and SVCCA, nearest
   neighbors, probe controls, layer geometry, PCA, TCAV and CRP, and export for UMAP and t-SNE
-- TDA-1 to TDA-8, TDA-11: persistent homology and RTD
+- TDA-1 to TDA-8, TDA-11 (**done**, [#141](https://github.com/Joshuaweg/pulsatrix/pull/141) to
+  [#149](https://github.com/Joshuaweg/pulsatrix/pull/149)): persistent homology with certified error bars, significance tests, and RTD
 - KS-3, KS-4: uncertainty and adversarial robustness
 - Llama-3.2-1B and Qwen2.5-0.5B pass the golden-logit test
 
@@ -990,7 +1000,7 @@ GUDHI's GPL-licensed parts and giotto-ph (AGPL) are avoided.
 | TDA-8 | Significance tests: a universal null distribution, bootstrap confidence bands, Gaussian and random-network baselines | Every reported loop needs a p-value | TDA-5 | P0 | M | Done (see below) |
 | TDA-9 | Barcode, persistence diagram and Betti curve views, with JSON and SVG export | See the result | TDA-5, VIZ-1 | P1 | M |  |
 | TDA-10 | **A manifold verifier for featurizer blocks:** decide whether a BSF or SAE block forms a circle or a torus, and recover a circular coordinate to steer along. It passes by reproducing the GPT-2 day-of-week circle (Engels et al.) against a random-network control | Goodfire measures block dimension with a linear method. Nobody has published a topological check, so this is new | TDA-4, TDA-7, TDA-8, FEAT-6 | P1 | M |  |
-| TDA-11 | Representation Topology Divergence next to CKA in one `compare_representations()` report | Catches clusters and loops that CKA misses | TDA-4, INT-2 | P1 | S |  |
+| TDA-11 | Representation Topology Divergence next to CKA in one `compare_representations()` report | Catches clusters and loops that CKA misses | TDA-4, INT-2 | P1 | S | Done (see below) |
 | TDA-12 | Betti numbers layer by layer through a network, with a random-network baseline | Reproduces "topology simplifies through the layers" (Naitzat et al., 2020) | TDA-7, TDA-8 | P1 | M |  |
 | TDA-13 | Spectral and distance-to-measure distances | Raw distances concentrate in high dimensions and hide loops | INT-1, FND-4 | P2 | M |  |
 | TDA-14 | Mapper, with an instability score and a parameter sweep, never a single graph | Mapper output depends heavily on its parameters | FND-4, TDA-3 | P2 | M |  |
@@ -1064,6 +1074,15 @@ GUDHI's GPL-licensed parts and giotto-ph (AGPL) are avoided.
   function, since only the caller can run its model. The random numbers come from mt19937's raw
   output (Box–Muller, multiply-shift), not the standard distributions, so results match across
   standard libraries.
+- **TDA-11** follows the plan in `tda/rtd.hpp`, with `CompareRepresentations()` (CKA,
+  mutual-kNN alignment and RTD) as the report. The construction was checked against the paper
+  (Equation 1's practical form, Algorithm 2's batches and 0.9-quantile normalization) and
+  against its Theorem 2.1, which the tests verify exactly. Two choices differ from the authors'
+  code:
+  - the quantile is taken over the pairs, as the paper says, rather than over the full matrix
+    with its zero diagonal;
+  - the +∞ entries are in the triangle the paper's matrix puts them in. The code uses the
+    mirror image, which is equivalent.
 
 Not planned: "neural persistence" on weight graphs. A 2023 follow-up showed it mostly measures
 weight variance.

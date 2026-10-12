@@ -245,7 +245,7 @@ below record the reasoning they were built on.
   - Goodfire's BSF vision post (2026-07-07) measures block dimension by stable rank, a linear measure.
   - Circular coordinates: de Silva, Morozov and Vejdemo-Johansson, DCG 2011.
   - **Falsifier:** the dominant H1 bar isn't significant against the null, or it also appears on random-init activations.
-- **TDA-11.** RTD: Barannikov, Trofimov et al., ICML 2022.
+- **TDA-11.** RTD: Barannikov, Trofimov et al., ICML 2022 (arXiv 2201.00058). The practical 2n-vertex matrix is [[0, w₊ᵀ], [w₊, min(w, w̃)]] with w₊ = w with its upper triangle set to +∞; distances divided by their 0.9 quantiles; RTD₁ = total H1 bar length, averaged over both directions and batches of 500. Theorem 2.1 (empty for w = w̃; dimension k + 1 against all-zero w̃ equals the barcode of w in dimension k) makes a test oracle.
 - **TDA-12.** Naitzat, Zhitnikov and Lim, "Topology of Deep Neural Networks", JMLR 2020, arXiv 2004.06093.
 - **TDA-13.**
   - Distance concentration hides loops in high dimensions: Damrich, Berens and Kobak, NeurIPS 2024, arXiv 2311.03087.
