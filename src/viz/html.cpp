@@ -664,8 +664,10 @@ JsonValue ToVegaLiteProjection(const ProjectionDocument& doc, const HtmlOptions&
         if (zoom) p.emplace_back("params", ZoomParams());
         return p;
     };
-    const std::string subtitle = std::to_string(n) + " points" + (doc.method.empty() ? "" : ", " + doc.method) +
-                                 "; one scale on every axis, so distances on the page are distances in the projection";
+    const std::string subtitle =
+        std::to_string(n) + " points" + (doc.method.empty() ? "" : ", " + doc.method) +
+        (IsNeighborEmbedding(doc) ? "; neighbors are kept, but distances, cluster sizes and densities aren't"
+                                  : "; one scale on every axis, so distances on the page are distances in the projection");
     Obj spec = Base(doc.title.empty() ? "Projection" : doc.title, options, std::move(values), subtitle);
     spec.erase(std::remove_if(spec.begin(), spec.end(), [](const auto& kv) { return kv.first == "width"; }), spec.end());
     if (shown == 2) {

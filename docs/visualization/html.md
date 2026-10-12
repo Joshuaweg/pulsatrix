@@ -15,7 +15,7 @@ histogram and top examples.
 | `RenderTrainingLogHtml(doc)` | A line chart per scalar tag and a histogram per histogram tag (HTML only) |
 | `RenderFeatureDashboardHtml(doc)` | A feature's statistics, activation histogram and top examples (HTML only) |
 | `RenderTokenRelevanceHtml(doc)` | The text, each piece on a background colored by its relevance |
-| `RenderProjectionHtml(doc)` | A projection as a zoomable scatter plot with each point's label on hover. With three or more axes, three panels (PC1–PC2, PC1–PC3, PC2–PC3) |
+| `RenderProjectionHtml(doc)` | A projection as a zoomable scatter plot with each point's label on hover. With three or more axes, three panels (PC1–PC2, PC1–PC3, PC2–PC3). The subtitle of a UMAP or t-SNE plot says its distances, cluster sizes and densities aren't meaningful |
 
 Each chart is also available as a bare Vega-Lite spec (`ToVegaLiteBarChart`, `ToVegaLiteHeatmap`,
 and so on) that you can embed in your own page, or wrap with `VegaLitePage(spec, heading)`.
