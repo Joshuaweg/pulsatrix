@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['parsejson_0',['ParseJson',['../classpulsatrix_1_1JsonValue.html#a3c96c3c15eaa74d67a9ea70916876dbb',1,'pulsatrix::JsonValue']]]
+  ['linearmodule_0',['LinearModule',['../classpulsatrix_1_1LoRAAdapter.html#a498990051270de193dec4255a2032f2c',1,'pulsatrix::LoRAAdapter']]]
 ];

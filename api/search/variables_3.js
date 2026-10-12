@@ -38,8 +38,9 @@ var searchData=
   ['done_35',['done',['../structpulsatrix_1_1StepResult.html#ae5bd2a2383e982da508334bc3bcf34b8',1,'pulsatrix::StepResult']]],
   ['dones_36',['dones',['../structpulsatrix_1_1ReplayBatch.html#adc6893d49007b0a84c4a4a1b623ae7fb',1,'pulsatrix::ReplayBatch']]],
   ['drop_5flast_37',['drop_last',['../structpulsatrix_1_1DataLoaderOptions.html#ac6f057701bbb19bed04ca1a441731483',1,'pulsatrix::DataLoaderOptions']]],
-  ['dtype_38',['dtype',['../structpulsatrix_1_1EncoderLMConfig.html#add2bbdefc077186a93a598a0d303fae1',1,'pulsatrix::EncoderLMConfig::dtype'],['../structpulsatrix_1_1HfModelConfig.html#a49e927554f73d9ce86001f594231f5f7',1,'pulsatrix::HfModelConfig::dtype'],['../structpulsatrix_1_1SafetensorsTensorInfo.html#af007cc048c5787b6acdb538eae80fbd4',1,'pulsatrix::SafetensorsTensorInfo::dtype']]],
-  ['dual_5flr_39',['dual_lr',['../structpulsatrix_1_1BlockSparseOptions.html#a532170be7f5d1208091146b6eba1bf1d',1,'pulsatrix::BlockSparseOptions']]],
-  ['duel_5foverlap_40',['duel_overlap',['../structpulsatrix_1_1BlockSparseOptions.html#a713179bfbce8d6bb2dd764cc80f2be30',1,'pulsatrix::BlockSparseOptions']]],
-  ['duplicates_41',['duplicates',['../structpulsatrix_1_1TwoNNResult.html#a6779953f6bcf35ff10814bb0c8f6c2ba',1,'pulsatrix::TwoNNResult']]]
+  ['dropout_38',['dropout',['../structpulsatrix_1_1LoRAConfig.html#aff1e572c039c6d40e604fcff83013e4d',1,'pulsatrix::LoRAConfig']]],
+  ['dtype_39',['dtype',['../structpulsatrix_1_1EncoderLMConfig.html#add2bbdefc077186a93a598a0d303fae1',1,'pulsatrix::EncoderLMConfig::dtype'],['../structpulsatrix_1_1HfModelConfig.html#a49e927554f73d9ce86001f594231f5f7',1,'pulsatrix::HfModelConfig::dtype'],['../structpulsatrix_1_1SafetensorsTensorInfo.html#af007cc048c5787b6acdb538eae80fbd4',1,'pulsatrix::SafetensorsTensorInfo::dtype']]],
+  ['dual_5flr_40',['dual_lr',['../structpulsatrix_1_1BlockSparseOptions.html#a532170be7f5d1208091146b6eba1bf1d',1,'pulsatrix::BlockSparseOptions']]],
+  ['duel_5foverlap_41',['duel_overlap',['../structpulsatrix_1_1BlockSparseOptions.html#a713179bfbce8d6bb2dd764cc80f2be30',1,'pulsatrix::BlockSparseOptions']]],
+  ['duplicates_42',['duplicates',['../structpulsatrix_1_1TwoNNResult.html#a6779953f6bcf35ff10814bb0c8f6c2ba',1,'pulsatrix::TwoNNResult']]]
 ];

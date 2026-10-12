@@ -313,9 +313,20 @@
   
   
   
-    <li class="md-nav__item">
-      <a href="../deep-learning/" class="md-nav__link">
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
         
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
+            
   
   
   <span class="md-ellipsis">
@@ -329,7 +340,79 @@
   
   
 
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Deep Learning Modules and Layers
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../deep-learning/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Overview
+  
+
+    
+  </span>
+  
+  
+
       </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../deep-learning/fine-tuning/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Parameter-Efficient Fine-Tuning
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
     </li>
   
 
@@ -3930,7 +4013,7 @@ in <a href="#int-embedding-and-representation-analysis">INT</a> is done.
   Gradients and Grad-CAM are checked against Captum. LIME, KernelSHAP, PDP, logit lens,
   activation patching, circuit graphs, probes and a basic sparse autoencoder are all in.</li>
 <li><strong>Missing.</strong> There is no import from PyTorch or Hugging Face, and everything is <code>float32</code>.
-  Tensors have no views or broadcasting. There is no LoRA.</li>
+  Tensors have no views or broadcasting. There is no LoRA (added in v1.3, TRN-7).</li>
 <li><strong>Done since v1.0.</strong> The whole <a href="#fnd-foundations">FND epic</a>: named parameters, freezing, top-k,
   eigensolver/QR/SVD, BatchNorm eval mode and folding, Conv2D stride and padding, seeding and
   deterministic mode, and device checks. Saving and loading: safetensors and native checkpoints
@@ -4623,7 +4706,7 @@ rate is tuned, plain LoRA matches or beats most of them.</p>
 <td>FND-2, IO-1</td>
 <td>P1</td>
 <td>M</td>
-<td></td>
+<td>Done (see below)</td>
 </tr>
 <tr>
 <td>TRN-8</td>
@@ -4700,6 +4783,14 @@ rate is tuned, plain LoRA matches or beats most of them.</p>
   v1.2. It is per-token tagging rather than next-token prediction, because attention has no causal
   mask. After the same budget, the pretrained model scores 0.985 on the new rule and the model
   trained from scratch 0.862.</li>
+<li><strong>TRN-7</strong> has no <code>LoRALinear</code> class. The projections inside every model are <code>LinearModule</code>
+  members, so a wrapper would have meant rebuilding each container. Instead <code>LinearModule</code> holds
+  an optional adapter (<code>attach_lora()</code>, <code>lora.hpp</code>), and a new <code>Module::named_children()</code> lets
+  <code>ApplyLora()</code> find a model's Linear layers by name, as PEFT's <code>target_modules</code> does. The
+  default is PEFT's <code>"all-linear"</code>, not PEFT's attention-only default, following "LoRA Without
+  Regret". Also added: <code>SetLoraEnabled()</code>, to run the base model without removing the adapter,
+  which TRN-8 and TRN-11 need. Checked against PEFT 0.21.0 on a tiny Qwen2: logits, all 28
+  adapter gradients, merging, and the saved file's keys and values.</li>
 </ul>
 <h3 id="follow-ups-the-trn-work-surfaced">Follow-ups the TRN work surfaced<a class="headerlink" href="#follow-ups-the-trn-work-surfaced" title="Permanent link">&para;</a></h3>
 <table>

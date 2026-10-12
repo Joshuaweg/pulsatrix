@@ -43,6 +43,7 @@ var group__dl__modules =
     [ "kv_cache.hpp", "kv__cache_8hpp.html", null ],
     [ "layer_norm_module.hpp", "layer__norm__module_8hpp.html", null ],
     [ "linear_module.hpp", "linear__module_8hpp.html", null ],
+    [ "lora.hpp", "lora_8hpp.html", null ],
     [ "lr_scheduler.hpp", "lr__scheduler_8hpp.html", null ],
     [ "lstm_module.hpp", "lstm__module_8hpp.html", null ],
     [ "mamba_module.hpp", "mamba__module_8hpp.html", null ],

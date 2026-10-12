@@ -134,6 +134,32 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:ae144f76de7ff802d45ab5f4ab42df76f" id="r_ae144f76de7ff802d45ab5f4ab42df76f"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1LinearModule.html#ae144f76de7ff802d45ab5f4ab42df76f">LinearModule</a> (int64_t <a class="el" href="classpulsatrix_1_1LinearModule.html#acbe57a37da3944e5a8bf8a716e23f72d">in_features</a>, int64_t <a class="el" href="classpulsatrix_1_1LinearModule.html#a2b89c3914c77d29b443a2ef0de2d17d8">out_features</a>, <a class="el" href="classpulsatrix_1_1DeviceBackend.html">DeviceBackend</a> *backend, bool use_bias=true)</td></tr>
 <tr class="memdesc:ae144f76de7ff802d45ab5f4ab42df76f"><td class="mdescLeft">&#160;</td><td class="mdescRight">As above, on backend's own device (backend-&gt;device()).  <br /></td></tr>
 <tr class="separator:ae144f76de7ff802d45ab5f4ab42df76f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ada07e8769de1f3ed452179663b79dd2f" id="r_ada07e8769de1f3ed452179663b79dd2f"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1LinearModule.html#ada07e8769de1f3ed452179663b79dd2f">~LinearModule</a> () override</td></tr>
+<tr class="separator:ada07e8769de1f3ed452179663b79dd2f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a18ec1683a4c49bd077e49aa6969abed4" id="r_a18ec1683a4c49bd077e49aa6969abed4"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1LinearModule.html#a18ec1683a4c49bd077e49aa6969abed4">LinearModule</a> (<a class="el" href="classpulsatrix_1_1LinearModule.html">LinearModule</a> &amp;&amp;) noexcept</td></tr>
+<tr class="separator:a18ec1683a4c49bd077e49aa6969abed4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa71036492390317c1615c27eb5b5844e" id="r_aa71036492390317c1615c27eb5b5844e"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classpulsatrix_1_1LinearModule.html">LinearModule</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1LinearModule.html#aa71036492390317c1615c27eb5b5844e">operator=</a> (<a class="el" href="classpulsatrix_1_1LinearModule.html">LinearModule</a> &amp;&amp;) noexcept</td></tr>
+<tr class="separator:aa71036492390317c1615c27eb5b5844e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afe2a9be2b5d32fdabcee32a33afdeedd" id="r_afe2a9be2b5d32fdabcee32a33afdeedd"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1LinearModule.html#afe2a9be2b5d32fdabcee32a33afdeedd">attach_lora</a> (const <a class="el" href="structpulsatrix_1_1LoRAConfig.html">LoRAConfig</a> &amp;config)</td></tr>
+<tr class="memdesc:afe2a9be2b5d32fdabcee32a33afdeedd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Adds a LoRA adapter (TRN-7, <a class="el" href="lora_8hpp.html" title="LoRA (Hu et al., 2021): fine-tune a frozen model through a low-rank update on each of its Linear laye...">lora.hpp</a>): from now on the layer computes x W + b + (alpha / r) x A B. A is initialized as PEFT does and B is zero, so the output doesn't change until B trains. The base weight isn't frozen here; <a class="el" href="namespacepulsatrix.html#ae40b041766846ad8286558e270c8f261" title="Attaches a LoRA adapter to each LinearModule that config.target_modules selects, then freezes everyth...">ApplyLora()</a> freezes it.  <br /></td></tr>
+<tr class="separator:afe2a9be2b5d32fdabcee32a33afdeedd"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad13314b17ae1e48809864fa0e292a111" id="r_ad13314b17ae1e48809864fa0e292a111"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1LinearModule.html#ad13314b17ae1e48809864fa0e292a111">detach_lora</a> ()</td></tr>
+<tr class="memdesc:ad13314b17ae1e48809864fa0e292a111"><td class="mdescLeft">&#160;</td><td class="mdescRight">Removes the adapter. A merged one stays in the weight. No-op without one.  <br /></td></tr>
+<tr class="separator:ad13314b17ae1e48809864fa0e292a111"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9910ec98fcc5196275b84c9fe0aa9fd6" id="r_a9910ec98fcc5196275b84c9fe0aa9fd6"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classpulsatrix_1_1LoRAAdapter.html">LoRAAdapter</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1LinearModule.html#a9910ec98fcc5196275b84c9fe0aa9fd6">lora</a> ()</td></tr>
+<tr class="memdesc:a9910ec98fcc5196275b84c9fe0aa9fd6"><td class="mdescLeft">&#160;</td><td class="mdescRight">The adapter, or nullptr.  <br /></td></tr>
+<tr class="separator:a9910ec98fcc5196275b84c9fe0aa9fd6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2cfb8bf3f8849e544ec8bf09a029c100" id="r_a2cfb8bf3f8849e544ec8bf09a029c100"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classpulsatrix_1_1LoRAAdapter.html">LoRAAdapter</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1LinearModule.html#a2cfb8bf3f8849e544ec8bf09a029c100">lora</a> () const</td></tr>
+<tr class="separator:a2cfb8bf3f8849e544ec8bf09a029c100"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:adb84050fe946873276d5ec6c37ee11b6" id="r_adb84050fe946873276d5ec6c37ee11b6"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1LinearModule.html#adb84050fe946873276d5ec6c37ee11b6">merge_lora</a> ()</td></tr>
+<tr class="memdesc:adb84050fe946873276d5ec6c37ee11b6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Adds the update into the weight, W += (alpha / r) A B, so <a class="el" href="classpulsatrix_1_1Module.html#a5cb3b4aac3d2364c973009413fde6a21" title="Runs this module&#39;s forward computation.">forward()</a> runs at the base layer's cost. While merged, A and B get no gradients.  <br /></td></tr>
+<tr class="separator:adb84050fe946873276d5ec6c37ee11b6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a815bcfdad43b8002cc7e3f7845879808" id="r_a815bcfdad43b8002cc7e3f7845879808"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1LinearModule.html#a815bcfdad43b8002cc7e3f7845879808">unmerge_lora</a> ()</td></tr>
+<tr class="memdesc:a815bcfdad43b8002cc7e3f7845879808"><td class="mdescLeft">&#160;</td><td class="mdescRight">Subtracts the update again. W comes back up to float32 rounding, as with PEFT.  <br /></td></tr>
+<tr class="separator:a815bcfdad43b8002cc7e3f7845879808"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a26596a18b70fd79bdee468364d53e45f" id="r_a26596a18b70fd79bdee468364d53e45f"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1LinearModule.html#a26596a18b70fd79bdee468364d53e45f">set_lora_enabled</a> (bool enabled)</td></tr>
+<tr class="memdesc:a26596a18b70fd79bdee468364d53e45f"><td class="mdescLeft">&#160;</td><td class="mdescRight">false runs the layer as its base layer, x W + b; true adds the update again.  <br /></td></tr>
+<tr class="separator:a26596a18b70fd79bdee468364d53e45f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1fb2aae6550d40a6c77313e0f29fce97" id="r_a1fb2aae6550d40a6c77313e0f29fce97"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1LinearModule.html#a1fb2aae6550d40a6c77313e0f29fce97">backward</a> (const <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp;grad_output) override</td></tr>
 <tr class="memdesc:a1fb2aae6550d40a6c77313e0f29fce97"><td class="mdescLeft">&#160;</td><td class="mdescRight">Computes the gradient w.r.t. this module's input, and accumulates the weight/bias gradients internally (summed across the batch).  <br /></td></tr>
 <tr class="separator:a1fb2aae6550d40a6c77313e0f29fce97"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -177,7 +203,7 @@ Public Member Functions</h2></td></tr>
 <tr class="memdesc:a7e120c973f4f9ead0b886e490039866a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Implements every LRPRule.  <br /></td></tr>
 <tr class="separator:a7e120c973f4f9ead0b886e490039866a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8372922cd8c2538678e2ce4341f9a53f" id="r_a8372922cd8c2538678e2ce4341f9a53f"><td class="memItemLeft" align="right" valign="top">std::vector&lt; <a class="el" href="structpulsatrix_1_1NamedParamRef.html">NamedParamRef</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1LinearModule.html#a8372922cd8c2538678e2ce4341f9a53f">named_parameters</a> () override</td></tr>
-<tr class="memdesc:a8372922cd8c2538678e2ce4341f9a53f"><td class="mdescLeft">&#160;</td><td class="mdescRight">This module's trainable parameters, each with its hierarchical name &ndash; the one place a module declares its parameters (roadmap FND-1).  <br /></td></tr>
+<tr class="memdesc:a8372922cd8c2538678e2ce4341f9a53f"><td class="mdescLeft">&#160;</td><td class="mdescRight"><code>weight</code>, <code>bias</code> (unless built without one), then a LoRA adapter's <code>lora_A.weight</code> and <code>lora_B.weight</code>.  <br /></td></tr>
 <tr class="separator:a8372922cd8c2538678e2ce4341f9a53f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a282449c0454da4a0eff12d56c6e8c905" id="r_a282449c0454da4a0eff12d56c6e8c905"><td class="memItemLeft" align="right" valign="top">std::optional&lt; <a class="el" href="namespacepulsatrix.html#a5480c8cbe462fe3f5a8eb04a8c579e6e">DeviceType</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1LinearModule.html#a282449c0454da4a0eff12d56c6e8c905">compute_device</a> () const override</td></tr>
 <tr class="memdesc:a282449c0454da4a0eff12d56c6e8c905"><td class="mdescLeft">&#160;</td><td class="mdescRight">Where this layer computes, so <a class="el" href="classpulsatrix_1_1Module.html#a5cb3b4aac3d2364c973009413fde6a21" title="Runs this module&#39;s forward computation.">forward()</a> rejects an input on another device (FND-8).  <br /></td></tr>
@@ -197,6 +223,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a05e4c9483d5577e3da94df3ee55e7699 inherit pub_methods_classpulsatrix_1_1Module" id="r_a05e4c9483d5577e3da94df3ee55e7699"><td class="memItemLeft" align="right" valign="top">virtual std::vector&lt; <a class="el" href="structpulsatrix_1_1NamedBufferRef.html">NamedBufferRef</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1Module.html#a05e4c9483d5577e3da94df3ee55e7699">named_buffers</a> ()</td></tr>
 <tr class="memdesc:a05e4c9483d5577e3da94df3ee55e7699 inherit pub_methods_classpulsatrix_1_1Module"><td class="mdescLeft">&#160;</td><td class="mdescRight">This module's buffers: state a checkpoint must save that no optimizer updates.  <br /></td></tr>
 <tr class="separator:a05e4c9483d5577e3da94df3ee55e7699 inherit pub_methods_classpulsatrix_1_1Module"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af8c82be7b5d20ceba973a2d03d2b19a5 inherit pub_methods_classpulsatrix_1_1Module" id="r_af8c82be7b5d20ceba973a2d03d2b19a5"><td class="memItemLeft" align="right" valign="top">virtual std::vector&lt; <a class="el" href="structpulsatrix_1_1NamedModuleRef.html">NamedModuleRef</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1Module.html#af8c82be7b5d20ceba973a2d03d2b19a5">named_children</a> ()</td></tr>
+<tr class="memdesc:af8c82be7b5d20ceba973a2d03d2b19a5 inherit pub_methods_classpulsatrix_1_1Module"><td class="mdescLeft">&#160;</td><td class="mdescRight">This module's direct sub-modules, each under the prefix its parameters carry in <a class="el" href="classpulsatrix_1_1Module.html#a176c8304fb06ac2792bc046204b65a40" title="This module&#39;s trainable parameters, each with its hierarchical name – the one place a module declares...">named_parameters()</a>, in the same order (TRN-7: how <a class="el" href="namespacepulsatrix.html#ae40b041766846ad8286558e270c8f261" title="Attaches a LoRA adapter to each LinearModule that config.target_modules selects, then freezes everyth...">ApplyLora()</a> finds a model's Linear layers). Default: none. <a class="el" href="namespacepulsatrix.html#aed40084881fde6ed5e4249b725383a77" title="Every module under root, depth first with each parent before its children, named by their full dotted...">NamedModules()</a> walks the whole tree.  <br /></td></tr>
+<tr class="separator:af8c82be7b5d20ceba973a2d03d2b19a5 inherit pub_methods_classpulsatrix_1_1Module"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a06b89fd2a7cc85503196c85f3c9ea17f inherit pub_methods_classpulsatrix_1_1Module" id="r_a06b89fd2a7cc85503196c85f3c9ea17f"><td class="memItemLeft" align="right" valign="top">virtual std::vector&lt; <a class="el" href="structpulsatrix_1_1ParamRef.html">ParamRef</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1Module.html#a06b89fd2a7cc85503196c85f3c9ea17f">parameters</a> ()</td></tr>
 <tr class="memdesc:a06b89fd2a7cc85503196c85f3c9ea17f inherit pub_methods_classpulsatrix_1_1Module"><td class="mdescLeft">&#160;</td><td class="mdescRight">This module's trainable parameters and their gradients, for an optimizer to update uniformly across module types.  <br /></td></tr>
 <tr class="separator:a06b89fd2a7cc85503196c85f3c9ea17f inherit pub_methods_classpulsatrix_1_1Module"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -223,7 +252,7 @@ Protected Member Functions</h2></td></tr>
 Weights/biases are owned here as member Tensors, not <a class="el" href="classpulsatrix_1_1ComputationGraph.html" title="Owns every Node in a computation graph and exposes read access for graph-walking code (autograd&#39;s bac...">ComputationGraph</a> nodes. Parameter gradients accumulate via <a class="el" href="classpulsatrix_1_1Tensor.html#a6f94effb892e616403b9f129acd3cb8e" title="In-place elementwise accumulation: this[i] += other[i] for every element.">Tensor::accumulate()</a> across <a class="el" href="classpulsatrix_1_1LinearModule.html#a1fb2aae6550d40a6c77313e0f29fce97" title="Computes the gradient w.r.t. this module&#39;s input, and accumulates the weight/bias gradients internall...">backward()</a> calls until something (the optimizer) resets them. Batch-dimension gradient reduction (summing weight/bias gradient contributions across the N examples in a batch) needs no new <a class="el" href="classpulsatrix_1_1Tensor.html" title="N-dimensional tensor. Owns its data buffer exclusively; a DeviceBackend* is injected (not owned) – th...">Tensor</a> primitive &ndash; see campaign_exai_dl_library_batch_dimension_support's mission_tensor_shape_foundation.md: weight_grad's reduction falls out of gemm's own k-dimension summation (accumulated in place, beta = 1); bias_grad's is <a class="el" href="classpulsatrix_1_1DeviceBackend.html#a23304707c57a62c3603bb2a04bef29c0" title="Per-column sum of a (rows x cols) row-major matrix: out[j] = beta*out[j] + sum_i in[i][j].">DeviceBackend::column_sums</a>, likewise accumulated in place. Both are device-resident (GPU-native-kernels Mission 1). </dd></dl>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="a574244ca4a46e93e0dcb6040c1358144" name="a574244ca4a46e93e0dcb6040c1358144"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a574244ca4a46e93e0dcb6040c1358144">&#9670;&#160;</a></span>LinearModule() <span class="overload">[1/2]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a574244ca4a46e93e0dcb6040c1358144">&#9670;&#160;</a></span>LinearModule() <span class="overload">[1/3]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -273,7 +302,7 @@ Weights/biases are owned here as member Tensors, not <a class="el" href="classpu
     <tr><td class="paramname">out_features</td><td>Output dimension. </td></tr>
     <tr><td class="paramname">backend</td><td>Backend to allocate/compute through. Not owned; must outlive this module. </td></tr>
     <tr><td class="paramname">device</td><td>Which device every internal <a class="el" href="classpulsatrix_1_1Tensor.html" title="N-dimensional tensor. Owns its data buffer exclusively; a DeviceBackend* is injected (not owned) – th...">Tensor</a> member (weight, bias, gradients, forward-pass caches) is tagged as. Must match whatever device backend actually allocates on, or <a class="el" href="classpulsatrix_1_1Tensor.html" title="N-dimensional tensor. Owns its data buffer exclusively; a DeviceBackend* is injected (not owned) – th...">Tensor</a>'s own device-based dispatch (e.g. CopyDirection selection) will be wrong. See campaign_exai_dl_library_phase1_5_cuda_backend.md's Mission 3. </td></tr>
-    <tr><td class="paramname">use_bias</td><td>false builds <code>y = x @ W</code> with no bias parameter (LLM-1: Llama-family projections have none). The bias buffer still exists, all zeros, so every <a class="el" href="classpulsatrix_1_1LRP.html" title="Whole-model LRP: runs the forward pass, seeds relevance at the chosen output(s), and propagates it to...">LRP</a> rule reads it unchanged, but it is not in <a class="el" href="classpulsatrix_1_1LinearModule.html#a8372922cd8c2538678e2ce4341f9a53f" title="This module&#39;s trainable parameters, each with its hierarchical name – the one place a module declares...">named_parameters()</a>, never receives a gradient, and <a class="el" href="classpulsatrix_1_1LinearModule.html#aadfa38a958379182534527247154e29e" title="Overwrites the bias buffer – test/initialization use only.">set_bias()</a> throws. </td></tr>
+    <tr><td class="paramname">use_bias</td><td>false builds <code>y = x @ W</code> with no bias parameter (LLM-1: Llama-family projections have none). The bias buffer still exists, all zeros, so every <a class="el" href="classpulsatrix_1_1LRP.html" title="Whole-model LRP: runs the forward pass, seeds relevance at the chosen output(s), and propagates it to...">LRP</a> rule reads it unchanged, but it is not in <a class="el" href="classpulsatrix_1_1LinearModule.html#a8372922cd8c2538678e2ce4341f9a53f" title="weight, bias (unless built without one), then a LoRA adapter&#39;s lora_A.weight and lora_B....">named_parameters()</a>, never receives a gradient, and <a class="el" href="classpulsatrix_1_1LinearModule.html#aadfa38a958379182534527247154e29e" title="Overwrites the bias buffer – test/initialization use only.">set_bias()</a> throws. </td></tr>
   </table>
   </dd>
 </dl>
@@ -281,7 +310,7 @@ Weights/biases are owned here as member Tensors, not <a class="el" href="classpu
 </div>
 </div>
 <a id="ae144f76de7ff802d45ab5f4ab42df76f" name="ae144f76de7ff802d45ab5f4ab42df76f"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ae144f76de7ff802d45ab5f4ab42df76f">&#9670;&#160;</a></span>LinearModule() <span class="overload">[2/2]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#ae144f76de7ff802d45ab5f4ab42df76f">&#9670;&#160;</a></span>LinearModule() <span class="overload">[2/3]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -323,7 +352,85 @@ Weights/biases are owned here as member Tensors, not <a class="el" href="classpu
 
 </div>
 </div>
+<a id="ada07e8769de1f3ed452179663b79dd2f" name="ada07e8769de1f3ed452179663b79dd2f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ada07e8769de1f3ed452179663b79dd2f">&#9670;&#160;</a></span>~LinearModule()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">pulsatrix::LinearModule::~LinearModule </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">override</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a18ec1683a4c49bd077e49aa6969abed4" name="a18ec1683a4c49bd077e49aa6969abed4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a18ec1683a4c49bd077e49aa6969abed4">&#9670;&#160;</a></span>LinearModule() <span class="overload">[3/3]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">pulsatrix::LinearModule::LinearModule </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classpulsatrix_1_1LinearModule.html">LinearModule</a> &amp;&amp;&#160;</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">noexcept</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
 <h2 class="groupheader">Member Function Documentation</h2>
+<a id="afe2a9be2b5d32fdabcee32a33afdeedd" name="afe2a9be2b5d32fdabcee32a33afdeedd"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#afe2a9be2b5d32fdabcee32a33afdeedd">&#9670;&#160;</a></span>attach_lora()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void pulsatrix::LinearModule::attach_lora </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="structpulsatrix_1_1LoRAConfig.html">LoRAConfig</a> &amp;&#160;</td>
+          <td class="paramname"><em>config</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Adds a LoRA adapter (TRN-7, <a class="el" href="lora_8hpp.html" title="LoRA (Hu et al., 2021): fine-tune a frozen model through a low-rank update on each of its Linear laye...">lora.hpp</a>): from now on the layer computes x W + b + (alpha / r) x A B. A is initialized as PEFT does and B is zero, so the output doesn't change until B trains. The base weight isn't frozen here; <a class="el" href="namespacepulsatrix.html#ae40b041766846ad8286558e270c8f261" title="Attaches a LoRA adapter to each LinearModule that config.target_modules selects, then freezes everyth...">ApplyLora()</a> freezes it. </p>
+<dl class="section note"><dt>Note</dt><dd>The adapter's A and B join <a class="el" href="classpulsatrix_1_1LinearModule.html#a8372922cd8c2538678e2ce4341f9a53f" title="weight, bias (unless built without one), then a LoRA adapter&#39;s lora_A.weight and lora_B....">named_parameters()</a> as <code>lora_A.weight</code> and <code>lora_B.weight</code>. <a class="el" href="classpulsatrix_1_1LinearModule.html#a1fb2aae6550d40a6c77313e0f29fce97" title="Computes the gradient w.r.t. this module&#39;s input, and accumulates the weight/bias gradients internall...">backward()</a> accumulates their gradients, and <a class="el" href="classpulsatrix_1_1LinearModule.html#a171e265daec59933d3a066bd5f368316" title="Epsilon-rule LRP relevance propagation (Bach et al. 2015), applied independently per example in the b...">propagate_relevance()</a> runs on the adapted weight W + (alpha / r) A B. </dd></dl>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname">std::logic_error</td><td>if the layer already has one; std::invalid_argument for invalid settings (<a class="el" href="classpulsatrix_1_1LoRAAdapter.html" title="One layer&#39;s low-rank update: A (in, r) and B (r, out), stored like LinearModule&#39;s weight,...">LoRAAdapter</a>'s constructor). </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
 <a id="a1fb2aae6550d40a6c77313e0f29fce97" name="a1fb2aae6550d40a6c77313e0f29fce97"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a1fb2aae6550d40a6c77313e0f29fce97">&#9670;&#160;</a></span>backward()</h2>
 
@@ -450,6 +557,25 @@ Device-generic: runs on Cpu, Cuda or Hip tensors (GPU-native-kernels Mission 1).
 
 </div>
 </div>
+<a id="ad13314b17ae1e48809864fa0e292a111" name="ad13314b17ae1e48809864fa0e292a111"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad13314b17ae1e48809864fa0e292a111">&#9670;&#160;</a></span>detach_lora()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void pulsatrix::LinearModule::detach_lora </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Removes the adapter. A merged one stays in the weight. No-op without one. </p>
+
+</div>
+</div>
 <a id="adb2f5ff5fde8b7a3a17d443c459ef75e" name="adb2f5ff5fde8b7a3a17d443c459ef75e"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#adb2f5ff5fde8b7a3a17d443c459ef75e">&#9670;&#160;</a></span>forward_impl()</h2>
 
@@ -535,6 +661,83 @@ Device-generic: runs on Cpu, Cuda or Hip tensors (GPU-native-kernels Mission 1).
 
 </div>
 </div>
+<a id="a9910ec98fcc5196275b84c9fe0aa9fd6" name="a9910ec98fcc5196275b84c9fe0aa9fd6"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9910ec98fcc5196275b84c9fe0aa9fd6">&#9670;&#160;</a></span>lora() <span class="overload">[1/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classpulsatrix_1_1LoRAAdapter.html">LoRAAdapter</a> * pulsatrix::LinearModule::lora </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>The adapter, or nullptr. </p>
+
+</div>
+</div>
+<a id="a2cfb8bf3f8849e544ec8bf09a029c100" name="a2cfb8bf3f8849e544ec8bf09a029c100"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2cfb8bf3f8849e544ec8bf09a029c100">&#9670;&#160;</a></span>lora() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">const <a class="el" href="classpulsatrix_1_1LoRAAdapter.html">LoRAAdapter</a> * pulsatrix::LinearModule::lora </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="adb84050fe946873276d5ec6c37ee11b6" name="adb84050fe946873276d5ec6c37ee11b6"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#adb84050fe946873276d5ec6c37ee11b6">&#9670;&#160;</a></span>merge_lora()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void pulsatrix::LinearModule::merge_lora </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Adds the update into the weight, W += (alpha / r) A B, so <a class="el" href="classpulsatrix_1_1Module.html#a5cb3b4aac3d2364c973009413fde6a21" title="Runs this module&#39;s forward computation.">forward()</a> runs at the base layer's cost. While merged, A and B get no gradients. </p>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname">std::logic_error</td><td>without an adapter, if it is already merged or if it is disabled. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
 <a id="a8372922cd8c2538678e2ce4341f9a53f" name="a8372922cd8c2538678e2ce4341f9a53f"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a8372922cd8c2538678e2ce4341f9a53f">&#9670;&#160;</a></span>named_parameters()</h2>
 
@@ -553,14 +756,12 @@ Device-generic: runs on Cpu, Cuda or Hip tensors (GPU-native-kernels Mission 1).
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">override</span><span class="mlabel">virtual</span></span>  </td>
+<span class="mlabels"><span class="mlabel">override</span><span class="mlabel">virtual</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
 
-<p>This module's trainable parameters, each with its hierarchical name &ndash; the one place a module declares its parameters (roadmap FND-1). </p>
-<dl class="section return"><dt>Returns</dt><dd>{name, {value, grad}} entries pointing directly at this module's own members, in a fixed order. Names are unique within the module tree. Default: empty (a parameterless module like <a class="el" href="classpulsatrix_1_1ReluModule.html" title="y = max(x, 0), elementwise. No parameters, no parameter gradients.">ReluModule</a> needs no override). </dd></dl>
-<dl class="section note"><dt>Note</dt><dd>Override this, not <a class="el" href="classpulsatrix_1_1Module.html#a06b89fd2a7cc85503196c85f3c9ea17f" title="This module&#39;s trainable parameters and their gradients, for an optimizer to update uniformly across m...">parameters()</a>: saving, loading, freezing by name and optimizer parameter groups all key on these names. </dd></dl>
+<p><code>weight</code>, <code>bias</code> (unless built without one), then a LoRA adapter's <code>lora_A.weight</code> and <code>lora_B.weight</code>. </p>
 
 <p>Reimplemented from <a class="el" href="classpulsatrix_1_1Module.html#a176c8304fb06ac2792bc046204b65a40">pulsatrix::Module</a>.</p>
 
@@ -592,6 +793,32 @@ Device-generic: runs on Cpu, Cuda or Hip tensors (GPU-native-kernels Mission 1).
 <p>Linear per charter's closed OpType set. </p>
 
 <p>Implements <a class="el" href="classpulsatrix_1_1Module.html#a3a4406bdbcd5f3886c71a24b8ddbf90e">pulsatrix::Module</a>.</p>
+
+</div>
+</div>
+<a id="aa71036492390317c1615c27eb5b5844e" name="aa71036492390317c1615c27eb5b5844e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa71036492390317c1615c27eb5b5844e">&#9670;&#160;</a></span>operator=()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classpulsatrix_1_1LinearModule.html">LinearModule</a> &amp; pulsatrix::LinearModule::operator= </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classpulsatrix_1_1LinearModule.html">LinearModule</a> &amp;&amp;&#160;</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">noexcept</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
 
 </div>
 </div>
@@ -756,6 +983,32 @@ config.rule selects Epsilon (default, as above), Gamma, AlphaBeta or ZBox, with 
 
 </div>
 </div>
+<a id="a26596a18b70fd79bdee468364d53e45f" name="a26596a18b70fd79bdee468364d53e45f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a26596a18b70fd79bdee468364d53e45f">&#9670;&#160;</a></span>set_lora_enabled()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void pulsatrix::LinearModule::set_lora_enabled </td>
+          <td>(</td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>enabled</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>false runs the layer as its base layer, x W + b; true adds the update again. </p>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname">std::logic_error</td><td>without an adapter, or while it is merged. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
 <a id="a9aee297a7e982b199628e1e64b1c08bf" name="a9aee297a7e982b199628e1e64b1c08bf"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a9aee297a7e982b199628e1e64b1c08bf">&#9670;&#160;</a></span>set_weight() <span class="overload">[1/2]</span></h2>
 
@@ -823,6 +1076,31 @@ config.rule selects Epsilon (default, as above), Gamma, AlphaBeta or ZBox, with 
 <p>Implements every LRPRule. </p>
 
 <p>Reimplemented from <a class="el" href="classpulsatrix_1_1Module.html#acad2aa6565d456d5a57be421c05537b6">pulsatrix::Module</a>.</p>
+
+</div>
+</div>
+<a id="a815bcfdad43b8002cc7e3f7845879808" name="a815bcfdad43b8002cc7e3f7845879808"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a815bcfdad43b8002cc7e3f7845879808">&#9670;&#160;</a></span>unmerge_lora()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void pulsatrix::LinearModule::unmerge_lora </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Subtracts the update again. W comes back up to float32 rounding, as with PEFT. </p>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname">std::logic_error</td><td>without a merged adapter. </td></tr>
+  </table>
+  </dd>
+</dl>
 
 </div>
 </div>

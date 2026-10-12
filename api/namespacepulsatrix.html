@@ -798,6 +798,12 @@ Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpulsatrix_1_1LocalSensitivityResult.html">LocalSensitivityResult</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">One-at-a-time sensitivity of one output around one input.  <a href="structpulsatrix_1_1LocalSensitivityResult.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1LoRAAdapter.html">LoRAAdapter</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">One layer's low-rank update: A <code>(in, r)</code> and B <code>(r, out)</code>, stored like <a class="el" href="classpulsatrix_1_1LinearModule.html" title="y = x @ W + b, batched (x is (N, in_features), y is (N, out_features)) – migrated from the original u...">LinearModule</a>'s weight, with x A B as the update. PEFT's lora_A and lora_B are the transposes, <code>(r, in)</code> and <code>(out, r)</code>; <a class="el" href="namespacepulsatrix.html#a6634c07a792f8867b3984a4a8244ed1d" title="Writes the model&#39;s adapters as a PEFT adapter directory: adapter_model.safetensors and adapter_config...">SaveLoraAdapter()</a> and <a class="el" href="namespacepulsatrix.html#a0ccccc2572b2e2d2d0178433bc00f0ff" title="Reads a PEFT LoRA adapter directory onto the model: attaches an adapter to each layer it has weights ...">LoadLoraAdapter()</a> convert.  <a href="classpulsatrix_1_1LoRAAdapter.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpulsatrix_1_1LoRAConfig.html">LoRAConfig</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">LoRA's settings. The defaults are PEFT's <code>LoraConfig</code>'s.  <a href="structpulsatrix_1_1LoRAConfig.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpulsatrix_1_1LossRecovered.html">LossRecovered</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="namespacepulsatrix.html#a0f041cc2b4d0f3b20771c2277381febe" title="Loss recovered, SAEBench&#39;s main downstream measure.">MeasureLossRecovered()</a>'s result: the model's loss three ways.  <a href="structpulsatrix_1_1LossRecovered.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -905,6 +911,9 @@ Classes</h2></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpulsatrix_1_1NamedBufferRef.html">NamedBufferRef</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="classpulsatrix_1_1Module.html" title="Base class for every layer type (LinearModule, Conv2DModule, activations, ...).">Module</a> state that is saved with a model but never trained, such as BatchNorm's running statistics, with its hierarchical name (roadmap IO-2). Named like parameters.  <a href="structpulsatrix_1_1NamedBufferRef.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpulsatrix_1_1NamedModuleRef.html">NamedModuleRef</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">A sub-module with its dot-separated name relative to the module that reported it, the same prefix its parameters carry (<code>mha.q_proj</code>, <code>layers.0</code>).  <a href="structpulsatrix_1_1NamedModuleRef.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpulsatrix_1_1NamedParamRef.html">NamedParamRef</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">A parameter together with its hierarchical, dot-separated name relative to the module that reported it (<code>weight</code>, <code>mha.q_proj.bias</code>, <code>0.weight</code>).  <a href="structpulsatrix_1_1NamedParamRef.html#details">More...</a><br /></td></tr>
@@ -2435,6 +2444,30 @@ Functions</h2></td></tr>
 <tr class="memitem:abc312204e032ea8f6f81f09aeae4d9e2" id="r_abc312204e032ea8f6f81f09aeae4d9e2"><td class="memItemLeft" align="right" valign="top">std::vector&lt; float &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#abc312204e032ea8f6f81f09aeae4d9e2">SolveLinearSystem</a> (std::vector&lt; std::vector&lt; float &gt; &gt; a, std::vector&lt; float &gt; b)</td></tr>
 <tr class="memdesc:abc312204e032ea8f6f81f09aeae4d9e2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Solves A*x = b via Gaussian elimination with partial pivoting.  <br /></td></tr>
 <tr class="separator:abc312204e032ea8f6f81f09aeae4d9e2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae40b041766846ad8286558e270c8f261" id="r_ae40b041766846ad8286558e270c8f261"><td class="memItemLeft" align="right" valign="top">std::vector&lt; std::string &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#ae40b041766846ad8286558e270c8f261">ApplyLora</a> (<a class="el" href="classpulsatrix_1_1Module.html">Module</a> &amp;model, const <a class="el" href="structpulsatrix_1_1LoRAConfig.html">LoRAConfig</a> &amp;config={})</td></tr>
+<tr class="memdesc:ae40b041766846ad8286558e270c8f261"><td class="mdescLeft">&#160;</td><td class="mdescRight">Attaches a LoRA adapter to each <a class="el" href="classpulsatrix_1_1LinearModule.html" title="y = x @ W + b, batched (x is (N, in_features), y is (N, out_features)) – migrated from the original u...">LinearModule</a> that config.target_modules selects, then freezes everything else: only the adapters train, as with PEFT's get_peft_model().  <br /></td></tr>
+<tr class="separator:ae40b041766846ad8286558e270c8f261"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a541d12b7125fc9e300b76891b0a9b557" id="r_a541d12b7125fc9e300b76891b0a9b557"><td class="memItemLeft" align="right" valign="top">std::vector&lt; std::pair&lt; std::string, <a class="el" href="classpulsatrix_1_1LinearModule.html">LinearModule</a> * &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#a541d12b7125fc9e300b76891b0a9b557">LoraLayers</a> (<a class="el" href="classpulsatrix_1_1Module.html">Module</a> &amp;model)</td></tr>
+<tr class="memdesc:a541d12b7125fc9e300b76891b0a9b557"><td class="mdescLeft">&#160;</td><td class="mdescRight">The model's LinearModules that have an adapter, by name, in the model's order.  <br /></td></tr>
+<tr class="separator:a541d12b7125fc9e300b76891b0a9b557"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a095446dde46caacd2ea46983ecac575f" id="r_a095446dde46caacd2ea46983ecac575f"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#a095446dde46caacd2ea46983ecac575f">MergeLora</a> (<a class="el" href="classpulsatrix_1_1Module.html">Module</a> &amp;model)</td></tr>
+<tr class="memdesc:a095446dde46caacd2ea46983ecac575f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Merges every adapter into its base weight (<a class="el" href="classpulsatrix_1_1LinearModule.html#adb84050fe946873276d5ec6c37ee11b6" title="Adds the update into the weight, W += (alpha / r) A B, so forward() runs at the base layer&#39;s cost....">LinearModule::merge_lora()</a>).  <br /></td></tr>
+<tr class="separator:a095446dde46caacd2ea46983ecac575f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab9bad443b07510f563278747e74a3c8f" id="r_ab9bad443b07510f563278747e74a3c8f"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#ab9bad443b07510f563278747e74a3c8f">UnmergeLora</a> (<a class="el" href="classpulsatrix_1_1Module.html">Module</a> &amp;model)</td></tr>
+<tr class="memdesc:ab9bad443b07510f563278747e74a3c8f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Takes every merged adapter out of its base weight again.  <br /></td></tr>
+<tr class="separator:ab9bad443b07510f563278747e74a3c8f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5ee67331e41bc1a13209d0a2b618104d" id="r_a5ee67331e41bc1a13209d0a2b618104d"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#a5ee67331e41bc1a13209d0a2b618104d">SetLoraEnabled</a> (<a class="el" href="classpulsatrix_1_1Module.html">Module</a> &amp;model, bool enabled)</td></tr>
+<tr class="memdesc:a5ee67331e41bc1a13209d0a2b618104d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Turns every adapter on or off, so one model runs as the base or as the fine-tune.  <br /></td></tr>
+<tr class="separator:a5ee67331e41bc1a13209d0a2b618104d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a24914157f269831b4241edb9bbf6e269" id="r_a24914157f269831b4241edb9bbf6e269"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#a24914157f269831b4241edb9bbf6e269">RemoveLora</a> (<a class="el" href="classpulsatrix_1_1Module.html">Module</a> &amp;model)</td></tr>
+<tr class="memdesc:a24914157f269831b4241edb9bbf6e269"><td class="mdescLeft">&#160;</td><td class="mdescRight">Removes every adapter. Merged ones stay in the weights (PEFT's merge_and_unload() is <a class="el" href="namespacepulsatrix.html#a095446dde46caacd2ea46983ecac575f" title="Merges every adapter into its base weight (LinearModule::merge_lora()).">MergeLora()</a> then this); unmerged ones are dropped (PEFT's unload()).  <br /></td></tr>
+<tr class="separator:a24914157f269831b4241edb9bbf6e269"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6634c07a792f8867b3984a4a8244ed1d" id="r_a6634c07a792f8867b3984a4a8244ed1d"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#a6634c07a792f8867b3984a4a8244ed1d">SaveLoraAdapter</a> (<a class="el" href="classpulsatrix_1_1Module.html">Module</a> &amp;model, const std::string &amp;directory, const std::vector&lt; <a class="el" href="structpulsatrix_1_1WeightMapping.html">WeightMapping</a> &gt; &amp;mapping={})</td></tr>
+<tr class="memdesc:a6634c07a792f8867b3984a4a8244ed1d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Writes the model's adapters as a PEFT adapter directory: <code>adapter_model.safetensors</code> and <code>adapter_config.json</code>, which PEFT's PeftModel.from_pretrained() loads onto the Hugging Face model.  <br /></td></tr>
+<tr class="separator:a6634c07a792f8867b3984a4a8244ed1d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0ccccc2572b2e2d2d0178433bc00f0ff" id="r_a0ccccc2572b2e2d2d0178433bc00f0ff"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#a0ccccc2572b2e2d2d0178433bc00f0ff">LoadLoraAdapter</a> (<a class="el" href="classpulsatrix_1_1Module.html">Module</a> &amp;model, const std::string &amp;directory, const std::vector&lt; <a class="el" href="structpulsatrix_1_1WeightMapping.html">WeightMapping</a> &gt; &amp;mapping={})</td></tr>
+<tr class="memdesc:a0ccccc2572b2e2d2d0178433bc00f0ff"><td class="mdescLeft">&#160;</td><td class="mdescRight">Reads a PEFT LoRA adapter directory onto the model: attaches an adapter to each layer it has weights for, with r from their shapes and lora_alpha and lora_dropout from <code>adapter_config.json</code>, and freezes the rest as <a class="el" href="namespacepulsatrix.html#ae40b041766846ad8286558e270c8f261" title="Attaches a LoRA adapter to each LinearModule that config.target_modules selects, then freezes everyth...">ApplyLora()</a> does.  <br /></td></tr>
+<tr class="separator:a0ccccc2572b2e2d2d0178433bc00f0ff"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a65a61a87205c4d889e1c16baf4d439a9" id="r_a65a61a87205c4d889e1c16baf4d439a9"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structpulsatrix_1_1ConservationResult.html">ConservationResult</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#a65a61a87205c4d889e1c16baf4d439a9">ComputeConservation</a> (const <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp;relevance_in, const <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp;relevance_out)</td></tr>
 <tr class="memdesc:a65a61a87205c4d889e1c16baf4d439a9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sums relevance_in and relevance_out independently and reports their gap.  <br /></td></tr>
 <tr class="separator:a65a61a87205c4d889e1c16baf4d439a9"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -2462,6 +2495,9 @@ Functions</h2></td></tr>
 <tr class="memitem:a8d4d176932520c4b6229ffd1454471de" id="r_a8d4d176932520c4b6229ffd1454471de"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#a8d4d176932520c4b6229ffd1454471de">append_named_parameters</a> (std::vector&lt; <a class="el" href="structpulsatrix_1_1NamedParamRef.html">NamedParamRef</a> &gt; &amp;out, const std::string &amp;prefix, <a class="el" href="classpulsatrix_1_1Module.html">Module</a> &amp;child)</td></tr>
 <tr class="memdesc:a8d4d176932520c4b6229ffd1454471de"><td class="mdescLeft">&#160;</td><td class="mdescRight">Appends <code>child</code>'s named parameters to <code>out</code>, each renamed to <code>prefix.name</code> &ndash; the one step every container's named_parameters() repeats per child.  <br /></td></tr>
 <tr class="separator:a8d4d176932520c4b6229ffd1454471de"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aed40084881fde6ed5e4249b725383a77" id="r_aed40084881fde6ed5e4249b725383a77"><td class="memItemLeft" align="right" valign="top">std::vector&lt; <a class="el" href="structpulsatrix_1_1NamedModuleRef.html">NamedModuleRef</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#aed40084881fde6ed5e4249b725383a77">NamedModules</a> (<a class="el" href="classpulsatrix_1_1Module.html">Module</a> &amp;root)</td></tr>
+<tr class="memdesc:aed40084881fde6ed5e4249b725383a77"><td class="mdescLeft">&#160;</td><td class="mdescRight">Every module under <code>root</code>, depth first with each parent before its children, named by their full dotted path (<code>layers.0.mha.q_proj</code>); <code>root</code> itself isn't included.  <br /></td></tr>
+<tr class="separator:aed40084881fde6ed5e4249b725383a77"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:adcfb14c67666eab8cfe009824f318631" id="r_adcfb14c67666eab8cfe009824f318631"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#adcfb14c67666eab8cfe009824f318631">release_tensor</a> (<a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp;t)</td></tr>
 <tr class="memdesc:adcfb14c67666eab8cfe009824f318631"><td class="mdescLeft">&#160;</td><td class="mdescRight">Frees <code>t's</code> buffer: it becomes an empty tensor on the same backend and device.  <br /></td></tr>
 <tr class="separator:adcfb14c67666eab8cfe009824f318631"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -5663,6 +5699,44 @@ Every op here computes the <em>forward</em> value only &ndash; no derivative var
 
 <p>Appends <code>child</code>'s named parameters to <code>out</code>, each renamed to <code>prefix.name</code> &ndash; the one step every container's named_parameters() repeats per child. </p>
 <dl class="section note"><dt>Note</dt><dd>A child that overrides only the legacy parameters() hook reports no names; its parameters are appended under positional names (<code>prefix.0</code>, <code>prefix.1</code>, ...) so a container never hides them from an optimizer that used to see them. </dd></dl>
+
+</div>
+</div>
+<a id="ae40b041766846ad8286558e270c8f261" name="ae40b041766846ad8286558e270c8f261"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae40b041766846ad8286558e270c8f261">&#9670;&#160;</a></span>ApplyLora()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::vector&lt; std::string &gt; pulsatrix::ApplyLora </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classpulsatrix_1_1Module.html">Module</a> &amp;&#160;</td>
+          <td class="paramname"><em>model</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="structpulsatrix_1_1LoRAConfig.html">LoRAConfig</a> &amp;&#160;</td>
+          <td class="paramname"><em>config</em> = <code>{}</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Attaches a LoRA adapter to each <a class="el" href="classpulsatrix_1_1LinearModule.html" title="y = x @ W + b, batched (x is (N, in_features), y is (N, out_features)) – migrated from the original u...">LinearModule</a> that config.target_modules selects, then freezes everything else: only the adapters train, as with PEFT's get_peft_model(). </p>
+<dl class="section return"><dt>Returns</dt><dd>The adapted layers' names, in the model's order. </dd></dl>
+<dl class="section note"><dt>Note</dt><dd>Each layer's A is drawn from config.seed and the layer's position in that order. </dd></dl>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname">std::invalid_argument</td><td>if a target matches no module or a module that isn't a <a class="el" href="classpulsatrix_1_1LinearModule.html" title="y = x @ W + b, batched (x is (N, in_features), y is (N, out_features)) – migrated from the original u...">LinearModule</a>, nothing is selected, or a selected layer already has an adapter. Nothing is changed then. </td></tr>
+  </table>
+  </dd>
+</dl>
 
 </div>
 </div>
@@ -12031,6 +12105,54 @@ template&lt;typename Genotype , typename FitnessT &gt; </div>
 
 </div>
 </div>
+<a id="a0ccccc2572b2e2d2d0178433bc00f0ff" name="a0ccccc2572b2e2d2d0178433bc00f0ff"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0ccccc2572b2e2d2d0178433bc00f0ff">&#9670;&#160;</a></span>LoadLoraAdapter()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void pulsatrix::LoadLoraAdapter </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classpulsatrix_1_1Module.html">Module</a> &amp;&#160;</td>
+          <td class="paramname"><em>model</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const std::string &amp;&#160;</td>
+          <td class="paramname"><em>directory</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const std::vector&lt; <a class="el" href="structpulsatrix_1_1WeightMapping.html">WeightMapping</a> &gt; &amp;&#160;</td>
+          <td class="paramname"><em>mapping</em> = <code>{}</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Reads a PEFT LoRA adapter directory onto the model: attaches an adapter to each layer it has weights for, with r from their shapes and lora_alpha and lora_dropout from <code>adapter_config.json</code>, and freezes the rest as <a class="el" href="namespacepulsatrix.html#ae40b041766846ad8286558e270c8f261" title="Attaches a LoRA adapter to each LinearModule that config.target_modules selects, then freezes everyth...">ApplyLora()</a> does. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">mapping</td><td>As for <a class="el" href="namespacepulsatrix.html#a6634c07a792f8867b3984a4a8244ed1d" title="Writes the model&#39;s adapters as a PEFT adapter directory: adapter_model.safetensors and adapter_config...">SaveLoraAdapter()</a>. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname">std::invalid_argument</td><td>for a config that isn't plain LoRA (DoRA, rsLoRA, fan_in_fan_out, trained biases, modules_to_save, rank or alpha patterns), a key that isn't a LoRA weight, a layer that doesn't exist or already has an adapter, or a shape that doesn't match. Everything is checked before the model is changed. std::runtime_error if a file can't be read. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
 <a id="a7770a1a560a76af4bf34d00a5289da6f" name="a7770a1a560a76af4bf34d00a5289da6f"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a7770a1a560a76af4bf34d00a5289da6f">&#9670;&#160;</a></span>LoadTokenizerJson()</h2>
 
@@ -12274,6 +12396,26 @@ template&lt;typename Genotype , typename FitnessT &gt; </div>
   </dd>
 </dl>
 <dl class="section note"><dt>Note</dt><dd>Per-parameter bandwidth for Continuous is 0.2 * (upper - lower); for LogUniform, 0.2 * (log(upper) - log(lower)), applied after taking the log of both the bandwidth basis and every observed/candidate value (consistent with this campaign's own established log-space convention for LogUniform elsewhere &ndash; GridSample/RandomSample/ UnitCubeToConfiguration); for Integer, 0.2 * (upper - lower), floored at 1.0 (a sub-1.0 bandwidth over integer-valued data would make the KDE unreasonably peaked). </dd></dl>
+
+</div>
+</div>
+<a id="a541d12b7125fc9e300b76891b0a9b557" name="a541d12b7125fc9e300b76891b0a9b557"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a541d12b7125fc9e300b76891b0a9b557">&#9670;&#160;</a></span>LoraLayers()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::vector&lt; std::pair&lt; std::string, <a class="el" href="classpulsatrix_1_1LinearModule.html">LinearModule</a> * &gt; &gt; pulsatrix::LoraLayers </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classpulsatrix_1_1Module.html">Module</a> &amp;&#160;</td>
+          <td class="paramname"><em>model</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>The model's LinearModules that have an adapter, by name, in the model's order. </p>
 
 </div>
 </div>
@@ -13812,6 +13954,26 @@ template&lt;typename Genotype , typename FitnessT &gt; </div>
 
 </div>
 </div>
+<a id="a095446dde46caacd2ea46983ecac575f" name="a095446dde46caacd2ea46983ecac575f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a095446dde46caacd2ea46983ecac575f">&#9670;&#160;</a></span>MergeLora()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void pulsatrix::MergeLora </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classpulsatrix_1_1Module.html">Module</a> &amp;&#160;</td>
+          <td class="paramname"><em>model</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Merges every adapter into its base weight (<a class="el" href="classpulsatrix_1_1LinearModule.html#adb84050fe946873276d5ec6c37ee11b6" title="Adds the update into the weight, W += (alpha / r) A B, so forward() runs at the base layer&#39;s cost....">LinearModule::merge_lora()</a>). </p>
+
+</div>
+</div>
 <a id="a10fa8d2b1fde640f55f4f7c3d87e9190" name="a10fa8d2b1fde640f55f4f7c3d87e9190"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a10fa8d2b1fde640f55f4f7c3d87e9190">&#9670;&#160;</a></span>mime_bundle_repr() <span class="overload">[1/18]</span></h2>
 
@@ -14507,6 +14669,34 @@ template&lt;typename Genotype , typename FitnessT &gt; </div>
   </table>
   </dd>
 </dl>
+
+</div>
+</div>
+<a id="aed40084881fde6ed5e4249b725383a77" name="aed40084881fde6ed5e4249b725383a77"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aed40084881fde6ed5e4249b725383a77">&#9670;&#160;</a></span>NamedModules()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::vector&lt; <a class="el" href="structpulsatrix_1_1NamedModuleRef.html">NamedModuleRef</a> &gt; pulsatrix::NamedModules </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classpulsatrix_1_1Module.html">Module</a> &amp;&#160;</td>
+          <td class="paramname"><em>root</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Every module under <code>root</code>, depth first with each parent before its children, named by their full dotted path (<code>layers.0.mha.q_proj</code>); <code>root</code> itself isn't included. </p>
 
 </div>
 </div>
@@ -17286,6 +17476,26 @@ template&lt;typename Genotype , typename FitnessT &gt; </div>
 
 <p>How much the model draws on each residue when it predicts the others: the mean, over every residue's masked wild-type logit (<a class="el" href="structpulsatrix_1_1EncoderTarget.html#ab2973a41dbfb309be90d97f5f817612a">EncoderTarget::MaskedToken</a>), of each residue's share of the explanation's total |relevance|. A per-protein explanation to compare with per-residue signals such as DMS sensitivity or conservation. </p>
 <dl class="section note"><dt>Note</dt><dd>Cost: one explanation per residue. <code>progress</code>, if set, is called after each. </dd></dl>
+
+</div>
+</div>
+<a id="a24914157f269831b4241edb9bbf6e269" name="a24914157f269831b4241edb9bbf6e269"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a24914157f269831b4241edb9bbf6e269">&#9670;&#160;</a></span>RemoveLora()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void pulsatrix::RemoveLora </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classpulsatrix_1_1Module.html">Module</a> &amp;&#160;</td>
+          <td class="paramname"><em>model</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Removes every adapter. Merged ones stay in the weights (PEFT's merge_and_unload() is <a class="el" href="namespacepulsatrix.html#a095446dde46caacd2ea46983ecac575f" title="Merges every adapter into its base weight (LinearModule::merge_lora()).">MergeLora()</a> then this); unmerged ones are dropped (PEFT's unload()). </p>
 
 </div>
 </div>
@@ -20575,6 +20785,55 @@ template&lt;typename ObjectiveFn , typename RNG &gt; </div>
 
 </div>
 </div>
+<a id="a6634c07a792f8867b3984a4a8244ed1d" name="a6634c07a792f8867b3984a4a8244ed1d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6634c07a792f8867b3984a4a8244ed1d">&#9670;&#160;</a></span>SaveLoraAdapter()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void pulsatrix::SaveLoraAdapter </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classpulsatrix_1_1Module.html">Module</a> &amp;&#160;</td>
+          <td class="paramname"><em>model</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const std::string &amp;&#160;</td>
+          <td class="paramname"><em>directory</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const std::vector&lt; <a class="el" href="structpulsatrix_1_1WeightMapping.html">WeightMapping</a> &gt; &amp;&#160;</td>
+          <td class="paramname"><em>mapping</em> = <code>{}</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Writes the model's adapters as a PEFT adapter directory: <code>adapter_model.safetensors</code> and <code>adapter_config.json</code>, which PEFT's PeftModel.from_pretrained() loads onto the Hugging Face model. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">mapping</td><td>How the model's parameter names become checkpoint names, the manifest used to load the base model (<a class="el" href="namespacepulsatrix.html#a01f1d9da2c67634f355455908a59b7e0" title="The manifest for a Llama-family Hugging Face checkpoint (model.embed_tokens.weight,...">HuggingFaceMapping()</a> for a <a class="el" href="classpulsatrix_1_1CausalLM.html" title="Token embedding, num_hidden_layers pre-norm transformer blocks, a final RMSNorm and a language-model ...">CausalLM</a>, <a class="el" href="namespacepulsatrix.html#a048d145a932fe492ea444769908f014a" title="The name mapping from an EsmForMaskedLM checkpoint to EncoderLM. Q/K/V, output, MLP and LM-head dense...">EsmMapping()</a> for an <a class="el" href="classpulsatrix_1_1EncoderLM.html" title="An ESM-2 masked language model: token embeddings (with ESM&#39;s token-dropout scaling),...">EncoderLM</a>). A layer whose <code>.weight</code> it maps whole names the adapter after the source. Empty keeps pulsatrix's names. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section note"><dt>Note</dt><dd>Keys are <code>base_model.model.&lt;module&gt;.lora_A.weight</code> <code>(r, in)</code> and <code>...lora_B.weight</code> <code>(out, r)</code>, float32. </dd></dl>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname">std::invalid_argument</td><td>if the model has no adapters, the adapters' rank, alpha or dropout differ, a merged adapter is saved (its update is in the base weight), or a layer has no whole-weight mapping; std::runtime_error if the files can't be written. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
 <a id="a50cbaa78a53c56deddcc160026d2a839" name="a50cbaa78a53c56deddcc160026d2a839"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a50cbaa78a53c56deddcc160026d2a839">&#9670;&#160;</a></span>ScaledDeltaBounds()</h2>
 
@@ -20825,6 +21084,36 @@ template&lt;typename ObjectiveFn , typename RNG &gt; </div>
 <dl class="section note"><dt>Note</dt><dd>Like <code>torch.manual_seed</code>: after set_seed(s), building the same objects in the same order gives the same initial weights, dropout masks and shuffles. Components that take an explicit seed ignore the global one. The default global seed is 0, so a program that never calls <a class="el" href="namespacepulsatrix.html#aa8b6d579f43a06291616012e22b33c46" title="Sets the global seed and restarts the seed stream next_seed() draws from.">set_seed()</a> is reproducible too. </dd>
 <dd>
 Process-wide state. Call it before building models, not while other threads are constructing seeded components. </dd></dl>
+
+</div>
+</div>
+<a id="a5ee67331e41bc1a13209d0a2b618104d" name="a5ee67331e41bc1a13209d0a2b618104d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5ee67331e41bc1a13209d0a2b618104d">&#9670;&#160;</a></span>SetLoraEnabled()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void pulsatrix::SetLoraEnabled </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classpulsatrix_1_1Module.html">Module</a> &amp;&#160;</td>
+          <td class="paramname"><em>model</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>enabled</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Turns every adapter on or off, so one model runs as the base or as the fine-tune. </p>
 
 </div>
 </div>
@@ -24778,6 +25067,26 @@ template&lt;typename T &gt; </div>
   </table>
   </dd>
 </dl>
+
+</div>
+</div>
+<a id="ab9bad443b07510f563278747e74a3c8f" name="ab9bad443b07510f563278747e74a3c8f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab9bad443b07510f563278747e74a3c8f">&#9670;&#160;</a></span>UnmergeLora()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void pulsatrix::UnmergeLora </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classpulsatrix_1_1Module.html">Module</a> &amp;&#160;</td>
+          <td class="paramname"><em>model</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Takes every merged adapter out of its base weight again. </p>
 
 </div>
 </div>
