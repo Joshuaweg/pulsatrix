@@ -690,6 +690,62 @@
   
   
     <li class="md-nav__item">
+      <a href="../mechanistic-interpretability/probes-and-concepts/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Probes and Concepts
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../mechanistic-interpretability/representations/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Analyzing Representations
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../mechanistic-interpretability/featurizers/" class="md-nav__link">
         
   
@@ -3780,7 +3836,9 @@ mistake, and how it is known to fail, lives in <a href="research-notes/">Researc
 <strong>The FEAT epic, featurizers and feature-level interpretability, is complete</strong> (2026-10-09):
 every item in <a href="#feat-featurizers-sparse-autoencoders-and-goodfire-bsf">FEAT</a> is done.
 <strong>v1.2, "Real pretrained models", is complete</strong> (2026-10-10): every item in its
-<a href="#v12-real-pretrained-models">milestone</a> is done.</p>
+<a href="#v12-real-pretrained-models">milestone</a> is done.
+<strong>The INT epic, embedding and representation analysis, is complete</strong> (2026-10-11): every item
+in <a href="#int-embedding-and-representation-analysis">INT</a> is done.</p>
 <ul>
 <li><strong>Strong.</strong> LRP covers every layer and is checked against Zennit and LXT. Saliency, Integrated
   Gradients and Grad-CAM are checked against Captum. LIME, KernelSHAP, PDP, logit lens,
@@ -3837,6 +3895,15 @@ every item in <a href="#feat-featurizers-sparse-autoencoders-and-goodfire-bsf">F
 <li><strong>Tested on real models:</strong> ESM-2, SmolLM2 and Gemma 3. Negative results are reported too:
     a steering vector that fails its checks, block-sparse featurizers that don't pay off on
     ESM-2, and decoder norms that miss rare fine-tune features.</li>
+<li><strong>Representation analysis</strong> (<a href="#int-embedding-and-representation-analysis">INT-1 to INT-8</a>).</li>
+<li><strong>Comparing representations:</strong> debiased linear CKA, RSA with a permutation test, SVCCA, and
+    mutual-kNN alignment, each matched to its reference code.</li>
+<li><strong>Describing a layer:</strong> nearest neighbors with a hubness check, anisotropy, effective rank,
+    TwoNN intrinsic dimension, and PCA projections with a split-half stability check.</li>
+<li><strong>Concepts:</strong> probe control tasks and baselines (selectivity), TCAV with significance
+    against random concepts, and Concept Relevance Propagation on the LRP rules.</li>
+<li><strong>UMAP and t-SNE by export:</strong> <code>.npy</code> and Embedding Projector files out, coordinates back in
+    as projection documents, with a warning on every plot that their distances don't mean much.</li>
 <li><strong>HIP backend.</strong> It works on gfx1151 (Strix Halo). Since v1.0 it has a profiler, multi-block
   <code>dot</code> and <code>sum</code>, parallel BatchNorm, a caching allocator, and no per-op stream syncs
   (<a href="#hip-training-efficiency-on-amd-gpus">HIP-1 to HIP-5</a>). Its container runs ROCm 10.0.0, the
@@ -3978,14 +4045,9 @@ machine, and explain it with the tools pulsatrix already has. Items on that path
 <li>KD-1, KD-2: distillation and teacher–student explanation agreement</li>
 <li>XAI-1 to XAI-4: the question-driven planner, explanation reports, counterfactuals, surrogates,
   Anchors</li>
-<li>INT-2 (<strong>done</strong>, <a href="https://github.com/Joshuaweg/pulsatrix/pull/131">#131</a>): linear CKA</li>
-<li>INT-1 (<strong>done</strong>, <a href="https://github.com/Joshuaweg/pulsatrix/pull/132">#132</a>): nearest neighbors, mutual nearest neighbors, mutual-kNN alignment</li>
-<li>INT-3 (<strong>done</strong>, <a href="https://github.com/Joshuaweg/pulsatrix/pull/133">#133</a>): probe controls (selectivity, and gain over a baseline)</li>
-<li>INT-4 (<strong>done</strong>, <a href="https://github.com/Joshuaweg/pulsatrix/pull/134">#134</a>): anisotropy, effective rank, TwoNN intrinsic dimension</li>
-<li>INT-5 (<strong>done</strong>, <a href="https://github.com/Joshuaweg/pulsatrix/pull/135">#135</a>): PCA, projection plots, split-half stability</li>
-<li>INT-6 (<strong>done</strong>): TCAV (<a href="https://github.com/Joshuaweg/pulsatrix/pull/136">#136</a>) and CRP (<a href="https://github.com/Joshuaweg/pulsatrix/pull/137">#137</a>)</li>
-<li>INT-7 (<strong>done</strong>, <a href="https://github.com/Joshuaweg/pulsatrix/pull/138">#138</a>): RSA with a permutation test, SVCCA</li>
-<li>INT-8 (<strong>done</strong>, <a href="https://github.com/Joshuaweg/pulsatrix/pull/139">#139</a>): <code>.npy</code> and Embedding Projector export for UMAP and t-SNE, and their coordinates back as projection documents</li>
+<li>INT-1 to INT-8 (<strong>done</strong>, <a href="https://github.com/Joshuaweg/pulsatrix/pull/131">#131</a> to
+  <a href="https://github.com/Joshuaweg/pulsatrix/pull/139">#139</a>): CKA, RSA and SVCCA, nearest
+  neighbors, probe controls, layer geometry, PCA, TCAV and CRP, and export for UMAP and t-SNE</li>
 <li>TDA-1 to TDA-8, TDA-11: persistent homology and RTD</li>
 <li>KS-3, KS-4: uncertainty and adversarial robustness</li>
 <li>Llama-3.2-1B and Qwen2.5-0.5B pass the golden-logit test</li>
@@ -4022,7 +4084,7 @@ machine, and explain it with the tools pulsatrix already has. Items on that path
 </ul>
 <h3 id="backlog-not-yet-scheduled">Backlog, not yet scheduled<a class="headerlink" href="#backlog-not-yet-scheduled" title="Permanent link">&para;</a></h3>
 <p>These P2 and P3 items wait until a milestone needs them or someone asks: TRN-12, TRN-13, IO-10,
-IO-11, INT-7 (<strong>done</strong>), INT-8 (<strong>done</strong>), TDA-13 to TDA-19, KD-3, KD-4, FEAT-8 (<strong>done</strong>), ARCH-4 to ARCH-10, VIZ-7, HIP-10,
+IO-11, TDA-13 to TDA-19, KD-3, KD-4, FEAT-8 (<strong>done</strong>), ARCH-4 to ARCH-10, VIZ-7, HIP-10,
 AGT-6, AGT-7, AGT-9, NB-4, NB-5, KS-6 and KS-7.</p>
 <h3 id="v20">v2.0<a class="headerlink" href="#v20" title="Permanent link">&para;</a></h3>
 <p>Larger changes that touch every module or backend.</p>
@@ -5368,6 +5430,11 @@ network says nothing about what the model learned.</p>
   counterfactual documents, as the beeswarm takes several attributions.</li>
 </ul>
 <h2 id="int-embedding-and-representation-analysis">INT: Embedding and representation analysis<a class="headerlink" href="#int-embedding-and-representation-analysis" title="Permanent link">&para;</a></h2>
+<p><strong>Complete</strong> (2026-10-11, PRs <a href="https://github.com/Joshuaweg/pulsatrix/pull/131">#131</a> to
+<a href="https://github.com/Joshuaweg/pulsatrix/pull/139">#139</a>). The user guides are
+<a href="../mechanistic-interpretability/representations/">Analyzing representations</a> and
+<a href="../mechanistic-interpretability/probes-and-concepts/">Probes and concepts</a>; CRP is in
+<a href="../interpretability/lrp/#concepts-concept-relevance-propagation">LRP</a>.</p>
 <table>
 <thead>
 <tr>
