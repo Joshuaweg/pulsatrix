@@ -155,6 +155,7 @@ add_library(pulsatrix_core
     src/tda/rips_persistence.cpp
     src/tda/diagram_distance.cpp
     src/tda/vectorization.cpp
+    src/tda/landmarks.cpp
     src/topk_sparse_autoencoder.cpp
     src/jumprelu_sparse_autoencoder.cpp
     src/transcoder.cpp
