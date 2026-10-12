@@ -1,5 +1,6 @@
 var causal__lm_8hpp =
 [
+    [ "pulsatrix::ResidualIntervention", "classpulsatrix_1_1ResidualIntervention.html", "classpulsatrix_1_1ResidualIntervention" ],
     [ "pulsatrix::CausalLM", "classpulsatrix_1_1CausalLM.html", "classpulsatrix_1_1CausalLM" ],
     [ "pulsatrix::WeightMapping", "structpulsatrix_1_1WeightMapping.html", "structpulsatrix_1_1WeightMapping" ],
     [ "pulsatrix::WeightLoadOptions", "structpulsatrix_1_1WeightLoadOptions.html", "structpulsatrix_1_1WeightLoadOptions" ],

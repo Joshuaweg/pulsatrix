@@ -9,10 +9,14 @@ var classpulsatrix_1_1LoRAAdapter =
     [ "dropout", "classpulsatrix_1_1LoRAAdapter.html#a6de44231e96574860f7195885d4a3d25", null ],
     [ "effective_weight", "classpulsatrix_1_1LoRAAdapter.html#ab1cc50f3b39a8354dd7ee8f5ebe25d78", null ],
     [ "enabled", "classpulsatrix_1_1LoRAAdapter.html#a98c456d730615b217e1ecdb99fdc7ff4", null ],
+    [ "has_relevance", "classpulsatrix_1_1LoRAAdapter.html#a0cc2912331c68842f0864869312d1289", null ],
+    [ "last_adapter_relevance", "classpulsatrix_1_1LoRAAdapter.html#aeef7a59ec14a219a09746a1936068ffd", null ],
+    [ "last_base_relevance", "classpulsatrix_1_1LoRAAdapter.html#a38de2fc51182cebd115e5d75a55e5d45", null ],
     [ "merged", "classpulsatrix_1_1LoRAAdapter.html#ad314a0bf4b3f4c4cbdc8e021c0c7d118", null ],
     [ "rank", "classpulsatrix_1_1LoRAAdapter.html#a90b1bb6590b13a01faff73e09cdfd584", null ],
     [ "scale", "classpulsatrix_1_1LoRAAdapter.html#ad04bf688b58ef91e9117aafbd2a1e79a", null ],
     [ "set_a", "classpulsatrix_1_1LoRAAdapter.html#a8657d74d0fc2bf28371358a9972be8dc", null ],
     [ "set_b", "classpulsatrix_1_1LoRAAdapter.html#ae7574b80fad6261b35d248f18544ab45", null ],
+    [ "update", "classpulsatrix_1_1LoRAAdapter.html#ac33473a99800e7e340a803f893ee4f8d", null ],
     [ "LinearModule", "classpulsatrix_1_1LoRAAdapter.html#a498990051270de193dec4255a2032f2c", null ]
 ];

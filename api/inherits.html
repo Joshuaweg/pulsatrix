@@ -919,108 +919,112 @@ $(document).ready(function(){initNavTree('hierarchy.html',''); initResizable(); 
 </td></tr>
 <tr><td><img src="inherit_graph_154.png" border="0" usemap="#apulsatrix_1_1Featurizer" alt=""/>
 <map name="apulsatrix_1_1Featurizer" id="apulsatrix_1_1Featurizer">
-<area shape="rect" href="classpulsatrix_1_1Featurizer.html" title="A featurizer maps activations x, (N, input_dim), to codes f = encode(x), (N, num_features),..." alt="" coords="5,129,157,155"/>
-<area shape="rect" href="classpulsatrix_1_1BlockSparseFeaturizer.html" title="A block&#45;sparse featurizer: G blocks of b directions in a d&#45;dimensional space. Codes are (N,..." alt="" coords="211,153,443,179"/>
-<area shape="poly" title=" " alt="" coords="171,148,211,152,211,157,171,153"/>
-<area shape="rect" href="classpulsatrix_1_1Crosscoder.html" title="A crosscoder over S sources of the same size d. Its input is the sources side by side,..." alt="" coords="248,203,407,228"/>
-<area shape="poly" title=" " alt="" coords="125,158,206,187,256,200,255,205,205,193,123,163"/>
-<area shape="rect" href="classpulsatrix_1_1JumpReLUSparseAutoencoder.html" title="A JumpReLU sparse autoencoder: z = pre · H(pre &#45; θ) with pre = x W_enc + b_enc, and x̂ = z W_dec + b_..." alt="" coords="228,253,427,293"/>
-<area shape="poly" title=" " alt="" coords="107,163,151,201,207,237,238,250,236,255,204,242,148,205,103,167"/>
-<area shape="rect" href="classpulsatrix_1_1SparseAutoencoder.html" title="A sparse autoencoder (SAE): LinearModule(dim, hidden_dim) &#45;&gt; ReluModule &#45;&gt; LinearModule(hidden_dim,..." alt="" coords="221,5,434,31"/>
-<area shape="poly" title=" " alt="" coords="102,118,146,77,174,57,204,40,235,28,237,33,206,44,177,61,149,81,105,122"/>
-<area shape="rect" href="classpulsatrix_1_1TopKSparseAutoencoder.html" title="A TopK sparse autoencoder: z = ReLU(TopK_k(W_enc (x &#45; b_dec) + b_enc)), x̂ = z W_dec + b_dec." alt="" coords="205,55,449,80"/>
-<area shape="poly" title=" " alt="" coords="121,121,205,89,249,77,251,83,206,94,123,126"/>
-<area shape="rect" href="classpulsatrix_1_1Transcoder.html" title="A transcoder: z = ReLU(TopK_k(x W_enc + b_enc)), ŷ = z W_dec + b_dec [+ x W_skip],..." alt="" coords="249,104,406,129"/>
-<area shape="poly" title=" " alt="" coords="171,130,248,122,249,127,171,135"/>
-<area shape="rect" href="classpulsatrix_1_1Module.html" title="Base class for every layer type (LinearModule, Conv2DModule, activations, ...)." alt="" coords="14,1171,149,1196"/>
-<area shape="poly" title=" " alt="" coords="81,1157,94,952,120,644,137,488,156,350,178,246,190,210,203,188,217,177,221,181,207,192,195,212,184,247,162,351,142,489,125,644,100,952,87,1157"/>
-<area shape="poly" title=" " alt="" coords="79,1157,80,975,84,842,92,698,107,554,129,422,144,364,161,313,181,271,203,239,224,224,247,215,249,220,226,228,207,243,185,274,166,315,149,365,135,423,112,555,98,699,89,843,85,975,85,1157"/>
-<area shape="poly" title=" " alt="" coords="80,1157,83,987,88,864,98,730,113,597,135,474,148,420,164,372,183,333,203,303,226,285,229,290,207,307,187,336,169,374,154,421,140,475,118,597,103,731,94,864,88,987,85,1157"/>
-<area shape="poly" title=" " alt="" coords="81,1157,92,926,115,570,132,389,152,229,175,107,189,66,203,40,219,28,222,32,207,44,194,68,181,108,157,230,137,389,120,570,97,926,86,1157"/>
-<area shape="poly" title=" " alt="" coords="81,1157,93,935,117,595,133,422,153,269,176,153,189,114,203,90,217,78,221,82,207,93,194,116,182,155,158,270,139,423,122,595,98,935,86,1157"/>
-<area shape="poly" title=" " alt="" coords="81,1157,93,943,118,619,135,455,155,310,177,199,190,162,203,139,224,124,248,115,249,120,226,128,207,142,195,164,183,201,160,311,140,456,123,620,99,944,87,1157"/>
-<area shape="rect" href="classpulsatrix_1_1ActivationModule.html" title="y = f(x), elementwise, for one of the backend&#39;s activations. No parameters." alt="" coords="227,1220,428,1245"/>
-<area shape="poly" title=" " alt="" coords="157,1196,206,1206,262,1217,261,1223,205,1211,156,1201"/>
-<area shape="rect" href="classpulsatrix_1_1AdaptiveAvgPool2DModule.html" title="Pools a rank&#45;4 (N, C, H, W) input to (N, C, out_h, out_w), as AdaptiveAvgPool2d((out_h,..." alt="" coords="225,1270,430,1310"/>
-<area shape="poly" title=" " alt="" coords="113,1202,156,1230,206,1256,239,1267,237,1272,204,1260,153,1234,110,1206"/>
-<area shape="rect" href="classpulsatrix_1_1AggregatorModule.html" title="y = (mean(x^p))^(1/p), reduced over the leading (batch/grounding) axis – not the last axis...." alt="" coords="224,1335,431,1360"/>
-<area shape="poly" title=" " alt="" coords="99,1206,143,1264,173,1295,207,1320,235,1332,233,1337,204,1324,169,1299,139,1268,95,1209"/>
-<area shape="rect" href="classpulsatrix_1_1AvgPool2DModule.html" title="Average pooling, rank&#45;4 (N, channels, H, W), matching Conv2DModule&#39;s convention. Stride fixed equal t..." alt="" coords="225,1384,430,1409"/>
-<area shape="poly" title=" " alt="" coords="94,1208,110,1246,134,1290,167,1334,207,1370,228,1381,225,1386,204,1375,163,1338,130,1293,106,1248,89,1210"/>
-<area shape="rect" href="classpulsatrix_1_1BatchNormModule.html" title="y_{n,c,h,w} = gamma_c * (x_{n,c,h,w} &#45; mu_c)/std_c + beta_c, mu_c/std_c computed per channel c over e..." alt="" coords="223,1433,431,1459"/>
-<area shape="poly" title=" " alt="" coords="91,1209,104,1255,127,1313,161,1371,182,1398,207,1420,226,1431,223,1436,204,1424,178,1401,156,1375,122,1315,99,1257,86,1210"/>
-<area shape="rect" href="classpulsatrix_1_1CausalLM.html" title="Token embedding, num_hidden_layers pre&#45;norm transformer blocks, a final RMSNorm and a language&#45;model ..." alt="" coords="252,1483,403,1508"/>
-<area shape="poly" title=" " alt="" coords="88,1209,99,1264,120,1335,135,1372,155,1408,178,1441,207,1469,228,1482,252,1489,251,1495,226,1487,204,1473,174,1445,150,1411,130,1375,115,1337,93,1266,83,1210"/>
-<area shape="rect" href="classpulsatrix_1_1ComponentLinear.html" title="A LinearModule split into C rank&#45;one subcomponents: W ≈ V U, V (in, C) reading the input and U (C,..." alt="" coords="226,1532,429,1557"/>
-<area shape="poly" title=" " alt="" coords="87,1209,94,1273,113,1357,128,1402,149,1445,175,1485,207,1519,227,1531,225,1536,204,1523,171,1488,144,1447,123,1404,108,1359,89,1274,81,1210"/>
-<area shape="rect" href="classpulsatrix_1_1ConjunctionModule.html" title="y = a T b for a selected t&#45;norm T, over two independent fuzzy&#45;truth&#45;valued operand tensors (values in..." alt="" coords="221,1581,433,1607"/>
-<area shape="poly" title=" " alt="" coords="85,1210,90,1282,106,1379,122,1431,143,1481,171,1528,207,1568,223,1579,220,1583,204,1572,167,1531,138,1484,117,1433,101,1381,84,1282,80,1210"/>
-<area shape="rect" href="classpulsatrix_1_1Conv2DModule.html" title="2D convolution, batched (input/output are rank&#45;4: N x channels x H x W) – migrated from the original ..." alt="" coords="234,1631,421,1656"/>
-<area shape="poly" title=" " alt="" coords="89,1209,104,1301,130,1424,146,1486,165,1542,185,1587,207,1617,235,1634,232,1639,204,1621,181,1590,160,1544,141,1488,125,1425,99,1302,84,1210"/>
-<area shape="rect" href="classpulsatrix_1_1DisjunctionModule.html" title="y = a S b for a selected t&#45;conorm S, over two independent fuzzy&#45;truth&#45;valued operand tensors (values ..." alt="" coords="223,1680,431,1705"/>
-<area shape="poly" title=" " alt="" coords="88,1209,102,1311,127,1449,143,1519,162,1582,183,1633,207,1667,225,1679,221,1683,203,1671,179,1635,157,1583,138,1520,121,1450,97,1312,83,1210"/>
-<area shape="rect" href="classpulsatrix_1_1DropoutModule.html" title="y = (mask_i ? x_i / (1 &#45; p) : 0) at training time (inverted dropout – scaling happens at training tim..." alt="" coords="234,1729,421,1755"/>
-<area shape="poly" title=" " alt="" coords="88,1210,100,1320,123,1473,139,1551,159,1621,181,1678,207,1716,235,1733,232,1738,203,1720,177,1681,154,1623,134,1552,118,1474,95,1321,82,1210"/>
-<area shape="rect" href="classpulsatrix_1_1EmbeddingModule.html" title="Embedding lookup table, rank&#45;2 input (N, L) of float&#45;encoded indices &#45;&gt; rank&#45;3 output (N,..." alt="" coords="223,1779,431,1804"/>
-<area shape="poly" title=" " alt="" coords="87,1209,98,1329,120,1497,136,1582,156,1660,180,1723,193,1748,207,1765,224,1778,221,1782,203,1769,188,1750,175,1726,151,1662,131,1583,115,1498,92,1329,82,1210"/>
-<area shape="rect" href="classpulsatrix_1_1EncoderBlock.html" title="One encoder layer. Shape (N, L, d_model) &#45;&gt; (N, L, d_model)." alt="" coords="240,1828,415,1853"/>
-<area shape="poly" title=" " alt="" coords="87,1210,96,1338,117,1521,133,1614,153,1699,178,1769,192,1795,207,1815,223,1826,241,1834,239,1839,220,1831,203,1819,187,1798,173,1771,148,1701,127,1615,111,1521,90,1338,81,1210"/>
-<area shape="rect" href="classpulsatrix_1_1EncoderLM.html" title="An ESM&#45;2 masked language model: token embeddings (with ESM&#39;s token&#45;dropout scaling),..." alt="" coords="248,1877,407,1903"/>
-<area shape="poly" title=" " alt="" coords="86,1210,94,1347,114,1545,129,1646,150,1738,176,1814,191,1843,207,1864,226,1878,249,1886,247,1891,224,1882,203,1868,186,1846,171,1816,145,1740,124,1647,108,1545,89,1347,81,1210"/>
-<area shape="rect" href="classpulsatrix_1_1FeedForwardModule.html" title="fc2(f(fc1(x))) over the last dimension. Shape (..., d_model) &#45;&gt; (..., d_model)." alt="" coords="218,1927,437,1952"/>
-<area shape="poly" title=" " alt="" coords="86,1210,92,1355,110,1568,126,1677,147,1777,174,1859,190,1890,207,1913,221,1924,218,1928,203,1917,185,1893,169,1861,142,1779,121,1678,105,1568,87,1356,81,1210"/>
-<area shape="rect" href="classpulsatrix_1_1FlattenModule.html" title="y = reshape(x, {N, x.numel()/N}), N = x.shape().dim(0). No parameters, no gradient math beyond reshap..." alt="" coords="237,1976,418,2001"/>
-<area shape="poly" title=" " alt="" coords="86,1210,90,1364,107,1592,123,1709,144,1816,172,1904,189,1938,207,1963,221,1974,238,1981,235,1986,218,1978,203,1967,184,1941,167,1906,139,1818,117,1710,102,1592,85,1364,80,1210"/>
-<area shape="rect" href="classpulsatrix_1_1GRUModule.html" title="Standard GRU recurrence (Cho et al. 2014), h_0 = 0 (zero&#45;initialized, not learnable – the same delibe..." alt="" coords="245,2025,409,2051"/>
-<area shape="poly" title=" " alt="" coords="85,1209,89,1372,94,1488,104,1615,119,1740,141,1855,154,1906,170,1949,188,1985,207,2012,225,2025,246,2033,244,2038,222,2030,203,2016,183,1988,165,1951,149,1907,136,1856,114,1741,99,1615,89,1489,83,1372,80,1210"/>
-<area shape="rect" href="classpulsatrix_1_1GroupNormModule.html" title="Splits num_channels into num_groups equal&#45;size groups; each group&#39;s mean/std is computed over every (..." alt="" coords="222,2075,433,2100"/>
-<area shape="poly" title=" " alt="" coords="85,1210,87,1381,92,1504,101,1638,116,1772,138,1894,152,1948,168,1995,186,2033,207,2061,223,2074,220,2078,203,2065,182,2036,163,1997,147,1949,133,1895,111,1773,96,1639,87,1505,82,1381,80,1210"/>
-<area shape="rect" href="classpulsatrix_1_1LSTMModule.html" title="Standard 4&#45;gate LSTM recurrence, h_0 = c_0 = 0 (zero&#45;initialized, not learnable – the same deliberate..." alt="" coords="242,2124,413,2149"/>
-<area shape="poly" title=" " alt="" coords="85,1210,85,1390,90,1520,98,1662,113,1804,135,1933,149,1990,166,2040,185,2080,207,2111,223,2123,243,2131,241,2136,221,2128,203,2115,181,2083,161,2042,144,1992,130,1934,108,1804,93,1662,84,1520,80,1390,80,1210"/>
-<area shape="rect" href="classpulsatrix_1_1LayerNormModule.html" title="y_{n,i} = gamma_i * (x_{n,i} &#45; mu_n)/std_n + beta_i, mu_n = mean_i(x_{n,i}), std_n = sqrt(var_i(x_{n,..." alt="" coords="224,2173,431,2199"/>
-<area shape="poly" title=" " alt="" coords="87,1209,100,1411,125,1714,142,1868,162,2003,184,2106,195,2140,207,2160,226,2174,222,2178,203,2164,191,2142,179,2107,157,2004,137,1869,120,1715,95,1411,81,1210"/>
-<area shape="rect" href="classpulsatrix_1_1LinearModule.html" title="y = x @ W + b, batched (x is (N, in_features), y is (N, out_features)) – migrated from the original u..." alt="" coords="240,2223,415,2248"/>
-<area shape="poly" title=" " alt="" coords="87,1210,99,1420,124,1740,141,1901,160,2044,183,2152,195,2188,207,2210,223,2222,241,2230,239,2234,220,2226,203,2213,190,2190,178,2154,155,2045,135,1902,119,1740,94,1421,81,1210"/>
-<area shape="rect" href="classpulsatrix_1_1MambaModule.html" title="Core Mamba/S6 selective&#45;scan recurrence (Gu &amp; Dao 2023, arXiv:2312.00752), input (N,..." alt="" coords="235,2272,419,2297"/>
-<area shape="poly" title=" " alt="" coords="86,1210,98,1429,122,1764,139,1934,159,2084,182,2198,194,2236,207,2259,220,2270,236,2277,234,2282,218,2274,203,2262,189,2239,177,2200,154,2085,134,1935,117,1765,93,1429,81,1210"/>
-<area shape="rect" href="classpulsatrix_1_1MaxPool2DModule.html" title="Max pooling, rank&#45;4 (N, channels, H, W), matching Conv2DModule&#39;s convention, as PyTorch&#39;s MaxPool2d w..." alt="" coords="223,2321,432,2347"/>
-<area shape="poly" title=" " alt="" coords="86,1209,97,1437,121,1788,137,1967,157,2125,181,2245,194,2284,207,2308,224,2321,221,2325,203,2312,189,2287,176,2246,152,2126,132,1968,115,1789,92,1438,81,1210"/>
-<area shape="rect" href="classpulsatrix_1_1MultiHeadAttentionModule.html" title="softmax(Q @ K^T / sqrt(head_dim)) @ V, multi&#45;head, with optional RoPE and optional QK&#45;Norm...." alt="" coords="220,317,435,357"/>
-<area shape="poly" title=" " alt="" coords="80,1157,85,997,102,760,117,637,138,524,167,431,184,395,203,367,218,354,221,359,207,370,189,397,172,433,144,525,122,638,107,760,90,997,86,1157"/>
-<area shape="rect" href="classpulsatrix_1_1NegationModule.html" title="y = 1 &#45; x, elementwise. No parameters, no parameter gradients." alt="" coords="230,381,425,407"/>
-<area shape="poly" title=" " alt="" coords="80,1157,86,1005,103,782,118,667,140,562,168,475,184,442,203,416,228,399,231,404,207,420,189,444,172,477,145,563,124,668,108,783,91,1006,86,1157"/>
-<area shape="rect" href="classpulsatrix_1_1RMSNormModule.html" title="y_{n,i} = gamma_i * x_{n,i} / rms(x_n), rms(x_n) = sqrt(mean_i(x_{n,i}^2) + eps), computed independen..." alt="" coords="227,431,427,456"/>
-<area shape="poly" title=" " alt="" coords="81,1156,87,1013,106,805,122,698,143,600,170,520,186,489,203,465,226,450,229,454,207,469,190,492,174,522,148,602,127,699,111,806,93,1013,86,1157"/>
-<area shape="rect" href="classpulsatrix_1_1RNNModule.html" title="h_t = tanh(x_t @ W_xh + h_{t&#45;1} @ W_hh + b_h), h_0 = 0 (zero&#45;initialized, not learnable – a deliberat..." alt="" coords="245,480,409,505"/>
-<area shape="poly" title=" " alt="" coords="81,1157,89,1022,109,829,125,730,146,640,171,565,187,537,203,515,223,501,244,493,246,498,225,506,207,519,191,539,176,567,151,641,130,731,115,830,95,1023,86,1157"/>
-<area shape="rect" href="classpulsatrix_1_1RWKVModule.html" title="Core RWKV&#45;4 time&#45;mixing block (Peng et al. 2023, arXiv:2305.13048), input (N, L, d_model) &#45;&gt; output (..." alt="" coords="240,529,415,555"/>
-<area shape="poly" title=" " alt="" coords="81,1157,91,1031,112,853,129,762,149,679,173,610,188,584,203,564,220,552,239,544,241,549,223,556,207,568,192,587,178,613,154,680,134,763,118,854,96,1032,87,1157"/>
-<area shape="rect" href="classpulsatrix_1_1ReluModule.html" title="y = max(x, 0), elementwise. No parameters, no parameter gradients." alt="" coords="245,579,409,604"/>
-<area shape="poly" title=" " alt="" coords="82,1157,93,1040,116,877,132,794,152,718,175,656,189,632,204,613,222,600,244,592,246,597,225,605,207,617,193,635,180,658,157,719,137,795,121,878,98,1041,87,1157"/>
-<area shape="rect" href="classpulsatrix_1_1ResidualModule.html" title="y = x + inner&#45;&gt;forward(x) for an arbitrary already&#45;built Module. The classic ResNet shortcut connecti..." alt="" coords="232,628,423,653"/>
-<area shape="poly" title=" " alt="" coords="83,1157,95,1049,119,901,135,825,155,757,177,701,203,663,230,646,233,650,207,667,182,703,160,759,141,827,124,902,100,1050,88,1157"/>
-<area shape="rect" href="classpulsatrix_1_1RetNetModule.html" title="Core RetNet retention block (Sun et al. 2023, arXiv:2307.08621), recurrent mode, input (N,..." alt="" coords="237,677,417,703"/>
-<area shape="poly" title=" " alt="" coords="83,1157,97,1058,122,925,139,857,158,796,179,746,203,712,219,701,236,693,238,698,222,705,207,716,184,749,163,798,144,859,128,926,103,1059,89,1157"/>
-<area shape="rect" href="classpulsatrix_1_1RoPEModule.html" title="Rotary Position Embedding (RoPE, Su et al. 2021): a fixed, non&#45;learnable, position&#45;dependent rotation..." alt="" coords="243,727,411,752"/>
-<area shape="poly" title=" " alt="" coords="79,1156,81,1079,87,1027,97,972,112,914,134,858,164,806,204,761,222,749,242,741,244,746,224,754,207,765,169,809,139,861,117,916,102,973,92,1028,87,1079,84,1157"/>
-<area shape="rect" href="classpulsatrix_1_1SequenceHead.html" title="A head on an encoder&#39;s representations (last_hidden_state), for fine&#45;tuning or probing...." alt="" coords="235,776,419,801"/>
-<area shape="poly" title=" " alt="" coords="80,1157,86,1087,103,993,119,943,140,895,168,850,204,811,234,793,237,798,207,815,172,853,145,897,124,945,108,995,91,1088,86,1157"/>
-<area shape="rect" href="classpulsatrix_1_1SequentialModule.html" title="Composes layers_[0..n&#45;1] in forward() order; backward()/propagate_relevance() chain layers_[n&#45;1...." alt="" coords="225,825,429,851"/>
-<area shape="poly" title=" " alt="" coords="82,1156,90,1095,110,1015,126,972,146,931,172,893,204,860,223,847,226,852,207,864,176,896,151,933,131,974,115,1016,95,1096,87,1157"/>
-<area shape="rect" href="classpulsatrix_1_1SoftmaxModule.html" title="Softmax over the tensor&#39;s last dimension, applied independently to every &quot;row&quot; (every fixed combinati..." alt="" coords="233,875,422,900"/>
-<area shape="poly" title=" " alt="" coords="84,1157,95,1104,117,1037,133,1001,152,967,176,936,204,909,231,894,234,899,207,913,180,940,157,970,137,1004,122,1038,100,1105,89,1158"/>
-<area shape="rect" href="classpulsatrix_1_1SwiGLUModule.html" title="down_proj(silu(gate_proj(x)) * up_proj(x)), the gated feedforward block used in place of a plain two&#45;..." alt="" coords="235,924,420,949"/>
-<area shape="poly" title=" " alt="" coords="87,1156,101,1112,125,1058,158,1004,180,980,204,958,233,944,235,948,207,963,183,983,163,1007,129,1061,106,1114,92,1158"/>
-<area shape="rect" href="classpulsatrix_1_1TiedLMHeadModule.html" title="logits = x @ E^T, where E is a token embedding table (vocab, d_model) that the head shares rather tha..." alt="" coords="219,973,435,999"/>
-<area shape="poly" title=" " alt="" coords="91,1157,108,1122,132,1082,165,1041,204,1008,227,996,229,1001,207,1012,168,1045,137,1085,112,1125,96,1159"/>
-<area shape="rect" href="classpulsatrix_1_1TinyTagger.html" title="Embedding &#45;&gt; TransformerBlock &#45;&gt; per&#45;token Linear head: (N, L) tokens to (N, L, C) logits." alt="" coords="248,1023,407,1048"/>
-<area shape="poly" title=" " alt="" coords="97,1158,141,1106,171,1079,204,1057,247,1041,249,1046,207,1062,174,1083,145,1110,101,1161"/>
-<area shape="rect" href="classpulsatrix_1_1TorchvisionResNet.html" title="torchvision&#39;s ResNet(BasicBlock, ...): a 7x7 stride&#45;2 convolution, BatchNorm, ReLU and 3x3 stride&#45;2 m..." alt="" coords="224,1072,431,1097"/>
-<area shape="poly" title=" " alt="" coords="109,1160,153,1132,204,1106,241,1095,243,1100,206,1111,155,1136,112,1164"/>
-<area shape="rect" href="classpulsatrix_1_1TorchvisionVGG.html" title="torchvision&#39;s VGG: 3x3 convolutions with bias and ReLU, 2x2 max pooling, adaptive average pooling to ..." alt="" coords="233,1121,422,1147"/>
-<area shape="poly" title=" " alt="" coords="158,1165,263,1144,264,1149,159,1171"/>
-<area shape="rect" href="classpulsatrix_1_1TransformerBlock.html" title="y1 = x + MHA(RMSNorm(x)), y2 = y1 + SwiGLU(RMSNorm(y1)). Shape (N, L, d_model) &#45;&gt; (N,..." alt="" coords="227,1171,428,1196"/>
-<area shape="poly" title=" " alt="" coords="163,1181,226,1181,226,1186,163,1186"/>
+<area shape="rect" href="classpulsatrix_1_1Featurizer.html" title="A featurizer maps activations x, (N, input_dim), to codes f = encode(x), (N, num_features),..." alt="" coords="5,141,157,167"/>
+<area shape="rect" href="classpulsatrix_1_1BlockSparseFeaturizer.html" title="A block&#45;sparse featurizer: G blocks of b directions in a d&#45;dimensional space. Codes are (N,..." alt="" coords="211,5,443,31"/>
+<area shape="poly" title=" " alt="" coords="99,129,144,83,172,59,204,40,233,28,235,33,207,44,176,64,147,87,103,133"/>
+<area shape="rect" href="classpulsatrix_1_1Crosscoder.html" title="A crosscoder over S sources of the same size d. Its input is the sources side by side,..." alt="" coords="248,55,407,80"/>
+<area shape="poly" title=" " alt="" coords="115,132,157,110,204,90,250,77,251,83,206,95,159,115,117,137"/>
+<area shape="rect" href="classpulsatrix_1_1JumpReLUSparseAutoencoder.html" title="A JumpReLU sparse autoencoder: z = pre · H(pre &#45; θ) with pre = x W_enc + b_enc, and x̂ = z W_dec + b_..." alt="" coords="228,105,427,145"/>
+<area shape="poly" title=" " alt="" coords="171,141,228,134,228,139,171,146"/>
+<area shape="rect" href="classpulsatrix_1_1SparseAutoencoder.html" title="A sparse autoencoder (SAE): LinearModule(dim, hidden_dim) &#45;&gt; ReluModule &#45;&gt; LinearModule(hidden_dim,..." alt="" coords="221,169,434,195"/>
+<area shape="poly" title=" " alt="" coords="171,162,221,167,220,172,171,167"/>
+<area shape="rect" href="classpulsatrix_1_1TopKSparseAutoencoder.html" title="A TopK sparse autoencoder: z = ReLU(TopK_k(W_enc (x &#45; b_dec) + b_enc)), x̂ = z W_dec + b_dec." alt="" coords="205,219,449,244"/>
+<area shape="poly" title=" " alt="" coords="122,170,206,203,255,216,253,221,205,209,120,175"/>
+<area shape="rect" href="classpulsatrix_1_1Transcoder.html" title="A transcoder: z = ReLU(TopK_k(x W_enc + b_enc)), ŷ = z W_dec + b_dec [+ x W_skip],..." alt="" coords="249,268,406,293"/>
+<area shape="poly" title=" " alt="" coords="105,175,149,215,177,236,206,253,249,268,247,273,204,258,174,240,146,219,102,179"/>
+<area shape="rect" href="classpulsatrix_1_1Module.html" title="Base class for every layer type (LinearModule, Conv2DModule, activations, ...)." alt="" coords="14,1180,149,1205"/>
+<area shape="poly" title=" " alt="" coords="81,1166,92,933,115,574,131,392,151,230,175,108,189,66,203,40,217,29,221,33,207,44,194,68,180,109,157,231,137,392,120,575,97,933,86,1166"/>
+<area shape="poly" title=" " alt="" coords="81,1166,93,942,117,600,133,426,153,272,176,155,189,115,203,91,223,76,247,67,249,72,226,80,207,94,194,118,182,157,158,273,139,427,122,601,98,943,86,1166"/>
+<area shape="poly" title=" " alt="" coords="81,1166,94,955,119,633,136,470,156,326,178,216,190,178,203,155,226,137,229,141,207,158,195,180,183,217,161,327,142,471,125,634,99,955,87,1167"/>
+<area shape="poly" title=" " alt="" coords="81,1166,95,963,120,657,137,502,156,365,179,261,191,226,203,204,219,192,222,196,207,208,195,228,184,263,162,366,142,503,125,657,100,963,87,1166"/>
+<area shape="poly" title=" " alt="" coords="79,1166,80,985,84,853,92,710,107,567,129,435,144,378,161,327,181,285,203,254,217,242,221,246,207,257,185,288,166,329,149,379,134,436,112,568,98,711,89,854,85,985,85,1166"/>
+<area shape="poly" title=" " alt="" coords="80,1166,81,993,86,868,95,733,110,598,132,474,146,420,163,372,182,333,203,303,224,288,247,279,249,284,226,293,207,307,186,335,168,374,151,421,137,475,116,599,101,734,92,869,87,993,85,1166"/>
+<area shape="rect" href="classpulsatrix_1_1ActivationModule.html" title="y = f(x), elementwise, for one of the backend&#39;s activations. No parameters." alt="" coords="227,1205,428,1231"/>
+<area shape="poly" title=" " alt="" coords="163,1198,227,1205,226,1210,163,1204"/>
+<area shape="rect" href="classpulsatrix_1_1AdaptiveAvgPool2DModule.html" title="Pools a rank&#45;4 (N, C, H, W) input to (N, C, out_h, out_w), as AdaptiveAvgPool2d((out_h,..." alt="" coords="225,1255,430,1295"/>
+<area shape="poly" title=" " alt="" coords="125,1208,206,1239,249,1253,248,1258,204,1245,123,1213"/>
+<area shape="rect" href="classpulsatrix_1_1AggregatorModule.html" title="y = (mean(x^p))^(1/p), reduced over the leading (batch/grounding) axis – not the last axis...." alt="" coords="224,1320,431,1345"/>
+<area shape="poly" title=" " alt="" coords="103,1214,147,1261,175,1285,207,1305,238,1317,236,1322,204,1310,172,1289,143,1265,99,1218"/>
+<area shape="rect" href="classpulsatrix_1_1AvgPool2DModule.html" title="Average pooling, rank&#45;4 (N, channels, H, W), matching Conv2DModule&#39;s convention. Stride fixed equal t..." alt="" coords="225,1369,430,1395"/>
+<area shape="poly" title=" " alt="" coords="96,1217,114,1249,138,1286,170,1324,207,1354,233,1367,231,1372,204,1359,166,1327,134,1290,109,1251,92,1219"/>
+<area shape="rect" href="classpulsatrix_1_1BatchNormModule.html" title="y_{n,c,h,w} = gamma_c * (x_{n,c,h,w} &#45; mu_c)/std_c + beta_c, mu_c/std_c computed per channel c over e..." alt="" coords="223,1419,431,1444"/>
+<area shape="poly" title=" " alt="" coords="92,1218,107,1260,131,1310,164,1361,184,1384,207,1404,230,1416,227,1421,204,1408,180,1388,160,1365,126,1313,102,1262,87,1220"/>
+<area shape="rect" href="classpulsatrix_1_1CausalLM.html" title="Token embedding, num_hidden_layers pre&#45;norm transformer blocks, a final RMSNorm and a language&#45;model ..." alt="" coords="252,1468,403,1493"/>
+<area shape="poly" title=" " alt="" coords="90,1218,101,1269,123,1333,158,1399,180,1428,207,1453,228,1466,253,1474,251,1479,226,1471,204,1457,176,1432,153,1401,119,1335,96,1271,84,1220"/>
+<area shape="rect" href="classpulsatrix_1_1ComponentLinear.html" title="A LinearModule split into C rank&#45;one subcomponents: W ≈ V U, V (in, C) reading the input and U (C,..." alt="" coords="226,1517,429,1543"/>
+<area shape="poly" title=" " alt="" coords="87,1219,96,1278,117,1356,132,1396,152,1435,177,1472,207,1503,227,1515,224,1520,204,1507,173,1475,147,1438,127,1398,111,1357,91,1279,82,1220"/>
+<area shape="rect" href="classpulsatrix_1_1ConjunctionModule.html" title="y = a T b for a selected t&#45;norm T, over two independent fuzzy&#45;truth&#45;valued operand tensors (values in..." alt="" coords="221,1567,433,1592"/>
+<area shape="poly" title=" " alt="" coords="86,1219,92,1287,110,1377,125,1425,146,1472,173,1515,207,1552,225,1564,223,1569,204,1556,169,1518,141,1474,120,1427,105,1379,87,1288,81,1219"/>
+<area shape="rect" href="classpulsatrix_1_1Conv2DModule.html" title="2D convolution, batched (input/output are rank&#45;4: N x channels x H x W) – migrated from the original ..." alt="" coords="234,1616,421,1641"/>
+<area shape="poly" title=" " alt="" coords="85,1219,88,1295,93,1344,103,1398,119,1454,140,1508,169,1558,207,1601,235,1618,232,1623,204,1605,165,1561,135,1510,113,1456,98,1400,88,1345,82,1295,79,1219"/>
+<area shape="rect" href="classpulsatrix_1_1DisjunctionModule.html" title="y = a S b for a selected t&#45;conorm S, over two independent fuzzy&#45;truth&#45;valued operand tensors (values ..." alt="" coords="223,1665,431,1691"/>
+<area shape="poly" title=" " alt="" coords="89,1219,103,1315,129,1445,145,1511,164,1571,184,1619,207,1651,225,1663,222,1667,203,1655,180,1621,159,1572,140,1513,123,1447,98,1316,83,1219"/>
+<area shape="rect" href="classpulsatrix_1_1DropoutModule.html" title="y = (mask_i ? x_i / (1 &#45; p) : 0) at training time (inverted dropout – scaling happens at training tim..." alt="" coords="234,1715,421,1740"/>
+<area shape="poly" title=" " alt="" coords="88,1219,101,1325,125,1470,141,1543,161,1610,183,1664,207,1700,235,1717,232,1722,203,1704,178,1667,156,1612,136,1545,120,1471,96,1325,83,1220"/>
+<area shape="rect" href="classpulsatrix_1_1EmbeddingModule.html" title="Embedding lookup table, rank&#45;2 input (N, L) of float&#45;encoded indices &#45;&gt; rank&#45;3 output (N,..." alt="" coords="223,1764,431,1789"/>
+<area shape="poly" title=" " alt="" coords="87,1219,99,1334,122,1494,138,1575,158,1649,181,1709,194,1732,207,1749,224,1762,221,1766,203,1753,189,1735,176,1712,153,1651,133,1576,117,1495,94,1334,82,1219"/>
+<area shape="rect" href="classpulsatrix_1_1EncoderBlock.html" title="One encoder layer. Shape (N, L, d_model) &#45;&gt; (N, L, d_model)." alt="" coords="240,1813,415,1839"/>
+<area shape="poly" title=" " alt="" coords="87,1219,97,1342,118,1517,135,1607,155,1688,179,1755,192,1780,207,1799,223,1810,241,1818,239,1823,220,1815,203,1803,188,1783,174,1757,149,1690,129,1608,113,1518,92,1342,82,1219"/>
+<area shape="rect" href="classpulsatrix_1_1EncoderLM.html" title="An ESM&#45;2 masked language model: token embeddings (with ESM&#39;s token&#45;dropout scaling),..." alt="" coords="248,1863,407,1888"/>
+<area shape="poly" title=" " alt="" coords="86,1219,95,1352,115,1542,131,1639,152,1728,177,1800,191,1828,207,1848,226,1862,249,1870,247,1875,224,1867,203,1852,187,1830,172,1802,147,1729,126,1640,110,1542,90,1352,81,1220"/>
+<area shape="rect" href="classpulsatrix_1_1FeedForwardModule.html" title="fc2(f(fc1(x))) over the last dimension. Shape (..., d_model) &#45;&gt; (..., d_model)." alt="" coords="218,1912,437,1937"/>
+<area shape="poly" title=" " alt="" coords="86,1219,93,1360,112,1565,128,1670,149,1766,175,1845,190,1875,207,1897,223,1910,220,1914,203,1901,186,1878,170,1847,143,1768,123,1671,107,1566,88,1361,81,1219"/>
+<area shape="rect" href="classpulsatrix_1_1FlattenModule.html" title="y = reshape(x, {N, x.numel()/N}), N = x.shape().dim(0). No parameters, no gradient math beyond reshap..." alt="" coords="237,1961,418,1987"/>
+<area shape="poly" title=" " alt="" coords="86,1219,91,1369,109,1588,125,1702,146,1805,173,1890,189,1923,207,1947,221,1958,238,1966,235,1971,218,1962,203,1951,185,1925,168,1892,140,1807,119,1703,104,1589,86,1369,80,1219"/>
+<area shape="rect" href="classpulsatrix_1_1GRUModule.html" title="Standard GRU recurrence (Cho et al. 2014), h_0 = 0 (zero&#45;initialized, not learnable – the same delibe..." alt="" coords="245,2011,409,2036"/>
+<area shape="poly" title=" " alt="" coords="85,1219,90,1378,106,1612,121,1733,143,1844,171,1935,188,1970,207,1996,225,2009,246,2018,244,2023,222,2014,203,2000,184,1973,166,1937,138,1846,116,1734,101,1613,84,1378,80,1219"/>
+<area shape="rect" href="classpulsatrix_1_1GroupNormModule.html" title="Splits num_channels into num_groups equal&#45;size groups; each group&#39;s mean/std is computed over every (..." alt="" coords="222,2060,433,2085"/>
+<area shape="poly" title=" " alt="" coords="85,1219,88,1386,93,1506,103,1635,118,1765,140,1883,153,1935,169,1981,187,2018,207,2045,223,2058,220,2062,203,2049,183,2020,164,1983,148,1937,135,1885,113,1766,98,1636,88,1506,83,1386,80,1219"/>
+<area shape="rect" href="classpulsatrix_1_1LSTMModule.html" title="Standard 4&#45;gate LSTM recurrence, h_0 = c_0 = 0 (zero&#45;initialized, not learnable – the same deliberate..." alt="" coords="242,2109,413,2135"/>
+<area shape="poly" title=" " alt="" coords="85,1219,86,1395,91,1522,100,1659,115,1797,137,1922,151,1978,167,2026,186,2065,207,2095,223,2107,243,2116,241,2121,221,2112,203,2099,181,2068,162,2028,146,1979,132,1924,110,1797,95,1660,86,1522,81,1395,80,1219"/>
+<area shape="rect" href="classpulsatrix_1_1LayerNormModule.html" title="y_{n,i} = gamma_i * (x_{n,i} &#45; mu_n)/std_n + beta_i, mu_n = mean_i(x_{n,i}), std_n = sqrt(var_i(x_{n,..." alt="" coords="224,2159,431,2184"/>
+<area shape="poly" title=" " alt="" coords="85,1219,85,1404,89,1537,97,1683,112,1828,134,1961,148,2020,165,2071,185,2113,207,2144,226,2158,222,2162,203,2148,180,2115,160,2073,143,2021,129,1963,106,1829,92,1683,83,1537,80,1404,79,1219"/>
+<area shape="rect" href="classpulsatrix_1_1LinearModule.html" title="y = x @ W + b, batched (x is (N, in_features), y is (N, out_features)) – migrated from the original u..." alt="" coords="240,2208,415,2233"/>
+<area shape="poly" title=" " alt="" coords="87,1219,100,1425,125,1736,142,1893,161,2032,183,2138,195,2173,207,2194,223,2206,241,2214,239,2219,220,2210,203,2197,190,2175,178,2139,156,2033,137,1894,120,1736,94,1425,81,1219"/>
+<area shape="rect" href="classpulsatrix_1_1MambaModule.html" title="Core Mamba/S6 selective&#45;scan recurrence (Gu &amp; Dao 2023, arXiv:2312.00752), input (N,..." alt="" coords="235,2257,419,2283"/>
+<area shape="poly" title=" " alt="" coords="87,1219,99,1433,123,1760,140,1926,160,2073,182,2184,195,2221,207,2243,220,2254,236,2262,234,2266,218,2258,203,2246,190,2223,177,2185,155,2074,135,1927,118,1761,93,1434,81,1219"/>
+<area shape="rect" href="classpulsatrix_1_1MaxPool2DModule.html" title="Max pooling, rank&#45;4 (N, channels, H, W), matching Conv2DModule&#39;s convention, as PyTorch&#39;s MaxPool2d w..." alt="" coords="223,2307,432,2332"/>
+<area shape="poly" title=" " alt="" coords="86,1219,98,1443,122,1785,138,1960,158,2113,182,2230,194,2269,207,2292,224,2305,221,2309,203,2296,189,2271,176,2231,153,2114,133,1960,116,1786,93,1443,81,1219"/>
+<area shape="rect" href="classpulsatrix_1_1MultiHeadAttentionModule.html" title="softmax(Q @ K^T / sqrt(head_dim)) @ V, multi&#45;head, with optional RoPE and optional QK&#45;Norm...." alt="" coords="220,2357,435,2397"/>
+<area shape="poly" title=" " alt="" coords="86,1219,98,1451,121,1809,138,1992,158,2153,181,2276,194,2317,207,2342,222,2355,219,2359,203,2345,189,2319,176,2277,153,2154,133,1992,116,1810,92,1452,81,1219"/>
+<area shape="rect" href="classpulsatrix_1_1NegationModule.html" title="y = 1 &#45; x, elementwise. No parameters, no parameter gradients." alt="" coords="230,317,425,343"/>
+<area shape="poly" title=" " alt="" coords="80,1166,83,1002,89,884,98,757,114,630,135,513,149,462,165,417,183,380,203,352,228,335,231,340,207,356,187,383,170,419,154,464,140,514,119,630,104,757,94,885,88,1002,85,1166"/>
+<area shape="rect" href="classpulsatrix_1_1RMSNormModule.html" title="y_{n,i} = gamma_i * x_{n,i} / rms(x_n), rms(x_n) = sqrt(mean_i(x_{n,i}^2) + eps), computed independen..." alt="" coords="227,367,427,392"/>
+<area shape="poly" title=" " alt="" coords="80,1166,85,1010,101,780,117,661,138,552,167,462,184,428,203,401,225,386,229,390,207,405,188,431,172,464,143,553,122,662,107,781,90,1011,86,1166"/>
+<area shape="rect" href="classpulsatrix_1_1RNNModule.html" title="h_t = tanh(x_t @ W_xh + h_{t&#45;1} @ W_hh + b_h), h_0 = 0 (zero&#45;initialized, not learnable – a deliberat..." alt="" coords="245,416,409,441"/>
+<area shape="poly" title=" " alt="" coords="81,1166,87,1019,105,803,120,692,141,591,169,507,185,475,203,451,222,437,244,428,246,433,225,441,207,455,190,478,174,510,146,592,125,693,110,804,92,1019,86,1166"/>
+<area shape="rect" href="classpulsatrix_1_1RWKVModule.html" title="Core RWKV&#45;4 time&#45;mixing block (Peng et al. 2023, arXiv:2305.13048), input (N, L, d_model) &#45;&gt; output (..." alt="" coords="240,465,415,491"/>
+<area shape="poly" title=" " alt="" coords="81,1166,88,1028,108,827,123,724,144,630,171,553,186,523,203,500,220,488,239,480,241,484,223,492,207,504,191,526,175,555,149,631,129,725,113,828,94,1028,86,1167"/>
+<area shape="rect" href="classpulsatrix_1_1ReluModule.html" title="y = max(x, 0), elementwise. No parameters, no parameter gradients." alt="" coords="245,515,409,540"/>
+<area shape="poly" title=" " alt="" coords="81,1166,90,1036,111,850,127,755,147,669,173,598,187,570,203,549,222,536,244,527,246,532,225,540,207,553,192,573,177,600,152,670,132,756,116,851,96,1036,87,1166"/>
+<area shape="rect" href="classpulsatrix_1_1ResidualIntervention.html" title="A trainable edit of the residual stream after a transformer block (TRN&#45;9: LoReFT),..." alt="" coords="216,564,439,589"/>
+<area shape="poly" title=" " alt="" coords="82,1166,92,1045,114,874,130,787,150,708,174,643,188,618,203,599,218,587,222,592,207,603,193,621,179,645,155,709,136,788,119,875,97,1045,87,1166"/>
+<area shape="rect" href="classpulsatrix_1_1ResidualModule.html" title="y = x + inner&#45;&gt;forward(x) for an arbitrary already&#45;built Module. The classic ResNet shortcut connecti..." alt="" coords="232,613,423,639"/>
+<area shape="poly" title=" " alt="" coords="82,1166,94,1054,117,898,134,819,153,747,176,688,189,665,204,648,230,631,233,636,207,652,194,668,181,690,158,749,139,820,123,899,99,1055,88,1167"/>
+<area shape="rect" href="classpulsatrix_1_1RetNetModule.html" title="Core RetNet retention block (Sun et al. 2023, arXiv:2307.08621), recurrent mode, input (N,..." alt="" coords="237,663,417,688"/>
+<area shape="poly" title=" " alt="" coords="83,1166,96,1063,121,922,137,851,156,786,178,733,203,697,219,686,236,678,238,683,222,691,207,701,183,736,161,788,142,852,126,923,102,1064,88,1167"/>
+<area shape="rect" href="classpulsatrix_1_1RoPEModule.html" title="Rotary Position Embedding (RoPE, Su et al. 2021): a fixed, non&#45;learnable, position&#45;dependent rotation..." alt="" coords="243,712,411,737"/>
+<area shape="poly" title=" " alt="" coords="84,1166,99,1072,124,946,141,883,159,825,180,778,203,747,222,734,242,726,244,731,224,739,207,751,185,781,164,827,146,884,130,947,104,1073,89,1167"/>
+<area shape="rect" href="classpulsatrix_1_1SequenceHead.html" title="A head on an encoder&#39;s representations (last_hidden_state), for fine&#45;tuning or probing...." alt="" coords="235,761,419,787"/>
+<area shape="poly" title=" " alt="" coords="80,1166,84,1092,100,992,115,938,137,886,166,838,204,796,234,779,237,783,207,800,170,841,142,889,120,940,105,993,89,1093,85,1166"/>
+<area shape="rect" href="classpulsatrix_1_1SequentialModule.html" title="Composes layers_[0..n&#45;1] in forward() order; backward()/propagate_relevance() chain layers_[n&#45;1...." alt="" coords="225,811,429,836"/>
+<area shape="poly" title=" " alt="" coords="81,1166,88,1101,107,1014,122,967,143,923,170,881,204,845,224,832,227,837,207,849,174,884,148,925,127,969,112,1015,93,1101,86,1167"/>
+<area shape="rect" href="classpulsatrix_1_1SoftmaxModule.html" title="Softmax over the tensor&#39;s last dimension, applied independently to every &quot;row&quot; (every fixed combinati..." alt="" coords="233,860,422,885"/>
+<area shape="poly" title=" " alt="" coords="83,1166,93,1109,113,1035,129,996,149,959,174,924,204,895,231,879,233,884,207,899,178,928,154,962,134,999,119,1037,98,1110,88,1167"/>
+<area shape="rect" href="classpulsatrix_1_1SwiGLUModule.html" title="down_proj(silu(gate_proj(x)) * up_proj(x)), the gated feedforward block used in place of a plain two&#45;..." alt="" coords="235,909,420,935"/>
+<area shape="poly" title=" " alt="" coords="85,1166,98,1118,121,1057,155,996,178,968,204,944,233,928,236,933,207,948,181,971,160,999,125,1060,103,1120,90,1167"/>
+<area shape="rect" href="classpulsatrix_1_1TiedLMHeadModule.html" title="logits = x @ E^T, where E is a token embedding table (vocab, d_model) that the head shares rather tha..." alt="" coords="219,959,435,984"/>
+<area shape="poly" title=" " alt="" coords="89,1166,104,1127,128,1080,161,1032,181,1011,204,993,225,982,228,986,207,998,185,1015,166,1036,133,1082,109,1129,94,1168"/>
+<area shape="rect" href="classpulsatrix_1_1TinyTagger.html" title="Embedding &#45;&gt; TransformerBlock &#45;&gt; per&#45;token Linear head: (N, L) tokens to (N, L, C) logits." alt="" coords="248,1008,407,1033"/>
+<area shape="poly" title=" " alt="" coords="94,1166,137,1103,168,1070,204,1042,247,1026,249,1031,207,1047,171,1074,141,1107,98,1169"/>
+<area shape="rect" href="classpulsatrix_1_1TorchvisionResNet.html" title="torchvision&#39;s ResNet(BasicBlock, ...): a 7x7 stride&#45;2 convolution, BatchNorm, ReLU and 3x3 stride&#45;2 m..." alt="" coords="224,1057,431,1083"/>
+<area shape="poly" title=" " alt="" coords="102,1168,146,1128,174,1108,204,1092,235,1080,237,1085,206,1096,177,1113,150,1133,106,1172"/>
+<area shape="rect" href="classpulsatrix_1_1TorchvisionVGG.html" title="torchvision&#39;s VGG: 3x3 convolutions with bias and ReLU, 2x2 max pooling, adaptive average pooling to ..." alt="" coords="233,1107,422,1132"/>
+<area shape="poly" title=" " alt="" coords="122,1172,205,1141,250,1129,251,1135,206,1146,124,1177"/>
+<area shape="rect" href="classpulsatrix_1_1TransformerBlock.html" title="y1 = x + MHA(RMSNorm(x)), y2 = y1 + SwiGLU(RMSNorm(y1)). Shape (N, L, d_model) &#45;&gt; (N,..." alt="" coords="227,1156,428,1181"/>
+<area shape="poly" title=" " alt="" coords="163,1182,226,1176,227,1181,163,1187"/>
+<area shape="rect" href="classpulsatrix_1_1LoReFTIntervention.html" title="One block&#39;s LoReFT edit. Parameters, named as pyreft&#39;s state dict:" alt="" coords="497,564,711,589"/>
+<area shape="poly" title=" " alt="" coords="453,574,497,574,497,579,453,579"/>
 </map>
 </td></tr>
 <tr><td><img src="inherit_graph_155.png" border="0" usemap="#apulsatrix_1_1FeaturizerLoss" alt=""/>
@@ -1308,72 +1312,82 @@ $(document).ready(function(){initNavTree('hierarchy.html',''); initResizable(); 
 <area shape="rect" href="structpulsatrix_1_1LoRAConfig.html" title="LoRA&#39;s settings. The defaults are PEFT&#39;s LoraConfig&#39;s." alt="" coords="5,5,167,31"/>
 </map>
 </td></tr>
-<tr><td><img src="inherit_graph_212.png" border="0" usemap="#apulsatrix_1_1LossRecovered" alt=""/>
+<tr><td><img src="inherit_graph_212.png" border="0" usemap="#apulsatrix_1_1LoraLayerRelevance" alt=""/>
+<map name="apulsatrix_1_1LoraLayerRelevance" id="apulsatrix_1_1LoraLayerRelevance">
+<area shape="rect" href="structpulsatrix_1_1LoraLayerRelevance.html" title="One adapted layer&#39;s share of a relevance pass (TRN&#45;8)." alt="" coords="5,5,224,31"/>
+</map>
+</td></tr>
+<tr><td><img src="inherit_graph_213.png" border="0" usemap="#apulsatrix_1_1LoReFTConfig" alt=""/>
+<map name="apulsatrix_1_1LoReFTConfig" id="apulsatrix_1_1LoReFTConfig">
+<area shape="rect" href="structpulsatrix_1_1LoReFTConfig.html" title="Where and how large LoReFT&#39;s interventions are." alt="" coords="5,5,180,31"/>
+</map>
+</td></tr>
+<tr><td><img src="inherit_graph_214.png" border="0" usemap="#apulsatrix_1_1LossRecovered" alt=""/>
 <map name="apulsatrix_1_1LossRecovered" id="apulsatrix_1_1LossRecovered">
 <area shape="rect" href="structpulsatrix_1_1LossRecovered.html" title="MeasureLossRecovered()&#39;s result: the model&#39;s loss three ways." alt="" coords="5,5,191,31"/>
 </map>
 </td></tr>
-<tr><td><img src="inherit_graph_213.png" border="0" usemap="#apulsatrix_1_1LRP" alt=""/>
+<tr><td><img src="inherit_graph_215.png" border="0" usemap="#apulsatrix_1_1LRP" alt=""/>
 <map name="apulsatrix_1_1LRP" id="apulsatrix_1_1LRP">
 <area shape="rect" href="classpulsatrix_1_1LRP.html" title="Whole&#45;model LRP: runs the forward pass, seeds relevance at the chosen output(s), and propagates it to..." alt="" coords="5,5,116,31"/>
 </map>
 </td></tr>
-<tr><td><img src="inherit_graph_214.png" border="0" usemap="#apulsatrix_1_1LRPRuleConfig" alt=""/>
+<tr><td><img src="inherit_graph_216.png" border="0" usemap="#apulsatrix_1_1LRPRuleConfig" alt=""/>
 <map name="apulsatrix_1_1LRPRuleConfig" id="apulsatrix_1_1LRPRuleConfig">
 <area shape="rect" href="structpulsatrix_1_1LRPRuleConfig.html" title="Configuration for LRP relevance propagation: which rule a module applies and its hyperparameters...." alt="" coords="5,5,187,31"/>
 </map>
 </td></tr>
-<tr><td><img src="inherit_graph_215.png" border="0" usemap="#apulsatrix_1_1LRPTarget" alt=""/>
+<tr><td><img src="inherit_graph_217.png" border="0" usemap="#apulsatrix_1_1LRPTarget" alt=""/>
 <map name="apulsatrix_1_1LRPTarget" id="apulsatrix_1_1LRPTarget">
 <area shape="rect" href="structpulsatrix_1_1LRPTarget.html" title="What LRP explains: one target class (and optionally one contrast class) per row of the network&#39;s (N,..." alt="" coords="5,5,156,31"/>
 </map>
 </td></tr>
-<tr><td><img src="inherit_graph_216.png" border="0" usemap="#apulsatrix_1_1LRSchedule" alt=""/>
+<tr><td><img src="inherit_graph_218.png" border="0" usemap="#apulsatrix_1_1LRSchedule" alt=""/>
 <map name="apulsatrix_1_1LRSchedule" id="apulsatrix_1_1LRSchedule">
 <area shape="rect" href="classpulsatrix_1_1LRSchedule.html" title="A learning&#45;rate multiplier as a function of the step, with the formulas of Hugging Face transformers&#39;..." alt="" coords="5,5,168,31"/>
 </map>
 </td></tr>
-<tr><td><img src="inherit_graph_217.png" border="0" usemap="#apulsatrix_1_1LRScheduler_3_01Optimizer_01_4" alt=""/>
+<tr><td><img src="inherit_graph_219.png" border="0" usemap="#apulsatrix_1_1LRScheduler_3_01Optimizer_01_4" alt=""/>
 <map name="apulsatrix_1_1LRScheduler_3_01Optimizer_01_4" id="apulsatrix_1_1LRScheduler_3_01Optimizer_01_4">
 <area shape="rect" href="classpulsatrix_1_1LRScheduler.html" title="Applies an LRSchedule to an optimizer (SGDOptimizer, AdamOptimizer, AdamWOptimizer): each rate become..." alt="" coords="5,5,172,45"/>
 </map>
 </td></tr>
-<tr><td><img src="inherit_graph_218.png" border="0" usemap="#apulsatrix_1_1MaskedLMBatch" alt=""/>
+<tr><td><img src="inherit_graph_220.png" border="0" usemap="#apulsatrix_1_1MaskedLMBatch" alt=""/>
 <map name="apulsatrix_1_1MaskedLMBatch" id="apulsatrix_1_1MaskedLMBatch">
 <area shape="rect" href="structpulsatrix_1_1MaskedLMBatch.html" title="One collated batch, on the collator&#39;s backend." alt="" coords="5,5,199,31"/>
 </map>
 </td></tr>
-<tr><td><img src="inherit_graph_219.png" border="0" usemap="#apulsatrix_1_1MaskedLMCollator" alt=""/>
+<tr><td><img src="inherit_graph_221.png" border="0" usemap="#apulsatrix_1_1MaskedLMCollator" alt=""/>
 <map name="apulsatrix_1_1MaskedLMCollator" id="apulsatrix_1_1MaskedLMCollator">
 <area shape="rect" href="classpulsatrix_1_1MaskedLMCollator.html" title="Turns sequences into masked&#45;LM batches as ESM&#45;2 was trained: &lt;cls&gt; + residues + &lt;eos&gt;,..." alt="" coords="5,5,212,31"/>
 </map>
 </td></tr>
-<tr><td><img src="inherit_graph_220.png" border="0" usemap="#apulsatrix_1_1MaskedLMEvaluation" alt=""/>
+<tr><td><img src="inherit_graph_222.png" border="0" usemap="#apulsatrix_1_1MaskedLMEvaluation" alt=""/>
 <map name="apulsatrix_1_1MaskedLMEvaluation" id="apulsatrix_1_1MaskedLMEvaluation">
 <area shape="rect" href="structpulsatrix_1_1MaskedLMEvaluation.html" title="Masked&#45;LM quality on held&#45;out sequences." alt="" coords="5,5,231,31"/>
 </map>
 </td></tr>
-<tr><td><img src="inherit_graph_221.png" border="0" usemap="#apulsatrix_1_1MaskedLMOptions" alt=""/>
+<tr><td><img src="inherit_graph_223.png" border="0" usemap="#apulsatrix_1_1MaskedLMOptions" alt=""/>
 <map name="apulsatrix_1_1MaskedLMOptions" id="apulsatrix_1_1MaskedLMOptions">
 <area shape="rect" href="structpulsatrix_1_1MaskedLMOptions.html" title="ESM&#45;2&#39;s masking (Lin et al. 2023; BERT&#39;s 80/10/10)." alt="" coords="5,5,212,31"/>
 </map>
 </td></tr>
-<tr><td><img src="inherit_graph_222.png" border="0" usemap="#apulsatrix_1_1MetadataColumn" alt=""/>
+<tr><td><img src="inherit_graph_224.png" border="0" usemap="#apulsatrix_1_1MetadataColumn" alt=""/>
 <map name="apulsatrix_1_1MetadataColumn" id="apulsatrix_1_1MetadataColumn">
 <area shape="rect" href="structpulsatrix_1_1MetadataColumn.html" title="One column of per&#45;point metadata: a label, a class, a value as text." alt="" coords="5,5,204,31"/>
 </map>
 </td></tr>
-<tr><td><img src="inherit_graph_223.png" border="0" usemap="#apulsatrix_1_1MetricCapability" alt=""/>
+<tr><td><img src="inherit_graph_225.png" border="0" usemap="#apulsatrix_1_1MetricCapability" alt=""/>
 <map name="apulsatrix_1_1MetricCapability" id="apulsatrix_1_1MetricCapability">
 <area shape="rect" href="structpulsatrix_1_1MetricCapability.html" title="Whether one metric can be read on this machine, and from where – or why not." alt="" coords="5,5,200,31"/>
 </map>
 </td></tr>
-<tr><td><img src="inherit_graph_224.png" border="0" usemap="#apulsatrix_1_1MetricRecord" alt=""/>
+<tr><td><img src="inherit_graph_226.png" border="0" usemap="#apulsatrix_1_1MetricRecord" alt=""/>
 <map name="apulsatrix_1_1MetricRecord" id="apulsatrix_1_1MetricRecord">
 <area shape="rect" href="structpulsatrix_1_1MetricRecord.html" title="One recorded metric value: a named tag, its value, and the training step it was logged at (mirrors Me..." alt="" coords="5,5,179,31"/>
 </map>
 </td></tr>
-<tr><td><img src="inherit_graph_225.png" border="0" usemap="#apulsatrix_1_1MetricsSink" alt=""/>
+<tr><td><img src="inherit_graph_227.png" border="0" usemap="#apulsatrix_1_1MetricsSink" alt=""/>
 <map name="apulsatrix_1_1MetricsSink" id="apulsatrix_1_1MetricsSink">
 <area shape="rect" href="classpulsatrix_1_1MetricsSink.html" title="Interface the training loop logs scalars/histograms through. Concrete writers (TensorBoard event form..." alt="" coords="5,31,168,56"/>
 <area shape="rect" href="classpulsatrix_1_1ImPlotMetricsSink.html" title="A concrete MetricsSink (metrics_sink.hpp&#39;s own doc comment names this the expected extension point: &quot;..." alt="" coords="216,5,421,31"/>
@@ -1382,137 +1396,137 @@ $(document).ready(function(){initNavTree('hierarchy.html',''); initResizable(); 
 <area shape="poly" title=" " alt="" coords="182,50,219,54,219,60,181,56"/>
 </map>
 </td></tr>
-<tr><td><img src="inherit_graph_226.png" border="0" usemap="#apulsatrix_1_1MimeBundle" alt=""/>
+<tr><td><img src="inherit_graph_228.png" border="0" usemap="#apulsatrix_1_1MimeBundle" alt=""/>
 <map name="apulsatrix_1_1MimeBundle" id="apulsatrix_1_1MimeBundle">
 <area shape="rect" href="structpulsatrix_1_1MimeBundle.html" title="One displayable value in several formats: MIME type to data, richest first. Text formats (text/plain,..." alt="" coords="5,5,175,31"/>
 </map>
 </td></tr>
-<tr><td><img src="inherit_graph_227.png" border="0" usemap="#apulsatrix_1_1MnistConvNet" alt=""/>
+<tr><td><img src="inherit_graph_229.png" border="0" usemap="#apulsatrix_1_1MnistConvNet" alt=""/>
 <map name="apulsatrix_1_1MnistConvNet" id="apulsatrix_1_1MnistConvNet">
 <area shape="rect" href="classpulsatrix_1_1MnistConvNet.html" title="Conv2D(1,8,5,5) &#45;&gt; ReLU &#45;&gt; Flatten &#45;&gt; Linear(4608,10), trained via CrossEntropyLoss + Adam,..." alt="" coords="5,5,184,31"/>
 </map>
 </td></tr>
-<tr><td><img src="inherit_graph_228.png" border="0" usemap="#apulsatrix_1_1MnistDataset" alt=""/>
+<tr><td><img src="inherit_graph_230.png" border="0" usemap="#apulsatrix_1_1MnistDataset" alt=""/>
 <map name="apulsatrix_1_1MnistDataset" id="apulsatrix_1_1MnistDataset">
 <area shape="rect" href="structpulsatrix_1_1MnistDataset.html" title="One IDX file pair&#39;s contents: parallel images/labels, same length." alt="" coords="5,5,180,31"/>
 </map>
 </td></tr>
-<tr><td><img src="inherit_graph_229.png" border="0" usemap="#apulsatrix_1_1MnistIdxLoader" alt=""/>
+<tr><td><img src="inherit_graph_231.png" border="0" usemap="#apulsatrix_1_1MnistIdxLoader" alt=""/>
 <map name="apulsatrix_1_1MnistIdxLoader" id="apulsatrix_1_1MnistIdxLoader">
 <area shape="rect" href="classpulsatrix_1_1MnistIdxLoader.html" title="Reads MNIST&#39;s original IDX&#45;format files directly – no format conversion, no generic Dataset abstracti..." alt="" coords="5,5,192,31"/>
 </map>
 </td></tr>
-<tr><td><img src="inherit_graph_230.png" border="0" usemap="#apulsatrix_1_1ModelToken" alt=""/>
+<tr><td><img src="inherit_graph_232.png" border="0" usemap="#apulsatrix_1_1ModelToken" alt=""/>
 <map name="apulsatrix_1_1ModelToken" id="apulsatrix_1_1ModelToken">
 <area shape="rect" href="structpulsatrix_1_1ModelToken.html" title="One token from a TokenModel: its id and string, and the bytes of the piece it covers." alt="" coords="5,5,169,31"/>
 </map>
 </td></tr>
-<tr><td><img src="inherit_graph_231.png" border="0" usemap="#apulsatrix_1_1MorrisDocument" alt=""/>
+<tr><td><img src="inherit_graph_233.png" border="0" usemap="#apulsatrix_1_1MorrisDocument" alt=""/>
 <map name="apulsatrix_1_1MorrisDocument" id="apulsatrix_1_1MorrisDocument">
 <area shape="rect" href="structpulsatrix_1_1MorrisDocument.html" title="pulsatrix.morris.v1: Morris screening statistics per feature (CFS&#45;4)." alt="" coords="5,5,200,31"/>
 </map>
 </td></tr>
-<tr><td><img src="inherit_graph_232.png" border="0" usemap="#apulsatrix_1_1MorrisDocument_1_1Feature" alt=""/>
+<tr><td><img src="inherit_graph_234.png" border="0" usemap="#apulsatrix_1_1MorrisDocument_1_1Feature" alt=""/>
 <map name="apulsatrix_1_1MorrisDocument_1_1Feature" id="apulsatrix_1_1MorrisDocument_1_1Feature">
 <area shape="rect" href="structpulsatrix_1_1MorrisDocument_1_1Feature.html" title=" " alt="" coords="5,5,200,45"/>
 </map>
 </td></tr>
-<tr><td><img src="inherit_graph_233.png" border="0" usemap="#apulsatrix_1_1MorrisOptions" alt=""/>
+<tr><td><img src="inherit_graph_235.png" border="0" usemap="#apulsatrix_1_1MorrisOptions" alt=""/>
 <map name="apulsatrix_1_1MorrisOptions" id="apulsatrix_1_1MorrisOptions">
 <area shape="rect" href="structpulsatrix_1_1MorrisOptions.html" title="Morris settings." alt="" coords="5,5,184,31"/>
 </map>
 </td></tr>
-<tr><td><img src="inherit_graph_234.png" border="0" usemap="#apulsatrix_1_1MorrisResult" alt=""/>
+<tr><td><img src="inherit_graph_236.png" border="0" usemap="#apulsatrix_1_1MorrisResult" alt=""/>
 <map name="apulsatrix_1_1MorrisResult" id="apulsatrix_1_1MorrisResult">
 <area shape="rect" href="structpulsatrix_1_1MorrisResult.html" title="Morris screening results, one entry per varied feature (SALib&#39;s morris.analyze)." alt="" coords="5,5,175,31"/>
 </map>
 </td></tr>
-<tr><td><img src="inherit_graph_235.png" border="0" usemap="#apulsatrix_1_1MSELoss" alt=""/>
+<tr><td><img src="inherit_graph_237.png" border="0" usemap="#apulsatrix_1_1MSELoss" alt=""/>
 <map name="apulsatrix_1_1MSELoss" id="apulsatrix_1_1MSELoss">
 <area shape="rect" href="classpulsatrix_1_1MSELoss.html" title="MSE = mean((prediction &#45; target)^2)." alt="" coords="5,5,149,31"/>
 </map>
 </td></tr>
-<tr><td><img src="inherit_graph_236.png" border="0" usemap="#apulsatrix_1_1MstEdge" alt=""/>
+<tr><td><img src="inherit_graph_238.png" border="0" usemap="#apulsatrix_1_1MstEdge" alt=""/>
 <map name="apulsatrix_1_1MstEdge" id="apulsatrix_1_1MstEdge">
 <area shape="rect" href="structpulsatrix_1_1MstEdge.html" title="One edge of a minimum spanning tree." alt="" coords="5,5,148,31"/>
 </map>
 </td></tr>
-<tr><td><img src="inherit_graph_237.png" border="0" usemap="#apulsatrix_1_1Mutation" alt=""/>
+<tr><td><img src="inherit_graph_239.png" border="0" usemap="#apulsatrix_1_1Mutation" alt=""/>
 <map name="apulsatrix_1_1Mutation" id="apulsatrix_1_1Mutation">
 <area shape="rect" href="structpulsatrix_1_1Mutation.html" title="One substitution, numbered from 1 as variant tables write it: A23G." alt="" coords="5,5,151,31"/>
 </map>
 </td></tr>
-<tr><td><img src="inherit_graph_238.png" border="0" usemap="#apulsatrix_1_1MutationLoss" alt=""/>
+<tr><td><img src="inherit_graph_240.png" border="0" usemap="#apulsatrix_1_1MutationLoss" alt=""/>
 <map name="apulsatrix_1_1MutationLoss" id="apulsatrix_1_1MutationLoss">
 <area shape="rect" href="classpulsatrix_1_1MutationLoss.html" title="Computes one of E&#45;GAN&#39;s three named mutation objectives against a discriminator&#39;s own raw logit outpu..." alt="" coords="5,5,180,31"/>
 </map>
 </td></tr>
-<tr><td><img src="inherit_graph_239.png" border="0" usemap="#apulsatrix_1_1MutationMapDocument" alt=""/>
+<tr><td><img src="inherit_graph_241.png" border="0" usemap="#apulsatrix_1_1MutationMapDocument" alt=""/>
 <map name="apulsatrix_1_1MutationMapDocument" id="apulsatrix_1_1MutationMapDocument">
 <area shape="rect" href="structpulsatrix_1_1MutationMapDocument.html" title="pulsatrix.mutation_map.v1: a score for every substitution, residue by residue, such as a model&#39;s log&#45;..." alt="" coords="5,5,245,31"/>
 </map>
 </td></tr>
-<tr><td><img src="inherit_graph_240.png" border="0" usemap="#apulsatrix_1_1NamedBufferRef" alt=""/>
+<tr><td><img src="inherit_graph_242.png" border="0" usemap="#apulsatrix_1_1NamedBufferRef" alt=""/>
 <map name="apulsatrix_1_1NamedBufferRef" id="apulsatrix_1_1NamedBufferRef">
 <area shape="rect" href="structpulsatrix_1_1NamedBufferRef.html" title="Module state that is saved with a model but never trained, such as BatchNorm&#39;s running statistics,..." alt="" coords="5,5,200,31"/>
 </map>
 </td></tr>
-<tr><td><img src="inherit_graph_241.png" border="0" usemap="#apulsatrix_1_1NamedModuleRef" alt=""/>
+<tr><td><img src="inherit_graph_243.png" border="0" usemap="#apulsatrix_1_1NamedModuleRef" alt=""/>
 <map name="apulsatrix_1_1NamedModuleRef" id="apulsatrix_1_1NamedModuleRef">
 <area shape="rect" href="structpulsatrix_1_1NamedModuleRef.html" title="A sub&#45;module with its dot&#45;separated name relative to the module that reported it, the same prefix its..." alt="" coords="5,5,209,31"/>
 </map>
 </td></tr>
-<tr><td><img src="inherit_graph_242.png" border="0" usemap="#apulsatrix_1_1NamedParamRef" alt=""/>
+<tr><td><img src="inherit_graph_244.png" border="0" usemap="#apulsatrix_1_1NamedParamRef" alt=""/>
 <map name="apulsatrix_1_1NamedParamRef" id="apulsatrix_1_1NamedParamRef">
 <area shape="rect" href="structpulsatrix_1_1NamedParamRef.html" title="A parameter together with its hierarchical, dot&#45;separated name relative to the module that reported i..." alt="" coords="5,5,203,31"/>
 </map>
 </td></tr>
-<tr><td><img src="inherit_graph_243.png" border="0" usemap="#apulsatrix_1_1NEATEvolutionResult" alt=""/>
+<tr><td><img src="inherit_graph_245.png" border="0" usemap="#apulsatrix_1_1NEATEvolutionResult" alt=""/>
 <map name="apulsatrix_1_1NEATEvolutionResult" id="apulsatrix_1_1NEATEvolutionResult">
 <area shape="rect" href="structpulsatrix_1_1NEATEvolutionResult.html" title="Result of a full NEAT evolutionary run." alt="" coords="5,5,188,45"/>
 </map>
 </td></tr>
-<tr><td><img src="inherit_graph_244.png" border="0" usemap="#apulsatrix_1_1NEATGenome" alt=""/>
+<tr><td><img src="inherit_graph_246.png" border="0" usemap="#apulsatrix_1_1NEATGenome" alt=""/>
 <map name="apulsatrix_1_1NEATGenome" id="apulsatrix_1_1NEATGenome">
 <area shape="rect" href="classpulsatrix_1_1NEATGenome.html" title="A NEAT genome: its node and connection genes, growable via structural mutation." alt="" coords="5,5,181,31"/>
 </map>
 </td></tr>
-<tr><td><img src="inherit_graph_245.png" border="0" usemap="#apulsatrix_1_1NeighborOptions" alt=""/>
+<tr><td><img src="inherit_graph_247.png" border="0" usemap="#apulsatrix_1_1NeighborOptions" alt=""/>
 <map name="apulsatrix_1_1NeighborOptions" id="apulsatrix_1_1NeighborOptions">
 <area shape="rect" href="structpulsatrix_1_1NeighborOptions.html" title="Settings for the neighbor searches." alt="" coords="5,5,201,31"/>
 </map>
 </td></tr>
-<tr><td><img src="inherit_graph_246.png" border="0" usemap="#apulsatrix_1_1Neighbors" alt=""/>
+<tr><td><img src="inherit_graph_248.png" border="0" usemap="#apulsatrix_1_1Neighbors" alt=""/>
 <map name="apulsatrix_1_1Neighbors" id="apulsatrix_1_1Neighbors">
 <area shape="rect" href="structpulsatrix_1_1Neighbors.html" title="Each query&#39;s k nearest points, nearest first." alt="" coords="5,5,159,31"/>
 </map>
 </td></tr>
-<tr><td><img src="inherit_graph_247.png" border="0" usemap="#apulsatrix_1_1Node" alt=""/>
+<tr><td><img src="inherit_graph_249.png" border="0" usemap="#apulsatrix_1_1Node" alt=""/>
 <map name="apulsatrix_1_1Node" id="apulsatrix_1_1Node">
 <area shape="rect" href="classpulsatrix_1_1Node.html" title="A single computation graph node. Owned exclusively by its ComputationGraph (see computation_graph...." alt="" coords="5,5,127,31"/>
 </map>
 </td></tr>
-<tr><td><img src="inherit_graph_248.png" border="0" usemap="#apulsatrix_1_1NodeGene" alt=""/>
+<tr><td><img src="inherit_graph_250.png" border="0" usemap="#apulsatrix_1_1NodeGene" alt=""/>
 <map name="apulsatrix_1_1NodeGene" id="apulsatrix_1_1NodeGene">
 <area shape="rect" href="structpulsatrix_1_1NodeGene.html" title="One node in a NEAT genome&#39;s topology." alt="" coords="5,5,160,31"/>
 </map>
 </td></tr>
-<tr><td><img src="inherit_graph_249.png" border="0" usemap="#apulsatrix_1_1NoiseSchedule" alt=""/>
+<tr><td><img src="inherit_graph_251.png" border="0" usemap="#apulsatrix_1_1NoiseSchedule" alt=""/>
 <map name="apulsatrix_1_1NoiseSchedule" id="apulsatrix_1_1NoiseSchedule">
 <area shape="rect" href="classpulsatrix_1_1NoiseSchedule.html" title="The DDPM (Ho et al. 2020, arXiv:2006.11239) linear variance schedule plus the two tensor operations d..." alt="" coords="5,5,188,31"/>
 </map>
 </td></tr>
-<tr><td><img src="inherit_graph_250.png" border="0" usemap="#apulsatrix_1_1NormalizedString" alt=""/>
+<tr><td><img src="inherit_graph_252.png" border="0" usemap="#apulsatrix_1_1NormalizedString" alt=""/>
 <map name="apulsatrix_1_1NormalizedString" id="apulsatrix_1_1NormalizedString">
 <area shape="rect" href="classpulsatrix_1_1NormalizedString.html" title="Text being normalized and pre&#45;tokenized, remembering where each byte came from in the original input,..." alt="" coords="5,5,205,31"/>
 </map>
 </td></tr>
-<tr><td><img src="inherit_graph_251.png" border="0" usemap="#apulsatrix_1_1NormalizedString_1_1Piece" alt=""/>
+<tr><td><img src="inherit_graph_253.png" border="0" usemap="#apulsatrix_1_1NormalizedString_1_1Piece" alt=""/>
 <map name="apulsatrix_1_1NormalizedString_1_1Piece" id="apulsatrix_1_1NormalizedString_1_1Piece">
 <area shape="rect" href="structpulsatrix_1_1NormalizedString_1_1Piece.html" title="One piece of a rebuilt text: its new bytes, and the range of the current text they replace (an empty ..." alt="" coords="5,5,205,45"/>
 </map>
 </td></tr>
-<tr><td><img src="inherit_graph_252.png" border="0" usemap="#apulsatrix_1_1Normalizer" alt=""/>
+<tr><td><img src="inherit_graph_254.png" border="0" usemap="#apulsatrix_1_1Normalizer" alt=""/>
 <map name="apulsatrix_1_1Normalizer" id="apulsatrix_1_1Normalizer">
 <area shape="rect" href="classpulsatrix_1_1Normalizer.html" title="Changes text before it is split (lowercasing, NFC, ...)." alt="" coords="5,104,164,129"/>
 <area shape="rect" href="classpulsatrix_1_1AsciiLowercase.html" title="Lowercases ASCII letters and leaves every other character alone." alt="" coords="230,5,417,31"/>
@@ -1527,282 +1541,282 @@ $(document).ready(function(){initNavTree('hierarchy.html',''); initResizable(); 
 <area shape="poly" title=" " alt="" coords="116,135,161,162,213,188,253,200,252,205,211,192,158,167,114,139"/>
 </map>
 </td></tr>
-<tr><td><img src="inherit_graph_253.png" border="0" usemap="#apulsatrix_1_1NullModelComparison_3_01Result_01_4" alt=""/>
+<tr><td><img src="inherit_graph_255.png" border="0" usemap="#apulsatrix_1_1NullModelComparison_3_01Result_01_4" alt=""/>
 <map name="apulsatrix_1_1NullModelComparison_3_01Result_01_4" id="apulsatrix_1_1NullModelComparison_3_01Result_01_4">
 <area shape="rect" href="structpulsatrix_1_1NullModelComparison.html" title="NullModelBaseline()&#39;s result: the analysis on the trained model and on the null model." alt="" coords="5,5,236,45"/>
 </map>
 </td></tr>
-<tr><td><img src="inherit_graph_254.png" border="0" usemap="#apulsatrix_1_1Offset" alt=""/>
+<tr><td><img src="inherit_graph_256.png" border="0" usemap="#apulsatrix_1_1Offset" alt=""/>
 <map name="apulsatrix_1_1Offset" id="apulsatrix_1_1Offset">
 <area shape="rect" href="structpulsatrix_1_1Offset.html" title="A byte range [begin, end) of the text passed to TextTokenizer::encode()." alt="" coords="5,5,132,31"/>
 </map>
 </td></tr>
-<tr><td><img src="inherit_graph_255.png" border="0" usemap="#apulsatrix_1_1orch_1_1AnthropicOptions" alt=""/>
+<tr><td><img src="inherit_graph_257.png" border="0" usemap="#apulsatrix_1_1orch_1_1AnthropicOptions" alt=""/>
 <map name="apulsatrix_1_1orch_1_1AnthropicOptions" id="apulsatrix_1_1orch_1_1AnthropicOptions">
 <area shape="rect" href="structpulsatrix_1_1orch_1_1AnthropicOptions.html" title="Settings for the Anthropic Messages API." alt="" coords="5,5,191,45"/>
 </map>
 </td></tr>
-<tr><td><img src="inherit_graph_256.png" border="0" usemap="#apulsatrix_1_1orch_1_1ChatRequest" alt=""/>
+<tr><td><img src="inherit_graph_258.png" border="0" usemap="#apulsatrix_1_1orch_1_1ChatRequest" alt=""/>
 <map name="apulsatrix_1_1orch_1_1ChatRequest" id="apulsatrix_1_1orch_1_1ChatRequest">
 <area shape="rect" href="structpulsatrix_1_1orch_1_1ChatRequest.html" title="A request to a provider." alt="" coords="5,5,212,31"/>
 </map>
 </td></tr>
-<tr><td><img src="inherit_graph_257.png" border="0" usemap="#apulsatrix_1_1orch_1_1ChatResponse" alt=""/>
+<tr><td><img src="inherit_graph_259.png" border="0" usemap="#apulsatrix_1_1orch_1_1ChatResponse" alt=""/>
 <map name="apulsatrix_1_1orch_1_1ChatResponse" id="apulsatrix_1_1orch_1_1ChatResponse">
 <area shape="rect" href="structpulsatrix_1_1orch_1_1ChatResponse.html" title="A provider&#39;s answer." alt="" coords="5,5,221,31"/>
 </map>
 </td></tr>
-<tr><td><img src="inherit_graph_258.png" border="0" usemap="#apulsatrix_1_1orch_1_1ContentBlock" alt=""/>
+<tr><td><img src="inherit_graph_260.png" border="0" usemap="#apulsatrix_1_1orch_1_1ContentBlock" alt=""/>
 <map name="apulsatrix_1_1orch_1_1ContentBlock" id="apulsatrix_1_1orch_1_1ContentBlock">
 <area shape="rect" href="structpulsatrix_1_1orch_1_1ContentBlock.html" title="One block of a message&#39;s content." alt="" coords="5,5,180,45"/>
 </map>
 </td></tr>
-<tr><td><img src="inherit_graph_259.png" border="0" usemap="#apulsatrix_1_1orch_1_1HttpHeader" alt=""/>
+<tr><td><img src="inherit_graph_261.png" border="0" usemap="#apulsatrix_1_1orch_1_1HttpHeader" alt=""/>
 <map name="apulsatrix_1_1orch_1_1HttpHeader" id="apulsatrix_1_1orch_1_1HttpHeader">
 <area shape="rect" href="structpulsatrix_1_1orch_1_1HttpHeader.html" title="One request header. A sensitive one (a credential) is redacted by HttpRequest::describe()." alt="" coords="5,5,204,31"/>
 </map>
 </td></tr>
-<tr><td><img src="inherit_graph_260.png" border="0" usemap="#apulsatrix_1_1orch_1_1HttpRequest" alt=""/>
+<tr><td><img src="inherit_graph_262.png" border="0" usemap="#apulsatrix_1_1orch_1_1HttpRequest" alt=""/>
 <map name="apulsatrix_1_1orch_1_1HttpRequest" id="apulsatrix_1_1orch_1_1HttpRequest">
 <area shape="rect" href="structpulsatrix_1_1orch_1_1HttpRequest.html" title="An HTTP request. Redirects are never followed, so a credential only goes to url." alt="" coords="5,5,209,31"/>
 </map>
 </td></tr>
-<tr><td><img src="inherit_graph_261.png" border="0" usemap="#apulsatrix_1_1orch_1_1HttpResponse" alt=""/>
+<tr><td><img src="inherit_graph_263.png" border="0" usemap="#apulsatrix_1_1orch_1_1HttpResponse" alt=""/>
 <map name="apulsatrix_1_1orch_1_1HttpResponse" id="apulsatrix_1_1orch_1_1HttpResponse">
 <area shape="rect" href="structpulsatrix_1_1orch_1_1HttpResponse.html" title="An HTTP response. A status of 400 or 500 is a response, not an error." alt="" coords="5,5,220,31"/>
 </map>
 </td></tr>
-<tr><td><img src="inherit_graph_262.png" border="0" usemap="#apulsatrix_1_1orch_1_1HttpTransport" alt=""/>
+<tr><td><img src="inherit_graph_264.png" border="0" usemap="#apulsatrix_1_1orch_1_1HttpTransport" alt=""/>
 <map name="apulsatrix_1_1orch_1_1HttpTransport" id="apulsatrix_1_1orch_1_1HttpTransport">
 <area shape="rect" href="classpulsatrix_1_1orch_1_1HttpTransport.html" title="Sends HTTP requests. One instance may be used by one thread at a time." alt="" coords="5,5,216,31"/>
 </map>
 </td></tr>
-<tr><td><img src="inherit_graph_263.png" border="0" usemap="#apulsatrix_1_1orch_1_1HttpTransportOptions" alt=""/>
+<tr><td><img src="inherit_graph_265.png" border="0" usemap="#apulsatrix_1_1orch_1_1HttpTransportOptions" alt=""/>
 <map name="apulsatrix_1_1orch_1_1HttpTransportOptions" id="apulsatrix_1_1orch_1_1HttpTransportOptions">
 <area shape="rect" href="structpulsatrix_1_1orch_1_1HttpTransportOptions.html" title="How a transport trusts servers. Certificate verification can&#39;t be turned off." alt="" coords="5,5,216,45"/>
 </map>
 </td></tr>
-<tr><td><img src="inherit_graph_264.png" border="0" usemap="#apulsatrix_1_1orch_1_1HttpUrl" alt=""/>
+<tr><td><img src="inherit_graph_266.png" border="0" usemap="#apulsatrix_1_1orch_1_1HttpUrl" alt=""/>
 <map name="apulsatrix_1_1orch_1_1HttpUrl" id="apulsatrix_1_1orch_1_1HttpUrl">
 <area shape="rect" href="structpulsatrix_1_1orch_1_1HttpUrl.html" title="An http or https URL split into its parts." alt="" coords="5,5,176,31"/>
 </map>
 </td></tr>
-<tr><td><img src="inherit_graph_265.png" border="0" usemap="#apulsatrix_1_1orch_1_1Message" alt=""/>
+<tr><td><img src="inherit_graph_267.png" border="0" usemap="#apulsatrix_1_1orch_1_1Message" alt=""/>
 <map name="apulsatrix_1_1orch_1_1Message" id="apulsatrix_1_1orch_1_1Message">
 <area shape="rect" href="structpulsatrix_1_1orch_1_1Message.html" title="One turn of a conversation." alt="" coords="5,5,187,31"/>
 </map>
 </td></tr>
-<tr><td><img src="inherit_graph_266.png" border="0" usemap="#apulsatrix_1_1orch_1_1OpenAiCompatibleOptions" alt=""/>
+<tr><td><img src="inherit_graph_268.png" border="0" usemap="#apulsatrix_1_1orch_1_1OpenAiCompatibleOptions" alt=""/>
 <map name="apulsatrix_1_1orch_1_1OpenAiCompatibleOptions" id="apulsatrix_1_1orch_1_1OpenAiCompatibleOptions">
 <area shape="rect" href="structpulsatrix_1_1orch_1_1OpenAiCompatibleOptions.html" title="Settings for an OpenAI&#45;compatible chat&#45;completions server (llama&#45;server, vLLM, Ollama)." alt="" coords="5,5,251,45"/>
 </map>
 </td></tr>
-<tr><td><img src="inherit_graph_267.png" border="0" usemap="#apulsatrix_1_1orch_1_1Provider" alt=""/>
+<tr><td><img src="inherit_graph_269.png" border="0" usemap="#apulsatrix_1_1orch_1_1Provider" alt=""/>
 <map name="apulsatrix_1_1orch_1_1Provider" id="apulsatrix_1_1orch_1_1Provider">
 <area shape="rect" href="classpulsatrix_1_1orch_1_1Provider.html" title="A model behind an API." alt="" coords="5,5,183,31"/>
 </map>
 </td></tr>
-<tr><td><img src="inherit_graph_268.png" border="0" usemap="#apulsatrix_1_1orch_1_1RetryPolicy" alt=""/>
+<tr><td><img src="inherit_graph_270.png" border="0" usemap="#apulsatrix_1_1orch_1_1RetryPolicy" alt=""/>
 <map name="apulsatrix_1_1orch_1_1RetryPolicy" id="apulsatrix_1_1orch_1_1RetryPolicy">
 <area shape="rect" href="structpulsatrix_1_1orch_1_1RetryPolicy.html" title="When and how long to retry." alt="" coords="5,5,203,31"/>
 </map>
 </td></tr>
-<tr><td><img src="inherit_graph_269.png" border="0" usemap="#apulsatrix_1_1orch_1_1SchemaError" alt=""/>
+<tr><td><img src="inherit_graph_271.png" border="0" usemap="#apulsatrix_1_1orch_1_1SchemaError" alt=""/>
 <map name="apulsatrix_1_1orch_1_1SchemaError" id="apulsatrix_1_1orch_1_1SchemaError">
 <area shape="rect" href="structpulsatrix_1_1orch_1_1SchemaError.html" title="One way a value fails a schema." alt="" coords="5,5,212,31"/>
 </map>
 </td></tr>
-<tr><td><img src="inherit_graph_270.png" border="0" usemap="#apulsatrix_1_1orch_1_1Secret" alt=""/>
+<tr><td><img src="inherit_graph_272.png" border="0" usemap="#apulsatrix_1_1orch_1_1Secret" alt=""/>
 <map name="apulsatrix_1_1orch_1_1Secret" id="apulsatrix_1_1orch_1_1Secret">
 <area shape="rect" href="classpulsatrix_1_1orch_1_1Secret.html" title="Holds a credential, such as an LLM provider&#39;s API key." alt="" coords="5,5,169,31"/>
 </map>
 </td></tr>
-<tr><td><img src="inherit_graph_271.png" border="0" usemap="#apulsatrix_1_1orch_1_1SseEvent" alt=""/>
+<tr><td><img src="inherit_graph_273.png" border="0" usemap="#apulsatrix_1_1orch_1_1SseEvent" alt=""/>
 <map name="apulsatrix_1_1orch_1_1SseEvent" id="apulsatrix_1_1orch_1_1SseEvent">
 <area shape="rect" href="structpulsatrix_1_1orch_1_1SseEvent.html" title="One server&#45;sent event." alt="" coords="5,5,188,31"/>
 </map>
 </td></tr>
-<tr><td><img src="inherit_graph_272.png" border="0" usemap="#apulsatrix_1_1orch_1_1SseParser" alt=""/>
+<tr><td><img src="inherit_graph_274.png" border="0" usemap="#apulsatrix_1_1orch_1_1SseParser" alt=""/>
 <map name="apulsatrix_1_1orch_1_1SseParser" id="apulsatrix_1_1orch_1_1SseParser">
 <area shape="rect" href="classpulsatrix_1_1orch_1_1SseParser.html" title="Parses a text/event&#45;stream body fed in chunks of any size, as the WHATWG HTML specification defines i..." alt="" coords="5,5,192,31"/>
 </map>
 </td></tr>
-<tr><td><img src="inherit_graph_273.png" border="0" usemap="#apulsatrix_1_1orch_1_1StreamCallbacks" alt=""/>
+<tr><td><img src="inherit_graph_275.png" border="0" usemap="#apulsatrix_1_1orch_1_1StreamCallbacks" alt=""/>
 <map name="apulsatrix_1_1orch_1_1StreamCallbacks" id="apulsatrix_1_1orch_1_1StreamCallbacks">
 <area shape="rect" href="structpulsatrix_1_1orch_1_1StreamCallbacks.html" title="Called as a streamed answer arrives. Either may be empty." alt="" coords="5,5,239,31"/>
 </map>
 </td></tr>
-<tr><td><img src="inherit_graph_274.png" border="0" usemap="#apulsatrix_1_1orch_1_1Tool" alt=""/>
+<tr><td><img src="inherit_graph_276.png" border="0" usemap="#apulsatrix_1_1orch_1_1Tool" alt=""/>
 <map name="apulsatrix_1_1orch_1_1Tool" id="apulsatrix_1_1orch_1_1Tool">
 <area shape="rect" href="structpulsatrix_1_1orch_1_1Tool.html" title="A tool: what the model sees, and the function that runs it." alt="" coords="5,5,155,31"/>
 </map>
 </td></tr>
-<tr><td><img src="inherit_graph_275.png" border="0" usemap="#apulsatrix_1_1orch_1_1ToolCall" alt=""/>
+<tr><td><img src="inherit_graph_277.png" border="0" usemap="#apulsatrix_1_1orch_1_1ToolCall" alt=""/>
 <map name="apulsatrix_1_1orch_1_1ToolCall" id="apulsatrix_1_1orch_1_1ToolCall">
 <area shape="rect" href="structpulsatrix_1_1orch_1_1ToolCall.html" title="One tool call to run." alt="" coords="5,5,180,31"/>
 </map>
 </td></tr>
-<tr><td><img src="inherit_graph_276.png" border="0" usemap="#apulsatrix_1_1orch_1_1ToolLoopOptions" alt=""/>
+<tr><td><img src="inherit_graph_278.png" border="0" usemap="#apulsatrix_1_1orch_1_1ToolLoopOptions" alt=""/>
 <map name="apulsatrix_1_1orch_1_1ToolLoopOptions" id="apulsatrix_1_1orch_1_1ToolLoopOptions">
 <area shape="rect" href="structpulsatrix_1_1orch_1_1ToolLoopOptions.html" title="Settings for RunToolLoop()." alt="" coords="5,5,185,45"/>
 </map>
 </td></tr>
-<tr><td><img src="inherit_graph_277.png" border="0" usemap="#apulsatrix_1_1orch_1_1ToolLoopResult" alt=""/>
+<tr><td><img src="inherit_graph_279.png" border="0" usemap="#apulsatrix_1_1orch_1_1ToolLoopResult" alt=""/>
 <map name="apulsatrix_1_1orch_1_1ToolLoopResult" id="apulsatrix_1_1orch_1_1ToolLoopResult">
 <area shape="rect" href="structpulsatrix_1_1orch_1_1ToolLoopResult.html" title="How a tool loop ended." alt="" coords="5,5,185,45"/>
 </map>
 </td></tr>
-<tr><td><img src="inherit_graph_278.png" border="0" usemap="#apulsatrix_1_1orch_1_1ToolOutcome" alt=""/>
+<tr><td><img src="inherit_graph_280.png" border="0" usemap="#apulsatrix_1_1orch_1_1ToolOutcome" alt=""/>
 <map name="apulsatrix_1_1orch_1_1ToolOutcome" id="apulsatrix_1_1orch_1_1ToolOutcome">
 <area shape="rect" href="structpulsatrix_1_1orch_1_1ToolOutcome.html" title="What a tool returned. An error is reported to the model, which can try again." alt="" coords="5,5,213,31"/>
 </map>
 </td></tr>
-<tr><td><img src="inherit_graph_279.png" border="0" usemap="#apulsatrix_1_1orch_1_1ToolRegistry" alt=""/>
+<tr><td><img src="inherit_graph_281.png" border="0" usemap="#apulsatrix_1_1orch_1_1ToolRegistry" alt=""/>
 <map name="apulsatrix_1_1orch_1_1ToolRegistry" id="apulsatrix_1_1orch_1_1ToolRegistry">
 <area shape="rect" href="classpulsatrix_1_1orch_1_1ToolRegistry.html" title="The tools an agent may use. RunToolLoop() takes executor(), and a planned MCP server will serve the s..." alt="" coords="5,5,208,31"/>
 </map>
 </td></tr>
-<tr><td><img src="inherit_graph_280.png" border="0" usemap="#apulsatrix_1_1orch_1_1ToolSpec" alt=""/>
+<tr><td><img src="inherit_graph_282.png" border="0" usemap="#apulsatrix_1_1orch_1_1ToolSpec" alt=""/>
 <map name="apulsatrix_1_1orch_1_1ToolSpec" id="apulsatrix_1_1orch_1_1ToolSpec">
 <area shape="rect" href="structpulsatrix_1_1orch_1_1ToolSpec.html" title="A tool the model may call. ToolRegistry::specs() makes these from its tools." alt="" coords="5,5,185,31"/>
 </map>
 </td></tr>
-<tr><td><img src="inherit_graph_281.png" border="0" usemap="#apulsatrix_1_1orch_1_1Usage" alt=""/>
+<tr><td><img src="inherit_graph_283.png" border="0" usemap="#apulsatrix_1_1orch_1_1Usage" alt=""/>
 <map name="apulsatrix_1_1orch_1_1Usage" id="apulsatrix_1_1orch_1_1Usage">
 <area shape="rect" href="structpulsatrix_1_1orch_1_1Usage.html" title="Tokens used by one request, or summed over a tool loop." alt="" coords="5,5,169,31"/>
 </map>
 </td></tr>
-<tr><td><img src="inherit_graph_282.png" border="0" usemap="#apulsatrix_1_1ParameterDecomposition" alt=""/>
+<tr><td><img src="inherit_graph_284.png" border="0" usemap="#apulsatrix_1_1ParameterDecomposition" alt=""/>
 <map name="apulsatrix_1_1ParameterDecomposition" id="apulsatrix_1_1ParameterDecomposition">
 <area shape="rect" href="classpulsatrix_1_1ParameterDecomposition.html" title="Trains a decomposition of the ComponentLinear layers inside model against the model itself: the targe..." alt="" coords="5,5,257,31"/>
 </map>
 </td></tr>
-<tr><td><img src="inherit_graph_283.png" border="0" usemap="#apulsatrix_1_1ParameterSnapshot" alt=""/>
+<tr><td><img src="inherit_graph_285.png" border="0" usemap="#apulsatrix_1_1ParameterSnapshot" alt=""/>
 <map name="apulsatrix_1_1ParameterSnapshot" id="apulsatrix_1_1ParameterSnapshot">
 <area shape="rect" href="classpulsatrix_1_1ParameterSnapshot.html" title="Saves every parameter of a module and restores them exactly when it goes out of scope." alt="" coords="5,5,220,31"/>
 </map>
 </td></tr>
-<tr><td><img src="inherit_graph_284.png" border="0" usemap="#apulsatrix_1_1ParameterSpec" alt=""/>
+<tr><td><img src="inherit_graph_286.png" border="0" usemap="#apulsatrix_1_1ParameterSpec" alt=""/>
 <map name="apulsatrix_1_1ParameterSpec" id="apulsatrix_1_1ParameterSpec">
 <area shape="rect" href="structpulsatrix_1_1ParameterSpec.html" title="One named parameter&#39;s description: its kind plus the bounds/categories that kind needs...." alt="" coords="5,5,191,31"/>
 </map>
 </td></tr>
-<tr><td><img src="inherit_graph_285.png" border="0" usemap="#apulsatrix_1_1ParamGroup" alt=""/>
+<tr><td><img src="inherit_graph_287.png" border="0" usemap="#apulsatrix_1_1ParamGroup" alt=""/>
 <map name="apulsatrix_1_1ParamGroup" id="apulsatrix_1_1ParamGroup">
 <area shape="rect" href="structpulsatrix_1_1ParamGroup.html" title="Optimizer settings for the parameters selects picks." alt="" coords="5,5,172,31"/>
 </map>
 </td></tr>
-<tr><td><img src="inherit_graph_286.png" border="0" usemap="#apulsatrix_1_1ParamGroupSet" alt=""/>
+<tr><td><img src="inherit_graph_288.png" border="0" usemap="#apulsatrix_1_1ParamGroupSet" alt=""/>
 <map name="apulsatrix_1_1ParamGroupSet" id="apulsatrix_1_1ParamGroupSet">
 <area shape="rect" href="classpulsatrix_1_1ParamGroupSet.html" title="The group machinery SGDOptimizer and AdamOptimizer share." alt="" coords="5,5,193,31"/>
 </map>
 </td></tr>
-<tr><td><img src="inherit_graph_287.png" border="0" usemap="#apulsatrix_1_1ParamGroupSet_1_1Assignment" alt=""/>
+<tr><td><img src="inherit_graph_289.png" border="0" usemap="#apulsatrix_1_1ParamGroupSet_1_1Assignment" alt=""/>
 <map name="apulsatrix_1_1ParamGroupSet_1_1Assignment" id="apulsatrix_1_1ParamGroupSet_1_1Assignment">
 <area shape="rect" href="structpulsatrix_1_1ParamGroupSet_1_1Assignment.html" title="One parameter with the settings that apply to it this step." alt="" coords="5,5,193,45"/>
 </map>
 </td></tr>
-<tr><td><img src="inherit_graph_288.png" border="0" usemap="#apulsatrix_1_1ParamRef" alt=""/>
+<tr><td><img src="inherit_graph_290.png" border="0" usemap="#apulsatrix_1_1ParamRef" alt=""/>
 <map name="apulsatrix_1_1ParamRef" id="apulsatrix_1_1ParamRef">
 <area shape="rect" href="structpulsatrix_1_1ParamRef.html" title="A trainable parameter and its accumulated gradient, as owned by some Module." alt="" coords="5,5,156,31"/>
 </map>
 </td></tr>
-<tr><td><img src="inherit_graph_289.png" border="0" usemap="#apulsatrix_1_1PartialDependence2D" alt=""/>
+<tr><td><img src="inherit_graph_291.png" border="0" usemap="#apulsatrix_1_1PartialDependence2D" alt=""/>
 <map name="apulsatrix_1_1PartialDependence2D" id="apulsatrix_1_1PartialDependence2D">
 <area shape="rect" href="structpulsatrix_1_1PartialDependence2D.html" title="Partial dependence on two features at once, over a grid of value pairs." alt="" coords="5,5,232,31"/>
 </map>
 </td></tr>
-<tr><td><img src="inherit_graph_290.png" border="0" usemap="#apulsatrix_1_1PartialDependenceDocument" alt=""/>
+<tr><td><img src="inherit_graph_292.png" border="0" usemap="#apulsatrix_1_1PartialDependenceDocument" alt=""/>
 <map name="apulsatrix_1_1PartialDependenceDocument" id="apulsatrix_1_1PartialDependenceDocument">
 <area shape="rect" href="structpulsatrix_1_1PartialDependenceDocument.html" title="pulsatrix.partial_dependence.v1: a partial dependence curve over one feature, with the individual (IC..." alt="" coords="5,5,215,45"/>
 </map>
 </td></tr>
-<tr><td><img src="inherit_graph_291.png" border="0" usemap="#apulsatrix_1_1PartialDependenceSvgOptions" alt=""/>
+<tr><td><img src="inherit_graph_293.png" border="0" usemap="#apulsatrix_1_1PartialDependenceSvgOptions" alt=""/>
 <map name="apulsatrix_1_1PartialDependenceSvgOptions" id="apulsatrix_1_1PartialDependenceSvgOptions">
 <area shape="rect" href="structpulsatrix_1_1PartialDependenceSvgOptions.html" title="Options for RenderPartialDependenceSvg." alt="" coords="5,5,215,45"/>
 </map>
 </td></tr>
-<tr><td><img src="inherit_graph_292.png" border="0" usemap="#apulsatrix_1_1PBTResult" alt=""/>
+<tr><td><img src="inherit_graph_294.png" border="0" usemap="#apulsatrix_1_1PBTResult" alt=""/>
 <map name="apulsatrix_1_1PBTResult" id="apulsatrix_1_1PBTResult">
 <area shape="rect" href="structpulsatrix_1_1PBTResult.html" title="The best&#45;performing trial&#39;s index, its metric, and how many generations ran." alt="" coords="5,5,159,31"/>
 </map>
 </td></tr>
-<tr><td><img src="inherit_graph_293.png" border="0" usemap="#apulsatrix_1_1PBTTruncationGroups" alt=""/>
+<tr><td><img src="inherit_graph_295.png" border="0" usemap="#apulsatrix_1_1PBTTruncationGroups" alt=""/>
 <map name="apulsatrix_1_1PBTTruncationGroups" id="apulsatrix_1_1PBTTruncationGroups">
 <area shape="rect" href="structpulsatrix_1_1PBTTruncationGroups.html" title="Indices of the population&#39;s current worst&#45; and best&#45;performing members." alt="" coords="5,5,184,45"/>
 </map>
 </td></tr>
-<tr><td><img src="inherit_graph_294.png" border="0" usemap="#apulsatrix_1_1Pca" alt=""/>
+<tr><td><img src="inherit_graph_296.png" border="0" usemap="#apulsatrix_1_1Pca" alt=""/>
 <map name="apulsatrix_1_1Pca" id="apulsatrix_1_1Pca">
 <area shape="rect" href="structpulsatrix_1_1Pca.html" title="A fitted PCA." alt="" coords="5,5,116,31"/>
 </map>
 </td></tr>
-<tr><td><img src="inherit_graph_295.png" border="0" usemap="#apulsatrix_1_1PDP" alt=""/>
+<tr><td><img src="inherit_graph_297.png" border="0" usemap="#apulsatrix_1_1PDP" alt=""/>
 <map name="apulsatrix_1_1PDP" id="apulsatrix_1_1PDP">
 <area shape="rect" href="classpulsatrix_1_1PDP.html" title="PDP_j(v) = (1/|B|) * sum_{b in B} f(x_j=v, x_{&#45;j}=b_{&#45;j}) – for each grid value v,..." alt="" coords="5,5,119,31"/>
 </map>
 </td></tr>
-<tr><td><img src="inherit_graph_296.png" border="0" usemap="#apulsatrix_1_1PersistenceDiagram" alt=""/>
+<tr><td><img src="inherit_graph_298.png" border="0" usemap="#apulsatrix_1_1PersistenceDiagram" alt=""/>
 <map name="apulsatrix_1_1PersistenceDiagram" id="apulsatrix_1_1PersistenceDiagram">
 <area shape="rect" href="structpulsatrix_1_1PersistenceDiagram.html" title="The features of one homology dimension: H0 for components, H1 for loops, H2 for voids." alt="" coords="5,5,224,31"/>
 </map>
 </td></tr>
-<tr><td><img src="inherit_graph_297.png" border="0" usemap="#apulsatrix_1_1PersistenceImage" alt=""/>
+<tr><td><img src="inherit_graph_299.png" border="0" usemap="#apulsatrix_1_1PersistenceImage" alt=""/>
 <map name="apulsatrix_1_1PersistenceImage" id="apulsatrix_1_1PersistenceImage">
 <area shape="rect" href="structpulsatrix_1_1PersistenceImage.html" title="A persistence image: values[row * width + column], row 0 at persistence 0." alt="" coords="5,5,208,31"/>
 </map>
 </td></tr>
-<tr><td><img src="inherit_graph_298.png" border="0" usemap="#apulsatrix_1_1PersistenceImageOptions" alt=""/>
+<tr><td><img src="inherit_graph_300.png" border="0" usemap="#apulsatrix_1_1PersistenceImageOptions" alt=""/>
 <map name="apulsatrix_1_1PersistenceImageOptions" id="apulsatrix_1_1PersistenceImageOptions">
 <area shape="rect" href="structpulsatrix_1_1PersistenceImageOptions.html" title="ComputePersistenceImage()&#39;s settings." alt="" coords="5,5,208,45"/>
 </map>
 </td></tr>
-<tr><td><img src="inherit_graph_299.png" border="0" usemap="#apulsatrix_1_1PersistenceLandscape" alt=""/>
+<tr><td><img src="inherit_graph_301.png" border="0" usemap="#apulsatrix_1_1PersistenceLandscape" alt=""/>
 <map name="apulsatrix_1_1PersistenceLandscape" id="apulsatrix_1_1PersistenceLandscape">
 <area shape="rect" href="structpulsatrix_1_1PersistenceLandscape.html" title="PersistenceLandscape()&#39;s result: layers[k][i] is lambda_{k+1}(grid[i])." alt="" coords="5,5,236,31"/>
 </map>
 </td></tr>
-<tr><td><img src="inherit_graph_300.png" border="0" usemap="#apulsatrix_1_1PersistencePair" alt=""/>
+<tr><td><img src="inherit_graph_302.png" border="0" usemap="#apulsatrix_1_1PersistencePair" alt=""/>
 <map name="apulsatrix_1_1PersistencePair" id="apulsatrix_1_1PersistencePair">
 <area shape="rect" href="structpulsatrix_1_1PersistencePair.html" title="One feature of a persistence diagram." alt="" coords="5,5,192,31"/>
 </map>
 </td></tr>
-<tr><td><img src="inherit_graph_301.png" border="0" usemap="#apulsatrix_1_1PerturbationCurve" alt=""/>
+<tr><td><img src="inherit_graph_303.png" border="0" usemap="#apulsatrix_1_1PerturbationCurve" alt=""/>
 <map name="apulsatrix_1_1PerturbationCurve" id="apulsatrix_1_1PerturbationCurve">
 <area shape="rect" href="structpulsatrix_1_1PerturbationCurve.html" title="A perturbation curve: the target score after each fraction of features was changed." alt="" coords="5,5,211,31"/>
 </map>
 </td></tr>
-<tr><td><img src="inherit_graph_302.png" border="0" usemap="#apulsatrix_1_1PerturbationOptions" alt=""/>
+<tr><td><img src="inherit_graph_304.png" border="0" usemap="#apulsatrix_1_1PerturbationOptions" alt=""/>
 <map name="apulsatrix_1_1PerturbationOptions" id="apulsatrix_1_1PerturbationOptions">
 <area shape="rect" href="structpulsatrix_1_1PerturbationOptions.html" title="Options for DeletionCurve() and InsertionCurve()." alt="" coords="5,5,223,31"/>
 </map>
 </td></tr>
-<tr><td><img src="inherit_graph_303.png" border="0" usemap="#apulsatrix_1_1Point3" alt=""/>
+<tr><td><img src="inherit_graph_305.png" border="0" usemap="#apulsatrix_1_1Point3" alt=""/>
 <map name="apulsatrix_1_1Point3" id="apulsatrix_1_1Point3">
 <area shape="rect" href="structpulsatrix_1_1Point3.html" title="A position in Ångström." alt="" coords="5,5,133,31"/>
 </map>
 </td></tr>
-<tr><td><img src="inherit_graph_304.png" border="0" usemap="#apulsatrix_1_1PointCloud" alt=""/>
+<tr><td><img src="inherit_graph_306.png" border="0" usemap="#apulsatrix_1_1PointCloud" alt=""/>
 <map name="apulsatrix_1_1PointCloud" id="apulsatrix_1_1PointCloud">
 <area shape="rect" href="classpulsatrix_1_1PointCloud.html" title="A set of points in R^dimension, built from activation batches." alt="" coords="5,5,163,31"/>
 </map>
 </td></tr>
-<tr><td><img src="inherit_graph_305.png" border="0" usemap="#apulsatrix_1_1PointCloudOptions" alt=""/>
+<tr><td><img src="inherit_graph_307.png" border="0" usemap="#apulsatrix_1_1PointCloudOptions" alt=""/>
 <map name="apulsatrix_1_1PointCloudOptions" id="apulsatrix_1_1PointCloudOptions">
 <area shape="rect" href="structpulsatrix_1_1PointCloudOptions.html" title="PointCloud&#39;s settings." alt="" coords="5,5,212,31"/>
 </map>
 </td></tr>
-<tr><td><img src="inherit_graph_306.png" border="0" usemap="#apulsatrix_1_1PointOrigin" alt=""/>
+<tr><td><img src="inherit_graph_308.png" border="0" usemap="#apulsatrix_1_1PointOrigin" alt=""/>
 <map name="apulsatrix_1_1PointOrigin" id="apulsatrix_1_1PointOrigin">
 <area shape="rect" href="structpulsatrix_1_1PointOrigin.html" title="Where one point of a PointCloud came from." alt="" coords="5,5,164,31"/>
 </map>
 </td></tr>
-<tr><td><img src="inherit_graph_307.png" border="0" usemap="#apulsatrix_1_1PolicyGradientLoss" alt=""/>
+<tr><td><img src="inherit_graph_309.png" border="0" usemap="#apulsatrix_1_1PolicyGradientLoss" alt=""/>
 <map name="apulsatrix_1_1PolicyGradientLoss" id="apulsatrix_1_1PolicyGradientLoss">
 <area shape="rect" href="classpulsatrix_1_1PolicyGradientLoss.html" title="loss = mean_b( &#45;log pi(a_b | s_b) * G_b ), where a_b is the action actually taken on step b of a roll..." alt="" coords="5,5,216,31"/>
 </map>
 </td></tr>
-<tr><td><img src="inherit_graph_308.png" border="0" usemap="#apulsatrix_1_1PostProcessor" alt=""/>
+<tr><td><img src="inherit_graph_310.png" border="0" usemap="#apulsatrix_1_1PostProcessor" alt=""/>
 <map name="apulsatrix_1_1PostProcessor" id="apulsatrix_1_1PostProcessor">
 <area shape="rect" href="classpulsatrix_1_1PostProcessor.html" title="Adds tokens around an encoding (BOS and EOS, sentence pairs, ...)." alt="" coords="5,70,184,95"/>
 <area shape="rect" href="classpulsatrix_1_1ByteLevelPostProcessor.html" title="Byte&#45;level post&#45;processing (Hugging Face&#39;s ByteLevel post&#45;processor): with trim_offsets,..." alt="" coords="263,5,443,45"/>
@@ -1813,12 +1827,12 @@ $(document).ready(function(){initNavTree('hierarchy.html',''); initResizable(); 
 <area shape="poly" title=" " alt="" coords="176,95,286,117,285,122,174,101"/>
 </map>
 </td></tr>
-<tr><td><img src="inherit_graph_309.png" border="0" usemap="#apulsatrix_1_1PPOClippedLoss" alt=""/>
+<tr><td><img src="inherit_graph_311.png" border="0" usemap="#apulsatrix_1_1PPOClippedLoss" alt=""/>
 <map name="apulsatrix_1_1PPOClippedLoss" id="apulsatrix_1_1PPOClippedLoss">
 <area shape="rect" href="classpulsatrix_1_1PPOClippedLoss.html" title="loss = mean_b( &#45;min( r_b * A_b, clamp(r_b, 1&#45;eps, 1+eps) * A_b ) ), where r_b = pi_new(a_b|s_b) / pi_..." alt="" coords="5,5,196,31"/>
 </map>
 </td></tr>
-<tr><td><img src="inherit_graph_310.png" border="0" usemap="#apulsatrix_1_1PreTokenizer" alt=""/>
+<tr><td><img src="inherit_graph_312.png" border="0" usemap="#apulsatrix_1_1PreTokenizer" alt=""/>
 <map name="apulsatrix_1_1PreTokenizer" id="apulsatrix_1_1PreTokenizer">
 <area shape="rect" href="classpulsatrix_1_1PreTokenizer.html" title="Splits text into the pieces the model tokenizes separately, and may change them (byte&#45; level mapping)..." alt="" coords="5,129,175,155"/>
 <area shape="rect" href="classpulsatrix_1_1ByteLevelPreTokenizer.html" title="Byte&#45;level pre&#45;tokenization (Hugging Face&#39;s ByteLevel): optionally prepends a space,..." alt="" coords="225,5,460,31"/>
@@ -1835,249 +1849,249 @@ $(document).ready(function(){initNavTree('hierarchy.html',''); initResizable(); 
 <area shape="poly" title=" " alt="" coords="117,162,164,200,224,237,257,250,255,255,221,242,161,204,113,166"/>
 </map>
 </td></tr>
-<tr><td><img src="inherit_graph_311.png" border="0" usemap="#apulsatrix_1_1ProbeGain" alt=""/>
+<tr><td><img src="inherit_graph_313.png" border="0" usemap="#apulsatrix_1_1ProbeGain" alt=""/>
 <map name="apulsatrix_1_1ProbeGain" id="apulsatrix_1_1ProbeGain">
 <area shape="rect" href="structpulsatrix_1_1ProbeGain.html" title="A probe on a representation beside the same probe on a baseline representation." alt="" coords="5,5,160,31"/>
 </map>
 </td></tr>
-<tr><td><img src="inherit_graph_312.png" border="0" usemap="#apulsatrix_1_1ProbeOptions" alt=""/>
+<tr><td><img src="inherit_graph_314.png" border="0" usemap="#apulsatrix_1_1ProbeOptions" alt=""/>
 <map name="apulsatrix_1_1ProbeOptions" id="apulsatrix_1_1ProbeOptions">
 <area shape="rect" href="structpulsatrix_1_1ProbeOptions.html" title=" " alt="" coords="5,5,180,31"/>
 </map>
 </td></tr>
-<tr><td><img src="inherit_graph_313.png" border="0" usemap="#apulsatrix_1_1ProbeResult" alt=""/>
+<tr><td><img src="inherit_graph_315.png" border="0" usemap="#apulsatrix_1_1ProbeResult" alt=""/>
 <map name="apulsatrix_1_1ProbeResult" id="apulsatrix_1_1ProbeResult">
 <area shape="rect" href="structpulsatrix_1_1ProbeResult.html" title="A probe&#39;s quality on held&#45;out rows." alt="" coords="5,5,171,31"/>
 </map>
 </td></tr>
-<tr><td><img src="inherit_graph_314.png" border="0" usemap="#apulsatrix_1_1ProbeSelectivity" alt=""/>
+<tr><td><img src="inherit_graph_316.png" border="0" usemap="#apulsatrix_1_1ProbeSelectivity" alt=""/>
 <map name="apulsatrix_1_1ProbeSelectivity" id="apulsatrix_1_1ProbeSelectivity">
 <area shape="rect" href="structpulsatrix_1_1ProbeSelectivity.html" title="A probe on the real task beside the same probe on the control task." alt="" coords="5,5,199,31"/>
 </map>
 </td></tr>
-<tr><td><img src="inherit_graph_315.png" border="0" usemap="#apulsatrix_1_1ProjectionDocument" alt=""/>
+<tr><td><img src="inherit_graph_317.png" border="0" usemap="#apulsatrix_1_1ProjectionDocument" alt=""/>
 <map name="apulsatrix_1_1ProjectionDocument" id="apulsatrix_1_1ProjectionDocument">
 <area shape="rect" href="structpulsatrix_1_1ProjectionDocument.html" title="pulsatrix.projection.v1: inputs placed in a few dimensions (INT&#45;5), such as their first principal com..." alt="" coords="5,5,224,31"/>
 </map>
 </td></tr>
-<tr><td><img src="inherit_graph_316.png" border="0" usemap="#apulsatrix_1_1ProteinFeature" alt=""/>
+<tr><td><img src="inherit_graph_318.png" border="0" usemap="#apulsatrix_1_1ProteinFeature" alt=""/>
 <map name="apulsatrix_1_1ProteinFeature" id="apulsatrix_1_1ProteinFeature">
 <area shape="rect" href="structpulsatrix_1_1ProteinFeature.html" title="One annotated stretch, numbered from 1, inclusive, as UniProt numbers it." alt="" coords="5,5,188,31"/>
 </map>
 </td></tr>
-<tr><td><img src="inherit_graph_317.png" border="0" usemap="#apulsatrix_1_1ProteinGymAssay" alt=""/>
+<tr><td><img src="inherit_graph_319.png" border="0" usemap="#apulsatrix_1_1ProteinGymAssay" alt=""/>
 <map name="apulsatrix_1_1ProteinGymAssay" id="apulsatrix_1_1ProteinGymAssay">
 <area shape="rect" href="structpulsatrix_1_1ProteinGymAssay.html" title="One assay&#39;s row of ProteinGym&#39;s reference file (DMS_substitutions.csv)." alt="" coords="5,5,208,31"/>
 </map>
 </td></tr>
-<tr><td><img src="inherit_graph_318.png" border="0" usemap="#apulsatrix_1_1ProteinStructure" alt=""/>
+<tr><td><img src="inherit_graph_320.png" border="0" usemap="#apulsatrix_1_1ProteinStructure" alt=""/>
 <map name="apulsatrix_1_1ProteinStructure" id="apulsatrix_1_1ProteinStructure">
 <area shape="rect" href="structpulsatrix_1_1ProteinStructure.html" title="The protein chains of a structure&#39;s first model." alt="" coords="5,5,197,31"/>
 </map>
 </td></tr>
-<tr><td><img src="inherit_graph_319.png" border="0" usemap="#apulsatrix_1_1QRResult" alt=""/>
+<tr><td><img src="inherit_graph_321.png" border="0" usemap="#apulsatrix_1_1QRResult" alt=""/>
 <map name="apulsatrix_1_1QRResult" id="apulsatrix_1_1QRResult">
 <area shape="rect" href="structpulsatrix_1_1QRResult.html" title="QR()&#39;s result, the thin factorization A = Q R." alt="" coords="5,5,152,31"/>
 </map>
 </td></tr>
-<tr><td><img src="inherit_graph_320.png" border="0" usemap="#apulsatrix_1_1RandomizationCheckResult" alt=""/>
+<tr><td><img src="inherit_graph_322.png" border="0" usemap="#apulsatrix_1_1RandomizationCheckResult" alt=""/>
 <map name="apulsatrix_1_1RandomizationCheckResult" id="apulsatrix_1_1RandomizationCheckResult">
 <area shape="rect" href="structpulsatrix_1_1RandomizationCheckResult.html" title="The randomization check&#39;s result: after randomizing layers[0..i], how similar the explanation stays (..." alt="" coords="5,5,191,45"/>
 </map>
 </td></tr>
-<tr><td><img src="inherit_graph_321.png" border="0" usemap="#apulsatrix_1_1RandomizationResult" alt=""/>
+<tr><td><img src="inherit_graph_323.png" border="0" usemap="#apulsatrix_1_1RandomizationResult" alt=""/>
 <map name="apulsatrix_1_1RandomizationResult" id="apulsatrix_1_1RandomizationResult">
 <area shape="rect" href="structpulsatrix_1_1RandomizationResult.html" title="The model&#45;parameter randomization test&#39;s result." alt="" coords="5,5,191,45"/>
 </map>
 </td></tr>
-<tr><td><img src="inherit_graph_322.png" border="0" usemap="#apulsatrix_1_1Rdm" alt=""/>
+<tr><td><img src="inherit_graph_324.png" border="0" usemap="#apulsatrix_1_1Rdm" alt=""/>
 <map name="apulsatrix_1_1Rdm" id="apulsatrix_1_1Rdm">
 <area shape="rect" href="structpulsatrix_1_1Rdm.html" title="A representational dissimilarity matrix: the distance between every pair of n inputs." alt="" coords="5,5,123,31"/>
 </map>
 </td></tr>
-<tr><td><img src="inherit_graph_323.png" border="0" usemap="#apulsatrix_1_1ReconstructionMetrics" alt=""/>
+<tr><td><img src="inherit_graph_325.png" border="0" usemap="#apulsatrix_1_1ReconstructionMetrics" alt=""/>
 <map name="apulsatrix_1_1ReconstructionMetrics" id="apulsatrix_1_1ReconstructionMetrics">
 <area shape="rect" href="structpulsatrix_1_1ReconstructionMetrics.html" title="EvaluateReconstruction()&#39;s result." alt="" coords="5,5,189,45"/>
 </map>
 </td></tr>
-<tr><td><img src="inherit_graph_324.png" border="0" usemap="#apulsatrix_1_1RecurrentCellArgs" alt=""/>
+<tr><td><img src="inherit_graph_326.png" border="0" usemap="#apulsatrix_1_1RecurrentCellArgs" alt=""/>
 <map name="apulsatrix_1_1RecurrentCellArgs" id="apulsatrix_1_1RecurrentCellArgs">
 <area shape="rect" href="structpulsatrix_1_1RecurrentCellArgs.html" title="Operand pointers for DeviceBackend::recurrent_cell (passed to kernels by value)." alt="" coords="5,5,209,31"/>
 </map>
 </td></tr>
-<tr><td><img src="inherit_graph_325.png" border="0" usemap="#apulsatrix_1_1RelevanceGraphOptions" alt=""/>
+<tr><td><img src="inherit_graph_327.png" border="0" usemap="#apulsatrix_1_1RelevanceGraphOptions" alt=""/>
 <map name="apulsatrix_1_1RelevanceGraphOptions" id="apulsatrix_1_1RelevanceGraphOptions">
 <area shape="rect" href="structpulsatrix_1_1RelevanceGraphOptions.html" title=" " alt="" coords="5,5,200,45"/>
 </map>
 </td></tr>
-<tr><td><img src="inherit_graph_326.png" border="0" usemap="#apulsatrix_1_1Reparameterize" alt=""/>
+<tr><td><img src="inherit_graph_328.png" border="0" usemap="#apulsatrix_1_1Reparameterize" alt=""/>
 <map name="apulsatrix_1_1Reparameterize" id="apulsatrix_1_1Reparameterize">
 <area shape="rect" href="classpulsatrix_1_1Reparameterize.html" title="VAE reparameterization trick (Kingma &amp; Welling 2013, arXiv:1312.6114), z[b,d] = mu[b,..." alt="" coords="5,5,196,31"/>
 </map>
 </td></tr>
-<tr><td><img src="inherit_graph_327.png" border="0" usemap="#apulsatrix_1_1ReparamGrad" alt=""/>
+<tr><td><img src="inherit_graph_329.png" border="0" usemap="#apulsatrix_1_1ReparamGrad" alt=""/>
 <map name="apulsatrix_1_1ReparamGrad" id="apulsatrix_1_1ReparamGrad">
 <area shape="rect" href="structpulsatrix_1_1ReparamGrad.html" title="The (grad_mu, grad_log_sigma) pair both VAE building blocks produce." alt="" coords="5,5,183,31"/>
 </map>
 </td></tr>
-<tr><td><img src="inherit_graph_328.png" border="0" usemap="#apulsatrix_1_1ReplayBatch" alt=""/>
+<tr><td><img src="inherit_graph_330.png" border="0" usemap="#apulsatrix_1_1ReplayBatch" alt=""/>
 <map name="apulsatrix_1_1ReplayBatch" id="apulsatrix_1_1ReplayBatch">
 <area shape="rect" href="structpulsatrix_1_1ReplayBatch.html" title="One uniformly&#45;sampled minibatch of transitions, one Tensor per transition field." alt="" coords="5,5,175,31"/>
 </map>
 </td></tr>
-<tr><td><img src="inherit_graph_329.png" border="0" usemap="#apulsatrix_1_1ReplayBuffer" alt=""/>
+<tr><td><img src="inherit_graph_331.png" border="0" usemap="#apulsatrix_1_1ReplayBuffer" alt=""/>
 <map name="apulsatrix_1_1ReplayBuffer" id="apulsatrix_1_1ReplayBuffer">
 <area shape="rect" href="classpulsatrix_1_1ReplayBuffer.html" title="Fixed&#45;capacity circular replay buffer of (observation, action, reward, next_observation,..." alt="" coords="5,5,176,31"/>
 </map>
 </td></tr>
-<tr><td><img src="inherit_graph_330.png" border="0" usemap="#apulsatrix_1_1Report" alt=""/>
+<tr><td><img src="inherit_graph_332.png" border="0" usemap="#apulsatrix_1_1Report" alt=""/>
 <map name="apulsatrix_1_1Report" id="apulsatrix_1_1Report">
 <area shape="rect" href="classpulsatrix_1_1Report.html" title="A document of markdown, code and rich outputs, written as a Jupyter notebook (nbformat 4...." alt="" coords="5,5,136,31"/>
 </map>
 </td></tr>
-<tr><td><img src="inherit_graph_331.png" border="0" usemap="#apulsatrix_1_1RepresentationComparison" alt=""/>
+<tr><td><img src="inherit_graph_333.png" border="0" usemap="#apulsatrix_1_1RepresentationComparison" alt=""/>
 <map name="apulsatrix_1_1RepresentationComparison" id="apulsatrix_1_1RepresentationComparison">
 <area shape="rect" href="structpulsatrix_1_1RepresentationComparison.html" title="Three views of how alike two representations are." alt="" coords="5,5,192,45"/>
 </map>
 </td></tr>
-<tr><td><img src="inherit_graph_332.png" border="0" usemap="#apulsatrix_1_1RepresentationComparisonOptions" alt=""/>
+<tr><td><img src="inherit_graph_334.png" border="0" usemap="#apulsatrix_1_1RepresentationComparisonOptions" alt=""/>
 <map name="apulsatrix_1_1RepresentationComparisonOptions" id="apulsatrix_1_1RepresentationComparisonOptions">
 <area shape="rect" href="structpulsatrix_1_1RepresentationComparisonOptions.html" title="CompareRepresentations()&#39;s settings." alt="" coords="5,5,192,45"/>
 </map>
 </td></tr>
-<tr><td><img src="inherit_graph_333.png" border="0" usemap="#apulsatrix_1_1ResidueAgreement" alt=""/>
+<tr><td><img src="inherit_graph_335.png" border="0" usemap="#apulsatrix_1_1ResidueAgreement" alt=""/>
 <map name="apulsatrix_1_1ResidueAgreement" id="apulsatrix_1_1ResidueAgreement">
 <area shape="rect" href="structpulsatrix_1_1ResidueAgreement.html" title="How a per&#45;residue explanation agrees with an independent per&#45;residue signal." alt="" coords="5,5,216,31"/>
 </map>
 </td></tr>
-<tr><td><img src="inherit_graph_334.png" border="0" usemap="#apulsatrix_1_1ResidueDeletionCurve" alt=""/>
+<tr><td><img src="inherit_graph_336.png" border="0" usemap="#apulsatrix_1_1ResidueDeletionCurve" alt=""/>
 <map name="apulsatrix_1_1ResidueDeletionCurve" id="apulsatrix_1_1ResidueDeletionCurve">
 <area shape="rect" href="structpulsatrix_1_1ResidueDeletionCurve.html" title="A deletion curve against its random baseline." alt="" coords="5,5,200,45"/>
 </map>
 </td></tr>
-<tr><td><img src="inherit_graph_335.png" border="0" usemap="#apulsatrix_1_1ResidueEmbeddings" alt=""/>
+<tr><td><img src="inherit_graph_337.png" border="0" usemap="#apulsatrix_1_1ResidueEmbeddings" alt=""/>
 <map name="apulsatrix_1_1ResidueEmbeddings" id="apulsatrix_1_1ResidueEmbeddings">
 <area shape="rect" href="structpulsatrix_1_1ResidueEmbeddings.html" title="Per&#45;residue representations at some layers: for each layer, residues x hidden values,..." alt="" coords="5,5,224,31"/>
 </map>
 </td></tr>
-<tr><td><img src="inherit_graph_336.png" border="0" usemap="#apulsatrix_1_1ResidueLogProbs" alt=""/>
+<tr><td><img src="inherit_graph_338.png" border="0" usemap="#apulsatrix_1_1ResidueLogProbs" alt=""/>
 <map name="apulsatrix_1_1ResidueLogProbs" id="apulsatrix_1_1ResidueLogProbs">
 <area shape="rect" href="structpulsatrix_1_1ResidueLogProbs.html" title="Log&#45;probabilities of every token at each residue: length rows of vocab values." alt="" coords="5,5,204,31"/>
 </map>
 </td></tr>
-<tr><td><img src="inherit_graph_337.png" border="0" usemap="#apulsatrix_1_1ResidueRelevance" alt=""/>
+<tr><td><img src="inherit_graph_339.png" border="0" usemap="#apulsatrix_1_1ResidueRelevance" alt=""/>
 <map name="apulsatrix_1_1ResidueRelevance" id="apulsatrix_1_1ResidueRelevance">
 <area shape="rect" href="structpulsatrix_1_1ResidueRelevance.html" title="Relevance per residue for one explained value." alt="" coords="5,5,212,31"/>
 </map>
 </td></tr>
-<tr><td><img src="inherit_graph_338.png" border="0" usemap="#apulsatrix_1_1ResidueTracksDocument" alt=""/>
+<tr><td><img src="inherit_graph_340.png" border="0" usemap="#apulsatrix_1_1ResidueTracksDocument" alt=""/>
 <map name="apulsatrix_1_1ResidueTracksDocument" id="apulsatrix_1_1ResidueTracksDocument">
 <area shape="rect" href="structpulsatrix_1_1ResidueTracksDocument.html" title="pulsatrix.residue_tracks.v1: per&#45;residue signals stacked under a sequence, and annotated stretches (d..." alt="" coords="5,5,185,45"/>
 </map>
 </td></tr>
-<tr><td><img src="inherit_graph_339.png" border="0" usemap="#apulsatrix_1_1ResidueTracksDocument_1_1Feature" alt=""/>
+<tr><td><img src="inherit_graph_341.png" border="0" usemap="#apulsatrix_1_1ResidueTracksDocument_1_1Feature" alt=""/>
 <map name="apulsatrix_1_1ResidueTracksDocument_1_1Feature" id="apulsatrix_1_1ResidueTracksDocument_1_1Feature">
 <area shape="rect" href="structpulsatrix_1_1ResidueTracksDocument_1_1Feature.html" title="An annotated stretch: positions start to end inclusive, in the document&#39;s numbering." alt="" coords="5,5,185,45"/>
 </map>
 </td></tr>
-<tr><td><img src="inherit_graph_340.png" border="0" usemap="#apulsatrix_1_1ResidueTracksDocument_1_1Track" alt=""/>
+<tr><td><img src="inherit_graph_342.png" border="0" usemap="#apulsatrix_1_1ResidueTracksDocument_1_1Track" alt=""/>
 <map name="apulsatrix_1_1ResidueTracksDocument_1_1Track" id="apulsatrix_1_1ResidueTracksDocument_1_1Track">
 <area shape="rect" href="structpulsatrix_1_1ResidueTracksDocument_1_1Track.html" title=" " alt="" coords="5,5,185,45"/>
 </map>
 </td></tr>
-<tr><td><img src="inherit_graph_341.png" border="0" usemap="#apulsatrix_1_1ResNetConfig" alt=""/>
+<tr><td><img src="inherit_graph_343.png" border="0" usemap="#apulsatrix_1_1ResNetConfig" alt=""/>
 <map name="apulsatrix_1_1ResNetConfig" id="apulsatrix_1_1ResNetConfig">
 <area shape="rect" href="structpulsatrix_1_1ResNetConfig.html" title="A torchvision ResNet with basic blocks (ResNet18 and ResNet34; ResNet18 is the one tested on the publ..." alt="" coords="5,5,180,31"/>
 </map>
 </td></tr>
-<tr><td><img src="inherit_graph_342.png" border="0" usemap="#apulsatrix_1_1ResumableTrial" alt=""/>
+<tr><td><img src="inherit_graph_344.png" border="0" usemap="#apulsatrix_1_1ResumableTrial" alt=""/>
 <map name="apulsatrix_1_1ResumableTrial" id="apulsatrix_1_1ResumableTrial">
 <area shape="rect" href="classpulsatrix_1_1ResumableTrial.html" title="A single hyperparameter configuration&#39;s live, resumable training state – own whatever network/optimiz..." alt="" coords="5,5,192,31"/>
 <area shape="rect" href="classpulsatrix_1_1PBTResumableTrial.html" title="A ResumableTrial that additionally exposes its live weights (a flat vector) and its current hyperpara..." alt="" coords="240,5,452,31"/>
 <area shape="poly" title=" " alt="" coords="206,15,240,15,240,21,206,21"/>
 </map>
 </td></tr>
-<tr><td><img src="inherit_graph_343.png" border="0" usemap="#apulsatrix_1_1RgbColor" alt=""/>
+<tr><td><img src="inherit_graph_345.png" border="0" usemap="#apulsatrix_1_1RgbColor" alt=""/>
 <map name="apulsatrix_1_1RgbColor" id="apulsatrix_1_1RgbColor">
 <area shape="rect" href="structpulsatrix_1_1RgbColor.html" title="An RGB color, each channel in [0, 1]." alt="" coords="5,5,152,31"/>
 </map>
 </td></tr>
-<tr><td><img src="inherit_graph_344.png" border="0" usemap="#apulsatrix_1_1RgbImageBuffer" alt=""/>
+<tr><td><img src="inherit_graph_346.png" border="0" usemap="#apulsatrix_1_1RgbImageBuffer" alt=""/>
 <map name="apulsatrix_1_1RgbImageBuffer" id="apulsatrix_1_1RgbImageBuffer">
 <area shape="rect" href="structpulsatrix_1_1RgbImageBuffer.html" title="An interleaved&#45;RGB, row&#45;major byte buffer ready for a texture upload." alt="" coords="5,5,197,31"/>
 </map>
 </td></tr>
-<tr><td><img src="inherit_graph_345.png" border="0" usemap="#apulsatrix_1_1RipsFeature" alt=""/>
+<tr><td><img src="inherit_graph_347.png" border="0" usemap="#apulsatrix_1_1RipsFeature" alt=""/>
 <map name="apulsatrix_1_1RipsFeature" id="apulsatrix_1_1RipsFeature">
 <area shape="rect" href="structpulsatrix_1_1RipsFeature.html" title="One feature of the diagram, with where it comes from." alt="" coords="5,5,169,31"/>
 </map>
 </td></tr>
-<tr><td><img src="inherit_graph_346.png" border="0" usemap="#apulsatrix_1_1RipsOptions" alt=""/>
+<tr><td><img src="inherit_graph_348.png" border="0" usemap="#apulsatrix_1_1RipsOptions" alt=""/>
 <map name="apulsatrix_1_1RipsOptions" id="apulsatrix_1_1RipsOptions">
 <area shape="rect" href="structpulsatrix_1_1RipsOptions.html" title="ComputeRipsPersistence()&#39;s settings." alt="" coords="5,5,171,31"/>
 </map>
 </td></tr>
-<tr><td><img src="inherit_graph_347.png" border="0" usemap="#apulsatrix_1_1RipsResult" alt=""/>
+<tr><td><img src="inherit_graph_349.png" border="0" usemap="#apulsatrix_1_1RipsResult" alt=""/>
 <map name="apulsatrix_1_1RipsResult" id="apulsatrix_1_1RipsResult">
 <area shape="rect" href="structpulsatrix_1_1RipsResult.html" title="ComputeRipsPersistence()&#39;s result." alt="" coords="5,5,161,31"/>
 </map>
 </td></tr>
-<tr><td><img src="inherit_graph_348.png" border="0" usemap="#apulsatrix_1_1RlRowArgs" alt=""/>
+<tr><td><img src="inherit_graph_350.png" border="0" usemap="#apulsatrix_1_1RlRowArgs" alt=""/>
 <map name="apulsatrix_1_1RlRowArgs" id="apulsatrix_1_1RlRowArgs">
 <area shape="rect" href="structpulsatrix_1_1RlRowArgs.html" title="Operand pointers and dims for DeviceBackend::rl_rows (passed to kernels by value)." alt="" coords="5,5,163,31"/>
 </map>
 </td></tr>
-<tr><td><img src="inherit_graph_349.png" border="0" usemap="#apulsatrix_1_1RolloutBatch" alt=""/>
+<tr><td><img src="inherit_graph_351.png" border="0" usemap="#apulsatrix_1_1RolloutBatch" alt=""/>
 <map name="apulsatrix_1_1RolloutBatch" id="apulsatrix_1_1RolloutBatch">
 <area shape="rect" href="structpulsatrix_1_1RolloutBatch.html" title="One whole stored rollout, reduced to what a policy&#45;gradient update consumes: the visited observations..." alt="" coords="5,5,176,31"/>
 </map>
 </td></tr>
-<tr><td><img src="inherit_graph_350.png" border="0" usemap="#apulsatrix_1_1RolloutBuffer" alt=""/>
+<tr><td><img src="inherit_graph_352.png" border="0" usemap="#apulsatrix_1_1RolloutBuffer" alt=""/>
 <map name="apulsatrix_1_1RolloutBuffer" id="apulsatrix_1_1RolloutBuffer">
 <area shape="rect" href="classpulsatrix_1_1RolloutBuffer.html" title="Fixed&#45;length, fill&#45;once on&#45;policy trajectory buffer of (observation, action, reward,..." alt="" coords="5,5,177,31"/>
 </map>
 </td></tr>
-<tr><td><img src="inherit_graph_351.png" border="0" usemap="#apulsatrix_1_1RsaTestResult" alt=""/>
+<tr><td><img src="inherit_graph_353.png" border="0" usemap="#apulsatrix_1_1RsaTestResult" alt=""/>
 <map name="apulsatrix_1_1RsaTestResult" id="apulsatrix_1_1RsaTestResult">
 <area shape="rect" href="structpulsatrix_1_1RsaTestResult.html" title="RsaPermutationTest()&#39;s result." alt="" coords="5,5,184,31"/>
 </map>
 </td></tr>
-<tr><td><img src="inherit_graph_352.png" border="0" usemap="#apulsatrix_1_1RtdOptions" alt=""/>
+<tr><td><img src="inherit_graph_354.png" border="0" usemap="#apulsatrix_1_1RtdOptions" alt=""/>
 <map name="apulsatrix_1_1RtdOptions" id="apulsatrix_1_1RtdOptions">
 <area shape="rect" href="structpulsatrix_1_1RtdOptions.html" title="Rtd()&#39;s settings: the paper&#39;s Algorithm 2." alt="" coords="5,5,164,31"/>
 </map>
 </td></tr>
-<tr><td><img src="inherit_graph_353.png" border="0" usemap="#apulsatrix_1_1RtdResult" alt=""/>
+<tr><td><img src="inherit_graph_355.png" border="0" usemap="#apulsatrix_1_1RtdResult" alt=""/>
 <map name="apulsatrix_1_1RtdResult" id="apulsatrix_1_1RtdResult">
 <area shape="rect" href="structpulsatrix_1_1RtdResult.html" title="Rtd()&#39;s result." alt="" coords="5,5,156,31"/>
 </map>
 </td></tr>
-<tr><td><img src="inherit_graph_354.png" border="0" usemap="#apulsatrix_1_1SafetensorsFile" alt=""/>
+<tr><td><img src="inherit_graph_356.png" border="0" usemap="#apulsatrix_1_1SafetensorsFile" alt=""/>
 <map name="apulsatrix_1_1SafetensorsFile" id="apulsatrix_1_1SafetensorsFile">
 <area shape="rect" href="classpulsatrix_1_1SafetensorsFile.html" title="A parsed, fully validated safetensors file, held in memory or memory&#45;mapped. Copies share the same by..." alt="" coords="5,5,192,31"/>
 </map>
 </td></tr>
-<tr><td><img src="inherit_graph_355.png" border="0" usemap="#apulsatrix_1_1SafetensorsTensorInfo" alt=""/>
+<tr><td><img src="inherit_graph_357.png" border="0" usemap="#apulsatrix_1_1SafetensorsTensorInfo" alt=""/>
 <map name="apulsatrix_1_1SafetensorsTensorInfo" id="apulsatrix_1_1SafetensorsTensorInfo">
 <area shape="rect" href="structpulsatrix_1_1SafetensorsTensorInfo.html" title="One tensor&#39;s header entry. Offsets are relative to the start of the data section." alt="" coords="5,5,236,31"/>
 </map>
 </td></tr>
-<tr><td><img src="inherit_graph_356.png" border="0" usemap="#apulsatrix_1_1Saliency" alt=""/>
+<tr><td><img src="inherit_graph_358.png" border="0" usemap="#apulsatrix_1_1Saliency" alt=""/>
 <map name="apulsatrix_1_1Saliency" id="apulsatrix_1_1Saliency">
 <area shape="rect" href="classpulsatrix_1_1Saliency.html" title="Raw&#45;gradient saliency: d(output[target_index])/d(input), computed by seeding ExplainerContext::backwa..." alt="" coords="5,5,148,31"/>
 </map>
 </td></tr>
-<tr><td><img src="inherit_graph_357.png" border="0" usemap="#apulsatrix_1_1SaliencyHeatmapView" alt=""/>
+<tr><td><img src="inherit_graph_359.png" border="0" usemap="#apulsatrix_1_1SaliencyHeatmapView" alt=""/>
 <map name="apulsatrix_1_1SaliencyHeatmapView" id="apulsatrix_1_1SaliencyHeatmapView">
 <area shape="rect" href="classpulsatrix_1_1SaliencyHeatmapView.html" title="Draws a 2D saliency heatmap plus a colormap scale bar. Unsigned magnitudes (e.g. Grad&#45;CAM) use Viridi..." alt="" coords="5,5,240,31"/>
 </map>
 </td></tr>
-<tr><td><img src="inherit_graph_358.png" border="0" usemap="#apulsatrix_1_1Sample" alt=""/>
+<tr><td><img src="inherit_graph_360.png" border="0" usemap="#apulsatrix_1_1Sample" alt=""/>
 <map name="apulsatrix_1_1Sample" id="apulsatrix_1_1Sample">
 <area shape="rect" href="structpulsatrix_1_1Sample.html" title="One dataset sample: an ordered list of Tensor fields (e.g. {features, label} or {image,..." alt="" coords="5,5,141,31"/>
 </map>
 </td></tr>
-<tr><td><img src="inherit_graph_359.png" border="0" usemap="#apulsatrix_1_1Sampler" alt=""/>
+<tr><td><img src="inherit_graph_361.png" border="0" usemap="#apulsatrix_1_1Sampler" alt=""/>
 <map name="apulsatrix_1_1Sampler" id="apulsatrix_1_1Sampler">
 <area shape="rect" href="classpulsatrix_1_1Sampler.html" title="Produces the order in which a DataLoader visits a Dataset&#39;s indices for one epoch." alt="" coords="5,31,147,56"/>
 <area shape="rect" href="classpulsatrix_1_1SequentialSampler.html" title="Visits indices [0, dataset_size) in ascending order." alt="" coords="195,5,405,31"/>
@@ -2086,247 +2100,247 @@ $(document).ready(function(){initNavTree('hierarchy.html',''); initResizable(); 
 <area shape="poly" title=" " alt="" coords="161,50,207,55,206,60,160,55"/>
 </map>
 </td></tr>
-<tr><td><img src="inherit_graph_360.png" border="0" usemap="#apulsatrix_1_1SatisfactionLoss" alt=""/>
+<tr><td><img src="inherit_graph_362.png" border="0" usemap="#apulsatrix_1_1SatisfactionLoss" alt=""/>
 <map name="apulsatrix_1_1SatisfactionLoss" id="apulsatrix_1_1SatisfactionLoss">
 <area shape="rect" href="classpulsatrix_1_1SatisfactionLoss.html" title="loss = 1 &#45; agg_p(truth_values) – the standard LTN &quot;Real Logic&quot; training objective (research_2026_neur..." alt="" coords="5,5,199,31"/>
 </map>
 </td></tr>
-<tr><td><img src="inherit_graph_361.png" border="0" usemap="#apulsatrix_1_1ScalarSeries" alt=""/>
+<tr><td><img src="inherit_graph_363.png" border="0" usemap="#apulsatrix_1_1ScalarSeries" alt=""/>
 <map name="apulsatrix_1_1ScalarSeries" id="apulsatrix_1_1ScalarSeries">
 <area shape="rect" href="structpulsatrix_1_1ScalarSeries.html" title="One scalar tag&#39;s logged (step, value) pairs, in log order." alt="" coords="5,5,172,31"/>
 </map>
 </td></tr>
-<tr><td><img src="inherit_graph_362.png" border="0" usemap="#apulsatrix_1_1ScoreCardScaleContext" alt=""/>
+<tr><td><img src="inherit_graph_364.png" border="0" usemap="#apulsatrix_1_1ScoreCardScaleContext" alt=""/>
 <map name="apulsatrix_1_1ScoreCardScaleContext" id="apulsatrix_1_1ScoreCardScaleContext">
 <area shape="rect" href="structpulsatrix_1_1ScoreCardScaleContext.html" title="Shared axis/color&#45;scale state across several ExplanationScoreCard instances shown together (small mul..." alt="" coords="5,5,193,45"/>
 </map>
 </td></tr>
-<tr><td><img src="inherit_graph_363.png" border="0" usemap="#apulsatrix_1_1SearchSpace" alt=""/>
+<tr><td><img src="inherit_graph_365.png" border="0" usemap="#apulsatrix_1_1SearchSpace" alt=""/>
 <map name="apulsatrix_1_1SearchSpace" id="apulsatrix_1_1SearchSpace">
 <area shape="rect" href="classpulsatrix_1_1SearchSpace.html" title="Describes a hyperparameter search space as an ordered list of named, typed parameters...." alt="" coords="5,5,176,31"/>
 </map>
 </td></tr>
-<tr><td><img src="inherit_graph_364.png" border="0" usemap="#apulsatrix_1_1SensitivityBounds" alt=""/>
+<tr><td><img src="inherit_graph_366.png" border="0" usemap="#apulsatrix_1_1SensitivityBounds" alt=""/>
 <map name="apulsatrix_1_1SensitivityBounds" id="apulsatrix_1_1SensitivityBounds">
 <area shape="rect" href="structpulsatrix_1_1SensitivityBounds.html" title="The low and high value to try for every feature of an input (flat order)." alt="" coords="5,5,209,31"/>
 </map>
 </td></tr>
-<tr><td><img src="inherit_graph_365.png" border="0" usemap="#apulsatrix_1_1SensitivityDocument" alt=""/>
+<tr><td><img src="inherit_graph_367.png" border="0" usemap="#apulsatrix_1_1SensitivityDocument" alt=""/>
 <map name="apulsatrix_1_1SensitivityDocument" id="apulsatrix_1_1SensitivityDocument">
 <area shape="rect" href="structpulsatrix_1_1SensitivityDocument.html" title="pulsatrix.sensitivity.v1: how one output moves when each input feature, alone, goes to a low and a hi..." alt="" coords="5,5,228,31"/>
 </map>
 </td></tr>
-<tr><td><img src="inherit_graph_366.png" border="0" usemap="#apulsatrix_1_1SensitivityDocument_1_1Feature" alt=""/>
+<tr><td><img src="inherit_graph_368.png" border="0" usemap="#apulsatrix_1_1SensitivityDocument_1_1Feature" alt=""/>
 <map name="apulsatrix_1_1SensitivityDocument_1_1Feature" id="apulsatrix_1_1SensitivityDocument_1_1Feature">
 <area shape="rect" href="structpulsatrix_1_1SensitivityDocument_1_1Feature.html" title=" " alt="" coords="5,5,228,45"/>
 </map>
 </td></tr>
-<tr><td><img src="inherit_graph_367.png" border="0" usemap="#apulsatrix_1_1SeparationRange" alt=""/>
+<tr><td><img src="inherit_graph_369.png" border="0" usemap="#apulsatrix_1_1SeparationRange" alt=""/>
 <map name="apulsatrix_1_1SeparationRange" id="apulsatrix_1_1SeparationRange">
 <area shape="rect" href="structpulsatrix_1_1SeparationRange.html" title="Pairs (i, j) counted by separation j &#45; i: at least min, and under max unless max is 0." alt="" coords="5,5,204,31"/>
 </map>
 </td></tr>
-<tr><td><img src="inherit_graph_368.png" border="0" usemap="#apulsatrix_1_1SequenceLogoDocument" alt=""/>
+<tr><td><img src="inherit_graph_370.png" border="0" usemap="#apulsatrix_1_1SequenceLogoDocument" alt=""/>
 <map name="apulsatrix_1_1SequenceLogoDocument" id="apulsatrix_1_1SequenceLogoDocument">
 <area shape="rect" href="structpulsatrix_1_1SequenceLogoDocument.html" title="pulsatrix.sequence_logo.v1: a distribution over letters at each residue, such as what a masked langua..." alt="" coords="5,5,253,31"/>
 </map>
 </td></tr>
-<tr><td><img src="inherit_graph_369.png" border="0" usemap="#apulsatrix_1_1SGDOptimizer" alt=""/>
+<tr><td><img src="inherit_graph_371.png" border="0" usemap="#apulsatrix_1_1SGDOptimizer" alt=""/>
 <map name="apulsatrix_1_1SGDOptimizer" id="apulsatrix_1_1SGDOptimizer">
 <area shape="rect" href="classpulsatrix_1_1SGDOptimizer.html" title="param &#45;= learning_rate * (grad + weight_decay * param), per parameter, for every parameter a Module e..." alt="" coords="5,5,184,31"/>
 </map>
 </td></tr>
-<tr><td><img src="inherit_graph_370.png" border="0" usemap="#apulsatrix_1_1Shape" alt=""/>
+<tr><td><img src="inherit_graph_372.png" border="0" usemap="#apulsatrix_1_1Shape" alt=""/>
 <map name="apulsatrix_1_1Shape" id="apulsatrix_1_1Shape">
 <area shape="rect" href="classpulsatrix_1_1Shape.html" title="An N&#45;dimensional shape. A plain aggregate of dimensions with no invariant beyond &quot;non&#45;negative dimens..." alt="" coords="5,5,132,31"/>
 </map>
 </td></tr>
-<tr><td><img src="inherit_graph_371.png" border="0" usemap="#apulsatrix_1_1SobolDocument" alt=""/>
+<tr><td><img src="inherit_graph_373.png" border="0" usemap="#apulsatrix_1_1SobolDocument" alt=""/>
 <map name="apulsatrix_1_1SobolDocument" id="apulsatrix_1_1SobolDocument">
 <area shape="rect" href="structpulsatrix_1_1SobolDocument.html" title="pulsatrix.sobol.v1: first&#45; and total&#45;order Sobol indices per feature (CFS&#45;4)." alt="" coords="5,5,196,31"/>
 </map>
 </td></tr>
-<tr><td><img src="inherit_graph_372.png" border="0" usemap="#apulsatrix_1_1SobolDocument_1_1Feature" alt=""/>
+<tr><td><img src="inherit_graph_374.png" border="0" usemap="#apulsatrix_1_1SobolDocument_1_1Feature" alt=""/>
 <map name="apulsatrix_1_1SobolDocument_1_1Feature" id="apulsatrix_1_1SobolDocument_1_1Feature">
 <area shape="rect" href="structpulsatrix_1_1SobolDocument_1_1Feature.html" title=" " alt="" coords="5,5,196,45"/>
 </map>
 </td></tr>
-<tr><td><img src="inherit_graph_373.png" border="0" usemap="#apulsatrix_1_1SobolOptions" alt=""/>
+<tr><td><img src="inherit_graph_375.png" border="0" usemap="#apulsatrix_1_1SobolOptions" alt=""/>
 <map name="apulsatrix_1_1SobolOptions" id="apulsatrix_1_1SobolOptions">
 <area shape="rect" href="structpulsatrix_1_1SobolOptions.html" title="Sobol settings." alt="" coords="5,5,179,31"/>
 </map>
 </td></tr>
-<tr><td><img src="inherit_graph_374.png" border="0" usemap="#apulsatrix_1_1SobolResult" alt=""/>
+<tr><td><img src="inherit_graph_376.png" border="0" usemap="#apulsatrix_1_1SobolResult" alt=""/>
 <map name="apulsatrix_1_1SobolResult" id="apulsatrix_1_1SobolResult">
 <area shape="rect" href="structpulsatrix_1_1SobolResult.html" title="Sobol indices, one entry per varied feature (SALib&#39;s sobol.analyze, first and total order)." alt="" coords="5,5,169,31"/>
 </map>
 </td></tr>
-<tr><td><img src="inherit_graph_375.png" border="0" usemap="#apulsatrix_1_1SparseCodes" alt=""/>
+<tr><td><img src="inherit_graph_377.png" border="0" usemap="#apulsatrix_1_1SparseCodes" alt=""/>
 <map name="apulsatrix_1_1SparseCodes" id="apulsatrix_1_1SparseCodes">
 <area shape="rect" href="structpulsatrix_1_1SparseCodes.html" title="Sparse codes: for each residue, its active features and their values." alt="" coords="5,5,176,31"/>
 </map>
 </td></tr>
-<tr><td><img src="inherit_graph_376.png" border="0" usemap="#apulsatrix_1_1SpeciesAssignment" alt=""/>
+<tr><td><img src="inherit_graph_378.png" border="0" usemap="#apulsatrix_1_1SpeciesAssignment" alt=""/>
 <map name="apulsatrix_1_1SpeciesAssignment" id="apulsatrix_1_1SpeciesAssignment">
 <area shape="rect" href="structpulsatrix_1_1SpeciesAssignment.html" title="Population grouping into species: each inner vector is a list of indices into the population vector t..." alt="" coords="5,5,220,31"/>
 </map>
 </td></tr>
-<tr><td><img src="inherit_graph_377.png" border="0" usemap="#apulsatrix_1_1SsmPassArgs" alt=""/>
+<tr><td><img src="inherit_graph_379.png" border="0" usemap="#apulsatrix_1_1SsmPassArgs" alt=""/>
 <map name="apulsatrix_1_1SsmPassArgs" id="apulsatrix_1_1SsmPassArgs">
 <area shape="rect" href="structpulsatrix_1_1SsmPassArgs.html" title="Operand pointers and dims for DeviceBackend::ssm_pass (passed to kernels by value)." alt="" coords="5,5,179,31"/>
 </map>
 </td></tr>
-<tr><td><img src="inherit_graph_378.png" border="0" usemap="#apulsatrix_1_1StabilityResult" alt=""/>
+<tr><td><img src="inherit_graph_380.png" border="0" usemap="#apulsatrix_1_1StabilityResult" alt=""/>
 <map name="apulsatrix_1_1StabilityResult" id="apulsatrix_1_1StabilityResult">
 <area shape="rect" href="structpulsatrix_1_1StabilityResult.html" title="The result of measuring an explainer&#39;s variance across repeated runs on the same input." alt="" coords="5,5,188,31"/>
 </map>
 </td></tr>
-<tr><td><img src="inherit_graph_379.png" border="0" usemap="#apulsatrix_1_1SteeringOptions" alt=""/>
+<tr><td><img src="inherit_graph_381.png" border="0" usemap="#apulsatrix_1_1SteeringOptions" alt=""/>
 <map name="apulsatrix_1_1SteeringOptions" id="apulsatrix_1_1SteeringOptions">
 <area shape="rect" href="structpulsatrix_1_1SteeringOptions.html" title=" " alt="" coords="5,5,196,31"/>
 </map>
 </td></tr>
-<tr><td><img src="inherit_graph_380.png" border="0" usemap="#apulsatrix_1_1SteeringReport" alt=""/>
+<tr><td><img src="inherit_graph_382.png" border="0" usemap="#apulsatrix_1_1SteeringReport" alt=""/>
 <map name="apulsatrix_1_1SteeringReport" id="apulsatrix_1_1SteeringReport">
 <area shape="rect" href="structpulsatrix_1_1SteeringReport.html" title="MeasureSteering()&#39;s result." alt="" coords="5,5,189,31"/>
 </map>
 </td></tr>
-<tr><td><img src="inherit_graph_381.png" border="0" usemap="#apulsatrix_1_1StepResult" alt=""/>
+<tr><td><img src="inherit_graph_383.png" border="0" usemap="#apulsatrix_1_1StepResult" alt=""/>
 <map name="apulsatrix_1_1StepResult" id="apulsatrix_1_1StepResult">
 <area shape="rect" href="structpulsatrix_1_1StepResult.html" title="What one Environment::step() produces: the next observation, this step&#39;s reward, and whether the epis..." alt="" coords="5,5,163,31"/>
 </map>
 </td></tr>
-<tr><td><img src="inherit_graph_382.png" border="0" usemap="#apulsatrix_1_1StructureChain" alt=""/>
+<tr><td><img src="inherit_graph_384.png" border="0" usemap="#apulsatrix_1_1StructureChain" alt=""/>
 <map name="apulsatrix_1_1StructureChain" id="apulsatrix_1_1StructureChain">
 <area shape="rect" href="structpulsatrix_1_1StructureChain.html" title="A chain&#39;s residues, in file order." alt="" coords="5,5,188,31"/>
 </map>
 </td></tr>
-<tr><td><img src="inherit_graph_383.png" border="0" usemap="#apulsatrix_1_1StructureResidue" alt=""/>
+<tr><td><img src="inherit_graph_385.png" border="0" usemap="#apulsatrix_1_1StructureResidue" alt=""/>
 <map name="apulsatrix_1_1StructureResidue" id="apulsatrix_1_1StructureResidue">
 <area shape="rect" href="structpulsatrix_1_1StructureResidue.html" title="One residue of a chain and its atoms." alt="" coords="5,5,204,31"/>
 </map>
 </td></tr>
-<tr><td><img src="inherit_graph_384.png" border="0" usemap="#apulsatrix_1_1SubTBLoss" alt=""/>
+<tr><td><img src="inherit_graph_386.png" border="0" usemap="#apulsatrix_1_1SubTBLoss" alt=""/>
 <map name="apulsatrix_1_1SubTBLoss" id="apulsatrix_1_1SubTBLoss">
 <area shape="rect" href="classpulsatrix_1_1SubTBLoss.html" title="One sub&#45;trajectory pair&#39;s contribution to the SubTB(λ) loss: Δ(i,j) = log F(s_i) + Σ log P_F − log F(..." alt="" coords="5,5,163,31"/>
 </map>
 </td></tr>
-<tr><td><img src="inherit_graph_385.png" border="0" usemap="#apulsatrix_1_1SuccessiveHalvingResult" alt=""/>
+<tr><td><img src="inherit_graph_387.png" border="0" usemap="#apulsatrix_1_1SuccessiveHalvingResult" alt=""/>
 <map name="apulsatrix_1_1SuccessiveHalvingResult" id="apulsatrix_1_1SuccessiveHalvingResult">
 <area shape="rect" href="structpulsatrix_1_1SuccessiveHalvingResult.html" title="The winning configuration, its final metric, and the total epoch&#45;budget actually spent across every t..." alt="" coords="5,5,215,45"/>
 </map>
 </td></tr>
-<tr><td><img src="inherit_graph_386.png" border="0" usemap="#apulsatrix_1_1SvccaOptions" alt=""/>
+<tr><td><img src="inherit_graph_388.png" border="0" usemap="#apulsatrix_1_1SvccaOptions" alt=""/>
 <map name="apulsatrix_1_1SvccaOptions" id="apulsatrix_1_1SvccaOptions">
 <area shape="rect" href="structpulsatrix_1_1SvccaOptions.html" title="Svcca()&#39;s settings." alt="" coords="5,5,180,31"/>
 </map>
 </td></tr>
-<tr><td><img src="inherit_graph_387.png" border="0" usemap="#apulsatrix_1_1SvccaResult" alt=""/>
+<tr><td><img src="inherit_graph_389.png" border="0" usemap="#apulsatrix_1_1SvccaResult" alt=""/>
 <map name="apulsatrix_1_1SvccaResult" id="apulsatrix_1_1SvccaResult">
 <area shape="rect" href="structpulsatrix_1_1SvccaResult.html" title="Svcca()&#39;s result." alt="" coords="5,5,172,31"/>
 </map>
 </td></tr>
-<tr><td><img src="inherit_graph_388.png" border="0" usemap="#apulsatrix_1_1SVDResult" alt=""/>
+<tr><td><img src="inherit_graph_390.png" border="0" usemap="#apulsatrix_1_1SVDResult" alt=""/>
 <map name="apulsatrix_1_1SVDResult" id="apulsatrix_1_1SVDResult">
 <area shape="rect" href="structpulsatrix_1_1SVDResult.html" title="SVD()&#39;s result, the thin factorization A = U diag(S) V^T with k = min(m, n)." alt="" coords="5,5,160,31"/>
 </map>
 </td></tr>
-<tr><td><img src="inherit_graph_389.png" border="0" usemap="#apulsatrix_1_1SvgOptions" alt=""/>
+<tr><td><img src="inherit_graph_391.png" border="0" usemap="#apulsatrix_1_1SvgOptions" alt=""/>
 <map name="apulsatrix_1_1SvgOptions" id="apulsatrix_1_1SvgOptions">
 <area shape="rect" href="structpulsatrix_1_1SvgOptions.html" title="Options shared by every SVG chart." alt="" coords="5,5,167,31"/>
 </map>
 </td></tr>
-<tr><td><img src="inherit_graph_390.png" border="0" usemap="#apulsatrix_1_1SystemMonitor" alt=""/>
+<tr><td><img src="inherit_graph_392.png" border="0" usemap="#apulsatrix_1_1SystemMonitor" alt=""/>
 <map name="apulsatrix_1_1SystemMonitor" id="apulsatrix_1_1SystemMonitor">
 <area shape="rect" href="classpulsatrix_1_1SystemMonitor.html" title="Samples CPU/GPU utilization, memory use and temperatures on a background thread, keeps a bounded in&#45;m..." alt="" coords="5,5,192,31"/>
 </map>
 </td></tr>
-<tr><td><img src="inherit_graph_391.png" border="0" usemap="#apulsatrix_1_1SystemMonitor_1_1Options" alt=""/>
+<tr><td><img src="inherit_graph_393.png" border="0" usemap="#apulsatrix_1_1SystemMonitor_1_1Options" alt=""/>
 <map name="apulsatrix_1_1SystemMonitor_1_1Options" id="apulsatrix_1_1SystemMonitor_1_1Options">
 <area shape="rect" href="structpulsatrix_1_1SystemMonitor_1_1Options.html" title="Construction options." alt="" coords="5,5,192,45"/>
 </map>
 </td></tr>
-<tr><td><img src="inherit_graph_392.png" border="0" usemap="#apulsatrix_1_1SystemSample" alt=""/>
+<tr><td><img src="inherit_graph_394.png" border="0" usemap="#apulsatrix_1_1SystemSample" alt=""/>
 <map name="apulsatrix_1_1SystemSample" id="apulsatrix_1_1SystemSample">
 <area shape="rect" href="structpulsatrix_1_1SystemSample.html" title="One point&#45;in&#45;time measurement of the host." alt="" coords="5,5,191,31"/>
 </map>
 </td></tr>
-<tr><td><img src="inherit_graph_393.png" border="0" usemap="#apulsatrix_1_1TaggingBatch" alt=""/>
+<tr><td><img src="inherit_graph_395.png" border="0" usemap="#apulsatrix_1_1TaggingBatch" alt=""/>
 <map name="apulsatrix_1_1TaggingBatch" id="apulsatrix_1_1TaggingBatch">
 <area shape="rect" href="structpulsatrix_1_1TaggingBatch.html" title="Ragged sequences: real tokens 1..kVocab&#45;1 followed by padding (input 0, target &#45;100)." alt="" coords="5,5,180,31"/>
 </map>
 </td></tr>
-<tr><td><img src="inherit_graph_394.png" border="0" usemap="#apulsatrix_1_1TanhGaussianGrad" alt=""/>
+<tr><td><img src="inherit_graph_396.png" border="0" usemap="#apulsatrix_1_1TanhGaussianGrad" alt=""/>
 <map name="apulsatrix_1_1TanhGaussianGrad" id="apulsatrix_1_1TanhGaussianGrad">
 <area shape="rect" href="structpulsatrix_1_1TanhGaussianGrad.html" title="The (grad_mean, grad_log_std) pair TanhGaussianPolicy::backward() produces – both (N,..." alt="" coords="5,5,213,31"/>
 </map>
 </td></tr>
-<tr><td><img src="inherit_graph_395.png" border="0" usemap="#apulsatrix_1_1TanhGaussianPolicy" alt=""/>
+<tr><td><img src="inherit_graph_397.png" border="0" usemap="#apulsatrix_1_1TanhGaussianPolicy" alt=""/>
 <map name="apulsatrix_1_1TanhGaussianPolicy" id="apulsatrix_1_1TanhGaussianPolicy">
 <area shape="rect" href="classpulsatrix_1_1TanhGaussianPolicy.html" title="SAC&#39;s reparameterized, tanh&#45;squashed Gaussian policy sample (Haarnoja et al. 2018,..." alt="" coords="5,5,221,31"/>
 </map>
 </td></tr>
-<tr><td><img src="inherit_graph_396.png" border="0" usemap="#apulsatrix_1_1TanhGaussianSample" alt=""/>
+<tr><td><img src="inherit_graph_398.png" border="0" usemap="#apulsatrix_1_1TanhGaussianSample" alt=""/>
 <map name="apulsatrix_1_1TanhGaussianSample" id="apulsatrix_1_1TanhGaussianSample">
 <area shape="rect" href="structpulsatrix_1_1TanhGaussianSample.html" title="The (action, log_prob) pair TanhGaussianPolicy::forward() produces." alt="" coords="5,5,232,31"/>
 </map>
 </td></tr>
-<tr><td><img src="inherit_graph_397.png" border="0" usemap="#apulsatrix_1_1TcavOptions" alt=""/>
+<tr><td><img src="inherit_graph_399.png" border="0" usemap="#apulsatrix_1_1TcavOptions" alt=""/>
 <map name="apulsatrix_1_1TcavOptions" id="apulsatrix_1_1TcavOptions">
 <area shape="rect" href="structpulsatrix_1_1TcavOptions.html" title=" " alt="" coords="5,5,172,31"/>
 </map>
 </td></tr>
-<tr><td><img src="inherit_graph_398.png" border="0" usemap="#apulsatrix_1_1TcavResult" alt=""/>
+<tr><td><img src="inherit_graph_400.png" border="0" usemap="#apulsatrix_1_1TcavResult" alt=""/>
 <map name="apulsatrix_1_1TcavResult" id="apulsatrix_1_1TcavResult">
 <area shape="rect" href="structpulsatrix_1_1TcavResult.html" title="RunTcav()&#39;s result." alt="" coords="5,5,163,31"/>
 </map>
 </td></tr>
-<tr><td><img src="inherit_graph_399.png" border="0" usemap="#apulsatrix_1_1TemplatePostProcessor_1_1Item" alt=""/>
+<tr><td><img src="inherit_graph_401.png" border="0" usemap="#apulsatrix_1_1TemplatePostProcessor_1_1Item" alt=""/>
 <map name="apulsatrix_1_1TemplatePostProcessor_1_1Item" id="apulsatrix_1_1TemplatePostProcessor_1_1Item">
 <area shape="rect" href="structpulsatrix_1_1TemplatePostProcessor_1_1Item.html" title="One template item: the sequence itself (special empty), or special tokens." alt="" coords="5,5,244,45"/>
 </map>
 </td></tr>
-<tr><td><img src="inherit_graph_400.png" border="0" usemap="#apulsatrix_1_1Tensor" alt=""/>
+<tr><td><img src="inherit_graph_402.png" border="0" usemap="#apulsatrix_1_1Tensor" alt=""/>
 <map name="apulsatrix_1_1Tensor" id="apulsatrix_1_1Tensor">
 <area shape="rect" href="classpulsatrix_1_1Tensor.html" title="N&#45;dimensional tensor. Owns its data buffer exclusively; a DeviceBackend* is injected (not owned) – th..." alt="" coords="5,5,135,31"/>
 </map>
 </td></tr>
-<tr><td><img src="inherit_graph_401.png" border="0" usemap="#apulsatrix_1_1TextTokenizer" alt=""/>
+<tr><td><img src="inherit_graph_403.png" border="0" usemap="#apulsatrix_1_1TextTokenizer" alt=""/>
 <map name="apulsatrix_1_1TextTokenizer" id="apulsatrix_1_1TextTokenizer">
 <area shape="rect" href="classpulsatrix_1_1TextTokenizer.html" title="A tokenizer: added tokens are split out of the raw text first (longest match, earliest first); each r..." alt="" coords="5,5,180,31"/>
 </map>
 </td></tr>
-<tr><td><img src="inherit_graph_402.png" border="0" usemap="#apulsatrix_1_1TextureCache" alt=""/>
+<tr><td><img src="inherit_graph_404.png" border="0" usemap="#apulsatrix_1_1TextureCache" alt=""/>
 <map name="apulsatrix_1_1TextureCache" id="apulsatrix_1_1TextureCache">
 <area shape="rect" href="classpulsatrix_1_1TextureCache.html" title="Uploads decoded image Tensors to OpenGL textures, keyed and cached by an arbitrary integer key (e...." alt="" coords="5,5,180,31"/>
 </map>
 </td></tr>
-<tr><td><img src="inherit_graph_403.png" border="0" usemap="#apulsatrix_1_1TimingStats" alt=""/>
+<tr><td><img src="inherit_graph_405.png" border="0" usemap="#apulsatrix_1_1TimingStats" alt=""/>
 <map name="apulsatrix_1_1TimingStats" id="apulsatrix_1_1TimingStats">
 <area shape="rect" href="structpulsatrix_1_1TimingStats.html" title="Summary of repeated timings, in milliseconds." alt="" coords="5,5,171,31"/>
 </map>
 </td></tr>
-<tr><td><img src="inherit_graph_404.png" border="0" usemap="#apulsatrix_1_1TokenCrossEntropyLoss" alt=""/>
+<tr><td><img src="inherit_graph_406.png" border="0" usemap="#apulsatrix_1_1TokenCrossEntropyLoss" alt=""/>
 <map name="apulsatrix_1_1TokenCrossEntropyLoss" id="apulsatrix_1_1TokenCrossEntropyLoss">
 <area shape="rect" href="classpulsatrix_1_1TokenCrossEntropyLoss.html" title="sum over tokens of &#45;log softmax(logits)[target], divided by a normalizer; tokens whose target is the ..." alt="" coords="5,5,244,31"/>
 </map>
 </td></tr>
-<tr><td><img src="inherit_graph_405.png" border="0" usemap="#apulsatrix_1_1Tokenizer" alt=""/>
+<tr><td><img src="inherit_graph_407.png" border="0" usemap="#apulsatrix_1_1Tokenizer" alt=""/>
 <map name="apulsatrix_1_1Tokenizer" id="apulsatrix_1_1Tokenizer">
 <area shape="rect" href="classpulsatrix_1_1Tokenizer.html" title="Splits text into lowercase word/punctuation tokens – pulsatrix&#39;s first text primitive (campaign_exai_..." alt="" coords="5,5,153,31"/>
 </map>
 </td></tr>
-<tr><td><img src="inherit_graph_406.png" border="0" usemap="#apulsatrix_1_1TokenizerMismatch" alt=""/>
+<tr><td><img src="inherit_graph_408.png" border="0" usemap="#apulsatrix_1_1TokenizerMismatch" alt=""/>
 <map name="apulsatrix_1_1TokenizerMismatch" id="apulsatrix_1_1TokenizerMismatch">
 <area shape="rect" href="structpulsatrix_1_1TokenizerMismatch.html" title="The first difference on one line of the corpus." alt="" coords="5,5,217,31"/>
 </map>
 </td></tr>
-<tr><td><img src="inherit_graph_407.png" border="0" usemap="#apulsatrix_1_1TokenizerParityReport" alt=""/>
+<tr><td><img src="inherit_graph_409.png" border="0" usemap="#apulsatrix_1_1TokenizerParityReport" alt=""/>
 <map name="apulsatrix_1_1TokenizerParityReport" id="apulsatrix_1_1TokenizerParityReport">
 <area shape="rect" href="structpulsatrix_1_1TokenizerParityReport.html" title="How a tokenizer compares with the reference, field by field." alt="" coords="5,5,191,45"/>
 </map>
 </td></tr>
-<tr><td><img src="inherit_graph_408.png" border="0" usemap="#apulsatrix_1_1TokenModel" alt=""/>
+<tr><td><img src="inherit_graph_410.png" border="0" usemap="#apulsatrix_1_1TokenModel" alt=""/>
 <map name="apulsatrix_1_1TokenModel" id="apulsatrix_1_1TokenModel">
 <area shape="rect" href="classpulsatrix_1_1TokenModel.html" title="Turns one pre&#45;tokenized piece into tokens (word&#45;level lookup, BPE, ...)." alt="" coords="5,80,169,105"/>
 <area shape="rect" href="classpulsatrix_1_1BpeModel.html" title="Byte&#45;pair encoding: start from characters and apply merges, lowest rank first." alt="" coords="239,5,391,31"/>
@@ -2339,67 +2353,67 @@ $(document).ready(function(){initNavTree('hierarchy.html',''); initResizable(); 
 <area shape="poly" title=" " alt="" coords="134,108,218,138,262,151,261,156,217,143,132,113"/>
 </map>
 </td></tr>
-<tr><td><img src="inherit_graph_409.png" border="0" usemap="#apulsatrix_1_1TokenRelevanceDocument" alt=""/>
+<tr><td><img src="inherit_graph_411.png" border="0" usemap="#apulsatrix_1_1TokenRelevanceDocument" alt=""/>
 <map name="apulsatrix_1_1TokenRelevanceDocument" id="apulsatrix_1_1TokenRelevanceDocument">
 <area shape="rect" href="structpulsatrix_1_1TokenRelevanceDocument.html" title="pulsatrix.token_relevance.v1: relevance scores over the pieces of a text, in reading order...." alt="" coords="5,5,197,45"/>
 </map>
 </td></tr>
-<tr><td><img src="inherit_graph_410.png" border="0" usemap="#apulsatrix_1_1TokenRelevanceView" alt=""/>
+<tr><td><img src="inherit_graph_412.png" border="0" usemap="#apulsatrix_1_1TokenRelevanceView" alt=""/>
 <map name="apulsatrix_1_1TokenRelevanceView" id="apulsatrix_1_1TokenRelevanceView">
 <area shape="rect" href="classpulsatrix_1_1TokenRelevanceView.html" title="Draws a document&#39;s pieces as running text that wraps to the window, each scored piece on a background..." alt="" coords="5,5,229,31"/>
 </map>
 </td></tr>
-<tr><td><img src="inherit_graph_411.png" border="0" usemap="#apulsatrix_1_1TopKResult" alt=""/>
+<tr><td><img src="inherit_graph_413.png" border="0" usemap="#apulsatrix_1_1TopKResult" alt=""/>
 <map name="apulsatrix_1_1TopKResult" id="apulsatrix_1_1TopKResult">
 <area shape="rect" href="structpulsatrix_1_1TopKResult.html" title="top_k()&#39;s result: the selected values and their positions along the last dimension." alt="" coords="5,5,164,31"/>
 </map>
 </td></tr>
-<tr><td><img src="inherit_graph_412.png" border="0" usemap="#apulsatrix_1_1TopKSaeOptions" alt=""/>
+<tr><td><img src="inherit_graph_414.png" border="0" usemap="#apulsatrix_1_1TopKSaeOptions" alt=""/>
 <map name="apulsatrix_1_1TopKSaeOptions" id="apulsatrix_1_1TopKSaeOptions">
 <area shape="rect" href="structpulsatrix_1_1TopKSaeOptions.html" title=" " alt="" coords="5,5,197,31"/>
 </map>
 </td></tr>
-<tr><td><img src="inherit_graph_413.png" border="0" usemap="#apulsatrix_1_1TorchvisionLoadReport" alt=""/>
+<tr><td><img src="inherit_graph_415.png" border="0" usemap="#apulsatrix_1_1TorchvisionLoadReport" alt=""/>
 <map name="apulsatrix_1_1TorchvisionLoadReport" id="apulsatrix_1_1TorchvisionLoadReport">
 <area shape="rect" href="structpulsatrix_1_1TorchvisionLoadReport.html" title="What LoadTorchvisionWeights() did." alt="" coords="5,5,196,45"/>
 </map>
 </td></tr>
-<tr><td><img src="inherit_graph_414.png" border="0" usemap="#apulsatrix_1_1ToyKnowledgeBase" alt=""/>
+<tr><td><img src="inherit_graph_416.png" border="0" usemap="#apulsatrix_1_1ToyKnowledgeBase" alt=""/>
 <map name="apulsatrix_1_1ToyKnowledgeBase" id="apulsatrix_1_1ToyKnowledgeBase">
 <area shape="rect" href="classpulsatrix_1_1ToyKnowledgeBase.html" title="A small, hand&#45;traceable knowledge base: two neural predicates A(x)/B(x) (each a sigmoid&#45;squashed Line..." alt="" coords="5,5,219,31"/>
 </map>
 </td></tr>
-<tr><td><img src="inherit_graph_415.png" border="0" usemap="#apulsatrix_1_1TrainingDashboard" alt=""/>
+<tr><td><img src="inherit_graph_417.png" border="0" usemap="#apulsatrix_1_1TrainingDashboard" alt=""/>
 <map name="apulsatrix_1_1TrainingDashboard" id="apulsatrix_1_1TrainingDashboard">
 <area shape="rect" href="classpulsatrix_1_1TrainingDashboard.html" title="Draws a live training dashboard: a data&#45;ink&#45;minimal per&#45;tag summary line (last/min/max value,..." alt="" coords="5,5,213,31"/>
 </map>
 </td></tr>
-<tr><td><img src="inherit_graph_416.png" border="0" usemap="#apulsatrix_1_1TrainingLogDocument" alt=""/>
+<tr><td><img src="inherit_graph_418.png" border="0" usemap="#apulsatrix_1_1TrainingLogDocument" alt=""/>
 <map name="apulsatrix_1_1TrainingLogDocument" id="apulsatrix_1_1TrainingLogDocument">
 <area shape="rect" href="structpulsatrix_1_1TrainingLogDocument.html" title="pulsatrix.training_log.v1: scalar series and the latest histogram per tag." alt="" coords="5,5,233,31"/>
 </map>
 </td></tr>
-<tr><td><img src="inherit_graph_417.png" border="0" usemap="#apulsatrix_1_1TrainingLogDocument_1_1Histogram" alt=""/>
+<tr><td><img src="inherit_graph_419.png" border="0" usemap="#apulsatrix_1_1TrainingLogDocument_1_1Histogram" alt=""/>
 <map name="apulsatrix_1_1TrainingLogDocument_1_1Histogram" id="apulsatrix_1_1TrainingLogDocument_1_1Histogram">
 <area shape="rect" href="structpulsatrix_1_1TrainingLogDocument_1_1Histogram.html" title=" " alt="" coords="5,5,233,45"/>
 </map>
 </td></tr>
-<tr><td><img src="inherit_graph_418.png" border="0" usemap="#apulsatrix_1_1TrainingLogDocument_1_1Series" alt=""/>
+<tr><td><img src="inherit_graph_420.png" border="0" usemap="#apulsatrix_1_1TrainingLogDocument_1_1Series" alt=""/>
 <map name="apulsatrix_1_1TrainingLogDocument_1_1Series" id="apulsatrix_1_1TrainingLogDocument_1_1Series">
 <area shape="rect" href="structpulsatrix_1_1TrainingLogDocument_1_1Series.html" title=" " alt="" coords="5,5,233,45"/>
 </map>
 </td></tr>
-<tr><td><img src="inherit_graph_419.png" border="0" usemap="#apulsatrix_1_1TrajectoryBalanceLoss" alt=""/>
+<tr><td><img src="inherit_graph_421.png" border="0" usemap="#apulsatrix_1_1TrajectoryBalanceLoss" alt=""/>
 <map name="apulsatrix_1_1TrajectoryBalanceLoss" id="apulsatrix_1_1TrajectoryBalanceLoss">
 <area shape="rect" href="classpulsatrix_1_1TrajectoryBalanceLoss.html" title="Δ(τ) = log Zθ + Σ log P_F(s_{t+1}|s_t) − log R(x) − Σ log P_B(s_t|s_{t+1}), loss = Δ(τ)²." alt="" coords="5,5,237,31"/>
 </map>
 </td></tr>
-<tr><td><img src="inherit_graph_420.png" border="0" usemap="#apulsatrix_1_1TranscoderOptions" alt=""/>
+<tr><td><img src="inherit_graph_422.png" border="0" usemap="#apulsatrix_1_1TranscoderOptions" alt=""/>
 <map name="apulsatrix_1_1TranscoderOptions" id="apulsatrix_1_1TranscoderOptions">
 <area shape="rect" href="structpulsatrix_1_1TranscoderOptions.html" title=" " alt="" coords="5,5,212,31"/>
 </map>
 </td></tr>
-<tr><td><img src="inherit_graph_421.png" border="0" usemap="#apulsatrix_1_1Transform" alt=""/>
+<tr><td><img src="inherit_graph_423.png" border="0" usemap="#apulsatrix_1_1Transform" alt=""/>
 <map name="apulsatrix_1_1Transform" id="apulsatrix_1_1Transform">
 <area shape="rect" href="classpulsatrix_1_1Transform.html" title="A single sample&#45;level preprocessing step (normalize, augment, tokenize, ...)." alt="" coords="5,169,157,195"/>
 <area shape="rect" href="classpulsatrix_1_1CenterCropTransform.html" title="Crops the centered (crop_height, crop_width) region of the image." alt="" coords="208,5,433,31"/>
@@ -2418,132 +2432,132 @@ $(document).ready(function(){initNavTree('hierarchy.html',''); initResizable(); 
 <area shape="poly" title=" " alt="" coords="102,204,146,254,175,280,207,302,234,316,232,320,204,307,172,284,142,258,98,207"/>
 </map>
 </td></tr>
-<tr><td><img src="inherit_graph_422.png" border="0" usemap="#apulsatrix_1_1TransformerBlockOptions" alt=""/>
+<tr><td><img src="inherit_graph_424.png" border="0" usemap="#apulsatrix_1_1TransformerBlockOptions" alt=""/>
 <map name="apulsatrix_1_1TransformerBlockOptions" id="apulsatrix_1_1TransformerBlockOptions">
 <area shape="rect" href="structpulsatrix_1_1TransformerBlockOptions.html" title="The parts of a TransformerBlock beyond its attention (LLM&#45;9 adds Gemma&#39;s)." alt="" coords="5,5,207,45"/>
 </map>
 </td></tr>
-<tr><td><img src="inherit_graph_423.png" border="0" usemap="#apulsatrix_1_1Trial" alt=""/>
+<tr><td><img src="inherit_graph_425.png" border="0" usemap="#apulsatrix_1_1Trial" alt=""/>
 <map name="apulsatrix_1_1Trial" id="apulsatrix_1_1Trial">
 <area shape="rect" href="classpulsatrix_1_1Trial.html" title="A configuration paired with the metric history observed while evaluating it (instantiate a network un..." alt="" coords="5,5,120,31"/>
 </map>
 </td></tr>
-<tr><td><img src="inherit_graph_424.png" border="0" usemap="#apulsatrix_1_1TTestResult" alt=""/>
+<tr><td><img src="inherit_graph_426.png" border="0" usemap="#apulsatrix_1_1TTestResult" alt=""/>
 <map name="apulsatrix_1_1TTestResult" id="apulsatrix_1_1TTestResult">
 <area shape="rect" href="structpulsatrix_1_1TTestResult.html" title="A two&#45;sample t&#45;test&#39;s result." alt="" coords="5,5,168,31"/>
 </map>
 </td></tr>
-<tr><td><img src="inherit_graph_425.png" border="0" usemap="#apulsatrix_1_1TwoNNResult" alt=""/>
+<tr><td><img src="inherit_graph_427.png" border="0" usemap="#apulsatrix_1_1TwoNNResult" alt=""/>
 <map name="apulsatrix_1_1TwoNNResult" id="apulsatrix_1_1TwoNNResult">
 <area shape="rect" href="structpulsatrix_1_1TwoNNResult.html" title="TwoNNDimension()&#39;s result." alt="" coords="5,5,179,31"/>
 </map>
 </td></tr>
-<tr><td><img src="inherit_graph_426.png" border="0" usemap="#apulsatrix_1_1UnicodeRegex" alt=""/>
+<tr><td><img src="inherit_graph_428.png" border="0" usemap="#apulsatrix_1_1UnicodeRegex" alt=""/>
 <map name="apulsatrix_1_1UnicodeRegex" id="apulsatrix_1_1UnicodeRegex">
 <area shape="rect" href="classpulsatrix_1_1UnicodeRegex.html" title="A compiled pattern, matched leftmost&#45;first with backtracking as Oniguruma (which Hugging Face tokeniz..." alt="" coords="5,5,187,31"/>
 </map>
 </td></tr>
-<tr><td><img src="inherit_graph_427.png" border="0" usemap="#apulsatrix_1_1UnicodeRegex_1_1Match" alt=""/>
+<tr><td><img src="inherit_graph_429.png" border="0" usemap="#apulsatrix_1_1UnicodeRegex_1_1Match" alt=""/>
 <map name="apulsatrix_1_1UnicodeRegex_1_1Match" id="apulsatrix_1_1UnicodeRegex_1_1Match">
 <area shape="rect" href="structpulsatrix_1_1UnicodeRegex_1_1Match.html" title="A match: a byte range [begin, end) of the subject." alt="" coords="5,5,187,45"/>
 </map>
 </td></tr>
-<tr><td><img src="inherit_graph_428.png" border="0" usemap="#apulsatrix_1_1UniversalNullResult" alt=""/>
+<tr><td><img src="inherit_graph_430.png" border="0" usemap="#apulsatrix_1_1UniversalNullResult" alt=""/>
 <map name="apulsatrix_1_1UniversalNullResult" id="apulsatrix_1_1UniversalNullResult">
 <area shape="rect" href="structpulsatrix_1_1UniversalNullResult.html" title="UniversalNullTest()&#39;s result." alt="" coords="5,5,180,45"/>
 </map>
 </td></tr>
-<tr><td><img src="inherit_graph_429.png" border="0" usemap="#apulsatrix_1_1ValidationIssue" alt=""/>
+<tr><td><img src="inherit_graph_431.png" border="0" usemap="#apulsatrix_1_1ValidationIssue" alt=""/>
 <map name="apulsatrix_1_1ValidationIssue" id="apulsatrix_1_1ValidationIssue">
 <area shape="rect" href="structpulsatrix_1_1ValidationIssue.html" title="One detected data&#45;quality issue: a missing (NaN) value or a statistical outlier." alt="" coords="5,5,192,31"/>
 </map>
 </td></tr>
-<tr><td><img src="inherit_graph_430.png" border="0" usemap="#apulsatrix_1_1VariantScorer" alt=""/>
+<tr><td><img src="inherit_graph_432.png" border="0" usemap="#apulsatrix_1_1VariantScorer" alt=""/>
 <map name="apulsatrix_1_1VariantScorer" id="apulsatrix_1_1VariantScorer">
 <area shape="rect" href="classpulsatrix_1_1VariantScorer.html" title="Scores variants with a masked language model and its tokenizer, the way ProteinGym scores ESM models...." alt="" coords="5,5,180,31"/>
 </map>
 </td></tr>
-<tr><td><img src="inherit_graph_431.png" border="0" usemap="#apulsatrix_1_1VariantScoringOptions" alt=""/>
+<tr><td><img src="inherit_graph_433.png" border="0" usemap="#apulsatrix_1_1VariantScoringOptions" alt=""/>
 <map name="apulsatrix_1_1VariantScoringOptions" id="apulsatrix_1_1VariantScoringOptions">
 <area shape="rect" href="structpulsatrix_1_1VariantScoringOptions.html" title=" " alt="" coords="5,5,187,45"/>
 </map>
 </td></tr>
-<tr><td><img src="inherit_graph_432.png" border="0" usemap="#apulsatrix_1_1VGGConfig" alt=""/>
+<tr><td><img src="inherit_graph_434.png" border="0" usemap="#apulsatrix_1_1VGGConfig" alt=""/>
 <map name="apulsatrix_1_1VGGConfig" id="apulsatrix_1_1VGGConfig">
 <area shape="rect" href="structpulsatrix_1_1VGGConfig.html" title="A torchvision VGG without BatchNorm (VGG11 to VGG19; VGG16 is the one tested on the published weights..." alt="" coords="5,5,163,31"/>
 </map>
 </td></tr>
-<tr><td><img src="inherit_graph_433.png" border="0" usemap="#apulsatrix_1_1VizFontFile" alt=""/>
+<tr><td><img src="inherit_graph_435.png" border="0" usemap="#apulsatrix_1_1VizFontFile" alt=""/>
 <map name="apulsatrix_1_1VizFontFile" id="apulsatrix_1_1VizFontFile">
 <area shape="rect" href="structpulsatrix_1_1VizFontFile.html" title="A font file, and the face to use when it holds several (.ttc)." alt="" coords="5,5,164,31"/>
 </map>
 </td></tr>
-<tr><td><img src="inherit_graph_434.png" border="0" usemap="#apulsatrix_1_1VizFontOptions" alt=""/>
+<tr><td><img src="inherit_graph_436.png" border="0" usemap="#apulsatrix_1_1VizFontOptions" alt=""/>
 <map name="apulsatrix_1_1VizFontOptions" id="apulsatrix_1_1VizFontOptions">
 <area shape="rect" href="structpulsatrix_1_1VizFontOptions.html" title="Which fonts a VizWindow loads." alt="" coords="5,5,191,31"/>
 </map>
 </td></tr>
-<tr><td><img src="inherit_graph_435.png" border="0" usemap="#apulsatrix_1_1VizWindow" alt=""/>
+<tr><td><img src="inherit_graph_437.png" border="0" usemap="#apulsatrix_1_1VizWindow" alt=""/>
 <map name="apulsatrix_1_1VizWindow" id="apulsatrix_1_1VizWindow">
 <area shape="rect" href="classpulsatrix_1_1VizWindow.html" title="Owns a GLFW window, OpenGL3 context, and ImGui/ImPlot context for the lifetime of one demo app...." alt="" coords="5,5,164,31"/>
 </map>
 </td></tr>
-<tr><td><img src="inherit_graph_436.png" border="0" usemap="#apulsatrix_1_1Vocabulary" alt=""/>
+<tr><td><img src="inherit_graph_438.png" border="0" usemap="#apulsatrix_1_1Vocabulary" alt=""/>
 <map name="apulsatrix_1_1Vocabulary" id="apulsatrix_1_1Vocabulary">
 <area shape="rect" href="classpulsatrix_1_1Vocabulary.html" title="Token&lt;&#45;&gt;index lookup table. Index 0 is always the reserved &quot;&lt;unk&gt;&quot; token – guaranteed by construction..." alt="" coords="5,5,164,31"/>
 </map>
 </td></tr>
-<tr><td><img src="inherit_graph_437.png" border="0" usemap="#apulsatrix_1_1WaterfallBar" alt=""/>
+<tr><td><img src="inherit_graph_439.png" border="0" usemap="#apulsatrix_1_1WaterfallBar" alt=""/>
 <map name="apulsatrix_1_1WaterfallBar" id="apulsatrix_1_1WaterfallBar">
 <area shape="rect" href="structpulsatrix_1_1WaterfallBar.html" title="One floating waterfall bar: spans [bottom, top] on the value axis." alt="" coords="5,5,173,31"/>
 </map>
 </td></tr>
-<tr><td><img src="inherit_graph_438.png" border="0" usemap="#apulsatrix_1_1WaterfallStep" alt=""/>
+<tr><td><img src="inherit_graph_440.png" border="0" usemap="#apulsatrix_1_1WaterfallStep" alt=""/>
 <map name="apulsatrix_1_1WaterfallStep" id="apulsatrix_1_1WaterfallStep">
 <area shape="rect" href="structpulsatrix_1_1WaterfallStep.html" title="One waterfall step: a labeled delta and the running cumulative value after it." alt="" coords="5,5,180,31"/>
 </map>
 </td></tr>
-<tr><td><img src="inherit_graph_439.png" border="0" usemap="#apulsatrix_1_1WavData" alt=""/>
+<tr><td><img src="inherit_graph_441.png" border="0" usemap="#apulsatrix_1_1WavData" alt=""/>
 <map name="apulsatrix_1_1WavData" id="apulsatrix_1_1WavData">
 <area shape="rect" href="structpulsatrix_1_1WavData.html" title="One decoded WAV file&#39;s contents: waveform Tensor plus its sample rate." alt="" coords="5,5,152,31"/>
 </map>
 </td></tr>
-<tr><td><img src="inherit_graph_440.png" border="0" usemap="#apulsatrix_1_1WavReader" alt=""/>
+<tr><td><img src="inherit_graph_442.png" border="0" usemap="#apulsatrix_1_1WavReader" alt=""/>
 <map name="apulsatrix_1_1WavReader" id="apulsatrix_1_1WavReader">
 <area shape="rect" href="classpulsatrix_1_1WavReader.html" title="Reads uncompressed 16&#45;bit PCM WAV files directly – pulsatrix&#39;s first audio primitive (campaign_exai_d..." alt="" coords="5,5,167,31"/>
 </map>
 </td></tr>
-<tr><td><img src="inherit_graph_441.png" border="0" usemap="#apulsatrix_1_1WeightLoadOptions" alt=""/>
+<tr><td><img src="inherit_graph_443.png" border="0" usemap="#apulsatrix_1_1WeightLoadOptions" alt=""/>
 <map name="apulsatrix_1_1WeightLoadOptions" id="apulsatrix_1_1WeightLoadOptions">
 <area shape="rect" href="structpulsatrix_1_1WeightLoadOptions.html" title="Loading settings." alt="" coords="5,5,219,31"/>
 </map>
 </td></tr>
-<tr><td><img src="inherit_graph_442.png" border="0" usemap="#apulsatrix_1_1WeightLoadReport" alt=""/>
+<tr><td><img src="inherit_graph_444.png" border="0" usemap="#apulsatrix_1_1WeightLoadReport" alt=""/>
 <map name="apulsatrix_1_1WeightLoadReport" id="apulsatrix_1_1WeightLoadReport">
 <area shape="rect" href="structpulsatrix_1_1WeightLoadReport.html" title="What a load did." alt="" coords="5,5,212,31"/>
 </map>
 </td></tr>
-<tr><td><img src="inherit_graph_443.png" border="0" usemap="#apulsatrix_1_1WeightMapping" alt=""/>
+<tr><td><img src="inherit_graph_445.png" border="0" usemap="#apulsatrix_1_1WeightMapping" alt=""/>
 <map name="apulsatrix_1_1WeightMapping" id="apulsatrix_1_1WeightMapping">
 <area shape="rect" href="structpulsatrix_1_1WeightMapping.html" title="One entry of a name&#45;mapping manifest." alt="" coords="5,5,193,31"/>
 </map>
 </td></tr>
-<tr><td><img src="inherit_graph_444.png" border="0" usemap="#apulsatrix_1_1WordScore" alt=""/>
+<tr><td><img src="inherit_graph_446.png" border="0" usemap="#apulsatrix_1_1WordScore" alt=""/>
 <map name="apulsatrix_1_1WordScore" id="apulsatrix_1_1WordScore">
 <area shape="rect" href="structpulsatrix_1_1WordScore.html" title="One word and its score." alt="" coords="5,5,161,31"/>
 </map>
 </td></tr>
-<tr><td><img src="inherit_graph_445.png" border="0" usemap="#apulsatrix_1_1WordScores" alt=""/>
+<tr><td><img src="inherit_graph_447.png" border="0" usemap="#apulsatrix_1_1WordScores" alt=""/>
 <map name="apulsatrix_1_1WordScores" id="apulsatrix_1_1WordScores">
 <area shape="rect" href="structpulsatrix_1_1WordScores.html" title="Per&#45;word scores for one text." alt="" coords="5,5,168,31"/>
 </map>
 </td></tr>
-<tr><td><img src="inherit_graph_446.png" border="0" usemap="#apulsatrix_1_1XorNetwork" alt=""/>
+<tr><td><img src="inherit_graph_448.png" border="0" usemap="#apulsatrix_1_1XorNetwork" alt=""/>
 <map name="apulsatrix_1_1XorNetwork" id="apulsatrix_1_1XorNetwork">
 <area shape="rect" href="classpulsatrix_1_1XorNetwork.html" title="A tiny MLP (Linear(2,4) &#45;&gt; ReLU &#45;&gt; Linear(4,1)) trained on XOR – the canonical not&#45;linearly&#45;separable..." alt="" coords="5,5,169,31"/>
 </map>
 </td></tr>
-<tr><td><img src="inherit_graph_447.png" border="0" usemap="#astd_1_1runtime__error" alt=""/>
+<tr><td><img src="inherit_graph_449.png" border="0" usemap="#astd_1_1runtime__error" alt=""/>
 <map name="astd_1_1runtime__error" id="astd_1_1runtime__error">
 <area shape="rect" title=" " alt="" coords="5,35,144,60"/>
 <area shape="rect" href="classpulsatrix_1_1orch_1_1HttpError.html" title="A request that got no complete response: the connection, TLS, a timeout or a limit failed." alt="" coords="192,5,375,31"/>

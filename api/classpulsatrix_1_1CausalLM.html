@@ -160,6 +160,12 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:ae51ea44ac86b795d537c158aaff5921f" id="r_ae51ea44ac86b795d537c158aaff5921f"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespacepulsatrix.html#ad9a1fe66874ff77912dd431c00acc157">NextTokenLogitsFn</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1CausalLM.html#ae51ea44ac86b795d537c158aaff5921f">next_token_logits</a> (int64_t max_length)</td></tr>
 <tr class="memdesc:ae51ea44ac86b795d537c158aaff5921f"><td class="mdescLeft">&#160;</td><td class="mdescRight">A cached next-token function for Generate (LLM-5): one pass over the prompt, then one position per new token.  <br /></td></tr>
 <tr class="separator:ae51ea44ac86b795d537c158aaff5921f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a536d5b52bc411d1a276d8e35e476e5a7" id="r_a536d5b52bc411d1a276d8e35e476e5a7"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1CausalLM.html#a536d5b52bc411d1a276d8e35e476e5a7">set_intervention</a> (int64_t <a class="el" href="classpulsatrix_1_1CausalLM.html#a146c289c429c1bf98cd36169f6249850">layer</a>, std::unique_ptr&lt; <a class="el" href="classpulsatrix_1_1ResidualIntervention.html">ResidualIntervention</a> &gt; <a class="el" href="classpulsatrix_1_1CausalLM.html#ab90ab6267dfc2cb48cbfb683a57832ec">intervention</a>)</td></tr>
+<tr class="memdesc:a536d5b52bc411d1a276d8e35e476e5a7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Runs <code>intervention</code> on block <code>layer's</code> output, in <a class="el" href="classpulsatrix_1_1Module.html#a5cb3b4aac3d2364c973009413fde6a21" title="Runs this module&#39;s forward computation.">forward()</a>, <a class="el" href="classpulsatrix_1_1CausalLM.html#a82afb7cb87d18d116e764f036c1b7029" title="Computes the gradient w.r.t. this module&#39;s input, given the gradient w.r.t. its output....">backward()</a>, the relevance passes and cached generation (TRN-9). Its parameters join <a class="el" href="classpulsatrix_1_1CausalLM.html#a3f05f65d21f65a6d2448da9b600396c2" title="This module&#39;s trainable parameters, each with its hierarchical name – the one place a module declares...">named_parameters()</a> as <code>interventions.&lt;layer&gt;.*</code>. nullptr removes it.  <br /></td></tr>
+<tr class="separator:a536d5b52bc411d1a276d8e35e476e5a7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab90ab6267dfc2cb48cbfb683a57832ec" id="r_ab90ab6267dfc2cb48cbfb683a57832ec"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classpulsatrix_1_1ResidualIntervention.html">ResidualIntervention</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1CausalLM.html#ab90ab6267dfc2cb48cbfb683a57832ec">intervention</a> (int64_t <a class="el" href="classpulsatrix_1_1CausalLM.html#a146c289c429c1bf98cd36169f6249850">layer</a>)</td></tr>
+<tr class="memdesc:ab90ab6267dfc2cb48cbfb683a57832ec"><td class="mdescLeft">&#160;</td><td class="mdescRight">Block <code>layer's</code> intervention, or nullptr.  <br /></td></tr>
+<tr class="separator:ab90ab6267dfc2cb48cbfb683a57832ec"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a78167d4cedaa787b7ef25ebc24817a0f" id="r_a78167d4cedaa787b7ef25ebc24817a0f"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1CausalLM.html#a78167d4cedaa787b7ef25ebc24817a0f">set_hidden_state_hook</a> (<a class="el" href="namespacepulsatrix.html#a5418afb94636789e3e253e44cdac5339">HiddenStateHook</a> hook)</td></tr>
 <tr class="memdesc:a78167d4cedaa787b7ef25ebc24817a0f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Calls <code>hook</code> at every position during <a class="el" href="classpulsatrix_1_1Module.html#a5cb3b4aac3d2364c973009413fde6a21" title="Runs this module&#39;s forward computation.">forward()</a> (not during <a class="el" href="classpulsatrix_1_1CausalLM.html#ae51ea44ac86b795d537c158aaff5921f" title="A cached next-token function for Generate (LLM-5): one pass over the prompt, then one position per ne...">next_token_logits()</a>'s cached passes). An empty function removes it.  <br /></td></tr>
 <tr class="separator:a78167d4cedaa787b7ef25ebc24817a0f"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -408,6 +414,40 @@ Protected Member Functions</h2></td></tr>
 </dl>
 
 <p>Implements <a class="el" href="classpulsatrix_1_1Module.html#a64d2dd3268af1b112aaeb1c8286351a9">pulsatrix::Module</a>.</p>
+
+</div>
+</div>
+<a id="ab90ab6267dfc2cb48cbfb683a57832ec" name="ab90ab6267dfc2cb48cbfb683a57832ec"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab90ab6267dfc2cb48cbfb683a57832ec">&#9670;&#160;</a></span>intervention()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classpulsatrix_1_1ResidualIntervention.html">ResidualIntervention</a> * pulsatrix::CausalLM::intervention </td>
+          <td>(</td>
+          <td class="paramtype">int64_t&#160;</td>
+          <td class="paramname"><em>layer</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Block <code>layer's</code> intervention, or nullptr. </p>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname">std::out_of_range.</td><td></td></tr>
+  </table>
+  </dd>
+</dl>
 
 </div>
 </div>
@@ -764,6 +804,42 @@ Protected Member Functions</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Calls <code>hook</code> at every position during <a class="el" href="classpulsatrix_1_1Module.html#a5cb3b4aac3d2364c973009413fde6a21" title="Runs this module&#39;s forward computation.">forward()</a> (not during <a class="el" href="classpulsatrix_1_1CausalLM.html#ae51ea44ac86b795d537c158aaff5921f" title="A cached next-token function for Generate (LLM-5): one pass over the prompt, then one position per ne...">next_token_logits()</a>'s cached passes). An empty function removes it. </p>
+
+</div>
+</div>
+<a id="a536d5b52bc411d1a276d8e35e476e5a7" name="a536d5b52bc411d1a276d8e35e476e5a7"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a536d5b52bc411d1a276d8e35e476e5a7">&#9670;&#160;</a></span>set_intervention()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void pulsatrix::CausalLM::set_intervention </td>
+          <td>(</td>
+          <td class="paramtype">int64_t&#160;</td>
+          <td class="paramname"><em>layer</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">std::unique_ptr&lt; <a class="el" href="classpulsatrix_1_1ResidualIntervention.html">ResidualIntervention</a> &gt;&#160;</td>
+          <td class="paramname"><em>intervention</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Runs <code>intervention</code> on block <code>layer's</code> output, in <a class="el" href="classpulsatrix_1_1Module.html#a5cb3b4aac3d2364c973009413fde6a21" title="Runs this module&#39;s forward computation.">forward()</a>, <a class="el" href="classpulsatrix_1_1CausalLM.html#a82afb7cb87d18d116e764f036c1b7029" title="Computes the gradient w.r.t. this module&#39;s input, given the gradient w.r.t. its output....">backward()</a>, the relevance passes and cached generation (TRN-9). Its parameters join <a class="el" href="classpulsatrix_1_1CausalLM.html#a3f05f65d21f65a6d2448da9b600396c2" title="This module&#39;s trainable parameters, each with its hierarchical name – the one place a module declares...">named_parameters()</a> as <code>interventions.&lt;layer&gt;.*</code>. nullptr removes it. </p>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname">std::out_of_range</td><td>for a layer index the model doesn't have. </td></tr>
+  </table>
+  </dd>
+</dl>
 
 </div>
 </div>

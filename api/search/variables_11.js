@@ -9,7 +9,7 @@ var searchData=
   ['random_5fmean_5fbehavior_6',['random_mean_behavior',['../structpulsatrix_1_1SteeringReport.html#a4ed4d55bb53a90a3303f7255724167f8',1,'pulsatrix::SteeringReport']]],
   ['random_5fmean_5fsteerability_7',['random_mean_steerability',['../structpulsatrix_1_1SteeringReport.html#ad5dbdccc9f49d8a5cd3ec5e5922a50a8',1,'pulsatrix::SteeringReport']]],
   ['random_5fscores_8',['random_scores',['../structpulsatrix_1_1ResidueDeletionCurve.html#a7f4a7f7867bd9f0fc634f6a4556cb982',1,'pulsatrix::ResidueDeletionCurve::random_scores'],['../structpulsatrix_1_1TcavResult.html#a4c359f4561796ef3c4d42c04358fa7c4',1,'pulsatrix::TcavResult::random_scores']]],
-  ['rank_9',['rank',['../structpulsatrix_1_1LoRAConfig.html#a23ca71de1bb38e20ecb9f256ded764c6',1,'pulsatrix::LoRAConfig']]],
+  ['rank_9',['rank',['../structpulsatrix_1_1LoRAConfig.html#a23ca71de1bb38e20ecb9f256ded764c6',1,'pulsatrix::LoRAConfig::rank'],['../structpulsatrix_1_1LoReFTConfig.html#a85fe5c8772cff219ff9132d8eba13fe1',1,'pulsatrix::LoReFTConfig::rank']]],
   ['rank_5fsimilarity_10',['rank_similarity',['../structpulsatrix_1_1AttributionNullReport.html#a9b6880e950d7d95af3adc595234a1e57',1,'pulsatrix::AttributionNullReport']]],
   ['ratio_11',['ratio',['../structpulsatrix_1_1FeatureSignificance.html#ae2ef8a68555ae023b76a48d09925e19f',1,'pulsatrix::FeatureSignificance']]],
   ['raw_12',['raw',['../structpulsatrix_1_1orch_1_1ContentBlock.html#af5b2cc115b24be5a34b4c8718de85c0a',1,'pulsatrix::orch::ContentBlock']]],

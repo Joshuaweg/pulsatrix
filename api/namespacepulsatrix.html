@@ -804,6 +804,15 @@ Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpulsatrix_1_1LoRAConfig.html">LoRAConfig</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">LoRA's settings. The defaults are PEFT's <code>LoraConfig</code>'s.  <a href="structpulsatrix_1_1LoRAConfig.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpulsatrix_1_1LoraLayerRelevance.html">LoraLayerRelevance</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">One adapted layer's share of a relevance pass (TRN-8).  <a href="structpulsatrix_1_1LoraLayerRelevance.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpulsatrix_1_1LoReFTConfig.html">LoReFTConfig</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Where and how large LoReFT's interventions are.  <a href="structpulsatrix_1_1LoReFTConfig.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1LoReFTIntervention.html">LoReFTIntervention</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">One block's LoReFT edit. Parameters, named as pyreft's state dict:  <a href="classpulsatrix_1_1LoReFTIntervention.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpulsatrix_1_1LossRecovered.html">LossRecovered</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="namespacepulsatrix.html#a0f041cc2b4d0f3b20771c2277381febe" title="Loss recovered, SAEBench&#39;s main downstream measure.">MeasureLossRecovered()</a>'s result: the model's loss three ways.  <a href="structpulsatrix_1_1LossRecovered.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -1128,6 +1137,9 @@ Classes</h2></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1ResampleTransform.html">ResampleTransform</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Resamples a waveform (sample.fields[0], shape (1, channels, num_samples) &ndash; <a class="el" href="classpulsatrix_1_1WavReader.html" title="Reads uncompressed 16-bit PCM WAV files directly – pulsatrix&#39;s first audio primitive (campaign_exai_d...">WavReader</a>'s/AudioFolderDataset's convention) from source_sample_rate to target_sample_rate via linear interpolation.  <a href="classpulsatrix_1_1ResampleTransform.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1ResidualIntervention.html">ResidualIntervention</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">A trainable edit of the residual stream after a transformer block (TRN-9: LoReFT), run by <a class="el" href="classpulsatrix_1_1CausalLM.html#a536d5b52bc411d1a276d8e35e476e5a7" title="Runs intervention on block layer&#39;s output, in forward(), backward(), the relevance passes and cached ...">CausalLM::set_intervention()</a>. Maps hidden states <code>(N, L, hidden_size)</code> to the same shape and, as a <a class="el" href="classpulsatrix_1_1Module.html" title="Base class for every layer type (LinearModule, Conv2DModule, activations, ...).">Module</a>, trains and explains with the model.  <a href="classpulsatrix_1_1ResidualIntervention.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1ResidualModule.html">ResidualModule</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight"><code>y = x + inner-&gt;forward(x)</code> for an arbitrary already-built <a class="el" href="classpulsatrix_1_1Module.html" title="Base class for every layer type (LinearModule, Conv2DModule, activations, ...).">Module</a>. The classic ResNet shortcut connection, owning its own native relevance-split rule &ndash; the charter's explicitly named failure mode to avoid is Captum/Zennit's "Canonizer
@@ -1564,6 +1576,9 @@ Typedefs</h2></td></tr>
 <tr class="memitem:ad9a1fe66874ff77912dd431c00acc157" id="r_ad9a1fe66874ff77912dd431c00acc157"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#ad9a1fe66874ff77912dd431c00acc157">NextTokenLogitsFn</a> = std::function&lt; std::vector&lt; float &gt;(const std::vector&lt; int64_t &gt; &amp;tokens)&gt;</td></tr>
 <tr class="memdesc:ad9a1fe66874ff77912dd431c00acc157"><td class="mdescLeft">&#160;</td><td class="mdescRight">The model as generation sees it: the token sequence so far in, the logits for the next token out (one per vocabulary entry). How they're computed is up to the caller: a full forward pass over the sequence (MakeNextTokenLogits), or a cached step (LLM-5).  <br /></td></tr>
 <tr class="separator:ad9a1fe66874ff77912dd431c00acc157"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae12c6d970bf22f916baf3b51a4b31e63" id="r_ae12c6d970bf22f916baf3b51a4b31e63"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#ae12c6d970bf22f916baf3b51a4b31e63">BlockOutputHook</a> = std::function&lt; <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a>(int64_t layer, int64_t start, int64_t prompt_length, const <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp;hidden)&gt;</td></tr>
+<tr class="memdesc:ae12c6d970bf22f916baf3b51a4b31e63"><td class="mdescLeft">&#160;</td><td class="mdescRight">Called on each block's output in <a class="el" href="namespacepulsatrix.html#a33603f171f9be34ef590dec1beb41980" title="A NextTokenLogitsFn for embedding -&gt; transformer blocks -&gt; head layers that keeps a KV cache per bloc...">MakeCachedNextTokenLogits()</a>: block <code>layer's</code> hidden states <code>(1, L, d)</code> for positions [start, start + L), in a sequence whose prompt is <code>prompt_length</code> long; returns what the next block reads. <a class="el" href="classpulsatrix_1_1CausalLM.html" title="Token embedding, num_hidden_layers pre-norm transformer blocks, a final RMSNorm and a language-model ...">CausalLM</a> uses it to run its interventions (TRN-9).  <br /></td></tr>
+<tr class="separator:ae12c6d970bf22f916baf3b51a4b31e63"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:abc17b0f5a8717d9ef75f08182d273a4d" id="r_abc17b0f5a8717d9ef75f08182d273a4d"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#abc17b0f5a8717d9ef75f08182d273a4d">LRPComposite</a> = std::function&lt; <a class="el" href="structpulsatrix_1_1LRPRuleConfig.html">LRPRuleConfig</a>(size_t layer_index, const <a class="el" href="classpulsatrix_1_1Module.html">Module</a> &amp;module)&gt;</td></tr>
 <tr class="memdesc:abc17b0f5a8717d9ef75f08182d273a4d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Per-layer <a class="el" href="classpulsatrix_1_1LRP.html" title="Whole-model LRP: runs the forward pass, seeds relevance at the chosen output(s), and propagates it to...">LRP</a> rule choice: maps (top-level module index in forward order, module) to the <a class="el" href="structpulsatrix_1_1LRPRuleConfig.html" title="Configuration for LRP relevance propagation: which rule a module applies and its hyperparameters....">LRPRuleConfig</a> that module applies.  <br /></td></tr>
 <tr class="separator:abc17b0f5a8717d9ef75f08182d273a4d"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -1778,6 +1793,11 @@ Enumerations</h2></td></tr>
  }</td></tr>
 <tr class="memdesc:aa4c5ed2bc6fef2b50c34076c222872aa"><td class="mdescLeft">&#160;</td><td class="mdescRight">The LRP rule family a module applies. Semantics follow Zennit 1.0.0 exactly (Anders et al. 2021); every rule other than Epsilon is defined only for affine layers (LinearModule, Conv2DModule) &ndash; see Module::supports_lrp_rule().  <a href="namespacepulsatrix.html#aa4c5ed2bc6fef2b50c34076c222872aa">More...</a><br /></td></tr>
 <tr class="separator:aa4c5ed2bc6fef2b50c34076c222872aa"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa3ee8f8c714e3eed498aa7575f844f30" id="r_aa3ee8f8c714e3eed498aa7575f844f30"><td class="memItemLeft" align="right" valign="top">enum class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#aa3ee8f8c714e3eed498aa7575f844f30">LoRARelevance</a> { <a class="el" href="namespacepulsatrix.html#aa3ee8f8c714e3eed498aa7575f844f30a8a9e64d86ed12ad40de129bc7f4683b2">Split</a>
+, <a class="el" href="namespacepulsatrix.html#aa3ee8f8c714e3eed498aa7575f844f30a63911b0b34ebf2a1fbc8f960d1d5cbcb">Merged</a>
+ }</td></tr>
+<tr class="memdesc:aa3ee8f8c714e3eed498aa7575f844f30"><td class="mdescLeft">&#160;</td><td class="mdescRight">How a LinearModule with an unmerged LoRA adapter (TRN-7, TRN-8) propagates relevance.  <a href="namespacepulsatrix.html#aa3ee8f8c714e3eed498aa7575f844f30">More...</a><br /></td></tr>
+<tr class="separator:aa3ee8f8c714e3eed498aa7575f844f30"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a96073a2b00a00be59e3a764fa4b671e7" id="r_a96073a2b00a00be59e3a764fa4b671e7"><td class="memItemLeft" align="right" valign="top">enum class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#a96073a2b00a00be59e3a764fa4b671e7">NeighborMetric</a> { <a class="el" href="namespacepulsatrix.html#a96073a2b00a00be59e3a764fa4b671e7a46ff06ae696616afdf3a695efd3db84c">Cosine</a>
 , <a class="el" href="namespacepulsatrix.html#a96073a2b00a00be59e3a764fa4b671e7a3e43207685247008d9e1ae53ecf8cab3">Euclidean</a>
  }</td></tr>
@@ -2333,9 +2353,9 @@ Functions</h2></td></tr>
 <tr class="memitem:a6cfa666246da5421f8bba0105d28340f" id="r_a6cfa666246da5421f8bba0105d28340f"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespacepulsatrix.html#ad9a1fe66874ff77912dd431c00acc157">NextTokenLogitsFn</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#a6cfa666246da5421f8bba0105d28340f">MakeNextTokenLogits</a> (std::vector&lt; <a class="el" href="classpulsatrix_1_1Module.html">Module</a> * &gt; layers, <a class="el" href="classpulsatrix_1_1DeviceBackend.html">DeviceBackend</a> *backend)</td></tr>
 <tr class="memdesc:a6cfa666246da5421f8bba0105d28340f"><td class="mdescLeft">&#160;</td><td class="mdescRight">A NextTokenLogitsFn for a stack of pulsatrix modules that maps token ids <code>(1, L)</code> to logits <code>(1, L, vocab)</code> (for example <a class="el" href="classpulsatrix_1_1EmbeddingModule.html" title="Embedding lookup table, rank-2 input (N, L) of float-encoded indices -&gt; rank-3 output (N,...">EmbeddingModule</a>, causal TransformerBlocks, an RMSNorm and a <a class="el" href="classpulsatrix_1_1TiedLMHeadModule.html" title="logits = x @ E^T, where E is a token embedding table (vocab, d_model) that the head shares rather tha...">TiedLMHeadModule</a>): it runs the whole sequence through the modules and returns the last position's logits.  <br /></td></tr>
 <tr class="separator:a6cfa666246da5421f8bba0105d28340f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:add21f6178694d0d0795bc60e374dc345" id="r_add21f6178694d0d0795bc60e374dc345"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespacepulsatrix.html#ad9a1fe66874ff77912dd431c00acc157">NextTokenLogitsFn</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#add21f6178694d0d0795bc60e374dc345">MakeCachedNextTokenLogits</a> (<a class="el" href="classpulsatrix_1_1EmbeddingModule.html">EmbeddingModule</a> &amp;embedding, std::vector&lt; <a class="el" href="classpulsatrix_1_1TransformerBlock.html">TransformerBlock</a> * &gt; blocks, std::vector&lt; <a class="el" href="classpulsatrix_1_1Module.html">Module</a> * &gt; head, <a class="el" href="classpulsatrix_1_1DeviceBackend.html">DeviceBackend</a> *backend, int64_t max_length, float embed_scale=1.0f)</td></tr>
-<tr class="memdesc:add21f6178694d0d0795bc60e374dc345"><td class="mdescLeft">&#160;</td><td class="mdescRight">A NextTokenLogitsFn for embedding -&gt; transformer blocks -&gt; head layers that keeps a KV cache per block (LLM-5): each call runs only the tokens after the longest prefix it has already processed, so generating n tokens costs one pass over the prompt and then one position per token, instead of n passes over the whole sequence. A call with a different history (a new prompt, or a shorter or edited one) truncates the caches to the shared prefix and continues from there.  <br /></td></tr>
-<tr class="separator:add21f6178694d0d0795bc60e374dc345"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a33603f171f9be34ef590dec1beb41980" id="r_a33603f171f9be34ef590dec1beb41980"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespacepulsatrix.html#ad9a1fe66874ff77912dd431c00acc157">NextTokenLogitsFn</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#a33603f171f9be34ef590dec1beb41980">MakeCachedNextTokenLogits</a> (<a class="el" href="classpulsatrix_1_1EmbeddingModule.html">EmbeddingModule</a> &amp;embedding, std::vector&lt; <a class="el" href="classpulsatrix_1_1TransformerBlock.html">TransformerBlock</a> * &gt; blocks, std::vector&lt; <a class="el" href="classpulsatrix_1_1Module.html">Module</a> * &gt; head, <a class="el" href="classpulsatrix_1_1DeviceBackend.html">DeviceBackend</a> *backend, int64_t max_length, float embed_scale=1.0f, <a class="el" href="namespacepulsatrix.html#ae12c6d970bf22f916baf3b51a4b31e63">BlockOutputHook</a> after_block={})</td></tr>
+<tr class="memdesc:a33603f171f9be34ef590dec1beb41980"><td class="mdescLeft">&#160;</td><td class="mdescRight">A NextTokenLogitsFn for embedding -&gt; transformer blocks -&gt; head layers that keeps a KV cache per block (LLM-5): each call runs only the tokens after the longest prefix it has already processed, so generating n tokens costs one pass over the prompt and then one position per token, instead of n passes over the whole sequence. A call with a different history (a new prompt, or a shorter or edited one) truncates the caches to the shared prefix and continues from there.  <br /></td></tr>
+<tr class="separator:a33603f171f9be34ef590dec1beb41980"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a07c587513b12f0ed1c2eae8fef64e2ad" id="r_a07c587513b12f0ed1c2eae8fef64e2ad"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#a07c587513b12f0ed1c2eae8fef64e2ad">SliceBatch</a> (const <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp;t, int64_t start, int64_t count, <a class="el" href="classpulsatrix_1_1DeviceBackend.html">DeviceBackend</a> *backend)</td></tr>
 <tr class="memdesc:a07c587513b12f0ed1c2eae8fef64e2ad"><td class="mdescLeft">&#160;</td><td class="mdescRight">Extracts rows [start, start+count) along t's leading dimension into a new <a class="el" href="classpulsatrix_1_1Tensor.html" title="N-dimensional tensor. Owns its data buffer exclusively; a DeviceBackend* is injected (not owned) – th...">Tensor</a> &ndash; the inverse of <a class="el" href="classpulsatrix_1_1Tensor.html#a15c8264d40dc71b5a5295b1b78098496" title="Concatenates N tensors along their leading dimension into one batch Tensor – pulsatrix&#39;s collate-time...">Tensor::Stack</a>, needed to split a pooled discriminator gradient back into each population member's own slice.  <br /></td></tr>
 <tr class="separator:a07c587513b12f0ed1c2eae8fef64e2ad"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -2450,6 +2470,9 @@ Functions</h2></td></tr>
 <tr class="memitem:a541d12b7125fc9e300b76891b0a9b557" id="r_a541d12b7125fc9e300b76891b0a9b557"><td class="memItemLeft" align="right" valign="top">std::vector&lt; std::pair&lt; std::string, <a class="el" href="classpulsatrix_1_1LinearModule.html">LinearModule</a> * &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#a541d12b7125fc9e300b76891b0a9b557">LoraLayers</a> (<a class="el" href="classpulsatrix_1_1Module.html">Module</a> &amp;model)</td></tr>
 <tr class="memdesc:a541d12b7125fc9e300b76891b0a9b557"><td class="mdescLeft">&#160;</td><td class="mdescRight">The model's LinearModules that have an adapter, by name, in the model's order.  <br /></td></tr>
 <tr class="separator:a541d12b7125fc9e300b76891b0a9b557"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae8702c2fa603f0c221e089ba7beda88e" id="r_ae8702c2fa603f0c221e089ba7beda88e"><td class="memItemLeft" align="right" valign="top">std::vector&lt; <a class="el" href="structpulsatrix_1_1LoraLayerRelevance.html">LoraLayerRelevance</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#ae8702c2fa603f0c221e089ba7beda88e">LoraRelevanceSplit</a> (<a class="el" href="classpulsatrix_1_1Module.html">Module</a> &amp;model)</td></tr>
+<tr class="memdesc:ae8702c2fa603f0c221e089ba7beda88e"><td class="mdescLeft">&#160;</td><td class="mdescRight">How much of each adapted layer's relevance went through its adapter in the model's last relevance pass (<a class="el" href="namespacepulsatrix.html#aa3ee8f8c714e3eed498aa7575f844f30a8a9e64d86ed12ad40de129bc7f4683b2">LoRARelevance::Split</a>, the default), in the model's order: where, and for which inputs, the fine-tuning changed the explanation.  <br /></td></tr>
+<tr class="separator:ae8702c2fa603f0c221e089ba7beda88e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a095446dde46caacd2ea46983ecac575f" id="r_a095446dde46caacd2ea46983ecac575f"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#a095446dde46caacd2ea46983ecac575f">MergeLora</a> (<a class="el" href="classpulsatrix_1_1Module.html">Module</a> &amp;model)</td></tr>
 <tr class="memdesc:a095446dde46caacd2ea46983ecac575f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Merges every adapter into its base weight (<a class="el" href="classpulsatrix_1_1LinearModule.html#adb84050fe946873276d5ec6c37ee11b6" title="Adds the update into the weight, W += (alpha / r) A B, so forward() runs at the base layer&#39;s cost....">LinearModule::merge_lora()</a>).  <br /></td></tr>
 <tr class="separator:a095446dde46caacd2ea46983ecac575f"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -2468,6 +2491,18 @@ Functions</h2></td></tr>
 <tr class="memitem:a0ccccc2572b2e2d2d0178433bc00f0ff" id="r_a0ccccc2572b2e2d2d0178433bc00f0ff"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#a0ccccc2572b2e2d2d0178433bc00f0ff">LoadLoraAdapter</a> (<a class="el" href="classpulsatrix_1_1Module.html">Module</a> &amp;model, const std::string &amp;directory, const std::vector&lt; <a class="el" href="structpulsatrix_1_1WeightMapping.html">WeightMapping</a> &gt; &amp;mapping={})</td></tr>
 <tr class="memdesc:a0ccccc2572b2e2d2d0178433bc00f0ff"><td class="mdescLeft">&#160;</td><td class="mdescRight">Reads a PEFT LoRA adapter directory onto the model: attaches an adapter to each layer it has weights for, with r from their shapes and lora_alpha and lora_dropout from <code>adapter_config.json</code>, and freezes the rest as <a class="el" href="namespacepulsatrix.html#ae40b041766846ad8286558e270c8f261" title="Attaches a LoRA adapter to each LinearModule that config.target_modules selects, then freezes everyth...">ApplyLora()</a> does.  <br /></td></tr>
 <tr class="separator:a0ccccc2572b2e2d2d0178433bc00f0ff"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a948d3e6a331347b43ac1bcd057bcddcd" id="r_a948d3e6a331347b43ac1bcd057bcddcd"><td class="memItemLeft" align="right" valign="top">std::vector&lt; <a class="el" href="classpulsatrix_1_1LoReFTIntervention.html">LoReFTIntervention</a> * &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#a948d3e6a331347b43ac1bcd057bcddcd">ApplyLoReFT</a> (<a class="el" href="classpulsatrix_1_1CausalLM.html">CausalLM</a> &amp;model, const <a class="el" href="structpulsatrix_1_1LoReFTConfig.html">LoReFTConfig</a> &amp;config={})</td></tr>
+<tr class="memdesc:a948d3e6a331347b43ac1bcd057bcddcd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Installs a <a class="el" href="classpulsatrix_1_1LoReFTIntervention.html" title="One block&#39;s LoReFT edit. Parameters, named as pyreft&#39;s state dict:">LoReFTIntervention</a> after each of config.layers' blocks and freezes the rest of the model: only the interventions train.  <br /></td></tr>
+<tr class="separator:a948d3e6a331347b43ac1bcd057bcddcd"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9daada0b339d6e98183d9c877a4f5b59" id="r_a9daada0b339d6e98183d9c877a4f5b59"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#a9daada0b339d6e98183d9c877a4f5b59">OrthonormalizeLoReFT</a> (<a class="el" href="classpulsatrix_1_1CausalLM.html">CausalLM</a> &amp;model)</td></tr>
+<tr class="memdesc:a9daada0b339d6e98183d9c877a4f5b59"><td class="mdescLeft">&#160;</td><td class="mdescRight">orthonormalize() on every LoReFT intervention of the model: call it after each optimizer step.  <br /></td></tr>
+<tr class="separator:a9daada0b339d6e98183d9c877a4f5b59"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0d2d14b16a6b63829b2e38f1f4a72ef9" id="r_a0d2d14b16a6b63829b2e38f1f4a72ef9"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#a0d2d14b16a6b63829b2e38f1f4a72ef9">SaveLoReFT</a> (<a class="el" href="classpulsatrix_1_1CausalLM.html">CausalLM</a> &amp;model, const std::string &amp;path)</td></tr>
+<tr class="memdesc:a0d2d14b16a6b63829b2e38f1f4a72ef9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Saves the model's LoReFT interventions as safetensors: per layer i, pyreft's state dict under <code>layer.&lt;i&gt;.rotate_layer</code>, <code>layer.&lt;i&gt;.learned_source.weight</code> and <code>layer.&lt;i&gt;.learned_source.bias</code>, in pyreft's layouts, with metadata <code>first</code> and <code>last</code>.  <br /></td></tr>
+<tr class="separator:a0d2d14b16a6b63829b2e38f1f4a72ef9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae3b0dfc13724bbdfc03a49ac20e1517c" id="r_ae3b0dfc13724bbdfc03a49ac20e1517c"><td class="memItemLeft" align="right" valign="top">std::vector&lt; <a class="el" href="classpulsatrix_1_1LoReFTIntervention.html">LoReFTIntervention</a> * &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#ae3b0dfc13724bbdfc03a49ac20e1517c">LoadLoReFT</a> (<a class="el" href="classpulsatrix_1_1CausalLM.html">CausalLM</a> &amp;model, const std::string &amp;path)</td></tr>
+<tr class="memdesc:ae3b0dfc13724bbdfc03a49ac20e1517c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Installs the interventions in a file <a class="el" href="namespacepulsatrix.html#a0d2d14b16a6b63829b2e38f1f4a72ef9" title="Saves the model&#39;s LoReFT interventions as safetensors: per layer i, pyreft&#39;s state dict under layer....">SaveLoReFT()</a> wrote, or one built from pyreft's per-intervention state dicts under those keys (convert its <code>.bin</code> files with tools/convert/pickle_to_safetensors.py), and freezes the rest of the model.  <br /></td></tr>
+<tr class="separator:ae3b0dfc13724bbdfc03a49ac20e1517c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a65a61a87205c4d889e1c16baf4d439a9" id="r_a65a61a87205c4d889e1c16baf4d439a9"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structpulsatrix_1_1ConservationResult.html">ConservationResult</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#a65a61a87205c4d889e1c16baf4d439a9">ComputeConservation</a> (const <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp;relevance_in, const <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp;relevance_out)</td></tr>
 <tr class="memdesc:a65a61a87205c4d889e1c16baf4d439a9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sums relevance_in and relevance_out independently and reports their gap.  <br /></td></tr>
 <tr class="separator:a65a61a87205c4d889e1c16baf4d439a9"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -3528,6 +3563,22 @@ Variables</h2></td></tr>
 <tr class="separator:a53e58562b930b7ba3a9cea70bc7a3f02"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Typedef Documentation</h2>
+<a id="ae12c6d970bf22f916baf3b51a4b31e63" name="ae12c6d970bf22f916baf3b51a4b31e63"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae12c6d970bf22f916baf3b51a4b31e63">&#9670;&#160;</a></span>BlockOutputHook</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">using <a class="el" href="namespacepulsatrix.html#ae12c6d970bf22f916baf3b51a4b31e63">pulsatrix::BlockOutputHook</a> = typedef std::function&lt;<a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a>(int64_t layer, int64_t start, int64_t prompt_length, const <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a>&amp; hidden)&gt;</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Called on each block's output in <a class="el" href="namespacepulsatrix.html#a33603f171f9be34ef590dec1beb41980" title="A NextTokenLogitsFn for embedding -&gt; transformer blocks -&gt; head layers that keeps a KV cache per bloc...">MakeCachedNextTokenLogits()</a>: block <code>layer's</code> hidden states <code>(1, L, d)</code> for positions [start, start + L), in a sequence whose prompt is <code>prompt_length</code> long; returns what the next block reads. <a class="el" href="classpulsatrix_1_1CausalLM.html" title="Token embedding, num_hidden_layers pre-norm transformer blocks, a final RMSNorm and a language-model ...">CausalLM</a> uses it to run its interventions (TRN-9). </p>
+
+</div>
+</div>
 <a id="a062f52068d0980a5b3771b192f0f0250" name="a062f52068d0980a5b3771b192f0f0250"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a062f52068d0980a5b3771b192f0f0250">&#9670;&#160;</a></span>CollateFn</h2>
 
@@ -4322,6 +4373,36 @@ Every op here computes the <em>forward</em> value only &ndash; no derivative var
 <tr><td class="fieldname"><a id="a23ce7985a73e7df95c9467eac40d5d9eac5e16d9f8dea3ad7bcadf3e06400c63c" name="a23ce7985a73e7df95c9467eac40d5d9eac5e16d9f8dea3ad7bcadf3e06400c63c"></a>DisjunctionForward&#160;</td><td class="fielddoc"></td></tr>
 <tr><td class="fieldname"><a id="a23ce7985a73e7df95c9467eac40d5d9ea726f8215d974d8309f5e669c1c715454" name="a23ce7985a73e7df95c9467eac40d5d9ea726f8215d974d8309f5e669c1c715454"></a>DisjunctionBackward&#160;</td><td class="fielddoc"></td></tr>
 <tr><td class="fieldname"><a id="a23ce7985a73e7df95c9467eac40d5d9eae93a7af9d2b5ab7e9b0c969635cf7d3f" name="a23ce7985a73e7df95c9467eac40d5d9eae93a7af9d2b5ab7e9b0c969635cf7d3f"></a>DisjunctionLrp&#160;</td><td class="fielddoc"></td></tr>
+</table>
+
+</div>
+</div>
+<a id="aa3ee8f8c714e3eed498aa7575f844f30" name="aa3ee8f8c714e3eed498aa7575f844f30"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa3ee8f8c714e3eed498aa7575f844f30">&#9670;&#160;</a></span>LoRARelevance</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">enum class <a class="el" href="namespacepulsatrix.html#aa3ee8f8c714e3eed498aa7575f844f30">pulsatrix::LoRARelevance</a></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">strong</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>How a <a class="el" href="classpulsatrix_1_1LinearModule.html" title="y = x @ W + b, batched (x is (N, in_features), y is (N, out_features)) – migrated from the original u...">LinearModule</a> with an unmerged LoRA adapter (TRN-7, TRN-8) propagates relevance. </p>
+<table class="fieldtable">
+<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="aa3ee8f8c714e3eed498aa7575f844f30a8a9e64d86ed12ad40de129bc7f4683b2" name="aa3ee8f8c714e3eed498aa7575f844f30a8a9e64d86ed12ad40de129bc7f4683b2"></a>Split&#160;</td><td class="fielddoc"><p>The layer is two parallel paths, the base weight W and the adapter's (alpha / r) A B, and the rule runs on both at once, as one Linear layer on the input repeated twice with the two weights stacked. The input relevance is the sum of the two paths' parts, which the adapter keeps (<a class="el" href="classpulsatrix_1_1LoRAAdapter.html#aeef7a59ec14a219a09746a1936068ffd" title="The last split&#39;s input relevance through the adapter, (N, in): what the fine-tuning contributes to th...">LoRAAdapter::last_adapter_relevance()</a>). For the epsilon rule the sum equals Merged's result; Gamma and AlphaBeta treat the paths' positive and negative parts separately, so it differs. </p>
+</td></tr>
+<tr><td class="fieldname"><a id="aa3ee8f8c714e3eed498aa7575f844f30a63911b0b34ebf2a1fbc8f960d1d5cbcb" name="aa3ee8f8c714e3eed498aa7575f844f30a63911b0b34ebf2a1fbc8f960d1d5cbcb"></a>Merged&#160;</td><td class="fielddoc"><p>The rule runs on the adapted weight W + (alpha / r) A B, exactly as on a merged adapter. </p>
+</td></tr>
 </table>
 
 </div>
@@ -5734,6 +5815,43 @@ Every op here computes the <em>forward</em> value only &ndash; no derivative var
 <dl class="exception"><dt>Exceptions</dt><dd>
   <table class="exception">
     <tr><td class="paramname">std::invalid_argument</td><td>if a target matches no module or a module that isn't a <a class="el" href="classpulsatrix_1_1LinearModule.html" title="y = x @ W + b, batched (x is (N, in_features), y is (N, out_features)) – migrated from the original u...">LinearModule</a>, nothing is selected, or a selected layer already has an adapter. Nothing is changed then. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="a948d3e6a331347b43ac1bcd057bcddcd" name="a948d3e6a331347b43ac1bcd057bcddcd"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a948d3e6a331347b43ac1bcd057bcddcd">&#9670;&#160;</a></span>ApplyLoReFT()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::vector&lt; <a class="el" href="classpulsatrix_1_1LoReFTIntervention.html">LoReFTIntervention</a> * &gt; pulsatrix::ApplyLoReFT </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classpulsatrix_1_1CausalLM.html">CausalLM</a> &amp;&#160;</td>
+          <td class="paramname"><em>model</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="structpulsatrix_1_1LoReFTConfig.html">LoReFTConfig</a> &amp;&#160;</td>
+          <td class="paramname"><em>config</em> = <code>{}</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Installs a <a class="el" href="classpulsatrix_1_1LoReFTIntervention.html" title="One block&#39;s LoReFT edit. Parameters, named as pyreft&#39;s state dict:">LoReFTIntervention</a> after each of config.layers' blocks and freezes the rest of the model: only the interventions train. </p>
+<dl class="section return"><dt>Returns</dt><dd>The interventions, in layer order; the model owns them. </dd></dl>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname">std::invalid_argument</td><td>for a layer the model doesn't have, or invalid sizes; std::logic_error if a chosen layer already has an intervention. </td></tr>
   </table>
   </dd>
 </dl>
@@ -12153,6 +12271,42 @@ template&lt;typename Genotype , typename FitnessT &gt; </div>
 
 </div>
 </div>
+<a id="ae3b0dfc13724bbdfc03a49ac20e1517c" name="ae3b0dfc13724bbdfc03a49ac20e1517c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae3b0dfc13724bbdfc03a49ac20e1517c">&#9670;&#160;</a></span>LoadLoReFT()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::vector&lt; <a class="el" href="classpulsatrix_1_1LoReFTIntervention.html">LoReFTIntervention</a> * &gt; pulsatrix::LoadLoReFT </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classpulsatrix_1_1CausalLM.html">CausalLM</a> &amp;&#160;</td>
+          <td class="paramname"><em>model</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const std::string &amp;&#160;</td>
+          <td class="paramname"><em>path</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Installs the interventions in a file <a class="el" href="namespacepulsatrix.html#a0d2d14b16a6b63829b2e38f1f4a72ef9" title="Saves the model&#39;s LoReFT interventions as safetensors: per layer i, pyreft&#39;s state dict under layer....">SaveLoReFT()</a> wrote, or one built from pyreft's per-intervention state dicts under those keys (convert its <code>.bin</code> files with tools/convert/pickle_to_safetensors.py), and freezes the rest of the model. </p>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname">std::invalid_argument</td><td>for missing metadata, an unknown key, a layer the model doesn't have or already intervenes on, or a shape that doesn't fit. Nothing changes then. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
 <a id="a7770a1a560a76af4bf34d00a5289da6f" name="a7770a1a560a76af4bf34d00a5289da6f"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a7770a1a560a76af4bf34d00a5289da6f">&#9670;&#160;</a></span>LoadTokenizerJson()</h2>
 
@@ -12419,6 +12573,33 @@ template&lt;typename Genotype , typename FitnessT &gt; </div>
 
 </div>
 </div>
+<a id="ae8702c2fa603f0c221e089ba7beda88e" name="ae8702c2fa603f0c221e089ba7beda88e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae8702c2fa603f0c221e089ba7beda88e">&#9670;&#160;</a></span>LoraRelevanceSplit()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::vector&lt; <a class="el" href="structpulsatrix_1_1LoraLayerRelevance.html">LoraLayerRelevance</a> &gt; pulsatrix::LoraRelevanceSplit </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classpulsatrix_1_1Module.html">Module</a> &amp;&#160;</td>
+          <td class="paramname"><em>model</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>How much of each adapted layer's relevance went through its adapter in the model's last relevance pass (<a class="el" href="namespacepulsatrix.html#aa3ee8f8c714e3eed498aa7575f844f30a8a9e64d86ed12ad40de129bc7f4683b2">LoRARelevance::Split</a>, the default), in the model's order: where, and for which inputs, the fine-tuning changed the explanation. </p>
+<dl class="section note"><dt>Note</dt><dd>Layers the pass didn't split (disabled or merged adapters, <a class="el" href="namespacepulsatrix.html#aa3ee8f8c714e3eed498aa7575f844f30a63911b0b34ebf2a1fbc8f960d1d5cbcb" title="The rule runs on the adapted weight W + (alpha / r) A B, exactly as on a merged adapter.">LoRARelevance::Merged</a>) are left out. </dd></dl>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname">std::logic_error</td><td>if no layer was split. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
 <a id="a70d91036da1e9b810ec33f0b81f04cc7" name="a70d91036da1e9b810ec33f0b81f04cc7"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a70d91036da1e9b810ec33f0b81f04cc7">&#9670;&#160;</a></span>lrp_rule_name()</h2>
 
@@ -12486,8 +12667,8 @@ template&lt;typename Genotype , typename FitnessT &gt; </div>
 
 </div>
 </div>
-<a id="add21f6178694d0d0795bc60e374dc345" name="add21f6178694d0d0795bc60e374dc345"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#add21f6178694d0d0795bc60e374dc345">&#9670;&#160;</a></span>MakeCachedNextTokenLogits()</h2>
+<a id="a33603f171f9be34ef590dec1beb41980" name="a33603f171f9be34ef590dec1beb41980"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a33603f171f9be34ef590dec1beb41980">&#9670;&#160;</a></span>MakeCachedNextTokenLogits()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -12526,7 +12707,13 @@ template&lt;typename Genotype , typename FitnessT &gt; </div>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">float&#160;</td>
-          <td class="paramname"><em>embed_scale</em> = <code>1.0f</code>&#160;</td>
+          <td class="paramname"><em>embed_scale</em> = <code>1.0f</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="namespacepulsatrix.html#ae12c6d970bf22f916baf3b51a4b31e63">BlockOutputHook</a>&#160;</td>
+          <td class="paramname"><em>after_block</em> = <code>{}</code>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -12542,6 +12729,7 @@ template&lt;typename Genotype , typename FitnessT &gt; </div>
     <tr><td class="paramname">embedding</td><td>Maps <code>(1, L)</code> ids to <code>(1, L, d_model)</code>. </td></tr>
     <tr><td class="paramname">blocks</td><td>Run with forward_cached, in order; each gets its own cache of max_length positions. </td></tr>
     <tr><td class="paramname">head</td><td>Applied to the last position's hidden state <code>(1, d_model)</code>: for example a final <a class="el" href="classpulsatrix_1_1RMSNormModule.html" title="y_{n,i} = gamma_i * x_{n,i} / rms(x_n), rms(x_n) = sqrt(mean_i(x_{n,i}^2) + eps), computed independen...">RMSNormModule</a> and a <a class="el" href="classpulsatrix_1_1TiedLMHeadModule.html" title="logits = x @ E^T, where E is a token embedding table (vocab, d_model) that the head shares rather tha...">TiedLMHeadModule</a>; must end in <code>(1, vocab)</code>. </td></tr>
+    <tr><td class="paramname">after_block</td><td>Optional; see BlockOutputHook. The prompt is the sequence of the first call, or of any call that changes it: one that doesn't just extend the previous sequence past it. </td></tr>
   </table>
   </dd>
 </dl>
@@ -15330,6 +15518,26 @@ template&lt;typename T &gt; </div>
 </div><div class="memdoc">
 
 <p>The name ToCircuitGraphDocument writes for <code>op_type</code>, for example <code>"Linear"</code>. </p>
+
+</div>
+</div>
+<a id="a9daada0b339d6e98183d9c877a4f5b59" name="a9daada0b339d6e98183d9c877a4f5b59"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9daada0b339d6e98183d9c877a4f5b59">&#9670;&#160;</a></span>OrthonormalizeLoReFT()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void pulsatrix::OrthonormalizeLoReFT </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classpulsatrix_1_1CausalLM.html">CausalLM</a> &amp;&#160;</td>
+          <td class="paramname"><em>model</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>orthonormalize() on every LoReFT intervention of the model: call it after each optimizer step. </p>
 
 </div>
 </div>
@@ -20828,6 +21036,42 @@ template&lt;typename ObjectiveFn , typename RNG &gt; </div>
 <dl class="exception"><dt>Exceptions</dt><dd>
   <table class="exception">
     <tr><td class="paramname">std::invalid_argument</td><td>if the model has no adapters, the adapters' rank, alpha or dropout differ, a merged adapter is saved (its update is in the base weight), or a layer has no whole-weight mapping; std::runtime_error if the files can't be written. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="a0d2d14b16a6b63829b2e38f1f4a72ef9" name="a0d2d14b16a6b63829b2e38f1f4a72ef9"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0d2d14b16a6b63829b2e38f1f4a72ef9">&#9670;&#160;</a></span>SaveLoReFT()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void pulsatrix::SaveLoReFT </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classpulsatrix_1_1CausalLM.html">CausalLM</a> &amp;&#160;</td>
+          <td class="paramname"><em>model</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const std::string &amp;&#160;</td>
+          <td class="paramname"><em>path</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Saves the model's LoReFT interventions as safetensors: per layer i, pyreft's state dict under <code>layer.&lt;i&gt;.rotate_layer</code>, <code>layer.&lt;i&gt;.learned_source.weight</code> and <code>layer.&lt;i&gt;.learned_source.bias</code>, in pyreft's layouts, with metadata <code>first</code> and <code>last</code>. </p>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname">std::invalid_argument</td><td>if the model has none, or they edit different positions. </td></tr>
   </table>
   </dd>
 </dl>

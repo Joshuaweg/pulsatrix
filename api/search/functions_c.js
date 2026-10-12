@@ -5,7 +5,7 @@ var searchData=
   ['make_5fvariable_2',['make_variable',['../classpulsatrix_1_1datalog_1_1Term.html#aafa9c17f14a551d5ffbd7eb8b31c309e',1,'pulsatrix::datalog::Term']]],
   ['makeanthropicprovider_3',['MakeAnthropicProvider',['../namespacepulsatrix_1_1orch.html#a50c1108594cb3e1dc78fc51aab620fac',1,'pulsatrix::orch']]],
   ['makebytetokenizer_4',['MakeByteTokenizer',['../namespacepulsatrix.html#abe1f90f0013f3fd10785ef875351d7b4',1,'pulsatrix']]],
-  ['makecachednexttokenlogits_5',['MakeCachedNextTokenLogits',['../namespacepulsatrix.html#add21f6178694d0d0795bc60e374dc345',1,'pulsatrix']]],
+  ['makecachednexttokenlogits_5',['MakeCachedNextTokenLogits',['../namespacepulsatrix.html#a33603f171f9be34ef590dec1beb41980',1,'pulsatrix']]],
   ['makechartokenizer_6',['MakeCharTokenizer',['../namespacepulsatrix.html#a42a51b3f39ce4900e0f3bcb50d83e404',1,'pulsatrix']]],
   ['makecontactmapdocument_7',['MakeContactMapDocument',['../namespacepulsatrix.html#a2fa6760122e251b331f67f62eeb33a70',1,'pulsatrix']]],
   ['makeesmtokenizer_8',['MakeEsmTokenizer',['../namespacepulsatrix.html#a73c55d10c6a32a7c7e755166a530a2e2',1,'pulsatrix']]],

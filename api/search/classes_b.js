@@ -15,11 +15,14 @@ var searchData=
   ['localsensitivityresult_12',['LocalSensitivityResult',['../structpulsatrix_1_1LocalSensitivityResult.html',1,'pulsatrix']]],
   ['loraadapter_13',['LoRAAdapter',['../classpulsatrix_1_1LoRAAdapter.html',1,'pulsatrix']]],
   ['loraconfig_14',['LoRAConfig',['../structpulsatrix_1_1LoRAConfig.html',1,'pulsatrix']]],
-  ['lossrecovered_15',['LossRecovered',['../structpulsatrix_1_1LossRecovered.html',1,'pulsatrix']]],
-  ['lrp_16',['LRP',['../classpulsatrix_1_1LRP.html',1,'pulsatrix']]],
-  ['lrpruleconfig_17',['LRPRuleConfig',['../structpulsatrix_1_1LRPRuleConfig.html',1,'pulsatrix']]],
-  ['lrptarget_18',['LRPTarget',['../structpulsatrix_1_1LRPTarget.html',1,'pulsatrix']]],
-  ['lrschedule_19',['LRSchedule',['../classpulsatrix_1_1LRSchedule.html',1,'pulsatrix']]],
-  ['lrscheduler_20',['LRScheduler',['../classpulsatrix_1_1LRScheduler.html',1,'pulsatrix']]],
-  ['lstmmodule_21',['LSTMModule',['../classpulsatrix_1_1LSTMModule.html',1,'pulsatrix']]]
+  ['loralayerrelevance_15',['LoraLayerRelevance',['../structpulsatrix_1_1LoraLayerRelevance.html',1,'pulsatrix']]],
+  ['loreftconfig_16',['LoReFTConfig',['../structpulsatrix_1_1LoReFTConfig.html',1,'pulsatrix']]],
+  ['loreftintervention_17',['LoReFTIntervention',['../classpulsatrix_1_1LoReFTIntervention.html',1,'pulsatrix']]],
+  ['lossrecovered_18',['LossRecovered',['../structpulsatrix_1_1LossRecovered.html',1,'pulsatrix']]],
+  ['lrp_19',['LRP',['../classpulsatrix_1_1LRP.html',1,'pulsatrix']]],
+  ['lrpruleconfig_20',['LRPRuleConfig',['../structpulsatrix_1_1LRPRuleConfig.html',1,'pulsatrix']]],
+  ['lrptarget_21',['LRPTarget',['../structpulsatrix_1_1LRPTarget.html',1,'pulsatrix']]],
+  ['lrschedule_22',['LRSchedule',['../classpulsatrix_1_1LRSchedule.html',1,'pulsatrix']]],
+  ['lrscheduler_23',['LRScheduler',['../classpulsatrix_1_1LRScheduler.html',1,'pulsatrix']]],
+  ['lstmmodule_24',['LSTMModule',['../classpulsatrix_1_1LSTMModule.html',1,'pulsatrix']]]
 ];

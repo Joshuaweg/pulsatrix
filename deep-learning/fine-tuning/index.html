@@ -496,10 +496,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#explaining-an-adapted-model" class="md-nav__link">
+  <a href="#explaining-an-adapted-model-what-did-the-fine-tuning-add" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Explaining an adapted model
+        Explaining an adapted model: what did the fine-tuning add?
       
     </span>
   </a>
@@ -518,10 +518,60 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#limits" class="md-nav__link">
+  <a href="#loras-limits" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Limits
+        LoRA's limits
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#loreft" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        LoReFT
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="LoReFT">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#explaining-a-loreft-model" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Explaining a LoReFT model
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#files" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Files
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#lorefts-limits" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        LoReFT's limits
       
     </span>
   </a>
@@ -2529,10 +2579,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#explaining-an-adapted-model" class="md-nav__link">
+  <a href="#explaining-an-adapted-model-what-did-the-fine-tuning-add" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Explaining an adapted model
+        Explaining an adapted model: what did the fine-tuning add?
       
     </span>
   </a>
@@ -2551,10 +2601,60 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#limits" class="md-nav__link">
+  <a href="#loras-limits" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Limits
+        LoRA's limits
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#loreft" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        LoReFT
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="LoReFT">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#explaining-a-loreft-model" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Explaining a LoReFT model
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#files" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Files
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#lorefts-limits" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        LoReFT's limits
       
     </span>
   </a>
@@ -2686,12 +2786,46 @@ PyTorch's values: a run seeded the same way in PEFT starts from different A matr
 </table>
 <p>The same calls exist per layer on <code>LinearModule</code>: <code>merge_lora()</code>, <code>unmerge_lora()</code>,
 <code>set_lora_enabled()</code>, <code>detach_lora()</code> and <code>lora()</code>.</p>
-<h3 id="explaining-an-adapted-model">Explaining an adapted model<a class="headerlink" href="#explaining-an-adapted-model" title="Permanent link">&para;</a></h3>
-<p>An adapted layer's <code>propagate_relevance()</code> treats it as the single linear map
-W + (alpha / r) A B, so every LRP rule, AttnLRP and the other explainers run on a LoRA model
-unchanged. The relevance is the same whether the adapter is merged or not, up to float32
-rounding. Splitting relevance between the base path and the adapter path, to see what the
-fine-tuning changed, is the next roadmap item (TRN-8).</p>
+<h3 id="explaining-an-adapted-model-what-did-the-fine-tuning-add">Explaining an adapted model: what did the fine-tuning add?<a class="headerlink" href="#explaining-an-adapted-model-what-did-the-fine-tuning-add" title="Permanent link">&para;</a></h3>
+<p>Every LRP rule, AttnLRP and the other explainers run on a LoRA model unchanged. An adapted layer
+also splits its relevance in two parts:
+- the part that reaches its input through the base weight W;
+- the part that reaches it through the adapter (alpha / r) A B.</p>
+<p>The two parts sum to the layer's input relevance. After a relevance pass, <code>LoraRelevanceSplit()</code>
+reports each adapted layer's split. A layer with a large adapter share is one whose explanation
+the fine-tuning changed. Within a layer, the adapter's <code>(N, in)</code> tensor shows which inputs and
+which features changed.</p>
+<div class="highlight"><pre><span></span><code><span class="n">LoadLoraAdapter</span><span class="p">(</span><span class="o">*</span><span class="n">model</span><span class="p">,</span><span class="w"> </span><span class="s">"my-adapter"</span><span class="p">,</span><span class="w"> </span><span class="n">HuggingFaceMapping</span><span class="p">(</span><span class="n">model</span><span class="o">-&gt;</span><span class="n">config</span><span class="p">()));</span>
+<span class="k">const</span><span class="w"> </span><span class="n">Tensor</span><span class="w"> </span><span class="n">logits</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">model</span><span class="o">-&gt;</span><span class="n">forward</span><span class="p">(</span><span class="n">tokens</span><span class="p">);</span>
+<span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="n">model</span><span class="o">-&gt;</span><span class="n">propagate_relevance</span><span class="p">(</span><span class="n">target_relevance</span><span class="p">,</span><span class="w"> </span><span class="n">LRPRuleConfig</span><span class="p">{});</span>
+<span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="n">LoraLayerRelevance</span><span class="o">&amp;</span><span class="w"> </span><span class="n">layer</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="n">LoraRelevanceSplit</span><span class="p">(</span><span class="o">*</span><span class="n">model</span><span class="p">))</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">std</span><span class="o">::</span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">layer</span><span class="p">.</span><span class="n">name</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">": base "</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">layer</span><span class="p">.</span><span class="n">base_total</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">", adapter "</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">layer</span><span class="p">.</span><span class="n">adapter_total</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">"</span><span class="se">\n</span><span class="s">"</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div>
+<p>To read one layer directly, use <code>LoRAAdapter::last_base_relevance()</code> and
+<code>last_adapter_relevance()</code>. Both are cleared by the next <code>forward()</code>.</p>
+<p><strong>How the split is computed.</strong> The layer is treated as two parallel paths. The rule runs on both
+at once, as on a single Linear layer whose input is x repeated twice and whose weight is W and
+(alpha / r) A B stacked. Every rule's denominator therefore sees both paths. What that means
+depends on the rule:</p>
+<ul>
+<li><strong>Epsilon</strong> (the default). Each path gets x_i w_ij R_j / z_j, where z is the whole layer's
+  output. The two parts add up exactly to the relevance of the merged layer, so splitting changes
+  nothing about the explanation itself.</li>
+<li><strong>Gamma and AlphaBeta (z⁺).</strong> These rules favour positive weights. The positive part of the
+  merged weight, (W + sAB)⁺, is not W⁺ + (sAB)⁺, so the split relevance differs from the merged
+  layer's, sometimes by a lot. Both are conservative. They answer different questions: the split
+  treats the fine-tune as a separate circuit added next to the base model, and the merged form
+  treats the fine-tuned model as one new model.</li>
+</ul>
+<p><code>LRPRuleConfig::lora_relevance</code> chooses between them:
+- <code>LoRARelevance::Split</code> (the default) splits the layer as above.
+- <code>LoRARelevance::Merged</code> runs the rule on the adapted weight, so an unmerged adapter gives
+  exactly the relevance a merged one does.</p>
+<p>A merged adapter (<code>MergeLora()</code>) can't be split, because its update is already part of W. A
+disabled adapter isn't split either. Neither reports a split.</p>
+<p>To see what a fine-tune changed, compare the relevance with the adapters off
+(<code>SetLoraEnabled(model, false)</code>) and on.</p>
 <h3 id="peft-adapter-files">PEFT adapter files<a class="headerlink" href="#peft-adapter-files" title="Permanent link">&para;</a></h3>
 <p><code>SaveLoraAdapter()</code> writes the directory PEFT's <code>PeftModel.from_pretrained()</code> reads:</p>
 <ul>
@@ -2724,7 +2858,7 @@ on a tiny Qwen2 model, on every projection. Loaded into pulsatrix:</p>
 <li><code>SaveLoraAdapter()</code> writes back the same keys, shapes and values as PEFT's file.</li>
 </ul>
 <p><code>ApplyLora()</code>'s default selects the same layers as PEFT's <code>"all-linear"</code>.</p>
-<h3 id="limits">Limits<a class="headerlink" href="#limits" title="Permanent link">&para;</a></h3>
+<h3 id="loras-limits">LoRA's limits<a class="headerlink" href="#loras-limits" title="Permanent link">&para;</a></h3>
 <ul>
 <li>Only <code>LinearModule</code> layers take adapters: not convolutions, embeddings or the tied
   language-model head.</li>
@@ -2733,6 +2867,80 @@ on a tiny Qwen2 model, on every projection. Loaded into pulsatrix:</p>
   <code>SequentialModule</code> and <code>ResidualModule</code>. A custom container can override <code>named_children()</code>
   the same way.</li>
 <li>rsLoRA, LoRA+ and DoRA are roadmap item TRN-13.</li>
+</ul>
+<h2 id="loreft">LoReFT<a class="headerlink" href="#loreft" title="Permanent link">&para;</a></h2>
+<p>LoReFT (Wu et al., 2024, "ReFT: Representation Finetuning for Language Models") leaves every weight
+of the model alone. It trains a small edit of the hidden states instead, at a few positions after
+chosen layers. At each edited position, the residual stream h after a block becomes</p>
+<div class="highlight"><pre><span></span><code>h' = h + Rᵀ (W h + b − R h)
+</code></pre></div>
+<p>R is <code>(r, d)</code> with orthonormal rows. In the r-dimensional subspace that R spans, the edit replaces
+the hidden state's coordinates R h with learned ones, W h + b. Outside the subspace, h doesn't
+move. That makes the fine-tune an interpretable object in its own right: a few directions in
+representation space and what is written into them. It is also very small, 2rd + r values per
+layer.</p>
+<div class="highlight"><pre><span></span><code><span class="cp">#include</span><span class="w"> </span><span class="cpf">"pulsatrix/loreft.hpp"</span>
+
+<span class="n">LoReFTConfig</span><span class="w"> </span><span class="n">reft</span><span class="p">;</span>
+<span class="n">reft</span><span class="p">.</span><span class="n">rank</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">4</span><span class="p">;</span>
+<span class="n">reft</span><span class="p">.</span><span class="n">layers</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="mi">4</span><span class="p">,</span><span class="w"> </span><span class="mi">8</span><span class="p">};</span><span class="w">            </span><span class="c1">// empty: every layer</span>
+<span class="n">reft</span><span class="p">.</span><span class="n">first</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">3</span><span class="p">;</span><span class="w">                  </span><span class="c1">// edit the first 3 and the last 3 prompt positions:</span>
+<span class="n">reft</span><span class="p">.</span><span class="n">last</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">3</span><span class="p">;</span><span class="w">                   </span><span class="c1">// pyreft's "f3+l3"</span>
+<span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="n">LoReFTIntervention</span><span class="o">*&gt;</span><span class="w"> </span><span class="n">edits</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">ApplyLoReFT</span><span class="p">(</span><span class="o">*</span><span class="n">model</span><span class="p">,</span><span class="w"> </span><span class="n">reft</span><span class="p">);</span><span class="w">  </span><span class="c1">// and freezes the model</span>
+
+<span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="cm">/* each batch */</span><span class="p">;;)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">opt</span><span class="p">.</span><span class="n">zero_grad</span><span class="p">(</span><span class="o">*</span><span class="n">model</span><span class="p">);</span>
+<span class="w">    </span><span class="k">const</span><span class="w"> </span><span class="kt">float</span><span class="w"> </span><span class="n">value</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">loss</span><span class="p">.</span><span class="n">forward</span><span class="p">(</span><span class="n">model</span><span class="o">-&gt;</span><span class="n">forward</span><span class="p">(</span><span class="n">tokens</span><span class="p">),</span><span class="w"> </span><span class="n">targets</span><span class="p">);</span>
+<span class="w">    </span><span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="n">model</span><span class="o">-&gt;</span><span class="n">backward</span><span class="p">(</span><span class="n">loss</span><span class="p">.</span><span class="n">backward</span><span class="p">());</span>
+<span class="w">    </span><span class="n">opt</span><span class="p">.</span><span class="n">step</span><span class="p">(</span><span class="o">*</span><span class="n">model</span><span class="p">);</span>
+<span class="w">    </span><span class="n">OrthonormalizeLoReFT</span><span class="p">(</span><span class="o">*</span><span class="n">model</span><span class="p">);</span><span class="w">  </span><span class="c1">// put R back on the orthonormal set</span>
+<span class="p">}</span>
+<span class="n">SaveLoReFT</span><span class="p">(</span><span class="o">*</span><span class="n">model</span><span class="p">,</span><span class="w"> </span><span class="s">"reft.safetensors"</span><span class="p">);</span>
+</code></pre></div>
+<p>The interventions belong to the <code>CausalLM</code> (<code>set_intervention()</code>, <code>intervention()</code>). Their
+parameters join <code>named_parameters()</code> as <code>interventions.&lt;layer&gt;.rotate_layer</code>,
+<code>interventions.&lt;layer&gt;.learned_source.weight</code> and <code>interventions.&lt;layer&gt;.learned_source.bias</code>.
+They run in <code>forward()</code>, <code>backward()</code> and the relevance passes. They also run in generation, which
+edits the prompt's positions only, as pyreft does: tokens the model generates aren't edited.</p>
+<p><strong>Keeping R orthonormal.</strong> A gradient step moves R off the set of orthonormal matrices, so call
+<code>OrthonormalizeLoReFT(model)</code> (or <code>orthonormalize()</code> on one intervention) after each optimizer
+step. pyreft keeps R orthonormal with PyTorch's orthogonal parametrization instead. For the same
+R, the edit, its gradient with respect to R and its relevance are identical, but a training run
+takes a different path through parameter space than pyreft's.</p>
+<p><strong>Initialization.</strong> As in pyreft, R starts orthonormal and W and b start like an <code>nn.Linear</code>
+layer, uniform on ±1/√d. Unlike LoRA, the edit is not zero at the start. The values come from
+<code>LoReFTConfig::seed</code> through raw <code>mt19937_64</code> output.</p>
+<h3 id="explaining-a-loreft-model">Explaining a LoReFT model<a class="headerlink" href="#explaining-a-loreft-model" title="Permanent link">&para;</a></h3>
+<p>The edit is affine in h: h' = h (I + (Wᵀ − Rᵀ) R) + b R. LRP therefore propagates through it
+exactly with the epsilon rule. The bias b R takes no relevance, as with every Linear layer here.</p>
+<p>Like a split LoRA layer, the edit is treated as two paths: the identity, which keeps h, and the
+edit, which rewrites the subspace. The rule runs on both together. <code>last_edit_relevance()</code> returns
+the edit's part, <code>(N, L, d)</code>, which is zero at positions the intervention didn't touch. Large
+values show where the fine-tune's rewrite drives the explanation.</p>
+<h3 id="files">Files<a class="headerlink" href="#files" title="Permanent link">&para;</a></h3>
+<p><code>SaveLoReFT()</code> writes one safetensors file with, for each layer i, pyreft's state dict in pyreft's
+layouts:
+- <code>layer.&lt;i&gt;.rotate_layer</code> (<code>(d, r)</code>);
+- <code>layer.&lt;i&gt;.learned_source.weight</code> (<code>(r, d)</code>);
+- <code>layer.&lt;i&gt;.learned_source.bias</code>.</p>
+<p>The positions are stored as <code>first</code> and <code>last</code> in the file's metadata. <code>LoadLoReFT()</code> reads such a
+file. pyreft saves each intervention as a PyTorch <code>.bin</code> state dict: convert those with
+<code>tools/convert/pickle_to_safetensors.py</code>, rename the keys as above, and add the metadata.</p>
+<p><strong>Checked against pyreft.</strong> <code>tools/golden/make_loreft_golden.py</code> uses pyreft 0.1.0's own
+<code>LoreftIntervention</code> on a tiny Qwen2 model, with rank 2 at layers 0 and 1 and positions
+"f1+l2". Loaded into pulsatrix:</p>
+<ul>
+<li>the logits match to 1e-4, on the CPU and on the GPU;</li>
+<li>the gradients of R, W and b match;</li>
+<li>greedy generation gives pyreft's tokens, which differ from the base model's.</li>
+</ul>
+<h3 id="lorefts-limits">LoReFT's limits<a class="headerlink" href="#lorefts-limits" title="Permanent link">&para;</a></h3>
+<ul>
+<li>Interventions run on <code>CausalLM</code> only, after a block. Other places pyreft can intervene, such as
+  attention outputs, aren't supported.</li>
+<li>Every sequence in a batch is edited at the same positions, so batches must not be padded.</li>
+<li>Only the linear activation, pyreft's default, is supported; it is what keeps LRP exact.</li>
+<li>pyreft's dropout on the intervention isn't supported.</li>
 </ul>
 
 
