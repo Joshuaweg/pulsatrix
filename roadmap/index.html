@@ -5781,9 +5781,9 @@ output can move when its input moves, and those bounds compose. So every result 
 certified error bar (<code>Certified&lt;T&gt;{value, bound, provenance}</code>) that adds up the fp32 distance
 error, the subsampling error and the vectorization error. The API doesn't expose <code>Functor</code>
 classes that nothing checks.</p>
-<p>Pulsatrix writes H0 itself (a minimum spanning tree, on CPU and GPU), vendors Ripser (MIT) for H1
-and H2, and writes the distances, vectorizations and significance tests itself. GUDHI's
-GPL-licensed parts and giotto-ph (AGPL) are avoided.</p>
+<p>Pulsatrix writes all of it itself: H0 (a minimum spanning tree), H1 and H2 (Ripser's algorithm,
+reimplemented; see TDA-4 below), the distances, the vectorizations and the significance tests.
+GUDHI's GPL-licensed parts and giotto-ph (AGPL) are avoided.</p>
 <table>
 <thead>
 <tr>
@@ -5831,7 +5831,7 @@ GPL-licensed parts and giotto-ph (AGPL) are avoided.</p>
 <td>TDA-2</td>
 <td>P0</td>
 <td>M</td>
-<td></td>
+<td>Done (see below)</td>
 </tr>
 <tr>
 <td>TDA-5</td>
@@ -5974,7 +5974,20 @@ GPL-licensed parts and giotto-ph (AGPL) are avoided.</p>
   little. It also returns the tree's edges, shortest first, and <code>SingleLinkageClusters()</code> cuts
   them at a scale. <code>PersistenceDiagram</code> (<code>tda/persistence_diagram.hpp</code>) starts here as a plain
   list of pairs with an error bound; TDA-5 adds its distances.</li>
+<li><strong>TDA-4</strong> is written for pulsatrix (<code>tda/rips_persistence.hpp</code>), not vendored: the user chose
+  that when downloading Ripser was blocked as third-party code. It follows Ripser's algorithm
+  (Bauer 2021): persistent cohomology, an implicit coboundary in the combinatorial number
+  system, clearing, and zero-persistence apparent pairs, with any prime field Z/p. It returns
+  critical edges and representative cocycles, as planned. Ripser's outputs couldn't serve as the
+  test oracle, so the tests check mathematical facts instead:</li>
+<li>the Adamaszek–Adams homotopy types of points on a circle;</li>
+<li>Betti numbers from boundary-matrix ranks at every scale;</li>
+<li>the Euler characteristic;</li>
+<li>the cocycle condition.</li>
 </ul>
+<p>Planted bugs (dropped signs, skipped reductions, a broken apparent-pair check) each fail
+  several of them. On a CPU it computes H1 of 2,000 points in about a second and H2 of 600
+  points in about 4 seconds.</p>
 <p>Not planned: "neural persistence" on weight graphs. A 2023 follow-up showed it mostly measures
 weight variance.</p>
 <h2 id="kd-surrogates-and-student-teacher">KD: Surrogates and student-teacher<a class="headerlink" href="#kd-surrogates-and-student-teacher" title="Permanent link">&para;</a></h2>

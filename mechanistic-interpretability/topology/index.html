@@ -840,6 +840,17 @@
   
 </li>
       
+        <li class="md-nav__item">
+  <a href="#loops-and-voids-h1-h2-and-up" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Loops and voids (H1, H2 and up)
+      
+    </span>
+  </a>
+  
+</li>
+      
     </ul>
   
 </nav>
@@ -2383,6 +2394,17 @@
   
 </li>
       
+        <li class="md-nav__item">
+  <a href="#loops-and-voids-h1-h2-and-up" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Loops and voids (H1, H2 and up)
+      
+    </span>
+  </a>
+  
+</li>
+      
     </ul>
   
 </nav>
@@ -2412,7 +2434,7 @@ noise and a random-network control?</p>
 <p>pulsatrix builds this as a pipeline, one stage at a time:</p>
 <div class="highlight"><pre><span></span><code>PointCloud → distances → filtration → persistence diagram → numbers and plots
 </code></pre></div>
-<p>This page grows with each stage. So far it covers the point cloud, the distances, and the first diagram: H0.</p>
+<p>This page grows with each stage. So far it covers the point cloud, the distances, and the diagrams: H0, then loops, voids and higher.</p>
 <h2 id="from-activations-to-a-point-cloud">From activations to a point cloud<a class="headerlink" href="#from-activations-to-a-point-cloud" title="Permanent link">&para;</a></h2>
 <p><code>PointCloud</code> gathers a layer's activations, batch by batch, into one set of points. Each point
 remembers the sample and position it came from, so a loop found later can be traced back to the
@@ -2542,7 +2564,96 @@ spanning tree. <code>ComputeH0()</code> finds the tree exactly with Prim's algor
 nearest-neighbor distances see. Many recent papers on the topology of language models use only
 H0. Before trusting such a result, check it against plain
 <a href="../representations/#nearest-neighbors">nearest-neighbor statistics</a>. Loops and voids (H1, H2)
-are where persistent homology sees something new; they come next.</p>
+are where persistent homology sees something new.</p>
+<h2 id="loops-and-voids-h1-h2-and-up">Loops and voids (H1, H2 and up)<a class="headerlink" href="#loops-and-voids-h1-h2-and-up" title="Permanent link">&para;</a></h2>
+<p><code>ComputeRipsPersistence()</code> computes the diagrams of the Vietoris–Rips filtration in every
+dimension up to <code>max_dimension</code>. A simplex joins the complex at its diameter, and loops (H1)
+and voids (H2) form and fill in as the scale grows:</p>
+<div class="highlight"><pre><span></span><code><span class="cp">#include</span><span class="w"> </span><span class="cpf">"pulsatrix/tda/rips_persistence.hpp"</span>
+
+<span class="n">RipsOptions</span><span class="w"> </span><span class="n">options</span><span class="p">;</span>
+<span class="n">options</span><span class="p">.</span><span class="n">max_dimension</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">2</span><span class="p">;</span><span class="w">   </span><span class="c1">// H0, H1 and H2</span>
+<span class="k">const</span><span class="w"> </span><span class="n">RipsResult</span><span class="w"> </span><span class="n">r</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">ComputeRipsPersistence</span><span class="p">(</span><span class="n">PairwiseDistances</span><span class="p">(</span><span class="n">cloud</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">backend</span><span class="p">),</span><span class="w"> </span><span class="n">options</span><span class="p">);</span>
+<span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="n">RipsFeature</span><span class="o">&amp;</span><span class="w"> </span><span class="n">loop</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="n">r</span><span class="p">.</span><span class="n">features</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="c1">// loop.pair.birth, loop.pair.death; r.diagrams[1] has the same pairs.</span>
+<span class="w">    </span><span class="c1">// loop.birth_edge, loop.death_edge: the edges whose lengths are the birth and the death.</span>
+<span class="p">}</span>
+</code></pre></div>
+<ul>
+<li><strong>Where a feature comes from.</strong> Each feature names its <em>critical edges</em>. The birth edge is the
+  longest edge of the simplex that creates the feature; the death edge is the longest edge of
+  the one that fills it in. Their endpoints, through <code>cloud.origins()</code>, are inputs.</li>
+<li><strong>Representative cocycles.</strong> With <code>RipsOptions::cocycles</code>, each feature in H1 and up comes with
+  a cocycle: a value on edges (for H1) whose coboundary vanishes on every triangle present
+  before the death. A loop's cocycle is nonzero summed around the loop. Circular coordinates,
+  which place points on the loop, are built from it.</li>
+<li><strong>Coefficients.</strong> <code>coefficient</code> is the prime p of the field Z/p, 2 by default. Diagrams over
+  different primes differ only for spaces with torsion, such as the projective plane. Circular
+  coordinates need a prime above 2, to lift the cocycle to the integers.</li>
+<li><strong>The threshold.</strong> By default it is the enclosing radius, the smallest over points of the
+  distance to the farthest one. There the complex is a cone, so every loop and void has died
+  and nothing is cut short. With a lower <code>threshold</code>, features still alive at it are reported
+  as essential (death ∞).</li>
+</ul>
+<p><strong>How it is computed.</strong> It follows the algorithm of Bauer's Ripser (2021), written for pulsatrix
+rather than vendored:</p>
+<ul>
+<li>persistent cohomology, which pairs the same intervals as homology;</li>
+<li>simplices named by their index in the combinatorial number system, with coboundaries
+  enumerated on demand rather than stored;</li>
+<li>clearing, and zero-persistence apparent pairs, which are settled without any reduction.</li>
+</ul>
+<p>On a CPU (Release build, points in 3 dimensions) it takes:</p>
+<table>
+<thead>
+<tr>
+<th>Points</th>
+<th>Dimensions</th>
+<th>Time</th>
+<th>Memory</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1,000</td>
+<td>H0, H1</td>
+<td>0.25 s</td>
+<td></td>
+</tr>
+<tr>
+<td>2,000</td>
+<td>H0, H1</td>
+<td>1.2 s</td>
+<td></td>
+</tr>
+<tr>
+<td>300</td>
+<td>H0 to H2</td>
+<td>0.5 s</td>
+<td></td>
+</tr>
+<tr>
+<td>600</td>
+<td>H0 to H2</td>
+<td>4.1 s</td>
+<td>125 MB peak for the whole run</td>
+</tr>
+</tbody>
+</table>
+<p>Cost grows quickly with the number of points and the dimension. Above a few thousand points
+for H1, or about a thousand for H2, choose landmarks first (coming next).</p>
+<p><strong>How it is checked.</strong> Nothing here relies on another library's output:</p>
+<ul>
+<li><strong>A theorem.</strong> Evenly spaced points on a circle have a known Rips complex at every scale
+  (Adamaszek and Adams, 2017). For 12 points: one loop from the side length to the chord of 4
+  steps, then exactly three voids from there to the chord of 5 steps.</li>
+<li><strong>Betti numbers from scratch.</strong> For every subset of 7 random points, at every scale, the
+  ranks of the boundary matrices over Z/2 and Z/3 give the Betti numbers. The pairs alive at
+  that scale must match them in every dimension.</li>
+<li><strong>The Euler characteristic.</strong> On 8 random points it matches at every scale.</li>
+<li><strong>The cocycle condition</strong>, and the winding of a circle's cocycle.</li>
+<li><strong>H0</strong> matches the minimum spanning tree.</li>
+</ul>
 <p>Full API reference: <a href="../api/group__tda.html">Doxygen: Topological Data Analysis</a></p>
 
 
