@@ -242,6 +242,7 @@ add_executable(pulsatrix_tests
     h0_test.cpp
     rips_persistence_test.cpp
     diagram_distance_test.cpp
+    vectorization_test.cpp
     sparse_autoencoder_test.cpp
     saliency_test.cpp
     lrp_test.cpp
