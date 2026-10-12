@@ -981,7 +981,7 @@ GPL-licensed parts and giotto-ph (AGPL) are avoided.
 | ID | Item | Why | Depends on | P | Effort | Status |
 |---|---|---|---|---|---|---|
 | TDA-1 | A `PointCloud` built from `ActivationSnapshot`s, with flatten and pooling options, concatenated across batches | The input to everything below | — | P0 | S | Done (see below) |
-| TDA-2 | Pairwise distances via GEMM on every backend, with an fp32 error bound | Distances are the only part that touches the model's dimension | TDA-1 | P0 | S |  |
+| TDA-2 | Pairwise distances via GEMM on every backend, with an fp32 error bound | Distances are the only part that touches the model's dimension | TDA-1 | P0 | S | Done (see below) |
 | TDA-3 | H0 as a minimum spanning tree | Exact, fast and GPU-friendly | TDA-2 | P0 | S |  |
 | TDA-4 | Vendored Ripser for H1 and H2, returning critical edges and cocycles | Loops and voids | TDA-2 | P0 | M |  |
 | TDA-5 | `Diagram`, bottleneck and Wasserstein distances, `Certified<T>`, and property tests for stability | Compare layers, models and seeds with certified error | TDA-3, TDA-4 | P0 | M |  |
@@ -1006,6 +1006,14 @@ GPL-licensed parts and giotto-ph (AGPL) are avoided.
   over every axis but a configurable feature axis, so a convolution's pixels and a sequence
   model's tokens use the same code. Points stay on the host as float32; `ToTensor()` places them
   on a backend for TDA-2.
+- **TDA-2** follows the plan in `tda/distance_matrix.hpp`. The error bound is rigorous: the
+  float32 dot-product bound γ_d ‖x‖ ‖y‖ (Higham), plus the double-precision norms and
+  combination, the rounding of centered or normalized points, and the final rounding, as an
+  interval on each squared distance. `error_bound` is the maximum over pairs, which is what
+  stability needs (d_B ≤ ‖D − D′‖∞). Additions: `center` (it cuts the bound by orders of
+  magnitude when points share an offset), `normalize`, an `Exact` method in double, and blocked
+  GEMMs over the upper triangle so device memory stays bounded. Distances are stored condensed in
+  scipy's pdist order, which Ripser (TDA-4) reads as an upper-triangular matrix.
 
 Not planned: "neural persistence" on weight graphs. A 2023 follow-up showed it mostly measures
 weight variance.
