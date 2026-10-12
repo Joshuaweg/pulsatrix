@@ -240,6 +240,7 @@ add_executable(pulsatrix_tests
     point_cloud_test.cpp
     distance_matrix_test.cpp
     h0_test.cpp
+    rips_persistence_test.cpp
     sparse_autoencoder_test.cpp
     saliency_test.cpp
     lrp_test.cpp

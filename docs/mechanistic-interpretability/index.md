@@ -26,6 +26,7 @@ attribution graphs of a language model's prediction.
 | How do I turn a layer's activations into points for topological data analysis? | `PointCloud`, `MakePointCloud` | [Topology](topology.md#from-activations-to-a-point-cloud) |
 | What are the distances between those points, and how far off can float32 make them? | `PairwiseDistances`, `DistanceMatrix::error_bound` | [Topology](topology.md#distances-with-an-error-bar) |
 | Which clusters does a layer form, and over what range of scales do they stay apart? | `ComputeH0`, `SingleLinkageClusters` | [Topology](topology.md#clusters-across-scales-h0) |
+| Does a layer arrange inputs in loops or around voids? Which inputs form them? | `ComputeRipsPersistence`, critical edges, cocycles | [Topology](topology.md#loops-and-voids-h1-h2-and-up) |
 | Does a concept, given by examples, push the model towards a class? | `RunTcav`, `TrainCav` | [Probes and concepts](probes-and-concepts.md#concepts-tcav) |
 | Which of a layer's channels does an LRP explanation pass through, and where in the input is each? | `ChannelRelevance`, `ConditionalHeatmaps`, `ConceptReferenceSamples` (CRP) | [LRP](../interpretability/lrp.md#concepts-concept-relevance-propagation) |
 | Which directions in a layer stand for concepts, found without labels? | Sparse autoencoders: `TopKSparseAutoencoder`, `JumpReLUSparseAutoencoder`, `SparseAutoencoder` | [Finding features](featurizers.md) |

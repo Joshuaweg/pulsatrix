@@ -223,7 +223,7 @@ below record the reasoning they were built on.
   - Single linkage is the unique stable functorial clustering: Carlsson and Mémoli, JMLR 2010.
   - Mapper as a cosheaf: de Silva, Munch and Patel, DCG 2016.
 - **TDA-2, TDA-3.** Distances via ‖x‖² + ‖y‖² − 2xyᵀ suffer fp32 cancellation for near-duplicate points; clamp at zero and carry the error as a diagram bound (stability gives d_B ≤ ‖D − D′‖∞). H0 equals single-linkage clustering, which is the minimum spanning tree (Carlsson and Mémoli 2010).
-- **TDA-4.** Ripser: Bauer, JACT 2021, arXiv 1908.02518. MIT, about 1000 lines, no dependencies.
+- **TDA-4.** Ripser: Bauer, JACT 2021, arXiv 1908.02518. MIT, about 1000 lines, no dependencies. Pulsatrix reimplements its algorithm instead of vendoring it. Test oracles that need no other library: the Rips complexes of points on a circle (Adamaszek and Adams, Pacific J. Math. 2017), and Betti numbers from boundary-matrix ranks.
   - giotto-ph is AGPLv3, so it can't be vendored.
   - GUDHI's CGAL-dependent modules are GPLv3.
   - Practical limits on CPU [I]: H1 up to about 2–5k points, H2 up to about 1k.
