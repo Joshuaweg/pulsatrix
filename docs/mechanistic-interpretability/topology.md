@@ -12,7 +12,7 @@ pulsatrix builds this as a pipeline, one stage at a time:
 PointCloud → distances → filtration → persistence diagram → numbers and plots
 ```
 
-This page grows with each stage. So far it covers the point cloud, the distances, the diagrams (H0, then loops, voids and higher), how to compare diagrams, and how to turn them into numbers.
+This page grows with each stage. So far it covers the point cloud, the distances, the diagrams (H0, then loops, voids and higher), how to compare diagrams, how to turn them into numbers, and landmarks for large clouds.
 
 ## From activations to a point cloud
 
@@ -98,7 +98,7 @@ Other options:
   at a time; by default a block has at most 2²⁴ entries.
 
 Storing n (n − 1) / 2 float32 values takes 50 MB for 5,000 points. Persistent homology above H0
-can't use many more points than that anyway; landmarks (coming) choose which ones to keep.
+can't use many more points than that anyway; [landmarks](#landmarks-for-large-clouds) choose which ones to keep.
 
 ## Clusters across scales (H0)
 
@@ -186,7 +186,7 @@ On a CPU (Release build, points in 3 dimensions) it takes:
 | 600 | H0 to H2 | 4.1 s | 125 MB peak for the whole run |
 
 Cost grows quickly with the number of points and the dimension. Above a few thousand points
-for H1, or about a thousand for H2, choose landmarks first (coming next).
+for H1, or about a thousand for H2, choose [landmarks](#landmarks-for-large-clouds) first.
 
 **How it is checked.** Nothing here relies on another library's output:
 
@@ -269,5 +269,43 @@ const double entropy = PersistentEntropy(r.diagrams[1]);
   `birth_max`, `persistence_max` and `sigma` set the same for both.
 - **Essential features** are left out of everything except the Betti curve, where they count
   from their birth on. Report how many there are (`essential_count()`) alongside.
+
+## Landmarks for large clouds
+
+A layer's activations over a dataset can be 100,000 points, far more than H1 or H2 can handle.
+`FarthestPointLandmarks()` picks a subset that covers the whole cloud. Each landmark is chosen
+greedily as the point farthest from those already picked:
+
+```cpp
+#include "pulsatrix/tda/landmarks.hpp"
+
+LandmarkOptions options;
+options.count = 1000;            // or options.radius: stop once every point is that close
+const Landmarks l = FarthestPointLandmarks(cloud, &backend, options);
+const Tensor subset = LandmarkPoints(cloud.ToTensor(&backend), l);
+const RipsResult r = ComputeRipsPersistence(PairwiseDistances(subset), rips_options);
+const PersistenceDiagram loops = WithSubsamplingBound(r.diagrams[1], l);
+// loops.error_bound now bounds the bottleneck distance to the diagram of *all* the points.
+```
+
+- **The certified bound.** Every point is within the covering radius ε of a landmark, so the
+  landmarks' Rips diagrams are within 2ε of the whole cloud's in bottleneck distance. `l.covering_radius`
+  is a `Certified` value whose term is the float32 error of the distances behind it.
+  `WithSubsamplingBound()` adds 2 × (ε + that error) to a diagram's own bound. A feature of
+  the landmarks with persistence well above twice that is a feature of the cloud.
+- **Choosing the count.** `l.insertion_radii[k]` is the covering radius just before landmark k
+  was added. It only decreases; plot it and stop where it flattens. Greedy selection is within
+  a factor of 2 of the best possible covering radius for the same count (Gonzalez, 1985). The
+  tests check this against brute force on small clouds.
+- **Cost.** Each landmark costs one GEMM of all the points against it, on the cloud's backend,
+  so k landmarks take O(n k d). The n × n distance matrix is never formed.
+- **Ties** go to the lowest index. `options.first` sets the first landmark. `options.center`
+  shrinks the float32 error when the points share a large offset, as it does for distances.
+- **Where each point went.** `l.nearest[i]` and `l.distance_to_nearest[i]` give each point's
+  landmark. Use them to carry labels or inputs over from the landmarks back to the whole cloud.
+
+In the tests, 50 landmarks of a noisy circle of 300 points give an H1 diagram within its
+certified bound of the full diagram, and the circle's loop persists more than four times longer
+than the bound.
 
 Full API reference: [Doxygen: Topological Data Analysis](../api/group__tda.html)

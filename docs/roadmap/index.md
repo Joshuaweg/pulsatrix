@@ -986,7 +986,7 @@ GUDHI's GPL-licensed parts and giotto-ph (AGPL) are avoided.
 | TDA-4 | Vendored Ripser for H1 and H2, returning critical edges and cocycles | Loops and voids | TDA-2 | P0 | M | Done (see below) |
 | TDA-5 | `Diagram`, bottleneck and Wasserstein distances, `Certified<T>`, and property tests for stability | Compare layers, models and seeds with certified error | TDA-3, TDA-4 | P0 | M | Done (see below) |
 | TDA-6 | Betti curves, persistence landscapes, persistence images, persistent entropy | Turn diagrams into numbers for probes and plots | TDA-5 | P0 | S | Done (see below) |
-| TDA-7 | Farthest-point landmarks, which give the subsampling error bound | Persistent homology can't run on 100,000 activations | FND-3 | P0 | S |  |
+| TDA-7 | Farthest-point landmarks, which give the subsampling error bound | Persistent homology can't run on 100,000 activations | FND-3 | P0 | S | Done (see below) |
 | TDA-8 | Significance tests: a universal null distribution, bootstrap confidence bands, Gaussian and random-network baselines | Every reported loop needs a p-value | TDA-5 | P0 | M |  |
 | TDA-9 | Barcode, persistence diagram and Betti curve views, with JSON and SVG export | See the result | TDA-5, VIZ-1 | P1 | M |  |
 | TDA-10 | **A manifold verifier for featurizer blocks:** decide whether a BSF or SAE block forms a circle or a torus, and recover a circular coordinate to steer along. It passes by reproducing the GPT-2 day-of-week circle (Engels et al.) against a random-network control | Goodfire measures block dimension with a linear method. Nobody has published a topological check, so this is new | TDA-4, TDA-7, TDA-8, FEAT-6 | P1 | M |  |
@@ -1046,6 +1046,12 @@ GUDHI's GPL-licensed parts and giotto-ph (AGPL) are avoided.
   Persistence images use Adams et al.'s linear weight and integrate the Gaussian over each pixel
   (with `erf`) rather than sampling it at the centre, so values don't depend on how finely the
   pixels sample a narrow Gaussian.
+- **TDA-7** follows the plan in `tda/landmarks.hpp`. Each step is one GEMM of all the points
+  against the new landmark on the backend, so the n × n matrix is never formed. The covering
+  radius is a `Certified<double>` whose term is the float32 error of those distances; the error
+  analysis is now shared with TDA-2 (`src/tda/float_error.hpp`). `WithSubsamplingBound()` adds
+  twice the certified radius to a landmark diagram's bound. Additions: the insertion radii, to
+  choose a count, and each point's nearest landmark.
 
 Not planned: "neural persistence" on weight graphs. A 2023 follow-up showed it mostly measures
 weight variance.
