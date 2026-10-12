@@ -2434,6 +2434,8 @@ network.
 - <strong>Compare and describe representations</strong>: CKA, RSA, SVCCA and mutual nearest neighbors across
   layers and models; anisotropy, effective rank and intrinsic dimension; PCA plots, and export
   for UMAP and t-SNE.
+- <strong>Measure the shape of a layer</strong> with persistent homology: its clusters, loops and voids,
+  with certified error bars, significance tests, and RTD to compare two layers' topology.
 - <strong>Test for named concepts</strong> with linear probes and their controls, and with TCAV.
 - <strong>Find features</strong> with sparse autoencoders (TopK, BatchTopK, Matryoshka, JumpReLU),
   block-sparse featurizers and transcoders, and <strong>evaluate</strong> them against random-model
@@ -2472,7 +2474,7 @@ LRP conservation, with an A/B comparison between two builds.</p>
 <p><strong>Python bindings</strong>: <code>Tensor</code>, the core layers, LRP and the other explainers, and seeding from
 Python. See <a href="getting-started/#python-bindings">Getting Started</a>.</p>
 <p>Everything is implemented in C++ with no Python dependency at runtime, and covered by about
-2,750 CPU tests (2,850 with the HIP backend) that run in CI on Windows and Linux.</p>
+2,900 CPU tests (3,000 with the HIP backend) that run in CI on Windows and Linux.</p>
 <h2 id="more-resources">More resources<a class="headerlink" href="#more-resources" title="Permanent link">&para;</a></h2>
 <ul>
 <li><strong><a href="getting-started/#using-pulsatrix-in-your-own-project">Using pulsatrix in your project</a></strong>:
