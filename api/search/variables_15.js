@@ -14,6 +14,7 @@ var searchData=
   ['vectors_11',['vectors',['../structpulsatrix_1_1EigenResult.html#af117bad73b445a0ea13ffdc69d312fa0',1,'pulsatrix::EigenResult::vectors'],['../structpulsatrix_1_1DoubleEigenResult.html#a4f55482c3578c138c3602972be898df9',1,'pulsatrix::DoubleEigenResult::vectors']]],
   ['vendor_12',['vendor',['../structpulsatrix_1_1GpuSample.html#a786d088d25cafa78192753f5107c0f0b',1,'pulsatrix::GpuSample']]],
   ['verdict_5foverlap_13',['verdict_overlap',['../structpulsatrix_1_1BlockSparseOptions.html#a1c66afc0c88276ea22ca7d019243b801',1,'pulsatrix::BlockSparseOptions']]],
-  ['vocab_14',['vocab',['../structpulsatrix_1_1ResidueLogProbs.html#a7d87644349be6c6c2a13ad0f2c33a912',1,'pulsatrix::ResidueLogProbs']]],
-  ['vocab_5fsize_15',['vocab_size',['../structpulsatrix_1_1EncoderLMConfig.html#a6f80bb256f6fc8979554df557f978319',1,'pulsatrix::EncoderLMConfig::vocab_size'],['../structpulsatrix_1_1HfModelConfig.html#afb420502f3a48ff8e1f01de55d3bf304',1,'pulsatrix::HfModelConfig::vocab_size']]]
+  ['vertices_14',['vertices',['../structpulsatrix_1_1CocycleEntry.html#aab3c60054f2993a5a96376710f0a5e08',1,'pulsatrix::CocycleEntry']]],
+  ['vocab_15',['vocab',['../structpulsatrix_1_1ResidueLogProbs.html#a7d87644349be6c6c2a13ad0f2c33a912',1,'pulsatrix::ResidueLogProbs']]],
+  ['vocab_5fsize_16',['vocab_size',['../structpulsatrix_1_1EncoderLMConfig.html#a6f80bb256f6fc8979554df557f978319',1,'pulsatrix::EncoderLMConfig::vocab_size'],['../structpulsatrix_1_1HfModelConfig.html#afb420502f3a48ff8e1f01de55d3bf304',1,'pulsatrix::HfModelConfig::vocab_size']]]
 ];

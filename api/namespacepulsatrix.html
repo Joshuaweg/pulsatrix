@@ -337,6 +337,9 @@ Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpulsatrix_1_1CMAESState.html">CMAESState</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">This algorithm's full adaptive state: the search mean, the global step size, and each dimension's own variance (the diagonal of the covariance matrix).  <a href="structpulsatrix_1_1CMAESState.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpulsatrix_1_1CocycleEntry.html">CocycleEntry</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">One simplex of a cocycle with its coefficient.  <a href="structpulsatrix_1_1CocycleEntry.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpulsatrix_1_1CompareOptions.html">CompareOptions</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">How CompareBenchmarks decides that a candidate got worse.  <a href="structpulsatrix_1_1CompareOptions.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -1120,6 +1123,15 @@ Classes</h2></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpulsatrix_1_1RgbImageBuffer.html">RgbImageBuffer</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">An interleaved-RGB, row-major byte buffer ready for a texture upload.  <a href="structpulsatrix_1_1RgbImageBuffer.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpulsatrix_1_1RipsFeature.html">RipsFeature</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">One feature of the diagram, with where it comes from.  <a href="structpulsatrix_1_1RipsFeature.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpulsatrix_1_1RipsOptions.html">RipsOptions</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="namespacepulsatrix.html#ad9dd7a45897a7198b95aec08abbf1ba5" title="Persistent homology of the Vietoris-Rips filtration on the given distances, in dimensions 0 to option...">ComputeRipsPersistence()</a>'s settings.  <a href="structpulsatrix_1_1RipsOptions.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpulsatrix_1_1RipsResult.html">RipsResult</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="namespacepulsatrix.html#ad9dd7a45897a7198b95aec08abbf1ba5" title="Persistent homology of the Vietoris-Rips filtration on the given distances, in dimensions 0 to option...">ComputeRipsPersistence()</a>'s result.  <a href="structpulsatrix_1_1RipsResult.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpulsatrix_1_1RlRowArgs.html">RlRowArgs</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Operand pointers and dims for <a class="el" href="classpulsatrix_1_1DeviceBackend.html#acddc3cd836958deac213a50a9dcf757a" title="One fused RL loss / target / Polyak pass (see RlRowOp for lanes and slots).">DeviceBackend::rl_rows</a> (passed to kernels by value).  <a href="structpulsatrix_1_1RlRowArgs.html#details">More...</a><br /></td></tr>
@@ -2841,6 +2853,9 @@ Functions</h2></td></tr>
 <tr class="memitem:ab4f5bdf3a37346ad36a611ab03d0a85e" id="r_ab4f5bdf3a37346ad36a611ab03d0a85e"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classpulsatrix_1_1PointCloud.html">PointCloud</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#ab4f5bdf3a37346ad36a611ab03d0a85e">MakePointCloud</a> (const std::vector&lt; <a class="el" href="classpulsatrix_1_1ActivationSnapshot.html">ActivationSnapshot</a> &gt; &amp;snapshots, <a class="el" href="namespacepulsatrix.html#a2b8dc3d7d2cef35f192d191f09156e67">NodeId</a> node, <a class="el" href="structpulsatrix_1_1PointCloudOptions.html">PointCloudOptions</a> options={})</td></tr>
 <tr class="memdesc:ab4f5bdf3a37346ad36a611ab03d0a85e"><td class="mdescLeft">&#160;</td><td class="mdescRight">A cloud from one node of several forward passes, such as one snapshot per batch.  <br /></td></tr>
 <tr class="separator:ab4f5bdf3a37346ad36a611ab03d0a85e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad9dd7a45897a7198b95aec08abbf1ba5" id="r_ad9dd7a45897a7198b95aec08abbf1ba5"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structpulsatrix_1_1RipsResult.html">RipsResult</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#ad9dd7a45897a7198b95aec08abbf1ba5">ComputeRipsPersistence</a> (const <a class="el" href="structpulsatrix_1_1DistanceMatrix.html">DistanceMatrix</a> &amp;distances, const <a class="el" href="structpulsatrix_1_1RipsOptions.html">RipsOptions</a> &amp;options={})</td></tr>
+<tr class="memdesc:ad9dd7a45897a7198b95aec08abbf1ba5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Persistent homology of the Vietoris-Rips filtration on the given distances, in dimensions 0 to options.max_dimension.  <br /></td></tr>
+<tr class="separator:ad9dd7a45897a7198b95aec08abbf1ba5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a71ec5781347ddf2db42af3e5675d3748" id="r_a71ec5781347ddf2db42af3e5675d3748"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#a71ec5781347ddf2db42af3e5675d3748">require_device</a> (const <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp;t, <a class="el" href="namespacepulsatrix.html#a5480c8cbe462fe3f5a8eb04a8c579e6e">DeviceType</a> expected, const char *where)</td></tr>
 <tr class="memdesc:a71ec5781347ddf2db42af3e5675d3748"><td class="mdescLeft">&#160;</td><td class="mdescRight">Throws unless <code>t</code> lives on <code>expected</code> &ndash; the check every module and loss runs on the tensors handed to it (roadmap FND-8, gpu_review #1).  <br /></td></tr>
 <tr class="separator:a71ec5781347ddf2db42af3e5675d3748"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -7673,6 +7688,43 @@ Host boundary (GPU-native-kernels Mission 7): a strictly sequential reverse recu
 <dl class="exception"><dt>Exceptions</dt><dd>
   <table class="exception">
     <tr><td class="paramname">std::invalid_argument</td><td>for the same inputs ComputeIce rejects, or feature_x == feature_y. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="ad9dd7a45897a7198b95aec08abbf1ba5" name="ad9dd7a45897a7198b95aec08abbf1ba5"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad9dd7a45897a7198b95aec08abbf1ba5">&#9670;&#160;</a></span>ComputeRipsPersistence()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="structpulsatrix_1_1RipsResult.html">RipsResult</a> pulsatrix::ComputeRipsPersistence </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="structpulsatrix_1_1DistanceMatrix.html">DistanceMatrix</a> &amp;&#160;</td>
+          <td class="paramname"><em>distances</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="structpulsatrix_1_1RipsOptions.html">RipsOptions</a> &amp;&#160;</td>
+          <td class="paramname"><em>options</em> = <code>{}</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Persistent homology of the Vietoris-Rips filtration on the given distances, in dimensions 0 to options.max_dimension. </p>
+<dl class="section note"><dt>Note</dt><dd>Diagrams list finite pairs by death, then birth, then essential ones, as <a class="el" href="structpulsatrix_1_1PersistenceDiagram.html" title="The features of one homology dimension: H0 for components, H1 for loops, H2 for voids.">PersistenceDiagram</a> does; pairs with zero persistence are left out. The diagrams don't depend on how equal distances are ordered; critical edges and cocycles do, and are the same on every platform. </dd></dl>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname">std::invalid_argument</td><td>if distances has fewer than 2 points, max_dimension is outside [0, 8], coefficient isn't a prime below 2^15, or the simplices of dimension max_dimension + 1 can't be indexed in 63 bits. </td></tr>
   </table>
   </dd>
 </dl>
