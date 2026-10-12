@@ -102,7 +102,7 @@ $(document).ready(function(){initNavTree('representation__similarity_8hpp.html',
 </div><!--header-->
 <div class="contents">
 
-<p>Linear CKA: how similar two layers' representations of the same inputs are.  
+<p>How similar two layers' representations of the same inputs are: linear CKA, RSA and SVCCA.  
 <a href="#details">More...</a></p>
 <div class="textblock"><code>#include &lt;cstddef&gt;</code><br />
 <code>#include &lt;cstdint&gt;</code><br />
@@ -113,7 +113,7 @@ Include dependency graph for representation_similarity.hpp:</div>
 <div class="dyncontent">
 <div class="center"><img src="representation__similarity_8hpp__incl.png" border="0" usemap="#ainclude_2pulsatrix_2representation__similarity_8hpp" alt=""/></div>
 <map name="ainclude_2pulsatrix_2representation__similarity_8hpp" id="ainclude_2pulsatrix_2representation__similarity_8hpp">
-<area shape="rect" title="Linear CKA: how similar two layers&#39; representations of the same inputs are." alt="" coords="305,5,534,45"/>
+<area shape="rect" title="How similar two layers&#39; representations of the same inputs are: linear CKA, RSA and SVCCA." alt="" coords="305,5,534,45"/>
 <area shape="rect" title=" " alt="" coords="34,313,104,339"/>
 <area shape="poly" title=" " alt="" coords="305,40,235,56,161,80,126,97,91,117,60,141,33,168,16,192,9,213,10,237,18,264,30,285,45,302,41,306,26,288,13,266,5,238,4,213,11,189,28,165,57,137,88,113,123,92,159,75,234,50,304,35"/>
 <area shape="rect" title=" " alt="" coords="565,313,632,339"/>
@@ -165,6 +165,18 @@ Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpulsatrix_1_1CkaMatrix.html">pulsatrix::CkaMatrix</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">CKA between every pair from two lists of representations, such as the layers of two models: <code>values[i * cols + j]</code> compares <code>a[i]</code> with <code>b[j]</code>.  <a href="structpulsatrix_1_1CkaMatrix.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpulsatrix_1_1Rdm.html">pulsatrix::Rdm</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">A representational dissimilarity matrix: the distance between every pair of n inputs.  <a href="structpulsatrix_1_1Rdm.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpulsatrix_1_1RsaTestResult.html">pulsatrix::RsaTestResult</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="namespacepulsatrix.html#a605caec24e33f92d034b712d7ae7e71e" title="Whether two RDMs agree more than chance: the Mantel test RSA uses.">RsaPermutationTest()</a>'s result.  <a href="structpulsatrix_1_1RsaTestResult.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpulsatrix_1_1SvccaOptions.html">pulsatrix::SvccaOptions</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="namespacepulsatrix.html#a5fafff22686c4cf7562ffe1ee9b50ae8" title="SVCCA: CanonicalCorrelations() between each representation&#39;s top singular directions.">Svcca()</a>'s settings.  <a href="structpulsatrix_1_1SvccaOptions.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpulsatrix_1_1SvccaResult.html">pulsatrix::SvccaResult</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="namespacepulsatrix.html#a5fafff22686c4cf7562ffe1ee9b50ae8" title="SVCCA: CanonicalCorrelations() between each representation&#39;s top singular directions.">Svcca()</a>'s result.  <a href="structpulsatrix_1_1SvccaResult.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="namespaces" name="namespaces"></a>
 Namespaces</h2></td></tr>
@@ -178,6 +190,17 @@ Enumerations</h2></td></tr>
  }</td></tr>
 <tr class="memdesc:ac793506d330b9f7e81f562eed3ab8539"><td class="mdescLeft">&#160;</td><td class="mdescRight">Which estimator of CKA to use.  <a href="namespacepulsatrix.html#ac793506d330b9f7e81f562eed3ab8539">More...</a><br /></td></tr>
 <tr class="separator:ac793506d330b9f7e81f562eed3ab8539"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af7188a9d468aec105d5e2e2382a9fa95" id="r_af7188a9d468aec105d5e2e2382a9fa95"><td class="memItemLeft" align="right" valign="top">enum class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#af7188a9d468aec105d5e2e2382a9fa95">pulsatrix::RdmMetric</a> { <a class="el" href="namespacepulsatrix.html#af7188a9d468aec105d5e2e2382a9fa95a5f750c3076b1c419d3d1684019d36b16">pulsatrix::Correlation</a>
+, <a class="el" href="namespacepulsatrix.html#af7188a9d468aec105d5e2e2382a9fa95a3e43207685247008d9e1ae53ecf8cab3">pulsatrix::Euclidean</a>
+, <a class="el" href="namespacepulsatrix.html#af7188a9d468aec105d5e2e2382a9fa95a46ff06ae696616afdf3a695efd3db84c">pulsatrix::Cosine</a>
+ }</td></tr>
+<tr class="memdesc:af7188a9d468aec105d5e2e2382a9fa95"><td class="mdescLeft">&#160;</td><td class="mdescRight">How RepresentationalDissimilarity() measures the distance between two inputs.  <a href="namespacepulsatrix.html#af7188a9d468aec105d5e2e2382a9fa95">More...</a><br /></td></tr>
+<tr class="separator:af7188a9d468aec105d5e2e2382a9fa95"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad6ed003359d98c48344452c9c07f1c20" id="r_ad6ed003359d98c48344452c9c07f1c20"><td class="memItemLeft" align="right" valign="top">enum class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#ad6ed003359d98c48344452c9c07f1c20">pulsatrix::RdmComparison</a> { <a class="el" href="namespacepulsatrix.html#ad6ed003359d98c48344452c9c07f1c20ad7bf0d066b5604f50adca3b43b404344">pulsatrix::Spearman</a>
+, <a class="el" href="namespacepulsatrix.html#ad6ed003359d98c48344452c9c07f1c20ac80907b6d4b64a0bd9295e304bf1ac8a">pulsatrix::Pearson</a>
+ }</td></tr>
+<tr class="memdesc:ad6ed003359d98c48344452c9c07f1c20"><td class="mdescLeft">&#160;</td><td class="mdescRight">How CompareRdms() correlates two RDMs.  <a href="namespacepulsatrix.html#ad6ed003359d98c48344452c9c07f1c20">More...</a><br /></td></tr>
+<tr class="separator:ad6ed003359d98c48344452c9c07f1c20"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
 Functions</h2></td></tr>
@@ -187,11 +210,34 @@ Functions</h2></td></tr>
 <tr class="memitem:a8b250634e4925e7e6a75808694e96f1a" id="r_a8b250634e4925e7e6a75808694e96f1a"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structpulsatrix_1_1CkaMatrix.html">CkaMatrix</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#a8b250634e4925e7e6a75808694e96f1a">pulsatrix::LinearCkaMatrix</a> (const std::vector&lt; <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &gt; &amp;a, const std::vector&lt; <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &gt; &amp;b, <a class="el" href="namespacepulsatrix.html#ac793506d330b9f7e81f562eed3ab8539">CkaEstimator</a> estimator=<a class="el" href="namespacepulsatrix.html#ac793506d330b9f7e81f562eed3ab8539a3b04dd98f4b6bfb00045042467cc909b">CkaEstimator::Debiased</a>, std::size_t max_gram_bytes=std::size_t{2}&lt;&lt; 30)</td></tr>
 <tr class="memdesc:a8b250634e4925e7e6a75808694e96f1a"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="namespacepulsatrix.html#a20006889a282e5fa1d7d864597ef08d4" title="Linear CKA between two representations of the same inputs.">LinearCka()</a> between every representation in <code>a</code> and every one in <code>b</code>.  <br /></td></tr>
 <tr class="separator:a8b250634e4925e7e6a75808694e96f1a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8268a024ce0a91a261d8a34b8cd3686d" id="r_a8268a024ce0a91a261d8a34b8cd3686d"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structpulsatrix_1_1Rdm.html">Rdm</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#a8268a024ce0a91a261d8a34b8cd3686d">pulsatrix::RepresentationalDissimilarity</a> (const <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp;x, <a class="el" href="namespacepulsatrix.html#af7188a9d468aec105d5e2e2382a9fa95">RdmMetric</a> metric=<a class="el" href="namespacepulsatrix.html#af7188a9d468aec105d5e2e2382a9fa95a5f750c3076b1c419d3d1684019d36b16">RdmMetric::Correlation</a>)</td></tr>
+<tr class="memdesc:a8268a024ce0a91a261d8a34b8cd3686d"><td class="mdescLeft">&#160;</td><td class="mdescRight">The RDM of a representation, shape (n, ...): a row per input, later dimensions flattened.  <br /></td></tr>
+<tr class="separator:a8268a024ce0a91a261d8a34b8cd3686d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a78329ea667353b975a3ebc8b0148a753" id="r_a78329ea667353b975a3ebc8b0148a753"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#a78329ea667353b975a3ebc8b0148a753">pulsatrix::CompareRdms</a> (const <a class="el" href="structpulsatrix_1_1Rdm.html">Rdm</a> &amp;a, const <a class="el" href="structpulsatrix_1_1Rdm.html">Rdm</a> &amp;b, <a class="el" href="namespacepulsatrix.html#ad6ed003359d98c48344452c9c07f1c20">RdmComparison</a> comparison=<a class="el" href="namespacepulsatrix.html#ad6ed003359d98c48344452c9c07f1c20ad7bf0d066b5604f50adca3b43b404344">RdmComparison::Spearman</a>)</td></tr>
+<tr class="memdesc:a78329ea667353b975a3ebc8b0148a753"><td class="mdescLeft">&#160;</td><td class="mdescRight">The correlation between two RDMs of the same inputs, in the same order.  <br /></td></tr>
+<tr class="separator:a78329ea667353b975a3ebc8b0148a753"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a83a6f9c3832e3ea08384dc50e294aecc" id="r_a83a6f9c3832e3ea08384dc50e294aecc"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#a83a6f9c3832e3ea08384dc50e294aecc">pulsatrix::Rsa</a> (const <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp;x, const <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp;y, <a class="el" href="namespacepulsatrix.html#af7188a9d468aec105d5e2e2382a9fa95">RdmMetric</a> metric=<a class="el" href="namespacepulsatrix.html#af7188a9d468aec105d5e2e2382a9fa95a5f750c3076b1c419d3d1684019d36b16">RdmMetric::Correlation</a>, <a class="el" href="namespacepulsatrix.html#ad6ed003359d98c48344452c9c07f1c20">RdmComparison</a> comparison=<a class="el" href="namespacepulsatrix.html#ad6ed003359d98c48344452c9c07f1c20ad7bf0d066b5604f50adca3b43b404344">RdmComparison::Spearman</a>)</td></tr>
+<tr class="memdesc:a83a6f9c3832e3ea08384dc50e294aecc"><td class="mdescLeft">&#160;</td><td class="mdescRight">RSA between two representations of the same inputs: CompareRdms(RepresentationalDissimilarity(x), RepresentationalDissimilarity(y)).  <br /></td></tr>
+<tr class="separator:a83a6f9c3832e3ea08384dc50e294aecc"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a605caec24e33f92d034b712d7ae7e71e" id="r_a605caec24e33f92d034b712d7ae7e71e"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structpulsatrix_1_1RsaTestResult.html">RsaTestResult</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#a605caec24e33f92d034b712d7ae7e71e">pulsatrix::RsaPermutationTest</a> (const <a class="el" href="structpulsatrix_1_1Rdm.html">Rdm</a> &amp;a, const <a class="el" href="structpulsatrix_1_1Rdm.html">Rdm</a> &amp;b, <a class="el" href="namespacepulsatrix.html#ad6ed003359d98c48344452c9c07f1c20">RdmComparison</a> comparison=<a class="el" href="namespacepulsatrix.html#ad6ed003359d98c48344452c9c07f1c20ad7bf0d066b5604f50adca3b43b404344">RdmComparison::Spearman</a>, int64_t permutations=999, uint64_t seed=0)</td></tr>
+<tr class="memdesc:a605caec24e33f92d034b712d7ae7e71e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Whether two RDMs agree more than chance: the Mantel test RSA uses.  <br /></td></tr>
+<tr class="separator:a605caec24e33f92d034b712d7ae7e71e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab4da5eb639a8f32b873f59c06b527731" id="r_ab4da5eb639a8f32b873f59c06b527731"><td class="memItemLeft" align="right" valign="top">std::vector&lt; double &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#ab4da5eb639a8f32b873f59c06b527731">pulsatrix::CanonicalCorrelations</a> (const <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp;x, const <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp;y)</td></tr>
+<tr class="memdesc:ab4da5eb639a8f32b873f59c06b527731"><td class="mdescLeft">&#160;</td><td class="mdescRight">The canonical correlations between two representations of the same inputs, largest first: min(rank x, rank y) values between 0 and 1.  <br /></td></tr>
+<tr class="separator:ab4da5eb639a8f32b873f59c06b527731"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5fafff22686c4cf7562ffe1ee9b50ae8" id="r_a5fafff22686c4cf7562ffe1ee9b50ae8"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structpulsatrix_1_1SvccaResult.html">SvccaResult</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#a5fafff22686c4cf7562ffe1ee9b50ae8">pulsatrix::Svcca</a> (const <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp;x, const <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp;y, const <a class="el" href="structpulsatrix_1_1SvccaOptions.html">SvccaOptions</a> &amp;options={})</td></tr>
+<tr class="memdesc:a5fafff22686c4cf7562ffe1ee9b50ae8"><td class="mdescLeft">&#160;</td><td class="mdescRight">SVCCA: <a class="el" href="namespacepulsatrix.html#ab4da5eb639a8f32b873f59c06b527731" title="The canonical correlations between two representations of the same inputs, largest first: min(rank x,...">CanonicalCorrelations()</a> between each representation's top singular directions.  <br /></td></tr>
+<tr class="separator:a5fafff22686c4cf7562ffe1ee9b50ae8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p>Linear CKA: how similar two layers' representations of the same inputs are. </p>
+<div class="textblock"><p>How similar two layers' representations of the same inputs are: linear CKA, RSA and SVCCA. </p>
 <p>Centered kernel alignment (Kornblith et al., ICML 2019) compares two representations of the same n inputs, for example one layer of two models, two layers of one model, a model before and after fine-tuning, or the same layer computed on two backends. It is 1 when one representation is a rotation and uniform scaling of the other, and near 0 when they are unrelated. Unlike comparing activations directly, it doesn't need the layers to have the same width or their neurons to line up.</p>
-<p>The debiased estimator (Song et al., JMLR 2012; Nguyen et al., ICLR 2021) is the default. The original, biased one is pulled towards 1 when there are few inputs for the width: two random, unrelated representations of 50 inputs with 1,000 features each score 0.95 with it and about 0 debiased. </p>
+<p>The debiased estimator (Song et al., JMLR 2012; Nguyen et al., ICLR 2021) is the default. The original, biased one is pulled towards 1 when there are few inputs for the width: two random, unrelated representations of 50 inputs with 1,000 features each score 0.95 with it and about 0 debiased.</p>
+<p>Two older measures are here too, for comparison with published results that use them:</p>
+<ul>
+<li><b>RSA</b> (representational similarity analysis; Kriegeskorte et al., Frontiers in Systems Neuroscience 2008) describes each representation by how far apart it puts every pair of inputs, its representational dissimilarity matrix (RDM), and correlates the two RDMs. It compares a model with anything that orders the same inputs, a brain recording or a hand-made model of the categories, and RsaPermutationTest() says whether the agreement could be chance.</li>
+<li><b>SVCCA</b> (Raghu et al., NeurIPS 2017) keeps each representation's top singular directions (99% of the variance by default) and finds the pairs of directions, one in each, that correlate most. It is invariant to any invertible linear map, which CKA isn't. That makes it blind to how a layer weights its directions, and Kornblith et al. found it worse than CKA at matching corresponding layers. It is also biased upwards: canonical correlations are fitted to the inputs, so unrelated representations score well above 0 unless there are many more inputs than kept directions. </li>
+</ul>
 </div></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
