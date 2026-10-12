@@ -87,7 +87,9 @@ LoRAAdapter::LoRAAdapter(int64_t in_features, int64_t out_features, const LoRACo
       b_grad_(Shape({std::max<int64_t>(config.rank, 1), out_features}), backend, device),
       dropout_(config.dropout >= 0 && config.dropout < 1 ? config.dropout : 0.0f, backend, config.seed ^ 0xD20F0u),
       last_input_(Shape({0}), backend, device),
-      last_hidden_(Shape({0}), backend, device) {
+      last_hidden_(Shape({0}), backend, device),
+      last_base_relevance_(Shape({0}), backend, device),
+      last_adapter_relevance_(Shape({0}), backend, device) {
     if (config.rank < 1) throw std::invalid_argument("LoRAAdapter: rank must be at least 1");
     if (!std::isfinite(config.alpha)) throw std::invalid_argument("LoRAAdapter: alpha must be finite");
     if (!(config.dropout >= 0 && config.dropout < 1)) throw std::invalid_argument("LoRAAdapter: dropout must be in [0, 1)");
@@ -116,6 +118,28 @@ void LoRAAdapter::set_b(const std::vector<float>& values) {
     const bool trainable = b_.requires_grad();
     b_ = Tensor(b_.shape(), backend_, values, b_.device());
     b_.set_requires_grad(trainable);
+}
+
+Tensor LoRAAdapter::update() const {
+    Tensor u(Shape({in_features_, out_features_}), backend_, a_.device());
+    backend_->fill(u.data(), 0.0f, static_cast<std::size_t>(u.numel()));
+    add_update(u, 1.0f);
+    return u;
+}
+
+const Tensor& LoRAAdapter::last_base_relevance() const {
+    if (!has_relevance()) throw std::logic_error("LoRAAdapter::last_base_relevance: no split relevance pass since the last forward()");
+    return last_base_relevance_;
+}
+
+const Tensor& LoRAAdapter::last_adapter_relevance() const {
+    if (!has_relevance()) throw std::logic_error("LoRAAdapter::last_adapter_relevance: no split relevance pass since the last forward()");
+    return last_adapter_relevance_;
+}
+
+void LoRAAdapter::clear_relevance() {
+    release_tensor(last_base_relevance_);
+    release_tensor(last_adapter_relevance_);
 }
 
 Tensor LoRAAdapter::effective_weight(const Tensor& weight) const {
@@ -170,6 +194,7 @@ void LoRAAdapter::release_activations() {
     release_tensor(last_input_);
     release_tensor(last_hidden_);
     dropout_.release_activations();
+    clear_relevance();
 }
 
 std::vector<std::string> ApplyLora(Module& model, const LoRAConfig& config) {
@@ -226,6 +251,20 @@ std::vector<std::pair<std::string, LinearModule*>> LoraLayers(Module& model) {
     for (const auto& l : LinearLayers(model)) {
         if (l.second->lora() != nullptr) out.push_back(l);
     }
+    return out;
+}
+
+std::vector<LoraLayerRelevance> LoraRelevanceSplit(Module& model) {
+    std::vector<LoraLayerRelevance> out;
+    for (const auto& [name, layer] : LoraLayers(model)) {
+        const LoRAAdapter& a = *layer->lora();
+        if (!a.has_relevance()) continue;
+        LoraLayerRelevance r{name, a.last_base_relevance(), a.last_adapter_relevance()};
+        for (float v : r.base.to_host_vector()) r.base_total += v;
+        for (float v : r.adapter.to_host_vector()) r.adapter_total += v;
+        out.push_back(std::move(r));
+    }
+    if (out.empty()) throw std::logic_error("LoraRelevanceSplit: no adapted layer was split in the last relevance pass");
     return out;
 }
 
