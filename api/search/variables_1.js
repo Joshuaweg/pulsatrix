@@ -41,6 +41,7 @@ var searchData=
   ['bos_5ftoken_5fid_38',['bos_token_id',['../structpulsatrix_1_1HfModelConfig.html#a0dcf48a72d20ad8a0568f554050d7102',1,'pulsatrix::HfModelConfig']]],
   ['bottom_39',['bottom',['../structpulsatrix_1_1WaterfallBar.html#a492341e89e384c8e1d8b6bbe54975c88',1,'pulsatrix::WaterfallBar']]],
   ['bottom_5findices_40',['bottom_indices',['../structpulsatrix_1_1PBTTruncationGroups.html#ab900a1310fa549b5a04fd56e44054016',1,'pulsatrix::PBTTruncationGroups']]],
-  ['busy_41',['busy',['../structpulsatrix_1_1detail_1_1CpuTimes.html#ac1a80e25d6ac7bed845faa0743d81afb',1,'pulsatrix::detail::CpuTimes']]],
-  ['byte_5ffallback_42',['byte_fallback',['../structpulsatrix_1_1BpeOptions.html#a45f208e88c7098f2a7ad3fadda6c37b8',1,'pulsatrix::BpeOptions']]]
+  ['bound_41',['bound',['../structpulsatrix_1_1ErrorTerm.html#af58d9b72fe5b8485ed1d791865eff01a',1,'pulsatrix::ErrorTerm']]],
+  ['busy_42',['busy',['../structpulsatrix_1_1detail_1_1CpuTimes.html#ac1a80e25d6ac7bed845faa0743d81afb',1,'pulsatrix::detail::CpuTimes']]],
+  ['byte_5ffallback_43',['byte_fallback',['../structpulsatrix_1_1BpeOptions.html#a45f208e88c7098f2a7ad3fadda6c37b8',1,'pulsatrix::BpeOptions']]]
 ];
