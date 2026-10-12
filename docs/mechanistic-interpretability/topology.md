@@ -12,7 +12,7 @@ pulsatrix builds this as a pipeline, one stage at a time:
 PointCloud → distances → filtration → persistence diagram → numbers and plots
 ```
 
-This page grows with each stage. So far it covers the point cloud, the distances, the diagrams (H0, then loops, voids and higher), and how to compare diagrams.
+This page grows with each stage. So far it covers the point cloud, the distances, the diagrams (H0, then loops, voids and higher), how to compare diagrams, and how to turn them into numbers.
 
 ## From activations to a point cloud
 
@@ -238,5 +238,36 @@ Both are exact. The bottleneck distance uses a binary search over candidate valu
 by a Hopcroft–Karp matching, and is comfortable up to a few hundred points per diagram. The
 Wasserstein distance uses the Hungarian algorithm, which takes (n₁ + n₂)³ time, so up to about a
 thousand points in all. Both match brute force over every matching on small diagrams.
+
+## Diagrams as numbers
+
+A probe, a t-test or a plot needs a fixed-size vector, not a set of points. Four standard
+vectorizations are in `tda/vectorization.hpp`:
+
+```cpp
+#include "pulsatrix/tda/vectorization.hpp"
+
+const std::vector<double> grid = LinearGrid(0.0, r.threshold, 100);
+const std::vector<int64_t> betti = BettiCurve(r.diagrams[1], grid);           // loops alive at each t
+const Certified<PersistenceLandscape> l = ComputePersistenceLandscape(r.diagrams[1], grid, /*layers=*/5);
+const PersistenceImage image = ComputePersistenceImage(r.diagrams[1], image_options);
+const double entropy = PersistentEntropy(r.diagrams[1]);
+```
+
+| Vectorization | What it is | Stable? |
+|---|---|---|
+| Betti curve | How many features are alive at each scale | No: a point crossing a grid value changes it by 1 |
+| Persistence landscape (Bubenik, 2015) | λ_k(t), the k-th largest "tent" min(t − b, d − t) at each t | Yes: within the bottleneck distance, at every t. Certified. |
+| Persistence image (Adams et al., 2017) | Points at (birth, persistence), weighted by persistence, blurred by a Gaussian, integrated over pixels | Under the 1-Wasserstein distance, not the bottleneck |
+| Persistent entropy | The Shannon entropy of the lifetimes, in nats | Not in general |
+
+- **Prefer landscapes when the result has to hold up.** They are the only one of the four that
+  inherits the stability theorem. `ComputePersistenceLandscape` returns a `Certified` value:
+  the exact diagram's landscapes are within `bound()` of these at every grid point.
+- **Fix the image's ranges when comparing.** By default a persistence image takes its birth and
+  persistence ranges from its own diagram. Images of two diagrams are comparable only with
+  `birth_max`, `persistence_max` and `sigma` set the same for both.
+- **Essential features** are left out of everything except the Betti curve, where they count
+  from their birth on. Report how many there are (`essential_count()`) alongside.
 
 Full API reference: [Doxygen: Topological Data Analysis](../api/group__tda.html)
