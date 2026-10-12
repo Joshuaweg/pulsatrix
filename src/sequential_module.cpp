@@ -86,6 +86,12 @@ std::vector<NamedParamRef> SequentialModule::named_parameters() {
     return result;
 }
 
+std::vector<NamedModuleRef> SequentialModule::named_children() {
+    std::vector<NamedModuleRef> out;
+    for (size_t i = 0; i < layers_.size(); ++i) out.push_back({std::to_string(i), layers_[i]});
+    return out;
+}
+
 void SequentialModule::set_training(bool training) {
     Module::set_training(training);
     for (Module* layer : layers_) {

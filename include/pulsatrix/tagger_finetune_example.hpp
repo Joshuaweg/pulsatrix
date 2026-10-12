@@ -38,6 +38,7 @@ public:
     [[nodiscard]] Tensor propagate_relevance(const Tensor& relevance_out, const LRPRuleConfig& config) override;
     [[nodiscard]] OpType op_type() const override { return OpType::Composite; }
     [[nodiscard]] std::vector<NamedParamRef> named_parameters() override;
+    [[nodiscard]] std::vector<NamedModuleRef> named_children() override;
     [[nodiscard]] std::vector<NamedBufferRef> named_buffers() override;
     void set_training(bool training) override;
 

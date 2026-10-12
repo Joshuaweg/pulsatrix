@@ -27,7 +27,7 @@ in [INT](#int-embedding-and-representation-analysis) is done.
   Gradients and Grad-CAM are checked against Captum. LIME, KernelSHAP, PDP, logit lens,
   activation patching, circuit graphs, probes and a basic sparse autoencoder are all in.
 - **Missing.** There is no import from PyTorch or Hugging Face, and everything is `float32`.
-  Tensors have no views or broadcasting. There is no LoRA.
+  Tensors have no views or broadcasting. There is no LoRA (added in v1.3, TRN-7).
 - **Done since v1.0.** The whole [FND epic](#fnd-foundations): named parameters, freezing, top-k,
   eigensolver/QR/SVD, BatchNorm eval mode and folding, Conv2D stride and padding, seeding and
   deterministic mode, and device checks. Saving and loading: safetensors and native checkpoints
@@ -396,7 +396,7 @@ rate is tuned, plain LoRA matches or beats most of them.
 | TRN-4 | Learning-rate schedulers: warmup, cosine, linear, constant | Every published recipe assumes them | — | P0 | S | Done, [#49](https://github.com/Joshuaweg/pulsatrix/pull/49) |
 | TRN-5 | Gradient accumulation that divides by the total token count, not the mean of micro-batch means | Averaging micro-batch means is wrong when sequence lengths vary | — | P0 | S | Done, [#50](https://github.com/Joshuaweg/pulsatrix/pull/50) |
 | TRN-6 | A full fine-tuning recipe on a small pretrained model | The baseline every other method is compared against | FND-2, IO-2 | P0 | S | Done, [#51](https://github.com/Joshuaweg/pulsatrix/pull/51) (see below) |
-| TRN-7 | `LoRALinear`: a frozen base weight plus a low-rank update, with merge and unmerge, adapter save and load using PEFT key names, and PEFT's defaults. Documentation follows "LoRA Without Regret": apply it to all layers, use about 10× the full fine-tuning learning rate | The main fine-tuning method | FND-2, IO-1 | P1 | M | |
+| TRN-7 | `LoRALinear`: a frozen base weight plus a low-rank update, with merge and unmerge, adapter save and load using PEFT key names, and PEFT's defaults. Documentation follows "LoRA Without Regret": apply it to all layers, use about 10× the full fine-tuning learning rate | The main fine-tuning method | FND-2, IO-1 | P1 | M | Done (see below) |
 | TRN-8 | LRP through LoRA that splits relevance between the base path and the adapter path. Document that the gamma and z+ rules give different results for merged and unmerged adapters | Shows what the fine-tuning changed, per input. No other library does this | TRN-7 | P1 | M | |
 | TRN-9 | LoReFT (representation fine-tuning) and LRP through it. The intervention is affine, so the epsilon rule is exact | Fine-tuning that is itself an interpretable subspace | FND-4 | P1 | M | |
 | TRN-10 | IA³ (learned rescaling vectors) | Tiny and trivially explainable | FND-2 | P2 | S | |
@@ -415,6 +415,14 @@ rate is tuned, plain LoRA matches or beats most of them.
   v1.2. It is per-token tagging rather than next-token prediction, because attention has no causal
   mask. After the same budget, the pretrained model scores 0.985 on the new rule and the model
   trained from scratch 0.862.
+- **TRN-7** has no `LoRALinear` class. The projections inside every model are `LinearModule`
+  members, so a wrapper would have meant rebuilding each container. Instead `LinearModule` holds
+  an optional adapter (`attach_lora()`, `lora.hpp`), and a new `Module::named_children()` lets
+  `ApplyLora()` find a model's Linear layers by name, as PEFT's `target_modules` does. The
+  default is PEFT's `"all-linear"`, not PEFT's attention-only default, following "LoRA Without
+  Regret". Also added: `SetLoraEnabled()`, to run the base model without removing the adapter,
+  which TRN-8 and TRN-11 need. Checked against PEFT 0.21.0 on a tiny Qwen2: logits, all 28
+  adapter gradients, merging, and the saved file's keys and values.
 
 ### Follow-ups the TRN work surfaced
 

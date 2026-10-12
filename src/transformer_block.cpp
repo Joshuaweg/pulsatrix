@@ -248,6 +248,13 @@ std::vector<NamedParamRef> TransformerBlock::named_parameters() {
     return params;
 }
 
+std::vector<NamedModuleRef> TransformerBlock::named_children() {
+    std::vector<NamedModuleRef> out{{"norm1", &norm1_}, {"mha", &mha_}, {"norm2", &norm2_}, {"swiglu", &swiglu_}};
+    if (post_attn_norm_) out.push_back({"post_attn_norm", post_attn_norm_.get()});
+    if (post_mlp_norm_) out.push_back({"post_mlp_norm", post_mlp_norm_.get()});
+    return out;
+}
+
 void TransformerBlock::set_training(bool training) {
     Module::set_training(training);
     norm1_.set_training(training);

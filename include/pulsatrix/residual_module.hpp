@@ -92,6 +92,7 @@ public:
     /** @brief inner_'s own named_parameters(), prefixed `inner.`, then the shortcut's, prefixed
      *         `shortcut.` -- this module owns none of its own. */
     [[nodiscard]] std::vector<NamedParamRef> named_parameters() override;
+    [[nodiscard]] std::vector<NamedModuleRef> named_children() override;
 
     /** @brief Every layer's named_buffers(), prefixed the same way as named_parameters(). */
     [[nodiscard]] std::vector<NamedBufferRef> named_buffers() override;

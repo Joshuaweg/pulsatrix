@@ -48,6 +48,17 @@ struct NamedBufferRef {
     Tensor* value;
 };
 
+class Module;
+
+/**
+ * @brief A sub-module with its dot-separated name relative to the module that reported it, the
+ *        same prefix its parameters carry (`mha.q_proj`, `layers.0`).
+ */
+struct NamedModuleRef {
+    std::string name;
+    Module* module;
+};
+
 /**
  * @brief Base class for every layer type (LinearModule, Conv2DModule, activations, ...).
  * @note `forward()`/`forward_impl()` is the NVI (non-virtual interface) idiom
@@ -182,6 +193,15 @@ public:
      *         layers' buffers the way they prefix parameters.
      */
     [[nodiscard]] virtual std::vector<NamedBufferRef> named_buffers() { return {}; }
+    /**
+     * @brief This module's direct sub-modules, each under the prefix its parameters carry in
+     *        named_parameters(), in the same order (TRN-7: how ApplyLora() finds a model's
+     *        Linear layers). Default: none. NamedModules() walks the whole tree.
+     * @note The containers that build language models and their layers report their children:
+     *       SequentialModule, ResidualModule, the attention, MLP and transformer blocks, CausalLM and
+     *       EncoderLM. A module that doesn't is a leaf to NamedModules().
+     */
+    [[nodiscard]] virtual std::vector<NamedModuleRef> named_children() { return {}; }
 
     /**
      * @brief This module's trainable parameters and their gradients, for an optimizer to
@@ -289,6 +309,21 @@ inline void append_named_parameters(std::vector<NamedParamRef>& out, const std::
     for (NamedParamRef& p : named) {
         out.push_back({prefix + "." + p.name, p.ref});
     }
+}
+
+/**
+ * @brief Every module under @p root, depth first with each parent before its children, named by
+ *        their full dotted path (`layers.0.mha.q_proj`); @p root itself isn't included.
+ */
+inline std::vector<NamedModuleRef> NamedModules(Module& root) {
+    std::vector<NamedModuleRef> out;
+    for (const NamedModuleRef& child : root.named_children()) {
+        out.push_back(child);
+        for (const NamedModuleRef& below : NamedModules(*child.module)) {
+            out.push_back({child.name + "." + below.name, below.module});
+        }
+    }
+    return out;
 }
 
 /** @brief Frees @p t's buffer: it becomes an empty tensor on the same backend and device. */

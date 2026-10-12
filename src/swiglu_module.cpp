@@ -185,6 +185,10 @@ std::vector<NamedParamRef> SwiGLUModule::named_parameters() {
     return params;
 }
 
+std::vector<NamedModuleRef> SwiGLUModule::named_children() {
+    return {{"gate_proj", &gate_proj_}, {"up_proj", &up_proj_}, {"down_proj", &down_proj_}};
+}
+
 void SwiGLUModule::release_activations() {
     gate_proj_.release_activations();
     up_proj_.release_activations();

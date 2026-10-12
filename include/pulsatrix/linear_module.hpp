@@ -4,8 +4,9 @@
  */
 #pragma once
 
-#include <optional>
 #include <initializer_list>
+#include <memory>
+#include <optional>
 #include <vector>
 
 #include "pulsatrix/module.hpp"
@@ -13,6 +14,8 @@
 namespace pulsatrix {
 
 class ReluModule;
+class LoRAAdapter;
+struct LoRAConfig;
 
 /**
  * @brief y = x @ W + b, batched (x is (N, in_features), y is (N, out_features)) --
@@ -63,6 +66,44 @@ public:
      *       Cpu-tagged weights in device memory (GPU-native-kernels Mission 0).
      */
     LinearModule(int64_t in_features, int64_t out_features, DeviceBackend* backend, bool use_bias = true);
+
+    ~LinearModule() override;
+    LinearModule(LinearModule&&) noexcept;
+    LinearModule& operator=(LinearModule&&) noexcept;
+
+    /**
+     * @brief Adds a LoRA adapter (TRN-7, lora.hpp): from now on the layer computes
+     *        x W + b + (alpha / r) x A B. A is initialized as PEFT does and B is zero, so the
+     *        output doesn't change until B trains. The base weight isn't frozen here; ApplyLora()
+     *        freezes it.
+     * @note The adapter's A and B join named_parameters() as `lora_A.weight` and `lora_B.weight`.
+     *       backward() accumulates their gradients, and propagate_relevance() runs on the adapted
+     *       weight W + (alpha / r) A B.
+     * @throws std::logic_error if the layer already has one; std::invalid_argument for invalid
+     *         settings (LoRAAdapter's constructor).
+     */
+    void attach_lora(const LoRAConfig& config);
+    /** @brief Removes the adapter. A merged one stays in the weight. No-op without one. */
+    void detach_lora();
+    /** @brief The adapter, or nullptr. */
+    [[nodiscard]] LoRAAdapter* lora() { return lora_.get(); }
+    [[nodiscard]] const LoRAAdapter* lora() const { return lora_.get(); }
+    /**
+     * @brief Adds the update into the weight, W += (alpha / r) A B, so forward() runs at the base
+     *        layer's cost. While merged, A and B get no gradients.
+     * @throws std::logic_error without an adapter, if it is already merged or if it is disabled.
+     */
+    void merge_lora();
+    /**
+     * @brief Subtracts the update again. W comes back up to float32 rounding, as with PEFT.
+     * @throws std::logic_error without a merged adapter.
+     */
+    void unmerge_lora();
+    /**
+     * @brief false runs the layer as its base layer, x W + b; true adds the update again.
+     * @throws std::logic_error without an adapter, or while it is merged.
+     */
+    void set_lora_enabled(bool enabled);
 
     /**
      * @brief Computes the gradient w.r.t. this module's input, and accumulates the
@@ -143,12 +184,9 @@ public:
     /** @brief Implements every LRPRule. */
     [[nodiscard]] bool supports_lrp_rule(LRPRule) const override { return true; }
 
-    [[nodiscard]] std::vector<NamedParamRef> named_parameters() override {
-        if (!use_bias_) {
-            return {{"weight", {&weight_, &weight_grad_}}};
-        }
-        return {{"weight", {&weight_, &weight_grad_}}, {"bias", {&bias_, &bias_grad_}}};
-    }
+    /** @brief `weight`, `bias` (unless built without one), then a LoRA adapter's `lora_A.weight`
+     *         and `lora_B.weight`. */
+    [[nodiscard]] std::vector<NamedParamRef> named_parameters() override;
 
 
     /** @brief Where this layer computes, so forward() rejects an input on another device (FND-8). */
@@ -171,6 +209,10 @@ private:
     Tensor last_input_;
     Tensor last_pre_bias_output_;
     bool has_forwarded_ = false;
+    std::unique_ptr<LoRAAdapter> lora_;
+
+    /** @brief An adapter that forward() adds: attached, enabled and not merged. */
+    [[nodiscard]] bool lora_active() const;
 };
 
 }  // namespace pulsatrix

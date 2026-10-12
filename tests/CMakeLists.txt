@@ -75,6 +75,7 @@ add_executable(pulsatrix_tests
     module_test.cpp
     module_graph_wiring_test.cpp
     linear_module_test.cpp
+    lora_test.cpp
     relu_module_test.cpp
     softmax_module_test.cpp
     rope_module_test.cpp
@@ -297,7 +298,8 @@ if(PULSATRIX_ENABLE_HIP)
                                        backend_equivalence_hip_test.cpp forward_pass_equivalence_hip_test.cpp
                                        vision_models_hip_test.cpp conv2d_chunking_hip_test.cpp
                                        fused_ops_hip_test.cpp
-                                       safetensors_hip_test.cpp distance_matrix_hip_test.cpp)
+                                       safetensors_hip_test.cpp distance_matrix_hip_test.cpp
+                                       lora_hip_test.cpp)
 endif()
 
 if(PULSATRIX_ENABLE_ORCHESTRATOR)
