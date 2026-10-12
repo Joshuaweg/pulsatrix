@@ -114,6 +114,12 @@ std::vector<NamedParamRef> ResidualModule::named_parameters() {
     return params;
 }
 
+std::vector<NamedModuleRef> ResidualModule::named_children() {
+    std::vector<NamedModuleRef> out{{"inner", inner_}};
+    if (shortcut_ != nullptr) out.push_back({"shortcut", shortcut_});
+    return out;
+}
+
 void ResidualModule::set_training(bool training) {
     Module::set_training(training);
     inner_->set_training(training);

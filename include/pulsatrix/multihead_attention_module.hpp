@@ -211,6 +211,7 @@ public:
     /** @brief Every sub-module's parameters, flattened -- Q/K/V/O weights and biases, plus
      *         the two QK-Norm gammas when enabled. RoPE and softmax contribute none. */
     [[nodiscard]] std::vector<NamedParamRef> named_parameters() override;
+    [[nodiscard]] std::vector<NamedModuleRef> named_children() override;
 
     /** @brief Every layer's named_buffers(), prefixed the same way as named_parameters(). */
     [[nodiscard]] std::vector<NamedBufferRef> named_buffers() override;

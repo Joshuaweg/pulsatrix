@@ -131,6 +131,7 @@ public:
 
     /** @brief norm1_'s, mha_'s, norm2_'s, and swiglu_'s parameters, flattened. */
     [[nodiscard]] std::vector<NamedParamRef> named_parameters() override;
+    [[nodiscard]] std::vector<NamedModuleRef> named_children() override;
 
     /** @brief Every layer's named_buffers(), prefixed the same way as named_parameters(). */
     [[nodiscard]] std::vector<NamedBufferRef> named_buffers() override;

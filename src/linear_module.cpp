@@ -5,6 +5,7 @@
 
 #include "lrp_rules.hpp"
 #include "pulsatrix/assert.hpp"
+#include "pulsatrix/lora.hpp"
 #include "pulsatrix/relu_module.hpp"
 
 namespace pulsatrix {
@@ -24,6 +25,49 @@ LinearModule::LinearModule(int64_t in_features, int64_t out_features, DeviceBack
       bias_grad_(Shape({out_features}), backend, device),
       last_input_(Shape({1, in_features}), backend, device),
       last_pre_bias_output_(Shape({1, out_features}), backend, device) {}
+
+LinearModule::~LinearModule() = default;
+LinearModule::LinearModule(LinearModule&&) noexcept = default;
+LinearModule& LinearModule::operator=(LinearModule&&) noexcept = default;
+
+std::vector<NamedParamRef> LinearModule::named_parameters() {
+    std::vector<NamedParamRef> out{{"weight", {&weight_, &weight_grad_}}};
+    if (use_bias_) out.push_back({"bias", {&bias_, &bias_grad_}});
+    if (lora_) {
+        out.push_back({"lora_A.weight", {&lora_->a_, &lora_->a_grad_}});
+        out.push_back({"lora_B.weight", {&lora_->b_, &lora_->b_grad_}});
+    }
+    return out;
+}
+
+void LinearModule::attach_lora(const LoRAConfig& config) {
+    if (lora_) throw std::logic_error("LinearModule::attach_lora: the layer already has an adapter");
+    lora_ = std::make_unique<LoRAAdapter>(in_features_, out_features_, config, backend_, weight_.device());
+}
+
+void LinearModule::detach_lora() { lora_.reset(); }
+
+bool LinearModule::lora_active() const { return lora_ && lora_->enabled_ && !lora_->merged_; }
+
+void LinearModule::merge_lora() {
+    if (!lora_) throw std::logic_error("LinearModule::merge_lora: the layer has no adapter");
+    if (lora_->merged_) throw std::logic_error("LinearModule::merge_lora: the adapter is already merged");
+    if (!lora_->enabled_) throw std::logic_error("LinearModule::merge_lora: the adapter is disabled");
+    lora_->add_update(weight_, 1.0f);
+    lora_->merged_ = true;
+}
+
+void LinearModule::unmerge_lora() {
+    if (!lora_ || !lora_->merged_) throw std::logic_error("LinearModule::unmerge_lora: the layer has no merged adapter");
+    lora_->add_update(weight_, -1.0f);
+    lora_->merged_ = false;
+}
+
+void LinearModule::set_lora_enabled(bool enabled) {
+    if (!lora_) throw std::logic_error("LinearModule::set_lora_enabled: the layer has no adapter");
+    if (lora_->merged_) throw std::logic_error("LinearModule::set_lora_enabled: the adapter is merged");
+    lora_->enabled_ = enabled;
+}
 
 void LinearModule::set_weight(std::initializer_list<float> values) {
     // Preserve weight_'s existing device tag -- reconstructing with the default (Cpu)
@@ -72,6 +116,8 @@ Tensor LinearModule::forward_impl(const Tensor& input) {
     backend_->gemm(input.data(), weight_.data(), pre_bias.data(), static_cast<size_t>(N),
                     static_cast<size_t>(in_features_), static_cast<size_t>(out_features_));
 
+    if (lora_active()) lora_->add_forward(input, pre_bias, is_training());
+
     // bias_ is (out_features,), broadcast-added per row on the device. (The batch migration
     // originally used a raw host loop here, which silently dereferenced device pointers on a
     // Cuda/Hip module; Mission 0 of GPU-native-kernels routed it through a ones-gemm, now the
@@ -89,7 +135,7 @@ Tensor LinearModule::forward_impl(const Tensor& input) {
 }
 
 Tensor LinearModule::forward_with_relu(const Tensor& input, ReluModule& relu) {
-    if (!use_bias_ || relu.compute_device() != std::optional<DeviceType>(weight_.device())) {
+    if (!use_bias_ || lora_active() || relu.compute_device() != std::optional<DeviceType>(weight_.device())) {
         return relu.forward(forward(input));
     }
     // Module::forward()'s checks on the input, then the gemm as forward_impl() does it.
@@ -154,6 +200,7 @@ Tensor LinearModule::backward(const Tensor& grad_output) {
     // grad_X = grad_Y @ W^T
     Tensor grad_input(Shape({N, in_features_}), backend_, weight_.device());
     backend_->gemm_ex(grad_output.data(), false, weight_.data(), true, grad_input.data(), n, out, in, 0.0f);
+    if (lora_active()) lora_->backward(grad_output, grad_input);
     return grad_input;
 }
 
@@ -172,6 +219,9 @@ Tensor LinearModule::propagate_relevance(const Tensor& relevance_out, const LRPR
     }
 
     lrp_rules::validate(config, "LinearModule");
+    // An unmerged adapter's layer is the linear map W + (alpha / r) A B, which the rules see whole.
+    const Tensor adapted = lora_active() ? lora_->effective_weight(weight_) : Tensor(Shape({0}), backend_, weight_.device());
+    const Tensor& weight = lora_active() ? adapted : weight_;
 
     Tensor relevance_in(Shape({N, in_features_}), backend_, weight_.device());
     if (!lrp_rules::is_legacy_epsilon(config)) {
@@ -191,14 +241,14 @@ Tensor LinearModule::propagate_relevance(const Tensor& relevance_out, const LRPR
             be->gemm_ex(g, false, w, true, gx, n, out, in, 0.0f);
         };
         op.add_bias = [=](const float* y, const float* b, float* o) { be->add_row_vector(y, b, o, n, out); };
-        lrp_rules::apply(op, last_input_.data(), weight_.data(), bias_.data(), last_pre_bias_output_.data(),
+        lrp_rules::apply(op, last_input_.data(), weight.data(), bias_.data(), last_pre_bias_output_.data(),
                          relevance_out.data(), relevance_in.data(), config);
         return relevance_in;
     }
 
     // Device-generic (GPU-native-kernels Mission 3): one output element per GPU thread, each
     // summing over out_features in the original loop's order.
-    backend_->lrp_linear(last_input_.data(), weight_.data(), last_pre_bias_output_.data(), relevance_out.data(),
+    backend_->lrp_linear(last_input_.data(), weight.data(), last_pre_bias_output_.data(), relevance_out.data(),
                          relevance_in.data(), static_cast<size_t>(N), static_cast<size_t>(in_features_),
                          static_cast<size_t>(out_features_), config.epsilon);
     return relevance_in;
@@ -207,6 +257,7 @@ Tensor LinearModule::propagate_relevance(const Tensor& relevance_out, const LRPR
 void LinearModule::release_activations() {
     release_tensor(last_input_);
     release_tensor(last_pre_bias_output_);
+    if (lora_) lora_->release_activations();
     has_forwarded_ = false;
 }
 

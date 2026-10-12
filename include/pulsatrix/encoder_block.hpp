@@ -81,6 +81,7 @@ public:
     /** @brief Owns the residual adds, as TransformerBlock does. */
     [[nodiscard]] OpType op_type() const override { return OpType::Elementwise; }
     [[nodiscard]] std::vector<NamedParamRef> named_parameters() override;
+    [[nodiscard]] std::vector<NamedModuleRef> named_children() override;
     [[nodiscard]] std::vector<NamedBufferRef> named_buffers() override;
     void set_training(bool training) override;
     [[nodiscard]] std::optional<DeviceType> compute_device() const override { return backend_->device(); }
