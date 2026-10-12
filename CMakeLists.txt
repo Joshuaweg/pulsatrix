@@ -726,6 +726,10 @@ if(PULSATRIX_BUILD_EXAMPLES)
     add_executable(imagenet_lrp_recipe examples/recipes/imagenet_lrp.cpp)
     target_link_libraries(imagenet_lrp_recipe PRIVATE pulsatrix_core)
     target_compile_definitions(imagenet_lrp_recipe PRIVATE $<$<BOOL:${PULSATRIX_ENABLE_HIP}>:PULSATRIX_DEMO_WITH_HIP>)
+
+    add_executable(is_the_shape_real_recipe examples/recipes/is_the_shape_real.cpp)
+    target_link_libraries(is_the_shape_real_recipe PRIVATE pulsatrix_core)
+    target_compile_definitions(is_the_shape_real_recipe PRIVATE $<$<BOOL:${PULSATRIX_ENABLE_HIP}>:PULSATRIX_DEMO_WITH_HIP>)
 endif()
 
 if(PULSATRIX_BUILD_TESTS)

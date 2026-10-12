@@ -52,6 +52,7 @@ Recipes link to the related full demo where one exists.
 
 - [Sparse autoencoder + linear probe](mechanistic-interpretability/sparse_autoencoder_probe.md)
 - [GFlowNet on HyperGrid](mechanistic-interpretability/gflownet_hypergrid.md)
+- [Is the shape real? Calendar circles in SmolLM2 and Llama, tested](mechanistic-interpretability/is_the_shape_real.md)
 
 ## Neuro-Symbolic Reasoning
 
