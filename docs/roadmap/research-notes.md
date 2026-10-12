@@ -238,7 +238,7 @@ below record the reasoning they were built on.
 - **TDA-8.**
   - Bootstrap confidence sets: Fasy et al., Annals of Statistics 2014.
   - Permutation tests: Robinson and Turner 2017.
-  - The universal null: Bobrowski and Skraba 2023.
+  - The universal null: Bobrowski and Skraba 2023 (Sci. Rep., arXiv 2207.03926). ℓ = A log log(death/birth) + B with B = −γ − A·L̄; A = 1 for Vietoris–Rips and 1/2 for Čech (not the other way round); null = left-skewed Gumbel, p = exp(−e^ℓ), Bonferroni. A conjecture; assumes a mostly-noise diagram.
 - **TDA-9.** Barcodes and persistence diagrams follow VIZ-1's JSON format; the significance band from TDA-8 is drawn on the diagram.
 - **TDA-10.**
   - Engels et al., "Not All Language Model Features Are Linear", ICLR 2025, arXiv 2405.14860: days of the week and months form circles in GPT-2 and Mistral.
