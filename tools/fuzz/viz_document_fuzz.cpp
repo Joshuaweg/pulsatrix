@@ -24,6 +24,7 @@
 #include "pulsatrix/viz/document.hpp"
 #include "pulsatrix/viz/protein_views.hpp"
 #include "pulsatrix/viz/svg.hpp"
+#include "pulsatrix/viz/topology_views.hpp"
 
 namespace {
 
@@ -71,6 +72,7 @@ extern "C" int LLVMFuzzerTestOneInput(const uint8_t* data, size_t size) {
     ReadAndRewrite(text, pulsatrix::ParseContactMapDocument);
     ReadAndRewrite(text, pulsatrix::ParseResidueTracksDocument);
     ReadAndRewrite(text, pulsatrix::ParseProjectionDocument);
+    ReadAndRewrite(text, pulsatrix::ParsePersistenceDiagramDocument);
     // Whatever reads must also render, or be refused with std::invalid_argument (VIZ-2).
     try {
         pulsatrix::AttributionDocument a = pulsatrix::ParseAttributionDocument(text);
@@ -105,6 +107,13 @@ extern "C" int LLVMFuzzerTestOneInput(const uint8_t* data, size_t size) {
     }
     try {
         (void)pulsatrix::RenderProjectionSvg(pulsatrix::ParseProjectionDocument(text));
+    } catch (const std::invalid_argument&) {
+    }
+    try {
+        const pulsatrix::PersistenceDiagramDocument ph = pulsatrix::ParsePersistenceDiagramDocument(text);
+        try { (void)pulsatrix::RenderPersistenceDiagramSvg(ph); } catch (const std::invalid_argument&) {}
+        try { (void)pulsatrix::RenderBarcodeSvg(ph); } catch (const std::invalid_argument&) {}
+        try { (void)pulsatrix::RenderBettiCurveSvg(ph); } catch (const std::invalid_argument&) {}
     } catch (const std::invalid_argument&) {
     }
     return 0;
@@ -155,7 +164,17 @@ std::vector<std::string> seeds() {
     pr.coordinates = {1.0f, -1.0f, 0.0f, 2.0f};
     pr.groups = {"a", "b"};
     pr.values = {1.0f, nan};
-    return {ToJson(a), ToJson(h), ToJson(t), ToJson(c), ToJson(l), ToJson(f), ToJson(mm), ToJson(lg), ToJson(cm), ToJson(rt), ToJson(pr)};
+    PersistenceDiagramDocument ph;
+    ph.threshold = 2.0;
+    PersistenceDiagramEntry h1;
+    h1.dimension = 1;
+    h1.births = {0.5, 0.25};
+    h1.deaths = {1.5, std::numeric_limits<double>::infinity()};
+    h1.error_bound = 0.01;
+    h1.p_values = {0.001, std::numeric_limits<double>::quiet_NaN()};
+    h1.significance_threshold = 0.05;
+    ph.diagrams = {h1};
+    return {ToJson(a), ToJson(h), ToJson(t), ToJson(c), ToJson(l), ToJson(f), ToJson(mm), ToJson(lg), ToJson(cm), ToJson(rt), ToJson(pr), ToJson(ph)};
 }
 
 }  // namespace

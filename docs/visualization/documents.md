@@ -45,6 +45,7 @@ There are sixteen kinds. Each has a struct, a writer (`ToJson`) and a reader (`P
 | `pulsatrix.sequence_logo.v1` | `SequenceLogoDocument` | `title`, `sequence`, `first_position`, `method`, `alphabet`, and row-major `probabilities` (positions × alphabet, each row a distribution) | `ResidueLogProbs` |
 | `pulsatrix.contact_map.v1` | `ContactMapDocument` | `title`, `sequence`, `first_position`, `method`, `predicted` (L × L) and `truth` (L × L of 0, 1 and NaN, or empty) | `ContactMap` |
 | `pulsatrix.projection.v1` | `ProjectionDocument` | `title`, `method`, `axes`, `explained_variance_ratio` (one per axis, or empty), row-major `coordinates` (points × axes), and optional per-point `labels`, `groups` and `values` | `MakeProjectionDocument(pca, scores)`, or `MakeProjectionDocument(coordinates, "umap")` for UMAP or t-SNE output |
+| `pulsatrix.persistence_diagram.v1` | `PersistenceDiagramDocument` (`viz/topology_documents.hpp`) | `title`, `filtration`, `source`, `num_points`, `threshold`, and per dimension its `births`, `deaths` (+∞ through `nonfinite`), certified `error_bound`, and optional `p_values` with their `significance_threshold` and `bootstrap_band` | `RipsResult` or `PersistenceDiagram`s; `AttachSignificance(UniversalNullResult)`, `AttachBootstrapBand(BootstrapBandResult)` |
 | `pulsatrix.residue_tracks.v1` | `ResidueTracksDocument` | `title`, `sequence`, `first_position`, `tracks` (`name`, one value per residue, `signed`), `features` (`name`, `start`, `end`, `category`) and `residue_ids` | — |
 
 ### Token relevance for text

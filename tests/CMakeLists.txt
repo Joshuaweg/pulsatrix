@@ -239,6 +239,7 @@ add_executable(pulsatrix_tests
     representation_geometry_test.cpp
     pca_test.cpp
     projection_view_test.cpp
+    topology_views_test.cpp
     tcav_test.cpp
     concept_relevance_test.cpp
     rsa_svcca_test.cpp
@@ -399,6 +400,21 @@ foreach(kind mutation_map sequence_logo contact_map residue_tracks)
         COMMAND pulsatrix_svg "${CMAKE_CURRENT_SOURCE_DIR}/fixtures/viz/${kind}.v1.json"
             -o "${CMAKE_CURRENT_BINARY_DIR}/pulsatrix_svg_${kind}.html")
 endforeach()
+# TDA-9: a persistence diagram document, in each of its three views.
+foreach(view diagram barcode betti)
+    add_test(NAME PulsatrixSvg.RendersAPersistence_${view}
+        COMMAND pulsatrix_svg "${CMAKE_CURRENT_SOURCE_DIR}/fixtures/viz/persistence_diagram.v1.json" --view ${view}
+            -o "${CMAKE_CURRENT_BINARY_DIR}/pulsatrix_svg_persistence_${view}.svg")
+endforeach()
+add_test(NAME PulsatrixSvg.RendersOneDimensionOfAPersistenceDiagram
+    COMMAND pulsatrix_svg "${CMAKE_CURRENT_SOURCE_DIR}/fixtures/viz/persistence_diagram.v1.json" --view barcode --dims 1
+        -o "${CMAKE_CURRENT_BINARY_DIR}/pulsatrix_svg_persistence_h1.svg")
+add_test(NAME PulsatrixSvg.RejectsAnUnknownPersistenceView
+    COMMAND pulsatrix_svg "${CMAKE_CURRENT_SOURCE_DIR}/fixtures/viz/persistence_diagram.v1.json" --view landscape)
+set_tests_properties(PulsatrixSvg.RejectsAnUnknownPersistenceView PROPERTIES WILL_FAIL TRUE)
+add_test(NAME PulsatrixSvg.RejectsADimensionThePersistenceDiagramLacks
+    COMMAND pulsatrix_svg "${CMAKE_CURRENT_SOURCE_DIR}/fixtures/viz/persistence_diagram.v1.json" --dims 2)
+set_tests_properties(PulsatrixSvg.RejectsADimensionThePersistenceDiagramLacks PROPERTIES WILL_FAIL TRUE)
 add_test(NAME PulsatrixSvg.RejectsAnUnknownIceStyle
     COMMAND pulsatrix_svg "${CMAKE_CURRENT_SOURCE_DIR}/fixtures/viz/partial_dependence.v1.json" --ice sideways)
 set_tests_properties(PulsatrixSvg.RejectsAnUnknownIceStyle PROPERTIES WILL_FAIL TRUE)
