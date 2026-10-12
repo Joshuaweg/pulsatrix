@@ -12,9 +12,10 @@ var searchData=
   ['encodertarget_9',['EncoderTarget',['../structpulsatrix_1_1EncoderTarget.html',1,'pulsatrix']]],
   ['encoding_10',['Encoding',['../structpulsatrix_1_1Encoding.html',1,'pulsatrix']]],
   ['environment_11',['Environment',['../classpulsatrix_1_1Environment.html',1,'pulsatrix']]],
-  ['esmcontacthead_12',['EsmContactHead',['../structpulsatrix_1_1EsmContactHead.html',1,'pulsatrix']]],
-  ['esresult_13',['ESResult',['../structpulsatrix_1_1ESResult.html',1,'pulsatrix']]],
-  ['example_14',['Example',['../structpulsatrix_1_1FeatureDashboardDocument_1_1Example.html',1,'pulsatrix::FeatureDashboardDocument']]],
-  ['explainercontext_15',['ExplainerContext',['../classpulsatrix_1_1ExplainerContext.html',1,'pulsatrix']]],
-  ['explanationscorecard_16',['ExplanationScoreCard',['../classpulsatrix_1_1ExplanationScoreCard.html',1,'pulsatrix']]]
+  ['errorterm_12',['ErrorTerm',['../structpulsatrix_1_1ErrorTerm.html',1,'pulsatrix']]],
+  ['esmcontacthead_13',['EsmContactHead',['../structpulsatrix_1_1EsmContactHead.html',1,'pulsatrix']]],
+  ['esresult_14',['ESResult',['../structpulsatrix_1_1ESResult.html',1,'pulsatrix']]],
+  ['example_15',['Example',['../structpulsatrix_1_1FeatureDashboardDocument_1_1Example.html',1,'pulsatrix::FeatureDashboardDocument']]],
+  ['explainercontext_16',['ExplainerContext',['../classpulsatrix_1_1ExplainerContext.html',1,'pulsatrix']]],
+  ['explanationscorecard_17',['ExplanationScoreCard',['../classpulsatrix_1_1ExplanationScoreCard.html',1,'pulsatrix']]]
 ];

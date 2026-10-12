@@ -5840,7 +5840,7 @@ GUDHI's GPL-licensed parts and giotto-ph (AGPL) are avoided.</p>
 <td>TDA-3, TDA-4</td>
 <td>P0</td>
 <td>M</td>
-<td></td>
+<td>Done (see below)</td>
 </tr>
 <tr>
 <td>TDA-6</td>
@@ -5987,7 +5987,14 @@ GUDHI's GPL-licensed parts and giotto-ph (AGPL) are avoided.</p>
 </ul>
 <p>Planted bugs (dropped signs, skipped reductions, a broken apparent-pair check) each fail
   several of them. On a CPU it computes H1 of 2,000 points in about a second and H2 of 600
-  points in about 4 seconds.</p>
+  points in about 4 seconds.
+- <strong>TDA-5</strong> follows the plan in <code>tda/diagram_distance.hpp</code>. The diagram type is TDA-3's
+  <code>PersistenceDiagram</code>. The bottleneck distance is exact (binary search over candidates, with
+  Hopcroft–Karp matchings) and returns a <code>Certified&lt;double&gt;</code>, whose terms are the two diagrams'
+  error bounds. The Wasserstein distance is exact (Hungarian algorithm) but returns a plain
+  double: an L∞ error in the distances doesn't bound it usefully. Kerber, Morozov and Nigmetov's
+  geometric speed-ups aren't implemented; diagrams of a few hundred points don't need them.
+  The stability property test perturbs random clouds and checks d_B ≤ ‖D − D′‖∞ in H0 and H1.</p>
 <p>Not planned: "neural persistence" on weight graphs. A 2023 follow-up showed it mostly measures
 weight variance.</p>
 <h2 id="kd-surrogates-and-student-teacher">KD: Surrogates and student-teacher<a class="headerlink" href="#kd-surrogates-and-student-teacher" title="Permanent link">&para;</a></h2>

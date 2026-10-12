@@ -52,6 +52,7 @@ var hierarchy =
     [ "pulsatrix::CalibrationLoss", "classpulsatrix_1_1CalibrationLoss.html", null ],
     [ "pulsatrix::Cav", "structpulsatrix_1_1Cav.html", null ],
     [ "pulsatrix::CavOptions", "structpulsatrix_1_1CavOptions.html", null ],
+    [ "pulsatrix::Certified< T >", "structpulsatrix_1_1Certified.html", null ],
     [ "pulsatrix::orch::ChatRequest", "structpulsatrix_1_1orch_1_1ChatRequest.html", null ],
     [ "pulsatrix::orch::ChatResponse", "structpulsatrix_1_1orch_1_1ChatResponse.html", null ],
     [ "pulsatrix::CheckpointLoadOptions", "structpulsatrix_1_1CheckpointLoadOptions.html", null ],
@@ -153,6 +154,7 @@ var hierarchy =
       [ "pulsatrix::ContinuousCartPoleEnv", "classpulsatrix_1_1ContinuousCartPoleEnv.html", null ],
       [ "pulsatrix::HyperGridEnv", "classpulsatrix_1_1HyperGridEnv.html", null ]
     ] ],
+    [ "pulsatrix::ErrorTerm", "structpulsatrix_1_1ErrorTerm.html", null ],
     [ "pulsatrix::EsmContactHead", "structpulsatrix_1_1EsmContactHead.html", null ],
     [ "pulsatrix::ESResult", "structpulsatrix_1_1ESResult.html", null ],
     [ "pulsatrix::FeatureDashboardDocument::Example", "structpulsatrix_1_1FeatureDashboardDocument_1_1Example.html", null ],

@@ -851,6 +851,17 @@
   
 </li>
       
+        <li class="md-nav__item">
+  <a href="#comparing-diagrams" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Comparing diagrams
+      
+    </span>
+  </a>
+  
+</li>
+      
     </ul>
   
 </nav>
@@ -2405,6 +2416,17 @@
   
 </li>
       
+        <li class="md-nav__item">
+  <a href="#comparing-diagrams" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Comparing diagrams
+      
+    </span>
+  </a>
+  
+</li>
+      
     </ul>
   
 </nav>
@@ -2434,7 +2456,7 @@ noise and a random-network control?</p>
 <p>pulsatrix builds this as a pipeline, one stage at a time:</p>
 <div class="highlight"><pre><span></span><code>PointCloud → distances → filtration → persistence diagram → numbers and plots
 </code></pre></div>
-<p>This page grows with each stage. So far it covers the point cloud, the distances, and the diagrams: H0, then loops, voids and higher.</p>
+<p>This page grows with each stage. So far it covers the point cloud, the distances, the diagrams (H0, then loops, voids and higher), and how to compare diagrams.</p>
 <h2 id="from-activations-to-a-point-cloud">From activations to a point cloud<a class="headerlink" href="#from-activations-to-a-point-cloud" title="Permanent link">&para;</a></h2>
 <p><code>PointCloud</code> gathers a layer's activations, batch by batch, into one set of points. Each point
 remembers the sample and position it came from, so a loop found later can be traced back to the
@@ -2654,6 +2676,39 @@ for H1, or about a thousand for H2, choose landmarks first (coming next).</p>
 <li><strong>The cocycle condition</strong>, and the winding of a circle's cocycle.</li>
 <li><strong>H0</strong> matches the minimum spanning tree.</li>
 </ul>
+<h2 id="comparing-diagrams">Comparing diagrams<a class="headerlink" href="#comparing-diagrams" title="Permanent link">&para;</a></h2>
+<p>Two diagrams, say of the same layer in two models, two seeds, or before and after fine-tuning,
+are compared by matching their points. Each point goes either to a point of the other diagram
+or to the diagonal, where a feature of zero persistence would sit:</p>
+<div class="highlight"><pre><span></span><code><span class="cp">#include</span><span class="w"> </span><span class="cpf">"pulsatrix/tda/diagram_distance.hpp"</span>
+
+<span class="k">const</span><span class="w"> </span><span class="n">Certified</span><span class="o">&lt;</span><span class="kt">double</span><span class="o">&gt;</span><span class="w"> </span><span class="n">d</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">BottleneckDistance</span><span class="p">(</span><span class="n">base</span><span class="p">.</span><span class="n">diagrams</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span><span class="w"> </span><span class="n">tuned</span><span class="p">.</span><span class="n">diagrams</span><span class="p">[</span><span class="mi">1</span><span class="p">]);</span>
+<span class="c1">// d.value: the largest move in the best matching.</span>
+<span class="c1">// d.bound(): the exact diagrams' distance is within this of d.value; d.terms itemize it.</span>
+<span class="k">const</span><span class="w"> </span><span class="kt">double</span><span class="w"> </span><span class="n">w2</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">WassersteinDistance</span><span class="p">(</span><span class="n">base</span><span class="p">.</span><span class="n">diagrams</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span><span class="w"> </span><span class="n">tuned</span><span class="p">.</span><span class="n">diagrams</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span><span class="w"> </span><span class="cm">/*order=*/</span><span class="mi">2</span><span class="p">);</span>
+</code></pre></div>
+<ul>
+<li><strong>Bottleneck distance</strong> is the smallest possible largest move. It is the distance the
+  stability theorem uses (Chazal, de Silva and Oudot, 2014): if two clouds' distance matrices
+  differ by at most e, their Rips diagrams are within e. The tests check this on random clouds
+  and perturbations, in H0 and H1, and the bound comes close to tight.</li>
+<li><strong>Wasserstein distance</strong> W_q is the q-th root of the smallest sum of q-th powers of the moves.
+  It counts every feature, where the bottleneck counts only the worst one. As q grows it
+  approaches the bottleneck.</li>
+<li><strong>Moves are measured in the L∞ norm</strong>, as in the stability theorem, so a point (b, d) is
+  (d − b) / 2 from the diagonal. Essential features are matched to each other by birth. If two
+  diagrams have different numbers of them, the distance is infinite.</li>
+</ul>
+<p><strong>Certified values.</strong> <code>Certified&lt;T&gt;</code> holds a value and the error terms behind it, each with its
+source. A bottleneck distance carries both diagrams' <code>error_bound</code>s: by the triangle inequality,
+the distance between the exact diagrams is within their sum. So a difference between two
+layers is real only if it exceeds <code>d.bound()</code>.</p>
+<p>The Wasserstein distance isn't certified. An error of e in every distance can move it by up to
+e times the q-th root of the number of points, so a single bound would mean little.</p>
+<p>Both are exact. The bottleneck distance uses a binary search over candidate values, each tested
+by a Hopcroft–Karp matching, and is comfortable up to a few hundred points per diagram. The
+Wasserstein distance uses the Hungarian algorithm, which takes (n₁ + n₂)³ time, so up to about a
+thousand points in all. Both match brute force over every matching on small diagrams.</p>
 <p>Full API reference: <a href="../api/group__tda.html">Doxygen: Topological Data Analysis</a></p>
 
 

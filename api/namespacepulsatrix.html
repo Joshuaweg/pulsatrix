@@ -296,6 +296,9 @@ Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1CenterCropTransform.html">CenterCropTransform</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Crops the centered (crop_height, crop_width) region of the image.  <a href="classpulsatrix_1_1CenterCropTransform.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpulsatrix_1_1Certified.html">Certified</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">A computed value and a certified bound on its error, itemized by source: the exact value is within <a class="el" href="structpulsatrix_1_1Certified.html#a5c3ea633d4f9b4d2fdeda57126dbf026" title="The total bound: the sum of the terms.">bound()</a> of value.  <a href="structpulsatrix_1_1Certified.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1CharModel.html">CharModel</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Every character (code point) is a token, looked up in a character list; unknown characters become the unknown token.  <a href="classpulsatrix_1_1CharModel.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -554,6 +557,9 @@ Classes</h2></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1Environment.html">Environment</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Base class for every RL environment (<a class="el" href="classpulsatrix_1_1CartPoleEnv.html" title="The classic cart-pole balancing task (Barto, Sutton &amp; Anderson 1983), the same equations OpenAI Gym&#39;s...">CartPoleEnv</a>, and whatever later phases add).  <a href="classpulsatrix_1_1Environment.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpulsatrix_1_1ErrorTerm.html">ErrorTerm</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">One source of error in a <a class="el" href="structpulsatrix_1_1Certified.html" title="A computed value and a certified bound on its error, itemized by source: the exact value is within bo...">Certified</a> value.  <a href="structpulsatrix_1_1ErrorTerm.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpulsatrix_1_1EsmContactHead.html">EsmContactHead</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">ESM's contact head (<code>EsmContactPredictionHead</code>): a logistic regression over every head's corrected attention map, <code>sigmoid(sum_c weight[c] * f_c(i, j) + bias)</code>. Channel <code>c = layer * heads + head</code>, as transformers stacks them.  <a href="structpulsatrix_1_1EsmContactHead.html#details">More...</a><br /></td></tr>
@@ -2838,6 +2844,12 @@ Functions</h2></td></tr>
 <tr class="memitem:ad2bb179db23384a5ae77b15279842ddb" id="r_ad2bb179db23384a5ae77b15279842ddb"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structpulsatrix_1_1TcavResult.html">TcavResult</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#ad2bb179db23384a5ae77b15279842ddb">RunTcav</a> (<a class="el" href="classpulsatrix_1_1ExplainerContext.html">ExplainerContext</a> &amp;ctx, <a class="el" href="namespacepulsatrix.html#a2b8dc3d7d2cef35f192d191f09156e67">NodeId</a> layer, int64_t target, const <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp;class_inputs, const <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp;concept_inputs, const std::vector&lt; <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &gt; &amp;random_inputs, <a class="el" href="classpulsatrix_1_1DeviceBackend.html">DeviceBackend</a> *backend, const <a class="el" href="structpulsatrix_1_1TcavOptions.html">TcavOptions</a> &amp;options={})</td></tr>
 <tr class="memdesc:ad2bb179db23384a5ae77b15279842ddb"><td class="mdescLeft">&#160;</td><td class="mdescRight">TCAV with Kim et al.'s significance test, for one concept, layer and class.  <br /></td></tr>
 <tr class="separator:ad2bb179db23384a5ae77b15279842ddb"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a63e75e91674dc6a0e50ed62c0f79b7f2" id="r_a63e75e91674dc6a0e50ed62c0f79b7f2"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structpulsatrix_1_1Certified.html">Certified</a>&lt; double &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#a63e75e91674dc6a0e50ed62c0f79b7f2">BottleneckDistance</a> (const <a class="el" href="structpulsatrix_1_1PersistenceDiagram.html">PersistenceDiagram</a> &amp;a, const <a class="el" href="structpulsatrix_1_1PersistenceDiagram.html">PersistenceDiagram</a> &amp;b)</td></tr>
+<tr class="memdesc:a63e75e91674dc6a0e50ed62c0f79b7f2"><td class="mdescLeft">&#160;</td><td class="mdescRight">The bottleneck distance between two diagrams of the same dimension.  <br /></td></tr>
+<tr class="separator:a63e75e91674dc6a0e50ed62c0f79b7f2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8c5d99678b999e2bc910cf161231d9e8" id="r_a8c5d99678b999e2bc910cf161231d9e8"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#a8c5d99678b999e2bc910cf161231d9e8">WassersteinDistance</a> (const <a class="el" href="structpulsatrix_1_1PersistenceDiagram.html">PersistenceDiagram</a> &amp;a, const <a class="el" href="structpulsatrix_1_1PersistenceDiagram.html">PersistenceDiagram</a> &amp;b, double order=2)</td></tr>
+<tr class="memdesc:a8c5d99678b999e2bc910cf161231d9e8"><td class="mdescLeft">&#160;</td><td class="mdescRight">The q-Wasserstein distance between two diagrams of the same dimension, with the L-infinity norm between points.  <br /></td></tr>
+<tr class="separator:a8c5d99678b999e2bc910cf161231d9e8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a38e9b82e739fc4c0df68b10cb6e3a642" id="r_a38e9b82e739fc4c0df68b10cb6e3a642"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structpulsatrix_1_1DistanceMatrix.html">DistanceMatrix</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#a38e9b82e739fc4c0df68b10cb6e3a642">PairwiseDistances</a> (const <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp;points, const <a class="el" href="structpulsatrix_1_1DistanceOptions.html">DistanceOptions</a> &amp;options={})</td></tr>
 <tr class="memdesc:a38e9b82e739fc4c0df68b10cb6e3a642"><td class="mdescLeft">&#160;</td><td class="mdescRight">Euclidean distances between every pair of rows.  <br /></td></tr>
 <tr class="separator:a38e9b82e739fc4c0df68b10cb6e3a642"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -5942,6 +5954,44 @@ template&lt;typename RNG &gt; </div>
   </dd>
 </dl>
 <dl class="section note"><dt>Note</dt><dd>child1_i + child2_i == parent1_i + parent2_i for any gamma_i &ndash; an algebraic invariant, not just a property at specific gamma values, useful for testing the RNG-driven wrapper without controlling its draws directly. </dd></dl>
+
+</div>
+</div>
+<a id="a63e75e91674dc6a0e50ed62c0f79b7f2" name="a63e75e91674dc6a0e50ed62c0f79b7f2"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a63e75e91674dc6a0e50ed62c0f79b7f2">&#9670;&#160;</a></span>BottleneckDistance()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="structpulsatrix_1_1Certified.html">Certified</a>&lt; double &gt; pulsatrix::BottleneckDistance </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="structpulsatrix_1_1PersistenceDiagram.html">PersistenceDiagram</a> &amp;&#160;</td>
+          <td class="paramname"><em>a</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="structpulsatrix_1_1PersistenceDiagram.html">PersistenceDiagram</a> &amp;&#160;</td>
+          <td class="paramname"><em>b</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>The bottleneck distance between two diagrams of the same dimension. </p>
+<dl class="section return"><dt>Returns</dt><dd>The distance between the diagrams as given, certified to be within a.error_bound + b.error_bound of the distance between the exact diagrams (by the triangle inequality). Infinite if the diagrams have different numbers of essential features, which can't be matched to the diagonal. </dd></dl>
+<dl class="section note"><dt>Note</dt><dd>Exact: a binary search over the candidate values, each tested by a maximum bipartite matching (Hopcroft-Karp) on the points and their diagonal projections. Comfortable up to a few hundred points per diagram; the cost grows as (n1 + n2)^2.5 times a logarithm. </dd></dl>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname">std::invalid_argument</td><td>if the diagrams' dimensions differ. </td></tr>
+  </table>
+  </dd>
+</dl>
 
 </div>
 </div>
@@ -24165,6 +24215,56 @@ template&lt;typename T &gt; </div>
 </div><div class="memdoc">
 
 <p>Whether this build's ImGui uses FreeType (color emoji) rather than stb_truetype. </p>
+
+</div>
+</div>
+<a id="a8c5d99678b999e2bc910cf161231d9e8" name="a8c5d99678b999e2bc910cf161231d9e8"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8c5d99678b999e2bc910cf161231d9e8">&#9670;&#160;</a></span>WassersteinDistance()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">double pulsatrix::WassersteinDistance </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="structpulsatrix_1_1PersistenceDiagram.html">PersistenceDiagram</a> &amp;&#160;</td>
+          <td class="paramname"><em>a</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="structpulsatrix_1_1PersistenceDiagram.html">PersistenceDiagram</a> &amp;&#160;</td>
+          <td class="paramname"><em>b</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">double&#160;</td>
+          <td class="paramname"><em>order</em> = <code>2</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>The q-Wasserstein distance between two diagrams of the same dimension, with the L-infinity norm between points. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">order</td><td>q, at least 1. Infinity gives the bottleneck distance's value. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>Infinite if the numbers of essential features differ. </dd></dl>
+<dl class="section note"><dt>Note</dt><dd>Exact, by the Hungarian algorithm on n1 + n2 rows: (n1 + n2)^3 time, so up to about a thousand points in all. Unlike the bottleneck distance it isn't certified: an error of e in every distance can move it by up to e times the q-th root of the number of points. </dd></dl>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname">std::invalid_argument</td><td>if the dimensions differ or order is below 1 or NaN. </td></tr>
+  </table>
+  </dd>
+</dl>
 
 </div>
 </div>
