@@ -238,11 +238,61 @@ Known differences and gaps:
   4.8e-5 against LXT's rules on the 650M model.
 - Not covered by the reference tests: the recurrent and state-space rules.
 
+## Concepts: Concept Relevance Propagation
+
+A heatmap says where the evidence for a class is, not what it is. Concept Relevance
+Propagation (CRP; Achtibat et al., Nature Machine Intelligence 2023) works at a hidden layer,
+where each channel (a convolution's filter, a dense layer's unit) stands for a learned concept.
+It answers three questions, with the same `LRP` object and rules as `explain()`:
+
+```cpp
+#include "pulsatrix/concept_relevance.hpp"
+
+const LRP lrp = LRP::epsilon_plus();
+// Node i + 1 is module i's output: 2 is the first ReLU's.
+const Tensor at_layer = LayerRelevance(lrp, ctx, image, LRPTarget{{cat}}, /*layer=*/2, &backend);
+const std::vector<double> per_channel = ChannelRelevance(at_layer);  // (N, C)
+
+// Where in the image are concepts 7 and 12?
+const std::vector<Attribution> maps =
+    ConditionalHeatmaps(lrp, ctx, image, LRPTarget{{cat}}, {{{2, {7}}}, {{2, {12}}}}, &backend);
+
+// What is concept 7? The images where it does most for "cat".
+const std::vector<int64_t> examples =
+    ConceptReferenceSamples(lrp, ctx, dataset, cat, 2, 7, /*k=*/8, ReferenceMode::Relevance, &backend);
+```
+
+- **How much each concept matters.** `ChannelRelevance` sums the relevance at the layer per
+  channel. With a conserving rule, the channels add up to the explained output.
+- **Where each concept is.** `ConditionalHeatmaps` runs LRP with the relevance at the layer
+  zeroed outside a concept's channels. The rules are linear in the relevance they pass on, so
+  the heatmaps of all a layer's channels add up to the plain heatmap (tested under three
+  presets, to 1e-5).
+  - A condition can mask several layers, for a concept and a sub-concept below it.
+  - The forward pass and the seed are computed once for all conditions.
+- **What each concept is.** `ConceptReferenceSamples` ranks a set of inputs by how relevant a
+  channel is in each for the class (relevance maximization), or by its largest activation
+  (activation maximization).
+  - Activation shows everything that excites the channel.
+  - Relevance shows when the channel actually does something for the class. In the test, the
+    input with the highest activation contributes nothing, because a later unit blocks it, so
+    relevance maximization passes it over.
+
+The pieces underneath are public too:
+
+- `LRP::seed_relevance` and `LRP::rule_configs` are the two halves of `explain()`.
+- `ExplainerContext::relevance_pass_through(relevance, configs, begin, end)` propagates through
+  a range of modules. A pass can stop at any layer, change the relevance there and continue.
+
+CRP works on `ExplainerContext` chains. A `SequentialModule` counts as one layer, so to condition
+inside it, list its modules in the context directly.
+
 ## See also
 
 - [Recipe: LRP on a trained MNIST classifier](../recipes/interpretability/mnist_lrp.md)
 - [Recipe: tracing relevance through a Datalog derivation](../recipes/neuro-symbolic/datalog_lrp_bridge.md)
 - [Customization](../customization/index.md#adding-a-new-layer): writing `propagate_relevance()` for your own layer
+- [Concepts given by examples (TCAV)](../mechanistic-interpretability/index.md#concepts-tcav): the other way to explain with concepts
 - [Checking an explanation](index.md#checking-an-explanation): deletion and insertion curves, the randomization test and the null-model baseline, for any LRP result
 - [Visualization](../visualization/documents.md): saving relevance as JSON and drawing it as SVG
 - [API reference: Layer-wise Relevance Propagation](../api/group__interpretability__lrp.html)
