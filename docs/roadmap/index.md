@@ -985,7 +985,7 @@ GUDHI's GPL-licensed parts and giotto-ph (AGPL) are avoided.
 | TDA-3 | H0 as a minimum spanning tree | Exact, fast and GPU-friendly | TDA-2 | P0 | S | Done (see below) |
 | TDA-4 | Vendored Ripser for H1 and H2, returning critical edges and cocycles | Loops and voids | TDA-2 | P0 | M | Done (see below) |
 | TDA-5 | `Diagram`, bottleneck and Wasserstein distances, `Certified<T>`, and property tests for stability | Compare layers, models and seeds with certified error | TDA-3, TDA-4 | P0 | M | Done (see below) |
-| TDA-6 | Betti curves, persistence landscapes, persistence images, persistent entropy | Turn diagrams into numbers for probes and plots | TDA-5 | P0 | S |  |
+| TDA-6 | Betti curves, persistence landscapes, persistence images, persistent entropy | Turn diagrams into numbers for probes and plots | TDA-5 | P0 | S | Done (see below) |
 | TDA-7 | Farthest-point landmarks, which give the subsampling error bound | Persistent homology can't run on 100,000 activations | FND-3 | P0 | S |  |
 | TDA-8 | Significance tests: a universal null distribution, bootstrap confidence bands, Gaussian and random-network baselines | Every reported loop needs a p-value | TDA-5 | P0 | M |  |
 | TDA-9 | Barcode, persistence diagram and Betti curve views, with JSON and SVG export | See the result | TDA-5, VIZ-1 | P1 | M |  |
@@ -1041,6 +1041,11 @@ GUDHI's GPL-licensed parts and giotto-ph (AGPL) are avoided.
   double: an L∞ error in the distances doesn't bound it usefully. Kerber, Morozov and Nigmetov's
   geometric speed-ups aren't implemented; diagrams of a few hundred points don't need them.
   The stability property test perturbs random clouds and checks d_B ≤ ‖D − D′‖∞ in H0 and H1.
+- **TDA-6** follows the plan in `tda/vectorization.hpp`. Only landscapes are certified: they are
+  1-Lipschitz in the bottleneck distance, and a property test checks that on random diagrams.
+  Persistence images use Adams et al.'s linear weight and integrate the Gaussian over each pixel
+  (with `erf`) rather than sampling it at the centre, so values don't depend on how finely the
+  pixels sample a narrow Gaussian.
 
 Not planned: "neural persistence" on weight graphs. A 2023 follow-up showed it mostly measures
 weight variance.
