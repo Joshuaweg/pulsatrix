@@ -25,8 +25,9 @@ var searchData=
   ['morrisoptions_22',['MorrisOptions',['../structpulsatrix_1_1MorrisOptions.html',1,'pulsatrix']]],
   ['morrisresult_23',['MorrisResult',['../structpulsatrix_1_1MorrisResult.html',1,'pulsatrix']]],
   ['mseloss_24',['MSELoss',['../classpulsatrix_1_1MSELoss.html',1,'pulsatrix']]],
-  ['multiheadattentionmodule_25',['MultiHeadAttentionModule',['../classpulsatrix_1_1MultiHeadAttentionModule.html',1,'pulsatrix']]],
-  ['mutation_26',['Mutation',['../structpulsatrix_1_1Mutation.html',1,'pulsatrix']]],
-  ['mutationloss_27',['MutationLoss',['../classpulsatrix_1_1MutationLoss.html',1,'pulsatrix']]],
-  ['mutationmapdocument_28',['MutationMapDocument',['../structpulsatrix_1_1MutationMapDocument.html',1,'pulsatrix']]]
+  ['mstedge_25',['MstEdge',['../structpulsatrix_1_1MstEdge.html',1,'pulsatrix']]],
+  ['multiheadattentionmodule_26',['MultiHeadAttentionModule',['../classpulsatrix_1_1MultiHeadAttentionModule.html',1,'pulsatrix']]],
+  ['mutation_27',['Mutation',['../structpulsatrix_1_1Mutation.html',1,'pulsatrix']]],
+  ['mutationloss_28',['MutationLoss',['../classpulsatrix_1_1MutationLoss.html',1,'pulsatrix']]],
+  ['mutationmapdocument_29',['MutationMapDocument',['../structpulsatrix_1_1MutationMapDocument.html',1,'pulsatrix']]]
 ];

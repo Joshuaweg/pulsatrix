@@ -23,8 +23,8 @@ var NAVTREEINDEX18 =
 "fixed__topology__xor__network_8hpp.html":[2,7,6],
 "flatten__module_8hpp.html":[2,0,28],
 "fonts_8hpp.html":[2,8,11],
-"functions.html":[4,3,0,0],
 "functions.html":[4,3,0],
+"functions.html":[4,3,0,0],
 "functions_b.html":[4,3,0,1],
 "functions_c.html":[4,3,0,2],
 "functions_d.html":[4,3,0,3],
@@ -76,8 +76,8 @@ var NAVTREEINDEX18 =
 "functions_type.html":[4,3,3],
 "functions_u.html":[4,3,0,20],
 "functions_v.html":[4,3,0,21],
-"functions_vars.html":[4,3,2,0],
 "functions_vars.html":[4,3,2],
+"functions_vars.html":[4,3,2,0],
 "functions_vars_b.html":[4,3,2,1],
 "functions_vars_c.html":[4,3,2,2],
 "functions_vars_d.html":[4,3,2,3],
@@ -141,6 +141,7 @@ var NAVTREEINDEX18 =
 "group__tda.html":[2,4],
 "group__visualization.html":[2,8],
 "gru__module_8hpp.html":[2,0,33],
+"h0_8hpp.html":[2,4,1],
 "hf__model_8hpp.html":[2,0,34],
 "hierarchy.html":[4,2],
 "hip__backend_8hpp.html":[2,0,35],
@@ -248,6 +249,5 @@ var NAVTREEINDEX18 =
 "namespacemembers_v.html":[3,1,0,21],
 "namespacemembers_vars.html":[3,1,2],
 "namespacemembers_w.html":[3,1,0,22],
-"namespacemembers_x.html":[3,1,0,23],
-"namespacemembers_z.html":[3,1,0,24]
+"namespacemembers_x.html":[3,1,0,23]
 };
