@@ -343,3 +343,71 @@ into pulsatrix:
 - the gradients of all six vectors match;
 - merging and unmerging leave the logits unchanged;
 - `SaveIA3Adapter()` writes back PEFT's keys, shapes and values.
+
+## What did the fine-tune change?
+
+Every method above makes a fine-tune you can switch on and off. `fine_tune_diff.hpp` compares the
+two, in the model's behaviour and in its weights.
+
+### The explanation, before and after
+
+`DiffAdapterRelevance()` explains the same prediction twice:
+1. with the fine-tune on (LoRA adapters, IA³ vectors and LoReFT interventions);
+2. with the fine-tune off.
+
+It returns both input relevances and their difference. By default both runs explain the token the
+fine-tuned model predicts at the last position. Each run seeds LRP with its own model's score for
+that token, so the two relevances add up to each model's own logit.
+
+```cpp
+#include "pulsatrix/fine_tune_diff.hpp"
+
+RelevanceDiff d = DiffAdapterRelevance(*model, tokens);  // (N, L) per token for a CausalLM
+// d.tuned, d.base, d.difference, d.classes, d.tuned_scores, d.base_scores
+```
+
+`DiffTarget` picks another position or explicit classes. `DiffRelevance(base, tuned, input)` does
+the same for two separate models, such as a full fine-tune and its base. The adapters are switched
+back on afterwards, even if a call throws. A merged adapter can't be switched off, so it's refused.
+
+Across a dataset, `TokenRelevanceShift` collects the differences by input token. It divides each
+sample's relevance by that model's score first, so every sample counts alike. Then `top(n)` lists
+the tokens the fine-tune made the model rely on more, and `top(n, true)` those it relies on less:
+
+```cpp
+TokenRelevanceShift shift;
+for (const Tensor& batch : batches) shift.add(batch, DiffAdapterRelevance(*model, batch));
+for (const TokenShift& t : shift.top(20, /*decrease=*/false, /*min_count=*/5)) {
+    std::cout << tokenizer.decode({t.token}) << ": " << t.base << " -> " << t.tuned << "\n";
+}
+```
+
+For which layer, and through which path, the fine-tune changed the explanation, use the
+per-layer splits: `LoraRelevanceSplit()` for LoRA and `last_edit_relevance()` for LoReFT.
+
+### Intruder dimensions in the weights
+
+Shuttleworth et al. (2024, "LoRA vs Full Fine-tuning: An Illusion of Equivalence") found that LoRA
+adds new high-ranking singular vectors to the weights. Full fine-tuning doesn't. They call these
+vectors **intruder dimensions**. A singular vector of the fine-tuned matrix is one when its cosine
+similarity with every singular vector of the base matrix is below a threshold ε. The paper counts
+them among the top k = 10.
+
+```cpp
+for (const LayerIntruders& layer : LoraIntruderDimensions(*model, /*k=*/10, /*epsilon=*/0.6)) {
+    std::cout << layer.name << ": " << layer.result.count << " intruders\n";
+}
+std::vector<LayerIntruders> full = IntruderDimensions(*base_model, *tuned_model);  // a full fine-tune
+```
+
+Each result holds every top vector's largest |cosine| with the base vectors, so any other threshold
+can be applied after the fact. The paper sweeps ε rather than fixing it, and the default of 0.6 is a
+starting point, not a standard.
+
+How this follows the paper:
+- **Which vectors.** The paper compares PyTorch's left singular vectors, those of the
+  `(out, in)` weight. Here that is the output space of pulsatrix's `(in, out)` weight.
+- **Absolute value.** The paper's Algorithm 1 compares cosines without an absolute value. A
+  singular vector's sign is arbitrary, so pulsatrix uses |cos|.
+- **Cost.** It computes the singular vectors as eigenvectors of WᵀW, in double on the CPU, which
+  costs O(out³) per layer.

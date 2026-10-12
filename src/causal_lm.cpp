@@ -68,7 +68,7 @@ Tensor CausalLM::forward_impl(const Tensor& input) {
     if (hidden_state_hook_) x = detail::ApplyHiddenStateHook(hidden_state_hook_, 0, x);
     for (size_t i = 0; i < layers_.size(); ++i) {
         x = layers_[i]->forward(x);
-        if (interventions_[i]) x = interventions_[i]->forward(x);
+        if (ResidualIntervention* e = active_intervention(i)) x = e->forward(x);
         if (hidden_state_hook_) x = detail::ApplyHiddenStateHook(hidden_state_hook_, static_cast<int64_t>(i) + 1, x);
     }
     last_hidden_shape_ = x.shape();
@@ -85,7 +85,7 @@ Tensor CausalLM::backward(const Tensor& grad_output) {
     g = tied_head_ ? tied_head_->backward(g) : lm_head_->backward(g);
     g = Reshaped(norm_.backward(g), last_hidden_shape_);
     for (size_t i = layers_.size(); i-- > 0;) {
-        if (interventions_[i]) g = interventions_[i]->backward(g);
+        if (ResidualIntervention* e = active_intervention(i)) g = e->backward(g);
         g = layers_[i]->backward(g);
     }
     return embed_.backward(ScaleEmbeddings(g));  // d(s e)/de = s
@@ -100,7 +100,7 @@ std::vector<Tensor> CausalLM::propagate_relevance_by_layer(const Tensor& relevan
     std::vector<Tensor> boundaries(layers_.size() + 1, r);
     for (size_t i = layers_.size(); i-- > 0;) {
         boundaries[i + 1] = r;
-        if (interventions_[i]) r = interventions_[i]->propagate_relevance(r, config);
+        if (ResidualIntervention* e = active_intervention(i)) r = e->propagate_relevance(r, config);
         r = layers_[i]->propagate_relevance(r, config);
     }
     boundaries[0] = r;
@@ -166,7 +166,7 @@ NextTokenLogitsFn CausalLM::next_token_logits(int64_t max_length) {
     BlockOutputHook after_block;
     if (std::any_of(interventions_.begin(), interventions_.end(), [](const auto& i) { return i != nullptr; })) {
         after_block = [this](int64_t layer, int64_t start, int64_t prompt_length, const Tensor& hidden) {
-            ResidualIntervention* intervention = interventions_[static_cast<size_t>(layer)].get();
+            ResidualIntervention* intervention = active_intervention(static_cast<size_t>(layer));
             return intervention ? intervention->forward_at(hidden, start, prompt_length) : hidden;
         };
     }
