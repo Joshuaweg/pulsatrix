@@ -862,6 +862,17 @@
   
 </li>
       
+        <li class="md-nav__item">
+  <a href="#diagrams-as-numbers" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Diagrams as numbers
+      
+    </span>
+  </a>
+  
+</li>
+      
     </ul>
   
 </nav>
@@ -2427,6 +2438,17 @@
   
 </li>
       
+        <li class="md-nav__item">
+  <a href="#diagrams-as-numbers" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Diagrams as numbers
+      
+    </span>
+  </a>
+  
+</li>
+      
     </ul>
   
 </nav>
@@ -2456,7 +2478,7 @@ noise and a random-network control?</p>
 <p>pulsatrix builds this as a pipeline, one stage at a time:</p>
 <div class="highlight"><pre><span></span><code>PointCloud → distances → filtration → persistence diagram → numbers and plots
 </code></pre></div>
-<p>This page grows with each stage. So far it covers the point cloud, the distances, the diagrams (H0, then loops, voids and higher), and how to compare diagrams.</p>
+<p>This page grows with each stage. So far it covers the point cloud, the distances, the diagrams (H0, then loops, voids and higher), how to compare diagrams, and how to turn them into numbers.</p>
 <h2 id="from-activations-to-a-point-cloud">From activations to a point cloud<a class="headerlink" href="#from-activations-to-a-point-cloud" title="Permanent link">&para;</a></h2>
 <p><code>PointCloud</code> gathers a layer's activations, batch by batch, into one set of points. Each point
 remembers the sample and position it came from, so a loop found later can be traced back to the
@@ -2709,6 +2731,58 @@ e times the q-th root of the number of points, so a single bound would mean litt
 by a Hopcroft–Karp matching, and is comfortable up to a few hundred points per diagram. The
 Wasserstein distance uses the Hungarian algorithm, which takes (n₁ + n₂)³ time, so up to about a
 thousand points in all. Both match brute force over every matching on small diagrams.</p>
+<h2 id="diagrams-as-numbers">Diagrams as numbers<a class="headerlink" href="#diagrams-as-numbers" title="Permanent link">&para;</a></h2>
+<p>A probe, a t-test or a plot needs a fixed-size vector, not a set of points. Four standard
+vectorizations are in <code>tda/vectorization.hpp</code>:</p>
+<div class="highlight"><pre><span></span><code><span class="cp">#include</span><span class="w"> </span><span class="cpf">"pulsatrix/tda/vectorization.hpp"</span>
+
+<span class="k">const</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">double</span><span class="o">&gt;</span><span class="w"> </span><span class="n">grid</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">LinearGrid</span><span class="p">(</span><span class="mf">0.0</span><span class="p">,</span><span class="w"> </span><span class="n">r</span><span class="p">.</span><span class="n">threshold</span><span class="p">,</span><span class="w"> </span><span class="mi">100</span><span class="p">);</span>
+<span class="k">const</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">int64_t</span><span class="o">&gt;</span><span class="w"> </span><span class="n">betti</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">BettiCurve</span><span class="p">(</span><span class="n">r</span><span class="p">.</span><span class="n">diagrams</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span><span class="w"> </span><span class="n">grid</span><span class="p">);</span><span class="w">           </span><span class="c1">// loops alive at each t</span>
+<span class="k">const</span><span class="w"> </span><span class="n">Certified</span><span class="o">&lt;</span><span class="n">PersistenceLandscape</span><span class="o">&gt;</span><span class="w"> </span><span class="n">l</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">ComputePersistenceLandscape</span><span class="p">(</span><span class="n">r</span><span class="p">.</span><span class="n">diagrams</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span><span class="w"> </span><span class="n">grid</span><span class="p">,</span><span class="w"> </span><span class="cm">/*layers=*/</span><span class="mi">5</span><span class="p">);</span>
+<span class="k">const</span><span class="w"> </span><span class="n">PersistenceImage</span><span class="w"> </span><span class="n">image</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">ComputePersistenceImage</span><span class="p">(</span><span class="n">r</span><span class="p">.</span><span class="n">diagrams</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span><span class="w"> </span><span class="n">image_options</span><span class="p">);</span>
+<span class="k">const</span><span class="w"> </span><span class="kt">double</span><span class="w"> </span><span class="n">entropy</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">PersistentEntropy</span><span class="p">(</span><span class="n">r</span><span class="p">.</span><span class="n">diagrams</span><span class="p">[</span><span class="mi">1</span><span class="p">]);</span>
+</code></pre></div>
+<table>
+<thead>
+<tr>
+<th>Vectorization</th>
+<th>What it is</th>
+<th>Stable?</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Betti curve</td>
+<td>How many features are alive at each scale</td>
+<td>No: a point crossing a grid value changes it by 1</td>
+</tr>
+<tr>
+<td>Persistence landscape (Bubenik, 2015)</td>
+<td>λ_k(t), the k-th largest "tent" min(t − b, d − t) at each t</td>
+<td>Yes: within the bottleneck distance, at every t. Certified.</td>
+</tr>
+<tr>
+<td>Persistence image (Adams et al., 2017)</td>
+<td>Points at (birth, persistence), weighted by persistence, blurred by a Gaussian, integrated over pixels</td>
+<td>Under the 1-Wasserstein distance, not the bottleneck</td>
+</tr>
+<tr>
+<td>Persistent entropy</td>
+<td>The Shannon entropy of the lifetimes, in nats</td>
+<td>Not in general</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li><strong>Prefer landscapes when the result has to hold up.</strong> They are the only one of the four that
+  inherits the stability theorem. <code>ComputePersistenceLandscape</code> returns a <code>Certified</code> value:
+  the exact diagram's landscapes are within <code>bound()</code> of these at every grid point.</li>
+<li><strong>Fix the image's ranges when comparing.</strong> By default a persistence image takes its birth and
+  persistence ranges from its own diagram. Images of two diagrams are comparable only with
+  <code>birth_max</code>, <code>persistence_max</code> and <code>sigma</code> set the same for both.</li>
+<li><strong>Essential features</strong> are left out of everything except the Betti curve, where they count
+  from their birth on. Report how many there are (<code>essential_count()</code>) alongside.</li>
+</ul>
 <p>Full API reference: <a href="../api/group__tda.html">Doxygen: Topological Data Analysis</a></p>
 
 

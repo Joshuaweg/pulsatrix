@@ -214,7 +214,7 @@ var searchData=
   ['rnnbackward_211',['RnnBackward',['../namespacepulsatrix.html#ac55b0127cfe9bf4ce7793fef9db97400a789b7cc15a19f6069e16e2522deebf64',1,'pulsatrix']]],
   ['rnnmodule_212',['rnnmodule',['../classpulsatrix_1_1RNNModule.html',1,'pulsatrix::RNNModule'],['../classpulsatrix_1_1RNNModule.html#a832c75ccdc365bfa6869d5e70f1982c7',1,'pulsatrix::RNNModule::RNNModule()']]],
   ['rocauc_213',['RocAuc',['../namespacepulsatrix.html#aeb3d11b2402f2163882ee0ce4142907a',1,'pulsatrix']]],
-  ['role_214',['role',['../structpulsatrix_1_1orch_1_1Message.html#a239a7e236f2be2bfce5d5bb8876ffc5f',1,'pulsatrix::orch::Message::Role'],['../structpulsatrix_1_1orch_1_1Message.html#acd68b927c30c0712d46f0eb8b17522bb',1,'pulsatrix::orch::Message::role']]],
+  ['role_214',['role',['../structpulsatrix_1_1orch_1_1Message.html#acd68b927c30c0712d46f0eb8b17522bb',1,'pulsatrix::orch::Message::role'],['../structpulsatrix_1_1orch_1_1Message.html#a239a7e236f2be2bfce5d5bb8876ffc5f',1,'pulsatrix::orch::Message::Role']]],
   ['rollout_5fbuffer_2ehpp_215',['rollout_buffer.hpp',['../rollout__buffer_8hpp.html',1,'']]],
   ['rolloutbatch_216',['RolloutBatch',['../structpulsatrix_1_1RolloutBatch.html',1,'pulsatrix']]],
   ['rolloutbuffer_217',['rolloutbuffer',['../classpulsatrix_1_1RolloutBuffer.html',1,'pulsatrix::RolloutBuffer'],['../classpulsatrix_1_1RolloutBuffer.html#a3dc449654414454f1e42bdebd795ce70',1,'pulsatrix::RolloutBuffer::RolloutBuffer()']]],

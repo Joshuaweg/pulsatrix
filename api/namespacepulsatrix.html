@@ -984,6 +984,15 @@ Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpulsatrix_1_1PersistenceDiagram.html">PersistenceDiagram</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The features of one homology dimension: H0 for components, H1 for loops, H2 for voids.  <a href="structpulsatrix_1_1PersistenceDiagram.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpulsatrix_1_1PersistenceImage.html">PersistenceImage</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">A persistence image: values[row * width + column], row 0 at persistence 0.  <a href="structpulsatrix_1_1PersistenceImage.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpulsatrix_1_1PersistenceImageOptions.html">PersistenceImageOptions</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="namespacepulsatrix.html#afb1ac96d9754badfe0c71e77bc4d1f8c" title="The persistence image (Adams et al., JMLR 2017): each finite point (b, d) placed at (b,...">ComputePersistenceImage()</a>'s settings.  <a href="structpulsatrix_1_1PersistenceImageOptions.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpulsatrix_1_1PersistenceLandscape.html">PersistenceLandscape</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">PersistenceLandscape()'s result: layers[k][i] is lambda_{k+1}(grid[i]).  <a href="structpulsatrix_1_1PersistenceLandscape.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpulsatrix_1_1PersistencePair.html">PersistencePair</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">One feature of a persistence diagram.  <a href="structpulsatrix_1_1PersistencePair.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -2868,6 +2877,21 @@ Functions</h2></td></tr>
 <tr class="memitem:ad9dd7a45897a7198b95aec08abbf1ba5" id="r_ad9dd7a45897a7198b95aec08abbf1ba5"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structpulsatrix_1_1RipsResult.html">RipsResult</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#ad9dd7a45897a7198b95aec08abbf1ba5">ComputeRipsPersistence</a> (const <a class="el" href="structpulsatrix_1_1DistanceMatrix.html">DistanceMatrix</a> &amp;distances, const <a class="el" href="structpulsatrix_1_1RipsOptions.html">RipsOptions</a> &amp;options={})</td></tr>
 <tr class="memdesc:ad9dd7a45897a7198b95aec08abbf1ba5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Persistent homology of the Vietoris-Rips filtration on the given distances, in dimensions 0 to options.max_dimension.  <br /></td></tr>
 <tr class="separator:ad9dd7a45897a7198b95aec08abbf1ba5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9967c03959aa2b86fa951f1306742a8f" id="r_a9967c03959aa2b86fa951f1306742a8f"><td class="memItemLeft" align="right" valign="top">std::vector&lt; double &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#a9967c03959aa2b86fa951f1306742a8f">LinearGrid</a> (double start, double stop, int64_t n)</td></tr>
+<tr class="memdesc:a9967c03959aa2b86fa951f1306742a8f"><td class="mdescLeft">&#160;</td><td class="mdescRight">n evenly spaced values from start to stop, both included (n &gt;= 2), or {start} for n == 1.  <br /></td></tr>
+<tr class="separator:a9967c03959aa2b86fa951f1306742a8f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1cbde18104fc299319955109745cfc23" id="r_a1cbde18104fc299319955109745cfc23"><td class="memItemLeft" align="right" valign="top">std::vector&lt; int64_t &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#a1cbde18104fc299319955109745cfc23">BettiCurve</a> (const <a class="el" href="structpulsatrix_1_1PersistenceDiagram.html">PersistenceDiagram</a> &amp;diagram, const std::vector&lt; double &gt; &amp;grid)</td></tr>
+<tr class="memdesc:a1cbde18104fc299319955109745cfc23"><td class="mdescLeft">&#160;</td><td class="mdescRight">The Betti curve: how many features are alive, birth &lt;= t &lt; death, at each scale t.  <br /></td></tr>
+<tr class="separator:a1cbde18104fc299319955109745cfc23"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7722ecd0c2945293567333539a5f668d" id="r_a7722ecd0c2945293567333539a5f668d"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structpulsatrix_1_1Certified.html">Certified</a>&lt; <a class="el" href="structpulsatrix_1_1PersistenceLandscape.html">PersistenceLandscape</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#a7722ecd0c2945293567333539a5f668d">ComputePersistenceLandscape</a> (const <a class="el" href="structpulsatrix_1_1PersistenceDiagram.html">PersistenceDiagram</a> &amp;diagram, const std::vector&lt; double &gt; &amp;grid, int64_t layers=5)</td></tr>
+<tr class="memdesc:a7722ecd0c2945293567333539a5f668d"><td class="mdescLeft">&#160;</td><td class="mdescRight">The first <code>layers</code> persistence landscape functions (Bubenik, JMLR 2015) on a grid: lambda_k(t) is the k-th largest of max(0, min(t - b, d - t)) over the finite points.  <br /></td></tr>
+<tr class="separator:a7722ecd0c2945293567333539a5f668d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afb1ac96d9754badfe0c71e77bc4d1f8c" id="r_afb1ac96d9754badfe0c71e77bc4d1f8c"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structpulsatrix_1_1PersistenceImage.html">PersistenceImage</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#afb1ac96d9754badfe0c71e77bc4d1f8c">ComputePersistenceImage</a> (const <a class="el" href="structpulsatrix_1_1PersistenceDiagram.html">PersistenceDiagram</a> &amp;diagram, const <a class="el" href="structpulsatrix_1_1PersistenceImageOptions.html">PersistenceImageOptions</a> &amp;options={})</td></tr>
+<tr class="memdesc:afb1ac96d9754badfe0c71e77bc4d1f8c"><td class="mdescLeft">&#160;</td><td class="mdescRight">The persistence image (Adams et al., JMLR 2017): each finite point (b, d) placed at (b, d - b), weighted by its persistence divided by persistence_max (so features near the diagonal count for little), and spread by a Gaussian; each pixel holds the integral over it, so a pixel's value doesn't depend on the resolution's sampling.  <br /></td></tr>
+<tr class="separator:afb1ac96d9754badfe0c71e77bc4d1f8c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab414ebd20d7981cded404ff6ad2e292d" id="r_ab414ebd20d7981cded404ff6ad2e292d"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#ab414ebd20d7981cded404ff6ad2e292d">PersistentEntropy</a> (const <a class="el" href="structpulsatrix_1_1PersistenceDiagram.html">PersistenceDiagram</a> &amp;diagram)</td></tr>
+<tr class="memdesc:ab414ebd20d7981cded404ff6ad2e292d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Persistent entropy (Chintakunta et al. 2015; Rucco et al. 2016): the Shannon entropy, in nats, of the finite points' persistences divided by their sum. 0 for one point; log n for n points of equal persistence; 0 for an empty diagram.  <br /></td></tr>
+<tr class="separator:ab414ebd20d7981cded404ff6ad2e292d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a71ec5781347ddf2db42af3e5675d3748" id="r_a71ec5781347ddf2db42af3e5675d3748"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#a71ec5781347ddf2db42af3e5675d3748">require_device</a> (const <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp;t, <a class="el" href="namespacepulsatrix.html#a5480c8cbe462fe3f5a8eb04a8c579e6e">DeviceType</a> expected, const char *where)</td></tr>
 <tr class="memdesc:a71ec5781347ddf2db42af3e5675d3748"><td class="mdescLeft">&#160;</td><td class="mdescRight">Throws unless <code>t</code> lives on <code>expected</code> &ndash; the check every module and loss runs on the tensors handed to it (roadmap FND-8, gpu_review #1).  <br /></td></tr>
 <tr class="separator:a71ec5781347ddf2db42af3e5675d3748"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -5767,6 +5791,42 @@ Every op here computes the <em>forward</em> value only &ndash; no derivative var
 
 </div>
 </div>
+<a id="a1cbde18104fc299319955109745cfc23" name="a1cbde18104fc299319955109745cfc23"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1cbde18104fc299319955109745cfc23">&#9670;&#160;</a></span>BettiCurve()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::vector&lt; int64_t &gt; pulsatrix::BettiCurve </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="structpulsatrix_1_1PersistenceDiagram.html">PersistenceDiagram</a> &amp;&#160;</td>
+          <td class="paramname"><em>diagram</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const std::vector&lt; double &gt; &amp;&#160;</td>
+          <td class="paramname"><em>grid</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>The Betti curve: how many features are alive, birth &lt;= t &lt; death, at each scale t. </p>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname">std::invalid_argument</td><td>if a grid value is NaN. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
 <a id="a583c867d2a7a1bcf70ed10994d2290e9" name="a583c867d2a7a1bcf70ed10994d2290e9"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a583c867d2a7a1bcf70ed10994d2290e9">&#9670;&#160;</a></span>BitFlipMutation()</h2>
 
@@ -7738,6 +7798,85 @@ Host boundary (GPU-native-kernels Mission 7): a strictly sequential reverse recu
 <dl class="exception"><dt>Exceptions</dt><dd>
   <table class="exception">
     <tr><td class="paramname">std::invalid_argument</td><td>for the same inputs ComputeIce rejects, or feature_x == feature_y. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="afb1ac96d9754badfe0c71e77bc4d1f8c" name="afb1ac96d9754badfe0c71e77bc4d1f8c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#afb1ac96d9754badfe0c71e77bc4d1f8c">&#9670;&#160;</a></span>ComputePersistenceImage()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="structpulsatrix_1_1PersistenceImage.html">PersistenceImage</a> pulsatrix::ComputePersistenceImage </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="structpulsatrix_1_1PersistenceDiagram.html">PersistenceDiagram</a> &amp;&#160;</td>
+          <td class="paramname"><em>diagram</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="structpulsatrix_1_1PersistenceImageOptions.html">PersistenceImageOptions</a> &amp;&#160;</td>
+          <td class="paramname"><em>options</em> = <code>{}</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>The persistence image (Adams et al., JMLR 2017): each finite point (b, d) placed at (b, d - b), weighted by its persistence divided by persistence_max (so features near the diagonal count for little), and spread by a Gaussian; each pixel holds the integral over it, so a pixel's value doesn't depend on the resolution's sampling. </p>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname">std::invalid_argument</td><td>if width or height is below 1, or the ranges are empty. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="a7722ecd0c2945293567333539a5f668d" name="a7722ecd0c2945293567333539a5f668d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7722ecd0c2945293567333539a5f668d">&#9670;&#160;</a></span>ComputePersistenceLandscape()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="structpulsatrix_1_1Certified.html">Certified</a>&lt; <a class="el" href="structpulsatrix_1_1PersistenceLandscape.html">PersistenceLandscape</a> &gt; pulsatrix::ComputePersistenceLandscape </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="structpulsatrix_1_1PersistenceDiagram.html">PersistenceDiagram</a> &amp;&#160;</td>
+          <td class="paramname"><em>diagram</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const std::vector&lt; double &gt; &amp;&#160;</td>
+          <td class="paramname"><em>grid</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int64_t&#160;</td>
+          <td class="paramname"><em>layers</em> = <code>5</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>The first <code>layers</code> persistence landscape functions (Bubenik, JMLR 2015) on a grid: lambda_k(t) is the k-th largest of max(0, min(t - b, d - t)) over the finite points. </p>
+<dl class="section return"><dt>Returns</dt><dd><a class="el" href="structpulsatrix_1_1Certified.html" title="A computed value and a certified bound on its error, itemized by source: the exact value is within bo...">Certified</a>: the landscapes of the exact diagram are within bound() of these, in the sup norm, at every grid point, because landscapes are 1-Lipschitz in the bottleneck distance. </dd></dl>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname">std::invalid_argument</td><td>if layers &lt; 1 or a grid value is NaN. </td></tr>
   </table>
   </dd>
 </dl>
@@ -11216,6 +11355,42 @@ template&lt;typename Genotype , typename FitnessT &gt; </div>
   </table>
   </dd>
 </dl>
+
+</div>
+</div>
+<a id="a9967c03959aa2b86fa951f1306742a8f" name="a9967c03959aa2b86fa951f1306742a8f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9967c03959aa2b86fa951f1306742a8f">&#9670;&#160;</a></span>LinearGrid()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::vector&lt; double &gt; pulsatrix::LinearGrid </td>
+          <td>(</td>
+          <td class="paramtype">double&#160;</td>
+          <td class="paramname"><em>start</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">double&#160;</td>
+          <td class="paramname"><em>stop</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int64_t&#160;</td>
+          <td class="paramname"><em>n</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>n evenly spaced values from start to stop, both included (n &gt;= 2), or {start} for n == 1. </p>
 
 </div>
 </div>
@@ -15492,6 +15667,26 @@ template&lt;typename T &gt; </div>
 </div><div class="memdoc">
 
 <p>The q-th percentile (0 to 100) with linear interpolation (numpy's default). </p>
+
+</div>
+</div>
+<a id="ab414ebd20d7981cded404ff6ad2e292d" name="ab414ebd20d7981cded404ff6ad2e292d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab414ebd20d7981cded404ff6ad2e292d">&#9670;&#160;</a></span>PersistentEntropy()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">double pulsatrix::PersistentEntropy </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="structpulsatrix_1_1PersistenceDiagram.html">PersistenceDiagram</a> &amp;&#160;</td>
+          <td class="paramname"><em>diagram</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Persistent entropy (Chintakunta et al. 2015; Rucco et al. 2016): the Shannon entropy, in nats, of the finite points' persistences divided by their sum. 0 for one point; log n for n points of equal persistence; 0 for an empty diagram. </p>
 
 </div>
 </div>

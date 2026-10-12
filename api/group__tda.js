@@ -5,5 +5,6 @@ var group__tda =
     [ "h0.hpp", "h0_8hpp.html", null ],
     [ "persistence_diagram.hpp", "persistence__diagram_8hpp.html", null ],
     [ "point_cloud.hpp", "point__cloud_8hpp.html", null ],
-    [ "rips_persistence.hpp", "rips__persistence_8hpp.html", null ]
+    [ "rips_persistence.hpp", "rips__persistence_8hpp.html", null ],
+    [ "vectorization.hpp", "vectorization_8hpp.html", null ]
 ];
