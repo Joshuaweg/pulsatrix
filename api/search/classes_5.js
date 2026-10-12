@@ -6,12 +6,13 @@ var searchData=
   ['featureactivitytracker_3',['FeatureActivityTracker',['../classpulsatrix_1_1FeatureActivityTracker.html',1,'pulsatrix']]],
   ['featuredashboarddocument_4',['FeatureDashboardDocument',['../structpulsatrix_1_1FeatureDashboardDocument.html',1,'pulsatrix']]],
   ['featuresensitivity_5',['FeatureSensitivity',['../structpulsatrix_1_1FeatureSensitivity.html',1,'pulsatrix']]],
-  ['featurizer_6',['Featurizer',['../classpulsatrix_1_1Featurizer.html',1,'pulsatrix']]],
-  ['featurizerloss_7',['FeaturizerLoss',['../structpulsatrix_1_1FeaturizerLoss.html',1,'pulsatrix']]],
-  ['feedforwardmodule_8',['FeedForwardModule',['../classpulsatrix_1_1FeedForwardModule.html',1,'pulsatrix']]],
-  ['fieldstatistics_9',['FieldStatistics',['../structpulsatrix_1_1FieldStatistics.html',1,'pulsatrix']]],
-  ['finetuneconfig_10',['FineTuneConfig',['../structpulsatrix_1_1FineTuneConfig.html',1,'pulsatrix']]],
-  ['fitnessmetrics_11',['FitnessMetrics',['../structpulsatrix_1_1FitnessMetrics.html',1,'pulsatrix']]],
-  ['flattenmodule_12',['FlattenModule',['../classpulsatrix_1_1FlattenModule.html',1,'pulsatrix']]],
-  ['fusedecoder_13',['FuseDecoder',['../classpulsatrix_1_1FuseDecoder.html',1,'pulsatrix']]]
+  ['featuresignificance_6',['FeatureSignificance',['../structpulsatrix_1_1FeatureSignificance.html',1,'pulsatrix']]],
+  ['featurizer_7',['Featurizer',['../classpulsatrix_1_1Featurizer.html',1,'pulsatrix']]],
+  ['featurizerloss_8',['FeaturizerLoss',['../structpulsatrix_1_1FeaturizerLoss.html',1,'pulsatrix']]],
+  ['feedforwardmodule_9',['FeedForwardModule',['../classpulsatrix_1_1FeedForwardModule.html',1,'pulsatrix']]],
+  ['fieldstatistics_10',['FieldStatistics',['../structpulsatrix_1_1FieldStatistics.html',1,'pulsatrix']]],
+  ['finetuneconfig_11',['FineTuneConfig',['../structpulsatrix_1_1FineTuneConfig.html',1,'pulsatrix']]],
+  ['fitnessmetrics_12',['FitnessMetrics',['../structpulsatrix_1_1FitnessMetrics.html',1,'pulsatrix']]],
+  ['flattenmodule_13',['FlattenModule',['../classpulsatrix_1_1FlattenModule.html',1,'pulsatrix']]],
+  ['fusedecoder_14',['FuseDecoder',['../classpulsatrix_1_1FuseDecoder.html',1,'pulsatrix']]]
 ];

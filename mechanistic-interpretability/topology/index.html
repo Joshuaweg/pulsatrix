@@ -873,6 +873,28 @@
   
 </li>
       
+        <li class="md-nav__item">
+  <a href="#landmarks-for-large-clouds" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Landmarks for large clouds
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#is-a-feature-real" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Is a feature real?
+      
+    </span>
+  </a>
+  
+</li>
+      
     </ul>
   
 </nav>
@@ -2449,6 +2471,28 @@
   
 </li>
       
+        <li class="md-nav__item">
+  <a href="#landmarks-for-large-clouds" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Landmarks for large clouds
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#is-a-feature-real" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Is a feature real?
+      
+    </span>
+  </a>
+  
+</li>
+      
     </ul>
   
 </nav>
@@ -2478,7 +2522,7 @@ noise and a random-network control?</p>
 <p>pulsatrix builds this as a pipeline, one stage at a time:</p>
 <div class="highlight"><pre><span></span><code>PointCloud → distances → filtration → persistence diagram → numbers and plots
 </code></pre></div>
-<p>This page grows with each stage. So far it covers the point cloud, the distances, the diagrams (H0, then loops, voids and higher), how to compare diagrams, and how to turn them into numbers.</p>
+<p>This page grows with each stage. So far it covers the point cloud, the distances, the diagrams (H0, then loops, voids and higher), how to compare diagrams, how to turn them into numbers, landmarks for large clouds, and whether a feature is real.</p>
 <h2 id="from-activations-to-a-point-cloud">From activations to a point cloud<a class="headerlink" href="#from-activations-to-a-point-cloud" title="Permanent link">&para;</a></h2>
 <p><code>PointCloud</code> gathers a layer's activations, batch by batch, into one set of points. Each point
 remembers the sample and position it came from, so a loop found later can be traced back to the
@@ -2578,7 +2622,7 @@ homology is all about small distances (when do two points join?), that matters. 
   at a time; by default a block has at most 2²⁴ entries.</li>
 </ul>
 <p>Storing n (n − 1) / 2 float32 values takes 50 MB for 5,000 points. Persistent homology above H0
-can't use many more points than that anyway; landmarks (coming) choose which ones to keep.</p>
+can't use many more points than that anyway; <a href="#landmarks-for-large-clouds">landmarks</a> choose which ones to keep.</p>
 <h2 id="clusters-across-scales-h0">Clusters across scales (H0)<a class="headerlink" href="#clusters-across-scales-h0" title="Permanent link">&para;</a></h2>
 <p>Grow a ball around every point. At scale 0 each point is its own component. As the scale grows,
 two components merge when the shortest edge between them appears, until one is left. H0
@@ -2685,7 +2729,7 @@ rather than vendored:</p>
 </tbody>
 </table>
 <p>Cost grows quickly with the number of points and the dimension. Above a few thousand points
-for H1, or about a thousand for H2, choose landmarks first (coming next).</p>
+for H1, or about a thousand for H2, choose <a href="#landmarks-for-large-clouds">landmarks</a> first.</p>
 <p><strong>How it is checked.</strong> Nothing here relies on another library's output:</p>
 <ul>
 <li><strong>A theorem.</strong> Evenly spaced points on a circle have a known Rips complex at every scale
@@ -2783,6 +2827,86 @@ vectorizations are in <code>tda/vectorization.hpp</code>:</p>
 <li><strong>Essential features</strong> are left out of everything except the Betti curve, where they count
   from their birth on. Report how many there are (<code>essential_count()</code>) alongside.</li>
 </ul>
+<h2 id="landmarks-for-large-clouds">Landmarks for large clouds<a class="headerlink" href="#landmarks-for-large-clouds" title="Permanent link">&para;</a></h2>
+<p>A layer's activations over a dataset can be 100,000 points, far more than H1 or H2 can handle.
+<code>FarthestPointLandmarks()</code> picks a subset that covers the whole cloud. Each landmark is chosen
+greedily as the point farthest from those already picked:</p>
+<div class="highlight"><pre><span></span><code><span class="cp">#include</span><span class="w"> </span><span class="cpf">"pulsatrix/tda/landmarks.hpp"</span>
+
+<span class="n">LandmarkOptions</span><span class="w"> </span><span class="n">options</span><span class="p">;</span>
+<span class="n">options</span><span class="p">.</span><span class="n">count</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1000</span><span class="p">;</span><span class="w">            </span><span class="c1">// or options.radius: stop once every point is that close</span>
+<span class="k">const</span><span class="w"> </span><span class="n">Landmarks</span><span class="w"> </span><span class="n">l</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">FarthestPointLandmarks</span><span class="p">(</span><span class="n">cloud</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">backend</span><span class="p">,</span><span class="w"> </span><span class="n">options</span><span class="p">);</span>
+<span class="k">const</span><span class="w"> </span><span class="n">Tensor</span><span class="w"> </span><span class="n">subset</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">LandmarkPoints</span><span class="p">(</span><span class="n">cloud</span><span class="p">.</span><span class="n">ToTensor</span><span class="p">(</span><span class="o">&amp;</span><span class="n">backend</span><span class="p">),</span><span class="w"> </span><span class="n">l</span><span class="p">);</span>
+<span class="k">const</span><span class="w"> </span><span class="n">RipsResult</span><span class="w"> </span><span class="n">r</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">ComputeRipsPersistence</span><span class="p">(</span><span class="n">PairwiseDistances</span><span class="p">(</span><span class="n">subset</span><span class="p">),</span><span class="w"> </span><span class="n">rips_options</span><span class="p">);</span>
+<span class="k">const</span><span class="w"> </span><span class="n">PersistenceDiagram</span><span class="w"> </span><span class="n">loops</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">WithSubsamplingBound</span><span class="p">(</span><span class="n">r</span><span class="p">.</span><span class="n">diagrams</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span><span class="w"> </span><span class="n">l</span><span class="p">);</span>
+<span class="c1">// loops.error_bound now bounds the bottleneck distance to the diagram of *all* the points.</span>
+</code></pre></div>
+<ul>
+<li><strong>The certified bound.</strong> Every point is within the covering radius ε of a landmark, so the
+  landmarks' Rips diagrams are within 2ε of the whole cloud's in bottleneck distance. <code>l.covering_radius</code>
+  is a <code>Certified</code> value whose term is the float32 error of the distances behind it.
+  <code>WithSubsamplingBound()</code> adds 2 × (ε + that error) to a diagram's own bound. A feature of
+  the landmarks with persistence well above twice that is a feature of the cloud.</li>
+<li><strong>Choosing the count.</strong> <code>l.insertion_radii[k]</code> is the covering radius just before landmark k
+  was added. It only decreases; plot it and stop where it flattens. Greedy selection is within
+  a factor of 2 of the best possible covering radius for the same count (Gonzalez, 1985). The
+  tests check this against brute force on small clouds.</li>
+<li><strong>Cost.</strong> Each landmark costs one GEMM of all the points against it, on the cloud's backend,
+  so k landmarks take O(n k d). The n × n distance matrix is never formed.</li>
+<li><strong>Ties</strong> go to the lowest index. <code>options.first</code> sets the first landmark. <code>options.center</code>
+  shrinks the float32 error when the points share a large offset, as it does for distances.</li>
+<li><strong>Where each point went.</strong> <code>l.nearest[i]</code> and <code>l.distance_to_nearest[i]</code> give each point's
+  landmark. Use them to carry labels or inputs over from the landmarks back to the whole cloud.</li>
+</ul>
+<p>In the tests, 50 landmarks of a noisy circle of 300 points give an H1 diagram within its
+certified bound of the full diagram, and the circle's loop persists more than four times longer
+than the bound.</p>
+<h2 id="is-a-feature-real">Is a feature real?<a class="headerlink" href="#is-a-feature-real" title="Permanent link">&para;</a></h2>
+<p>A diagram of pure noise is full of short-lived loops, and some always live longer than the rest.
+Before reporting a loop, test it. <code>tda/significance.hpp</code> has three tests, each answering a
+slightly different question.</p>
+<p><strong>The universal null: one diagram, a p-value per feature.</strong> Bobrowski and Skraba (2023) found
+that the death/birth ratios of noise follow one distribution, whatever the noise came from,
+once normalized: ℓ = log log(death / birth) − L̄ − γ, where L̄ is the diagram's mean of
+log log(death / birth) and γ is Euler's constant. Under the null, ℓ follows a left-skewed
+Gumbel distribution, so a feature's p-value is exp(−e^ℓ). Bonferroni's correction then splits α
+over the features.</p>
+<div class="highlight"><pre><span></span><code><span class="cp">#include</span><span class="w"> </span><span class="cpf">"pulsatrix/tda/significance.hpp"</span>
+
+<span class="k">const</span><span class="w"> </span><span class="n">UniversalNullResult</span><span class="w"> </span><span class="n">u</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">UniversalNullTest</span><span class="p">(</span><span class="n">r</span><span class="p">.</span><span class="n">diagrams</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span><span class="w"> </span><span class="cm">/*alpha=*/</span><span class="mf">0.05</span><span class="p">);</span>
+<span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="n">FeatureSignificance</span><span class="o">&amp;</span><span class="w"> </span><span class="n">f</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="n">u</span><span class="p">.</span><span class="n">features</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">f</span><span class="p">.</span><span class="n">significant</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="cm">/* r.features[1][f.index] is a real loop */</span><span class="w"> </span><span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div>
+<ul>
+<li><strong>It's a conjecture,</strong> supported by the authors' experiments on many distributions and real
+  data, not a theorem. The constants are theirs for Rips filtrations (A = 1).</li>
+<li><strong>It needs a mostly-noise diagram.</strong> L̄ comes from the diagram itself, so use diagrams with
+  hundreds of features or more. Point sets spaced too evenly, such as lattices, don't follow it.</li>
+<li><strong>In the tests,</strong> the p-values of the loops of uniform noise are calibrated (about a tenth fall
+  below 0.1, and half below 0.5), and Bonferroni flags at most one of their 300-odd loops. A
+  ring with clutter around it is flagged; the same ring with uniform points inside it isn't,
+  since those points fill the loop in at once.</li>
+</ul>
+<p><strong>The bootstrap band: how far the diagram moves under resampling.</strong> <code>BootstrapBand()</code> resamples
+the points with replacement, computes each resample's diagram, and takes the 1 − α quantile c
+of their bottleneck distances to the original (Fasy et al., 2014). Features with persistence
+above 2c lie outside the band. Resamples reuse the distance matrix, so nothing is recomputed,
+but each one is a full Rips computation. Fasy et al. prove coverage for distance-function
+filtrations; for Rips diagrams the band is the standard heuristic.</p>
+<p><strong>Baselines: is this more structure than a cloud with nothing in it?</strong> Compute a statistic, such
+as <code>MaxPersistence()</code> of H1, on the data and on clouds with no structure, then take
+<code>BaselinePValue()</code>, the rank p-value:</p>
+<ul>
+<li><code>GaussianBaseline(points, count, seed)</code> draws a Gaussian cloud with the same mean and
+  covariance (one GEMM, and the covariance's rank is kept, so a cloud in a plane gives a
+  baseline in the same plane);</li>
+<li>for a random-network baseline, collect the same layer's activations from a
+  <code>NullModelBaseline</code> copy of the model.</li>
+</ul>
+<p>With m baselines the smallest p-value is 1 / (m + 1): use 19 for p = 0.05, 99 for 0.01.</p>
+<p>Use more than one. The universal null is cheapest, and the bootstrap needs no conjecture. The
+random-network baseline is the one that asks whether the structure was <em>learned</em>.</p>
 <p>Full API reference: <a href="../api/group__tda.html">Doxygen: Topological Data Analysis</a></p>
 
 

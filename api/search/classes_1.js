@@ -13,12 +13,14 @@ var searchData=
   ['blocksparsefeaturizer_10',['BlockSparseFeaturizer',['../classpulsatrix_1_1BlockSparseFeaturizer.html',1,'pulsatrix']]],
   ['blocksparseoptions_11',['BlockSparseOptions',['../structpulsatrix_1_1BlockSparseOptions.html',1,'pulsatrix']]],
   ['booleansemiring_12',['BooleanSemiring',['../structpulsatrix_1_1datalog_1_1BooleanSemiring.html',1,'pulsatrix::datalog']]],
-  ['boundedqueue_13',['BoundedQueue',['../classpulsatrix_1_1BoundedQueue.html',1,'pulsatrix']]],
-  ['bpemodel_14',['BpeModel',['../classpulsatrix_1_1BpeModel.html',1,'pulsatrix']]],
-  ['bpeoptions_15',['BpeOptions',['../structpulsatrix_1_1BpeOptions.html',1,'pulsatrix']]],
-  ['bytefallbackdecoder_16',['ByteFallbackDecoder',['../classpulsatrix_1_1ByteFallbackDecoder.html',1,'pulsatrix']]],
-  ['byteleveldecoder_17',['ByteLevelDecoder',['../classpulsatrix_1_1ByteLevelDecoder.html',1,'pulsatrix']]],
-  ['bytelevelpostprocessor_18',['ByteLevelPostProcessor',['../classpulsatrix_1_1ByteLevelPostProcessor.html',1,'pulsatrix']]],
-  ['bytelevelpretokenizer_19',['ByteLevelPreTokenizer',['../classpulsatrix_1_1ByteLevelPreTokenizer.html',1,'pulsatrix']]],
-  ['bytemodel_20',['ByteModel',['../classpulsatrix_1_1ByteModel.html',1,'pulsatrix']]]
+  ['bootstrapbandresult_13',['BootstrapBandResult',['../structpulsatrix_1_1BootstrapBandResult.html',1,'pulsatrix']]],
+  ['bootstrapoptions_14',['BootstrapOptions',['../structpulsatrix_1_1BootstrapOptions.html',1,'pulsatrix']]],
+  ['boundedqueue_15',['BoundedQueue',['../classpulsatrix_1_1BoundedQueue.html',1,'pulsatrix']]],
+  ['bpemodel_16',['BpeModel',['../classpulsatrix_1_1BpeModel.html',1,'pulsatrix']]],
+  ['bpeoptions_17',['BpeOptions',['../structpulsatrix_1_1BpeOptions.html',1,'pulsatrix']]],
+  ['bytefallbackdecoder_18',['ByteFallbackDecoder',['../classpulsatrix_1_1ByteFallbackDecoder.html',1,'pulsatrix']]],
+  ['byteleveldecoder_19',['ByteLevelDecoder',['../classpulsatrix_1_1ByteLevelDecoder.html',1,'pulsatrix']]],
+  ['bytelevelpostprocessor_20',['ByteLevelPostProcessor',['../classpulsatrix_1_1ByteLevelPostProcessor.html',1,'pulsatrix']]],
+  ['bytelevelpretokenizer_21',['ByteLevelPreTokenizer',['../classpulsatrix_1_1ByteLevelPreTokenizer.html',1,'pulsatrix']]],
+  ['bytemodel_22',['ByteModel',['../classpulsatrix_1_1ByteModel.html',1,'pulsatrix']]]
 ];
