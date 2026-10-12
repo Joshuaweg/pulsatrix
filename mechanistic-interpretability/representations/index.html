@@ -1,0 +1,2862 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="ExAI-first C++ deep learning library">
+      
+      
+      
+        <link rel="canonical" href="https://joshuaweg.github.io/pulsatrix/mechanistic-interpretability/representations/">
+      
+      
+        <link rel="prev" href="../probes-and-concepts/">
+      
+      
+        <link rel="next" href="../featurizers/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../../assets/pulsatrix_icon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.7">
+    
+    
+      
+        <title>Analyzing Representations - Pulsatrix</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.ec1eaa64.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../stylesheets/extra.css">
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="green" data-md-color-accent="teal">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#analyzing-representations" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../.." title="Pulsatrix" class="md-header__button md-logo" aria-label="Pulsatrix" data-md-component="logo">
+      
+  <img src="../../assets/pulsatrix_icon.png" alt="logo">
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Pulsatrix
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Analyzing Representations
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="green" data-md-color-accent="teal"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a4 4 0 0 0-4 4 4 4 0 0 0 4 4 4 4 0 0 0 4-4 4 4 0 0 0-4-4m0 10a6 6 0 0 1-6-6 6 6 0 0 1 6-6 6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="green" data-md-color-accent="teal"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 18c-.89 0-1.74-.2-2.5-.55C11.56 16.5 13 14.42 13 12s-1.44-4.5-3.5-5.45C10.26 6.2 11.11 6 12 6a6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/Joshuaweg/pulsatrix" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    Joshuaweg/pulsatrix
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="Pulsatrix" class="md-nav__button md-logo" aria-label="Pulsatrix" data-md-component="logo">
+      
+  <img src="../../assets/pulsatrix_icon.png" alt="logo">
+
+    </a>
+    Pulsatrix
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/Joshuaweg/pulsatrix" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    Joshuaweg/pulsatrix
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Home
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../getting-started/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Getting Started
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../deep-learning/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Deep Learning Modules and Layers
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../data-pipeline/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Data Loading, Transformation & Validation
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../language-models/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Language Models
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../protein-models/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Protein Language Models
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7" >
+        
+          
+          <label class="md-nav__link" for="__nav_7" id="__nav_7_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Interpretability
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_7_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_7">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Interpretability
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../interpretability/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Overview
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../interpretability/lrp/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Layer-wise Relevance Propagation
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../interpretability/model-agnostic/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Model-Agnostic Explainers
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../interpretability/deep-learning-approaches/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Gradient-Based Explainers
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../reinforcement-learning/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Reinforcement Learning
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_9" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_9" id="__nav_9_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Mechanistic Interpretability
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_9_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_9">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Mechanistic Interpretability
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Overview
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../probes-and-concepts/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Probes and Concepts
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Analyzing Representations
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Analyzing Representations
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#comparing-representations-cka" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Comparing representations (CKA)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#rsa-and-svcca" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        RSA and SVCCA
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#nearest-neighbors" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Nearest neighbors
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#the-shape-of-a-layer" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The shape of a layer
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#pca-projections" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        PCA projections
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#umap-and-t-sne" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        UMAP and t-SNE
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../featurizers/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Finding Features
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../evaluating-features/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Evaluating Features
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../steering/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Steering
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../model-diffing/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Model Diffing
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../parameter-decomposition/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Parameter Decomposition
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../attribution-graphs/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Attribution Graphs
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../gflownets/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    GFlowNets
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../neuro-symbolic/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Neuro-Symbolic Reasoning
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../evolutionary-computation/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Evolutionary Computation
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../hyperparameter-optimization/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Hyperparameter Optimization
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../agents/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    LLM Agents
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_14" >
+        
+          
+          <label class="md-nav__link" for="__nav_14" id="__nav_14_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Visualization
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_14_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_14">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Visualization
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../visualization/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Overview
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../visualization/notebooks/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Notebooks and Reports
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../visualization/svg/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    SVG Figures
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../visualization/html/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Interactive HTML
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../visualization/documents/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    JSON Documents
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../visualization/attribution-graphs/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Attribution Graph Viewers
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../visualization/desktop/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Desktop Windows (ImGui)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../system-monitoring/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    System Monitoring
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../gpu-profiling/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    GPU Profiling (HIP)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../gpu-ci/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    GPU CI
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../benchmarks/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Benchmarks
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../customization/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Customization
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_20" >
+        
+          
+          <label class="md-nav__link" for="__nav_20" id="__nav_20_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Recipes
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_20_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_20">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Recipes
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../recipes/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Overview
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../recipes/deep-learning/xor_training/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    XOR Training
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../recipes/deep-learning/sequence_models_rnn_lstm_gru/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    RNN vs. LSTM vs. GRU
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../recipes/deep-learning/residual_and_norm_layers/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Residual and Normalization Layers
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../recipes/deep-learning/tagger_finetune/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Full Fine-Tuning
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../recipes/data-pipeline/csv_dataloader_training/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    CSV + DataLoader Training
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../recipes/interpretability/mnist_lrp/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    LRP on MNIST
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../recipes/interpretability/imagenet_lrp/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    LRP on ImageNet Models
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../recipes/interpretability/saliency_and_integrated_gradients/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Saliency and Integrated Gradients
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../recipes/interpretability/grad_cam_walkthrough/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Grad-CAM
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../recipes/interpretability/kernel_shap_basics/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    KernelSHAP
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../recipes/interpretability/lime_basics/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    LIME
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../recipes/rl/dqn_cartpole/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    DQN on CartPole
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../recipes/rl/gae_and_ppo_clipped/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    GAE and PPO Clipping
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../recipes/mechanistic-interpretability/sparse_autoencoder_probe/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Sparse Autoencoder + Probe
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../recipes/mechanistic-interpretability/gflownet_hypergrid/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    GFlowNet on HyperGrid
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../recipes/neuro-symbolic/datalog_lrp_bridge/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Datalog LRP Bridge
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../recipes/protein-models/protein_tem1/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    TEM-1 End to End
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../recipes/visualization/notebook_report/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Notebook Report
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../recipes/visualization/training_dashboard/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Training Dashboard
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_21" >
+        
+          
+          <label class="md-nav__link" for="__nav_21" id="__nav_21_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Roadmap
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_21_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_21">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Roadmap
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../roadmap/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Overview
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../roadmap/research-notes/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Research Notes
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../roadmap/protein-language-models/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Protein Language Models
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../api/index.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    API Reference
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#comparing-representations-cka" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Comparing representations (CKA)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#rsa-and-svcca" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        RSA and SVCCA
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#nearest-neighbors" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Nearest neighbors
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#the-shape-of-a-layer" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The shape of a layer
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#pca-projections" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        PCA projections
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#umap-and-t-sne" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        UMAP and t-SNE
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+  
+  
+
+
+<h1 id="analyzing-representations">Analyzing Representations<a class="headerlink" href="#analyzing-representations" title="Permanent link">&para;</a></h1>
+<p>These tools describe what a layer does with a set of inputs, without labels: how it compares
+with another layer or model, which inputs it treats as alike, how many dimensions it uses, and
+what it looks like in two or three dimensions.</p>
+<p>Each takes a matrix with one row per input, <code>(n, width)</code>, collected with the hooks described in
+the <a href="../#reading-and-changing-activations">overview</a>. Two representations being compared
+must come from the same n inputs, in the same order.</p>
+<table>
+<thead>
+<tr>
+<th>Your question</th>
+<th>Tool</th>
+<th>Section</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>How similar are two layers, two models, or a model before and after fine-tuning?</td>
+<td><code>LinearCka</code>, <code>LinearCkaMatrix</code></td>
+<td><a href="#comparing-representations-cka">CKA</a></td>
+</tr>
+<tr>
+<td>Does a model order the inputs as a brain recording or a model of the categories does?</td>
+<td><code>RsaPermutationTest</code></td>
+<td><a href="#rsa-and-svcca">RSA</a></td>
+</tr>
+<tr>
+<td>Which directions do two layers share?</td>
+<td><code>Svcca</code>, <code>CanonicalCorrelations</code></td>
+<td><a href="#rsa-and-svcca">SVCCA</a></td>
+</tr>
+<tr>
+<td>Which inputs does a layer treat as alike? Do two models agree?</td>
+<td><code>NearestNeighbors</code>, <code>MutualKnnAlignment</code></td>
+<td><a href="#nearest-neighbors">Nearest neighbors</a></td>
+</tr>
+<tr>
+<td>Is cosine similarity meaningful here? How many dimensions are used?</td>
+<td><code>Anisotropy</code>, <code>MeasureEffectiveRank</code>, <code>TwoNNDimension</code></td>
+<td><a href="#the-shape-of-a-layer">The shape of a layer</a></td>
+</tr>
+<tr>
+<td>What does a layer look like in 2D or 3D?</td>
+<td><code>FitPca</code>, <code>RenderProjectionSvg</code></td>
+<td><a href="#pca-projections">PCA</a></td>
+</tr>
+<tr>
+<td>How do I run UMAP or t-SNE on a layer?</td>
+<td><code>ExportEmbeddings</code>, <code>ReadNpy</code></td>
+<td><a href="#umap-and-t-sne">UMAP and t-SNE</a></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Compare against an untrained model.</strong> Every number on this page can come from the architecture
+or the inputs rather than what was learned. Compute it on a
+<a href="../#baselines"><code>NullModelBaseline</code></a> too.</p>
+<h2 id="comparing-representations-cka">Comparing representations (CKA)<a class="headerlink" href="#comparing-representations-cka" title="Permanent link">&para;</a></h2>
+<p>Centered kernel alignment (CKA) measures how similar two representations of the same inputs
+are: one layer of two models, two layers of one model, a model before and after fine-tuning, or
+the same layer computed on the CPU and the GPU. Run the same n inputs through both, collect one
+row per input from each, and compare:</p>
+<div class="highlight"><pre><span></span><code><span class="cp">#include</span><span class="w"> </span><span class="cpf">"pulsatrix/representation_similarity.hpp"</span>
+
+<span class="c1">// layer_a: (n, 768) activations from one model; layer_b: (n, 1024) from another, same n inputs.</span>
+<span class="k">const</span><span class="w"> </span><span class="kt">double</span><span class="w"> </span><span class="n">similarity</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">LinearCka</span><span class="p">(</span><span class="n">layer_a</span><span class="p">,</span><span class="w"> </span><span class="n">layer_b</span><span class="p">);</span>
+</code></pre></div>
+<ul>
+<li><strong>1</strong> means one representation is a rotation and uniform scaling of the other, plus an offset.
+  The two layers don't need the same width, and their neurons don't need to line up.</li>
+<li><strong>Near 0</strong> means they are unrelated.</li>
+<li>Dimensions after the first are flattened, so a convolution's (n, channels, height, width)
+  activations are n vectors. The tensors can be on any device; CKA is computed in double
+  precision on the host.</li>
+</ul>
+<p><code>LinearCkaMatrix(layers_a, layers_b)</code> compares every layer of one model with every layer of
+another, reusing each layer's work across its row or column. Draw the result as a heatmap:</p>
+<div class="highlight"><pre><span></span><code><span class="cp">#include</span><span class="w"> </span><span class="cpf">"pulsatrix/viz/svg.hpp"</span>
+
+<span class="k">const</span><span class="w"> </span><span class="n">CkaMatrix</span><span class="w"> </span><span class="n">m</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">LinearCkaMatrix</span><span class="p">(</span><span class="n">layers_a</span><span class="p">,</span><span class="w"> </span><span class="n">layers_b</span><span class="p">);</span>
+<span class="n">HeatmapDocument</span><span class="w"> </span><span class="n">doc</span><span class="p">;</span>
+<span class="n">doc</span><span class="p">.</span><span class="n">title</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">"CKA, model A layers × model B layers"</span><span class="p">;</span>
+<span class="n">doc</span><span class="p">.</span><span class="n">rows</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">m</span><span class="p">.</span><span class="n">rows</span><span class="p">;</span>
+<span class="n">doc</span><span class="p">.</span><span class="n">cols</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">m</span><span class="p">.</span><span class="n">cols</span><span class="p">;</span>
+<span class="n">doc</span><span class="p">.</span><span class="n">values</span><span class="p">.</span><span class="n">assign</span><span class="p">(</span><span class="n">m</span><span class="p">.</span><span class="n">values</span><span class="p">.</span><span class="n">begin</span><span class="p">(),</span><span class="w"> </span><span class="n">m</span><span class="p">.</span><span class="n">values</span><span class="p">.</span><span class="n">end</span><span class="p">());</span>
+<span class="n">std</span><span class="o">::</span><span class="n">ofstream</span><span class="p">(</span><span class="s">"cka.svg"</span><span class="p">)</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">RenderHeatmapSvg</span><span class="p">(</span><span class="n">doc</span><span class="p">);</span>
+</code></pre></div>
+<p>Things to know:</p>
+<ul>
+<li><strong>Use the default, debiased estimator.</strong> The original estimator is pulled towards 1 when
+  there are few inputs for the width: two unrelated random representations of 50 inputs with
+  1,000 features each score 0.95 with it and −0.02 debiased. Pass <code>CkaEstimator::Biased</code> to
+  reproduce numbers from papers that used it. The debiased value can be slightly negative, and
+  needs at least 4 inputs.</li>
+<li><strong>Compare against an untrained model.</strong> Two layers can look similar because of the
+  architecture or the input, not what was learned. In the tests, the second hidden layers of two
+  small networks trained from different seeds score 0.68; one of them against the same network
+  untrained scores 0.10. Run the comparison on a <code>NullModelBaseline</code> too (<a href="../#baselines">Baselines</a>).</li>
+<li><strong>Outliers move it.</strong> A few inputs with very large activations can dominate, and CKA can be
+  pushed up or down on purpose (Davari et al., 2022). Check that a result holds on a second set
+  of inputs.</li>
+<li>A representation that is constant over the inputs has no CKA: the result is NaN.</li>
+</ul>
+<p>The implementation matches the reference code of Kornblith et al. (ICML 2019) to 12 decimal
+places for both estimators.</p>
+<h2 id="rsa-and-svcca">RSA and SVCCA<a class="headerlink" href="#rsa-and-svcca" title="Permanent link">&para;</a></h2>
+<p>Two older ways to compare representations are in the same header. Use CKA unless you need one
+of them.</p>
+<p><strong>RSA</strong> (representational similarity analysis) describes a representation by how far apart it
+puts every pair of inputs, its representational dissimilarity matrix (RDM), and correlates two
+RDMs. Because only the RDM is compared, the other side can be anything that orders the same
+inputs: another model, a brain recording, or a hand-made matrix that says which inputs share a
+category.</p>
+<div class="highlight"><pre><span></span><code><span class="cp">#include</span><span class="w"> </span><span class="cpf">"pulsatrix/representation_similarity.hpp"</span>
+
+<span class="k">const</span><span class="w"> </span><span class="n">Rdm</span><span class="w"> </span><span class="n">model</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">RepresentationalDissimilarity</span><span class="p">(</span><span class="n">layer</span><span class="p">,</span><span class="w"> </span><span class="n">RdmMetric</span><span class="o">::</span><span class="n">Correlation</span><span class="p">);</span><span class="w">  </span><span class="c1">// 1 − Pearson</span>
+<span class="k">const</span><span class="w"> </span><span class="n">Rdm</span><span class="w"> </span><span class="n">categories</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">...;</span><span class="w">  </span><span class="c1">// e.g. 0 within a category, 1 across, in the same pair order</span>
+<span class="k">const</span><span class="w"> </span><span class="n">RsaTestResult</span><span class="w"> </span><span class="n">r</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">RsaPermutationTest</span><span class="p">(</span><span class="n">model</span><span class="p">,</span><span class="w"> </span><span class="n">categories</span><span class="p">,</span><span class="w"> </span><span class="n">RdmComparison</span><span class="o">::</span><span class="n">Spearman</span><span class="p">,</span><span class="w"> </span><span class="mi">999</span><span class="p">);</span>
+<span class="c1">// r.similarity: Spearman's correlation of the two RDMs; r.p_value: how often relabeled inputs</span>
+<span class="c1">// agree as well.</span>
+</code></pre></div>
+<ul>
+<li><strong>The metrics</strong> are correlation distance (the RSA default), Euclidean and cosine. RDMs are
+  stored as scipy's <code>pdist</code> stores them, pairs (0, 1), (0, 2), ..., so they can go to or come
+  from Python unchanged; <code>Rdm::at(i, j)</code> reads one.</li>
+<li><strong>Compare with Spearman</strong> (the default) when the two RDMs are on different scales, which is
+  almost always; only the order of the distances counts. <code>Rsa(x, y)</code> does both steps.</li>
+<li><strong>Test with <code>RsaPermutationTest()</code>, not a correlation's p-value.</strong> The distances in an RDM
+  aren't independent (one input's row moves n − 1 of them), so the usual p-value is too small.
+  The test relabels the inputs of one RDM instead. In the tests, two noisy views of four
+  categories agree at 0.83 with p = 1/200, the smallest 199 relabelings can give, and unrelated
+  representations reach p &lt; 0.05 in 3 of 40 trials, about the one in 20 they should.</li>
+</ul>
+<p><strong>SVCCA</strong> keeps each representation's top singular directions, 99% of the variance by default,
+and finds the pairs of directions, one in each, that correlate most. The mean of those canonical
+correlations is the similarity.</p>
+<div class="highlight"><pre><span></span><code><span class="k">const</span><span class="w"> </span><span class="n">SvccaResult</span><span class="w"> </span><span class="n">r</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Svcca</span><span class="p">(</span><span class="n">layer_a</span><span class="p">,</span><span class="w"> </span><span class="n">layer_b</span><span class="p">);</span><span class="w">  </span><span class="c1">// r.similarity, r.correlations (largest first)</span>
+<span class="k">const</span><span class="w"> </span><span class="n">SvccaResult</span><span class="w"> </span><span class="n">fixed</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Svcca</span><span class="p">(</span><span class="n">layer_a</span><span class="p">,</span><span class="w"> </span><span class="n">layer_b</span><span class="p">,</span><span class="w"> </span><span class="n">SvccaOptions</span><span class="p">{</span><span class="mf">0.99</span><span class="p">,</span><span class="w"> </span><span class="mi">20</span><span class="p">});</span><span class="w">  </span><span class="c1">// 20 directions each</span>
+</code></pre></div>
+<p>Things to know:</p>
+<ul>
+<li><strong>It is biased upwards, more than CKA.</strong> Canonical correlations are fitted to the inputs. Two
+  unrelated 20-dimensional representations score 0.50 with 60 inputs, against −0.02 for
+  debiased CKA, and still 0.09 with 2,000. Use many more inputs than kept directions.</li>
+<li><strong>It refuses too few inputs.</strong> When the kept directions of both add up to the number of inputs
+  or more, some correlations are 1 whatever the data, and <code>Svcca()</code> throws rather than report
+  them. Ask for fewer directions with <code>SvccaOptions::directions</code>.</li>
+<li><strong>It ignores how a layer weights its directions.</strong> CCA is invariant to any invertible linear
+  map: stretching one axis of a layer ten times and shearing another leaves SVCCA at 1, and
+  drops CKA to 0.48 in the tests. Kornblith et al. found CKA better at matching corresponding layers for this reason.</li>
+<li><code>CanonicalCorrelations(x, y)</code> is plain CCA, on every direction with variance.</li>
+</ul>
+<p>RSA matches independent numpy implementations of scipy's <code>pdist</code> and <code>spearmanr</code> to 12 decimal
+places, and SVCCA and CCA one written with numpy's SVD and QR to 9.</p>
+<h2 id="nearest-neighbors">Nearest neighbors<a class="headerlink" href="#nearest-neighbors" title="Permanent link">&para;</a></h2>
+<p><code>NearestNeighbors()</code> finds, for each input, the k inputs a layer represents most alike, by cosine
+similarity (the default) or Euclidean distance:</p>
+<div class="highlight"><pre><span></span><code><span class="cp">#include</span><span class="w"> </span><span class="cpf">"pulsatrix/nearest_neighbors.hpp"</span>
+
+<span class="c1">// embeddings: (n, width), a row per input.</span>
+<span class="n">NeighborOptions</span><span class="w"> </span><span class="n">options</span><span class="p">;</span>
+<span class="n">options</span><span class="p">.</span><span class="n">k</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">5</span><span class="p">;</span>
+<span class="n">options</span><span class="p">.</span><span class="n">center</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">true</span><span class="p">;</span><span class="w">  </span><span class="c1">// subtract the mean first; see below</span>
+<span class="k">const</span><span class="w"> </span><span class="n">Neighbors</span><span class="w"> </span><span class="n">near</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">NearestNeighbors</span><span class="p">(</span><span class="n">embeddings</span><span class="p">,</span><span class="w"> </span><span class="n">options</span><span class="p">);</span>
+<span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">int64_t</span><span class="w"> </span><span class="n">r</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">r</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">near</span><span class="p">.</span><span class="n">k</span><span class="p">;</span><span class="w"> </span><span class="o">++</span><span class="n">r</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">std</span><span class="o">::</span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">near</span><span class="p">.</span><span class="n">index</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="n">r</span><span class="p">)</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">" "</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">near</span><span class="p">.</span><span class="n">score</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="n">r</span><span class="p">)</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">"</span><span class="se">\n</span><span class="s">"</span><span class="p">;</span><span class="w">  </span><span class="c1">// input 0's neighbors, nearest first</span>
+<span class="p">}</span>
+</code></pre></div>
+<ul>
+<li><strong>Search another set</strong> with <code>NearestNeighbors(queries, points, options)</code>, for example new
+  inputs against a labelled reference set.</li>
+<li><strong>Match items across two sets</strong> with <code>MutualNearestNeighbors(a, b, options)</code>: the pairs
+  (i, j) where each is among the other's k nearest.</li>
+<li><strong>Compare two models</strong> with <code>MutualKnnAlignment(a, b, options)</code>: for each input, the
+  fraction of its k neighbors under one representation that are also its neighbors under the
+  other, averaged. The two can have different widths. With the default options it is the
+  mutual-kNN alignment of Huh et al.'s "Platonic Representation Hypothesis" (2024), and it
+  matches their code exactly. Unrelated representations score about k / (n − 1) by chance, so
+  read a score against that, not against 0. It complements CKA (above): CKA compares the whole
+  geometry, mutual kNN only who is close to whom.</li>
+</ul>
+<p>The search is exact, in double precision on the host. It costs about n² × width multiply-adds, so
+it suits up to tens of thousands of inputs. Ties keep the lower index first.</p>
+<p>Things to know:</p>
+<ul>
+<li><strong>Center cosine similarities.</strong> Activations often share a large common component, so every
+  pair's cosine is high and the ranking follows that component. <code>center = true</code> subtracts the
+  points' mean first. It doesn't change Euclidean distances.</li>
+<li>
+<p><strong>Check for hubs.</strong> In high dimensions a few points become almost everyone's neighbor, and
+  many become nobody's (Radovanović et al., 2010). Neighbor lists, and scores built on them,
+  then say more about the hubs than about the inputs. <code>MeasureHubness(neighbors, n)</code> reports
+  how often each point is a neighbor, and the skewness of those counts: near 0 is even, well
+  above 1 means hubs. For 300 random Gaussian points and k = 5:</p>
+<table>
+<thead>
+<tr>
+<th>Dimension</th>
+<th>Skewness</th>
+<th>The biggest hub is in</th>
+<th>Never a neighbor</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>3</td>
+<td>−0.04</td>
+<td>3% of lists</td>
+<td>2% of points</td>
+</tr>
+<tr>
+<td>30</td>
+<td>2.05</td>
+<td>12% of lists</td>
+<td>21% of points</td>
+</tr>
+<tr>
+<td>300</td>
+<td>3.52</td>
+<td>20% of lists</td>
+<td>36% of points</td>
+</tr>
+</tbody>
+</table>
+<p>Centering also reduces hubness for cosine similarity (Suzuki et al., 2013).</p>
+</li>
+</ul>
+<h2 id="the-shape-of-a-layer">The shape of a layer<a class="headerlink" href="#the-shape-of-a-layer" title="Permanent link">&para;</a></h2>
+<p>Three numbers describe a layer's representations of a set of inputs. Each is cheap enough to
+compute for every layer.</p>
+<div class="highlight"><pre><span></span><code><span class="cp">#include</span><span class="w"> </span><span class="cpf">"pulsatrix/representation_geometry.hpp"</span>
+
+<span class="c1">// layer: (n, width), a row per input.</span>
+<span class="k">const</span><span class="w"> </span><span class="kt">double</span><span class="w"> </span><span class="n">raw</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Anisotropy</span><span class="p">(</span><span class="n">layer</span><span class="p">);</span><span class="w">                     </span><span class="c1">// mean cosine over all pairs</span>
+<span class="k">const</span><span class="w"> </span><span class="kt">double</span><span class="w"> </span><span class="n">centered</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Anisotropy</span><span class="p">(</span><span class="n">layer</span><span class="p">,</span><span class="w"> </span><span class="cm">/*center=*/</span><span class="nb">true</span><span class="p">);</span>
+<span class="k">const</span><span class="w"> </span><span class="n">EffectiveRank</span><span class="w"> </span><span class="n">rank</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">MeasureEffectiveRank</span><span class="p">(</span><span class="n">layer</span><span class="p">);</span><span class="w">  </span><span class="c1">// .effective_rank, .participation_ratio</span>
+<span class="k">const</span><span class="w"> </span><span class="n">TwoNNResult</span><span class="w"> </span><span class="n">id</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">TwoNNDimension</span><span class="p">(</span><span class="n">layer</span><span class="p">);</span><span class="w">            </span><span class="c1">// .dimension, .mle_dimension</span>
+</code></pre></div>
+<ul>
+<li><strong>Anisotropy</strong> is the mean cosine similarity between different inputs. Spread-out
+  directions score about 0. Language models' layers often score 0.5 or more (Ethayarajh,
+  2019): they share a few large directions, so any two inputs look alike by cosine. If raw
+  anisotropy is high and centered anisotropy is near 0, the similarity was the shared
+  direction. Center before comparing by cosine (<code>NeighborOptions::center</code>, above). The test
+  data shows this: rows spread evenly score 0.001, shifting them all along one axis raises that
+  to 0.63, and centering brings it back to −0.003.</li>
+<li><strong>Effective rank</strong> (Roy and Vetterli, 2007) is how many directions the inputs spread along.
+  It's the exponential of the entropy of the normalized singular values, between 1 and the
+  smaller of n and the width. The participation ratio is a coarser count that the largest
+  directions dominate more. Both center by default, because a shared direction would otherwise
+  take up part of the count.</li>
+<li><strong>TwoNN intrinsic dimension</strong> (Facco et al., 2017) is how many dimensions the inputs vary in
+  locally, which can be far below the width. It uses only each point's two nearest neighbors.
+  <code>dimension</code> is the paper's fit and matches scikit-dimension and DADApy. <code>mle_dimension</code> is
+  DADApy's maximum-likelihood version. Exact repeated rows are dropped first and counted in
+  <code>duplicates</code>. In the test, points filling a 2- and a 5-dimensional cube, written in 40
+  dimensions, give 1.91 and 4.53.</li>
+</ul>
+<p>Things to know about TwoNN:</p>
+<ul>
+<li><strong>Low with too few points.</strong> It reads low when the dimension is high for the number of
+  points: tens of dimensions need thousands.</li>
+<li><strong>Noise raises it.</strong> It measures the nearest neighbors' scale, so noise on a low-dimensional
+  surface adds dimensions.</li>
+<li><strong>Cost.</strong> The search is exact, at n² × width.</li>
+</ul>
+<h2 id="pca-projections">PCA projections<a class="headerlink" href="#pca-projections" title="Permanent link">&para;</a></h2>
+<p><code>FitPca()</code> finds the directions along which a layer's representations of a set of inputs vary
+most. <code>PcaProject()</code> places inputs on them, to plot, or to pass fewer dimensions on to another
+method.</p>
+<div class="highlight"><pre><span></span><code><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;fstream&gt;</span>
+
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">"pulsatrix/pca.hpp"</span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">"pulsatrix/viz/svg.hpp"</span>
+
+<span class="c1">// layer: (n, width), a row per input; words and tags: one per input.</span>
+<span class="k">const</span><span class="w"> </span><span class="n">Pca</span><span class="w"> </span><span class="n">pca</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">FitPca</span><span class="p">(</span><span class="n">layer</span><span class="p">,</span><span class="w"> </span><span class="cm">/*components=*/</span><span class="mi">3</span><span class="p">);</span>
+<span class="k">const</span><span class="w"> </span><span class="n">Tensor</span><span class="w"> </span><span class="n">scores</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">PcaProject</span><span class="p">(</span><span class="n">pca</span><span class="p">,</span><span class="w"> </span><span class="n">layer</span><span class="p">);</span><span class="w">  </span><span class="c1">// (n, 3)</span>
+<span class="k">const</span><span class="w"> </span><span class="n">ProjectionDocument</span><span class="w"> </span><span class="n">doc</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">MakeProjectionDocument</span><span class="p">(</span><span class="n">pca</span><span class="p">,</span><span class="w"> </span><span class="n">scores</span><span class="p">,</span><span class="w"> </span><span class="cm">/*labels=*/</span><span class="n">words</span><span class="p">,</span><span class="w"> </span><span class="cm">/*groups=*/</span><span class="n">tags</span><span class="p">);</span>
+<span class="n">std</span><span class="o">::</span><span class="n">ofstream</span><span class="p">(</span><span class="s">"layer.svg"</span><span class="p">)</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">RenderProjectionSvg</span><span class="p">(</span><span class="n">doc</span><span class="p">);</span><span class="w">          </span><span class="c1">// PC1 against PC2</span>
+<span class="n">std</span><span class="o">::</span><span class="n">ofstream</span><span class="p">(</span><span class="s">"layer13.svg"</span><span class="p">)</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">RenderProjectionSvg</span><span class="p">(</span><span class="n">doc</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="mi">2</span><span class="p">);</span><span class="w">  </span><span class="c1">// PC1 against PC3</span>
+<span class="n">std</span><span class="o">::</span><span class="n">ofstream</span><span class="p">(</span><span class="s">"layer.json"</span><span class="p">)</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">ToJson</span><span class="p">(</span><span class="n">doc</span><span class="p">);</span><span class="w">                     </span><span class="c1">// for pulsatrix_svg or HTML</span>
+</code></pre></div>
+<p>It matches scikit-learn's <code>PCA</code> to 1e-10:</p>
+<ul>
+<li>The data are centered.</li>
+<li>Variances divide by n − 1.</li>
+<li>Each component's largest entry is positive, so the same data always give the same picture.</li>
+</ul>
+<p>It runs in double precision, through whichever is smaller of the covariance and the Gram
+matrix.</p>
+<ul>
+<li><strong>Plots.</strong> <code>RenderProjectionSvg</code> draws two axes on one scale, so distances on the page are
+  distances in the projection. Each axis is captioned with its share of the variance.</li>
+<li>Points are colored by group or by value, and show their label on hover.</li>
+<li><code>RenderProjectionHtml</code> is the zoomable version. With three components it shows the three
+    pairs side by side, the views of a 3D projection.</li>
+<li>The <code>pulsatrix.projection.v1</code> document (<code>ToJson</code>) also lets any outside tool draw it.</li>
+<li><strong>Steering directions.</strong> <code>PcaComponent(pca, i)</code> is component i as a unit vector for
+  <code>SteeringHook</code>. One standard deviation along it is <code>sqrt(pca.explained_variance[i])</code>, a
+  natural unit for the coefficient. Then test whether it does anything with <code>MeasureSteering</code>
+  (<a href="../steering/">Steering</a>).</li>
+<li><strong>Fewer dimensions.</strong> <code>PcaReconstruct</code> maps coordinates back. <code>PcaProject(pca, x,
+  /*whiten=*/true)</code> gives every axis variance 1.</li>
+</ul>
+<p>Things to know:</p>
+<ul>
+<li><strong>Check that the picture is stable.</strong> Components with close variances can swap or rotate
+  between two samples of the same inputs. <code>PcaSplitHalfOverlap(layer, k)</code> fits each half of
+  the inputs separately and compares the two k-dimensional spans: 1 means the same span, near
+  k / width means unrelated. In the test, points on a plane give 0.9995, the same plane under
+  noise as large as it gives 0.92, and noise alone gives 0.09.</li>
+<li><strong>Most variance isn't most meaning.</strong> In anisotropic layers the first component is often the
+  common direction or a few outlier dimensions (see <a href="#the-shape-of-a-layer">the shape of a layer</a>).
+  Look at the explained variance ratios, and treat a direction as a hypothesis to test.</li>
+<li><strong><code>SubspaceOverlap(a, b, k)</code></strong> compares any two PCAs of the same width, for example the same
+  layer in two models, or before and after fine-tuning.</li>
+</ul>
+<h2 id="umap-and-t-sne">UMAP and t-SNE<a class="headerlink" href="#umap-and-t-sne" title="Permanent link">&para;</a></h2>
+<p>pulsatrix doesn't run UMAP or t-SNE. It writes a layer's representations in the formats the
+tools that do run them read, and reads their coordinates back for its own plots.</p>
+<div class="highlight"><pre><span></span><code><span class="cp">#include</span><span class="w"> </span><span class="cpf">"pulsatrix/embedding_export.hpp"</span>
+
+<span class="c1">// layer: (n, width); words and tags: one per input. The directory must exist.</span>
+<span class="n">ExportEmbeddings</span><span class="p">(</span><span class="s">"layer6"</span><span class="p">,</span><span class="w"> </span><span class="n">layer</span><span class="p">,</span><span class="w"> </span><span class="p">{{</span><span class="s">"word"</span><span class="p">,</span><span class="w"> </span><span class="n">words</span><span class="p">},</span><span class="w"> </span><span class="p">{</span><span class="s">"tag"</span><span class="p">,</span><span class="w"> </span><span class="n">tags</span><span class="p">}});</span>
+<span class="c1">// layer6/vectors.npy, layer6/vectors.tsv, layer6/metadata.tsv</span>
+</code></pre></div>
+<ul>
+<li><strong>In Python:</strong> <code>np.load("layer6/vectors.npy")</code> goes straight into <code>umap.UMAP().fit_transform</code>,
+  <code>openTSNE.TSNE().fit</code> or scikit-learn's <code>TSNE</code>. <code>WriteNpy</code> and <code>SerializeNpy</code> write any tensor
+  the same way, float32 with its shape.</li>
+<li><strong>In the browser, with nothing to install:</strong> load <code>vectors.tsv</code> and <code>metadata.tsv</code> into the
+  Embedding Projector (projector.tensorflow.org), which runs UMAP, t-SNE and PCA and colors
+  points by any metadata column.</li>
+<li><strong>Back in pulsatrix:</strong> save the coordinates with <code>np.save</code>, read them with <code>ReadNpy</code>, and make
+  a projection document, which the <a href="#pca-projections">PCA views</a> draw:</li>
+</ul>
+<div class="highlight"><pre><span></span><code><span class="k">const</span><span class="w"> </span><span class="n">Tensor</span><span class="w"> </span><span class="n">xy</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">ReadNpy</span><span class="p">(</span><span class="s">"layer6/umap.npy"</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">backend</span><span class="p">);</span><span class="w">  </span><span class="c1">// (n, 2), from Python</span>
+<span class="k">const</span><span class="w"> </span><span class="n">ProjectionDocument</span><span class="w"> </span><span class="n">doc</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">MakeProjectionDocument</span><span class="p">(</span><span class="n">xy</span><span class="p">,</span><span class="w"> </span><span class="s">"umap"</span><span class="p">,</span><span class="w"> </span><span class="n">words</span><span class="p">,</span><span class="w"> </span><span class="n">tags</span><span class="p">);</span>
+<span class="n">std</span><span class="o">::</span><span class="n">ofstream</span><span class="p">(</span><span class="s">"layer6_umap.svg"</span><span class="p">)</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">RenderProjectionSvg</span><span class="p">(</span><span class="n">doc</span><span class="p">);</span>
+</code></pre></div>
+<p>Things to know:</p>
+<ul>
+<li><strong>These plots keep neighbors, not distances.</strong> The gaps between clusters, the clusters' sizes
+  and their densities carry little meaning, and shapes can come from the settings alone
+  (perplexity, <code>n_neighbors</code>, <code>min_dist</code>). The views say so under every plot whose method is
+  <code>umap</code>, <code>tsne</code>, <code>t-sne</code> or <code>opentsne</code>. Ask questions about distances of PCA, and about
+  neighbors of <a href="#nearest-neighbors">nearest neighbors</a>, which measures them directly.</li>
+<li><strong>Run them more than once.</strong> Both start from random positions. A cluster that appears in one
+  run and not another, or under one perplexity and not another, isn't evidence of anything.</li>
+<li><strong>Reduce first if the layer is wide.</strong> Running PCA to about 50 dimensions first (<code>FitPca</code>,
+  <code>PcaProject</code>, then export the scores) is standard for t-SNE, and makes both faster.</li>
+<li><strong>The reader takes what numpy writes for float arrays:</strong> float32 or float64, C or Fortran
+  order, format versions 1 to 3. It rejects anything else, including pickled objects, with an
+  error rather than a guess, and is fuzzed (<code>tools/fuzz/npy_fuzz.cpp</code>).</li>
+</ul>
+<p>Full API reference: <a href="../api/group__mech__interp.html">Doxygen: Mechanistic Interpretability</a></p>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.instant", "navigation.tracking", "navigation.top", "content.code.copy"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.d7400e89.min.js"></script>
+      
+    
+  </body>
+</html>
