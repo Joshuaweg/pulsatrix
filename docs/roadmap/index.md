@@ -974,16 +974,16 @@ certified error bar (`Certified<T>{value, bound, provenance}`) that adds up the 
 error, the subsampling error and the vectorization error. The API doesn't expose `Functor`
 classes that nothing checks.
 
-Pulsatrix writes H0 itself (a minimum spanning tree, on CPU and GPU), vendors Ripser (MIT) for H1
-and H2, and writes the distances, vectorizations and significance tests itself. GUDHI's
-GPL-licensed parts and giotto-ph (AGPL) are avoided.
+Pulsatrix writes all of it itself: H0 (a minimum spanning tree), H1 and H2 (Ripser's algorithm,
+reimplemented; see TDA-4 below), the distances, the vectorizations and the significance tests.
+GUDHI's GPL-licensed parts and giotto-ph (AGPL) are avoided.
 
 | ID | Item | Why | Depends on | P | Effort | Status |
 |---|---|---|---|---|---|---|
 | TDA-1 | A `PointCloud` built from `ActivationSnapshot`s, with flatten and pooling options, concatenated across batches | The input to everything below | — | P0 | S | Done (see below) |
 | TDA-2 | Pairwise distances via GEMM on every backend, with an fp32 error bound | Distances are the only part that touches the model's dimension | TDA-1 | P0 | S | Done (see below) |
 | TDA-3 | H0 as a minimum spanning tree | Exact, fast and GPU-friendly | TDA-2 | P0 | S | Done (see below) |
-| TDA-4 | Vendored Ripser for H1 and H2, returning critical edges and cocycles | Loops and voids | TDA-2 | P0 | M |  |
+| TDA-4 | Vendored Ripser for H1 and H2, returning critical edges and cocycles | Loops and voids | TDA-2 | P0 | M | Done (see below) |
 | TDA-5 | `Diagram`, bottleneck and Wasserstein distances, `Certified<T>`, and property tests for stability | Compare layers, models and seeds with certified error | TDA-3, TDA-4 | P0 | M |  |
 | TDA-6 | Betti curves, persistence landscapes, persistence images, persistent entropy | Turn diagrams into numbers for probes and plots | TDA-5 | P0 | S |  |
 | TDA-7 | Farthest-point landmarks, which give the subsampling error bound | Persistent homology can't run on 100,000 activations | FND-3 | P0 | S |  |
@@ -1020,6 +1020,20 @@ GPL-licensed parts and giotto-ph (AGPL) are avoided.
   little. It also returns the tree's edges, shortest first, and `SingleLinkageClusters()` cuts
   them at a scale. `PersistenceDiagram` (`tda/persistence_diagram.hpp`) starts here as a plain
   list of pairs with an error bound; TDA-5 adds its distances.
+- **TDA-4** is written for pulsatrix (`tda/rips_persistence.hpp`), not vendored: the user chose
+  that when downloading Ripser was blocked as third-party code. It follows Ripser's algorithm
+  (Bauer 2021): persistent cohomology, an implicit coboundary in the combinatorial number
+  system, clearing, and zero-persistence apparent pairs, with any prime field Z/p. It returns
+  critical edges and representative cocycles, as planned. Ripser's outputs couldn't serve as the
+  test oracle, so the tests check mathematical facts instead:
+  - the Adamaszek–Adams homotopy types of points on a circle;
+  - Betti numbers from boundary-matrix ranks at every scale;
+  - the Euler characteristic;
+  - the cocycle condition.
+
+  Planted bugs (dropped signs, skipped reductions, a broken apparent-pair check) each fail
+  several of them. On a CPU it computes H1 of 2,000 points in about a second and H2 of 600
+  points in about 4 seconds.
 
 Not planned: "neural persistence" on weight graphs. A 2023 follow-up showed it mostly measures
 weight variance.

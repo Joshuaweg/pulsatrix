@@ -12,7 +12,7 @@ pulsatrix builds this as a pipeline, one stage at a time:
 PointCloud → distances → filtration → persistence diagram → numbers and plots
 ```
 
-This page grows with each stage. So far it covers the point cloud, the distances, and the first diagram: H0.
+This page grows with each stage. So far it covers the point cloud, the distances, and the diagrams: H0, then loops, voids and higher.
 
 ## From activations to a point cloud
 
@@ -133,6 +133,71 @@ const std::vector<int64_t> clusters = SingleLinkageClusters(h0.edges, cloud.size
 nearest-neighbor distances see. Many recent papers on the topology of language models use only
 H0. Before trusting such a result, check it against plain
 [nearest-neighbor statistics](representations.md#nearest-neighbors). Loops and voids (H1, H2)
-are where persistent homology sees something new; they come next.
+are where persistent homology sees something new.
+
+## Loops and voids (H1, H2 and up)
+
+`ComputeRipsPersistence()` computes the diagrams of the Vietoris–Rips filtration in every
+dimension up to `max_dimension`. A simplex joins the complex at its diameter, and loops (H1)
+and voids (H2) form and fill in as the scale grows:
+
+```cpp
+#include "pulsatrix/tda/rips_persistence.hpp"
+
+RipsOptions options;
+options.max_dimension = 2;   // H0, H1 and H2
+const RipsResult r = ComputeRipsPersistence(PairwiseDistances(cloud, &backend), options);
+for (const RipsFeature& loop : r.features[1]) {
+    // loop.pair.birth, loop.pair.death; r.diagrams[1] has the same pairs.
+    // loop.birth_edge, loop.death_edge: the edges whose lengths are the birth and the death.
+}
+```
+
+- **Where a feature comes from.** Each feature names its *critical edges*. The birth edge is the
+  longest edge of the simplex that creates the feature; the death edge is the longest edge of
+  the one that fills it in. Their endpoints, through `cloud.origins()`, are inputs.
+- **Representative cocycles.** With `RipsOptions::cocycles`, each feature in H1 and up comes with
+  a cocycle: a value on edges (for H1) whose coboundary vanishes on every triangle present
+  before the death. A loop's cocycle is nonzero summed around the loop. Circular coordinates,
+  which place points on the loop, are built from it.
+- **Coefficients.** `coefficient` is the prime p of the field Z/p, 2 by default. Diagrams over
+  different primes differ only for spaces with torsion, such as the projective plane. Circular
+  coordinates need a prime above 2, to lift the cocycle to the integers.
+- **The threshold.** By default it is the enclosing radius, the smallest over points of the
+  distance to the farthest one. There the complex is a cone, so every loop and void has died
+  and nothing is cut short. With a lower `threshold`, features still alive at it are reported
+  as essential (death ∞).
+
+**How it is computed.** It follows the algorithm of Bauer's Ripser (2021), written for pulsatrix
+rather than vendored:
+
+- persistent cohomology, which pairs the same intervals as homology;
+- simplices named by their index in the combinatorial number system, with coboundaries
+  enumerated on demand rather than stored;
+- clearing, and zero-persistence apparent pairs, which are settled without any reduction.
+
+On a CPU (Release build, points in 3 dimensions) it takes:
+
+| Points | Dimensions | Time | Memory |
+|---|---|---|---|
+| 1,000 | H0, H1 | 0.25 s | |
+| 2,000 | H0, H1 | 1.2 s | |
+| 300 | H0 to H2 | 0.5 s | |
+| 600 | H0 to H2 | 4.1 s | 125 MB peak for the whole run |
+
+Cost grows quickly with the number of points and the dimension. Above a few thousand points
+for H1, or about a thousand for H2, choose landmarks first (coming next).
+
+**How it is checked.** Nothing here relies on another library's output:
+
+- **A theorem.** Evenly spaced points on a circle have a known Rips complex at every scale
+  (Adamaszek and Adams, 2017). For 12 points: one loop from the side length to the chord of 4
+  steps, then exactly three voids from there to the chord of 5 steps.
+- **Betti numbers from scratch.** For every subset of 7 random points, at every scale, the
+  ranks of the boundary matrices over Z/2 and Z/3 give the Betti numbers. The pairs alive at
+  that scale must match them in every dimension.
+- **The Euler characteristic.** On 8 random points it matches at every scale.
+- **The cocycle condition**, and the winding of a circle's cocycle.
+- **H0** matches the minimum spanning tree.
 
 Full API reference: [Doxygen: Topological Data Analysis](../api/group__tda.html)
