@@ -12,7 +12,7 @@ pulsatrix builds this as a pipeline, one stage at a time:
 PointCloud → distances → filtration → persistence diagram → numbers and plots
 ```
 
-This page grows with each stage. So far it covers the point cloud, the distances, and the diagrams: H0, then loops, voids and higher.
+This page grows with each stage. So far it covers the point cloud, the distances, the diagrams (H0, then loops, voids and higher), and how to compare diagrams.
 
 ## From activations to a point cloud
 
@@ -199,5 +199,44 @@ for H1, or about a thousand for H2, choose landmarks first (coming next).
 - **The Euler characteristic.** On 8 random points it matches at every scale.
 - **The cocycle condition**, and the winding of a circle's cocycle.
 - **H0** matches the minimum spanning tree.
+
+## Comparing diagrams
+
+Two diagrams, say of the same layer in two models, two seeds, or before and after fine-tuning,
+are compared by matching their points. Each point goes either to a point of the other diagram
+or to the diagonal, where a feature of zero persistence would sit:
+
+```cpp
+#include "pulsatrix/tda/diagram_distance.hpp"
+
+const Certified<double> d = BottleneckDistance(base.diagrams[1], tuned.diagrams[1]);
+// d.value: the largest move in the best matching.
+// d.bound(): the exact diagrams' distance is within this of d.value; d.terms itemize it.
+const double w2 = WassersteinDistance(base.diagrams[1], tuned.diagrams[1], /*order=*/2);
+```
+
+- **Bottleneck distance** is the smallest possible largest move. It is the distance the
+  stability theorem uses (Chazal, de Silva and Oudot, 2014): if two clouds' distance matrices
+  differ by at most e, their Rips diagrams are within e. The tests check this on random clouds
+  and perturbations, in H0 and H1, and the bound comes close to tight.
+- **Wasserstein distance** W_q is the q-th root of the smallest sum of q-th powers of the moves.
+  It counts every feature, where the bottleneck counts only the worst one. As q grows it
+  approaches the bottleneck.
+- **Moves are measured in the L∞ norm**, as in the stability theorem, so a point (b, d) is
+  (d − b) / 2 from the diagonal. Essential features are matched to each other by birth. If two
+  diagrams have different numbers of them, the distance is infinite.
+
+**Certified values.** `Certified<T>` holds a value and the error terms behind it, each with its
+source. A bottleneck distance carries both diagrams' `error_bound`s: by the triangle inequality,
+the distance between the exact diagrams is within their sum. So a difference between two
+layers is real only if it exceeds `d.bound()`.
+
+The Wasserstein distance isn't certified. An error of e in every distance can move it by up to
+e times the q-th root of the number of points, so a single bound would mean little.
+
+Both are exact. The bottleneck distance uses a binary search over candidate values, each tested
+by a Hopcroft–Karp matching, and is comfortable up to a few hundred points per diagram. The
+Wasserstein distance uses the Hungarian algorithm, which takes (n₁ + n₂)³ time, so up to about a
+thousand points in all. Both match brute force over every matching on small diagrams.
 
 Full API reference: [Doxygen: Topological Data Analysis](../api/group__tda.html)
