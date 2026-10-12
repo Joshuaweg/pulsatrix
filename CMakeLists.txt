@@ -157,6 +157,7 @@ add_library(pulsatrix_core
     src/tda/vectorization.cpp
     src/tda/landmarks.cpp
     src/tda/significance.cpp
+    src/tda/rtd.cpp
     src/topk_sparse_autoencoder.cpp
     src/jumprelu_sparse_autoencoder.cpp
     src/transcoder.cpp

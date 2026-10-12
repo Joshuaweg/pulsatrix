@@ -12,7 +12,7 @@ pulsatrix builds this as a pipeline, one stage at a time:
 PointCloud → distances → filtration → persistence diagram → numbers and plots
 ```
 
-This page grows with each stage. So far it covers the point cloud, the distances, the diagrams (H0, then loops, voids and higher), how to compare diagrams, how to turn them into numbers, landmarks for large clouds, and whether a feature is real.
+This page grows with each stage. So far it covers the point cloud, the distances, the diagrams (H0, then loops, voids and higher), how to compare diagrams, how to turn them into numbers, landmarks for large clouds, whether a feature is real, and comparing two representations' topology.
 
 ## From activations to a point cloud
 
@@ -360,5 +360,38 @@ With m baselines the smallest p-value is 1 / (m + 1): use 19 for p = 0.05, 99 fo
 
 Use more than one. The universal null is cheapest, and the bootstrap needs no conjecture. The
 random-network baseline is the one that asks whether the structure was *learned*.
+
+## Comparing two representations' topology (RTD)
+
+[CKA](representations.md#comparing-representations-cka) compares two representations' whole
+geometry at once. When most of the variance is in a few large distances, it can call two layers
+alike although one splits a cluster that the other keeps whole. Representation Topology
+Divergence (Barannikov, Trofimov et al., 2022) compares the clusters and loops at every scale:
+
+```cpp
+#include "pulsatrix/tda/rtd.hpp"
+
+const RtdResult r = Rtd(layer_a, layer_b);   // rows: the same inputs, in the same order
+// r.rtd: 0 for the same topology; larger means more clusters and loops differ, and by more.
+
+const RepresentationComparison c = CompareRepresentations(layer_a, layer_b);
+// c.cka, c.mutual_knn, c.rtd.rtd: three views side by side.
+```
+
+- **How it works.** Each representation's distances are divided by their 0.9 quantile, so
+  scale doesn't count. A Vietoris–Rips filtration on two copies of the inputs then mixes the two
+  sets of distances. Its H1 barcode, the *R-Cross-Barcode*, holds a bar for each cluster that
+  merges at one scale in one representation and at another scale in the other. RTD is the
+  total length of those bars, averaged over both directions and over random batches of 500
+  inputs (`RtdOptions`, as in the paper's Algorithm 2).
+- **What it guarantees.** The cross-barcode of identical representations is empty. Against
+  distances that are all 0, it is the ordinary barcode one dimension down (the paper's Theorem
+  2.1). The tests check both exactly, and that rotation and scale leave RTD near 0.
+- **In the tests,** two clusters 40 apart, each then split in two, keep CKA above 0.9, while RTD
+  rises almost fivefold over a jittered copy. Mutual-kNN alignment drops too: it sees the
+  neighbors change.
+- **`CrossBarcode(w, w~, dimension)`** gives the barcode itself, for your own distances (not
+  normalized), to see *which* clusters differ.
+- **Cost.** Each batch is a Rips computation on twice the batch size.
 
 Full API reference: [Doxygen: Topological Data Analysis](../api/group__tda.html)

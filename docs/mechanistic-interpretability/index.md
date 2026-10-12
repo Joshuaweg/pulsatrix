@@ -31,6 +31,7 @@ attribution graphs of a language model's prediction.
 | How do I feed a diagram to a probe, a test or a plot? | `ComputePersistenceLandscape` (certified), `BettiCurve`, `ComputePersistenceImage`, `PersistentEntropy` | [Topology](topology.md#diagrams-as-numbers) |
 | How do I run persistent homology on 100,000 activations? | `FarthestPointLandmarks`, `WithSubsamplingBound` | [Topology](topology.md#landmarks-for-large-clouds) |
 | Is a loop real, or noise? | `UniversalNullTest`, `BootstrapBand`, `GaussianBaseline`, `BaselinePValue` | [Topology](topology.md#is-a-feature-real) |
+| Do two layers have the same clusters and loops, which CKA can miss? | `Rtd`, `CompareRepresentations` (CKA, mutual kNN and RTD together) | [Topology](topology.md#comparing-two-representations-topology-rtd) |
 | Does a concept, given by examples, push the model towards a class? | `RunTcav`, `TrainCav` | [Probes and concepts](probes-and-concepts.md#concepts-tcav) |
 | Which of a layer's channels does an LRP explanation pass through, and where in the input is each? | `ChannelRelevance`, `ConditionalHeatmaps`, `ConceptReferenceSamples` (CRP) | [LRP](../interpretability/lrp.md#concepts-concept-relevance-propagation) |
 | Which directions in a layer stand for concepts, found without labels? | Sparse autoencoders: `TopKSparseAutoencoder`, `JumpReLUSparseAutoencoder`, `SparseAutoencoder` | [Finding features](featurizers.md) |
