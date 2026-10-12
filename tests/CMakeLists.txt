@@ -77,6 +77,7 @@ add_executable(pulsatrix_tests
     linear_module_test.cpp
     lora_test.cpp
     lora_relevance_test.cpp
+    loreft_test.cpp
     relu_module_test.cpp
     softmax_module_test.cpp
     rope_module_test.cpp

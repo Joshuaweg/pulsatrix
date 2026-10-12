@@ -26,6 +26,7 @@
 
 #include "pulsatrix/device_backend.hpp"
 #include "pulsatrix/lrp_rule_config.hpp"
+#include "pulsatrix/tensor.hpp"
 
 namespace pulsatrix {
 namespace lrp_rules {
@@ -68,6 +69,14 @@ inline bool is_legacy_epsilon(const LRPRuleConfig& config) {
  */
 void apply(const AffineOp& op, const float* x, const float* w, const float* b, const float* pre_bias, const float* r,
            float* r_in, const LRPRuleConfig& config);
+
+/**
+ * @brief A dense layer's input relevance: x `(n, in)` through w `(in, out)`, with z the cached
+ *        pre-bias output and @p bias the layer's bias, under any rule. The pre-bias epsilon rule runs
+ *        DeviceBackend::lrp_linear; the others go through apply().
+ */
+Tensor linear(DeviceBackend* be, DeviceType device, const Tensor& x, const Tensor& w, const Tensor& bias, const Tensor& z,
+              const Tensor& relevance_out, size_t n, size_t in, size_t out, const LRPRuleConfig& config);
 
 }  // namespace lrp_rules
 }  // namespace pulsatrix
