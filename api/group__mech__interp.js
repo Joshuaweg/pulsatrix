@@ -7,6 +7,7 @@ var group__mech__interp =
     [ "concept_relevance.hpp", "concept__relevance_8hpp.html", null ],
     [ "crosscoder.hpp", "crosscoder_8hpp.html", null ],
     [ "detailed_balance_loss.hpp", "detailed__balance__loss_8hpp.html", null ],
+    [ "embedding_export.hpp", "embedding__export_8hpp.html", null ],
     [ "featurizer.hpp", "featurizer_8hpp.html", null ],
     [ "featurizer_metrics.hpp", "featurizer__metrics_8hpp.html", null ],
     [ "gflownet_forward_policy.hpp", "gflownet__forward__policy_8hpp.html", null ],

@@ -40,5 +40,6 @@ var searchData=
   ['explainedvariancebysource_37',['ExplainedVarianceBySource',['../namespacepulsatrix.html#a2a0969f2c97efd22de37c87faa8c20f3',1,'pulsatrix']]],
   ['explainercontext_38',['ExplainerContext',['../classpulsatrix_1_1ExplainerContext.html#aaf2c031a3c7b796bea55e7613080e0ea',1,'pulsatrix::ExplainerContext']]],
   ['exploreconfiguration_39',['ExploreConfiguration',['../namespacepulsatrix.html#a15aae4f82a577165290ca698e28d4fd3',1,'pulsatrix']]],
-  ['exploreconfigurationgivenfactors_40',['ExploreConfigurationGivenFactors',['../namespacepulsatrix.html#a1ee9611b4c31458db9f3d21589227c39',1,'pulsatrix']]]
+  ['exploreconfigurationgivenfactors_40',['ExploreConfigurationGivenFactors',['../namespacepulsatrix.html#a1ee9611b4c31458db9f3d21589227c39',1,'pulsatrix']]],
+  ['exportembeddings_41',['ExportEmbeddings',['../namespacepulsatrix.html#a1168a3fbd17aa6d974a2ede8b8ea1f55',1,'pulsatrix']]]
 ];

@@ -3985,6 +3985,7 @@ machine, and explain it with the tools pulsatrix already has. Items on that path
 <li>INT-5 (<strong>done</strong>, <a href="https://github.com/Joshuaweg/pulsatrix/pull/135">#135</a>): PCA, projection plots, split-half stability</li>
 <li>INT-6 (<strong>done</strong>): TCAV (<a href="https://github.com/Joshuaweg/pulsatrix/pull/136">#136</a>) and CRP (<a href="https://github.com/Joshuaweg/pulsatrix/pull/137">#137</a>)</li>
 <li>INT-7 (<strong>done</strong>, <a href="https://github.com/Joshuaweg/pulsatrix/pull/138">#138</a>): RSA with a permutation test, SVCCA</li>
+<li>INT-8 (<strong>done</strong>, <a href="https://github.com/Joshuaweg/pulsatrix/pull/139">#139</a>): <code>.npy</code> and Embedding Projector export for UMAP and t-SNE, and their coordinates back as projection documents</li>
 <li>TDA-1 to TDA-8, TDA-11: persistent homology and RTD</li>
 <li>KS-3, KS-4: uncertainty and adversarial robustness</li>
 <li>Llama-3.2-1B and Qwen2.5-0.5B pass the golden-logit test</li>
@@ -4021,7 +4022,7 @@ machine, and explain it with the tools pulsatrix already has. Items on that path
 </ul>
 <h3 id="backlog-not-yet-scheduled">Backlog, not yet scheduled<a class="headerlink" href="#backlog-not-yet-scheduled" title="Permanent link">&para;</a></h3>
 <p>These P2 and P3 items wait until a milestone needs them or someone asks: TRN-12, TRN-13, IO-10,
-IO-11, INT-7 (<strong>done</strong>), INT-8, TDA-13 to TDA-19, KD-3, KD-4, FEAT-8 (<strong>done</strong>), ARCH-4 to ARCH-10, VIZ-7, HIP-10,
+IO-11, INT-7 (<strong>done</strong>), INT-8 (<strong>done</strong>), TDA-13 to TDA-19, KD-3, KD-4, FEAT-8 (<strong>done</strong>), ARCH-4 to ARCH-10, VIZ-7, HIP-10,
 AGT-6, AGT-7, AGT-9, NB-4, NB-5, KS-6 and KS-7.</p>
 <h3 id="v20">v2.0<a class="headerlink" href="#v20" title="Permanent link">&para;</a></h3>
 <p>Larger changes that touch every module or backend.</p>
@@ -5450,13 +5451,38 @@ network says nothing about what the model learned.</p>
 <td>VIZ-1</td>
 <td>P3</td>
 <td>—</td>
-<td></td>
+<td>Done, <a href="https://github.com/Joshuaweg/pulsatrix/pull/139">#139</a> (see below)</td>
 </tr>
 </tbody>
 </table>
 <h3 id="how-the-int-work-departed-from-the-plan">How the INT work departed from the plan<a class="headerlink" href="#how-the-int-work-departed-from-the-plan" title="Permanent link">&para;</a></h3>
 <ul>
-<li><strong>INT-7</strong> adds RSA and SVCCA to <code>representation_similarity.hpp</code>, next to CKA.</li>
+<li><strong>INT-8</strong> follows the plan in <code>embedding_export.hpp</code>: export, not an implementation.</li>
+<li><strong>The formats:</strong><ul>
+<li><code>.npy</code> (<code>SerializeNpy</code>, <code>WriteNpy</code>) for umap-learn, openTSNE and scikit-learn. It matches
+  numpy's own files byte for byte.</li>
+<li>The Embedding Projector's <code>vectors.tsv</code> and <code>metadata.tsv</code>, which run UMAP and t-SNE in
+  the browser.</li>
+<li><code>ExportEmbeddings()</code> writes all three.</li>
+</ul>
+</li>
+<li><strong>Added beyond the plan: the way back.</strong><ul>
+<li><code>ParseNpy()</code> and <code>ReadNpy()</code> read float32 or float64 in C or Fortran order, in format
+  versions 1 to 3. They're checked against files numpy wrote
+  (<code>tools/generate_npy_fixtures.py</code>) and fuzzed (<code>tools/fuzz/npy_fuzz.cpp</code>, 4 million inputs
+  under ASan and UBSan).</li>
+<li><code>MakeProjectionDocument(coordinates, method)</code> makes the coordinates a projection document.</li>
+</ul>
+</li>
+<li>
+<p><strong>The views say what's distorted.</strong> On a UMAP or t-SNE document the SVG and HTML views say
+    that neighbors are kept but distances, cluster sizes and densities aren't. Before, the HTML
+    subtitle said distances on the page were distances in the projection, which is true only
+    for PCA.</p>
+</li>
+<li>
+<p><strong>INT-7</strong> adds RSA and SVCCA to <code>representation_similarity.hpp</code>, next to CKA.</p>
+</li>
 <li><strong>RSA:</strong> <code>RepresentationalDissimilarity()</code> (correlation, Euclidean or cosine distance, stored
     in scipy's <code>pdist</code> order), <code>CompareRdms()</code> (Spearman or Pearson) and <code>Rsa()</code>.</li>
 <li><strong>Added beyond the plan: <code>RsaPermutationTest()</code>,</strong> the Mantel test RSA uses. A correlation's
