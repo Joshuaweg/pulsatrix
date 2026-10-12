@@ -294,6 +294,9 @@ var namespacepulsatrix =
     [ "PerturbationCurve", "structpulsatrix_1_1PerturbationCurve.html", "structpulsatrix_1_1PerturbationCurve" ],
     [ "PerturbationOptions", "structpulsatrix_1_1PerturbationOptions.html", "structpulsatrix_1_1PerturbationOptions" ],
     [ "Point3", "structpulsatrix_1_1Point3.html", "structpulsatrix_1_1Point3" ],
+    [ "PointCloud", "classpulsatrix_1_1PointCloud.html", "classpulsatrix_1_1PointCloud" ],
+    [ "PointCloudOptions", "structpulsatrix_1_1PointCloudOptions.html", "structpulsatrix_1_1PointCloudOptions" ],
+    [ "PointOrigin", "structpulsatrix_1_1PointOrigin.html", "structpulsatrix_1_1PointOrigin" ],
     [ "PolicyGradientLoss", "classpulsatrix_1_1PolicyGradientLoss.html", "classpulsatrix_1_1PolicyGradientLoss" ],
     [ "PostProcessor", "classpulsatrix_1_1PostProcessor.html", "classpulsatrix_1_1PostProcessor" ],
     [ "PPOClippedLoss", "classpulsatrix_1_1PPOClippedLoss.html", "classpulsatrix_1_1PPOClippedLoss" ],
@@ -622,6 +625,13 @@ var namespacepulsatrix =
       [ "Integer", "namespacepulsatrix.html#abb575cb311c04812afe7f12350d86eecaa0faef0851b4294c06f2b94bb1cb2044", null ],
       [ "Categorical", "namespacepulsatrix.html#abb575cb311c04812afe7f12350d86eeca397ae2f1915691d54607441f899e100c", null ]
     ] ],
+    [ "PointPooling", "namespacepulsatrix.html#afac97d73c04740a34d6f4ce4298789d8", [
+      [ "Flatten", "namespacepulsatrix.html#afac97d73c04740a34d6f4ce4298789d8a4adae1c15e93fd1abd85fcdd8b948e10", null ],
+      [ "PerPosition", "namespacepulsatrix.html#afac97d73c04740a34d6f4ce4298789d8a8b60e95cb5137cc1c45c4dd2f475a4b6", null ],
+      [ "Mean", "namespacepulsatrix.html#afac97d73c04740a34d6f4ce4298789d8a3d6c9ac08ada31c184094bbc67afe00d", null ],
+      [ "Max", "namespacepulsatrix.html#afac97d73c04740a34d6f4ce4298789d8a6a061313d22e51e0f25b7cd4dc065233", null ],
+      [ "Last", "namespacepulsatrix.html#afac97d73c04740a34d6f4ce4298789d8ad55b30607c2a9a2616347d6edb789f6b", null ]
+    ] ],
     [ "PrependScheme", "namespacepulsatrix.html#ad7a1ebc92bdef322b1c30385aac7c066", [
       [ "Always", "namespacepulsatrix.html#ad7a1ebc92bdef322b1c30385aac7c066a68eec46437c384d8dad18d5464ebc35c", null ],
       [ "First", "namespacepulsatrix.html#ad7a1ebc92bdef322b1c30385aac7c066a7fb55ed0b7a30342ba6da306428cae04", null ],
@@ -888,6 +898,7 @@ var namespacepulsatrix =
     [ "MakeEsmTokenizer", "namespacepulsatrix.html#a73c55d10c6a32a7c7e755166a530a2e2", null ],
     [ "MakeMutationMapDocument", "namespacepulsatrix.html#a8c70e17a0a2f46ef425f7f5116cbaa1f", null ],
     [ "MakeNextTokenLogits", "namespacepulsatrix.html#a6cfa666246da5421f8bba0105d28340f", null ],
+    [ "MakePointCloud", "namespacepulsatrix.html#ab4f5bdf3a37346ad36a611ab03d0a85e", null ],
     [ "MakeProjectionDocument", "namespacepulsatrix.html#a5cf7cc57faf4b605b2c5c243511d54cc", null ],
     [ "MakeProjectionDocument", "namespacepulsatrix.html#a8e46929c57dbec09bdcdfb1524d0db93", null ],
     [ "MakeSequenceLogoDocument", "namespacepulsatrix.html#a3777da7be1e93db0075fbe1256718596", null ],

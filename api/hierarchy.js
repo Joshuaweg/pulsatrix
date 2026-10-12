@@ -362,6 +362,9 @@ var hierarchy =
       [ "pulsatrix::detail::LinuxSources", "classpulsatrix_1_1detail_1_1LinuxSources.html", null ]
     ] ],
     [ "pulsatrix::Point3", "structpulsatrix_1_1Point3.html", null ],
+    [ "pulsatrix::PointCloud", "classpulsatrix_1_1PointCloud.html", null ],
+    [ "pulsatrix::PointCloudOptions", "structpulsatrix_1_1PointCloudOptions.html", null ],
+    [ "pulsatrix::PointOrigin", "structpulsatrix_1_1PointOrigin.html", null ],
     [ "pulsatrix::PolicyGradientLoss", "classpulsatrix_1_1PolicyGradientLoss.html", null ],
     [ "pulsatrix::GaussianProcessRegressor::Posterior", "structpulsatrix_1_1GaussianProcessRegressor_1_1Posterior.html", null ],
     [ "pulsatrix::PostProcessor", "classpulsatrix_1_1PostProcessor.html", [
