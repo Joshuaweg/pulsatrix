@@ -213,6 +213,38 @@ public:
      */
     [[nodiscard]] Attribution explain(ExplainerContext& ctx, const Tensor& input, const LRPTarget& target,
                                       DeviceBackend* backend) const {
+        float relevance_out_sum = 0.0f;
+        Tensor seed_tensor = seed_relevance(ctx, input, target, backend, &relevance_out_sum);
+        const std::vector<LRPRuleConfig> configs = rule_configs(ctx);
+        std::string rules;
+        for (size_t i = 0; i < configs.size(); ++i) {
+            rules += (i == 0 ? "" : ",") + lrp_rule_name(configs[i].rule);
+        }
+        Tensor relevance = ctx.relevance_pass(seed_tensor, configs);
+        const float relevance_in_sum =
+            relevance.backend()->sum(relevance.data(), static_cast<size_t>(relevance.numel()));
+
+        return Attribution{"lrp",
+                           std::move(relevance),
+                           {{"rule", composite_ ? "composite:" + composite_name_ : lrp_rule_name(config_.rule)},
+                            {"rules", rules},
+                            {"epsilon", std::to_string(config_.epsilon)},
+                            {"seed", target.seed == LRPSeed::OutputValue ? "output_value" : "one_hot"},
+                            {"targets", join(target.targets)},
+                            {"contrasts", join(target.contrasts)},
+                            {"relevance_out_sum", std::to_string(relevance_out_sum)},
+                            {"relevance_in_sum", std::to_string(relevance_in_sum)}}};
+    }
+
+    /**
+     * @brief The first half of explain(): runs the forward pass and builds the relevance it seeds
+     *        at the output, shape (N, num_classes). With rule_configs(), this lets a caller run the
+     *        relevance pass itself, for example in pieces (ExplainerContext::relevance_pass_through).
+     * @param relevance_out_sum If not null, set to the seed's total.
+     * @throws std::invalid_argument as explain() does for the output and the target.
+     */
+    [[nodiscard]] Tensor seed_relevance(ExplainerContext& ctx, const Tensor& input, const LRPTarget& target, DeviceBackend* backend,
+                                        float* relevance_out_sum = nullptr) const {
         Tensor output = ctx.forward_pass(input);
         if (output.rank() != 2) {
             throw std::invalid_argument("LRP::explain: network output must be rank-2 (N, num_classes)");
@@ -241,42 +273,29 @@ public:
             return target.seed == LRPSeed::OutputValue ? y[static_cast<size_t>(n * C + c)] : 1.0f;
         };
         std::vector<float> seed(static_cast<size_t>(N * C), 0.0f);
-        float relevance_out_sum = 0.0f;
+        float out_sum = 0.0f;
         for (int64_t n = 0; n < N; ++n) {
             const int64_t t = targets[static_cast<size_t>(n)];
             seed[static_cast<size_t>(n * C + t)] = seed_value(n, t);
-            relevance_out_sum += seed_value(n, t);
+            out_sum += seed_value(n, t);
             if (!contrasts.empty()) {
                 const int64_t c = contrasts[static_cast<size_t>(n)];
                 seed[static_cast<size_t>(n * C + c)] = -seed_value(n, c);
-                relevance_out_sum -= seed_value(n, c);
+                out_sum -= seed_value(n, c);
             }
         }
-        Tensor seed_tensor(output.shape(), backend, seed, output.device());
+        if (relevance_out_sum != nullptr) *relevance_out_sum = out_sum;
+        return Tensor(output.shape(), backend, seed, output.device());
+    }
 
+    /** @brief The rule each of @p ctx's modules applies, in forward order, as explain() uses them. */
+    [[nodiscard]] std::vector<LRPRuleConfig> rule_configs(const ExplainerContext& ctx) const {
         std::vector<LRPRuleConfig> configs;
         configs.reserve(ctx.modules().size());
         for (size_t i = 0; i < ctx.modules().size(); ++i) {
             configs.push_back(composite_ ? composite_(i, *ctx.modules()[i]) : config_);
         }
-        std::string rules;
-        for (size_t i = 0; i < configs.size(); ++i) {
-            rules += (i == 0 ? "" : ",") + lrp_rule_name(configs[i].rule);
-        }
-        Tensor relevance = ctx.relevance_pass(seed_tensor, configs);
-        const float relevance_in_sum =
-            relevance.backend()->sum(relevance.data(), static_cast<size_t>(relevance.numel()));
-
-        return Attribution{"lrp",
-                           std::move(relevance),
-                           {{"rule", composite_ ? "composite:" + composite_name_ : lrp_rule_name(config_.rule)},
-                            {"rules", rules},
-                            {"epsilon", std::to_string(config_.epsilon)},
-                            {"seed", target.seed == LRPSeed::OutputValue ? "output_value" : "one_hot"},
-                            {"targets", join(target.targets)},
-                            {"contrasts", join(target.contrasts)},
-                            {"relevance_out_sum", std::to_string(relevance_out_sum)},
-                            {"relevance_in_sum", std::to_string(relevance_in_sum)}}};
+        return configs;
     }
 
     /** @brief The uniform config (default-constructed when this LRP uses a composite). */

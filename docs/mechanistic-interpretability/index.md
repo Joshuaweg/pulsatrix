@@ -21,6 +21,7 @@ attribution graphs of a language model's prediction.
 | Is cosine similarity meaningful in this layer? How many dimensions does it use? | `Anisotropy`, `MeasureEffectiveRank`, `TwoNNDimension` | [Below](#the-shape-of-a-layer) |
 | What does a layer look like in 2D or 3D? Which directions vary most? | `FitPca`, `PcaProject`, `PcaSplitHalfOverlap`, `RenderProjectionSvg` | [Below](#pca-projections) |
 | Does a concept, given by examples, push the model towards a class? | `RunTcav`, `TrainCav` | [Below](#concepts-tcav) |
+| Which of a layer's channels does an LRP explanation pass through, and where in the input is each? | `ChannelRelevance`, `ConditionalHeatmaps`, `ConceptReferenceSamples` (CRP) | [LRP](../interpretability/lrp.md#concepts-concept-relevance-propagation) |
 | Which directions in a layer stand for concepts, found without labels? | Sparse autoencoders: `TopKSparseAutoencoder`, `JumpReLUSparseAutoencoder`, `SparseAutoencoder` | [Finding features](featurizers.md) |
 | Which concepts take more than one dimension, such as an angle or a position? | `BlockSparseFeaturizer` | [Finding features](featurizers.md#block-sparse-featurizers) |
 | What does an MLP compute, step by step? | `Transcoder` | [Finding features](featurizers.md#transcoders) |
@@ -441,6 +442,11 @@ Things to know:
   dimensions that separate the two samples only by chance.
 - **Models.** The models are `ExplainerContext` chains. TCAV needs the gradient at an inner
   layer, which the language models don't expose yet.
+
+TCAV starts from concepts people name and asks whether the model uses them.
+[Concept Relevance Propagation](../interpretability/lrp.md#concepts-concept-relevance-propagation)
+goes the other way: it starts from the concepts a layer has learned (its channels) and shows
+where each one is in an input and what it responds to.
 
 ### Baselines
 

@@ -191,7 +191,7 @@ Fine-tune the models from v1.2 and explain what the fine-tuning changed.
 - INT-3 (**done**, [#133](https://github.com/Joshuaweg/pulsatrix/pull/133)): probe controls (selectivity, and gain over a baseline)
 - INT-4 (**done**, [#134](https://github.com/Joshuaweg/pulsatrix/pull/134)): anisotropy, effective rank, TwoNN intrinsic dimension
 - INT-5 (**done**, [#135](https://github.com/Joshuaweg/pulsatrix/pull/135)): PCA, projection plots, split-half stability
-- INT-6: TCAV (**done**, [#136](https://github.com/Joshuaweg/pulsatrix/pull/136)) and CRP (next)
+- INT-6 (**done**): TCAV ([#136](https://github.com/Joshuaweg/pulsatrix/pull/136)) and CRP ([#137](https://github.com/Joshuaweg/pulsatrix/pull/137))
 - TDA-1 to TDA-8, TDA-11: persistent homology and RTD
 - KS-3, KS-4: uncertainty and adversarial robustness
 - Llama-3.2-1B and Qwen2.5-0.5B pass the golden-logit test
@@ -787,7 +787,7 @@ network says nothing about what the model learned.
 | INT-3 | Control tasks for `LinearProbe` (selectivity = probe accuracy minus control accuracy) | High probe accuracy can come from the probe, not the representation | — | P0 | S | Done, [#133](https://github.com/Joshuaweg/pulsatrix/pull/133) (see below) |
 | INT-4 | Anisotropy, effective rank and TwoNN intrinsic dimension | Explains why raw cosine similarity misleads; one number per layer | INT-1 | P1 | S | Done, [#134](https://github.com/Joshuaweg/pulsatrix/pull/134) (see below) |
 | INT-5 | PCA projections | 2D and 3D views, steering directions, preprocessing for TDA | FND-4 | P1 | M | Done, [#135](https://github.com/Joshuaweg/pulsatrix/pull/135) (see below) |
-| INT-6 | TCAV (with significance against random concepts) and Concept Relevance Propagation | Concept-level explanations, and CRP reuses pulsatrix's LRP rules | INT-3 | P1 | M | TCAV done, [#136](https://github.com/Joshuaweg/pulsatrix/pull/136); CRP next (see below) |
+| INT-6 | TCAV (with significance against random concepts) and Concept Relevance Propagation | Concept-level explanations, and CRP reuses pulsatrix's LRP rules | INT-3 | P1 | M | Done: TCAV [#136](https://github.com/Joshuaweg/pulsatrix/pull/136), CRP [#137](https://github.com/Joshuaweg/pulsatrix/pull/137) (see below) |
 | INT-7 | RSA and SVCCA | Mostly covered by CKA | FND-4 | P2 | — | |
 | INT-8 | UMAP and t-SNE: export the data only, don't implement | Expensive, and they distort distances and cluster sizes | VIZ-1 | P3 | — | |
 
@@ -811,6 +811,24 @@ network says nothing about what the model learned.
     documented and tested.
   - **Not covered:** the language models, which don't expose gradients at an intermediate
     layer.
+  - **CRP**, in `concept_relevance.hpp`:
+    - **The functions:**
+      - `LayerRelevance` and `ChannelRelevance`.
+      - `ConditionalHeatmaps`, with masks on one layer or several.
+      - `ConceptReferenceSamples`, by relevance or activation.
+    - **What it needed:** `ExplainerContext::relevance_pass_through()`, to stop a pass at a
+      layer and continue it, and `LRP::seed_relevance()` and `LRP::rule_configs()`, the two
+      halves of `explain()`, so CRP applies exactly LRP's rules.
+    - **Checked by:**
+      - **Additivity:** every channel's heatmap adds up to the LRP heatmap under three presets,
+        to 1e-5.
+      - **Nesting:** sub-concept heatmaps add up to their concept's.
+      - **Localization (the falsifier):** a filter that reads only one input channel has a
+        heatmap of exactly zero on the other.
+      - **Reference samples:** relevance passes over the input with the highest activation,
+        whose contribution a later unit blocks.
+    - **Not done:** the CRP paper's attribution graphs of concepts across layers, and its
+      zennit-crp comparison. The pieces for both are here.
 
 - **INT-5** adds `pca.hpp`.
   - **The functions:** `FitPca()`, `PcaProject()` (optionally whitened), `PcaReconstruct()`,
