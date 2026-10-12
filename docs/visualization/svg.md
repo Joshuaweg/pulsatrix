@@ -22,7 +22,7 @@ magnitudes.
 | `RenderSequenceLogoSvg(doc)` | A sequence logo: letters stacked to each position's information content | `SequenceLogoDocument` |
 | `RenderContactMapSvg(doc)` | Predicted contacts above the diagonal; the structure's contacts and the top L predictions, right or wrong, below | `ContactMapDocument` |
 | `RenderResidueTracksSvg(doc)` | Per-residue tracks and annotated features under the sequence | `ResidueTracksDocument` |
-| `RenderProjectionSvg(doc, x_axis, y_axis)` | Two axes of a projection, such as PC1 and PC2, on one scale: points colored by group (with a legend) or by value (with a color bar), each with its label on hover | `ProjectionDocument` |
+| `RenderProjectionSvg(doc, x_axis, y_axis)` | Two axes of a projection, such as PC1 and PC2, on one scale: points colored by group (with a legend) or by value (with a color bar), each with its label on hover. UMAP and t-SNE plots get a note that their distances, cluster sizes and densities aren't meaningful | `ProjectionDocument` |
 
 ```cpp
 #include <fstream>
