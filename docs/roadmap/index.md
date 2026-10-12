@@ -987,7 +987,7 @@ GUDHI's GPL-licensed parts and giotto-ph (AGPL) are avoided.
 | TDA-5 | `Diagram`, bottleneck and Wasserstein distances, `Certified<T>`, and property tests for stability | Compare layers, models and seeds with certified error | TDA-3, TDA-4 | P0 | M | Done (see below) |
 | TDA-6 | Betti curves, persistence landscapes, persistence images, persistent entropy | Turn diagrams into numbers for probes and plots | TDA-5 | P0 | S | Done (see below) |
 | TDA-7 | Farthest-point landmarks, which give the subsampling error bound | Persistent homology can't run on 100,000 activations | FND-3 | P0 | S | Done (see below) |
-| TDA-8 | Significance tests: a universal null distribution, bootstrap confidence bands, Gaussian and random-network baselines | Every reported loop needs a p-value | TDA-5 | P0 | M |  |
+| TDA-8 | Significance tests: a universal null distribution, bootstrap confidence bands, Gaussian and random-network baselines | Every reported loop needs a p-value | TDA-5 | P0 | M | Done (see below) |
 | TDA-9 | Barcode, persistence diagram and Betti curve views, with JSON and SVG export | See the result | TDA-5, VIZ-1 | P1 | M |  |
 | TDA-10 | **A manifold verifier for featurizer blocks:** decide whether a BSF or SAE block forms a circle or a torus, and recover a circular coordinate to steer along. It passes by reproducing the GPT-2 day-of-week circle (Engels et al.) against a random-network control | Goodfire measures block dimension with a linear method. Nobody has published a topological check, so this is new | TDA-4, TDA-7, TDA-8, FEAT-6 | P1 | M |  |
 | TDA-11 | Representation Topology Divergence next to CKA in one `compare_representations()` report | Catches clusters and loops that CKA misses | TDA-4, INT-2 | P1 | S |  |
@@ -1052,6 +1052,18 @@ GUDHI's GPL-licensed parts and giotto-ph (AGPL) are avoided.
   analysis is now shared with TDA-2 (`src/tda/float_error.hpp`). `WithSubsamplingBound()` adds
   twice the certified radius to a landmark diagram's bound. Additions: the insertion radii, to
   choose a count, and each point's nearest landmark.
+- **TDA-8** follows the plan in `tda/significance.hpp`:
+  - `UniversalNullTest()`: Bobrowski and Skraba's ℓ with A = 1 and B = −γ − L̄ for Rips, a
+    left-skewed Gumbel null and Bonferroni. The constants were checked against the paper.
+  - `BootstrapBand()`: Fasy et al.'s band, with resamples that reuse the distance matrix
+    (`SubDistanceMatrix()`).
+  - `GaussianBaseline()`: matched mean and covariance through one GEMM, with no decomposition.
+  - `BaselinePValue()`: rank p-values for any statistic.
+
+  The random-network baseline is `NullModelBaseline` plus `BaselinePValue()` rather than a new
+  function, since only the caller can run its model. The random numbers come from mt19937's raw
+  output (Box–Muller, multiply-shift), not the standard distributions, so results match across
+  standard libraries.
 
 Not planned: "neural persistence" on weight graphs. A 2023 follow-up showed it mostly measures
 weight variance.
