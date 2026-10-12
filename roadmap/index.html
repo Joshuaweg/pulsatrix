@@ -3957,6 +3957,15 @@ in <a href="#int-embedding-and-representation-analysis">INT</a> is done.</p>
 <li><strong>Tested on real models:</strong> ESM-2, SmolLM2 and Gemma 3. Negative results are reported too:
     a steering vector that fails its checks, block-sparse featurizers that don't pay off on
     ESM-2, and decoder norms that miss rare fine-tune features.</li>
+<li><strong>Topological data analysis</strong> (<a href="#tda-topological-data-analysis">TDA-1 to TDA-8, TDA-11</a>).</li>
+<li><strong>The pipeline:</strong> activations to point clouds, GEMM distances with a certified float32
+    error bound, H0 from the minimum spanning tree, and Vietoris–Rips persistence in any
+    dimension (Ripser's algorithm, written for pulsatrix) with critical edges and cocycles.</li>
+<li><strong>Certified results:</strong> bottleneck distances, landscapes and landmark subsampling carry
+    <code>Certified</code> error bounds that compose.</li>
+<li><strong>Is it real?:</strong> the universal null distribution, bootstrap bands, and Gaussian or
+    random-network baselines.</li>
+<li><strong>Comparing representations:</strong> RTD next to CKA in <code>CompareRepresentations()</code>.</li>
 <li><strong>Representation analysis</strong> (<a href="#int-embedding-and-representation-analysis">INT-1 to INT-8</a>).</li>
 <li><strong>Comparing representations:</strong> debiased linear CKA, RSA with a permutation test, SVCCA, and
     mutual-kNN alignment, each matched to its reference code.</li>
@@ -4110,7 +4119,8 @@ machine, and explain it with the tools pulsatrix already has. Items on that path
 <li>INT-1 to INT-8 (<strong>done</strong>, <a href="https://github.com/Joshuaweg/pulsatrix/pull/131">#131</a> to
   <a href="https://github.com/Joshuaweg/pulsatrix/pull/139">#139</a>): CKA, RSA and SVCCA, nearest
   neighbors, probe controls, layer geometry, PCA, TCAV and CRP, and export for UMAP and t-SNE</li>
-<li>TDA-1 to TDA-8, TDA-11: persistent homology and RTD</li>
+<li>TDA-1 to TDA-8, TDA-11 (<strong>done</strong>, <a href="https://github.com/Joshuaweg/pulsatrix/pull/141">#141</a> to
+  <a href="https://github.com/Joshuaweg/pulsatrix/pull/149">#149</a>): persistent homology with certified error bars, significance tests, and RTD</li>
 <li>KS-3, KS-4: uncertainty and adversarial robustness</li>
 <li>Llama-3.2-1B and Qwen2.5-0.5B pass the golden-logit test</li>
 </ul>
@@ -5894,7 +5904,7 @@ GUDHI's GPL-licensed parts and giotto-ph (AGPL) are avoided.</p>
 <td>TDA-4, INT-2</td>
 <td>P1</td>
 <td>S</td>
-<td></td>
+<td>Done (see below)</td>
 </tr>
 <tr>
 <td>TDA-12</td>
@@ -6016,7 +6026,16 @@ GUDHI's GPL-licensed parts and giotto-ph (AGPL) are avoided.</p>
 <p>The random-network baseline is <code>NullModelBaseline</code> plus <code>BaselinePValue()</code> rather than a new
   function, since only the caller can run its model. The random numbers come from mt19937's raw
   output (Box–Muller, multiply-shift), not the standard distributions, so results match across
-  standard libraries.</p>
+  standard libraries.
+- <strong>TDA-11</strong> follows the plan in <code>tda/rtd.hpp</code>, with <code>CompareRepresentations()</code> (CKA,
+  mutual-kNN alignment and RTD) as the report. The construction was checked against the paper
+  (Equation 1's practical form, Algorithm 2's batches and 0.9-quantile normalization) and
+  against its Theorem 2.1, which the tests verify exactly. Two choices differ from the authors'
+  code:
+  - the quantile is taken over the pairs, as the paper says, rather than over the full matrix
+    with its zero diagonal;
+  - the +∞ entries are in the triangle the paper's matrix puts them in. The code uses the
+    mirror image, which is equivalent.</p>
 <p>Not planned: "neural persistence" on weight graphs. A 2023 follow-up showed it mostly measures
 weight variance.</p>
 <h2 id="kd-surrogates-and-student-teacher">KD: Surrogates and student-teacher<a class="headerlink" href="#kd-surrogates-and-student-teacher" title="Permanent link">&para;</a></h2>

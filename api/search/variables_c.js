@@ -91,5 +91,6 @@ var searchData=
   ['mu_5fstar_88',['mu_star',['../structpulsatrix_1_1MorrisResult.html#aec1897071008895e4836859ede1e6370',1,'pulsatrix::MorrisResult::mu_star'],['../structpulsatrix_1_1MorrisDocument_1_1Feature.html#a5d5684fecf546a15a55beabfa96930b3',1,'pulsatrix::MorrisDocument::Feature::mu_star']]],
   ['mu_5fstar_5fconf_89',['mu_star_conf',['../structpulsatrix_1_1MorrisResult.html#a941d356a32d9ec7e580b6530672cb3bf',1,'pulsatrix::MorrisResult::mu_star_conf'],['../structpulsatrix_1_1MorrisDocument_1_1Feature.html#a75a55e333a538bdca4e8ad8558cef4e5',1,'pulsatrix::MorrisDocument::Feature::mu_star_conf']]],
   ['mutant_90',['mutant',['../structpulsatrix_1_1Mutation.html#a83c59d7edbdcc402022af47ff9275f4b',1,'pulsatrix::Mutation']]],
-  ['mutants_91',['mutants',['../structpulsatrix_1_1DmsVariants.html#a8878f7feb4041dd93b0ea4ab3908635b',1,'pulsatrix::DmsVariants']]]
+  ['mutants_91',['mutants',['../structpulsatrix_1_1DmsVariants.html#a8878f7feb4041dd93b0ea4ab3908635b',1,'pulsatrix::DmsVariants']]],
+  ['mutual_5fknn_92',['mutual_knn',['../structpulsatrix_1_1RepresentationComparison.html#a95c85f9c1b90f9e73f74edb771e7ca6a',1,'pulsatrix::RepresentationComparison']]]
 ];
