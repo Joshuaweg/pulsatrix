@@ -16,6 +16,7 @@ namespace pulsatrix {
 class ReluModule;
 class LoRAAdapter;
 struct LoRAConfig;
+class IA3Adapter;
 
 /**
  * @brief y = x @ W + b, batched (x is (N, in_features), y is (N, out_features)) --
@@ -106,6 +107,27 @@ public:
     void set_lora_enabled(bool enabled);
 
     /**
+     * @brief Adds an IA³ rescaling vector l, all ones (TRN-10, ia3.hpp): the layer then computes
+     *        (x W + b) ⊙ l, or (x ⊙ l) W + b when @p feedforward. l joins named_parameters() as
+     *        `ia3_l`; backward() trains it; propagate_relevance() runs on the rescaled layer,
+     *        W diag(l) with bias b ⊙ l, or diag(l) W.
+     * @throws std::logic_error if the layer already has an IA³ vector or a LoRA adapter.
+     */
+    void attach_ia3(bool feedforward);
+    /** @brief Removes the vector. A merged one stays in the weights. No-op without one. */
+    void detach_ia3();
+    [[nodiscard]] IA3Adapter* ia3() { return ia3_.get(); }
+    [[nodiscard]] const IA3Adapter* ia3() const { return ia3_.get(); }
+    /** @brief Folds l into the weights (and, for output scaling, the bias), as PEFT's merge() does.
+     *  @throws std::logic_error without an IA³ vector, or if it is merged or disabled. */
+    void merge_ia3();
+    /** @brief Divides it back out by l + 1e-8, as PEFT's unmerge() does.
+     *  @throws std::logic_error without a merged vector. */
+    void unmerge_ia3();
+    /** @brief false runs the base layer. @throws std::logic_error without a vector, or while merged. */
+    void set_ia3_enabled(bool enabled);
+
+    /**
      * @brief Computes the gradient w.r.t. this module's input, and accumulates the
      *        weight/bias gradients internally (summed across the batch).
      * @param grad_output Gradient w.r.t. this module's output. Must be (N, out_features),
@@ -185,7 +207,7 @@ public:
     [[nodiscard]] bool supports_lrp_rule(LRPRule) const override { return true; }
 
     /** @brief `weight`, `bias` (unless built without one), then a LoRA adapter's `lora_A.weight`
-     *         and `lora_B.weight`. */
+     *         and `lora_B.weight`, or an IA³ vector's `ia3_l`. */
     [[nodiscard]] std::vector<NamedParamRef> named_parameters() override;
 
 
@@ -210,9 +232,15 @@ private:
     Tensor last_pre_bias_output_;
     bool has_forwarded_ = false;
     std::unique_ptr<LoRAAdapter> lora_;
+    std::unique_ptr<IA3Adapter> ia3_;
 
     /** @brief An adapter that forward() adds: attached, enabled and not merged. */
     [[nodiscard]] bool lora_active() const;
+    /** @brief An IA³ vector that forward() applies: attached, enabled and not merged. */
+    [[nodiscard]] bool ia3_active() const;
+    /** @brief forward() and backward() of the layer without its IA³ vector. */
+    [[nodiscard]] Tensor forward_base(const Tensor& input);
+    [[nodiscard]] Tensor backward_base(const Tensor& grad_output);
 };
 
 }  // namespace pulsatrix

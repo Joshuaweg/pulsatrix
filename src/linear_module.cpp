@@ -5,6 +5,7 @@
 
 #include "lrp_rules.hpp"
 #include "pulsatrix/assert.hpp"
+#include "pulsatrix/ia3.hpp"
 #include "pulsatrix/lora.hpp"
 #include "pulsatrix/relu_module.hpp"
 
@@ -37,11 +38,13 @@ std::vector<NamedParamRef> LinearModule::named_parameters() {
         out.push_back({"lora_A.weight", {&lora_->a_, &lora_->a_grad_}});
         out.push_back({"lora_B.weight", {&lora_->b_, &lora_->b_grad_}});
     }
+    if (ia3_) out.push_back({"ia3_l", {&ia3_->scale_, &ia3_->grad_}});
     return out;
 }
 
 void LinearModule::attach_lora(const LoRAConfig& config) {
     if (lora_) throw std::logic_error("LinearModule::attach_lora: the layer already has an adapter");
+    if (ia3_) throw std::logic_error("LinearModule::attach_lora: the layer has an IA3 vector");
     lora_ = std::make_unique<LoRAAdapter>(in_features_, out_features_, config, backend_, weight_.device());
 }
 
@@ -94,7 +97,96 @@ void LinearModule::set_bias(const std::vector<float>& values) {
     bias_ = Tensor(bias_.shape(), backend_, values, bias_.device());
 }
 
+namespace {
+
+// x (rows, cols) with each row multiplied elementwise by v (cols): the outer product 1 v broadcasts v.
+Tensor ScaleColumns(DeviceBackend* be, const Tensor& x, const Tensor& v, size_t rows, size_t cols) {
+    Tensor ones(Shape({static_cast<int64_t>(rows), 1}), be, std::vector<float>(rows, 1.0f), x.device());
+    Tensor broadcast(x.shape(), be, x.device());
+    be->gemm(ones.data(), v.data(), broadcast.data(), rows, 1, cols);
+    Tensor out(x.shape(), be, x.device());
+    be->mul(x.data(), broadcast.data(), out.data(), rows * cols);
+    return out;
+}
+
+// x (rows, cols) with row i multiplied by v[i].
+Tensor ScaleRowsBy(DeviceBackend* be, const Tensor& x, const Tensor& v, size_t rows, size_t cols) {
+    Tensor ones(Shape({1, static_cast<int64_t>(cols)}), be, std::vector<float>(cols, 1.0f), x.device());
+    Tensor broadcast(x.shape(), be, x.device());
+    be->gemm(v.data(), ones.data(), broadcast.data(), rows, 1, cols);
+    Tensor out(x.shape(), be, x.device());
+    be->mul(x.data(), broadcast.data(), out.data(), rows * cols);
+    return out;
+}
+
+}  // namespace
+
+void LinearModule::attach_ia3(bool feedforward) {
+    if (ia3_) throw std::logic_error("LinearModule::attach_ia3: the layer already has an IA3 vector");
+    if (lora_) throw std::logic_error("LinearModule::attach_ia3: the layer has a LoRA adapter");
+    ia3_ = std::make_unique<IA3Adapter>(feedforward ? in_features_ : out_features_, feedforward, backend_, weight_.device());
+}
+
+void LinearModule::detach_ia3() { ia3_.reset(); }
+
+bool LinearModule::ia3_active() const { return ia3_ && ia3_->enabled_ && !ia3_->merged_; }
+
+void LinearModule::merge_ia3() {
+    if (!ia3_) throw std::logic_error("LinearModule::merge_ia3: the layer has no IA3 vector");
+    if (ia3_->merged_) throw std::logic_error("LinearModule::merge_ia3: the vector is already merged");
+    if (!ia3_->enabled_) throw std::logic_error("LinearModule::merge_ia3: the vector is disabled");
+    const auto in = static_cast<size_t>(in_features_), out = static_cast<size_t>(out_features_);
+    const bool w_trainable = weight_.requires_grad(), b_trainable = bias_.requires_grad();
+    if (ia3_->feedforward_) {
+        weight_ = ScaleRowsBy(backend_, weight_, ia3_->scale_, in, out);
+    } else {
+        weight_ = ScaleColumns(backend_, weight_, ia3_->scale_, in, out);
+        if (use_bias_) bias_ = ScaleColumns(backend_, bias_, ia3_->scale_, 1, out);
+    }
+    weight_.set_requires_grad(w_trainable);
+    bias_.set_requires_grad(b_trainable);
+    ia3_->merged_ = true;
+}
+
+void LinearModule::unmerge_ia3() {
+    if (!ia3_ || !ia3_->merged_) throw std::logic_error("LinearModule::unmerge_ia3: the layer has no merged IA3 vector");
+    std::vector<float> inverse = ia3_->scale_.to_host_vector();
+    for (float& v : inverse) v = 1.0f / (v + 1e-8f);  // PEFT's unmerge divides by l + 1e-8
+    const Tensor inv(ia3_->scale_.shape(), backend_, inverse, weight_.device());
+    const auto in = static_cast<size_t>(in_features_), out = static_cast<size_t>(out_features_);
+    const bool w_trainable = weight_.requires_grad(), b_trainable = bias_.requires_grad();
+    if (ia3_->feedforward_) {
+        weight_ = ScaleRowsBy(backend_, weight_, inv, in, out);
+    } else {
+        weight_ = ScaleColumns(backend_, weight_, inv, in, out);
+        if (use_bias_) bias_ = ScaleColumns(backend_, bias_, inv, 1, out);
+    }
+    weight_.set_requires_grad(w_trainable);
+    bias_.set_requires_grad(b_trainable);
+    ia3_->merged_ = false;
+}
+
+void LinearModule::set_ia3_enabled(bool enabled) {
+    if (!ia3_) throw std::logic_error("LinearModule::set_ia3_enabled: the layer has no IA3 vector");
+    if (ia3_->merged_) throw std::logic_error("LinearModule::set_ia3_enabled: the vector is merged");
+    ia3_->enabled_ = enabled;
+}
+
 Tensor LinearModule::forward_impl(const Tensor& input) {
+    if (!ia3_active()) return forward_base(input);
+    if (input.rank() != 2 || input.shape().dim(1) != in_features_) {
+        throw std::invalid_argument("LinearModule::forward: input must be rank-2 (N, in_features)");
+    }
+    const auto n = static_cast<size_t>(input.shape().dim(0));
+    if (ia3_->feedforward_) {
+        ia3_->last_input_ = input;
+        return forward_base(ScaleColumns(backend_, input, ia3_->scale_, n, static_cast<size_t>(in_features_)));
+    }
+    ia3_->last_output_ = forward_base(input);
+    return ScaleColumns(backend_, ia3_->last_output_, ia3_->scale_, n, static_cast<size_t>(out_features_));
+}
+
+Tensor LinearModule::forward_base(const Tensor& input) {
     // External boundary (campaign_exai_dl_library_adversarial_hardening.md, Mission 1,
     // findings 3/12; shape generalized to (N, in_features) by
     // campaign_exai_dl_library_batch_dimension_support): input can originate from Phase 5's
@@ -136,7 +228,7 @@ Tensor LinearModule::forward_impl(const Tensor& input) {
 }
 
 Tensor LinearModule::forward_with_relu(const Tensor& input, ReluModule& relu) {
-    if (!use_bias_ || lora_ || relu.compute_device() != std::optional<DeviceType>(weight_.device())) {
+    if (!use_bias_ || lora_ || ia3_ || relu.compute_device() != std::optional<DeviceType>(weight_.device())) {
         return relu.forward(forward(input));
     }
     // Module::forward()'s checks on the input, then the gemm as forward_impl() does it.
@@ -162,6 +254,34 @@ Tensor LinearModule::forward_with_relu(const Tensor& input, ReluModule& relu) {
 }
 
 Tensor LinearModule::backward(const Tensor& grad_output) {
+    if (!ia3_active() || !has_forwarded_) return backward_base(grad_output);
+    require_device(grad_output, *compute_device(), "LinearModule::backward");
+    const int64_t N = last_input_.shape().dim(0);
+    if (grad_output.rank() != 2 || grad_output.shape().dim(1) != out_features_ || grad_output.shape().dim(0) != N) {
+        throw std::invalid_argument(
+            "LinearModule::backward: grad_output must be rank-2 (N, out_features) matching the cached batch size");
+    }
+    const auto n = static_cast<size_t>(N), in = static_cast<size_t>(in_features_), out = static_cast<size_t>(out_features_);
+    if (ia3_->feedforward_) {
+        // y = (x ⊙ l) W + b: dL/dl = sum over the batch of (dL/d(x ⊙ l)) ⊙ x.
+        const Tensor grad_scaled = backward_base(grad_output);
+        if (ia3_->scale_.requires_grad()) {
+            Tensor product(grad_scaled.shape(), backend_, weight_.device());
+            backend_->mul(grad_scaled.data(), ia3_->last_input_.data(), product.data(), n * in);
+            backend_->column_sums(product.data(), ia3_->grad_.data(), n, in, 1.0f);
+        }
+        return ScaleColumns(backend_, grad_scaled, ia3_->scale_, n, in);
+    }
+    // y = (x W + b) ⊙ l: dL/dl = sum over the batch of g ⊙ (x W + b).
+    if (ia3_->scale_.requires_grad()) {
+        Tensor product(grad_output.shape(), backend_, weight_.device());
+        backend_->mul(grad_output.data(), ia3_->last_output_.data(), product.data(), n * out);
+        backend_->column_sums(product.data(), ia3_->grad_.data(), n, out, 1.0f);
+    }
+    return backward_base(ScaleColumns(backend_, grad_output, ia3_->scale_, n, out));
+}
+
+Tensor LinearModule::backward_base(const Tensor& grad_output) {
     require_device(grad_output, *compute_device(), "LinearModule::backward");
     // Finding 12: calling backward() before any forward() previously silently computed a
     // meaningless answer from zero-initialized cached state (last_input_) instead of
@@ -221,6 +341,18 @@ Tensor LinearModule::propagate_relevance(const Tensor& relevance_out, const LRPR
 
     lrp_rules::validate(config, "LinearModule");
     const auto n = static_cast<size_t>(N), in = static_cast<size_t>(in_features_), out = static_cast<size_t>(out_features_);
+    if (ia3_active()) {
+        // The rescaled layer, exactly: diag(l) W on the unscaled input, or W diag(l) with bias b ⊙ l and z ⊙ l.
+        if (ia3_->feedforward_) {
+            const Tensor w = ScaleRowsBy(backend_, weight_, ia3_->scale_, in, out);
+            return lrp_rules::linear(backend_, weight_.device(), ia3_->last_input_, w, bias_, last_pre_bias_output_,
+                                     relevance_out, n, in, out, config);
+        }
+        const Tensor w = ScaleColumns(backend_, weight_, ia3_->scale_, in, out);
+        const Tensor b = ScaleColumns(backend_, bias_, ia3_->scale_, 1, out);
+        const Tensor z = ScaleColumns(backend_, last_pre_bias_output_, ia3_->scale_, n, out);
+        return lrp_rules::linear(backend_, weight_.device(), last_input_, w, b, z, relevance_out, n, in, out, config);
+    }
     if (!lora_active()) {
         if (lora_) lora_->clear_relevance();
         return lrp_rules::linear(backend_, weight_.device(), last_input_, weight_, bias_, last_pre_bias_output_, relevance_out,
@@ -259,6 +391,10 @@ void LinearModule::release_activations() {
     release_tensor(last_input_);
     release_tensor(last_pre_bias_output_);
     if (lora_) lora_->release_activations();
+    if (ia3_) {
+        release_tensor(ia3_->last_input_);
+        release_tensor(ia3_->last_output_);
+    }
     has_forwarded_ = false;
 }
 
