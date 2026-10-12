@@ -277,3 +277,69 @@ file. pyreft saves each intervention as a PyTorch `.bin` state dict: convert tho
 - Every sequence in a batch is edited at the same positions, so batches must not be padded.
 - Only the linear activation, pyreft's default, is supported; it is what keeps LRP exact.
 - pyreft's dropout on the intervention isn't supported.
+
+## IA³
+
+IA³ (Liu et al., 2022, "Few-Shot Parameter-Efficient Fine-Tuning is Better and Cheaper than
+In-Context Learning") learns one rescaling vector per adapted layer and nothing else:
+
+```
+y = (x W + b) ⊙ l        keys and values: the layer's output, bias included
+y = (x ⊙ l) W + b        the MLP's down projection: its input, the inner activations
+```
+
+Each vector starts at 1, so the adapted model starts out as the base model. There is one value
+per channel: about 58 thousand values for SmolLM2-135M on the default layers, against 4.9
+million for rank-16 LoRA on every projection. That makes the fine-tune trivially explainable. Each
+entry of l says how much the fine-tune amplified (above 1), damped (between 0 and 1) or flipped
+(below 0) one key, value or MLP channel.
+
+```cpp
+#include "pulsatrix/ia3.hpp"
+
+std::vector<std::string> adapted = ApplyIA3(*model);  // k_proj, v_proj, down_proj; freezes the rest
+// ... train as with LoRA ...
+SaveIA3Adapter(*model, "my-ia3", HuggingFaceMapping(model->config()));
+```
+
+`IA3Config::target_modules` and `feedforward_modules` choose the layers, with PEFT's matching:
+- **Targets.** The default is the paper's: every `k_proj` and `v_proj`, and the MLP's output
+  projection, `down_proj` in a `CausalLM` or `fc2` in an `EncoderLM`. PEFT's own default for
+  Qwen2 rescales `q_proj` instead of `k_proj`.
+- **Feedforward modules.** The layers whose input is rescaled rather than their output. Each one
+  must also be a target.
+
+The vector is in `named_parameters()` as `<layer>.ia3_l`: `(out)` for output scaling and `(in)`
+for a feedforward layer.
+
+| Call | Effect |
+|---|---|
+| `MergeIA3(model)` | Folds each vector into its weights: W diag(l), and b ⊙ l for output scaling; diag(l) W for a feedforward layer. |
+| `UnmergeIA3(model)` | Divides it back out by l + 1e-8, as PEFT does. The weights return up to float rounding. |
+| `SetIA3Enabled(model, false)` | Runs the base model. Not allowed while merged. |
+| `RemoveIA3(model)` | Removes the vectors; merged ones stay in the weights. |
+| `IA3Layers(model)` | The adapted layers, by name. |
+
+A layer takes an IA³ vector or a LoRA adapter, not both.
+
+**Explaining an IA³ model.** Both forms are the base layer with rescaled weights, so
+`propagate_relevance()` runs every rule on the rescaled layer, exactly as if it were merged. There
+is nothing to split. Under the epsilon rule, rescaling an output channel doesn't change how that
+channel's relevance spreads over the inputs. What changes is how much relevance reaches the channel
+from above, which is the fine-tune's effect.
+
+**PEFT files.** `SaveIA3Adapter()` writes PEFT's adapter directory: `base_model.model.<module>.ia3_l`
+with shape `(out, 1)` or `(1, in)`, and an `adapter_config.json` with `target_modules` and
+`feedforward_modules`. `LoadIA3Adapter()` reads one. It tells a feedforward layer by its vector's
+shape and checks that against `feedforward_modules`. It refuses `fan_in_fan_out` and
+`modules_to_save`.
+
+**Checked against PEFT.** `tools/golden/make_ia3_golden.py` makes an IA³ adapter with PEFT 0.21.0
+on a tiny Qwen2 model, on `k_proj`, `v_proj` and `down_proj`. The vectors are redrawn around 1 so
+they matter, and `k_proj` and `v_proj` have biases, which output scaling multiplies too. Loaded
+into pulsatrix:
+
+- the logits match PEFT's to 1e-4, on the CPU and on the GPU;
+- the gradients of all six vectors match;
+- merging and unmerging leave the logits unchanged;
+- `SaveIA3Adapter()` writes back PEFT's keys, shapes and values.

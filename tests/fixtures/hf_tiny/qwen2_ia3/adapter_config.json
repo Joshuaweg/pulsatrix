@@ -1,0 +1,24 @@
+{
+  "auto_mapping": {
+    "base_model_class": "Qwen2ForCausalLM",
+    "parent_library": "transformers.models.qwen2.modeling_qwen2"
+  },
+  "base_model_name_or_path": "tests/fixtures/hf_tiny/qwen2",
+  "exclude_modules": null,
+  "fan_in_fan_out": false,
+  "feedforward_modules": [
+    "down_proj"
+  ],
+  "inference_mode": true,
+  "init_ia3_weights": true,
+  "modules_to_save": null,
+  "peft_type": "IA3",
+  "peft_version": "0.21.0",
+  "revision": null,
+  "target_modules": [
+    "v_proj",
+    "k_proj",
+    "down_proj"
+  ],
+  "task_type": null
+}

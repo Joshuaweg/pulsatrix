@@ -1,6 +1,6 @@
 // TRN-7 on the GPU: a PEFT adapter on the tiny Qwen2 gives PEFT's logits through hipBLAS, and an
 // adapter's gradients, merge and split relevance (TRN-8) agree with the CPU's; pyreft's LoReFT
-// interventions (TRN-9) give pyreft's logits and gradients.
+// interventions (TRN-9) give pyreft's logits and gradients; PEFT's IA3 vectors (TRN-10) give PEFT's.
 #include <gtest/gtest.h>
 
 #include <algorithm>
@@ -13,6 +13,7 @@
 #include "pulsatrix/cpu_backend.hpp"
 #include "pulsatrix/hip_backend.hpp"
 #include "pulsatrix/linear_module.hpp"
+#include "pulsatrix/ia3.hpp"
 #include "pulsatrix/loreft.hpp"
 #include "pulsatrix/lora.hpp"
 #include "pulsatrix/safetensors.hpp"
@@ -103,6 +104,22 @@ TEST(LoReFTHip, PyreftInterventionsGivePyreftsLogitsAndGradients) {
     EXPECT_LT(MaxAbsDiff(edits[0]->named_parameters()[0].ref.grad->to_host_vector(),
                          reference.tensor("grad.layer.0.rotate_layer", &cpu).to_host_vector()),
               1e-3f);
+}
+
+TEST(IA3Hip, PeftVectorsGivePeftsLogitsAndGradients) {
+    HIPBackend hip;
+    CPUBackend cpu;
+    std::unique_ptr<CausalLM> model = LoadCausalLM(Fixture("qwen2"), &hip);
+    LoadIA3Adapter(*model, Fixture("qwen2_ia3"), HuggingFaceMapping(model->config()));
+    const SafetensorsFile reference = SafetensorsFile::Read(Fixture("qwen2_ia3") + "/reference.safetensors");
+    const Tensor tokens(Shape({1, 6}), &hip, std::vector<float>{3, 17, 42, 5, 60, 8}, DeviceType::Hip);
+    EXPECT_LT(MaxAbsDiff(model->forward(tokens).to_host_vector(), reference.tensor("logits", &cpu).to_host_vector()), 1e-4f);
+    (void)model->backward(reference.tensor("upstream", &hip));
+    EXPECT_LT(MaxAbsDiff(model->layer(0).swiglu().down_proj().ia3()->scale_grad().to_host_vector(),
+                         reference.tensor("base_model.model.model.layers.0.mlp.down_proj.ia3_l", &cpu).to_host_vector()),
+              1e-3f);
+    MergeIA3(*model);
+    EXPECT_LT(MaxAbsDiff(model->forward(tokens).to_host_vector(), reference.tensor("logits", &cpu).to_host_vector()), 1e-4f);
 }
 
 }  // namespace
