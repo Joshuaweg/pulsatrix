@@ -23,6 +23,49 @@ word-level scores and figures.
 
 Full API reference: [Doxygen: Interpretability](../api/group__interpretability.html)
 
+## Which explainer answers which question
+
+Different questions need different explainers. Pulsatrix sorts them by the nine question
+categories of Liao, Gruen and Miller's XAI question bank (CHI 2020):
+
+| `XaiQuestion` | The question | Explainers |
+|---|---|---|
+| `Input` | What kind of data was the system trained on? | `NearestNeighbors` |
+| `Output` | What kind of output does the system give? | none yet |
+| `Performance` | How accurate/precise/reliable are the predictions? | none yet (KS-3) |
+| `HowGlobal` | How does the system make predictions? | PDP, ALE, Morris, Sobol, TCAV, probes, featurizers, representation comparison |
+| `Why` | Why/how is this instance given this prediction? | LRP, Integrated Gradients, Saliency, Grad-CAM, KernelSHAP, LIME, Occlusion |
+| `WhyNot` | Why is this instance NOT predicted to be Q? | Contrastive LRP, counterfactuals |
+| `WhatIf` | What would the system predict if this instance changes to…? | Local sensitivity, ICE, PDP, Occlusion, activation patching, steering |
+| `HowToBeThat` | How should this instance change to get a different prediction Q? | Counterfactuals |
+| `HowToStillBeThis` | What change is permitted for this instance to still get the same prediction? | none yet (Anchors, XAI-4) |
+
+There are also four reasons to explain (Adadi and Berrada, 2018), as `XaiReason`: to
+**justify** a decision, to **control** the model by finding its flaws, to **improve** it, and to
+**discover** something new from it.
+
+Every explainer declares the questions it answers, the main one first. The declaration also gives
+its scope (one prediction or the whole model), the least model access it needs (black box,
+weights, activations, gradients or LRP rules) and the inputs it takes. The classes with an
+`explain()` method return their declaration from `capabilities()`. Every explainer, functions
+included, is in `ExplainerCatalog()`:
+
+```cpp
+#include "pulsatrix/explainer_capabilities.hpp"
+
+LRP::capabilities().answers(XaiQuestion::WhyNot);           // true: contrastive LRP
+ExplainerCapabilitiesOf("GrowingSpheres").access;           // ModelAccess::BlackBox
+
+for (const ExplainerCapabilities* e : ExplainersFor(XaiQuestion::HowToBeThat)) {
+    std::cout << e->name << " in " << e->header << "\n";    // the three counterfactual searches
+}
+
+std::string json = WriteJson(ExplainerCatalogDocument());   // pulsatrix.explainer_catalog.v1
+```
+
+`ExplainersFor()` lists first the explainers whose main question it is. A question with no
+explainer yet returns an empty list, not a poor substitute.
+
 ## Shared infrastructure
 
 - **`Attribution`** (`include/pulsatrix/attribution.hpp`): the result type every explainer

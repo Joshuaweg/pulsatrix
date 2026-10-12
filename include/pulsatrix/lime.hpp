@@ -15,6 +15,7 @@
 #include "pulsatrix/assert.hpp"
 #include "pulsatrix/attribution.hpp"
 #include "pulsatrix/device_backend.hpp"
+#include "pulsatrix/explainer_capabilities.hpp"
 #include "pulsatrix/tensor.hpp"
 #include "pulsatrix/weighted_linear_regression.hpp"
 
@@ -40,6 +41,9 @@ namespace pulsatrix {
  */
 class LIME {
 public:
+    /** @brief What it answers and needs: its ExplainerCatalog() entry. */
+    [[nodiscard]] static const ExplainerCapabilities& capabilities() { return ExplainerCapabilitiesOf("LIME"); }
+
     /**
      * @brief Computes the LIME local surrogate explanation for one output index.
      * @param predict Forward-pass callable: input Tensor in, output Tensor out.

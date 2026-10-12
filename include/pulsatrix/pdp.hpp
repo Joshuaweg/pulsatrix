@@ -14,6 +14,7 @@
 #include "pulsatrix/assert.hpp"
 #include "pulsatrix/attribution.hpp"
 #include "pulsatrix/device_backend.hpp"
+#include "pulsatrix/explainer_capabilities.hpp"
 #include "pulsatrix/tensor.hpp"
 
 namespace pulsatrix {
@@ -36,6 +37,9 @@ namespace pulsatrix {
  */
 class PDP {
 public:
+    /** @brief What it answers and needs: its ExplainerCatalog() entry. */
+    [[nodiscard]] static const ExplainerCapabilities& capabilities() { return ExplainerCapabilitiesOf("PDP"); }
+
     /**
      * @brief Computes the PDP curve for one feature.
      * @param predict Forward-pass callable: input Tensor in, output Tensor out.
