@@ -23,6 +23,7 @@ attribution graphs of a language model's prediction.
 | Is cosine similarity meaningful in this layer? How many dimensions does it use? | `Anisotropy`, `MeasureEffectiveRank`, `TwoNNDimension` | [Representations](representations.md#the-shape-of-a-layer) |
 | What does a layer look like in 2D or 3D? Which directions vary most? | `FitPca`, `PcaProject`, `PcaSplitHalfOverlap`, `RenderProjectionSvg` | [Representations](representations.md#pca-projections) |
 | How do I look at a layer with UMAP or t-SNE? | `ExportEmbeddings`, `WriteNpy`, `ReadNpy`, `MakeProjectionDocument(coordinates, "umap")` | [Representations](representations.md#umap-and-t-sne) |
+| How do I turn a layer's activations into points for topological data analysis? | `PointCloud`, `MakePointCloud` | [Topology](topology.md#from-activations-to-a-point-cloud) |
 | Does a concept, given by examples, push the model towards a class? | `RunTcav`, `TrainCav` | [Probes and concepts](probes-and-concepts.md#concepts-tcav) |
 | Which of a layer's channels does an LRP explanation pass through, and where in the input is each? | `ChannelRelevance`, `ConditionalHeatmaps`, `ConceptReferenceSamples` (CRP) | [LRP](../interpretability/lrp.md#concepts-concept-relevance-propagation) |
 | Which directions in a layer stand for concepts, found without labels? | Sparse autoencoders: `TopKSparseAutoencoder`, `JumpReLUSparseAutoencoder`, `SparseAutoencoder` | [Finding features](featurizers.md) |
