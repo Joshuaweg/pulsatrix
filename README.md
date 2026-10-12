@@ -132,8 +132,10 @@ This takes about 30 seconds on a CPU, or 14 with `--device hip` on an AMD GPU. T
 [attribution graphs guide](https://joshuaweg.github.io/pulsatrix/mechanistic-interpretability/attribution-graphs/)
 shows where to download the model and Gemma Scope 2's transcoders.
 
-Other tools find a layer's features, steer a model, compare a model with its fine-tune, and
-decompose a network's weights. The
+Other tools compare layers and models (CKA, RSA, SVCCA, mutual nearest neighbors), measure a
+layer's shape and project it in 2D, test for named concepts with controlled probes and TCAV,
+find a layer's features, steer a model, compare a model with its fine-tune, and decompose a
+network's weights. The
 [Mechanistic Interpretability guide](https://joshuaweg.github.io/pulsatrix/mechanistic-interpretability/)
 starts with which tool answers which question, and reports what each method found on real models.
 
@@ -155,7 +157,9 @@ starts with which tool answers which question, and reports what each method foun
 | Checking explanations | Deletion/insertion curves with ROAD, the model-parameter randomization test, sparseness, complexity, `NullModelBaseline` | [Interpretability](https://joshuaweg.github.io/pulsatrix/interpretability/) |
 | Data pipeline | `Dataset`/`DataLoader`; CSV, image, text, audio and video-frame datasets; dataset validation; tokenizers loaded from Hugging Face `tokenizer.json` (byte-level BPE, as in SmolLM2, Qwen, Llama 3 and gpt-oss, and SentencePiece-style BPE, as in Gemma 3, Llama 2 and Mistral) with offsets back into the text; merging token scores into word scores | [Data pipeline](https://joshuaweg.github.io/pulsatrix/data-pipeline/) |
 | Reinforcement learning | CartPole environments, DQN, REINFORCE, A2C, PPO, SAC | [RL](https://joshuaweg.github.io/pulsatrix/reinforcement-learning/) |
-| Mechanistic interpretability | Hooks and linear probes with control tasks and baselines (selectivity); layer and model comparison with debiased linear CKA, RSA (with a permutation test), SVCCA and mutual-kNN alignment; nearest neighbors with a hubness check; anisotropy, effective rank and TwoNN intrinsic dimension; PCA projections with a split-half stability check; `.npy` and Embedding Projector export for UMAP and t-SNE; TCAV with significance against random concepts; Concept Relevance Propagation; sparse autoencoders (TopK, BatchTopK, Matryoshka, JumpReLU), block-sparse featurizers and transcoders, with SAEBench-style metrics and random-model baselines; steering with a reliability report; model diffing with crosscoders; parameter decomposition (SPD, VPD); attribution graphs through transcoder features for Neuronpedia's viewer; GFlowNets | [Mech interp](https://joshuaweg.github.io/pulsatrix/mechanistic-interpretability/) |
+| Representation analysis | Layer and model comparison with debiased linear CKA, RSA (with a permutation test), SVCCA and mutual-kNN alignment; nearest neighbors with a hubness check; anisotropy, effective rank and TwoNN intrinsic dimension; PCA projections with a split-half stability check; `.npy` and Embedding Projector export for UMAP and t-SNE | [Representations](https://joshuaweg.github.io/pulsatrix/mechanistic-interpretability/representations/) |
+| Probes and concepts | Linear probes with control tasks and baselines (selectivity); TCAV with significance against random concepts; Concept Relevance Propagation | [Probes and concepts](https://joshuaweg.github.io/pulsatrix/mechanistic-interpretability/probes-and-concepts/) |
+| Mechanistic interpretability | Hooks, activation patching and the logit lens; sparse autoencoders (TopK, BatchTopK, Matryoshka, JumpReLU), block-sparse featurizers and transcoders, with SAEBench-style metrics and random-model baselines; steering with a reliability report; model diffing with crosscoders; parameter decomposition (SPD, VPD); attribution graphs through transcoder features for Neuronpedia's viewer; GFlowNets | [Mech interp](https://joshuaweg.github.io/pulsatrix/mechanistic-interpretability/) |
 | Neuro-symbolic | Differentiable fuzzy logic, a Datalog engine, LRP through Datalog derivations | [Neuro-symbolic](https://joshuaweg.github.io/pulsatrix/neuro-symbolic/) |
 | Evolutionary computation | Genetic algorithms, NSGA-II, NEAT, Evolution Strategies, CMA-ES, PBT, E-GAN | [Evolutionary](https://joshuaweg.github.io/pulsatrix/evolutionary-computation/) |
 | Hyperparameter optimization | Grid/random search, Gaussian-process BO, TPE, Successive Halving, Hyperband, ASHA | [HPO](https://joshuaweg.github.io/pulsatrix/hyperparameter-optimization/) |
@@ -230,11 +234,12 @@ target_link_libraries(my_app PRIVATE pulsatrix::core)
 
 ## Status
 
-- The v1.2 "Real pretrained models" milestone is complete (the CMake project version is still
-  1.1.0). The API may still change between minor versions.
+- The v1.2 "Real pretrained models" milestone is complete, and v1.3 "Tune and explain" is under
+  way: its representation-analysis work (INT) is done. The CMake project version is still
+  1.1.0, and the API may still change between minor versions.
 - What's planned next, and why, is in the
   [Roadmap](https://joshuaweg.github.io/pulsatrix/roadmap/).
-- About 2,750 tests on the CPU, and 2,850 with the HIP backend. CI builds and tests every push
+- About 2,850 tests on the CPU, and 2,950 with the HIP backend. CI builds and tests every push
   and pull request on Windows (MSVC) and Linux (GCC), runs the Python binding tests, and
   compiles the CUDA and HIP backends.
 - macOS with Clang should work but isn't tested in CI.

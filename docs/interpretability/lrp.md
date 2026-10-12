@@ -292,7 +292,7 @@ inside it, list its modules in the context directly.
 - [Recipe: LRP on a trained MNIST classifier](../recipes/interpretability/mnist_lrp.md)
 - [Recipe: tracing relevance through a Datalog derivation](../recipes/neuro-symbolic/datalog_lrp_bridge.md)
 - [Customization](../customization/index.md#adding-a-new-layer): writing `propagate_relevance()` for your own layer
-- [Concepts given by examples (TCAV)](../mechanistic-interpretability/index.md#concepts-tcav): the other way to explain with concepts
+- [Concepts given by examples (TCAV)](../mechanistic-interpretability/probes-and-concepts.md#concepts-tcav): the other way to explain with concepts
 - [Checking an explanation](index.md#checking-an-explanation): deletion and insertion curves, the randomization test and the null-model baseline, for any LRP result
 - [Visualization](../visualization/documents.md): saving relevance as JSON and drawing it as SVG
 - [API reference: Layer-wise Relevance Propagation](../api/group__interpretability__lrp.html)
