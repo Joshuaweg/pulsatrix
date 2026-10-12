@@ -239,7 +239,7 @@ var searchData=
   ['rsa_236',['Rsa',['../namespacepulsatrix.html#a83a6f9c3832e3ea08384dc50e294aecc',1,'pulsatrix']]],
   ['rsapermutationtest_237',['RsaPermutationTest',['../namespacepulsatrix.html#a605caec24e33f92d034b712d7ae7e71e',1,'pulsatrix']]],
   ['rsatestresult_238',['RsaTestResult',['../structpulsatrix_1_1RsaTestResult.html',1,'pulsatrix']]],
-  ['rule_239',['rule',['../structpulsatrix_1_1LRPRuleConfig.html#af2058e16402ec127db79a8f37bdaf489',1,'pulsatrix::LRPRuleConfig::rule'],['../classpulsatrix_1_1datalog_1_1Rule.html#a1bdf21f58b3a0210aa66e55cc2aaedd4',1,'pulsatrix::datalog::Rule::Rule()'],['../classpulsatrix_1_1datalog_1_1Rule.html',1,'pulsatrix::datalog::Rule']]],
+  ['rule_239',['rule',['../classpulsatrix_1_1datalog_1_1Rule.html#a1bdf21f58b3a0210aa66e55cc2aaedd4',1,'pulsatrix::datalog::Rule::Rule()'],['../structpulsatrix_1_1LRPRuleConfig.html#af2058e16402ec127db79a8f37bdaf489',1,'pulsatrix::LRPRuleConfig::rule'],['../classpulsatrix_1_1datalog_1_1Rule.html',1,'pulsatrix::datalog::Rule']]],
   ['rule_5fconfigs_240',['rule_configs',['../classpulsatrix_1_1LRP.html#a45be12db06ffa07a5dbc74e84a93e196',1,'pulsatrix::LRP']]],
   ['run_241',['run',['../classpulsatrix_1_1VizWindow.html#a1c7208c9be6720936abc4648d5202cd5',1,'pulsatrix::VizWindow::run(const std::function&lt; void()&gt; &amp;draw_frame)'],['../classpulsatrix_1_1VizWindow.html#a33f85929a9f9358dd05c9b7de7e381d5',1,'pulsatrix::VizWindow::run(const std::function&lt; void()&gt; &amp;draw_frame, const std::function&lt; void(int, int)&gt; &amp;after_render)']]],
   ['runasha_242',['RunASHA',['../namespacepulsatrix.html#aba99c25698e39330189ccaf49b9cd27a',1,'pulsatrix']]],

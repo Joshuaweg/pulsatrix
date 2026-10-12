@@ -1,7 +1,7 @@
 var searchData=
 [
   ['edge_5fthreshold_0',['edge_threshold',['../structpulsatrix_1_1RelevanceGraphOptions.html#a4999dc4a13400c10ef04e920ed0b0da2',1,'pulsatrix::RelevanceGraphOptions::edge_threshold'],['../structpulsatrix_1_1CircuitTraceOptions.html#a22fd9bfb6a5662a6c329d899d309abaf',1,'pulsatrix::CircuitTraceOptions::edge_threshold']]],
-  ['edges_1',['edges',['../structpulsatrix_1_1AleResult.html#af6ac965ef7f5c6e8b788a6988b210064',1,'pulsatrix::AleResult::edges'],['../structpulsatrix_1_1CircuitGraphDocument.html#a0550a31e00e69b8320504507765fd816',1,'pulsatrix::CircuitGraphDocument::edges']]],
+  ['edges_1',['edges',['../structpulsatrix_1_1AleResult.html#af6ac965ef7f5c6e8b788a6988b210064',1,'pulsatrix::AleResult::edges'],['../structpulsatrix_1_1H0Result.html#ae703ae375362cb7c54f32ba90bbcb0e4',1,'pulsatrix::H0Result::edges'],['../structpulsatrix_1_1CircuitGraphDocument.html#a0550a31e00e69b8320504507765fd816',1,'pulsatrix::CircuitGraphDocument::edges']]],
   ['effective_5frank_2',['effective_rank',['../structpulsatrix_1_1BlockGeometry.html#a6a78f5abf730922b110649a99758fa2a',1,'pulsatrix::BlockGeometry::effective_rank'],['../structpulsatrix_1_1EffectiveRank.html#a52e41f515b09ea3cd15d921f9f7cf190',1,'pulsatrix::EffectiveRank::effective_rank']]],
   ['effects_3',['effects',['../structpulsatrix_1_1AleResult.html#ae93793c823c7615f9b40e06f1cc04ce3',1,'pulsatrix::AleResult']]],
   ['elapsed_5fseconds_4',['elapsed_seconds',['../structpulsatrix_1_1SystemSample.html#a24f5ddfd403268ca24ca5775faa3f827',1,'pulsatrix::SystemSample']]],
@@ -17,7 +17,7 @@ var searchData=
   ['eps_14',['eps',['../structpulsatrix_1_1RecurrentCellArgs.html#a06f5a6fe94693e0ea2c07ea2bfb12d1d',1,'pulsatrix::RecurrentCellArgs::eps'],['../structpulsatrix_1_1SsmPassArgs.html#a4a2d4d6fe8a614f6fd5333aa7e5c3a15',1,'pulsatrix::SsmPassArgs::eps']]],
   ['epsilon_15',['epsilon',['../structpulsatrix_1_1LRPRuleConfig.html#a41a03360ab748cd978bea186731a1750',1,'pulsatrix::LRPRuleConfig']]],
   ['epsilon_5fbias_5fin_5fdenominator_16',['epsilon_bias_in_denominator',['../structpulsatrix_1_1LRPRuleConfig.html#ace420e2114f01fc83687eeed487884fc',1,'pulsatrix::LRPRuleConfig']]],
-  ['error_5fbound_17',['error_bound',['../structpulsatrix_1_1DistanceMatrix.html#a1961963526561d2049ac11bcb1fcf9dc',1,'pulsatrix::DistanceMatrix']]],
+  ['error_5fbound_17',['error_bound',['../structpulsatrix_1_1DistanceMatrix.html#a1961963526561d2049ac11bcb1fcf9dc',1,'pulsatrix::DistanceMatrix::error_bound'],['../structpulsatrix_1_1PersistenceDiagram.html#a11f6801d2bfbefc65c959a7e805ee80e',1,'pulsatrix::PersistenceDiagram::error_bound']]],
   ['examples_18',['examples',['../structpulsatrix_1_1TokenizerParityReport.html#a25f928483f9eadf98c6b04aa60853c5d',1,'pulsatrix::TokenizerParityReport']]],
   ['explained_5fvariance_19',['explained_variance',['../structpulsatrix_1_1ReconstructionMetrics.html#a9f876fa9d1ba14a9bb8cca0ae8113c5e',1,'pulsatrix::ReconstructionMetrics::explained_variance'],['../structpulsatrix_1_1Pca.html#a13769d1a558bf12a4e05c8ec40b80395',1,'pulsatrix::Pca::explained_variance']]],
   ['explained_5fvariance_5fratio_20',['explained_variance_ratio',['../structpulsatrix_1_1Pca.html#a6b224b1e2fd4d5de5ee1cd6d1dcc9d7e',1,'pulsatrix::Pca::explained_variance_ratio'],['../structpulsatrix_1_1ProjectionDocument.html#a1c2dd7b3f93020c3a9f20e98fa44a018',1,'pulsatrix::ProjectionDocument::explained_variance_ratio']]]

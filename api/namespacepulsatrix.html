@@ -650,6 +650,9 @@ Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1GRUModule.html">GRUModule</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Standard GRU recurrence (Cho et al. 2014), h_0 = 0 (zero-initialized, not learnable &ndash; the same deliberate scope cut RNNModule/LSTMModule made, and the same thing that makes this module's conservation exact; see the <a class="el" href="classpulsatrix_1_1LRP.html" title="Whole-model LRP: runs the forward pass, seeds relevance at the chosen output(s), and propagates it to...">LRP</a> note below): z_t = sigmoid(x_t @ W_xz + h_{t-1} @ W_hz + b_z) (update gate), r_t = sigmoid(x_t @ W_xr + h_{t-1} @ W_hr + b_r) (reset gate), hn_prev_t = h_{t-1} @ W_hn (internal projection, no bias), n_t = tanh(x_t @ W_xn + r_t * hn_prev_t + b_n) (candidate), h_t = (1 - z_t) * h_{t-1} + z_t * n_t. Note the reset gate multiplies the <em>projected</em> previous hidden state <code>hn_prev_t</code>, not <code>h_{t-1}</code> itself &ndash; that projection is a distinct cached intermediate, and it is what gives GRU's <a class="el" href="classpulsatrix_1_1LRP.html" title="Whole-model LRP: runs the forward pass, seeds relevance at the chosen output(s), and propagates it to...">LRP</a> rule a different shape from LSTM's. Input (N, L, input_size) -&gt; output (N, L, hidden_size), the full hidden-state sequence (matches <a class="el" href="classpulsatrix_1_1RNNModule.html" title="h_t = tanh(x_t @ W_xh + h_{t-1} @ W_hh + b_h), h_0 = 0 (zero-initialized, not learnable – a deliberat...">RNNModule</a>'s/LSTMModule's convention). Single layer, no bidirectional/multi-layer/variable-length support.  <a href="classpulsatrix_1_1GRUModule.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpulsatrix_1_1H0Result.html">H0Result</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="namespacepulsatrix.html#a3ec1f2f22fa8ed381a933f6abbafe4ce" title="H0 persistence of the Vietoris-Rips filtration on the given distances.">ComputeH0()</a>'s result.  <a href="structpulsatrix_1_1H0Result.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpulsatrix_1_1HeadPrecision.html">HeadPrecision</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpulsatrix_1_1HeatmapColorScale.html">HeatmapColorScale</a></td></tr>
@@ -861,6 +864,9 @@ Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1MSELoss.html">MSELoss</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">MSE = mean((prediction - target)^2).  <a href="classpulsatrix_1_1MSELoss.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpulsatrix_1_1MstEdge.html">MstEdge</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">One edge of a minimum spanning tree.  <a href="structpulsatrix_1_1MstEdge.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1MultiHeadAttentionModule.html">MultiHeadAttentionModule</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight"><code>softmax(Q @ K^T / sqrt(head_dim)) @ V</code>, multi-head, with optional RoPE and optional QK-Norm. <a class="el" href="classpulsatrix_1_1Shape.html" title="An N-dimensional shape. A plain aggregate of dimensions with no invariant beyond &quot;non-negative dimens...">Shape</a> <code>(N, L, d_model) -&gt; (N, L, d_model)</code>.  <a href="classpulsatrix_1_1MultiHeadAttentionModule.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -965,6 +971,12 @@ Classes</h2></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1PDP.html">PDP</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">PDP_j(v) = (1/|B|) * sum_{b in B} f(x_j=v, x_{-j}=b_{-j}) &ndash; for each grid value v, replace every background instance's feature j with v (keeping its other features), average the model's output over the whole background set.  <a href="classpulsatrix_1_1PDP.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpulsatrix_1_1PersistenceDiagram.html">PersistenceDiagram</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The features of one homology dimension: H0 for components, H1 for loops, H2 for voids.  <a href="structpulsatrix_1_1PersistenceDiagram.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpulsatrix_1_1PersistencePair.html">PersistencePair</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">One feature of a persistence diagram.  <a href="structpulsatrix_1_1PersistencePair.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpulsatrix_1_1PerturbationCurve.html">PerturbationCurve</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">A perturbation curve: the target score after each fraction of features was changed.  <a href="structpulsatrix_1_1PerturbationCurve.html#details">More...</a><br /></td></tr>
@@ -2820,6 +2832,12 @@ Functions</h2></td></tr>
 <tr class="memitem:a86a26fa0d020dc0b17de5a589f6a4d50" id="r_a86a26fa0d020dc0b17de5a589f6a4d50"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structpulsatrix_1_1DistanceMatrix.html">DistanceMatrix</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#a86a26fa0d020dc0b17de5a589f6a4d50">PairwiseDistances</a> (const <a class="el" href="classpulsatrix_1_1PointCloud.html">PointCloud</a> &amp;cloud, <a class="el" href="classpulsatrix_1_1DeviceBackend.html">DeviceBackend</a> *backend, const <a class="el" href="structpulsatrix_1_1DistanceOptions.html">DistanceOptions</a> &amp;options={})</td></tr>
 <tr class="memdesc:a86a26fa0d020dc0b17de5a589f6a4d50"><td class="mdescLeft">&#160;</td><td class="mdescRight">Euclidean distances between every pair of a cloud's points, on the given backend.  <br /></td></tr>
 <tr class="separator:a86a26fa0d020dc0b17de5a589f6a4d50"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3ec1f2f22fa8ed381a933f6abbafe4ce" id="r_a3ec1f2f22fa8ed381a933f6abbafe4ce"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structpulsatrix_1_1H0Result.html">H0Result</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#a3ec1f2f22fa8ed381a933f6abbafe4ce">ComputeH0</a> (const <a class="el" href="structpulsatrix_1_1DistanceMatrix.html">DistanceMatrix</a> &amp;distances)</td></tr>
+<tr class="memdesc:a3ec1f2f22fa8ed381a933f6abbafe4ce"><td class="mdescLeft">&#160;</td><td class="mdescRight">H0 persistence of the Vietoris-Rips filtration on the given distances.  <br /></td></tr>
+<tr class="separator:a3ec1f2f22fa8ed381a933f6abbafe4ce"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af8013ed0a97f123686d0b441e69dae77" id="r_af8013ed0a97f123686d0b441e69dae77"><td class="memItemLeft" align="right" valign="top">std::vector&lt; int64_t &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#af8013ed0a97f123686d0b441e69dae77">SingleLinkageClusters</a> (const std::vector&lt; <a class="el" href="structpulsatrix_1_1MstEdge.html">MstEdge</a> &gt; &amp;edges, int64_t points, double threshold)</td></tr>
+<tr class="memdesc:af8013ed0a97f123686d0b441e69dae77"><td class="mdescLeft">&#160;</td><td class="mdescRight">The clusters of single linkage cut at a scale: points joined by tree edges no longer than threshold share a label.  <br /></td></tr>
+<tr class="separator:af8013ed0a97f123686d0b441e69dae77"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab4f5bdf3a37346ad36a611ab03d0a85e" id="r_ab4f5bdf3a37346ad36a611ab03d0a85e"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classpulsatrix_1_1PointCloud.html">PointCloud</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#ab4f5bdf3a37346ad36a611ab03d0a85e">MakePointCloud</a> (const std::vector&lt; <a class="el" href="classpulsatrix_1_1ActivationSnapshot.html">ActivationSnapshot</a> &gt; &amp;snapshots, <a class="el" href="namespacepulsatrix.html#a2b8dc3d7d2cef35f192d191f09156e67">NodeId</a> node, <a class="el" href="structpulsatrix_1_1PointCloudOptions.html">PointCloudOptions</a> options={})</td></tr>
 <tr class="memdesc:ab4f5bdf3a37346ad36a611ab03d0a85e"><td class="mdescLeft">&#160;</td><td class="mdescRight">A cloud from one node of several forward passes, such as one snapshot per batch.  <br /></td></tr>
 <tr class="separator:ab4f5bdf3a37346ad36a611ab03d0a85e"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -7290,6 +7308,33 @@ A <code>dones[t] == 1</code> row cuts <em>both</em> the bootstrap and the trace 
 A free function rather than a class: a pure reduction with no state to carry, matching <a class="el" href="namespacepulsatrix.html#a6176ba0afe78bd0aa69aec2b670d5b8c" title="Vanilla DQN Bellman target (Mnih et al. 2015): targets[b,0] = rewards[b,0] + gamma * (1 - dones[b,...">ComputeDQNTarget()</a>/ComputeDoubleDQNTarget()'s own free-function precedent. </dd>
 <dd>
 Host boundary (GPU-native-kernels Mission 7): a strictly sequential reverse recursion over one rollout. The inputs may live on any device &ndash; one device-&gt;host copy of each of rewards, dones and values per call &ndash; and both results are uploaded through <code>backend</code>. </dd></dl>
+
+</div>
+</div>
+<a id="a3ec1f2f22fa8ed381a933f6abbafe4ce" name="a3ec1f2f22fa8ed381a933f6abbafe4ce"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3ec1f2f22fa8ed381a933f6abbafe4ce">&#9670;&#160;</a></span>ComputeH0()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="structpulsatrix_1_1H0Result.html">H0Result</a> pulsatrix::ComputeH0 </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="structpulsatrix_1_1DistanceMatrix.html">DistanceMatrix</a> &amp;&#160;</td>
+          <td class="paramname"><em>distances</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>H0 persistence of the Vietoris-Rips filtration on the given distances. </p>
+<dl class="section note"><dt>Note</dt><dd>Prim's algorithm over the dense matrix: O(n^2) reads, the same order as reading the distances once, and far cheaper than computing them (O(n^2 d)). Equal lengths are broken by the lower point index, so the result is the same on every platform. </dd></dl>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname">std::invalid_argument</td><td>if distances has fewer than 2 points. </td></tr>
+  </table>
+  </dd>
+</dl>
 
 </div>
 </div>
@@ -20113,6 +20158,55 @@ template&lt;typename RNG &gt; </div>
 <dl class="section note"><dt>Note</dt><dd>draws must exclude 1.0: the u &gt; 0.5 branch divides by (1 - u), which is exactly zero at u == 1 &ndash; excluded by validation rather than silently producing inf/nan. </dd>
 <dd>
 child1_i + child2_i == parent1_i + parent2_i for any beta_q (and therefore any eta, draw) &ndash; an algebraic invariant independent of the specific draw, useful for testing the RNG-driven wrapper. </dd></dl>
+
+</div>
+</div>
+<a id="af8013ed0a97f123686d0b441e69dae77" name="af8013ed0a97f123686d0b441e69dae77"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af8013ed0a97f123686d0b441e69dae77">&#9670;&#160;</a></span>SingleLinkageClusters()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::vector&lt; int64_t &gt; pulsatrix::SingleLinkageClusters </td>
+          <td>(</td>
+          <td class="paramtype">const std::vector&lt; <a class="el" href="structpulsatrix_1_1MstEdge.html">MstEdge</a> &gt; &amp;&#160;</td>
+          <td class="paramname"><em>edges</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int64_t&#160;</td>
+          <td class="paramname"><em>points</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">double&#160;</td>
+          <td class="paramname"><em>threshold</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>The clusters of single linkage cut at a scale: points joined by tree edges no longer than threshold share a label. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">points</td><td>The number of points the edges span. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>One label per point, numbered 0, 1, ... in order of each cluster's lowest point. </dd></dl>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname">std::invalid_argument</td><td>if an edge has an endpoint outside [0, points). </td></tr>
+  </table>
+  </dd>
+</dl>
 
 </div>
 </div>

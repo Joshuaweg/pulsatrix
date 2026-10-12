@@ -5822,7 +5822,7 @@ GPL-licensed parts and giotto-ph (AGPL) are avoided.</p>
 <td>TDA-2</td>
 <td>P0</td>
 <td>S</td>
-<td></td>
+<td>Done (see below)</td>
 </tr>
 <tr>
 <td>TDA-4</td>
@@ -5968,6 +5968,12 @@ GPL-licensed parts and giotto-ph (AGPL) are avoided.</p>
   magnitude when points share an offset), <code>normalize</code>, an <code>Exact</code> method in double, and blocked
   GEMMs over the upper triangle so device memory stays bounded. Distances are stored condensed in
   scipy's pdist order, which Ripser (TDA-4) reads as an upper-triangular matrix.</li>
+<li><strong>TDA-3</strong> computes H0 with Prim's algorithm on the host (<code>tda/h0.hpp</code>), not on the GPU. The
+  dense tree takes O(n²) reads of the distance matrix, the same as reading it once, while the
+  distances themselves (TDA-2, O(n²d)) are what the GPU is for, so a GPU tree would save
+  little. It also returns the tree's edges, shortest first, and <code>SingleLinkageClusters()</code> cuts
+  them at a scale. <code>PersistenceDiagram</code> (<code>tda/persistence_diagram.hpp</code>) starts here as a plain
+  list of pairs with an error bound; TDA-5 adds its distances.</li>
 </ul>
 <p>Not planned: "neural persistence" on weight graphs. A 2023 follow-up showed it mostly measures
 weight variance.</p>

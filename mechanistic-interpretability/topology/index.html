@@ -829,6 +829,17 @@
   
 </li>
       
+        <li class="md-nav__item">
+  <a href="#clusters-across-scales-h0" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Clusters across scales (H0)
+      
+    </span>
+  </a>
+  
+</li>
+      
     </ul>
   
 </nav>
@@ -2361,6 +2372,17 @@
   
 </li>
       
+        <li class="md-nav__item">
+  <a href="#clusters-across-scales-h0" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Clusters across scales (H0)
+      
+    </span>
+  </a>
+  
+</li>
+      
     </ul>
   
 </nav>
@@ -2390,7 +2412,7 @@ noise and a random-network control?</p>
 <p>pulsatrix builds this as a pipeline, one stage at a time:</p>
 <div class="highlight"><pre><span></span><code>PointCloud → distances → filtration → persistence diagram → numbers and plots
 </code></pre></div>
-<p>This page grows with each stage. So far it covers the first two.</p>
+<p>This page grows with each stage. So far it covers the point cloud, the distances, and the first diagram: H0.</p>
 <h2 id="from-activations-to-a-point-cloud">From activations to a point cloud<a class="headerlink" href="#from-activations-to-a-point-cloud" title="Permanent link">&para;</a></h2>
 <p><code>PointCloud</code> gathers a layer's activations, batch by batch, into one set of points. Each point
 remembers the sample and position it came from, so a loop found later can be traced back to the
@@ -2491,6 +2513,36 @@ homology is all about small distances (when do two points join?), that matters. 
 </ul>
 <p>Storing n (n − 1) / 2 float32 values takes 50 MB for 5,000 points. Persistent homology above H0
 can't use many more points than that anyway; landmarks (coming) choose which ones to keep.</p>
+<h2 id="clusters-across-scales-h0">Clusters across scales (H0)<a class="headerlink" href="#clusters-across-scales-h0" title="Permanent link">&para;</a></h2>
+<p>Grow a ball around every point. At scale 0 each point is its own component. As the scale grows,
+two components merge when the shortest edge between them appears, until one is left. H0
+persistence records those merges: one pair (born at 0, dies at the merge scale) per merge, and
+one pair that never dies.</p>
+<p>That is single-linkage clustering, and the merge scales are the edge lengths of a minimum
+spanning tree. <code>ComputeH0()</code> finds the tree exactly with Prim's algorithm, in O(n²) time:</p>
+<div class="highlight"><pre><span></span><code><span class="cp">#include</span><span class="w"> </span><span class="cpf">"pulsatrix/tda/h0.hpp"</span>
+
+<span class="k">const</span><span class="w"> </span><span class="n">H0Result</span><span class="w"> </span><span class="n">h0</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">ComputeH0</span><span class="p">(</span><span class="n">PairwiseDistances</span><span class="p">(</span><span class="n">cloud</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">backend</span><span class="p">));</span>
+<span class="c1">// h0.diagram.pairs: (0, merge scale) per merge, then (0, ∞). h0.diagram.error_bound is the</span>
+<span class="c1">// distances' bound: the diagram is within it of the exact one, in bottleneck distance.</span>
+<span class="c1">// h0.edges: the tree's n − 1 edges, shortest first; edge k is the k-th merge.</span>
+<span class="k">const</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">int64_t</span><span class="o">&gt;</span><span class="w"> </span><span class="n">clusters</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">SingleLinkageClusters</span><span class="p">(</span><span class="n">h0</span><span class="p">.</span><span class="n">edges</span><span class="p">,</span><span class="w"> </span><span class="n">cloud</span><span class="p">.</span><span class="n">size</span><span class="p">(),</span><span class="w"> </span><span class="cm">/*threshold=*/</span><span class="mf">0.5</span><span class="p">);</span>
+</code></pre></div>
+<ul>
+<li><strong>Long-lived pairs are clusters.</strong> A pair that dies late means a group that stays apart from
+  the rest over a wide range of scales. <code>SingleLinkageClusters()</code> cuts the tree at a scale and
+  labels the groups. Each edge's endpoints, through <code>cloud.origins()</code>, name the inputs a merge
+  joins.</li>
+<li><strong>Duplicate points</strong> give zero-length edges. They stay in <code>edges</code> but not in the diagram,
+  which leaves out zero-persistence pairs as Ripser does.</li>
+<li><strong>Ties</strong> in length break by the lower point index, so the tree is the same on every platform.
+  Its lengths, which are all the diagram uses, are the same for every minimum tree.</li>
+</ul>
+<p><strong>H0 alone says little.</strong> It is a function of the minimum spanning tree, so it sees roughly what
+nearest-neighbor distances see. Many recent papers on the topology of language models use only
+H0. Before trusting such a result, check it against plain
+<a href="../representations/#nearest-neighbors">nearest-neighbor statistics</a>. Loops and voids (H1, H2)
+are where persistent homology sees something new; they come next.</p>
 <p>Full API reference: <a href="../api/group__tda.html">Doxygen: Topological Data Analysis</a></p>
 
 

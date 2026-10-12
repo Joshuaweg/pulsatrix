@@ -1,6 +1,6 @@
 var searchData=
 [
-  ['b_0',['b',['../structpulsatrix_1_1RgbColor.html#ab7cf0a6380926071d0c80730b45612e3',1,'pulsatrix::RgbColor']]],
+  ['b_0',['b',['../structpulsatrix_1_1RgbColor.html#ab7cf0a6380926071d0c80730b45612e3',1,'pulsatrix::RgbColor::b'],['../structpulsatrix_1_1MstEdge.html#acec44919dd11f8f57aba257a03db3a96',1,'pulsatrix::MstEdge::b']]],
   ['balanced_5faccuracy_1',['balanced_accuracy',['../structpulsatrix_1_1ProbeResult.html#a9058f5ae4261cf45bf24a716a7ea8553',1,'pulsatrix::ProbeResult']]],
   ['balanced_5fgain_2',['balanced_gain',['../structpulsatrix_1_1ProbeGain.html#a38da1cb37b960598e1ab30a4ec99b9f7',1,'pulsatrix::ProbeGain']]],
   ['balanced_5fselectivity_3',['balanced_selectivity',['../structpulsatrix_1_1ProbeSelectivity.html#a7cf55066b7ab65ad2f7f9a0b7124e92f',1,'pulsatrix::ProbeSelectivity']]],
@@ -32,13 +32,14 @@ var searchData=
   ['bias_5fcorrection2_29',['bias_correction2',['../structpulsatrix_1_1AdamTensorStep.html#ad8cfd5f41dde2fad0fa6314253aef3ba',1,'pulsatrix::AdamTensorStep']]],
   ['bin_5fedges_30',['bin_edges',['../structpulsatrix_1_1HistogramBins.html#ad4bbdebd74ab26d941736736a58e0570',1,'pulsatrix::HistogramBins']]],
   ['bins_31',['bins',['../structpulsatrix_1_1DmsVariants.html#ab4c7fc2e797810209063b3ea8967cfe8',1,'pulsatrix::DmsVariants']]],
-  ['block_5frows_32',['block_rows',['../structpulsatrix_1_1DistanceOptions.html#a18d8afb9998403d9ce6c3c09f9a5140e',1,'pulsatrix::DistanceOptions']]],
-  ['block_5fsize_33',['block_size',['../structpulsatrix_1_1BlockSparseOptions.html#a01453fcd1d2889400eb78c395197d728',1,'pulsatrix::BlockSparseOptions']]],
-  ['blocks_34',['blocks',['../structpulsatrix_1_1ResNetConfig.html#a4372a83cf0b1a79205b8fa28d2d2e62d',1,'pulsatrix::ResNetConfig']]],
-  ['body_35',['body',['../structpulsatrix_1_1orch_1_1HttpRequest.html#a82c584e43a04b68ab360124bf22260dc',1,'pulsatrix::orch::HttpRequest::body'],['../structpulsatrix_1_1orch_1_1HttpResponse.html#a92d8e8d17019fe035364813590c296eb',1,'pulsatrix::orch::HttpResponse::body']]],
-  ['bos_5ftoken_5fid_36',['bos_token_id',['../structpulsatrix_1_1HfModelConfig.html#a0dcf48a72d20ad8a0568f554050d7102',1,'pulsatrix::HfModelConfig']]],
-  ['bottom_37',['bottom',['../structpulsatrix_1_1WaterfallBar.html#a492341e89e384c8e1d8b6bbe54975c88',1,'pulsatrix::WaterfallBar']]],
-  ['bottom_5findices_38',['bottom_indices',['../structpulsatrix_1_1PBTTruncationGroups.html#ab900a1310fa549b5a04fd56e44054016',1,'pulsatrix::PBTTruncationGroups']]],
-  ['busy_39',['busy',['../structpulsatrix_1_1detail_1_1CpuTimes.html#ac1a80e25d6ac7bed845faa0743d81afb',1,'pulsatrix::detail::CpuTimes']]],
-  ['byte_5ffallback_40',['byte_fallback',['../structpulsatrix_1_1BpeOptions.html#a45f208e88c7098f2a7ad3fadda6c37b8',1,'pulsatrix::BpeOptions']]]
+  ['birth_32',['birth',['../structpulsatrix_1_1PersistencePair.html#ab25b27f4d8a03333c60a5387c28c2961',1,'pulsatrix::PersistencePair']]],
+  ['block_5frows_33',['block_rows',['../structpulsatrix_1_1DistanceOptions.html#a18d8afb9998403d9ce6c3c09f9a5140e',1,'pulsatrix::DistanceOptions']]],
+  ['block_5fsize_34',['block_size',['../structpulsatrix_1_1BlockSparseOptions.html#a01453fcd1d2889400eb78c395197d728',1,'pulsatrix::BlockSparseOptions']]],
+  ['blocks_35',['blocks',['../structpulsatrix_1_1ResNetConfig.html#a4372a83cf0b1a79205b8fa28d2d2e62d',1,'pulsatrix::ResNetConfig']]],
+  ['body_36',['body',['../structpulsatrix_1_1orch_1_1HttpRequest.html#a82c584e43a04b68ab360124bf22260dc',1,'pulsatrix::orch::HttpRequest::body'],['../structpulsatrix_1_1orch_1_1HttpResponse.html#a92d8e8d17019fe035364813590c296eb',1,'pulsatrix::orch::HttpResponse::body']]],
+  ['bos_5ftoken_5fid_37',['bos_token_id',['../structpulsatrix_1_1HfModelConfig.html#a0dcf48a72d20ad8a0568f554050d7102',1,'pulsatrix::HfModelConfig']]],
+  ['bottom_38',['bottom',['../structpulsatrix_1_1WaterfallBar.html#a492341e89e384c8e1d8b6bbe54975c88',1,'pulsatrix::WaterfallBar']]],
+  ['bottom_5findices_39',['bottom_indices',['../structpulsatrix_1_1PBTTruncationGroups.html#ab900a1310fa549b5a04fd56e44054016',1,'pulsatrix::PBTTruncationGroups']]],
+  ['busy_40',['busy',['../structpulsatrix_1_1detail_1_1CpuTimes.html#ac1a80e25d6ac7bed845faa0743d81afb',1,'pulsatrix::detail::CpuTimes']]],
+  ['byte_5ffallback_41',['byte_fallback',['../structpulsatrix_1_1BpeOptions.html#a45f208e88c7098f2a7ad3fadda6c37b8',1,'pulsatrix::BpeOptions']]]
 ];
