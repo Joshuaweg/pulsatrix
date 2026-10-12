@@ -133,6 +133,10 @@ std::vector<NamedParamRef> EncoderBlock::named_parameters() {
     return out;
 }
 
+std::vector<NamedModuleRef> EncoderBlock::named_children() {
+    return {{"norm1", norm1_.get()}, {"mha", &mha_}, {"norm2", norm2_.get()}, {"mlp", mlp_.get()}};
+}
+
 std::vector<NamedBufferRef> EncoderBlock::named_buffers() {
     std::vector<NamedBufferRef> out;
     append_named_buffers(out, "norm1", *norm1_);

@@ -64,6 +64,10 @@ std::vector<NamedParamRef> FeedForwardModule::named_parameters() {
     return out;
 }
 
+std::vector<NamedModuleRef> FeedForwardModule::named_children() {
+    return {{"fc1", &fc1_}, {"fc2", &fc2_}};
+}
+
 std::vector<NamedBufferRef> FeedForwardModule::named_buffers() {
     std::vector<NamedBufferRef> out;
     append_named_buffers(out, "fc1", fc1_);

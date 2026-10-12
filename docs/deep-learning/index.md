@@ -459,6 +459,10 @@ as without freezing. `LinearModule`, `Conv2DModule` and `EmbeddingModule` skip c
 frozen weight's gradient altogether, which is where fine-tuning saves time. A name that matches
 nothing throws `std::invalid_argument`, so a typo can't leave the model silently trainable.
 
+To train a small low-rank update instead of the weights themselves, see
+[Parameter-Efficient Fine-Tuning](fine-tuning.md): `ApplyLora()` adds LoRA adapters and freezes
+the rest.
+
 ### Encoder layers
 
 `EncoderBlock` is one transformer encoder layer whose layout is chosen with
@@ -522,3 +526,4 @@ what it normalizes over:
 - [RNN vs. LSTM vs. GRU on a parity task](../recipes/deep-learning/sequence_models_rnn_lstm_gru.md)
 - [Residual connections and normalization layers](../recipes/deep-learning/residual_and_norm_layers.md)
 - [Full fine-tuning: pretrain, save, reload, fine-tune](../recipes/deep-learning/tagger_finetune.md)
+- [Parameter-efficient fine-tuning with LoRA](fine-tuning.md)

@@ -612,6 +612,15 @@ std::vector<NamedParamRef> MultiHeadAttentionModule::named_parameters() {
     return params;
 }
 
+std::vector<NamedModuleRef> MultiHeadAttentionModule::named_children() {
+    std::vector<NamedModuleRef> out{{"q_proj", &q_proj_}, {"k_proj", &k_proj_}, {"v_proj", &v_proj_}, {"out_proj", &out_proj_}};
+    if (use_qk_norm_) {
+        out.push_back({"q_norm", q_norm_.get()});
+        out.push_back({"k_norm", k_norm_.get()});
+    }
+    return out;
+}
+
 void MultiHeadAttentionModule::set_training(bool training) {
     Module::set_training(training);
     q_proj_.set_training(training);
