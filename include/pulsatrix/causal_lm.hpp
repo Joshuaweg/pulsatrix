@@ -46,6 +46,27 @@ inline Tensor ApplyHiddenStateHook(const HiddenStateHook& hook, int64_t position
 }  // namespace detail
 
 /**
+ * @brief A trainable edit of the residual stream after a transformer block (TRN-9: LoReFT), run by
+ *        CausalLM::set_intervention(). Maps hidden states `(N, L, hidden_size)` to the same shape and,
+ *        as a Module, trains and explains with the model.
+ */
+class ResidualIntervention : public Module {
+public:
+    /**
+     * @brief The edit for hidden states covering positions [start, start + L) of a sequence whose
+     *        prompt is @p prompt_length positions long. forward(x) is forward_at(x, 0, L). Cached
+     *        generation calls it once on the prompt and then once per new token, each a later start.
+     */
+    [[nodiscard]] virtual Tensor forward_at(const Tensor& hidden, int64_t start, int64_t prompt_length) = 0;
+
+protected:
+    [[nodiscard]] Tensor forward_impl(const Tensor& hidden) override {
+        if (hidden.rank() != 3) throw std::invalid_argument("ResidualIntervention::forward: hidden states must be (N, L, d)");
+        return forward_at(hidden, 0, hidden.shape().dim(1));
+    }
+};
+
+/**
  * @brief Token embedding, `num_hidden_layers` pre-norm transformer blocks, a final RMSNorm and a
  *        language-model head (tied to the embedding or its own bias-free Linear): the architecture
  *        of Llama, SmolLM2, Qwen2/2.5 and Qwen3. Maps `(N, L)` token ids to `(N, L, vocab)` logits.
@@ -93,6 +114,16 @@ public:
      */
     [[nodiscard]] NextTokenLogitsFn next_token_logits(int64_t max_length);
 
+    /**
+     * @brief Runs @p intervention on block @p layer's output, in forward(), backward(), the relevance
+     *        passes and cached generation (TRN-9). Its parameters join named_parameters() as
+     *        `interventions.<layer>.*`. nullptr removes it.
+     * @throws std::out_of_range for a layer index the model doesn't have.
+     */
+    void set_intervention(int64_t layer, std::unique_ptr<ResidualIntervention> intervention);
+    /** @brief Block @p layer's intervention, or nullptr. @throws std::out_of_range. */
+    [[nodiscard]] ResidualIntervention* intervention(int64_t layer) { return interventions_.at(static_cast<size_t>(layer)).get(); }
+
     /** @brief Calls @p hook at every position during forward() (not during next_token_logits()'s
      *         cached passes). An empty function removes it. */
     void set_hidden_state_hook(HiddenStateHook hook) { hidden_state_hook_ = std::move(hook); }
@@ -122,6 +153,7 @@ private:
     std::unique_ptr<LinearModule> lm_head_;
     Shape last_hidden_shape_ = Shape({0});
     HiddenStateHook hidden_state_hook_;
+    std::vector<std::unique_ptr<ResidualIntervention>> interventions_;  // one slot per layer
 };
 
 /** @brief How a source tensor becomes a target parameter. */

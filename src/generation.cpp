@@ -188,7 +188,7 @@ NextTokenLogitsFn MakeNextTokenLogits(std::vector<Module*> layers, DeviceBackend
 
 NextTokenLogitsFn MakeCachedNextTokenLogits(EmbeddingModule& embedding, std::vector<TransformerBlock*> blocks,
                                             std::vector<Module*> head, DeviceBackend* backend, int64_t max_length,
-                                            float embed_scale) {
+                                            float embed_scale, BlockOutputHook after_block) {
     if (blocks.empty()) {
         throw std::invalid_argument("MakeCachedNextTokenLogits: no blocks");
     }
@@ -202,14 +202,15 @@ NextTokenLogitsFn MakeCachedNextTokenLogits(EmbeddingModule& embedding, std::vec
         std::vector<KVCache> caches;
         std::vector<int64_t> processed;
         std::vector<float> last_logits;
+        int64_t prompt_length = 0;
     };
     auto state = std::make_shared<State>();
     for (TransformerBlock* b : blocks) {
         state->caches.push_back(b->mha().MakeKVCache(1, max_length));
     }
     EmbeddingModule* emb = &embedding;
-    return [state, emb, blocks = std::move(blocks), head = std::move(head), backend, max_length,
-            embed_scale](const std::vector<int64_t>& tokens) {
+    return [state, emb, blocks = std::move(blocks), head = std::move(head), backend, max_length, embed_scale,
+            after_block = std::move(after_block)](const std::vector<int64_t>& tokens) {
         if (tokens.empty()) {
             throw std::invalid_argument("MakeCachedNextTokenLogits: the sequence is empty");
         }
@@ -227,6 +228,10 @@ NextTokenLogitsFn MakeCachedNextTokenLogits(EmbeddingModule& embedding, std::vec
         if (shared == tokens.size()) {
             --shared;  // a prefix of what was processed: rerun its last token for its logits
         }
+        // A sequence that only extends the last one past its prompt keeps that prompt; any other is a new prompt.
+        if (state->processed.empty() || static_cast<int64_t>(shared) < state->prompt_length) {
+            state->prompt_length = static_cast<int64_t>(tokens.size());
+        }
         for (KVCache& c : state->caches) c.truncate(static_cast<int64_t>(shared));
         const auto fresh = static_cast<int64_t>(tokens.size() - shared);
         std::vector<float> ids(tokens.begin() + static_cast<std::ptrdiff_t>(shared), tokens.end());
@@ -238,6 +243,7 @@ NextTokenLogitsFn MakeCachedNextTokenLogits(EmbeddingModule& embedding, std::vec
         }
         for (size_t i = 0; i < blocks.size(); ++i) {
             x = blocks[i]->forward_cached(x, state->caches[i]);
+            if (after_block) x = after_block(static_cast<int64_t>(i), static_cast<int64_t>(shared), state->prompt_length, x);
         }
         const int64_t d = x.shape().dim(2);
         const std::vector<float> all = x.to_host_vector();
