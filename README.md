@@ -236,11 +236,11 @@ target_link_libraries(my_app PRIVATE pulsatrix::core)
 ## Status
 
 - The v1.2 "Real pretrained models" milestone is complete, and v1.3 "Tune and explain" is under
-  way: its representation-analysis work (INT) is done. The CMake project version is still
+  way: its representation-analysis (INT) and topological data analysis (TDA) work is done. The CMake project version is still
   1.1.0, and the API may still change between minor versions.
 - What's planned next, and why, is in the
   [Roadmap](https://joshuaweg.github.io/pulsatrix/roadmap/).
-- About 2,850 tests on the CPU, and 2,950 with the HIP backend. CI builds and tests every push
+- About 2,900 tests on the CPU, and 3,000 with the HIP backend. CI builds and tests every push
   and pull request on Windows (MSVC) and Linux (GCC), runs the Python binding tests, and
   compiles the CUDA and HIP backends.
 - macOS with Clang should work but isn't tested in CI.

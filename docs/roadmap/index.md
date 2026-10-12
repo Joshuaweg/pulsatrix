@@ -20,6 +20,8 @@ every item in [FEAT](#feat-featurizers-sparse-autoencoders-and-goodfire-bsf) is 
 [milestone](#v12-real-pretrained-models) is done.
 **The INT epic, embedding and representation analysis, is complete** (2026-10-11): every item
 in [INT](#int-embedding-and-representation-analysis) is done.
+**The TDA epic's v1.3 scope is complete** (2026-10-12): TDA-1 to TDA-8 and TDA-11 in
+[TDA](#tda-topological-data-analysis) are done; TDA-9, TDA-10 and TDA-12 are scheduled for v1.4.
 
 - **Strong.** LRP covers every layer and is checked against Zennit and LXT. Saliency, Integrated
   Gradients and Grad-CAM are checked against Captum. LIME, KernelSHAP, PDP, logit lens,
@@ -1086,6 +1088,14 @@ GUDHI's GPL-licensed parts and giotto-ph (AGPL) are avoided.
 
 Not planned: "neural persistence" on weight graphs. A 2023 follow-up showed it mostly measures
 weight variance.
+
+### Follow-ups the TDA work surfaced
+
+| Follow-up | Found in | Belongs with |
+|---|---|---|
+| Kerber, Morozov and Nigmetov's geometric speed-ups for the bottleneck and Wasserstein distances, once diagrams reach thousands of points | TDA-5 | TDA-12 (many layers, many diagrams) |
+| A certified bound for RTD: a sum of bar lengths moves by up to the number of bars times the distance error, too loose to be useful | TDA-11 | Research Notes |
+| A bootstrap band with a proof for Rips filtrations; Fasy et al.'s proof covers distance functions, and for Rips it is the standard heuristic | TDA-8 | Research Notes |
 
 ## KD: Surrogates and student-teacher
 
