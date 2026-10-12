@@ -65,6 +65,8 @@ network.
 - **Compare and describe representations**: CKA, RSA, SVCCA and mutual nearest neighbors across
   layers and models; anisotropy, effective rank and intrinsic dimension; PCA plots, and export
   for UMAP and t-SNE.
+- **Measure the shape of a layer** with persistent homology: its clusters, loops and voids,
+  with certified error bars, significance tests, and RTD to compare two layers' topology.
 - **Test for named concepts** with linear probes and their controls, and with TCAV.
 - **Find features** with sparse autoencoders (TopK, BatchTopK, Matryoshka, JumpReLU),
   block-sparse featurizers and transcoders, and **evaluate** them against random-model
@@ -113,7 +115,7 @@ LRP conservation, with an A/B comparison between two builds.
 Python. See [Getting Started](getting-started.md#python-bindings).
 
 Everything is implemented in C++ with no Python dependency at runtime, and covered by about
-2,750 CPU tests (2,850 with the HIP backend) that run in CI on Windows and Linux.
+2,900 CPU tests (3,000 with the HIP backend) that run in CI on Windows and Linux.
 
 ## More resources
 
