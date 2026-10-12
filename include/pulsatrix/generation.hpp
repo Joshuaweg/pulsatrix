@@ -108,6 +108,13 @@ void ProcessLogits(std::vector<float>& logits, const std::vector<int64_t>& token
 [[nodiscard]] NextTokenLogitsFn MakeNextTokenLogits(std::vector<Module*> layers, DeviceBackend* backend);
 
 /**
+ * @brief Called on each block's output in MakeCachedNextTokenLogits(): block @p layer's hidden states
+ *        `(1, L, d)` for positions [start, start + L), in a sequence whose prompt is @p prompt_length
+ *        long; returns what the next block reads. CausalLM uses it to run its interventions (TRN-9).
+ */
+using BlockOutputHook = std::function<Tensor(int64_t layer, int64_t start, int64_t prompt_length, const Tensor& hidden)>;
+
+/**
  * @brief A NextTokenLogitsFn for embedding -> transformer blocks -> head layers that keeps a KV cache
  *        per block (LLM-5): each call runs only the tokens after the longest prefix it has already
  *        processed, so generating n tokens costs one pass over the prompt and then one position per
@@ -118,6 +125,8 @@ void ProcessLogits(std::vector<float>& logits, const std::vector<int64_t>& token
  * @param blocks Run with forward_cached, in order; each gets its own cache of max_length positions.
  * @param head Applied to the last position's hidden state `(1, d_model)`: for example a final
  *        RMSNormModule and a TiedLMHeadModule; must end in `(1, vocab)`.
+ * @param after_block Optional; see BlockOutputHook. The prompt is the sequence of the first call, or
+ *        of any call that changes it: one that doesn't just extend the previous sequence past it.
  * @note The returned function owns the caches (allocated once) and is stateful: use one per
  *       sequence being generated. The modules are not owned and must outlive it.
  * @throws std::invalid_argument (when built) if blocks is empty or a pointer is null; (when called)
@@ -126,6 +135,7 @@ void ProcessLogits(std::vector<float>& logits, const std::vector<int64_t>& token
 [[nodiscard]] NextTokenLogitsFn MakeCachedNextTokenLogits(EmbeddingModule& embedding,
                                                           std::vector<TransformerBlock*> blocks,
                                                           std::vector<Module*> head, DeviceBackend* backend,
-                                                          int64_t max_length, float embed_scale = 1.0f);
+                                                          int64_t max_length, float embed_scale = 1.0f,
+                                                          BlockOutputHook after_block = {});
 
 }  // namespace pulsatrix

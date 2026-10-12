@@ -45,6 +45,7 @@ CausalLM::CausalLM(const HfModelConfig& config, DeviceBackend* backend, bool all
         layers_.push_back(std::make_unique<TransformerBlock>(ToAttentionConfig(config, i), config.intermediate_size,
                                                              backend, options));
     }
+    interventions_.resize(layers_.size());
     if (config.tie_word_embeddings) {
         tied_head_ = std::make_unique<TiedLMHeadModule>(embed_, backend);
     } else {
@@ -67,6 +68,7 @@ Tensor CausalLM::forward_impl(const Tensor& input) {
     if (hidden_state_hook_) x = detail::ApplyHiddenStateHook(hidden_state_hook_, 0, x);
     for (size_t i = 0; i < layers_.size(); ++i) {
         x = layers_[i]->forward(x);
+        if (interventions_[i]) x = interventions_[i]->forward(x);
         if (hidden_state_hook_) x = detail::ApplyHiddenStateHook(hidden_state_hook_, static_cast<int64_t>(i) + 1, x);
     }
     last_hidden_shape_ = x.shape();
@@ -82,7 +84,10 @@ Tensor CausalLM::backward(const Tensor& grad_output) {
     Tensor g = Reshaped(grad_output, Shape({rows, config_.vocab_size}));
     g = tied_head_ ? tied_head_->backward(g) : lm_head_->backward(g);
     g = Reshaped(norm_.backward(g), last_hidden_shape_);
-    for (auto it = layers_.rbegin(); it != layers_.rend(); ++it) g = (*it)->backward(g);
+    for (size_t i = layers_.size(); i-- > 0;) {
+        if (interventions_[i]) g = interventions_[i]->backward(g);
+        g = layers_[i]->backward(g);
+    }
     return embed_.backward(ScaleEmbeddings(g));  // d(s e)/de = s
 }
 
@@ -95,6 +100,7 @@ std::vector<Tensor> CausalLM::propagate_relevance_by_layer(const Tensor& relevan
     std::vector<Tensor> boundaries(layers_.size() + 1, r);
     for (size_t i = layers_.size(); i-- > 0;) {
         boundaries[i + 1] = r;
+        if (interventions_[i]) r = interventions_[i]->propagate_relevance(r, config);
         r = layers_[i]->propagate_relevance(r, config);
     }
     boundaries[0] = r;
@@ -112,6 +118,9 @@ std::vector<NamedParamRef> CausalLM::named_parameters() {
     for (size_t i = 0; i < layers_.size(); ++i) append_named_parameters(out, "layers." + std::to_string(i), *layers_[i]);
     append_named_parameters(out, "norm", norm_);
     if (lm_head_) append_named_parameters(out, "lm_head", *lm_head_);
+    for (size_t i = 0; i < interventions_.size(); ++i) {
+        if (interventions_[i]) append_named_parameters(out, "interventions." + std::to_string(i), *interventions_[i]);
+    }
     return out;
 }
 
@@ -120,6 +129,9 @@ std::vector<NamedModuleRef> CausalLM::named_children() {
     for (size_t i = 0; i < layers_.size(); ++i) out.push_back({"layers." + std::to_string(i), layers_[i].get()});
     out.push_back({"norm", &norm_});
     if (lm_head_) out.push_back({"lm_head", lm_head_.get()});
+    for (size_t i = 0; i < interventions_.size(); ++i) {
+        if (interventions_[i]) out.push_back({"interventions." + std::to_string(i), interventions_[i].get()});
+    }
     return out;
 }
 
@@ -136,13 +148,30 @@ void CausalLM::set_training(bool training) {
     norm_.set_training(training);
     if (tied_head_) tied_head_->set_training(training);
     if (lm_head_) lm_head_->set_training(training);
+    for (auto& intervention : interventions_) {
+        if (intervention) intervention->set_training(training);
+    }
+}
+
+void CausalLM::set_intervention(int64_t layer, std::unique_ptr<ResidualIntervention> intervention) {
+    if (layer < 0 || layer >= num_layers()) throw std::out_of_range("CausalLM::set_intervention: no layer " + std::to_string(layer));
+    if (intervention) intervention->set_training(is_training());
+    interventions_[static_cast<size_t>(layer)] = std::move(intervention);
 }
 
 NextTokenLogitsFn CausalLM::next_token_logits(int64_t max_length) {
     std::vector<TransformerBlock*> blocks;
     for (auto& layer : layers_) blocks.push_back(layer.get());
     Module* head = tied_head_ ? static_cast<Module*>(tied_head_.get()) : lm_head_.get();
-    return MakeCachedNextTokenLogits(embed_, blocks, {&norm_, head}, backend_, max_length, config_.embed_scale);
+    BlockOutputHook after_block;
+    if (std::any_of(interventions_.begin(), interventions_.end(), [](const auto& i) { return i != nullptr; })) {
+        after_block = [this](int64_t layer, int64_t start, int64_t prompt_length, const Tensor& hidden) {
+            ResidualIntervention* intervention = interventions_[static_cast<size_t>(layer)].get();
+            return intervention ? intervention->forward_at(hidden, start, prompt_length) : hidden;
+        };
+    }
+    return MakeCachedNextTokenLogits(embed_, blocks, {&norm_, head}, backend_, max_length, config_.embed_scale,
+                                     std::move(after_block));
 }
 
 // ---- loading --------------------------------------------------------------------------------
