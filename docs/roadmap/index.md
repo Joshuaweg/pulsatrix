@@ -225,7 +225,10 @@ Feature discovery on real models, and agents that can drive the library.
 - FEAT-1 to FEAT-7 (**done**): the featurizer interface, TopK and its family, metrics,
   transcoders, BSF, steering
 - TDA-9 (**done**, [#157](https://github.com/Joshuaweg/pulsatrix/pull/157)): topology views
-- TDA-10, TDA-12: the manifold verifier for featurizers, layer-wise topology
+- TDA-10, TDA-12: the manifold verifier for featurizers, layer-wise topology. The
+  ["Is the shape real?"](../recipes/mechanistic-interpretability/is_the_shape_real.md) recipe
+  ran TDA-10's tests on SmolLM2-135M and Llama-3.2-1B; what's left is `CircularCoordinates`,
+  `VerifyManifold` on a BSF block, and a loop test that sees clusters
 - VIZ-4 (**done**), VIZ-6b, VIZ-6c: Neuronpedia export, feature dashboards, the embedding projector
 - AGT-5, AGT-8: the native MCP server and automated feature descriptions
 - NB-3: Python notebook display
@@ -1047,7 +1050,7 @@ GUDHI's GPL-licensed parts and giotto-ph (AGPL) are avoided.
 | TDA-7 | Farthest-point landmarks, which give the subsampling error bound | Persistent homology can't run on 100,000 activations | FND-3 | P0 | S | Done (see below) |
 | TDA-8 | Significance tests: a universal null distribution, bootstrap confidence bands, Gaussian and random-network baselines | Every reported loop needs a p-value | TDA-5 | P0 | M | Done (see below) |
 | TDA-9 | Barcode, persistence diagram and Betti curve views, with JSON and SVG export | See the result | TDA-5, VIZ-1 | P1 | M | Done, [#157](https://github.com/Joshuaweg/pulsatrix/pull/157) |
-| TDA-10 | **A manifold verifier for featurizer blocks:** decide whether a BSF or SAE block forms a circle or a torus, and recover a circular coordinate to steer along. It passes by reproducing the GPT-2 day-of-week circle (Engels et al.) against a random-network control | Goodfire measures block dimension with a linear method. Nobody has published a topological check, so this is new | TDA-4, TDA-7, TDA-8, FEAT-6 | P1 | M |  |
+| TDA-10 | **A manifold verifier for featurizer blocks:** decide whether a BSF or SAE block forms a circle or a torus, and recover a circular coordinate to steer along. It passes by reproducing the GPT-2 day-of-week circle (Engels et al.) against a random-network control. Partly done: the ["Is the shape real?"](../recipes/mechanistic-interpretability/is_the_shape_real.md) recipe runs the tests on SmolLM2-135M and Llama-3.2-1B residual streams (GPT-2 isn't supported); the calendar order is certified, the loop isn't | Goodfire measures block dimension with a linear method. Nobody has published a topological check, so this is new | TDA-4, TDA-7, TDA-8, FEAT-6 | P1 | M |  |
 | TDA-11 | Representation Topology Divergence next to CKA in one `compare_representations()` report | Catches clusters and loops that CKA misses | TDA-4, INT-2 | P1 | S | Done (see below) |
 | TDA-12 | Betti numbers layer by layer through a network, with a random-network baseline | Reproduces "topology simplifies through the layers" (Naitzat et al., 2020) | TDA-7, TDA-8 | P1 | M |  |
 | TDA-13 | Spectral and distance-to-measure distances | Raw distances concentrate in high dimensions and hide loops | INT-1, FND-4 | P2 | M |  |
@@ -1148,6 +1151,7 @@ weight variance.
 | Kerber, Morozov and Nigmetov's geometric speed-ups for the bottleneck and Wasserstein distances, once diagrams reach thousands of points | TDA-5 | TDA-12 (many layers, many diagrams) |
 | A certified bound for RTD: a sum of bar lengths moves by up to the number of bars times the distance error, too loose to be useful | TDA-11 | Research Notes |
 | A bootstrap band with a proof for Rips filtrations; Fasy et al.'s proof covers distance functions, and for Rips it is the standard heuristic | TDA-8 | Research Notes |
+| A loop test for clustered points. On the calendar words, the largest death/birth ratio picks small loops inside each word's cluster rather than the ring through them, so the ring isn't certified though the order is. Rips on the cluster centroids, with a null of the same size, or a circular coordinate | The "Is the shape real?" recipe | TDA-10 |
 
 ## KD: Surrogates and student-teacher
 

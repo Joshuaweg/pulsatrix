@@ -253,6 +253,46 @@ TEST_F(PcaTest, RejectsWhatItCannotFit) {
     EXPECT_THROW((void)PcaSplitHalfOverlap(Make(0.3, 3, 6), 1), std::invalid_argument);
 }
 
+// A few distinct points, each repeated many times: a Gram matrix of low rank with a large cluster of
+// zero eigenvalues. The QL iteration's deflation test was relative to the neighboring diagonal
+// entries only, which are zero there, so it never converged (found by the "Is the shape real?"
+// recipe on SmolLM2's embeddings).
+TEST(SymmetricEigenInDouble, ConvergesOnARankDeficientGramWithManyRepeats) {
+    CPUBackend backend;
+    const int64_t words = 7, repeats = 40, width = 576, n = words * repeats;
+    uint64_t state = 7;
+    std::vector<double> distinct(static_cast<std::size_t>(words * width));
+    for (double& v : distinct) {
+        state = state * 6364136223846793005ULL + 1442695040888963407ULL;
+        v = static_cast<double>(state >> 11) / 9007199254740992.0 - 0.5;
+    }
+    for (int64_t d = 0; d < width; ++d) {  // centered, as the recipe centers each sentence's words
+        double mean = 0;
+        for (int64_t w = 0; w < words; ++w) mean += distinct[static_cast<std::size_t>(w * width + d)];
+        for (int64_t w = 0; w < words; ++w) distinct[static_cast<std::size_t>(w * width + d)] -= mean / words;
+    }
+    std::vector<float> x;
+    for (int64_t r = 0; r < repeats; ++r) {
+        for (int64_t w = 0; w < words; ++w) {
+            for (int64_t d = 0; d < width; ++d) x.push_back(static_cast<float>(distinct[static_cast<std::size_t>(w * width + d)]));
+        }
+    }
+    const Pca pca = FitPca(Tensor(Shape({n, width}), &backend, x), words - 1);
+    double explained = 0;
+    for (double r : pca.explained_variance_ratio) explained += r;
+    EXPECT_NEAR(explained, 1.0, 1e-5);  // seven centered points span six directions
+    EXPECT_THROW((void)FitPca(Tensor(Shape({n, width}), &backend, x), words), std::invalid_argument);
+    for (int64_t a = 0; a < words - 1; ++a) {
+        for (int64_t b = 0; b < words - 1; ++b) {
+            double dot = 0;
+            for (int64_t j = 0; j < width; ++j) {
+                dot += pca.components[static_cast<std::size_t>(a * width + j)] * pca.components[static_cast<std::size_t>(b * width + j)];
+            }
+            EXPECT_NEAR(dot, a == b ? 1.0 : 0.0, 1e-9);
+        }
+    }
+}
+
 TEST(SymmetricEigenInDouble, AgreesWithSymmetricEigen) {
     CPUBackend backend;
     const std::vector<double> a = {4, 1, 0.5, 1, 3, 0.25, 0.5, 0.25, 2};

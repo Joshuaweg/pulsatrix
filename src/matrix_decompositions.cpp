@@ -341,12 +341,20 @@ void tridiagonal_ql(std::vector<double>& d, std::vector<double>& e, Dense& zt) {
     if (n > 0) {
         e[n - 1] = 0.0;
     }
+    // An off-diagonal entry is negligible when it's small next to its two diagonal neighbors, or
+    // next to the whole matrix: zeroing it then moves every eigenvalue by at most eps * ||T||. The
+    // second test is what lets a cluster of eigenvalues near zero (a rank-deficient Gram matrix)
+    // converge, where the neighbors are zero too and the first test can never pass.
+    double norm = 0.0;
+    for (int64_t i = 0; i < n; ++i) {
+        norm = std::max(norm, std::fabs(d[i]) + std::fabs(e[i]) + (i > 0 ? std::fabs(e[i - 1]) : 0.0));
+    }
     for (int64_t l = 0; l < n; ++l) {
         int iterations = 0;
         int64_t m = l;
         do {
             for (m = l; m < n - 1; ++m) {
-                if (std::fabs(e[m]) <= eps * (std::fabs(d[m]) + std::fabs(d[m + 1]))) {
+                if (std::fabs(e[m]) <= eps * (std::fabs(d[m]) + std::fabs(d[m + 1])) || std::fabs(e[m]) <= eps * norm) {
                     break;
                 }
             }

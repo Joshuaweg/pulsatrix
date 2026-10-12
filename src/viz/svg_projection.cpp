@@ -19,9 +19,11 @@ using namespace svg_detail;
 
 namespace {
 
-// Tableau 10, the palette the residue tracks use too. Groups past ten reuse colors.
-constexpr const char* kGroupColors[] = {"#4e79a7", "#f28e2b", "#59a14f", "#e15759", "#76b7b2",
-                                        "#edc948", "#b07aa1", "#ff9da7", "#9c755f", "#bab0ac"};
+// Tableau 10, the palette the residue tracks use too, then Tableau 20's light shades, so twelve
+// months or twenty classes each get their own color. Groups past twenty reuse colors.
+constexpr const char* kGroupColors[] = {"#4e79a7", "#f28e2b", "#59a14f", "#e15759", "#76b7b2", "#edc948", "#b07aa1",
+                                        "#ff9da7", "#9c755f", "#bab0ac", "#a0cbe8", "#ffbe7d", "#8cd17d", "#ff9d9a",
+                                        "#86bcb6", "#f1ce63", "#d4a6c8", "#fabfd2", "#d7b5a6", "#79706e"};
 constexpr size_t kNumGroupColors = sizeof kGroupColors / sizeof kGroupColors[0];
 constexpr const char* kPointColor = "#4e79a7";
 
