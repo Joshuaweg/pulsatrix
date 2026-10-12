@@ -1,5 +1,6 @@
-// TDA-2 on the GPU: the GEMM runs through hipBLAS, and its distances stay within the certified
-// float32 error bound, including when cancellation makes that bound large.
+// TDA-2 and TDA-7 on the GPU: the GEMMs run through hipBLAS, and the distances and landmark covering
+// radii stay within their certified float32 error bounds, including when cancellation makes those
+// bounds large.
 #include <gtest/gtest.h>
 
 #include <cmath>
@@ -10,6 +11,7 @@
 #include "pulsatrix/cpu_backend.hpp"
 #include "pulsatrix/hip_backend.hpp"
 #include "pulsatrix/tda/distance_matrix.hpp"
+#include "pulsatrix/tda/landmarks.hpp"
 
 namespace pulsatrix {
 namespace {
@@ -70,6 +72,34 @@ TEST(DistanceMatrixHip, CancellationOnTheGpuIsCoveredByTheBound) {
     const DistanceMatrix c = PairwiseDistances(points, centered);
     EXPECT_LE(WorstError(c, x, d), c.error_bound);
     EXPECT_LT(c.error_bound * 100, raw.error_bound);
+}
+
+TEST(DistanceMatrixHip, LandmarkCoveringRadiiAreCertifiedOnTheGpu) {
+    HIPBackend hip;
+    const int64_t n = 2000, d = 384;
+    for (float offset : {0.0f, 50.0f}) {
+        const std::vector<float> x = Gaussian(n, d, 13, 1.0f, offset);
+        const Tensor points(Shape({n, d}), &hip, x, DeviceType::Hip);
+        LandmarkOptions o;
+        o.count = 64;
+        const Landmarks l = FarthestPointLandmarks(points, o);
+        ASSERT_EQ(l.indices.size(), 64u);
+        double exact = 0;
+        for (int64_t i = 0; i < n; ++i) {
+            long double nearest = 1e300L;
+            for (int64_t j : l.indices) {
+                long double s = 0;
+                for (int64_t a = 0; a < d; ++a) {
+                    const long double diff = static_cast<long double>(x[static_cast<std::size_t>(i * d + a)]) -
+                                             x[static_cast<std::size_t>(j * d + a)];
+                    s += diff * diff;
+                }
+                nearest = std::min(nearest, std::sqrt(s));
+            }
+            exact = std::max(exact, static_cast<double>(nearest));
+        }
+        EXPECT_NEAR(exact, l.covering_radius.value, l.covering_radius.bound()) << "offset " << offset;
+    }
 }
 
 }  // namespace
