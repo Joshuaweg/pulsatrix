@@ -39,6 +39,7 @@ var group__dl__modules =
     [ "hip_check.hpp", "hip__check_8hpp.html", null ],
     [ "hipblas_check.hpp", "hipblas__check_8hpp.html", null ],
     [ "host_guard.hpp", "host__guard_8hpp.html", null ],
+    [ "ia3.hpp", "ia3_8hpp.html", null ],
     [ "kl_divergence_loss.hpp", "kl__divergence__loss_8hpp.html", null ],
     [ "kv_cache.hpp", "kv__cache_8hpp.html", null ],
     [ "layer_norm_module.hpp", "layer__norm__module_8hpp.html", null ],

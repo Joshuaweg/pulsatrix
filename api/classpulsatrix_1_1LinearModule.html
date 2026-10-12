@@ -160,6 +160,25 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a26596a18b70fd79bdee468364d53e45f" id="r_a26596a18b70fd79bdee468364d53e45f"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1LinearModule.html#a26596a18b70fd79bdee468364d53e45f">set_lora_enabled</a> (bool enabled)</td></tr>
 <tr class="memdesc:a26596a18b70fd79bdee468364d53e45f"><td class="mdescLeft">&#160;</td><td class="mdescRight">false runs the layer as its base layer, x W + b; true adds the update again.  <br /></td></tr>
 <tr class="separator:a26596a18b70fd79bdee468364d53e45f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a14d6cf6237dce5f163e9e1e17b947e01" id="r_a14d6cf6237dce5f163e9e1e17b947e01"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1LinearModule.html#a14d6cf6237dce5f163e9e1e17b947e01">attach_ia3</a> (bool feedforward)</td></tr>
+<tr class="memdesc:a14d6cf6237dce5f163e9e1e17b947e01"><td class="mdescLeft">&#160;</td><td class="mdescRight">Adds an IA³ rescaling vector l, all ones (TRN-10, <a class="el" href="ia3_8hpp.html" title="IA³ (Liu et al., 2022): fine-tune a frozen model by learning one rescaling vector per adapted Linear ...">ia3.hpp</a>): the layer then computes (x W + b) ⊙ l, or (x ⊙ l) W + b when <code>feedforward</code>. l joins <a class="el" href="classpulsatrix_1_1LinearModule.html#a8372922cd8c2538678e2ce4341f9a53f" title="weight, bias (unless built without one), then a LoRA adapter&#39;s lora_A.weight and lora_B....">named_parameters()</a> as <code>ia3_l</code>; <a class="el" href="classpulsatrix_1_1LinearModule.html#a1fb2aae6550d40a6c77313e0f29fce97" title="Computes the gradient w.r.t. this module&#39;s input, and accumulates the weight/bias gradients internall...">backward()</a> trains it; <a class="el" href="classpulsatrix_1_1LinearModule.html#a171e265daec59933d3a066bd5f368316" title="Epsilon-rule LRP relevance propagation (Bach et al. 2015), applied independently per example in the b...">propagate_relevance()</a> runs on the rescaled layer, W diag(l) with bias b ⊙ l, or diag(l) W.  <br /></td></tr>
+<tr class="separator:a14d6cf6237dce5f163e9e1e17b947e01"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4864148cbdabf0e29585d5d62f9ed98b" id="r_a4864148cbdabf0e29585d5d62f9ed98b"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1LinearModule.html#a4864148cbdabf0e29585d5d62f9ed98b">detach_ia3</a> ()</td></tr>
+<tr class="memdesc:a4864148cbdabf0e29585d5d62f9ed98b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Removes the vector. A merged one stays in the weights. No-op without one.  <br /></td></tr>
+<tr class="separator:a4864148cbdabf0e29585d5d62f9ed98b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae665125ad4a1d932d7dc4ccab3b4619e" id="r_ae665125ad4a1d932d7dc4ccab3b4619e"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classpulsatrix_1_1IA3Adapter.html">IA3Adapter</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1LinearModule.html#ae665125ad4a1d932d7dc4ccab3b4619e">ia3</a> ()</td></tr>
+<tr class="separator:ae665125ad4a1d932d7dc4ccab3b4619e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aac7f2fa78418c4cfaab2531a9e817fd9" id="r_aac7f2fa78418c4cfaab2531a9e817fd9"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classpulsatrix_1_1IA3Adapter.html">IA3Adapter</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1LinearModule.html#aac7f2fa78418c4cfaab2531a9e817fd9">ia3</a> () const</td></tr>
+<tr class="separator:aac7f2fa78418c4cfaab2531a9e817fd9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac420776d5c7acec4725a5a0edb0c1066" id="r_ac420776d5c7acec4725a5a0edb0c1066"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1LinearModule.html#ac420776d5c7acec4725a5a0edb0c1066">merge_ia3</a> ()</td></tr>
+<tr class="memdesc:ac420776d5c7acec4725a5a0edb0c1066"><td class="mdescLeft">&#160;</td><td class="mdescRight">Folds l into the weights (and, for output scaling, the bias), as PEFT's merge() does.  <br /></td></tr>
+<tr class="separator:ac420776d5c7acec4725a5a0edb0c1066"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5659c593689cef71511f51ad3248a101" id="r_a5659c593689cef71511f51ad3248a101"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1LinearModule.html#a5659c593689cef71511f51ad3248a101">unmerge_ia3</a> ()</td></tr>
+<tr class="memdesc:a5659c593689cef71511f51ad3248a101"><td class="mdescLeft">&#160;</td><td class="mdescRight">Divides it back out by l + 1e-8, as PEFT's unmerge() does.  <br /></td></tr>
+<tr class="separator:a5659c593689cef71511f51ad3248a101"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0917a5720cb891175720bcc6eee0bd29" id="r_a0917a5720cb891175720bcc6eee0bd29"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1LinearModule.html#a0917a5720cb891175720bcc6eee0bd29">set_ia3_enabled</a> (bool enabled)</td></tr>
+<tr class="memdesc:a0917a5720cb891175720bcc6eee0bd29"><td class="mdescLeft">&#160;</td><td class="mdescRight">false runs the base layer.  <br /></td></tr>
+<tr class="separator:a0917a5720cb891175720bcc6eee0bd29"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1fb2aae6550d40a6c77313e0f29fce97" id="r_a1fb2aae6550d40a6c77313e0f29fce97"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1LinearModule.html#a1fb2aae6550d40a6c77313e0f29fce97">backward</a> (const <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp;grad_output) override</td></tr>
 <tr class="memdesc:a1fb2aae6550d40a6c77313e0f29fce97"><td class="mdescLeft">&#160;</td><td class="mdescRight">Computes the gradient w.r.t. this module's input, and accumulates the weight/bias gradients internally (summed across the batch).  <br /></td></tr>
 <tr class="separator:a1fb2aae6550d40a6c77313e0f29fce97"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -203,7 +222,7 @@ Public Member Functions</h2></td></tr>
 <tr class="memdesc:a7e120c973f4f9ead0b886e490039866a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Implements every LRPRule.  <br /></td></tr>
 <tr class="separator:a7e120c973f4f9ead0b886e490039866a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8372922cd8c2538678e2ce4341f9a53f" id="r_a8372922cd8c2538678e2ce4341f9a53f"><td class="memItemLeft" align="right" valign="top">std::vector&lt; <a class="el" href="structpulsatrix_1_1NamedParamRef.html">NamedParamRef</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1LinearModule.html#a8372922cd8c2538678e2ce4341f9a53f">named_parameters</a> () override</td></tr>
-<tr class="memdesc:a8372922cd8c2538678e2ce4341f9a53f"><td class="mdescLeft">&#160;</td><td class="mdescRight"><code>weight</code>, <code>bias</code> (unless built without one), then a LoRA adapter's <code>lora_A.weight</code> and <code>lora_B.weight</code>.  <br /></td></tr>
+<tr class="memdesc:a8372922cd8c2538678e2ce4341f9a53f"><td class="mdescLeft">&#160;</td><td class="mdescRight"><code>weight</code>, <code>bias</code> (unless built without one), then a LoRA adapter's <code>lora_A.weight</code> and <code>lora_B.weight</code>, or an IA³ vector's <code>ia3_l</code>.  <br /></td></tr>
 <tr class="separator:a8372922cd8c2538678e2ce4341f9a53f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a282449c0454da4a0eff12d56c6e8c905" id="r_a282449c0454da4a0eff12d56c6e8c905"><td class="memItemLeft" align="right" valign="top">std::optional&lt; <a class="el" href="namespacepulsatrix.html#a5480c8cbe462fe3f5a8eb04a8c579e6e">DeviceType</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1LinearModule.html#a282449c0454da4a0eff12d56c6e8c905">compute_device</a> () const override</td></tr>
 <tr class="memdesc:a282449c0454da4a0eff12d56c6e8c905"><td class="mdescLeft">&#160;</td><td class="mdescRight">Where this layer computes, so <a class="el" href="classpulsatrix_1_1Module.html#a5cb3b4aac3d2364c973009413fde6a21" title="Runs this module&#39;s forward computation.">forward()</a> rejects an input on another device (FND-8).  <br /></td></tr>
@@ -404,6 +423,32 @@ Weights/biases are owned here as member Tensors, not <a class="el" href="classpu
 </div>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
+<a id="a14d6cf6237dce5f163e9e1e17b947e01" name="a14d6cf6237dce5f163e9e1e17b947e01"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a14d6cf6237dce5f163e9e1e17b947e01">&#9670;&#160;</a></span>attach_ia3()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void pulsatrix::LinearModule::attach_ia3 </td>
+          <td>(</td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>feedforward</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Adds an IA³ rescaling vector l, all ones (TRN-10, <a class="el" href="ia3_8hpp.html" title="IA³ (Liu et al., 2022): fine-tune a frozen model by learning one rescaling vector per adapted Linear ...">ia3.hpp</a>): the layer then computes (x W + b) ⊙ l, or (x ⊙ l) W + b when <code>feedforward</code>. l joins <a class="el" href="classpulsatrix_1_1LinearModule.html#a8372922cd8c2538678e2ce4341f9a53f" title="weight, bias (unless built without one), then a LoRA adapter&#39;s lora_A.weight and lora_B....">named_parameters()</a> as <code>ia3_l</code>; <a class="el" href="classpulsatrix_1_1LinearModule.html#a1fb2aae6550d40a6c77313e0f29fce97" title="Computes the gradient w.r.t. this module&#39;s input, and accumulates the weight/bias gradients internall...">backward()</a> trains it; <a class="el" href="classpulsatrix_1_1LinearModule.html#a171e265daec59933d3a066bd5f368316" title="Epsilon-rule LRP relevance propagation (Bach et al. 2015), applied independently per example in the b...">propagate_relevance()</a> runs on the rescaled layer, W diag(l) with bias b ⊙ l, or diag(l) W. </p>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname">std::logic_error</td><td>if the layer already has an IA³ vector or a LoRA adapter. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
 <a id="afe2a9be2b5d32fdabcee32a33afdeedd" name="afe2a9be2b5d32fdabcee32a33afdeedd"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#afe2a9be2b5d32fdabcee32a33afdeedd">&#9670;&#160;</a></span>attach_lora()</h2>
 
@@ -557,6 +602,25 @@ Device-generic: runs on Cpu, Cuda or Hip tensors (GPU-native-kernels Mission 1).
 
 </div>
 </div>
+<a id="a4864148cbdabf0e29585d5d62f9ed98b" name="a4864148cbdabf0e29585d5d62f9ed98b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4864148cbdabf0e29585d5d62f9ed98b">&#9670;&#160;</a></span>detach_ia3()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void pulsatrix::LinearModule::detach_ia3 </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Removes the vector. A merged one stays in the weights. No-op without one. </p>
+
+</div>
+</div>
 <a id="ad13314b17ae1e48809864fa0e292a111" name="ad13314b17ae1e48809864fa0e292a111"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ad13314b17ae1e48809864fa0e292a111">&#9670;&#160;</a></span>detach_lora()</h2>
 
@@ -633,6 +697,56 @@ Device-generic: runs on Cpu, Cuda or Hip tensors (GPU-native-kernels Mission 1).
 </div><div class="memdoc">
 
 <p><code>relu.forward(forward(input))</code> with the bias add and the ReLU in one kernel (HIP-6). Both layers end with the cached state the two calls leave, so <a class="el" href="classpulsatrix_1_1LinearModule.html#a1fb2aae6550d40a6c77313e0f29fce97" title="Computes the gradient w.r.t. this module&#39;s input, and accumulates the weight/bias gradients internall...">backward()</a> and <a class="el" href="classpulsatrix_1_1LRP.html" title="Whole-model LRP: runs the forward pass, seeds relevance at the chosen output(s), and propagates it to...">LRP</a> are unchanged, and the values are identical. <a class="el" href="classpulsatrix_1_1SequentialModule.html" title="Composes layers_[0..n-1] in forward() order; backward()/propagate_relevance() chain layers_[n-1....">SequentialModule</a> uses it for every <a class="el" href="classpulsatrix_1_1LinearModule.html" title="y = x @ W + b, batched (x is (N, in_features), y is (N, out_features)) – migrated from the original u...">LinearModule</a> followed by a <a class="el" href="classpulsatrix_1_1ReluModule.html" title="y = max(x, 0), elementwise. No parameters, no parameter gradients.">ReluModule</a>. </p>
+
+</div>
+</div>
+<a id="ae665125ad4a1d932d7dc4ccab3b4619e" name="ae665125ad4a1d932d7dc4ccab3b4619e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae665125ad4a1d932d7dc4ccab3b4619e">&#9670;&#160;</a></span>ia3() <span class="overload">[1/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classpulsatrix_1_1IA3Adapter.html">IA3Adapter</a> * pulsatrix::LinearModule::ia3 </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="aac7f2fa78418c4cfaab2531a9e817fd9" name="aac7f2fa78418c4cfaab2531a9e817fd9"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aac7f2fa78418c4cfaab2531a9e817fd9">&#9670;&#160;</a></span>ia3() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">const <a class="el" href="classpulsatrix_1_1IA3Adapter.html">IA3Adapter</a> * pulsatrix::LinearModule::ia3 </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
 
 </div>
 </div>
@@ -713,6 +827,31 @@ Device-generic: runs on Cpu, Cuda or Hip tensors (GPU-native-kernels Mission 1).
 
 </div>
 </div>
+<a id="ac420776d5c7acec4725a5a0edb0c1066" name="ac420776d5c7acec4725a5a0edb0c1066"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac420776d5c7acec4725a5a0edb0c1066">&#9670;&#160;</a></span>merge_ia3()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void pulsatrix::LinearModule::merge_ia3 </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Folds l into the weights (and, for output scaling, the bias), as PEFT's merge() does. </p>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname">std::logic_error</td><td>without an IA³ vector, or if it is merged or disabled. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
 <a id="adb84050fe946873276d5ec6c37ee11b6" name="adb84050fe946873276d5ec6c37ee11b6"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#adb84050fe946873276d5ec6c37ee11b6">&#9670;&#160;</a></span>merge_lora()</h2>
 
@@ -761,7 +900,7 @@ Device-generic: runs on Cpu, Cuda or Hip tensors (GPU-native-kernels Mission 1).
 </table>
 </div><div class="memdoc">
 
-<p><code>weight</code>, <code>bias</code> (unless built without one), then a LoRA adapter's <code>lora_A.weight</code> and <code>lora_B.weight</code>. </p>
+<p><code>weight</code>, <code>bias</code> (unless built without one), then a LoRA adapter's <code>lora_A.weight</code> and <code>lora_B.weight</code>, or an IA³ vector's <code>ia3_l</code>. </p>
 
 <p>Reimplemented from <a class="el" href="classpulsatrix_1_1Module.html#a176c8304fb06ac2792bc046204b65a40">pulsatrix::Module</a>.</p>
 
@@ -983,6 +1122,32 @@ config.rule selects Epsilon (default, as above), Gamma, AlphaBeta or ZBox, with 
 
 </div>
 </div>
+<a id="a0917a5720cb891175720bcc6eee0bd29" name="a0917a5720cb891175720bcc6eee0bd29"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0917a5720cb891175720bcc6eee0bd29">&#9670;&#160;</a></span>set_ia3_enabled()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void pulsatrix::LinearModule::set_ia3_enabled </td>
+          <td>(</td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>enabled</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>false runs the base layer. </p>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname">std::logic_error</td><td>without a vector, or while merged. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
 <a id="a26596a18b70fd79bdee468364d53e45f" name="a26596a18b70fd79bdee468364d53e45f"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a26596a18b70fd79bdee468364d53e45f">&#9670;&#160;</a></span>set_lora_enabled()</h2>
 
@@ -1076,6 +1241,31 @@ config.rule selects Epsilon (default, as above), Gamma, AlphaBeta or ZBox, with 
 <p>Implements every LRPRule. </p>
 
 <p>Reimplemented from <a class="el" href="classpulsatrix_1_1Module.html#acad2aa6565d456d5a57be421c05537b6">pulsatrix::Module</a>.</p>
+
+</div>
+</div>
+<a id="a5659c593689cef71511f51ad3248a101" name="a5659c593689cef71511f51ad3248a101"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5659c593689cef71511f51ad3248a101">&#9670;&#160;</a></span>unmerge_ia3()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void pulsatrix::LinearModule::unmerge_ia3 </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Divides it back out by l + 1e-8, as PEFT's unmerge() does. </p>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname">std::logic_error</td><td>without a merged vector. </td></tr>
+  </table>
+  </dd>
+</dl>
 
 </div>
 </div>

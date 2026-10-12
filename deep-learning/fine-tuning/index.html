@@ -583,6 +583,56 @@
   
 </li>
       
+        <li class="md-nav__item">
+  <a href="#ia3" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        IA³
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#what-did-the-fine-tune-change" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        What did the fine-tune change?
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="What did the fine-tune change?">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#the-explanation-before-and-after" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The explanation, before and after
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#intruder-dimensions-in-the-weights" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Intruder dimensions in the weights
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
     </ul>
   
 </nav>
@@ -2666,6 +2716,56 @@
   
 </li>
       
+        <li class="md-nav__item">
+  <a href="#ia3" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        IA³
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#what-did-the-fine-tune-change" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        What did the fine-tune change?
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="What did the fine-tune change?">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#the-explanation-before-and-after" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The explanation, before and after
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#intruder-dimensions-in-the-weights" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Intruder dimensions in the weights
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
     </ul>
   
 </nav>
@@ -2942,6 +3042,132 @@ file. pyreft saves each intervention as a PyTorch <code>.bin</code> state dict: 
 <li>Only the linear activation, pyreft's default, is supported; it is what keeps LRP exact.</li>
 <li>pyreft's dropout on the intervention isn't supported.</li>
 </ul>
+<h2 id="ia3">IA³<a class="headerlink" href="#ia3" title="Permanent link">&para;</a></h2>
+<p>IA³ (Liu et al., 2022, "Few-Shot Parameter-Efficient Fine-Tuning is Better and Cheaper than
+In-Context Learning") learns one rescaling vector per adapted layer and nothing else:</p>
+<div class="highlight"><pre><span></span><code>y = (x W + b) ⊙ l        keys and values: the layer's output, bias included
+y = (x ⊙ l) W + b        the MLP's down projection: its input, the inner activations
+</code></pre></div>
+<p>Each vector starts at 1, so the adapted model starts out as the base model. There is one value
+per channel: about 58 thousand values for SmolLM2-135M on the default layers, against 4.9
+million for rank-16 LoRA on every projection. That makes the fine-tune trivially explainable. Each
+entry of l says how much the fine-tune amplified (above 1), damped (between 0 and 1) or flipped
+(below 0) one key, value or MLP channel.</p>
+<div class="highlight"><pre><span></span><code><span class="cp">#include</span><span class="w"> </span><span class="cpf">"pulsatrix/ia3.hpp"</span>
+
+<span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="o">&gt;</span><span class="w"> </span><span class="n">adapted</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">ApplyIA3</span><span class="p">(</span><span class="o">*</span><span class="n">model</span><span class="p">);</span><span class="w">  </span><span class="c1">// k_proj, v_proj, down_proj; freezes the rest</span>
+<span class="c1">// ... train as with LoRA ...</span>
+<span class="n">SaveIA3Adapter</span><span class="p">(</span><span class="o">*</span><span class="n">model</span><span class="p">,</span><span class="w"> </span><span class="s">"my-ia3"</span><span class="p">,</span><span class="w"> </span><span class="n">HuggingFaceMapping</span><span class="p">(</span><span class="n">model</span><span class="o">-&gt;</span><span class="n">config</span><span class="p">()));</span>
+</code></pre></div>
+<p><code>IA3Config::target_modules</code> and <code>feedforward_modules</code> choose the layers, with PEFT's matching:
+- <strong>Targets.</strong> The default is the paper's: every <code>k_proj</code> and <code>v_proj</code>, and the MLP's output
+  projection, <code>down_proj</code> in a <code>CausalLM</code> or <code>fc2</code> in an <code>EncoderLM</code>. PEFT's own default for
+  Qwen2 rescales <code>q_proj</code> instead of <code>k_proj</code>.
+- <strong>Feedforward modules.</strong> The layers whose input is rescaled rather than their output. Each one
+  must also be a target.</p>
+<p>The vector is in <code>named_parameters()</code> as <code>&lt;layer&gt;.ia3_l</code>: <code>(out)</code> for output scaling and <code>(in)</code>
+for a feedforward layer.</p>
+<table>
+<thead>
+<tr>
+<th>Call</th>
+<th>Effect</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>MergeIA3(model)</code></td>
+<td>Folds each vector into its weights: W diag(l), and b ⊙ l for output scaling; diag(l) W for a feedforward layer.</td>
+</tr>
+<tr>
+<td><code>UnmergeIA3(model)</code></td>
+<td>Divides it back out by l + 1e-8, as PEFT does. The weights return up to float rounding.</td>
+</tr>
+<tr>
+<td><code>SetIA3Enabled(model, false)</code></td>
+<td>Runs the base model. Not allowed while merged.</td>
+</tr>
+<tr>
+<td><code>RemoveIA3(model)</code></td>
+<td>Removes the vectors; merged ones stay in the weights.</td>
+</tr>
+<tr>
+<td><code>IA3Layers(model)</code></td>
+<td>The adapted layers, by name.</td>
+</tr>
+</tbody>
+</table>
+<p>A layer takes an IA³ vector or a LoRA adapter, not both.</p>
+<p><strong>Explaining an IA³ model.</strong> Both forms are the base layer with rescaled weights, so
+<code>propagate_relevance()</code> runs every rule on the rescaled layer, exactly as if it were merged. There
+is nothing to split. Under the epsilon rule, rescaling an output channel doesn't change how that
+channel's relevance spreads over the inputs. What changes is how much relevance reaches the channel
+from above, which is the fine-tune's effect.</p>
+<p><strong>PEFT files.</strong> <code>SaveIA3Adapter()</code> writes PEFT's adapter directory: <code>base_model.model.&lt;module&gt;.ia3_l</code>
+with shape <code>(out, 1)</code> or <code>(1, in)</code>, and an <code>adapter_config.json</code> with <code>target_modules</code> and
+<code>feedforward_modules</code>. <code>LoadIA3Adapter()</code> reads one. It tells a feedforward layer by its vector's
+shape and checks that against <code>feedforward_modules</code>. It refuses <code>fan_in_fan_out</code> and
+<code>modules_to_save</code>.</p>
+<p><strong>Checked against PEFT.</strong> <code>tools/golden/make_ia3_golden.py</code> makes an IA³ adapter with PEFT 0.21.0
+on a tiny Qwen2 model, on <code>k_proj</code>, <code>v_proj</code> and <code>down_proj</code>. The vectors are redrawn around 1 so
+they matter, and <code>k_proj</code> and <code>v_proj</code> have biases, which output scaling multiplies too. Loaded
+into pulsatrix:</p>
+<ul>
+<li>the logits match PEFT's to 1e-4, on the CPU and on the GPU;</li>
+<li>the gradients of all six vectors match;</li>
+<li>merging and unmerging leave the logits unchanged;</li>
+<li><code>SaveIA3Adapter()</code> writes back PEFT's keys, shapes and values.</li>
+</ul>
+<h2 id="what-did-the-fine-tune-change">What did the fine-tune change?<a class="headerlink" href="#what-did-the-fine-tune-change" title="Permanent link">&para;</a></h2>
+<p>Every method above makes a fine-tune you can switch on and off. <code>fine_tune_diff.hpp</code> compares the
+two, in the model's behaviour and in its weights.</p>
+<h3 id="the-explanation-before-and-after">The explanation, before and after<a class="headerlink" href="#the-explanation-before-and-after" title="Permanent link">&para;</a></h3>
+<p><code>DiffAdapterRelevance()</code> explains the same prediction twice:
+1. with the fine-tune on (LoRA adapters, IA³ vectors and LoReFT interventions);
+2. with the fine-tune off.</p>
+<p>It returns both input relevances and their difference. By default both runs explain the token the
+fine-tuned model predicts at the last position. Each run seeds LRP with its own model's score for
+that token, so the two relevances add up to each model's own logit.</p>
+<div class="highlight"><pre><span></span><code><span class="cp">#include</span><span class="w"> </span><span class="cpf">"pulsatrix/fine_tune_diff.hpp"</span>
+
+<span class="n">RelevanceDiff</span><span class="w"> </span><span class="n">d</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">DiffAdapterRelevance</span><span class="p">(</span><span class="o">*</span><span class="n">model</span><span class="p">,</span><span class="w"> </span><span class="n">tokens</span><span class="p">);</span><span class="w">  </span><span class="c1">// (N, L) per token for a CausalLM</span>
+<span class="c1">// d.tuned, d.base, d.difference, d.classes, d.tuned_scores, d.base_scores</span>
+</code></pre></div>
+<p><code>DiffTarget</code> picks another position or explicit classes. <code>DiffRelevance(base, tuned, input)</code> does
+the same for two separate models, such as a full fine-tune and its base. The adapters are switched
+back on afterwards, even if a call throws. A merged adapter can't be switched off, so it's refused.</p>
+<p>Across a dataset, <code>TokenRelevanceShift</code> collects the differences by input token. It divides each
+sample's relevance by that model's score first, so every sample counts alike. Then <code>top(n)</code> lists
+the tokens the fine-tune made the model rely on more, and <code>top(n, true)</code> those it relies on less:</p>
+<div class="highlight"><pre><span></span><code><span class="n">TokenRelevanceShift</span><span class="w"> </span><span class="n">shift</span><span class="p">;</span>
+<span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="n">Tensor</span><span class="o">&amp;</span><span class="w"> </span><span class="n">batch</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="n">batches</span><span class="p">)</span><span class="w"> </span><span class="n">shift</span><span class="p">.</span><span class="n">add</span><span class="p">(</span><span class="n">batch</span><span class="p">,</span><span class="w"> </span><span class="n">DiffAdapterRelevance</span><span class="p">(</span><span class="o">*</span><span class="n">model</span><span class="p">,</span><span class="w"> </span><span class="n">batch</span><span class="p">));</span>
+<span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="n">TokenShift</span><span class="o">&amp;</span><span class="w"> </span><span class="n">t</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="n">shift</span><span class="p">.</span><span class="n">top</span><span class="p">(</span><span class="mi">20</span><span class="p">,</span><span class="w"> </span><span class="cm">/*decrease=*/</span><span class="nb">false</span><span class="p">,</span><span class="w"> </span><span class="cm">/*min_count=*/</span><span class="mi">5</span><span class="p">))</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">std</span><span class="o">::</span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">tokenizer</span><span class="p">.</span><span class="n">decode</span><span class="p">({</span><span class="n">t</span><span class="p">.</span><span class="n">token</span><span class="p">})</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">": "</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">t</span><span class="p">.</span><span class="n">base</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">" -&gt; "</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">t</span><span class="p">.</span><span class="n">tuned</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">"</span><span class="se">\n</span><span class="s">"</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div>
+<p>For which layer, and through which path, the fine-tune changed the explanation, use the
+per-layer splits: <code>LoraRelevanceSplit()</code> for LoRA and <code>last_edit_relevance()</code> for LoReFT.</p>
+<h3 id="intruder-dimensions-in-the-weights">Intruder dimensions in the weights<a class="headerlink" href="#intruder-dimensions-in-the-weights" title="Permanent link">&para;</a></h3>
+<p>Shuttleworth et al. (2024, "LoRA vs Full Fine-tuning: An Illusion of Equivalence") found that LoRA
+adds new high-ranking singular vectors to the weights. Full fine-tuning doesn't. They call these
+vectors <strong>intruder dimensions</strong>. A singular vector of the fine-tuned matrix is one when its cosine
+similarity with every singular vector of the base matrix is below a threshold ε. The paper counts
+them among the top k = 10.</p>
+<div class="highlight"><pre><span></span><code><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="n">LayerIntruders</span><span class="o">&amp;</span><span class="w"> </span><span class="n">layer</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="n">LoraIntruderDimensions</span><span class="p">(</span><span class="o">*</span><span class="n">model</span><span class="p">,</span><span class="w"> </span><span class="cm">/*k=*/</span><span class="mi">10</span><span class="p">,</span><span class="w"> </span><span class="cm">/*epsilon=*/</span><span class="mf">0.6</span><span class="p">))</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">std</span><span class="o">::</span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">layer</span><span class="p">.</span><span class="n">name</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">": "</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">layer</span><span class="p">.</span><span class="n">result</span><span class="p">.</span><span class="n">count</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">" intruders</span><span class="se">\n</span><span class="s">"</span><span class="p">;</span>
+<span class="p">}</span>
+<span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="n">LayerIntruders</span><span class="o">&gt;</span><span class="w"> </span><span class="n">full</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">IntruderDimensions</span><span class="p">(</span><span class="o">*</span><span class="n">base_model</span><span class="p">,</span><span class="w"> </span><span class="o">*</span><span class="n">tuned_model</span><span class="p">);</span><span class="w">  </span><span class="c1">// a full fine-tune</span>
+</code></pre></div>
+<p>Each result holds every top vector's largest |cosine| with the base vectors, so any other threshold
+can be applied after the fact. The paper sweeps ε rather than fixing it, and the default of 0.6 is a
+starting point, not a standard.</p>
+<p>How this follows the paper:
+- <strong>Which vectors.</strong> The paper compares PyTorch's left singular vectors, those of the
+  <code>(out, in)</code> weight. Here that is the output space of pulsatrix's <code>(in, out)</code> weight.
+- <strong>Absolute value.</strong> The paper's Algorithm 1 compares cosines without an absolute value. A
+  singular vector's sign is arbitrary, so pulsatrix uses |cos|.
+- <strong>Cost.</strong> It computes the singular vectors as eigenvectors of WᵀW, in double on the CPU, which
+  costs O(out³) per layer.</p>
 
 
 

@@ -495,6 +495,9 @@ Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1DeviceBackend.html">DeviceBackend</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Vendor-agnostic compute/memory backend. <a class="el" href="classpulsatrix_1_1CPUBackend.html" title="CPU-resident DeviceBackend implementation. Reference implementation every other backend (CUDABackend,...">CPUBackend</a>, <a class="el" href="classpulsatrix_1_1CUDABackend.html" title="CUDA-resident DeviceBackend implementation.">CUDABackend</a> (Phase 1.5), and <a class="el" href="classpulsatrix_1_1HIPBackend.html" title="HIP-resident DeviceBackend implementation, targeting AMD GPUs via ROCm.">HIPBackend</a> (Phase 1.6) all implement this contract; <a class="el" href="classpulsatrix_1_1Tensor.html" title="N-dimensional tensor. Owns its data buffer exclusively; a DeviceBackend* is injected (not owned) – th...">Tensor</a> and <a class="el" href="classpulsatrix_1_1ComputationGraph.html" title="Owns every Node in a computation graph and exposes read access for graph-walking code (autograd&#39;s bac...">ComputationGraph</a> depend only on this interface, never on a concrete backend's types.  <a href="classpulsatrix_1_1DeviceBackend.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpulsatrix_1_1DiffTarget.html">DiffTarget</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Which output both models are asked to explain.  <a href="structpulsatrix_1_1DiffTarget.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1DigitsPreTokenizer.html">DigitsPreTokenizer</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Splits off numeric characters (Unicode N), one by one or in runs (Hugging Face's Digits).  <a href="classpulsatrix_1_1DigitsPreTokenizer.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -715,6 +718,12 @@ Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1HyperGridEnv.html">HyperGridEnv</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">An n-dimensional grid: state is an integer coordinate in <code>[0, H-1]^ndim</code>, actions increment one coordinate or stop the episode, reward is concentrated near the grid's corners.  <a href="classpulsatrix_1_1HyperGridEnv.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1IA3Adapter.html">IA3Adapter</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">One layer's rescaling vector l: <code>(out)</code> for an output-scaling layer, <code>(in)</code> for a feedforward one. <a class="el" href="classpulsatrix_1_1LinearModule.html" title="y = x @ W + b, batched (x is (N, in_features), y is (N, out_features)) – migrated from the original u...">LinearModule</a> owns and drives it; read it through <a class="el" href="classpulsatrix_1_1LinearModule.html#ae665125ad4a1d932d7dc4ccab3b4619e">LinearModule::ia3()</a>.  <a href="classpulsatrix_1_1IA3Adapter.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpulsatrix_1_1IA3Config.html">IA3Config</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Which layers IA³ rescales, PEFT style (see <a class="el" href="structpulsatrix_1_1LoRAConfig.html#a9e922c9989bc33eb8d8b7f433d862965" title="The layers ApplyLora() adapts, PEFT style: a layer matches a name if its own name is that name or end...">LoRAConfig::target_modules</a> for the matching).  <a href="structpulsatrix_1_1IA3Config.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpulsatrix_1_1IceResult.html">IceResult</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">ICE curves for one feature: <code>curves[i][k] = f(x_i with feature j set to grid[k])[target]</code>.  <a href="structpulsatrix_1_1IceResult.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -744,6 +753,9 @@ Classes</h2></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1IntegratedGradients.html">IntegratedGradients</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">IG_i(x) = (x_i - baseline_i) * (1/steps) * sum_{k=1}^{steps} d(F(baseline + (k/steps)(x - baseline)))/dx_i &ndash; a Riemann-sum approximation of the straight-line path integral from baseline to input.  <a href="classpulsatrix_1_1IntegratedGradients.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpulsatrix_1_1IntruderResult.html">IntruderResult</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Intruder dimensions of one weight matrix (Shuttleworth et al., 2024, Definition 3.1).  <a href="structpulsatrix_1_1IntruderResult.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1IterableDataset.html">IterableDataset</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Streaming dataset abstraction for sources with no random access or no known length (sharded files, generators) &ndash; pulsatrix's analogue of PyTorch's <a class="el" href="classpulsatrix_1_1IterableDataset.html" title="Streaming dataset abstraction for sources with no random access or no known length (sharded files,...">IterableDataset</a> / tf.data's source-op model. <a class="el" href="classpulsatrix_1_1DataLoader.html" title="Orchestrates sampling and collation into batches – pulsatrix&#39;s DataLoader (PyTorch DataLoader / torch...">DataLoader</a> treats this and <a class="el" href="classpulsatrix_1_1Dataset.html" title="Random-access dataset abstraction – pulsatrix&#39;s analogue of PyTorch&#39;s torch.utils....">Dataset</a> via a common internal adapter (<a class="el" href="data__loader_8hpp.html" title="Orchestrates sampling, fetch, and collation into batches.">data_loader.hpp</a>) so both share one fetch/collate path.  <a href="classpulsatrix_1_1IterableDataset.html#details">More...</a><br /></td></tr>
@@ -776,6 +788,9 @@ Classes</h2></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpulsatrix_1_1LatentScaling.html">LatentScaling</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Latent Scaling (Minder et al., Eq. 4): how much of latent j's b-side decoder direction each source actually needs. For a target Y^m over the inputs where it's computed, <code>β^m = ⟨Y^m d, f⟩ / (|f|² |d|²)</code> with <code>d = d_j^b</code>, the best scale of <code>f d</code> against Y^m.  <a href="structpulsatrix_1_1LatentScaling.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpulsatrix_1_1LayerIntruders.html">LayerIntruders</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="namespacepulsatrix.html#a34d6c6b45318eaed8675c38b19af9f47" title="Counts the top-k singular vectors of tuned that no singular vector of base resembles: |cos| &lt; epsilon...">IntruderDimensions()</a> for one named layer.  <a href="structpulsatrix_1_1LayerIntruders.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1LayerNormModule.html">LayerNormModule</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">y_{n,i} = gamma_i * (x_{n,i} - mu_n)/std_n + beta_i, mu_n = mean_i(x_{n,i}), std_n = sqrt(var_i(x_{n,i}) + eps), computed independently per batch row n. Batched ((N, num_features)), migrated from the original unbatched (rank-1) scope by campaign_exai_dl_library_batch_dimension_support.  <a href="classpulsatrix_1_1LayerNormModule.html#details">More...</a><br /></td></tr>
@@ -1103,6 +1118,9 @@ Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpulsatrix_1_1RecurrentCellArgs.html">RecurrentCellArgs</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Operand pointers for <a class="el" href="classpulsatrix_1_1DeviceBackend.html#a3f1a7579cba30481c5bc8cfab97c5bbd" title="One fused recurrent-cell pass over n elements (see RecurrentCellOp for slots).">DeviceBackend::recurrent_cell</a> (passed to kernels by value).  <a href="structpulsatrix_1_1RecurrentCellArgs.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpulsatrix_1_1RelevanceDiff.html">RelevanceDiff</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The two explanations of the same prediction, and their difference.  <a href="structpulsatrix_1_1RelevanceDiff.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpulsatrix_1_1RelevanceGraphOptions.html">RelevanceGraphOptions</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1ReluModule.html">ReluModule</a></td></tr>
@@ -1426,8 +1444,14 @@ Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpulsatrix_1_1TokenRelevanceDocument.html">TokenRelevanceDocument</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight"><code>pulsatrix.token_relevance.v1</code>: relevance scores over the pieces of a text, in reading order. <a class="el" href="namespacepulsatrix.html#ace54ebd40de79191dcfd03d924f32d0e" title="A token-level document for text from its Encoding and one score per token.">MakeTokenRelevanceDocument()</a> and <a class="el" href="namespacepulsatrix.html#ae0fad8b255ac061cc8652aac55293e51" title="A word-level document for text from AggregateToWords(): each word scored, the text between words as u...">MakeWordRelevanceDocument()</a> (<code><a class="el" href="text__relevance_8hpp.html" title="Token relevance documents from real explanations (VIZ-6a): a tokenizer&#39;s Encoding or TOK-4&#39;s word sco...">viz/text_relevance.hpp</a></code>) build one from a tokenizer's <a class="el" href="structpulsatrix_1_1Encoding.html" title="The result of encoding one text.">Encoding</a> or from word scores.  <a href="structpulsatrix_1_1TokenRelevanceDocument.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1TokenRelevanceShift.html">TokenRelevanceShift</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Collects <a class="el" href="structpulsatrix_1_1RelevanceDiff.html" title="The two explanations of the same prediction, and their difference.">RelevanceDiff</a> results over a dataset by input token: which tokens a fine-tune made the model rely on more, and which less.  <a href="classpulsatrix_1_1TokenRelevanceShift.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1TokenRelevanceView.html">TokenRelevanceView</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Draws a document's pieces as running text that wraps to the window, each scored piece on a background colored by its relevance (DivergingColormap, scaled to the largest |relevance|), as the SVG token strip does. Unscored pieces (the spaces between words) are plain text, and a newline starts a new line. Hovering a piece shows its text and score.  <a href="classpulsatrix_1_1TokenRelevanceView.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpulsatrix_1_1TokenShift.html">TokenShift</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">One token's relevance shift, averaged over every occurrence seen.  <a href="structpulsatrix_1_1TokenShift.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpulsatrix_1_1TopKResult.html">TopKResult</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="namespacepulsatrix.html#a307af1ed1935c2c78f7e2aead3f70c45" title="Selects the k largest (or smallest) entries of every row along the last dimension.">top_k()</a>'s result: the selected values and their positions along the last dimension.  <a href="structpulsatrix_1_1TopKResult.html#details">More...</a><br /></td></tr>
@@ -2311,6 +2335,21 @@ Functions</h2></td></tr>
 <tr class="memdesc:a15496a5463aed293576fafbe396c0073"><td class="mdescLeft">&#160;</td><td class="mdescRight">Feature absorption (Chanin et al.; SAEBench's version, in outline). A concept is absorbed when the features that stand for it stay silent on an input that has it, because a more specific feature fires instead and carries its direction: a "starts
        with S" feature that skips "short", which a "short" feature covers.  <br /></td></tr>
 <tr class="separator:a15496a5463aed293576fafbe396c0073"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afa9ba633960497e6640e150f179a7a1a" id="r_afa9ba633960497e6640e150f179a7a1a"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structpulsatrix_1_1RelevanceDiff.html">RelevanceDiff</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#afa9ba633960497e6640e150f179a7a1a">DiffRelevance</a> (<a class="el" href="classpulsatrix_1_1Module.html">Module</a> &amp;base, <a class="el" href="classpulsatrix_1_1Module.html">Module</a> &amp;tuned, const <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp;input, const <a class="el" href="structpulsatrix_1_1DiffTarget.html">DiffTarget</a> &amp;target={}, const <a class="el" href="structpulsatrix_1_1LRPRuleConfig.html">LRPRuleConfig</a> &amp;config={})</td></tr>
+<tr class="memdesc:afa9ba633960497e6640e150f179a7a1a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Explains the same prediction in both models: forward() on <code>input</code>, then relevance seeded with each model's own score for the class, at the class only.  <br /></td></tr>
+<tr class="separator:afa9ba633960497e6640e150f179a7a1a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8d59b405f0ea8a3253013224d8a5914d" id="r_a8d59b405f0ea8a3253013224d8a5914d"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structpulsatrix_1_1RelevanceDiff.html">RelevanceDiff</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#a8d59b405f0ea8a3253013224d8a5914d">DiffAdapterRelevance</a> (<a class="el" href="classpulsatrix_1_1Module.html">Module</a> &amp;model, const <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp;input, const <a class="el" href="structpulsatrix_1_1DiffTarget.html">DiffTarget</a> &amp;target={}, const <a class="el" href="structpulsatrix_1_1LRPRuleConfig.html">LRPRuleConfig</a> &amp;config={})</td></tr>
+<tr class="memdesc:a8d59b405f0ea8a3253013224d8a5914d"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="namespacepulsatrix.html#afa9ba633960497e6640e150f179a7a1a" title="Explains the same prediction in both models: forward() on input, then relevance seeded with each mode...">DiffRelevance()</a> for a fine-tune held as adapters on <code>model:</code> the tuned run with its LoRA adapters, IA³ vectors and (for a <a class="el" href="classpulsatrix_1_1CausalLM.html" title="Token embedding, num_hidden_layers pre-norm transformer blocks, a final RMSNorm and a language-model ...">CausalLM</a>) interventions on, the base run with them off. They are back on afterwards, even if a call throws.  <br /></td></tr>
+<tr class="separator:a8d59b405f0ea8a3253013224d8a5914d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a34d6c6b45318eaed8675c38b19af9f47" id="r_a34d6c6b45318eaed8675c38b19af9f47"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structpulsatrix_1_1IntruderResult.html">IntruderResult</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#a34d6c6b45318eaed8675c38b19af9f47">IntruderDimensions</a> (const <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp;base, const <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp;tuned, int64_t k=10, double epsilon=0.6)</td></tr>
+<tr class="memdesc:a34d6c6b45318eaed8675c38b19af9f47"><td class="mdescLeft">&#160;</td><td class="mdescRight">Counts the top-k singular vectors of <code>tuned</code> that no singular vector of <code>base</code> resembles: |cos| &lt; <code>epsilon</code> against every one of them.  <br /></td></tr>
+<tr class="separator:a34d6c6b45318eaed8675c38b19af9f47"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab63dc3dcd7db34f07450a322395b8a52" id="r_ab63dc3dcd7db34f07450a322395b8a52"><td class="memItemLeft" align="right" valign="top">std::vector&lt; <a class="el" href="structpulsatrix_1_1LayerIntruders.html">LayerIntruders</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#ab63dc3dcd7db34f07450a322395b8a52">LoraIntruderDimensions</a> (<a class="el" href="classpulsatrix_1_1Module.html">Module</a> &amp;model, int64_t k=10, double epsilon=0.6)</td></tr>
+<tr class="memdesc:ab63dc3dcd7db34f07450a322395b8a52"><td class="mdescLeft">&#160;</td><td class="mdescRight">Intruder dimensions of every LoRA layer: its base weight W against W + (alpha / r) A B.  <br /></td></tr>
+<tr class="separator:ab63dc3dcd7db34f07450a322395b8a52"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a954c77c8cbc4a345064611292be22ae0" id="r_a954c77c8cbc4a345064611292be22ae0"><td class="memItemLeft" align="right" valign="top">std::vector&lt; <a class="el" href="structpulsatrix_1_1LayerIntruders.html">LayerIntruders</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#a954c77c8cbc4a345064611292be22ae0">IntruderDimensions</a> (<a class="el" href="classpulsatrix_1_1Module.html">Module</a> &amp;base, <a class="el" href="classpulsatrix_1_1Module.html">Module</a> &amp;tuned, int64_t k=10, double epsilon=0.6)</td></tr>
+<tr class="memdesc:a954c77c8cbc4a345064611292be22ae0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Intruder dimensions of every <a class="el" href="classpulsatrix_1_1LinearModule.html" title="y = x @ W + b, batched (x is (N, in_features), y is (N, out_features)) – migrated from the original u...">LinearModule</a> the two models share by name and shape: a full fine-tune against its base.  <br /></td></tr>
+<tr class="separator:a954c77c8cbc4a345064611292be22ae0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a383a816a6ee859218999a53b32056d8f" id="r_a383a816a6ee859218999a53b32056d8f"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#a383a816a6ee859218999a53b32056d8f">SpearmanCorrelation</a> (const std::vector&lt; double &gt; &amp;x, const std::vector&lt; double &gt; &amp;y)</td></tr>
 <tr class="memdesc:a383a816a6ee859218999a53b32056d8f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Spearman's rank correlation, ties given their average rank (scipy's <code>spearmanr</code>). NaN if either input is constant.  <br /></td></tr>
 <tr class="separator:a383a816a6ee859218999a53b32056d8f"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -2440,6 +2479,30 @@ Functions</h2></td></tr>
 <tr class="memitem:a80f5f01c0855dedcca3d97c58a66c810"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="structpulsatrix_1_1HyperbandResult.html">HyperbandResult</a>&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#a80f5f01c0855dedcca3d97c58a66c810">RunHyperband</a> (const <a class="el" href="classpulsatrix_1_1SearchSpace.html">SearchSpace</a> &amp;space, const <a class="el" href="namespacepulsatrix.html#a6bc143576cb71fab19f76a88330f5a4f">TrialFactory</a> &amp;make_trial, int max_resource, double eta, RNG &amp;rng)</td></tr>
 <tr class="memdesc:a80f5f01c0855dedcca3d97c58a66c810"><td class="mdescLeft">&#160;</td><td class="mdescRight">Runs one Successive Halving bracket (<a class="el" href="successive__halving_8hpp.html" title="Successive Halving (the rung-based promotion mechanism underlying Hyperband and ASHA,...">successive_halving.hpp</a>) per ComputeHyperbandBrackets(max_resource, eta), keeping the best result across all of them.  <br /></td></tr>
 <tr class="separator:a80f5f01c0855dedcca3d97c58a66c810"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3f16cfa5a63e418f683bfba8470e8fcf" id="r_a3f16cfa5a63e418f683bfba8470e8fcf"><td class="memItemLeft" align="right" valign="top">std::vector&lt; std::string &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#a3f16cfa5a63e418f683bfba8470e8fcf">ApplyIA3</a> (<a class="el" href="classpulsatrix_1_1Module.html">Module</a> &amp;model, const <a class="el" href="structpulsatrix_1_1IA3Config.html">IA3Config</a> &amp;config={})</td></tr>
+<tr class="memdesc:a3f16cfa5a63e418f683bfba8470e8fcf"><td class="mdescLeft">&#160;</td><td class="mdescRight">Attaches an IA³ vector to each <a class="el" href="classpulsatrix_1_1LinearModule.html" title="y = x @ W + b, batched (x is (N, in_features), y is (N, out_features)) – migrated from the original u...">LinearModule</a> config selects, then freezes everything else, as PEFT's get_peft_model() does.  <br /></td></tr>
+<tr class="separator:a3f16cfa5a63e418f683bfba8470e8fcf"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2ae90f3b17585918cb4b50083968e2bf" id="r_a2ae90f3b17585918cb4b50083968e2bf"><td class="memItemLeft" align="right" valign="top">std::vector&lt; std::pair&lt; std::string, <a class="el" href="classpulsatrix_1_1LinearModule.html">LinearModule</a> * &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#a2ae90f3b17585918cb4b50083968e2bf">IA3Layers</a> (<a class="el" href="classpulsatrix_1_1Module.html">Module</a> &amp;model)</td></tr>
+<tr class="memdesc:a2ae90f3b17585918cb4b50083968e2bf"><td class="mdescLeft">&#160;</td><td class="mdescRight">The model's LinearModules with an IA³ vector, by name, in the model's order.  <br /></td></tr>
+<tr class="separator:a2ae90f3b17585918cb4b50083968e2bf"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a40c60149df67177070f7d5274621c575" id="r_a40c60149df67177070f7d5274621c575"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#a40c60149df67177070f7d5274621c575">MergeIA3</a> (<a class="el" href="classpulsatrix_1_1Module.html">Module</a> &amp;model)</td></tr>
+<tr class="memdesc:a40c60149df67177070f7d5274621c575"><td class="mdescLeft">&#160;</td><td class="mdescRight">Folds every vector into its layer's weights (and an output-scaling layer's bias).  <br /></td></tr>
+<tr class="separator:a40c60149df67177070f7d5274621c575"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae4323c38d1d4e6340c833a9d61694ead" id="r_ae4323c38d1d4e6340c833a9d61694ead"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#ae4323c38d1d4e6340c833a9d61694ead">UnmergeIA3</a> (<a class="el" href="classpulsatrix_1_1Module.html">Module</a> &amp;model)</td></tr>
+<tr class="memdesc:ae4323c38d1d4e6340c833a9d61694ead"><td class="mdescLeft">&#160;</td><td class="mdescRight">Divides it back out, as PEFT does. Entries of l within 1e-8 of 0 can't be undone exactly.  <br /></td></tr>
+<tr class="separator:ae4323c38d1d4e6340c833a9d61694ead"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a07d1be05de5ebe58702906544d2f6c2f" id="r_a07d1be05de5ebe58702906544d2f6c2f"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#a07d1be05de5ebe58702906544d2f6c2f">SetIA3Enabled</a> (<a class="el" href="classpulsatrix_1_1Module.html">Module</a> &amp;model, bool enabled)</td></tr>
+<tr class="memdesc:a07d1be05de5ebe58702906544d2f6c2f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Turns every vector on or off.  <br /></td></tr>
+<tr class="separator:a07d1be05de5ebe58702906544d2f6c2f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0723670a1a2c0e5aab3fa0df59c0df97" id="r_a0723670a1a2c0e5aab3fa0df59c0df97"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#a0723670a1a2c0e5aab3fa0df59c0df97">RemoveIA3</a> (<a class="el" href="classpulsatrix_1_1Module.html">Module</a> &amp;model)</td></tr>
+<tr class="memdesc:a0723670a1a2c0e5aab3fa0df59c0df97"><td class="mdescLeft">&#160;</td><td class="mdescRight">Removes every vector; merged ones stay in the weights.  <br /></td></tr>
+<tr class="separator:a0723670a1a2c0e5aab3fa0df59c0df97"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af9495a3c97c2c79db76d397e7dad085d" id="r_af9495a3c97c2c79db76d397e7dad085d"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#af9495a3c97c2c79db76d397e7dad085d">SaveIA3Adapter</a> (<a class="el" href="classpulsatrix_1_1Module.html">Module</a> &amp;model, const std::string &amp;directory, const std::vector&lt; <a class="el" href="structpulsatrix_1_1WeightMapping.html">WeightMapping</a> &gt; &amp;mapping={})</td></tr>
+<tr class="memdesc:af9495a3c97c2c79db76d397e7dad085d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Writes the model's IA³ vectors as a PEFT adapter directory (<code>adapter_model.safetensors</code> with <code>base_model.model.&lt;module&gt;.ia3_l</code>, <code>(out, 1)</code> or <code>(1, in)</code>, and <code>adapter_config.json</code>).  <br /></td></tr>
+<tr class="separator:af9495a3c97c2c79db76d397e7dad085d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a63938ede5d596c92a8c8d5947df4eb8d" id="r_a63938ede5d596c92a8c8d5947df4eb8d"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#a63938ede5d596c92a8c8d5947df4eb8d">LoadIA3Adapter</a> (<a class="el" href="classpulsatrix_1_1Module.html">Module</a> &amp;model, const std::string &amp;directory, const std::vector&lt; <a class="el" href="structpulsatrix_1_1WeightMapping.html">WeightMapping</a> &gt; &amp;mapping={})</td></tr>
+<tr class="memdesc:a63938ede5d596c92a8c8d5947df4eb8d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Reads a PEFT IA³ adapter directory onto the model, telling feedforward layers by the vectors' shapes, and freezes the rest of the model.  <br /></td></tr>
+<tr class="separator:a63938ede5d596c92a8c8d5947df4eb8d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:acc1e37df8ef4f10a7d04762733588931" id="r_acc1e37df8ef4f10a7d04762733588931"><td class="memItemLeft" align="right" valign="top">std::vector&lt; float &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#acc1e37df8ef4f10a7d04762733588931">FeatureGrid</a> (const std::vector&lt; <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &gt; &amp;background, int64_t feature_index, int64_t grid_size=100, float lower_percentile=0.05f, float upper_percentile=0.95f)</td></tr>
 <tr class="memdesc:acc1e37df8ef4f10a7d04762733588931"><td class="mdescLeft">&#160;</td><td class="mdescRight">An evenly spaced grid for one feature, built the way scikit-learn's <code>partial_dependence</code> builds it: the feature's distinct values when there are fewer than <code>grid_size</code> of them, otherwise <code>grid_size</code> points from the lower to the upper percentile of the feature's values (<code>scipy.stats.mstats.mquantiles</code> with its default plotting positions).  <br /></td></tr>
 <tr class="separator:acc1e37df8ef4f10a7d04762733588931"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -5780,6 +5843,43 @@ Every op here computes the <em>forward</em> value only &ndash; no derivative var
 
 <p>Appends <code>child</code>'s named parameters to <code>out</code>, each renamed to <code>prefix.name</code> &ndash; the one step every container's named_parameters() repeats per child. </p>
 <dl class="section note"><dt>Note</dt><dd>A child that overrides only the legacy parameters() hook reports no names; its parameters are appended under positional names (<code>prefix.0</code>, <code>prefix.1</code>, ...) so a container never hides them from an optimizer that used to see them. </dd></dl>
+
+</div>
+</div>
+<a id="a3f16cfa5a63e418f683bfba8470e8fcf" name="a3f16cfa5a63e418f683bfba8470e8fcf"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3f16cfa5a63e418f683bfba8470e8fcf">&#9670;&#160;</a></span>ApplyIA3()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::vector&lt; std::string &gt; pulsatrix::ApplyIA3 </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classpulsatrix_1_1Module.html">Module</a> &amp;&#160;</td>
+          <td class="paramname"><em>model</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="structpulsatrix_1_1IA3Config.html">IA3Config</a> &amp;&#160;</td>
+          <td class="paramname"><em>config</em> = <code>{}</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Attaches an IA³ vector to each <a class="el" href="classpulsatrix_1_1LinearModule.html" title="y = x @ W + b, batched (x is (N, in_features), y is (N, out_features)) – migrated from the original u...">LinearModule</a> config selects, then freezes everything else, as PEFT's get_peft_model() does. </p>
+<dl class="section return"><dt>Returns</dt><dd>The adapted layers' names, in the model's order. </dd></dl>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname">std::invalid_argument</td><td>if a target or feedforward name matches no module or a module that isn't a <a class="el" href="classpulsatrix_1_1LinearModule.html" title="y = x @ W + b, batched (x is (N, in_features), y is (N, out_features)) – migrated from the original u...">LinearModule</a>, a feedforward name isn't a target, nothing is selected, or a selected layer already has an IA³ vector or a LoRA adapter. Nothing changes then. </td></tr>
+  </table>
+  </dd>
+</dl>
 
 </div>
 </div>
@@ -9237,6 +9337,54 @@ If a front is uniform in some objective (max == min across the whole front), tha
 
 </div>
 </div>
+<a id="a8d59b405f0ea8a3253013224d8a5914d" name="a8d59b405f0ea8a3253013224d8a5914d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8d59b405f0ea8a3253013224d8a5914d">&#9670;&#160;</a></span>DiffAdapterRelevance()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="structpulsatrix_1_1RelevanceDiff.html">RelevanceDiff</a> pulsatrix::DiffAdapterRelevance </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classpulsatrix_1_1Module.html">Module</a> &amp;&#160;</td>
+          <td class="paramname"><em>model</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp;&#160;</td>
+          <td class="paramname"><em>input</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="structpulsatrix_1_1DiffTarget.html">DiffTarget</a> &amp;&#160;</td>
+          <td class="paramname"><em>target</em> = <code>{}</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="structpulsatrix_1_1LRPRuleConfig.html">LRPRuleConfig</a> &amp;&#160;</td>
+          <td class="paramname"><em>config</em> = <code>{}</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p><a class="el" href="namespacepulsatrix.html#afa9ba633960497e6640e150f179a7a1a" title="Explains the same prediction in both models: forward() on input, then relevance seeded with each mode...">DiffRelevance()</a> for a fine-tune held as adapters on <code>model:</code> the tuned run with its LoRA adapters, IA³ vectors and (for a <a class="el" href="classpulsatrix_1_1CausalLM.html" title="Token embedding, num_hidden_layers pre-norm transformer blocks, a final RMSNorm and a language-model ...">CausalLM</a>) interventions on, the base run with them off. They are back on afterwards, even if a call throws. </p>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname">std::invalid_argument</td><td>if the model has no enabled adapters, or one is merged (its update is in the weights and can't be switched off). </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
 <a id="ad0c4189a448065ddbe2710704b2bec80" name="ad0c4189a448065ddbe2710704b2bec80"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ad0c4189a448065ddbe2710704b2bec80">&#9670;&#160;</a></span>DifferenceOfMeans()</h2>
 
@@ -9273,6 +9421,60 @@ If a front is uniform in some objective (max == min across the whole front), tha
 <dl class="exception"><dt>Exceptions</dt><dd>
   <table class="exception">
     <tr><td class="paramname">std::invalid_argument</td><td>for empty sets or rows of different sizes. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="afa9ba633960497e6640e150f179a7a1a" name="afa9ba633960497e6640e150f179a7a1a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#afa9ba633960497e6640e150f179a7a1a">&#9670;&#160;</a></span>DiffRelevance()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="structpulsatrix_1_1RelevanceDiff.html">RelevanceDiff</a> pulsatrix::DiffRelevance </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classpulsatrix_1_1Module.html">Module</a> &amp;&#160;</td>
+          <td class="paramname"><em>base</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="classpulsatrix_1_1Module.html">Module</a> &amp;&#160;</td>
+          <td class="paramname"><em>tuned</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp;&#160;</td>
+          <td class="paramname"><em>input</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="structpulsatrix_1_1DiffTarget.html">DiffTarget</a> &amp;&#160;</td>
+          <td class="paramname"><em>target</em> = <code>{}</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="structpulsatrix_1_1LRPRuleConfig.html">LRPRuleConfig</a> &amp;&#160;</td>
+          <td class="paramname"><em>config</em> = <code>{}</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Explains the same prediction in both models: forward() on <code>input</code>, then relevance seeded with each model's own score for the class, at the class only. </p>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname">std::invalid_argument</td><td>if the models' outputs differ in shape, the output isn't <code>(N, C)</code> or <code>(N, L, C)</code>, or a class or the position is out of range; as the models' own calls throw. </td></tr>
   </table>
   </dd>
 </dl>
@@ -11490,6 +11692,26 @@ template&lt;typename Genotype , typename FitnessT &gt; </div>
 
 </div>
 </div>
+<a id="a2ae90f3b17585918cb4b50083968e2bf" name="a2ae90f3b17585918cb4b50083968e2bf"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2ae90f3b17585918cb4b50083968e2bf">&#9670;&#160;</a></span>IA3Layers()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::vector&lt; std::pair&lt; std::string, <a class="el" href="classpulsatrix_1_1LinearModule.html">LinearModule</a> * &gt; &gt; pulsatrix::IA3Layers </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classpulsatrix_1_1Module.html">Module</a> &amp;&#160;</td>
+          <td class="paramname"><em>model</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>The model's LinearModules with an IA³ vector, by name, in the model's order. </p>
+
+</div>
+</div>
 <a id="acf06d2190bfb60cc8810fcf24d1e99b2" name="acf06d2190bfb60cc8810fcf24d1e99b2"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#acf06d2190bfb60cc8810fcf24d1e99b2">&#9670;&#160;</a></span>Impute()</h2>
 
@@ -11660,6 +11882,111 @@ template&lt;typename Genotype , typename FitnessT &gt; </div>
 <dl class="exception"><dt>Exceptions</dt><dd>
   <table class="exception">
     <tr><td class="paramname">std::invalid_argument</td><td>as <a class="el" href="namespacepulsatrix.html#a08ca823b9f2196df3e5f407dee95fcc5" title="Deletion (MoRF): removes features from most to least relevant, imputing them, and records the target ...">DeletionCurve()</a>. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="a34d6c6b45318eaed8675c38b19af9f47" name="a34d6c6b45318eaed8675c38b19af9f47"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a34d6c6b45318eaed8675c38b19af9f47">&#9670;&#160;</a></span>IntruderDimensions() <span class="overload">[1/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="structpulsatrix_1_1IntruderResult.html">IntruderResult</a> pulsatrix::IntruderDimensions </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp;&#160;</td>
+          <td class="paramname"><em>base</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp;&#160;</td>
+          <td class="paramname"><em>tuned</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int64_t&#160;</td>
+          <td class="paramname"><em>k</em> = <code>10</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">double&#160;</td>
+          <td class="paramname"><em>epsilon</em> = <code>0.6</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Counts the top-k singular vectors of <code>tuned</code> that no singular vector of <code>base</code> resembles: |cos| &lt; <code>epsilon</code> against every one of them. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">base,tuned</td><td>Weights of the same shape in pulsatrix's <code>(in, out)</code> layout. The vectors compared are the output-space ones, PyTorch's left singular vectors of its <code>(out, in)</code> weight, as in the paper. </td></tr>
+    <tr><td class="paramname">k</td><td>The paper's figures use 10. </td></tr>
+    <tr><td class="paramname">epsilon</td><td>The paper sweeps it (it calls 0.6 to 0.9 typical for full fine-tuning); 0.6 is a starting point, not a standard. max_similarity lets a caller apply any other threshold. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section note"><dt>Note</dt><dd>The paper's Algorithm 1 compares cosines without an absolute value. A singular vector's sign is arbitrary, so this uses |cos|. Two O(out^3) eigendecompositions of W^T W, on the CPU in double (SymmetricEigen takes about 0.8 s at n = 512 in a Release build). </dd></dl>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname">std::invalid_argument</td><td>if the shapes differ or aren't rank 2, k &lt; 1, or epsilon isn't in (0, 1]. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="a954c77c8cbc4a345064611292be22ae0" name="a954c77c8cbc4a345064611292be22ae0"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a954c77c8cbc4a345064611292be22ae0">&#9670;&#160;</a></span>IntruderDimensions() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::vector&lt; <a class="el" href="structpulsatrix_1_1LayerIntruders.html">LayerIntruders</a> &gt; pulsatrix::IntruderDimensions </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classpulsatrix_1_1Module.html">Module</a> &amp;&#160;</td>
+          <td class="paramname"><em>base</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="classpulsatrix_1_1Module.html">Module</a> &amp;&#160;</td>
+          <td class="paramname"><em>tuned</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int64_t&#160;</td>
+          <td class="paramname"><em>k</em> = <code>10</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">double&#160;</td>
+          <td class="paramname"><em>epsilon</em> = <code>0.6</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Intruder dimensions of every <a class="el" href="classpulsatrix_1_1LinearModule.html" title="y = x @ W + b, batched (x is (N, in_features), y is (N, out_features)) – migrated from the original u...">LinearModule</a> the two models share by name and shape: a full fine-tune against its base. </p>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname">std::invalid_argument</td><td>if they share none. </td></tr>
   </table>
   </dd>
 </dl>
@@ -12223,6 +12550,48 @@ template&lt;typename Genotype , typename FitnessT &gt; </div>
 
 </div>
 </div>
+<a id="a63938ede5d596c92a8c8d5947df4eb8d" name="a63938ede5d596c92a8c8d5947df4eb8d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a63938ede5d596c92a8c8d5947df4eb8d">&#9670;&#160;</a></span>LoadIA3Adapter()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void pulsatrix::LoadIA3Adapter </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classpulsatrix_1_1Module.html">Module</a> &amp;&#160;</td>
+          <td class="paramname"><em>model</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const std::string &amp;&#160;</td>
+          <td class="paramname"><em>directory</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const std::vector&lt; <a class="el" href="structpulsatrix_1_1WeightMapping.html">WeightMapping</a> &gt; &amp;&#160;</td>
+          <td class="paramname"><em>mapping</em> = <code>{}</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Reads a PEFT IA³ adapter directory onto the model, telling feedforward layers by the vectors' shapes, and freezes the rest of the model. </p>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname">std::invalid_argument</td><td>for a config that isn't plain IA³ (fan_in_fan_out, modules_to_save), a key that isn't an IA³ vector, a shape that fits neither side of its layer or disagrees with feedforward_modules, or a layer that doesn't exist or is already adapted. Nothing changes then. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
 <a id="a0ccccc2572b2e2d2d0178433bc00f0ff" name="a0ccccc2572b2e2d2d0178433bc00f0ff"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a0ccccc2572b2e2d2d0178433bc00f0ff">&#9670;&#160;</a></span>LoadLoraAdapter()</h2>
 
@@ -12550,6 +12919,48 @@ template&lt;typename Genotype , typename FitnessT &gt; </div>
   </dd>
 </dl>
 <dl class="section note"><dt>Note</dt><dd>Per-parameter bandwidth for Continuous is 0.2 * (upper - lower); for LogUniform, 0.2 * (log(upper) - log(lower)), applied after taking the log of both the bandwidth basis and every observed/candidate value (consistent with this campaign's own established log-space convention for LogUniform elsewhere &ndash; GridSample/RandomSample/ UnitCubeToConfiguration); for Integer, 0.2 * (upper - lower), floored at 1.0 (a sub-1.0 bandwidth over integer-valued data would make the KDE unreasonably peaked). </dd></dl>
+
+</div>
+</div>
+<a id="ab63dc3dcd7db34f07450a322395b8a52" name="ab63dc3dcd7db34f07450a322395b8a52"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab63dc3dcd7db34f07450a322395b8a52">&#9670;&#160;</a></span>LoraIntruderDimensions()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::vector&lt; <a class="el" href="structpulsatrix_1_1LayerIntruders.html">LayerIntruders</a> &gt; pulsatrix::LoraIntruderDimensions </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classpulsatrix_1_1Module.html">Module</a> &amp;&#160;</td>
+          <td class="paramname"><em>model</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int64_t&#160;</td>
+          <td class="paramname"><em>k</em> = <code>10</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">double&#160;</td>
+          <td class="paramname"><em>epsilon</em> = <code>0.6</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Intruder dimensions of every LoRA layer: its base weight W against W + (alpha / r) A B. </p>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname">std::invalid_argument</td><td>if the model has no unmerged LoRA adapters. </td></tr>
+  </table>
+  </dd>
+</dl>
 
 </div>
 </div>
@@ -14139,6 +14550,26 @@ template&lt;typename Genotype , typename FitnessT &gt; </div>
 </div><div class="memdoc">
 
 <p>ProteinGym's MCC: <code>scores</code> at or above their median predict 1. </p>
+
+</div>
+</div>
+<a id="a40c60149df67177070f7d5274621c575" name="a40c60149df67177070f7d5274621c575"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a40c60149df67177070f7d5274621c575">&#9670;&#160;</a></span>MergeIA3()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void pulsatrix::MergeIA3 </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classpulsatrix_1_1Module.html">Module</a> &amp;&#160;</td>
+          <td class="paramname"><em>model</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Folds every vector into its layer's weights (and an output-scaling layer's bias). </p>
 
 </div>
 </div>
@@ -17687,6 +18118,26 @@ template&lt;typename Genotype , typename FitnessT &gt; </div>
 
 </div>
 </div>
+<a id="a0723670a1a2c0e5aab3fa0df59c0df97" name="a0723670a1a2c0e5aab3fa0df59c0df97"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0723670a1a2c0e5aab3fa0df59c0df97">&#9670;&#160;</a></span>RemoveIA3()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void pulsatrix::RemoveIA3 </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classpulsatrix_1_1Module.html">Module</a> &amp;&#160;</td>
+          <td class="paramname"><em>model</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Removes every vector; merged ones stay in the weights. </p>
+
+</div>
+</div>
 <a id="a24914157f269831b4241edb9bbf6e269" name="a24914157f269831b4241edb9bbf6e269"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a24914157f269831b4241edb9bbf6e269">&#9670;&#160;</a></span>RemoveLora()</h2>
 
@@ -20993,6 +21444,54 @@ template&lt;typename ObjectiveFn , typename RNG &gt; </div>
 
 </div>
 </div>
+<a id="af9495a3c97c2c79db76d397e7dad085d" name="af9495a3c97c2c79db76d397e7dad085d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af9495a3c97c2c79db76d397e7dad085d">&#9670;&#160;</a></span>SaveIA3Adapter()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void pulsatrix::SaveIA3Adapter </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classpulsatrix_1_1Module.html">Module</a> &amp;&#160;</td>
+          <td class="paramname"><em>model</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const std::string &amp;&#160;</td>
+          <td class="paramname"><em>directory</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const std::vector&lt; <a class="el" href="structpulsatrix_1_1WeightMapping.html">WeightMapping</a> &gt; &amp;&#160;</td>
+          <td class="paramname"><em>mapping</em> = <code>{}</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Writes the model's IA³ vectors as a PEFT adapter directory (<code>adapter_model.safetensors</code> with <code>base_model.model.&lt;module&gt;.ia3_l</code>, <code>(out, 1)</code> or <code>(1, in)</code>, and <code>adapter_config.json</code>). </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">mapping</td><td>As for <a class="el" href="namespacepulsatrix.html#a6634c07a792f8867b3984a4a8244ed1d" title="Writes the model&#39;s adapters as a PEFT adapter directory: adapter_model.safetensors and adapter_config...">SaveLoraAdapter()</a>: the base model's weight manifest, or empty for pulsatrix's names. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname">std::invalid_argument</td><td>if there are none, one is merged, or a layer has no whole-weight mapping. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
 <a id="a6634c07a792f8867b3984a4a8244ed1d" name="a6634c07a792f8867b3984a4a8244ed1d"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a6634c07a792f8867b3984a4a8244ed1d">&#9670;&#160;</a></span>SaveLoraAdapter()</h2>
 
@@ -21328,6 +21827,42 @@ template&lt;typename ObjectiveFn , typename RNG &gt; </div>
 <dl class="section note"><dt>Note</dt><dd>Like <code>torch.manual_seed</code>: after set_seed(s), building the same objects in the same order gives the same initial weights, dropout masks and shuffles. Components that take an explicit seed ignore the global one. The default global seed is 0, so a program that never calls <a class="el" href="namespacepulsatrix.html#aa8b6d579f43a06291616012e22b33c46" title="Sets the global seed and restarts the seed stream next_seed() draws from.">set_seed()</a> is reproducible too. </dd>
 <dd>
 Process-wide state. Call it before building models, not while other threads are constructing seeded components. </dd></dl>
+
+</div>
+</div>
+<a id="a07d1be05de5ebe58702906544d2f6c2f" name="a07d1be05de5ebe58702906544d2f6c2f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a07d1be05de5ebe58702906544d2f6c2f">&#9670;&#160;</a></span>SetIA3Enabled()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void pulsatrix::SetIA3Enabled </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classpulsatrix_1_1Module.html">Module</a> &amp;&#160;</td>
+          <td class="paramname"><em>model</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>enabled</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Turns every vector on or off. </p>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname">std::logic_error</td><td>while one is merged. </td></tr>
+  </table>
+  </dd>
+</dl>
 
 </div>
 </div>
@@ -25311,6 +25846,26 @@ template&lt;typename T &gt; </div>
   </table>
   </dd>
 </dl>
+
+</div>
+</div>
+<a id="ae4323c38d1d4e6340c833a9d61694ead" name="ae4323c38d1d4e6340c833a9d61694ead"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae4323c38d1d4e6340c833a9d61694ead">&#9670;&#160;</a></span>UnmergeIA3()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void pulsatrix::UnmergeIA3 </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classpulsatrix_1_1Module.html">Module</a> &amp;&#160;</td>
+          <td class="paramname"><em>model</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Divides it back out, as PEFT does. Entries of l within 1e-8 of 0 can't be undone exactly. </p>
 
 </div>
 </div>
