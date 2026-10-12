@@ -361,6 +361,38 @@ With m baselines the smallest p-value is 1 / (m + 1): use 19 for p = 0.05, 99 fo
 Use more than one. The universal null is cheapest, and the bootstrap needs no conjecture. The
 random-network baseline is the one that asks whether the structure was *learned*.
 
+## Seeing the result
+
+`viz/topology_documents.hpp` saves diagrams as a `pulsatrix.persistence_diagram.v1` document,
+with each dimension's certified error bound and any test results. `viz/topology_views.hpp` draws
+the document three ways:
+
+- **`RenderPersistenceDiagramSvg`**: birth against death. A gray band along the diagonal covers
+  persistence up to twice the error bound, which errors in the distances alone could explain.
+  Features that never die sit on a dashed ∞ line.
+- **`RenderBarcodeSvg`**: one bar per feature, longest first, with ±error-bound whiskers.
+- **`RenderBettiCurveSvg`**: how many features are alive at each scale. The error bound doesn't
+  cover it, since short features can come and go; the figure says so.
+
+With a test attached, significant features are drawn filled (diagram) or solid (barcode), and the
+rest hollow or faint:
+
+```cpp
+#include "pulsatrix/viz/topology_views.hpp"
+
+PersistenceDiagramDocument doc = ToPersistenceDiagramDocument(r, "Layer 12, weekday tokens");
+AttachSignificance(doc, 1, UniversalNullTest(r.diagrams[1]));   // p-values on H1
+std::ofstream("diagram.svg") << RenderPersistenceDiagramSvg(doc);
+std::ofstream("doc.json") << ToJson(doc);   // later: pulsatrix_svg doc.json --view barcode
+```
+
+![A persistence diagram: six H0 points on the death axis, one essential, and three H1 points, one far above the diagonal and filled, two near it and hollow](figures/persistence_diagram.svg)
+
+![The same document as a barcode, grouped by dimension, with whiskers of the error bound](figures/barcode.svg)
+
+On the command line: `pulsatrix_svg doc.json --view diagram|barcode|betti [--dims 1]`. There is
+no HTML view yet.
+
 ## Comparing two representations' topology (RTD)
 
 [CKA](representations.md#comparing-representations-cka) compares two representations' whole
