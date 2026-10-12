@@ -192,7 +192,7 @@ Fine-tune the models from v1.2 and explain what the fine-tuning changed.
 - INT-4 (**done**, [#134](https://github.com/Joshuaweg/pulsatrix/pull/134)): anisotropy, effective rank, TwoNN intrinsic dimension
 - INT-5 (**done**, [#135](https://github.com/Joshuaweg/pulsatrix/pull/135)): PCA, projection plots, split-half stability
 - INT-6 (**done**): TCAV ([#136](https://github.com/Joshuaweg/pulsatrix/pull/136)) and CRP ([#137](https://github.com/Joshuaweg/pulsatrix/pull/137))
-- INT-7 (**done**, PR pending): RSA with a permutation test, SVCCA
+- INT-7 (**done**, [#138](https://github.com/Joshuaweg/pulsatrix/pull/138)): RSA with a permutation test, SVCCA
 - TDA-1 to TDA-8, TDA-11: persistent homology and RTD
 - KS-3, KS-4: uncertainty and adversarial robustness
 - Llama-3.2-1B and Qwen2.5-0.5B pass the golden-logit test
@@ -789,7 +789,7 @@ network says nothing about what the model learned.
 | INT-4 | Anisotropy, effective rank and TwoNN intrinsic dimension | Explains why raw cosine similarity misleads; one number per layer | INT-1 | P1 | S | Done, [#134](https://github.com/Joshuaweg/pulsatrix/pull/134) (see below) |
 | INT-5 | PCA projections | 2D and 3D views, steering directions, preprocessing for TDA | FND-4 | P1 | M | Done, [#135](https://github.com/Joshuaweg/pulsatrix/pull/135) (see below) |
 | INT-6 | TCAV (with significance against random concepts) and Concept Relevance Propagation | Concept-level explanations, and CRP reuses pulsatrix's LRP rules | INT-3 | P1 | M | Done: TCAV [#136](https://github.com/Joshuaweg/pulsatrix/pull/136), CRP [#137](https://github.com/Joshuaweg/pulsatrix/pull/137) (see below) |
-| INT-7 | RSA and SVCCA | Mostly covered by CKA | FND-4 | P2 | — | Done, PR pending (see below) |
+| INT-7 | RSA and SVCCA | Mostly covered by CKA | FND-4 | P2 | — | Done, [#138](https://github.com/Joshuaweg/pulsatrix/pull/138) (see below) |
 | INT-8 | UMAP and t-SNE: export the data only, don't implement | Expensive, and they distort distances and cluster sizes | VIZ-1 | P3 | — | |
 
 ### How the INT work departed from the plan
