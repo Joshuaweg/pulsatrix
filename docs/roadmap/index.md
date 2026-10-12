@@ -204,7 +204,8 @@ Load SmolLM2-135M and ResNet18, run them, and match the reference implementation
 
 Fine-tune the models from v1.2 and explain what the fine-tuning changed.
 
-- TRN-7 to TRN-11: LoRA, LRP through LoRA, LoReFT, IA³, model diffing
+- TRN-7 to TRN-11 (**done**, [#151](https://github.com/Joshuaweg/pulsatrix/pull/151) to
+  [#155](https://github.com/Joshuaweg/pulsatrix/pull/155)): LoRA, LRP through LoRA, LoReFT, IA³, model diffing
 - KD-1, KD-2: distillation and teacher–student explanation agreement
 - XAI-1 to XAI-4: the question-driven planner, explanation reports, counterfactuals, surrogates,
   Anchors
@@ -400,7 +401,7 @@ rate is tuned, plain LoRA matches or beats most of them.
 | TRN-8 | LRP through LoRA that splits relevance between the base path and the adapter path. Document that the gamma and z+ rules give different results for merged and unmerged adapters | Shows what the fine-tuning changed, per input. No other library does this | TRN-7 | P1 | M |  Done (see below) |
 | TRN-9 | LoReFT (representation fine-tuning) and LRP through it. The intervention is affine, so the epsilon rule is exact | Fine-tuning that is itself an interpretable subspace | FND-4 | P1 | M |  Done (see below) |
 | TRN-10 | IA³ (learned rescaling vectors) | Tiny and trivially explainable | FND-2 | P2 | S |  Done (see below) |
-| TRN-11 | Model diffing: relevance of the fine-tuned model minus relevance of the base model, plus an intruder-dimension check on the weights | Shows what a fine-tune changed across a dataset | TRN-8, FND-4 | P2 | M | |
+| TRN-11 | Model diffing: relevance of the fine-tuned model minus relevance of the base model, plus an intruder-dimension check on the weights | Shows what a fine-tune changed across a dataset | TRN-8, FND-4 | P2 | M |  Done (see below) |
 | TRN-12 | Activation checkpointing per block. Off in explain mode, because LRP needs the cached activations | Memory for 1B-parameter models | — | P2 | M | |
 | TRN-13 | rsLoRA, LoRA+ and DoRA | Small gains that a tuned learning rate often matches | TRN-7 | P2 | S–M | |
 | TRN-14 | PiSSA, VeRA, AdaLoRA, GaLore, QLoRA, prefix and prompt tuning, BitFit, adapter layers, and 2025–26 LoRA variants | Low value per the 2026 variant study, or blocked by missing dtypes | TRN-7 | P3 | — | |
@@ -444,6 +445,14 @@ rate is tuned, plain LoRA matches or beats most of them.
   feedforward module. PEFT's Qwen2 default rescales queries instead of keys. LRP runs on the
   rescaled layer exactly. Checked against PEFT 0.21.0: logits, gradients, merging and the saved
   file. PEFT's file helpers, shared with LoRA, moved to `src/peft_util.hpp`.
+- **TRN-11** follows the plan in `fine_tune_diff.hpp`:
+  - `DiffAdapterRelevance()` switches LoRA, IA³ and LoReFT off and on, adding
+    `CausalLM::set_interventions_enabled()`.
+  - `DiffRelevance()` compares two separate models.
+  - `TokenRelevanceShift` aggregates the differences by token over a dataset.
+  - Intruder dimensions follow Shuttleworth et al.'s Definition 3.1. They use |cos| because a
+    singular vector's sign is arbitrary, and the default ε = 0.6 is a starting point, since the
+    paper sweeps ε.
 
 ### Follow-ups the TRN work surfaced
 

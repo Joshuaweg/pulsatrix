@@ -121,6 +121,10 @@ public:
      * @throws std::out_of_range for a layer index the model doesn't have.
      */
     void set_intervention(int64_t layer, std::unique_ptr<ResidualIntervention> intervention);
+    /** @brief false runs the model as if it had no interventions, everywhere they would run;
+     *         true (the default) runs them again (TRN-11: the base model's relevance). */
+    void set_interventions_enabled(bool enabled) { interventions_enabled_ = enabled; }
+    [[nodiscard]] bool interventions_enabled() const { return interventions_enabled_; }
     /** @brief Block @p layer's intervention, or nullptr. @throws std::out_of_range. */
     [[nodiscard]] ResidualIntervention* intervention(int64_t layer) { return interventions_.at(static_cast<size_t>(layer)).get(); }
 
@@ -154,6 +158,11 @@ private:
     Shape last_hidden_shape_ = Shape({0});
     HiddenStateHook hidden_state_hook_;
     std::vector<std::unique_ptr<ResidualIntervention>> interventions_;  // one slot per layer
+    bool interventions_enabled_ = true;
+    /** @brief Block @p i's intervention if interventions run, else nullptr. */
+    [[nodiscard]] ResidualIntervention* active_intervention(size_t i) const {
+        return interventions_enabled_ ? interventions_[i].get() : nullptr;
+    }
 };
 
 /** @brief How a source tensor becomes a target parameter. */
