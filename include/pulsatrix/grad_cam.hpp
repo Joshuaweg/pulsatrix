@@ -12,6 +12,7 @@
 #include "pulsatrix/assert.hpp"
 #include "pulsatrix/attribution.hpp"
 #include "pulsatrix/device_backend.hpp"
+#include "pulsatrix/explainer_capabilities.hpp"
 #include "pulsatrix/explainer_context.hpp"
 #include "pulsatrix/tensor.hpp"
 
@@ -36,6 +37,9 @@ namespace pulsatrix {
  */
 class GradCAM {
 public:
+    /** @brief What it answers and needs: its ExplainerCatalog() entry. */
+    [[nodiscard]] static const ExplainerCapabilities& capabilities() { return ExplainerCapabilitiesOf("GradCAM"); }
+
     /**
      * @brief Computes the Grad-CAM map for one target class index.
      * @param ctx Context to run the forward/backward pass through. Its graph must contain

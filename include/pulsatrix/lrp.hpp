@@ -15,6 +15,7 @@
 #include "pulsatrix/attribution.hpp"
 #include "pulsatrix/conv2d_module.hpp"
 #include "pulsatrix/device_backend.hpp"
+#include "pulsatrix/explainer_capabilities.hpp"
 #include "pulsatrix/explainer_context.hpp"
 #include "pulsatrix/linear_module.hpp"
 #include "pulsatrix/lrp_rule_config.hpp"
@@ -166,6 +167,9 @@ inline LRPComposite epsilon_gamma_box(float low, float high, float gamma = 0.25f
  */
 class LRP {
 public:
+    /** @brief What it answers and needs: its ExplainerCatalog() entry. */
+    [[nodiscard]] static const ExplainerCapabilities& capabilities() { return ExplainerCapabilitiesOf("LRP"); }
+
     /** @brief Uniform rule: every module applies `config`. */
     explicit LRP(LRPRuleConfig config = LRPRuleConfig{}) : config_(config) {}
 

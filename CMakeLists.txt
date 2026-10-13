@@ -74,6 +74,7 @@ add_library(pulsatrix_core
     src/loreft.cpp
     src/ia3.cpp
     src/fine_tune_diff.cpp
+    src/explainer_capabilities.cpp
     src/relu_module.cpp
     src/softmax_module.cpp
     src/rope_module.cpp
