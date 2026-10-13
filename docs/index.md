@@ -60,7 +60,8 @@ structures, and explain their predictions.
   reports what the explanation does and doesn't support.
 - [Performance](interpretability/performance.md): accuracy, log loss, the Brier score,
   calibration with a reliability diagram, the error on each slice of the data, tested against
-  the rest, and uncertainty from Monte Carlo dropout and deep ensembles.
+  the rest, uncertainty from Monte Carlo dropout and deep ensembles, and conformal prediction
+  sets and intervals with a coverage guarantee.
 
 **[Reinforcement Learning](reinforcement-learning/index.md)**: CartPole environments, replay and
 rollout buffers, and DQN, REINFORCE, A2C, PPO and SAC. Each algorithm's tests train it to a

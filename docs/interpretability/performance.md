@@ -10,7 +10,9 @@ prediction, not whether the prediction is right. Pulsatrix answers it with the m
 - **`EvaluateRegressor`:** mean squared and absolute error, and R²;
 - **`PerSliceError`:** the error on each slice of the data, each tested against the rest;
 - **`McDropoutSamples`** and **`EnsembleSamples`**, in `pulsatrix/uncertainty.hpp`: how sure the
-  model is of each prediction, and whether more data would make it surer.
+  model is of each prediction, and whether more data would make it surer;
+- **split conformal prediction**, in `pulsatrix/conformal.hpp`: prediction sets and intervals that
+  hold the truth with a chosen probability, for any model.
 
 Every number matches scikit-learn's on the same data, and the slice test matches SciPy's
 `fisher_exact`. `tests/performance_test.cpp` checks them against values from
@@ -149,6 +151,55 @@ part is the variance of their means.
     tend to agree more than an ensemble's do. Neither is the true posterior, and the epistemic
     part says how much these samples disagree, nothing more.
 
+## Conformal prediction
+
+A probability of 0.9 doesn't mean the model is right 90% of the time; calibration says how far
+off it is, but not what to do about it. Split conformal prediction (Vovk, Gammerman and Shafer;
+Angelopoulos and Bates, arXiv 2107.07511) turns any model's scores into a guarantee:
+
+1. Score each example of a held-out calibration set, which the model wasn't trained on, by how
+   badly the model fits it.
+2. Take q̂, the ⌈(n + 1)(1 − α)⌉-th smallest score.
+3. A new input's prediction set holds every answer that would score at most q̂.
+
+If the calibration examples and the new one are exchangeable, the set holds the true answer with
+probability at least 1 − α:
+
+```cpp
+#include "pulsatrix/conformal.hpp"
+
+ConformalOptions options;
+options.alpha = 0.1;                       // 90% coverage
+options.score = ConformalScore::Aps;
+ConformalClassifier c = CalibrateConformalClassifier(calibration_probabilities, calibration_labels, options);
+std::vector<std::vector<int64_t>> sets = PredictionSets(c, test_probabilities);
+CoverageReport r = EvaluateCoverage(sets, test_labels);
+```
+
+| Score | Definition | Sets |
+|---|---|---|
+| `Lac` | 1 − p(true class) (Sadinle, Lei and Wasserman, 2019) | the smallest on average, but they can be empty, and hard inputs are undercovered |
+| `Aps` | the mass of the classes ranked at or above the true one (Romano, Sesia and Candès, 2020) | larger for harder inputs; `randomized` brings coverage close to exactly 1 − α |
+
+For regression, `CalibrateConformalRegressor` scores the absolute residual and gives ŷ ± q̂.
+`CalibrateConformalQuantileRegressor` takes a quantile regressor's lower and upper predictions and
+gives CQR's [lo − q̂, hi + q̂] (Romano, Patterson and Candès, 2019), narrower where the noise is.
+
+`EvaluateCoverage` reports the coverage, the mean set size or interval width, how many sets were
+empty, and the coverage of each set size. Large sets that are undercovered are a sign the score
+doesn't adapt to hard inputs.
+
+**The guarantee is marginal:** it holds on average over inputs, not for each input or each
+group. A model can cover 90% overall and 70% of one group. `CoverageReport::misses` holds a 0 or 1
+per input, so `PerSliceError(r.misses, slices)` tests each group's coverage like any other error.
+
+!!! note
+    With too few calibration examples, the rank ⌈(n + 1)(1 − α)⌉ is above n, q̂ is infinite and
+    every set holds every class: at α = 0.1 that takes fewer than 9 examples.
+
+LAC sets and absolute-residual intervals match MAPIE 1.1.0's, and APS sets Angelopoulos and
+Bates' reference code (`tools/generate_conformal_reference_values.py`).
+
 ## In a report
 
 The Control reason requires per-slice error. The planner marks it available when the caller has
@@ -170,8 +221,10 @@ For a regressor, or any model whose error isn't the wrong class, run `PerSliceEr
 and pass `SliceErrorCheck(report)` to `ReportExplanation`.
 
 The Performance question itself plans `ClassifierMetrics`, `RegressorMetrics`,
-`PerSliceError`, `MonteCarloDropout` and `DeepEnsemble`. They describe how the model behaves, not what it learned, so the planner doesn't
+`PerSliceError`, `MonteCarloDropout`, `DeepEnsemble` and `SplitConformal`. Those that score
+against true labels (the metrics and conformal calibration) need `ModelTraits::has_labels`. They describe how the model behaves, not what it learned, so the planner doesn't
 ask for a null-model baseline for them.
 
 Each report has a JSON document: `pulsatrix.classification_report.v1`,
-`pulsatrix.regression_report.v1`, `pulsatrix.slice_error.v1` and `pulsatrix.uncertainty.v1`.
+`pulsatrix.regression_report.v1`, `pulsatrix.slice_error.v1`, `pulsatrix.uncertainty.v1` and
+`pulsatrix.coverage.v1`.
