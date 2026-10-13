@@ -210,7 +210,7 @@ Fine-tune the models from v1.2 and explain what the fine-tuning changed.
 - XAI-1 (**done**, [#156](https://github.com/Joshuaweg/pulsatrix/pull/156)): which questions each explainer answers
 - XAI-2 (**done**, [#160](https://github.com/Joshuaweg/pulsatrix/pull/160)): the question-driven planner
 - XAI-3 (**done**, [#161](https://github.com/Joshuaweg/pulsatrix/pull/161)): explanation reports that run the checks and carry caveats
-- XAI-4: surrogates, Anchors, prototypes
+- XAI-4 (surrogate tree and LIME fidelity **done**, [#162](https://github.com/Joshuaweg/pulsatrix/pull/162)): Anchors, prototypes and pertinent negatives to come
 - INT-1 to INT-8 (**done**, [#131](https://github.com/Joshuaweg/pulsatrix/pull/131) to
   [#139](https://github.com/Joshuaweg/pulsatrix/pull/139)): CKA, RSA and SVCCA, nearest
   neighbors, probe controls, layer geometry, PCA, TCAV and CRP, and export for UMAP and t-SNE
@@ -734,7 +734,7 @@ doesn't support.
 | Why | LRP composites, Integrated Gradients | Have |
 | Why not | Contrastive LRP (relevance of logit P minus logit Q) | Have |
 | What if | PDP, ICE, ALE, local and global (Morris, Sobol) sensitivity, occlusion, re-running with an edited input | Have ([CFS](#cfs-counterfactuals-and-sensitivity)) |
-| How (global) | Global surrogate tree, PDP, TCAV, CRP | Partial; XAI-4, INT-6 |
+| How (global) | Global surrogate tree, PDP, TCAV, CRP | Have |
 | How to be that | Counterfactual search | Have: gradient-based, model-agnostic and diverse sets ([CFS](#cfs-counterfactuals-and-sensitivity)) |
 | How to still be this | Anchors | Gap; XAI-4 |
 | Performance | Metrics, calibration, per-slice error, uncertainty | Partial; KS-3 |
@@ -754,7 +754,7 @@ The reason changes the defaults:
 | XAI-1 | `XaiQuestion` (9 values) and `XaiReason` (4 values), and a `capabilities()` declaration on every explainer | Machine-readable "what this explainer answers" | — | P0–P1 | S | Done, [#156](https://github.com/Joshuaweg/pulsatrix/pull/156) |
 | XAI-2 | `ExplanationPlanner::plan(question, reason, model_traits)`, returning ranked explainers and the checks that must run. Optional, and never hides the direct explainer APIs | The framework users actually call | XAI-1 | P1 | M | Done, [#160](https://github.com/Joshuaweg/pulsatrix/pull/160) |
 | XAI-3 | An `Explanation` report: the attribution plus question, reason, method, settings, metric results and caveats. Caveats are filled in automatically from known failure modes | Explanations that say what they don't support | XAI-2 | P1 | M | Done, [#161](https://github.com/Joshuaweg/pulsatrix/pull/161) |
-| XAI-4 | The missing explainers: a global decision-tree surrogate with a fidelity score, local fidelity output for LIME, Anchors, prototypes from nearest neighbors, and pertinent negatives | Covers How to still be this and How (global); counterfactuals moved to CFS | XAI-1, INT-1 | P1 | M each | |
+| XAI-4 | The missing explainers: a global decision-tree surrogate with a fidelity score, local fidelity output for LIME, Anchors, prototypes from nearest neighbors, and pertinent negatives | Covers How to still be this and How (global); counterfactuals moved to CFS | XAI-1, INT-1 | P1 | M each | Partly done: surrogate tree and LIME fidelity, [#162](https://github.com/Joshuaweg/pulsatrix/pull/162) |
 | XAI-5 | Explanation-quality metrics in the Quantus families: deletion and insertion curves (with the ROAD correction), the model-parameter randomization test, sparseness and complexity | Today pulsatrix has conservation and stability checks only | — | P0 | M | Done, [#53](https://github.com/Joshuaweg/pulsatrix/pull/53) |
 | XAI-6 | `NullModelBaseline`: re-run any explainer, probe or featurizer on a re-initialized copy of the model and report the difference | The baseline rule above, as one call | FND-1 | P0 | S–M | Done, [#54](https://github.com/Joshuaweg/pulsatrix/pull/54) |
 
@@ -795,6 +795,15 @@ The reason changes the defaults:
   through `ReportExplanation`. On the test MLP, KernelSHAP passes every Justify check but just
   fails randomization (0.51), because the input's magnitudes dominate the ranking, as Adebayo et
   al. found for gradient × input.
+- **XAI-4, surrogate tree and LIME fidelity.** The tree is CART grown the way scikit-learn grows
+  it, so it is checked node by node against `DecisionTreeClassifier` and `DecisionTreeRegressor`.
+  scikit-learn breaks ties between features at random and pulsatrix by the lower index. With 80
+  rows, deep classification nodes tied often enough to change scikit-learn's tree between random
+  states, so the reference trees use 200 rows, where they don't change. Fidelity is measured on a
+  held-out 30%, and the planner lists it as the tree's own check. On sin(4x₀) + cos(3x₁)·x₂, no
+  readable depth reaches the 85% falsifier: held-out R² is 0.78 at depth 4 and 0.84 at depth 8,
+  with 61 leaves. LIME's local fidelity is the weighted R² of its surrogate, without an intercept,
+  so it can be negative. XAI-3 warns below 0.8.
 - **XAI-5.** The metrics take a prediction function and a finished attribution, so they work with
   any explainer. ROAD's imputation solves every removed pixel jointly as the weighted mean of its
   neighbors, plus seeded noise. Sparseness and complexity score an all-zero attribution as 0,
@@ -817,6 +826,7 @@ The reason changes the defaults:
 | Faithfulness for token input: deletion fills token ids with a value, which is another token. A report on a language model needs removal in embedding space or by a mask token; XAI-3 marks it as a warning | XAI-3 | XAI-1 revision, with the input kinds |
 | An explanation report on a real model in a recipe, and a view for the `pulsatrix.explanation.v1` document | XAI-3 | A recipe, and VIZ |
 | The plan as an MCP tool, so agents can ask which explainer to run | XAI-2 | AGT-5 |
+| A tree view for the `pulsatrix.surrogate_tree.v1` document; today it is text (`DescribeSurrogateTree`) and JSON | XAI-4 | VIZ |
 
 ## CFS: Counterfactuals and sensitivity
 

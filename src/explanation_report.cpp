@@ -358,8 +358,7 @@ const std::vector<MethodCaveat>& MethodCaveats() {
          "treat features as independent; correlated features split credit unpredictably (Kumar et al. 2020)."},
         {"LIME", "method.lime_sampling",
          "The surrogate is fitted to random perturbations: another seed, sample count or kernel width gives "
-         "another explanation (Alvarez-Melis and Jaakkola 2018), and its local fidelity isn't reported yet "
-         "(XAI-4)."},
+         "another explanation (Alvarez-Melis and Jaakkola 2018)."},
         {"Occlusion", "method.occlusion_fill",
          "Covered windows are filled with a baseline value the model may never have seen, so the score "
          "includes its reaction to the fill (Hooker et al. 2019)."},
@@ -556,6 +555,15 @@ std::vector<Caveat> DeriveCaveats(const Explanation& e) {
             add("method.integrated_gradients_steps", CaveatSeverity::Warning, "method",
                 "Only " + *steps + " interpolation steps: completeness holds only up to the Riemann sum's error "
                 "(50 to 300 is typical).");
+        }
+    }
+    if (e.method == "LIME") {
+        const std::optional<std::string> fidelity = e.setting("local_fidelity");
+        if (fidelity && std::stod(*fidelity) < 0.8) {
+            add("method.lime_local_fidelity", CaveatSeverity::Warning, "method",
+                "The linear surrogate fits the model poorly around this input (local fidelity " +
+                    Fmt(std::stod(*fidelity)) + ", weighted R²), so its coefficients aren't the model's local "
+                    "behaviour; a smaller sigma or more samples may fit better.");
         }
     }
     const CheckResult* stability = e.check("stability");
