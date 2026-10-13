@@ -281,6 +281,14 @@ std::vector<ExplainerCapabilities> BuildCatalog() {
     c.push_back(Entry("ContactPrediction", "protein_contacts.hpp", {"RankContactHeads", "ContactPredictor::predict"},
                       "Which attention heads track residue contacts, and how well.", {Q::HowGlobal}, S::Global,
                       A::Activations, I::Protein));
+    for (ExplainerCapabilities& e : c) {
+        e.attribution = e.name == "LRP" || e.name == "Saliency" || e.name == "IntegratedGradients" || e.name == "GradCAM" ||
+                        e.name == "KernelSHAP" || e.name == "LIME" || e.name == "Occlusion";
+        e.complete = e.name == "LRP" || e.name == "IntegratedGradients" || e.name == "KernelSHAP" ||
+                     e.name == "ConceptRelevance" || e.name == "ProteinRelevance" || e.name == "FineTuneRelevanceDiff";
+        e.needs_base_model = e.name == "FineTuneRelevanceDiff" || e.name == "IntruderDimensions";
+        e.max_features = e.name == "KernelSHAP" ? 20 : 0;
+    }
     return c;
 }
 
@@ -330,6 +338,10 @@ JsonValue ToJson(const ExplainerCapabilities& capabilities) {
         {"scope", std::string(to_string(capabilities.scope))},
         {"access", std::string(to_string(capabilities.access))},
         {"input", std::string(to_string(capabilities.input))},
+        {"attribution", capabilities.attribution},
+        {"complete", capabilities.complete},
+        {"needs_base_model", capabilities.needs_base_model},
+        {"max_features", JsonValue(capabilities.max_features)},
     });
 }
 
