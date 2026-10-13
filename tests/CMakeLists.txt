@@ -352,8 +352,9 @@ include(GoogleTest)
 # built most recently into the generated test commands -- under a multi-config generator
 # (Visual Studio), that means `ctest -C Debug` can silently run the *Release* binary if
 # Release was built more recently, with no error, just wrong results. PRE_TEST re-discovers
-# against the actual $<CONFIG> binary on every ctest invocation.
-gtest_discover_tests(pulsatrix_tests DISCOVERY_MODE PRE_TEST)
+# against the actual $<CONFIG> binary on every ctest invocation. Listing the tests takes over the
+# default 5 s on a busy Windows runner, so the timeout is 60 s.
+gtest_discover_tests(pulsatrix_tests DISCOVERY_MODE PRE_TEST DISCOVERY_TIMEOUT 60)
 
 # KS-1: install this build, then build and run a separate project that finds it with
 # find_package(pulsatrix) alone. Runs the install rules for real, so it catches a header the
@@ -367,6 +368,14 @@ add_test(NAME PulsatrixInstall.FindPackageConsumer
         "-DGENERATOR=${CMAKE_GENERATOR}"
         "-DCXX_COMPILER=${CMAKE_CXX_COMPILER}"
         -P "${CMAKE_CURRENT_SOURCE_DIR}/install_consumer_test.cmake")
+
+# Recipes that run a model get a smoke run on the tiny test model, so CI runs their code end to end.
+if(PULSATRIX_BUILD_EXAMPLES)
+    add_test(NAME Recipe.IsTheShapeRealSmoke
+        COMMAND is_the_shape_real_recipe "${CMAKE_CURRENT_SOURCE_DIR}/fixtures/hf_tiny/llama"
+            "${CMAKE_CURRENT_BINARY_DIR}/recipe_is_the_shape_real" --smoke
+            --tokenizer "${CMAKE_CURRENT_SOURCE_DIR}/fixtures/tokenizers/smollm2/tokenizer.json")
+endif()
 
 # VIZ-2: the pulsatrix_svg command-line tool, on the VIZ-1 document fixtures.
 add_test(NAME PulsatrixSvg.RendersAnAttribution
