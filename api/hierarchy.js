@@ -162,6 +162,7 @@ var hierarchy =
     [ "pulsatrix::EsmContactHead", "structpulsatrix_1_1EsmContactHead.html", null ],
     [ "pulsatrix::ESResult", "structpulsatrix_1_1ESResult.html", null ],
     [ "pulsatrix::FeatureDashboardDocument::Example", "structpulsatrix_1_1FeatureDashboardDocument_1_1Example.html", null ],
+    [ "pulsatrix::ExplainerCapabilities", "structpulsatrix_1_1ExplainerCapabilities.html", null ],
     [ "pulsatrix::ExplainerContext", "classpulsatrix_1_1ExplainerContext.html", null ],
     [ "pulsatrix::ExplanationScoreCard", "classpulsatrix_1_1ExplanationScoreCard.html", null ],
     [ "pulsatrix::datalog::FactDatabase", "classpulsatrix_1_1datalog_1_1FactDatabase.html", null ],

@@ -95,6 +95,7 @@ $(document).ready(function(){initNavTree('classpulsatrix_1_1KernelSHAP.html','')
 <div class="header">
   <div class="summary">
 <a href="#pub-methods">Public Member Functions</a> &#124;
+<a href="#pub-static-methods">Static Public Member Functions</a> &#124;
 <a href="classpulsatrix_1_1KernelSHAP-members.html">List of all members</a>  </div>
   <div class="headertitle"><div class="title">pulsatrix::KernelSHAP Class Reference</div></div>
 </div><!--header-->
@@ -110,6 +111,12 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a5dab4fed1a768722277916b14fee0d33" id="r_a5dab4fed1a768722277916b14fee0d33"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structpulsatrix_1_1Attribution.html">Attribution</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1KernelSHAP.html#a5dab4fed1a768722277916b14fee0d33">explain</a> (const std::function&lt; <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a>(const <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp;)&gt; &amp;predict, const <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp;input, const <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp;baseline, int64_t target_index, <a class="el" href="classpulsatrix_1_1DeviceBackend.html">DeviceBackend</a> *backend) const</td></tr>
 <tr class="memdesc:a5dab4fed1a768722277916b14fee0d33"><td class="mdescLeft">&#160;</td><td class="mdescRight">Computes Shapley value approximations for one output index.  <br /></td></tr>
 <tr class="separator:a5dab4fed1a768722277916b14fee0d33"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-static-methods" name="pub-static-methods"></a>
+Static Public Member Functions</h2></td></tr>
+<tr class="memitem:ab48df5eddc12b62ba686cf9d6dd179f6" id="r_ab48df5eddc12b62ba686cf9d6dd179f6"><td class="memItemLeft" align="right" valign="top">static const <a class="el" href="structpulsatrix_1_1ExplainerCapabilities.html">ExplainerCapabilities</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1KernelSHAP.html#ab48df5eddc12b62ba686cf9d6dd179f6">capabilities</a> ()</td></tr>
+<tr class="memdesc:ab48df5eddc12b62ba686cf9d6dd179f6"><td class="mdescLeft">&#160;</td><td class="mdescRight">What it answers and needs: its <a class="el" href="namespacepulsatrix.html#aaebde114c64c90e88b03e5c04cba260a" title="Every explainer pulsatrix has, in a fixed order.">ExplainerCatalog()</a> entry.  <br /></td></tr>
+<tr class="separator:ab48df5eddc12b62ba686cf9d6dd179f6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Approximates Shapley values via full coalition enumeration + SHAP-kernel-weighted linear regression, reusing fit_weighted_linear_regression for the reduced (n-1)-dimensional problem the efficiency-axiom substitution produces. </p>
@@ -121,6 +128,33 @@ Takes a forward-pass callable, not <a class="el" href="classpulsatrix_1_1Explain
 <dd>
 Device-generic host boundary: coalitions are built on the host from one read of input/baseline, uploaded beside the input, and only f(z)[target] is read back. </dd></dl>
 </div><h2 class="groupheader">Member Function Documentation</h2>
+<a id="ab48df5eddc12b62ba686cf9d6dd179f6" name="ab48df5eddc12b62ba686cf9d6dd179f6"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab48df5eddc12b62ba686cf9d6dd179f6">&#9670;&#160;</a></span>capabilities()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static const <a class="el" href="structpulsatrix_1_1ExplainerCapabilities.html">ExplainerCapabilities</a> &amp; pulsatrix::KernelSHAP::capabilities </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>What it answers and needs: its <a class="el" href="namespacepulsatrix.html#aaebde114c64c90e88b03e5c04cba260a" title="Every explainer pulsatrix has, in a fixed order.">ExplainerCatalog()</a> entry. </p>
+
+</div>
+</div>
 <a id="a5dab4fed1a768722277916b14fee0d33" name="a5dab4fed1a768722277916b14fee0d33"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a5dab4fed1a768722277916b14fee0d33">&#9670;&#160;</a></span>explain()</h2>
 

@@ -3,6 +3,7 @@ var group__interpretability =
     [ "Model-Agnostic Explainers", "group__interpretability__agnostic.html", "group__interpretability__agnostic" ],
     [ "Gradient-Based Explainers", "group__interpretability__dl.html", "group__interpretability__dl" ],
     [ "Layer-wise Relevance Propagation", "group__interpretability__lrp.html", "group__interpretability__lrp" ],
+    [ "explainer_capabilities.hpp", "explainer__capabilities_8hpp.html", null ],
     [ "fitness_metrics.hpp", "fitness__metrics_8hpp.html", null ],
     [ "protein_concepts.hpp", "protein__concepts_8hpp.html", null ],
     [ "protein_contacts.hpp", "protein__contacts_8hpp.html", null ],

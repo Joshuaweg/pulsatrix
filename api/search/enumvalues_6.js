@@ -5,9 +5,11 @@ var searchData=
   ['gelu_2',['gelu',['../namespacepulsatrix.html#afec27fa326532e4ad62b32d54558b503af48cca1c6deaa6a1c34e4ee46954cf0b',1,'pulsatrix::Gelu'],['../namespacepulsatrix.html#a988785af20e321b62cf99997047a6985af48cca1c6deaa6a1c34e4ee46954cf0b',1,'pulsatrix::Gelu']]],
   ['gelutanh_3',['gelutanh',['../namespacepulsatrix.html#afec27fa326532e4ad62b32d54558b503a2def035d9851f43e5bb24c50b324d47f',1,'pulsatrix::GeluTanh'],['../namespacepulsatrix.html#a988785af20e321b62cf99997047a6985a2def035d9851f43e5bb24c50b324d47f',1,'pulsatrix::GeluTanh']]],
   ['gemm_4',['Gemm',['../namespacepulsatrix.html#a6aec8b41f4e464852c7d0b56cfee6843a67d92e041230138abff74328d18b03a1',1,'pulsatrix']]],
-  ['godel_5',['godel',['../classpulsatrix_1_1ConjunctionModule.html#ac337b697d16a8cdac0dda3744c73346fa7c77586449fe21323ae2f00adcddde82',1,'pulsatrix::ConjunctionModule::Godel'],['../classpulsatrix_1_1DisjunctionModule.html#aa262bae9403da4b2852f4d66c158da3ea7c77586449fe21323ae2f00adcddde82',1,'pulsatrix::DisjunctionModule::Godel']]],
-  ['grassmannian_6',['Grassmannian',['../namespacepulsatrix.html#a056ad7d81b2ee20acdbf7f6f7a1e7a9ca7865867e192c85f94cb5cbf96923b41a',1,'pulsatrix']]],
-  ['grouplasso_7',['GroupLasso',['../namespacepulsatrix.html#a056ad7d81b2ee20acdbf7f6f7a1e7a9cae3f1dee6b41cf7ad97e79b39791cb10c',1,'pulsatrix']]],
-  ['grubackward_8',['GruBackward',['../namespacepulsatrix.html#ac55b0127cfe9bf4ce7793fef9db97400ab250d5c399d7c2349e16a8f2ecd36185',1,'pulsatrix']]],
-  ['grulrp_9',['GruLrp',['../namespacepulsatrix.html#ac55b0127cfe9bf4ce7793fef9db97400aeb5497c21260ca12facce3759273ab44',1,'pulsatrix']]]
+  ['global_5',['Global',['../namespacepulsatrix.html#a51afa06976af080a2b978c0815224a32a4cc6684df7b4a92b1dec6fce3264fac8',1,'pulsatrix']]],
+  ['godel_6',['godel',['../classpulsatrix_1_1ConjunctionModule.html#ac337b697d16a8cdac0dda3744c73346fa7c77586449fe21323ae2f00adcddde82',1,'pulsatrix::ConjunctionModule::Godel'],['../classpulsatrix_1_1DisjunctionModule.html#aa262bae9403da4b2852f4d66c158da3ea7c77586449fe21323ae2f00adcddde82',1,'pulsatrix::DisjunctionModule::Godel']]],
+  ['gradients_7',['Gradients',['../namespacepulsatrix.html#a6f8112c4b12ea9595f3374ad2022422bae99e133f4481158db879726b7335d967',1,'pulsatrix']]],
+  ['grassmannian_8',['Grassmannian',['../namespacepulsatrix.html#a056ad7d81b2ee20acdbf7f6f7a1e7a9ca7865867e192c85f94cb5cbf96923b41a',1,'pulsatrix']]],
+  ['grouplasso_9',['GroupLasso',['../namespacepulsatrix.html#a056ad7d81b2ee20acdbf7f6f7a1e7a9cae3f1dee6b41cf7ad97e79b39791cb10c',1,'pulsatrix']]],
+  ['grubackward_10',['GruBackward',['../namespacepulsatrix.html#ac55b0127cfe9bf4ce7793fef9db97400ab250d5c399d7c2349e16a8f2ecd36185',1,'pulsatrix']]],
+  ['grulrp_11',['GruLrp',['../namespacepulsatrix.html#ac55b0127cfe9bf4ce7793fef9db97400aeb5497c21260ca12facce3759273ab44',1,'pulsatrix']]]
 ];

@@ -11,5 +11,7 @@ var searchData=
   ['qrresult_8',['QRResult',['../structpulsatrix_1_1QRResult.html',1,'pulsatrix']]],
   ['qualityfitness_9',['QualityFitness',['../namespacepulsatrix.html#a956c06f49f783152ffc13683bb232b75',1,'pulsatrix']]],
   ['query_5fpre_5fattn_5fscalar_10',['query_pre_attn_scalar',['../structpulsatrix_1_1HfModelConfig.html#af2c9b0f60a30a87cd75dd7251e746a75',1,'pulsatrix::HfModelConfig']]],
-  ['query_5fweight_11',['query_weight',['../structpulsatrix_1_1datalog_1_1NeuralPredicateQueryResult.html#a1f88a8558770a28d059ea75ff32716c8',1,'pulsatrix::datalog::NeuralPredicateQueryResult']]]
+  ['query_5fweight_11',['query_weight',['../structpulsatrix_1_1datalog_1_1NeuralPredicateQueryResult.html#a1f88a8558770a28d059ea75ff32716c8',1,'pulsatrix::datalog::NeuralPredicateQueryResult']]],
+  ['questions_12',['questions',['../structpulsatrix_1_1ExplainerCapabilities.html#a827e01c976a926ae79bf30b7041452a0',1,'pulsatrix::ExplainerCapabilities']]],
+  ['questiontext_13',['QuestionText',['../namespacepulsatrix.html#a6e667a2af09d5c42a810f93386dd528e',1,'pulsatrix']]]
 ];

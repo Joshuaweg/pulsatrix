@@ -163,6 +163,7 @@ var namespacepulsatrix =
     [ "ErrorTerm", "structpulsatrix_1_1ErrorTerm.html", "structpulsatrix_1_1ErrorTerm" ],
     [ "EsmContactHead", "structpulsatrix_1_1EsmContactHead.html", "structpulsatrix_1_1EsmContactHead" ],
     [ "ESResult", "structpulsatrix_1_1ESResult.html", "structpulsatrix_1_1ESResult" ],
+    [ "ExplainerCapabilities", "structpulsatrix_1_1ExplainerCapabilities.html", "structpulsatrix_1_1ExplainerCapabilities" ],
     [ "ExplainerContext", "classpulsatrix_1_1ExplainerContext.html", "classpulsatrix_1_1ExplainerContext" ],
     [ "ExplanationScoreCard", "classpulsatrix_1_1ExplanationScoreCard.html", "classpulsatrix_1_1ExplanationScoreCard" ],
     [ "FastaRecord", "structpulsatrix_1_1FastaRecord.html", "structpulsatrix_1_1FastaRecord" ],
@@ -575,6 +576,10 @@ var namespacepulsatrix =
       [ "GeluTanh", "namespacepulsatrix.html#afec27fa326532e4ad62b32d54558b503a2def035d9851f43e5bb24c50b324d47f", null ],
       [ "Gelu", "namespacepulsatrix.html#afec27fa326532e4ad62b32d54558b503af48cca1c6deaa6a1c34e4ee46954cf0b", null ]
     ] ],
+    [ "ExplanationScope", "namespacepulsatrix.html#a51afa06976af080a2b978c0815224a32", [
+      [ "Local", "namespacepulsatrix.html#a51afa06976af080a2b978c0815224a32a509820290d57f333403f490dde7316f4", null ],
+      [ "Global", "namespacepulsatrix.html#a51afa06976af080a2b978c0815224a32a4cc6684df7b4a92b1dec6fce3264fac8", null ]
+    ] ],
     [ "FinishReason", "namespacepulsatrix.html#ad77127af5416692cbd6eaeaba9ec0e0a", [
       [ "Eos", "namespacepulsatrix.html#ad77127af5416692cbd6eaeaba9ec0e0aa86d16d93f97145c1c4532ada5501eaeb", null ],
       [ "Length", "namespacepulsatrix.html#ad77127af5416692cbd6eaeaba9ec0e0aaba2a9c6c8c77e03f83ef8bf543612275", null ]
@@ -592,6 +597,15 @@ var namespacepulsatrix =
       [ "Raw", "namespacepulsatrix.html#ad2acaf7e4c4f58cf3a59c360e5f4e1baa65e65c8ab0d8609ce12fc68a03cb8e00", null ],
       [ "Centered", "namespacepulsatrix.html#ad2acaf7e4c4f58cf3a59c360e5f4e1baadc5ffc2b720501ba00de3be1477b435d", null ],
       [ "Derivative", "namespacepulsatrix.html#ad2acaf7e4c4f58cf3a59c360e5f4e1baa70ae6e285cc14c8486e3cf5bec39d1fd", null ]
+    ] ],
+    [ "InputKind", "namespacepulsatrix.html#a6d5917966064f051ac4390de4120fc12", [
+      [ "Any", "namespacepulsatrix.html#a6d5917966064f051ac4390de4120fc12aed36a1ef76a59ee3f15180e0441188ad", null ],
+      [ "Tabular", "namespacepulsatrix.html#a6d5917966064f051ac4390de4120fc12afd962cc92afda6dfaf585997dd6cb671", null ],
+      [ "Image", "namespacepulsatrix.html#a6d5917966064f051ac4390de4120fc12abe53a0541a6d36f6ecb879fa2c584b08", null ],
+      [ "Tokens", "namespacepulsatrix.html#a6d5917966064f051ac4390de4120fc12af6861770bdf2fb702a665f1b34e4f9ed", null ],
+      [ "Protein", "namespacepulsatrix.html#a6d5917966064f051ac4390de4120fc12a7e667a4e12400ed892761cd44d4e7fbd", null ],
+      [ "Symbolic", "namespacepulsatrix.html#a6d5917966064f051ac4390de4120fc12aaddee1396a3e20ceea8071ed6da54866", null ],
+      [ "Representation", "namespacepulsatrix.html#a6d5917966064f051ac4390de4120fc12a5b977909710855427ac2d915b3b7c38c", null ]
     ] ],
     [ "LatentClass", "namespacepulsatrix.html#ab673d269658e3265e7743bcffa908aa8", [
       [ "AOnly", "namespacepulsatrix.html#ab673d269658e3265e7743bcffa908aa8a1fc5889d3bb8f6cad1f13441c1717a48", null ],
@@ -633,6 +647,13 @@ var namespacepulsatrix =
     [ "MlpType", "namespacepulsatrix.html#a871e9a9107ca439528eafcacf6eb7f46", [
       [ "Plain", "namespacepulsatrix.html#a871e9a9107ca439528eafcacf6eb7f46a4cd8413207629a963225f4314b53adcd", null ],
       [ "Gated", "namespacepulsatrix.html#a871e9a9107ca439528eafcacf6eb7f46ae33f92b6ec382adfd412624ff0c83644", null ]
+    ] ],
+    [ "ModelAccess", "namespacepulsatrix.html#a6f8112c4b12ea9595f3374ad2022422b", [
+      [ "BlackBox", "namespacepulsatrix.html#a6f8112c4b12ea9595f3374ad2022422ba0d39766dbb56e9c5d1255a9a6435e5b3", null ],
+      [ "Weights", "namespacepulsatrix.html#a6f8112c4b12ea9595f3374ad2022422ba8831731b52fdc6cb7f162f9767d66e4d", null ],
+      [ "Activations", "namespacepulsatrix.html#a6f8112c4b12ea9595f3374ad2022422bae3a64e00ddaac102e67205a5f9fd32a9", null ],
+      [ "Gradients", "namespacepulsatrix.html#a6f8112c4b12ea9595f3374ad2022422bae99e133f4481158db879726b7335d967", null ],
+      [ "Relevance", "namespacepulsatrix.html#a6f8112c4b12ea9595f3374ad2022422baad24ffca4f9e9c0c7e80fe1512df6db9", null ]
     ] ],
     [ "MutationObjective", "namespacepulsatrix.html#ab997921e8dd2fcb16daefdcc05ce6550", [
       [ "Minimax", "namespacepulsatrix.html#ab997921e8dd2fcb16daefdcc05ce6550a380c18e239f03cf9c0a846c7defd029b", null ],
@@ -789,6 +810,23 @@ var namespacepulsatrix =
       [ "WordsAndPunctuation", "namespacepulsatrix.html#a1c796f1d1ffa3966d6cc310c29a720b4a79e192157e129c1c826c7488bb3769b4", null ],
       [ "Whitespace", "namespacepulsatrix.html#a1c796f1d1ffa3966d6cc310c29a720b4ace9a733c2ae3f8b704aec91f551b2bcc", null ]
     ] ],
+    [ "XaiQuestion", "namespacepulsatrix.html#a7d304e7a712c6931b0f6fb22e532c6b8", [
+      [ "Input", "namespacepulsatrix.html#a7d304e7a712c6931b0f6fb22e532c6b8a324118a6721dd6b8a9b9f4e327df2bf5", null ],
+      [ "Output", "namespacepulsatrix.html#a7d304e7a712c6931b0f6fb22e532c6b8a29c2c02a361c9d7028472e5d92cd4a54", null ],
+      [ "Performance", "namespacepulsatrix.html#a7d304e7a712c6931b0f6fb22e532c6b8a9446a98ad14416153cc4d45ab8b531bf", null ],
+      [ "HowGlobal", "namespacepulsatrix.html#a7d304e7a712c6931b0f6fb22e532c6b8a92184215324250b809caabc0862675cf", null ],
+      [ "Why", "namespacepulsatrix.html#a7d304e7a712c6931b0f6fb22e532c6b8a91164770fc34b877cc56ccaf61d6eee8", null ],
+      [ "WhyNot", "namespacepulsatrix.html#a7d304e7a712c6931b0f6fb22e532c6b8aac4e5472f1024a04f55b310dc84d1dbd", null ],
+      [ "WhatIf", "namespacepulsatrix.html#a7d304e7a712c6931b0f6fb22e532c6b8a1af8a7c5ce0c83c5616fa368d27d119b", null ],
+      [ "HowToBeThat", "namespacepulsatrix.html#a7d304e7a712c6931b0f6fb22e532c6b8ad486569827ae2ad736fbeb61971f6e2c", null ],
+      [ "HowToStillBeThis", "namespacepulsatrix.html#a7d304e7a712c6931b0f6fb22e532c6b8a086f2bcef82bbf60b6c972bedcab2ae4", null ]
+    ] ],
+    [ "XaiReason", "namespacepulsatrix.html#a0b67dc6545aa4959c870323f2df97d05", [
+      [ "Justify", "namespacepulsatrix.html#a0b67dc6545aa4959c870323f2df97d05a4b425d212a2e7b36c38703bfdcd57823", null ],
+      [ "Control", "namespacepulsatrix.html#a0b67dc6545aa4959c870323f2df97d05aa1595abbb4c3a326636dd178757cd6c1", null ],
+      [ "Improve", "namespacepulsatrix.html#a0b67dc6545aa4959c870323f2df97d05a10ac42c4d7dca450a66e8efbe8b00799", null ],
+      [ "Discover", "namespacepulsatrix.html#a0b67dc6545aa4959c870323f2df97d05aabfc3a65538a6ec86502b2b498b6b4a6", null ]
+    ] ],
     [ "AblationHook", "namespacepulsatrix.html#a1184cf3eab567420501e3a607b99a2b4", null ],
     [ "AggregateToWords", "namespacepulsatrix.html#a9969ba30da557b617c083a42527ae783", null ],
     [ "AggregateToWords", "namespacepulsatrix.html#ad632e662dfcc2dd85fab54b1ee8e9b1f", null ],
@@ -796,6 +834,8 @@ var namespacepulsatrix =
     [ "AlignmentConservation", "namespacepulsatrix.html#a80210273b4a933b3a1838af103371b77", null ],
     [ "AlignmentQuery", "namespacepulsatrix.html#afdc5d7f8ad01f1e29984467e35bc560a", null ],
     [ "AllocateOffspringCounts", "namespacepulsatrix.html#aba26bb47a841c985070a3d37cff2a423", null ],
+    [ "AllXaiQuestions", "namespacepulsatrix.html#a0022b758a7444c6eced4df937aed45a0", null ],
+    [ "AllXaiReasons", "namespacepulsatrix.html#a0cbe364e8c302436d1f280539947f323", null ],
     [ "AnalyzeMorris", "namespacepulsatrix.html#a2f76ee6bef103d750bdef0f6fce07a76", null ],
     [ "AnalyzeSobol", "namespacepulsatrix.html#a3418efb43c16bb465beb0354f9930382", null ],
     [ "Anisotropy", "namespacepulsatrix.html#ad0fb981b927a721ca21aed909e8f55b9", null ],
@@ -903,6 +943,10 @@ var namespacepulsatrix =
     [ "EvaluateReconstruction", "namespacepulsatrix.html#afb724b74a8b0dea386aec8265563eca3", null ],
     [ "ExpectedImprovement", "namespacepulsatrix.html#abf980c4f81efaaafcbfd21722b3d7d3e", null ],
     [ "ExplainedVarianceBySource", "namespacepulsatrix.html#a2a0969f2c97efd22de37c87faa8c20f3", null ],
+    [ "ExplainerCapabilitiesOf", "namespacepulsatrix.html#a51e7af182c24ab1f829076969f213352", null ],
+    [ "ExplainerCatalog", "namespacepulsatrix.html#aaebde114c64c90e88b03e5c04cba260a", null ],
+    [ "ExplainerCatalogDocument", "namespacepulsatrix.html#a2d6b4a742808d7cef196ecada322f9fa", null ],
+    [ "ExplainersFor", "namespacepulsatrix.html#a87a20ae858da6737d5283803e531e1fe", null ],
     [ "ExploreConfiguration", "namespacepulsatrix.html#a15aae4f82a577165290ca698e28d4fd3", null ],
     [ "ExploreConfigurationGivenFactors", "namespacepulsatrix.html#a1ee9611b4c31458db9f3d21589227c39", null ],
     [ "ExportEmbeddings", "namespacepulsatrix.html#a1168a3fbd17aa6d974a2ede8b8ea1f55", null ],
@@ -1083,6 +1127,8 @@ var namespacepulsatrix =
     [ "ParseTokenizerJson", "namespacepulsatrix.html#ac426352fc275389c5339f87200081a36", null ],
     [ "ParseTokenRelevanceDocument", "namespacepulsatrix.html#a23fce678b138b32c28e725fc932c1e56", null ],
     [ "ParseTrainingLogDocument", "namespacepulsatrix.html#a808b96b4abd360d90e4a12b4c28476ba", null ],
+    [ "ParseXaiQuestion", "namespacepulsatrix.html#a23191ffe675d693eaf29a57d9f935bd8", null ],
+    [ "ParseXaiReason", "namespacepulsatrix.html#a30df5c7e490e05dd5e39b39ebbd24303", null ],
     [ "PcaComponent", "namespacepulsatrix.html#a50949eb841d1e40b88dc6dadbcc1b0f6", null ],
     [ "PcaProject", "namespacepulsatrix.html#a571fe26775b77bed555f15a79131c511", null ],
     [ "PcaReconstruct", "namespacepulsatrix.html#a74f97f6ddd1895233bc4fcf2b0132993", null ],
@@ -1103,6 +1149,7 @@ var namespacepulsatrix =
     [ "PruneLinks", "namespacepulsatrix.html#a12d0c673c45bc5f12e46041c1b3d2a14", null ],
     [ "QR", "namespacepulsatrix.html#a281ea330d1061f3fdd9fd8578e3b2c2f", null ],
     [ "QualityFitness", "namespacepulsatrix.html#a956c06f49f783152ffc13683bb232b75", null ],
+    [ "QuestionText", "namespacepulsatrix.html#a6e667a2af09d5c42a810f93386dd528e", null ],
     [ "RandomizationCheck", "namespacepulsatrix.html#a0873bbb14c1456e1862355ece8f3ac9c", null ],
     [ "RandomSample", "namespacepulsatrix.html#aa6ea52ad0a3275de0825182eac0b8660", null ],
     [ "RangeBounds", "namespacepulsatrix.html#af7b6197038b51b34a805f1171810d28c", null ],
@@ -1117,6 +1164,7 @@ var namespacepulsatrix =
     [ "ReadNpy", "namespacepulsatrix.html#ae564154db51b2593d10f5f1e075165e0", null ],
     [ "ReadProteinGymReference", "namespacepulsatrix.html#ac5afa1d6d5a7e637d2e166817a142d97", null ],
     [ "ReadStructure", "namespacepulsatrix.html#adbd45d0876377efe00a432b630000be7", null ],
+    [ "ReasonText", "namespacepulsatrix.html#a2e84db51d705fdd4d165ec0274361a40", null ],
     [ "ReinitializeParameters", "namespacepulsatrix.html#a27ada5559b2ea9d71fdb73638e9e0101", null ],
     [ "release_tensor", "namespacepulsatrix.html#adcfb14c67666eab8cfe009824f318631", null ],
     [ "RelevanceProfile", "namespacepulsatrix.html#aa4af758799767958b9dd2c2a12bc93c5", null ],
@@ -1240,6 +1288,11 @@ var namespacepulsatrix =
     [ "TimeIt", "namespacepulsatrix.html#a9a61731245dd8ff9ebe10415b973df2d", null ],
     [ "to_json", "namespacepulsatrix.html#a67958a23dcb78a6477ca7276457ea457", null ],
     [ "to_json", "namespacepulsatrix.html#ae6ac032290ca2bd170f7bbb0879b3e37", null ],
+    [ "to_string", "namespacepulsatrix.html#a8949d7845bb9cf164bf81db6ab41ab96", null ],
+    [ "to_string", "namespacepulsatrix.html#a4e19b1c392718908bb252e94eb699eda", null ],
+    [ "to_string", "namespacepulsatrix.html#aed715983d4dd4b5eb4f1a4b240699e31", null ],
+    [ "to_string", "namespacepulsatrix.html#af1c980bc26f34e4edacb14b48985fa47", null ],
+    [ "to_string", "namespacepulsatrix.html#a795d5ac760a0cf7583b4d607e8a34d9b", null ],
     [ "ToAttentionConfig", "namespacepulsatrix.html#a0f72456585566c7d3dd290e3ac5f0af5", null ],
     [ "ToAttentionConfig", "namespacepulsatrix.html#ad64730dfcec06e9aeecdef5787e60c8a", null ],
     [ "ToAttribution", "namespacepulsatrix.html#a6465cd5ee1442b5670cefdd371344d38", null ],
@@ -1260,6 +1313,7 @@ var namespacepulsatrix =
     [ "ToJson", "namespacepulsatrix.html#a78fac3d6c2d0c19d16dae11ee8cf561a", null ],
     [ "ToJson", "namespacepulsatrix.html#a81177bae8565dd9b82c6d1829b79b27c", null ],
     [ "ToJson", "namespacepulsatrix.html#ae1bd894b2f804084cd61b94d4e4bd520", null ],
+    [ "ToJson", "namespacepulsatrix.html#aa4e8b5fb8a54c061c9a57a7449d9ecc2", null ],
     [ "ToJson", "namespacepulsatrix.html#ac0c52d3b599e7bf169118db77357e61c", null ],
     [ "ToJson", "namespacepulsatrix.html#ab956a7775fa51f615c268b6635ca4a58", null ],
     [ "ToJson", "namespacepulsatrix.html#a3723b86c310dfa94b0a9346dcaba88ef", null ],

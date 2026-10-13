@@ -16,6 +16,7 @@ var searchData=
   ['esmcontacthead_13',['EsmContactHead',['../structpulsatrix_1_1EsmContactHead.html',1,'pulsatrix']]],
   ['esresult_14',['ESResult',['../structpulsatrix_1_1ESResult.html',1,'pulsatrix']]],
   ['example_15',['Example',['../structpulsatrix_1_1FeatureDashboardDocument_1_1Example.html',1,'pulsatrix::FeatureDashboardDocument']]],
-  ['explainercontext_16',['ExplainerContext',['../classpulsatrix_1_1ExplainerContext.html',1,'pulsatrix']]],
-  ['explanationscorecard_17',['ExplanationScoreCard',['../classpulsatrix_1_1ExplanationScoreCard.html',1,'pulsatrix']]]
+  ['explainercapabilities_16',['ExplainerCapabilities',['../structpulsatrix_1_1ExplainerCapabilities.html',1,'pulsatrix']]],
+  ['explainercontext_17',['ExplainerContext',['../classpulsatrix_1_1ExplainerContext.html',1,'pulsatrix']]],
+  ['explanationscorecard_18',['ExplanationScoreCard',['../classpulsatrix_1_1ExplanationScoreCard.html',1,'pulsatrix']]]
 ];

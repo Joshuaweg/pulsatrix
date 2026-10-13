@@ -209,6 +209,7 @@ var annotated_dup =
       [ "ErrorTerm", "structpulsatrix_1_1ErrorTerm.html", "structpulsatrix_1_1ErrorTerm" ],
       [ "EsmContactHead", "structpulsatrix_1_1EsmContactHead.html", "structpulsatrix_1_1EsmContactHead" ],
       [ "ESResult", "structpulsatrix_1_1ESResult.html", "structpulsatrix_1_1ESResult" ],
+      [ "ExplainerCapabilities", "structpulsatrix_1_1ExplainerCapabilities.html", "structpulsatrix_1_1ExplainerCapabilities" ],
       [ "ExplainerContext", "classpulsatrix_1_1ExplainerContext.html", "classpulsatrix_1_1ExplainerContext" ],
       [ "ExplanationScoreCard", "classpulsatrix_1_1ExplanationScoreCard.html", "classpulsatrix_1_1ExplanationScoreCard" ],
       [ "FastaRecord", "structpulsatrix_1_1FastaRecord.html", "structpulsatrix_1_1FastaRecord" ],

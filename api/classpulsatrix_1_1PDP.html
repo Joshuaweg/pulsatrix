@@ -95,6 +95,7 @@ $(document).ready(function(){initNavTree('classpulsatrix_1_1PDP.html',''); initR
 <div class="header">
   <div class="summary">
 <a href="#pub-methods">Public Member Functions</a> &#124;
+<a href="#pub-static-methods">Static Public Member Functions</a> &#124;
 <a href="classpulsatrix_1_1PDP-members.html">List of all members</a>  </div>
   <div class="headertitle"><div class="title">pulsatrix::PDP Class Reference</div></div>
 </div><!--header-->
@@ -110,6 +111,12 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:aa6f5bb5e6cb1a2751afb6bbadbeb988a" id="r_aa6f5bb5e6cb1a2751afb6bbadbeb988a"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structpulsatrix_1_1Attribution.html">Attribution</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1PDP.html#aa6f5bb5e6cb1a2751afb6bbadbeb988a">explain</a> (const std::function&lt; <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a>(const <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp;)&gt; &amp;predict, const std::vector&lt; <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &gt; &amp;background, int64_t feature_index, int64_t target_index, float grid_min, float grid_max, int64_t grid_size, <a class="el" href="classpulsatrix_1_1DeviceBackend.html">DeviceBackend</a> *backend) const</td></tr>
 <tr class="memdesc:aa6f5bb5e6cb1a2751afb6bbadbeb988a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Computes the <a class="el" href="classpulsatrix_1_1PDP.html" title="PDP_j(v) = (1/|B|) * sum_{b in B} f(x_j=v, x_{-j}=b_{-j}) – for each grid value v,...">PDP</a> curve for one feature.  <br /></td></tr>
 <tr class="separator:aa6f5bb5e6cb1a2751afb6bbadbeb988a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-static-methods" name="pub-static-methods"></a>
+Static Public Member Functions</h2></td></tr>
+<tr class="memitem:aaa9c99da68ad8644fa88c11c3992009b" id="r_aaa9c99da68ad8644fa88c11c3992009b"><td class="memItemLeft" align="right" valign="top">static const <a class="el" href="structpulsatrix_1_1ExplainerCapabilities.html">ExplainerCapabilities</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1PDP.html#aaa9c99da68ad8644fa88c11c3992009b">capabilities</a> ()</td></tr>
+<tr class="memdesc:aaa9c99da68ad8644fa88c11c3992009b"><td class="mdescLeft">&#160;</td><td class="mdescRight">What it answers and needs: its <a class="el" href="namespacepulsatrix.html#aaebde114c64c90e88b03e5c04cba260a" title="Every explainer pulsatrix has, in a fixed order.">ExplainerCatalog()</a> entry.  <br /></td></tr>
+<tr class="separator:aaa9c99da68ad8644fa88c11c3992009b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>PDP_j(v) = (1/|B|) * sum_{b in B} f(x_j=v, x_{-j}=b_{-j}) &ndash; for each grid value v, replace every background instance's feature j with v (keeping its other features), average the model's output over the whole background set. </p>
@@ -121,6 +128,33 @@ Takes a forward-pass callable, not <a class="el" href="classpulsatrix_1_1Explain
 <dd>
 Device-generic host boundary: each background instance is read to the host once; the swept copies are uploaded beside it and only f(z)[target] is read back. </dd></dl>
 </div><h2 class="groupheader">Member Function Documentation</h2>
+<a id="aaa9c99da68ad8644fa88c11c3992009b" name="aaa9c99da68ad8644fa88c11c3992009b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aaa9c99da68ad8644fa88c11c3992009b">&#9670;&#160;</a></span>capabilities()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static const <a class="el" href="structpulsatrix_1_1ExplainerCapabilities.html">ExplainerCapabilities</a> &amp; pulsatrix::PDP::capabilities </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>What it answers and needs: its <a class="el" href="namespacepulsatrix.html#aaebde114c64c90e88b03e5c04cba260a" title="Every explainer pulsatrix has, in a fixed order.">ExplainerCatalog()</a> entry. </p>
+
+</div>
+</div>
 <a id="aa6f5bb5e6cb1a2751afb6bbadbeb988a" name="aa6f5bb5e6cb1a2751afb6bbadbeb988a"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#aa6f5bb5e6cb1a2751afb6bbadbeb988a">&#9670;&#160;</a></span>explain()</h2>
 
