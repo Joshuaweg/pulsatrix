@@ -75,6 +75,7 @@ add_library(pulsatrix_core
     src/ia3.cpp
     src/fine_tune_diff.cpp
     src/explainer_capabilities.cpp
+    src/explanation_planner.cpp
     src/relu_module.cpp
     src/softmax_module.cpp
     src/rope_module.cpp
@@ -823,6 +824,10 @@ target_compile_definitions(pulsatrix_diff_lm PRIVATE $<$<BOOL:${PULSATRIX_ENABLE
 add_executable(pulsatrix_spd_toy tools/explain/pulsatrix_spd_toy.cpp)
 target_link_libraries(pulsatrix_spd_toy PRIVATE pulsatrix_core)
 
+# pulsatrix_plan: which explainers answer a question about a model, and the checks they need (XAI-2).
+add_executable(pulsatrix_plan tools/explain/pulsatrix_plan.cpp)
+target_link_libraries(pulsatrix_plan PRIVATE pulsatrix_core)
+
 # pulsatrix_tokenizer_parity: a tokenizer.json against Hugging Face tokenizers on a corpus (TOK-2).
 add_executable(pulsatrix_tokenizer_parity tools/tokenizers/pulsatrix_tokenizer_parity.cpp)
 target_link_libraries(pulsatrix_tokenizer_parity PRIVATE pulsatrix_core)
@@ -894,7 +899,7 @@ if(PULSATRIX_INSTALL)
         FILES_MATCHING PATTERN "*.hpp"
         ${excluded_headers})
 
-    install(TARGETS pulsatrix_svg pulsatrix_bench pulsatrix_golden pulsatrix_attnlrp pulsatrix_tokenizer_parity pulsatrix_explain_text pulsatrix_proteingym pulsatrix_contacts pulsatrix_protein_views pulsatrix_explain_protein pulsatrix_train_esm pulsatrix_finetune_esm pulsatrix_probe_esm pulsatrix_steer_esm pulsatrix_diff_lm pulsatrix_spd_toy RUNTIME DESTINATION "${CMAKE_INSTALL_BINDIR}")
+    install(TARGETS pulsatrix_svg pulsatrix_bench pulsatrix_golden pulsatrix_attnlrp pulsatrix_tokenizer_parity pulsatrix_explain_text pulsatrix_proteingym pulsatrix_contacts pulsatrix_protein_views pulsatrix_explain_protein pulsatrix_train_esm pulsatrix_finetune_esm pulsatrix_probe_esm pulsatrix_steer_esm pulsatrix_diff_lm pulsatrix_spd_toy pulsatrix_plan RUNTIME DESTINATION "${CMAKE_INSTALL_BINDIR}")
     set(pulsatrix_installed_libraries pulsatrix_core)
     if(PULSATRIX_ENABLE_ORCHESTRATOR)
         list(APPEND pulsatrix_installed_libraries pulsatrix_orchestrator)

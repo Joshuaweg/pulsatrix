@@ -151,6 +151,25 @@ TEST(ExplainerCatalog, TheDocumentRoundTripsThroughJson) {
     EXPECT_EQ(lrp.find("scope")->as_string(), "local");
     EXPECT_EQ(lrp.find("input")->as_string(), "any");
     EXPECT_EQ(lrp.find("entry_points")->as_array().front().as_string(), "LRP::explain");
+    EXPECT_TRUE(lrp.find("complete")->as_bool());
+    EXPECT_FALSE(lrp.find("needs_base_model")->as_bool());
+}
+
+TEST(ExplainerCatalog, CompletenessAndBaseModelsAreDeclared) {
+    EXPECT_TRUE(IntegratedGradients::capabilities().complete);
+    EXPECT_TRUE(KernelSHAP::capabilities().complete);
+    EXPECT_FALSE(Saliency::capabilities().complete);  // a gradient doesn't add up to the output
+    EXPECT_FALSE(LIME::capabilities().complete);
+    EXPECT_TRUE(ExplainerCapabilitiesOf("FineTuneRelevanceDiff").needs_base_model);
+    EXPECT_TRUE(ExplainerCapabilitiesOf("IntruderDimensions").needs_base_model);
+    for (const ExplainerCapabilities& e : ExplainerCatalog()) {
+        // Completeness is a property of attributions: of local explainers that answer Why.
+        if (e.complete) EXPECT_TRUE(e.answers(XaiQuestion::Why)) << e.name;
+        // An explainer declared to return an Attribution does so in its header.
+        if (e.attribution) EXPECT_TRUE(ContainsWord(ReadHeader(e.header), "Attribution")) << e.name;
+    }
+    EXPECT_TRUE(ExplainerCapabilitiesOf("Occlusion").attribution);
+    EXPECT_FALSE(ExplainerCapabilitiesOf("LogitLens").attribution);
 }
 
 }  // namespace

@@ -81,6 +81,7 @@ add_executable(pulsatrix_tests
     ia3_test.cpp
     fine_tune_diff_test.cpp
     explainer_capabilities_test.cpp
+    explanation_planner_test.cpp
     relu_module_test.cpp
     softmax_module_test.cpp
     rope_module_test.cpp
@@ -380,6 +381,22 @@ if(PULSATRIX_BUILD_EXAMPLES)
             "${CMAKE_CURRENT_BINARY_DIR}/recipe_what_did_the_finetune_change" --smoke --retain
             --tokenizer "${CMAKE_CURRENT_SOURCE_DIR}/fixtures/tokenizers/smollm2/tokenizer.json")
 endif()
+
+# XAI-2: the pulsatrix_plan command-line tool. It exits 1 when the plan has a warning.
+add_test(NAME PulsatrixPlan.JustifiesWhyWithLrpFirst
+    COMMAND pulsatrix_plan --question why --reason justify --access relevance --input image --reinitialize)
+set_tests_properties(PulsatrixPlan.JustifiesWhyWithLrpFirst PROPERTIES
+    PASS_REGULAR_EXPRESSION "1\\. LRP \\(pulsatrix/lrp.hpp")
+add_test(NAME PulsatrixPlan.ControlIsIncompleteWithoutPerSliceError
+    COMMAND pulsatrix_plan --question why --reason control --access gradients --input image --reinitialize)
+set_tests_properties(PulsatrixPlan.ControlIsIncompleteWithoutPerSliceError PROPERTIES WILL_FAIL TRUE)
+add_test(NAME PulsatrixPlan.WritesJson
+    COMMAND pulsatrix_plan --question how_global --reason discover --input representation --reinitialize --json)
+set_tests_properties(PulsatrixPlan.WritesJson PROPERTIES
+    PASS_REGULAR_EXPRESSION "\"schema\": *\"pulsatrix.explanation_plan.v1\"")
+add_test(NAME PulsatrixPlan.RejectsAnUnknownReason
+    COMMAND pulsatrix_plan --question why --reason curiosity)
+set_tests_properties(PulsatrixPlan.RejectsAnUnknownReason PROPERTIES WILL_FAIL TRUE)
 
 # VIZ-2: the pulsatrix_svg command-line tool, on the VIZ-1 document fixtures.
 add_test(NAME PulsatrixSvg.RendersAnAttribution

@@ -10,6 +10,7 @@
  */
 #pragma once
 
+#include <cstdint>
 #include <optional>
 #include <string>
 #include <string_view>
@@ -109,6 +110,19 @@ struct ExplainerCapabilities {
     ExplanationScope scope = ExplanationScope::Local;
     ModelAccess access = ModelAccess::BlackBox;
     InputKind input = InputKind::Any;
+    /** @brief It returns an Attribution with one value per input element, so the metrics in
+     *         explanation_metrics.hpp (deletion, insertion, randomization, sparseness) apply. */
+    bool attribution = false;
+    /** @brief The attributions add up to the output, minus a baseline's where there is one:
+     *         LRP's conservation, Integrated Gradients' completeness, Shapley values' efficiency.
+     *         It can be checked on every explanation (ComputeConservation()), and LRP's ε rules keep
+     *         it only approximately. */
+    bool complete = false;
+    /** @brief It compares a model with the one it was fine-tuned from, so it needs both. */
+    bool needs_base_model = false;
+    /** @brief The most input features it can take, or 0 for no limit: KernelSHAP enumerates every
+     *         coalition, so it takes at most 20. */
+    int64_t max_features = 0;
 
     /** @brief Whether @p question is among questions. */
     [[nodiscard]] bool answers(XaiQuestion question) const;
