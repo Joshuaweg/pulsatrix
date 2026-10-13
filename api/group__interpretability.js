@@ -7,6 +7,7 @@ var group__interpretability =
     [ "explanation_planner.hpp", "explanation__planner_8hpp.html", null ],
     [ "explanation_report.hpp", "explanation__report_8hpp.html", null ],
     [ "fitness_metrics.hpp", "fitness__metrics_8hpp.html", null ],
+    [ "performance.hpp", "performance_8hpp.html", null ],
     [ "protein_concepts.hpp", "protein__concepts_8hpp.html", null ],
     [ "protein_contacts.hpp", "protein__contacts_8hpp.html", null ],
     [ "protein_explanations.hpp", "protein__explanations_8hpp.html", null ],

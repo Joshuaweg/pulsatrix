@@ -177,6 +177,7 @@ var dir_549639eb5e09d856a0d6449a002be6ea =
     [ "pbt_trial.hpp", "pbt__trial_8hpp.html", "pbt__trial_8hpp" ],
     [ "pca.hpp", "pca_8hpp.html", "pca_8hpp" ],
     [ "pdp.hpp", "pdp_8hpp.html", "pdp_8hpp" ],
+    [ "performance.hpp", "performance_8hpp.html", "performance_8hpp" ],
     [ "policy_gradient_loss.hpp", "policy__gradient__loss_8hpp.html", "policy__gradient__loss_8hpp" ],
     [ "polyak_update.hpp", "polyak__update_8hpp.html", "polyak__update_8hpp" ],
     [ "ppo_clipped_loss.hpp", "ppo__clipped__loss_8hpp.html", "ppo__clipped__loss_8hpp" ],

@@ -135,6 +135,11 @@ Public Attributes</h2></td></tr>
 <tr class="memitem:a7741c9bdb9e94bfa9eb260196d9dfae7" id="r_a7741c9bdb9e94bfa9eb260196d9dfae7"><td class="memItemLeft" align="right" valign="top">std::vector&lt; <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpulsatrix_1_1ExplanationRequest.html#a7741c9bdb9e94bfa9eb260196d9dfae7">dataset</a></td></tr>
 <tr class="memdesc:a7741c9bdb9e94bfa9eb260196d9dfae7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Inputs to aggregate explanations over, each shaped like the one explained.  <br /></td></tr>
 <tr class="separator:a7741c9bdb9e94bfa9eb260196d9dfae7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4bd02ec879c5827676271b2a19bb11f5" id="r_a4bd02ec879c5827676271b2a19bb11f5"><td class="memItemLeft" align="right" valign="top">std::vector&lt; int64_t &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpulsatrix_1_1ExplanationRequest.html#a4bd02ec879c5827676271b2a19bb11f5">labels</a></td></tr>
+<tr class="memdesc:a4bd02ec879c5827676271b2a19bb11f5"><td class="mdescLeft">&#160;</td><td class="mdescRight">For the per-slice error check: the true class of each dataset input, and the slice it belongs to.  <br /></td></tr>
+<tr class="separator:a4bd02ec879c5827676271b2a19bb11f5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a112170d3c2ac0f12eae4a62148d78fc6" id="r_a112170d3c2ac0f12eae4a62148d78fc6"><td class="memItemLeft" align="right" valign="top">std::vector&lt; std::string &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpulsatrix_1_1ExplanationRequest.html#a112170d3c2ac0f12eae4a62148d78fc6">slices</a></td></tr>
+<tr class="separator:a112170d3c2ac0f12eae4a62148d78fc6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3a7503ee7943f38893f622bb4af81ae9" id="r_a3a7503ee7943f38893f622bb4af81ae9"><td class="memItemLeft" align="right" valign="top">std::vector&lt; std::pair&lt; std::string, std::string &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpulsatrix_1_1ExplanationRequest.html#a3a7503ee7943f38893f622bb4af81ae9">settings</a></td></tr>
 <tr class="memdesc:a3a7503ee7943f38893f622bb4af81ae9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Anything about how the explanation was made that the explainer's metadata leaves out.  <br /></td></tr>
 <tr class="separator:a3a7503ee7943f38893f622bb4af81ae9"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -171,6 +176,22 @@ Public Attributes</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Inputs to aggregate explanations over, each shaped like the one explained. </p>
+
+</div>
+</div>
+<a id="a4bd02ec879c5827676271b2a19bb11f5" name="a4bd02ec879c5827676271b2a19bb11f5"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4bd02ec879c5827676271b2a19bb11f5">&#9670;&#160;</a></span>labels</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::vector&lt;int64_t&gt; pulsatrix::ExplanationRequest::labels</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>For the per-slice error check: the true class of each dataset input, and the slice it belongs to. </p>
 
 </div>
 </div>
@@ -231,6 +252,20 @@ Public Attributes</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Anything about how the explanation was made that the explainer's metadata leaves out. </p>
+
+</div>
+</div>
+<a id="a112170d3c2ac0f12eae4a62148d78fc6" name="a112170d3c2ac0f12eae4a62148d78fc6"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a112170d3c2ac0f12eae4a62148d78fc6">&#9670;&#160;</a></span>slices</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::vector&lt;std::string&gt; pulsatrix::ExplanationRequest::slices</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
 
 </div>
 </div>

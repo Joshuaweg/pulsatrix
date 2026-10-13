@@ -789,6 +789,34 @@
 
               
             
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="performance/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Performance
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
           </ul>
         </nav>
       
@@ -2716,7 +2744,7 @@ categories of Liao, Gruen and Miller's XAI question bank (CHI 2020):</p>
 <tr>
 <td><code>Performance</code></td>
 <td>How accurate/precise/reliable are the predictions?</td>
-<td>none yet (KS-3)</td>
+<td>Classifier and regressor metrics, calibration, per-slice error (<a href="performance/">Performance</a>)</td>
 </tr>
 <tr>
 <td><code>HowGlobal</code></td>
@@ -2861,8 +2889,8 @@ or the feature count is unknown, explainers made for one kind, or limited to a f
 <li>loss recovered for featurizers.</li>
 </ul>
 <p>A required check that can't run makes the plan incomplete and adds a warning. For example,
-Control requires per-slice error, which pulsatrix doesn't have yet (KS-3), so every Control plan
-says so. A question with no explainer, such as Output, comes back empty, with a warning, not a
+Control requires per-slice error, which needs the dataset's true labels and a slice for each input
+(<code>ModelTraits::has_labels</code>, or <code>--labels</code>); a Control plan without them says so. A question with no explainer, such as Output, comes back empty, with a warning, not a
 poor substitute.</p>
 <p>From the command line, <code>pulsatrix_plan</code> prints the same plan. It exits 1 when the plan has a
 warning:</p>
@@ -2883,12 +2911,12 @@ Explainers, best first:
 Checks:
   [required] randomization: ModelParameterRandomizationTest (pulsatrix/explanation_metrics.hpp), for LRP, Saliency, ...
   [required] null_model: NullModelBaseline (pulsatrix/null_model_baseline.hpp), for RelevanceGraph, CircuitTracing, ...
-  [required, can't run] per_slice_error
-     can't run: pulsatrix has no per-slice error report yet (KS-3)
+  [required, can't run] per_slice_error: PerSliceError (pulsatrix/performance.hpp)
+     can't run: needs a labeled dataset with a slice for each input
   ...
 
 Warnings:
-  control requires the per_slice_error check, which can't run: pulsatrix has no per-slice error report yet (KS-3)
+  control requires the per_slice_error check, which can't run: needs a labeled dataset with a slice for each input
 </code></pre></div>
 <p>The plan is only as precise as the catalog. Explainers declared for any input are offered for
 every kind. For a language model, though, LRP, Saliency and Integrated Gradients run through an
@@ -3025,10 +3053,16 @@ then every check the plan asks for, and returns an <code>Explanation</code>. The
 <td>The mean absolute attribution over <code>request.dataset</code>, kept in <code>Explanation::aggregate</code></td>
 <td>(measured, no verdict)</td>
 </tr>
+<tr>
+<td>per_slice_error</td>
+<td><a href="performance/#error-by-slice"><code>PerSliceError</code></a> on <code>request.dataset</code>, with <code>request.labels</code> and <code>request.slices</code>; an input is wrong when the model's largest output isn't its label</td>
+<td>no slice is worse than the rest: Fisher's exact test, Bonferroni-corrected, at α = 0.05</td>
+</tr>
 </tbody>
 </table>
 <p>Every threshold is in <code>ExplanationCheckOptions</code>, and the report records the values used. A check
-pulsatrix can't run yet, such as per-slice error (KS-3), comes back as not run.</p>
+that can't run, such as per-slice error without labels, comes back as not run. For a regressor,
+run <code>PerSliceError</code> on its losses and pass <code>SliceErrorCheck(report)</code> to <code>ReportExplanation</code>.</p>
 <p><strong>The caveats</strong> follow from the report alone, so <code>DeriveCaveats()</code> gives the same caveats for a
 stored report:</p>
 <ul>
