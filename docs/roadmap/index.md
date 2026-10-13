@@ -24,8 +24,8 @@ in [INT](#int-embedding-and-representation-analysis) is done.
 [TDA](#tda-topological-data-analysis) are done. TDA-9 is done too; TDA-10 and TDA-12 are scheduled for v1.4.
 **The XAI epic, question-driven explainability, is complete** (2026-10-13): every item in
 [XAI](#xai-question-driven-explainability-framework) is done. Every one of the nine questions has
-an explainer except Output (a template). KS-3 answers Performance: metrics, calibration and
-per-slice error so far, with uncertainty and conformal prediction to come.
+an explainer except Output (a template). KS-3 answers Performance: metrics, calibration,
+per-slice error and uncertainty so far, with conformal prediction to come.
 
 - **Strong.** LRP covers every layer and is checked against Zennit and LXT. Saliency, Integrated
   Gradients and Grad-CAM are checked against Captum. LIME, KernelSHAP, PDP, logit lens,
@@ -221,8 +221,8 @@ Fine-tune the models from v1.2 and explain what the fine-tuning changed.
 - TDA-1 to TDA-8, TDA-11 (**done**, [#141](https://github.com/Joshuaweg/pulsatrix/pull/141) to
   [#149](https://github.com/Joshuaweg/pulsatrix/pull/149)): persistent homology with certified error bars, significance tests, and RTD
 - KS-3 (in progress): metrics, calibration and per-slice error
-  ([#168](https://github.com/Joshuaweg/pulsatrix/pull/168)); Monte Carlo dropout, deep ensembles
-  and split conformal prediction next
+  ([#168](https://github.com/Joshuaweg/pulsatrix/pull/168)); Monte Carlo dropout and deep ensembles
+  ([#169](https://github.com/Joshuaweg/pulsatrix/pull/169)); split conformal prediction next
 - KS-4: adversarial robustness
 - Llama-3.2-1B and Qwen2.5-0.5B pass the golden-logit test
 
@@ -744,7 +744,7 @@ doesn't support.
 | How (global) | Global surrogate tree, PDP, TCAV, CRP | Have |
 | How to be that | Counterfactual search | Have: gradient-based, model-agnostic and diverse sets ([CFS](#cfs-counterfactuals-and-sensitivity)) |
 | How to still be this | Anchors | Have |
-| Performance | Metrics, calibration, per-slice error, uncertainty | Have metrics, calibration and per-slice error; uncertainty in KS-3 |
+| Performance | Metrics, calibration, per-slice error, uncertainty | Have metrics, calibration, per-slice error and uncertainty; conformal prediction in KS-3 |
 | Input (data) | Dataset statistics, nearest training examples, data attribution | Partial; INT-1, KS-5 |
 | Output | Output schema and label documentation | Template only |
 
@@ -1847,7 +1847,7 @@ AGT-5 has to follow these security rules:
 |---|---|---|---|---|---|---|
 | KS-1 | CMake `install()` and a package config, so other projects can `find_package(pulsatrix)` | There's no install step today | — | P0 | S | Done, [#61](https://github.com/Joshuaweg/pulsatrix/pull/61) |
 | KS-2 | A benchmark suite: step time, explanation time, conservation error | Measures every HIP item and catches regressions | — | P1 | S | Done, [#64](https://github.com/Joshuaweg/pulsatrix/pull/64) (see below) |
-| KS-3 | Uncertainty: Monte Carlo dropout, deep ensembles, split conformal prediction | Answers the Performance question | — | P1 | S | Partly done: metrics, calibration and per-slice error, [#168](https://github.com/Joshuaweg/pulsatrix/pull/168) |
+| KS-3 | Uncertainty: Monte Carlo dropout, deep ensembles, split conformal prediction | Answers the Performance question | — | P1 | S | Partly done: metrics, calibration and per-slice error, [#168](https://github.com/Joshuaweg/pulsatrix/pull/168); Monte Carlo dropout and deep ensembles, [#169](https://github.com/Joshuaweg/pulsatrix/pull/169) |
 | KS-4 | FGSM and PGD attacks, also used as a robustness test for explanations | Robustness and the Control reason | — | P1 | S | |
 | KS-5 | TracIn data attribution | Answers "which training examples caused this" | FND-1 | P2 | M | |
 | KS-6 | Fairness metrics, drift detection and a model-card generator | The Input question, and documentation | — | P2 | S each | |
@@ -1918,6 +1918,15 @@ AGT-5 has to follow these security rules:
   from `ExplanationRequest::labels` and `::slices`, so a Control plan can be complete. A
   re-initialized model is no baseline for a metric, so the planner asks for no null model for
   the Performance explainers.
+
+  The second part ([#169](https://github.com/Joshuaweg/pulsatrix/pull/169)) adds
+  `uncertainty.hpp`. `McDropoutSamples` turns on only the dropout layers, LoRA adapters with
+  dropout included, and restores every module's mode, also when the prediction throws.
+  `DecomposeUncertainty` splits the entropy into aleatoric and epistemic parts (BALD), and
+  `CombineGaussians` does the same for regressors trained with the new `GaussianNLLLoss`. Deep
+  ensembles needed nothing beyond running each member: training them is the caller's loop. There
+  is no access level for "a pulsatrix Module", so Monte Carlo dropout declares Gradients, the
+  first level that implies one.
 
 ### Follow-ups the KS work surfaced
 

@@ -8,11 +8,14 @@ prediction, not whether the prediction is right. Pulsatrix answers it with the m
 - **`EvaluateClassifier`:** accuracy, log loss, the Brier score, calibration with a reliability
   diagram, a confusion matrix, and each class's precision, recall and F1;
 - **`EvaluateRegressor`:** mean squared and absolute error, and R²;
-- **`PerSliceError`:** the error on each slice of the data, each tested against the rest.
+- **`PerSliceError`:** the error on each slice of the data, each tested against the rest;
+- **`McDropoutSamples`** and **`EnsembleSamples`**, in `pulsatrix/uncertainty.hpp`: how sure the
+  model is of each prediction, and whether more data would make it surer.
 
 Every number matches scikit-learn's on the same data, and the slice test matches SciPy's
 `fisher_exact`. `tests/performance_test.cpp` checks them against values from
-`tools/generate_performance_reference_values.py`.
+`tools/generate_performance_reference_values.py`; `tests/uncertainty_test.cpp` checks the
+uncertainty split against numpy.
 
 ## Scoring a classifier
 
@@ -102,6 +105,50 @@ How each slice is tested:
 A slice that isn't flagged hasn't been shown to be fine. A small slice can have a high error and
 still not be significantly worse; its interval shows how little is known.
 
+## Uncertainty
+
+A probability of 0.6 from one network doesn't say whether the network has seen inputs like this
+one. Several predictions of the same input that disagree do. `pulsatrix/uncertainty.hpp` gets them
+two ways:
+
+- **Monte Carlo dropout** (Gal and Ghahramani, ICML 2016): `McDropoutSamples` keeps the dropout
+  layers on at inference and runs the network several times. Everything else stays in eval mode,
+  so BatchNorm uses its running statistics, and each module's mode is restored afterwards. LoRA
+  adapters with dropout count as dropout layers.
+- **Deep ensembles** (Lakshminarayanan, Pritzel and Blundell, NeurIPS 2017): train several
+  networks from different seeds, and `EnsembleSamples` runs each one.
+
+```cpp
+#include "pulsatrix/uncertainty.hpp"
+
+auto predict = [&](const Tensor& x) { return softmax.forward(model.forward(x)); };
+std::vector<Tensor> samples = McDropoutSamples(model, predict, inputs, 30);
+UncertaintyDecomposition u = DecomposeUncertainty(samples);
+// u.mean: the prediction to use; u.total, u.aleatoric, u.epistemic: per input, in nats
+```
+
+`DecomposeUncertainty` splits the entropy of the mean prediction into two parts (Depeweg et al.,
+ICML 2018):
+
+| Part | Formula | What it means |
+|---|---|---|
+| total | H[E p], the entropy of the mean | how unsure the prediction is |
+| aleatoric | E H[p], the samples' mean entropy | noise in the data: each sample is unsure too, and more data wouldn't help |
+| epistemic | total − aleatoric, the mutual information (BALD) | the samples disagree: the model hasn't learned this region, and more data would help |
+
+Samples that agree on 50/50 give all aleatoric uncertainty; confident samples that disagree give
+the same total, all epistemic. `agreement` is the fraction of samples that pick the mean's class.
+
+**For regression**, each member predicts a mean and a variance, trained with `GaussianNLLLoss`: the
+network outputs (μ, s) and its variance is softplus(s) + 10⁻⁶, as Lakshminarayanan et al. did.
+`CombineGaussians` mixes the members: the aleatoric part is their mean variance, and the epistemic
+part is the variance of their means.
+
+!!! note
+    The decomposition is only as good as the samples. Dropout samples come from one network and
+    tend to agree more than an ensemble's do. Neither is the true posterior, and the epistemic
+    part says how much these samples disagree, nothing more.
+
 ## In a report
 
 The Control reason requires per-slice error. The planner marks it available when the caller has
@@ -122,9 +169,9 @@ Explanation e = BuildExplanation(request, x, explain, predict, &model);
 For a regressor, or any model whose error isn't the wrong class, run `PerSliceError` on its losses
 and pass `SliceErrorCheck(report)` to `ReportExplanation`.
 
-The Performance question itself plans `ClassifierMetrics`, `RegressorMetrics` and
-`PerSliceError`. They describe how the model behaves, not what it learned, so the planner doesn't
+The Performance question itself plans `ClassifierMetrics`, `RegressorMetrics`,
+`PerSliceError`, `MonteCarloDropout` and `DeepEnsemble`. They describe how the model behaves, not what it learned, so the planner doesn't
 ask for a null-model baseline for them.
 
 Each report has a JSON document: `pulsatrix.classification_report.v1`,
-`pulsatrix.regression_report.v1` and `pulsatrix.slice_error.v1`.
+`pulsatrix.regression_report.v1`, `pulsatrix.slice_error.v1` and `pulsatrix.uncertainty.v1`.
