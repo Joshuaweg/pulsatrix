@@ -249,6 +249,7 @@ add_executable(pulsatrix_tests
     pca_test.cpp
     projection_view_test.cpp
     topology_views_test.cpp
+    performance_views_test.cpp
     tcav_test.cpp
     concept_relevance_test.cpp
     rsa_svcca_test.cpp
@@ -461,6 +462,21 @@ set_tests_properties(PulsatrixSvg.RejectsAnUnknownPersistenceView PROPERTIES WIL
 add_test(NAME PulsatrixSvg.RejectsADimensionThePersistenceDiagramLacks
     COMMAND pulsatrix_svg "${CMAKE_CURRENT_SOURCE_DIR}/fixtures/viz/persistence_diagram.v1.json" --dims 2)
 set_tests_properties(PulsatrixSvg.RejectsADimensionThePersistenceDiagramLacks PROPERTIES WILL_FAIL TRUE)
+# KS-3: a classification report as a reliability diagram, two of them overlaid, and a slice error.
+add_test(NAME PulsatrixSvg.RendersAReliabilityDiagram
+    COMMAND pulsatrix_svg "${CMAKE_CURRENT_SOURCE_DIR}/fixtures/viz/classification_report.v1.json"
+        -o "${CMAKE_CURRENT_BINARY_DIR}/pulsatrix_svg_reliability.svg")
+add_test(NAME PulsatrixSvg.OverlaysReliabilityDiagrams
+    COMMAND pulsatrix_svg "${CMAKE_CURRENT_SOURCE_DIR}/fixtures/viz/classification_report.v1.json"
+        "${CMAKE_CURRENT_SOURCE_DIR}/fixtures/viz/classification_report.v1.json"
+        -o "${CMAKE_CURRENT_BINARY_DIR}/pulsatrix_svg_reliability_two.svg")
+add_test(NAME PulsatrixSvg.RendersASliceError
+    COMMAND pulsatrix_svg "${CMAKE_CURRENT_SOURCE_DIR}/fixtures/viz/slice_error.v1.json"
+        -o "${CMAKE_CURRENT_BINARY_DIR}/pulsatrix_svg_slice_error.svg")
+add_test(NAME PulsatrixSvg.RejectsAReliabilityDiagramMixedWithASliceError
+    COMMAND pulsatrix_svg "${CMAKE_CURRENT_SOURCE_DIR}/fixtures/viz/classification_report.v1.json"
+        "${CMAKE_CURRENT_SOURCE_DIR}/fixtures/viz/slice_error.v1.json")
+set_tests_properties(PulsatrixSvg.RejectsAReliabilityDiagramMixedWithASliceError PROPERTIES WILL_FAIL TRUE)
 add_test(NAME PulsatrixSvg.RejectsAnUnknownIceStyle
     COMMAND pulsatrix_svg "${CMAKE_CURRENT_SOURCE_DIR}/fixtures/viz/partial_dependence.v1.json" --ice sideways)
 set_tests_properties(PulsatrixSvg.RejectsAnUnknownIceStyle PROPERTIES WILL_FAIL TRUE)

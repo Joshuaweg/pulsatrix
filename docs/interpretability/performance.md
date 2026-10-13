@@ -69,6 +69,22 @@ accuracy 0.575  log loss 1.411  Brier 0.662  ECE 0.152  MCE 0.455
 
 Its most confident predictions are right far less often than it claims.
 
+`RenderReliabilityDiagramSvg` draws the bins, one line per classifier, so two models can be
+compared on one figure. A calibrated classifier lies on the diagonal. The marks grow with the bin's
+share of the inputs, and the strip below shows that share: a bin of three inputs can sit far from
+the diagonal by chance.
+
+```cpp
+#include "pulsatrix/viz/performance_views.hpp"
+
+std::ofstream("reliability.svg") << RenderReliabilityDiagramSvg({{"one network", single}, {"ensemble", ensemble}});
+```
+
+`pulsatrix_svg one.json ensemble.json -o reliability.svg` draws the same from the reports' documents
+(`WriteJson(ToJson(report))`), each named after its file.
+
+![A reliability diagram of two classifiers that make the same guesses, one more confidently: its points sit further below the diagonal, and its ECE is higher](figures/reliability_diagram.svg)
+
 !!! note
     The ECE depends on the number of bins, and with few predictions per bin it is biased upward.
     Compare models with the same bins, and read the reliability diagram, not just the number.
@@ -106,6 +122,11 @@ How each slice is tested:
 
 A slice that isn't flagged hasn't been shown to be fine. A small slice can have a high error and
 still not be significantly worse; its interval shows how little is known.
+
+`RenderSliceErrorSvg(s)` draws the report, worst first, with each interval and p-value; slices
+worse than the rest are red. `SliceErrorViewOptions` names the metric and adds a reference line:
+
+![Five slices' error rates with their intervals; the night slice is red and far above the overall error of 0.18](figures/slice_error.svg)
 
 ## Uncertainty
 
@@ -192,6 +213,15 @@ doesn't adapt to hard inputs.
 **The guarantee is marginal:** it holds on average over inputs, not for each input or each
 group. A model can cover 90% overall and 70% of one group. `CoverageReport::misses` holds a 0 or 1
 per input, so `PerSliceError(r.misses, slices)` tests each group's coverage like any other error.
+Draw it with the target miss rate as the reference:
+
+```cpp
+SliceErrorViewOptions view;
+view.metric = "miss rate";
+view.reference = 0.1;          // alpha
+view.reference_label = "target";
+std::ofstream("coverage.svg") << RenderSliceErrorSvg(PerSliceError(r.misses, slices), view);
+```
 
 !!! note
     With too few calibration examples, the rank ⌈(n + 1)(1 − α)⌉ is above n, q̂ is infinite and
