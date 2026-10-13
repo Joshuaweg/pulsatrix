@@ -257,6 +257,8 @@ add_library(pulsatrix_core
     src/viz/document_whatif.cpp
     src/viz/document_projection.cpp
     src/viz/svg_projection.cpp
+    src/viz/topology_documents.cpp
+    src/viz/topology_views.cpp
     src/benchmark.cpp
     src/json.cpp
 )

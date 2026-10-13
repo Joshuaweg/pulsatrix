@@ -13,6 +13,7 @@
 #include "pulsatrix/json.hpp"
 #include "pulsatrix/viz/document.hpp"
 #include "pulsatrix/viz/protein_documents.hpp"
+#include "pulsatrix/viz/topology_documents.hpp"
 
 namespace pulsatrix {
 
@@ -74,6 +75,7 @@ struct MimeBundle {
 [[nodiscard]] MimeBundle mime_bundle_repr(const SequenceLogoDocument& doc);
 [[nodiscard]] MimeBundle mime_bundle_repr(const ContactMapDocument& doc);
 [[nodiscard]] MimeBundle mime_bundle_repr(const ResidueTracksDocument& doc);
+[[nodiscard]] MimeBundle mime_bundle_repr(const PersistenceDiagramDocument& doc);
 ///@}
 
 /**

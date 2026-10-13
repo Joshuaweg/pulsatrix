@@ -21,7 +21,7 @@ every item in [FEAT](#feat-featurizers-sparse-autoencoders-and-goodfire-bsf) is 
 **The INT epic, embedding and representation analysis, is complete** (2026-10-11): every item
 in [INT](#int-embedding-and-representation-analysis) is done.
 **The TDA epic's v1.3 scope is complete** (2026-10-12): TDA-1 to TDA-8 and TDA-11 in
-[TDA](#tda-topological-data-analysis) are done; TDA-9, TDA-10 and TDA-12 are scheduled for v1.4.
+[TDA](#tda-topological-data-analysis) are done. TDA-9 is done too; TDA-10 and TDA-12 are scheduled for v1.4.
 
 - **Strong.** LRP covers every layer and is checked against Zennit and LXT. Saliency, Integrated
   Gradients and Grad-CAM are checked against Captum. LIME, KernelSHAP, PDP, logit lens,
@@ -224,8 +224,8 @@ Feature discovery on real models, and agents that can drive the library.
 
 - FEAT-1 to FEAT-7 (**done**): the featurizer interface, TopK and its family, metrics,
   transcoders, BSF, steering
-- TDA-9, TDA-10, TDA-12: topology views, the manifold verifier for featurizers, layer-wise
-  topology
+- TDA-9 (**done**, [#157](https://github.com/Joshuaweg/pulsatrix/pull/157)): topology views
+- TDA-10, TDA-12: the manifold verifier for featurizers, layer-wise topology
 - VIZ-4 (**done**), VIZ-6b, VIZ-6c: Neuronpedia export, feature dashboards, the embedding projector
 - AGT-5, AGT-8: the native MCP server and automated feature descriptions
 - NB-3: Python notebook display
@@ -1046,7 +1046,7 @@ GUDHI's GPL-licensed parts and giotto-ph (AGPL) are avoided.
 | TDA-6 | Betti curves, persistence landscapes, persistence images, persistent entropy | Turn diagrams into numbers for probes and plots | TDA-5 | P0 | S | Done (see below) |
 | TDA-7 | Farthest-point landmarks, which give the subsampling error bound | Persistent homology can't run on 100,000 activations | FND-3 | P0 | S | Done (see below) |
 | TDA-8 | Significance tests: a universal null distribution, bootstrap confidence bands, Gaussian and random-network baselines | Every reported loop needs a p-value | TDA-5 | P0 | M | Done (see below) |
-| TDA-9 | Barcode, persistence diagram and Betti curve views, with JSON and SVG export | See the result | TDA-5, VIZ-1 | P1 | M |  |
+| TDA-9 | Barcode, persistence diagram and Betti curve views, with JSON and SVG export | See the result | TDA-5, VIZ-1 | P1 | M | Done, [#157](https://github.com/Joshuaweg/pulsatrix/pull/157) |
 | TDA-10 | **A manifold verifier for featurizer blocks:** decide whether a BSF or SAE block forms a circle or a torus, and recover a circular coordinate to steer along. It passes by reproducing the GPT-2 day-of-week circle (Engels et al.) against a random-network control | Goodfire measures block dimension with a linear method. Nobody has published a topological check, so this is new | TDA-4, TDA-7, TDA-8, FEAT-6 | P1 | M |  |
 | TDA-11 | Representation Topology Divergence next to CKA in one `compare_representations()` report | Catches clusters and loops that CKA misses | TDA-4, INT-2 | P1 | S | Done (see below) |
 | TDA-12 | Betti numbers layer by layer through a network, with a random-network baseline | Reproduces "topology simplifies through the layers" (Naitzat et al., 2020) | TDA-7, TDA-8 | P1 | M |  |
@@ -1122,6 +1122,12 @@ GUDHI's GPL-licensed parts and giotto-ph (AGPL) are avoided.
   function, since only the caller can run its model. The random numbers come from mt19937's raw
   output (Box–Muller, multiply-shift), not the standard distributions, so results match across
   standard libraries.
+- **TDA-9.** One document kind, `pulsatrix.persistence_diagram.v1`, with three views, as an
+  attribution document has a bar chart and a waterfall. The document keeps each diagram's
+  certified error bound, and `AttachSignificance` and `AttachBootstrapBand` add the TDA-8 tests;
+  the views draw the bound (a band on the diagram, whiskers on the barcode) and mark which
+  features passed. `AttachSignificance` checks each tested feature's death/birth ratio, so a test
+  of another diagram is refused. SVG only for now: there is no HTML view yet.
 - **TDA-11** follows the plan in `tda/rtd.hpp`, with `CompareRepresentations()` (CKA,
   mutual-kNN alignment and RTD) as the report. The construction was checked against the paper
   (Equation 1's practical form, Algorithm 2's batches and 0.9-quantile normalization) and
