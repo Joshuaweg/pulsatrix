@@ -1958,7 +1958,7 @@ AGT-5 has to follow these security rules:
 | Bottleneck ResNets (ResNet50 and up) and VGG with BatchNorm, on the same builders | KS-9 | a later model-zoo item |
 | `AdaptiveAvgPool2DModule` for sizes that don't divide evenly (PyTorch's overlapping windows) | KS-9 | when a model needs it |
 | Python bindings for `TorchvisionResNet` and `TorchvisionVGG` | KS-9 | NB-3 |
-| Views for the reliability diagram, per-slice error and conformal coverage | KS-3 | VIZ |
+| Views for the reliability diagram, per-slice error and conformal coverage | KS-3 | Done, [#172](https://github.com/Joshuaweg/pulsatrix/pull/172): `RenderReliabilityDiagramSvg` and `RenderSliceErrorSvg`, which draws coverage by slice with the target miss rate as its reference; `pulsatrix_svg` reads both reports |
 | A recipe on a real model: calibration, uncertainty on familiar and unfamiliar inputs, and conformal coverage by slice | KS-3 | a recipe |
 | Uncertainty in the Justify report: the planner says the report should carry it, and `Explanation` has no field for it yet | KS-3 | XAI-3 revision |
 | RAPS (Angelopoulos et al., ICLR 2021) and conformal risk control | KS-3 | when a user needs smaller sets |

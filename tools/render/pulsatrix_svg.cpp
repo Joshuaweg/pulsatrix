@@ -20,6 +20,9 @@
 //   pulsatrix_svg ph.json -o diagram.svg                       # persistence_diagram (TDA-9)
 //   pulsatrix_svg ph.json --view barcode --dims 1 -o bars.svg  # the same, as a barcode of H1
 //   pulsatrix_svg ph.json --view betti -o betti.svg            # the same, as Betti curves
+//   pulsatrix_svg metrics.json -o reliability.svg              # classification_report: reliability diagram (KS-3)
+//   pulsatrix_svg one.json five.json -o reliability.svg        # several, on one diagram
+//   pulsatrix_svg slices.json -o slices.svg                    # slice_error: error by slice (KS-3)
 //
 //   pulsatrix_svg explanation.json -o explanation.html          # interactive: hover, zoom, export
 //   pulsatrix_svg run.json -o run.html                          # training_log (HTML only)
@@ -44,6 +47,7 @@
 
 #include "pulsatrix/viz/attribution_graph.hpp"
 #include "pulsatrix/viz/html.hpp"
+#include "pulsatrix/viz/performance_views.hpp"
 #include "pulsatrix/viz/protein_views.hpp"
 #include "pulsatrix/viz/svg.hpp"
 #include "pulsatrix/viz/topology_views.hpp"
@@ -251,17 +255,23 @@ int main(int argc, char** argv) {
     html_options.width = options.width;
     html_options.title = options.title;
     if (inputs.size() > 1 && beeswarm_features.empty()) {
-        // Several counterfactual documents make a set; anything else needs --beeswarm.
-        bool all_counterfactuals = true;
+        // Several counterfactual documents make a set, and several classification reports one
+        // reliability diagram; anything else needs --beeswarm.
+        std::string shared_kind;
         try {
             for (const std::string& path : inputs) {
-                all_counterfactuals = all_counterfactuals && VizDocumentKind(ReadFile(path)) == "counterfactual";
+                const std::string kind = VizDocumentKind(ReadFile(path));
+                if (shared_kind.empty() || shared_kind == kind) {
+                    shared_kind = kind;
+                } else {
+                    shared_kind = "mixed";
+                }
             }
         } catch (const std::exception&) {
-            all_counterfactuals = false;
+            shared_kind.clear();
         }
-        if (!all_counterfactuals) {
-            Usage("several documents make a beeswarm (add --beeswarm I,J,...) or a counterfactual set");
+        if (shared_kind != "counterfactual" && shared_kind != "classification_report") {
+            Usage("several documents make a beeswarm (add --beeswarm I,J,...), a counterfactual set or a reliability diagram");
         }
     }
 
@@ -275,6 +285,13 @@ int main(int argc, char** argv) {
             svg = ToNeuronpediaJson(FromCircuitGraph(ParseCircuitGraphDocument(json), slug, scan));
         } else if (html) {
             svg = RenderHtml(inputs, top_k, waterfall, baseline, beeswarm_features, pd_options, html_options);
+        } else if (inputs.size() > 1 && beeswarm_features.empty() && VizDocumentKind(ReadFile(inputs.front())) == "classification_report") {
+            // Each classifier is named after its file.
+            std::vector<ReliabilitySeries> series;
+            for (const std::string& path : inputs) {
+                series.push_back({std::filesystem::path(path).stem().string(), ParseClassificationReport(ReadFile(path))});
+            }
+            svg = RenderReliabilityDiagramSvg(series, options);
         } else if (inputs.size() > 1 && beeswarm_features.empty()) {
             std::vector<CounterfactualDocument> docs;
             for (const std::string& path : inputs) {
@@ -322,6 +339,10 @@ int main(int argc, char** argv) {
                 svg = persistence_view == "barcode" ? RenderBarcodeSvg(doc, persistence_options, options)
                       : persistence_view == "betti" ? RenderBettiCurveSvg(doc, persistence_options, options)
                                                     : RenderPersistenceDiagramSvg(doc, persistence_options, options);
+            } else if (kind == "classification_report") {
+                svg = RenderReliabilityDiagramSvg(ParseClassificationReport(json), options);
+            } else if (kind == "slice_error") {
+                svg = RenderSliceErrorSvg(ParseSliceErrorReport(json), {}, options);
             } else {
                 throw std::invalid_argument("there is no SVG view for " + kind + " documents yet");
             }

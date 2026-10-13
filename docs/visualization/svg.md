@@ -25,6 +25,8 @@ magnitudes.
 | `RenderPersistenceDiagramSvg(doc, view)` | Birth against death per feature, a band of the certified error along the diagonal, essential features on a ∞ line, significant ones filled | `PersistenceDiagramDocument` (topology views, `viz/topology_views.hpp`) |
 | `RenderBarcodeSvg(doc, view)` | A bar per feature from birth to death, by dimension and longest first, with ±error-bound whiskers | `PersistenceDiagramDocument` |
 | `RenderBettiCurveSvg(doc, view)` | The number of features alive at each scale, per dimension | `PersistenceDiagramDocument` |
+| `RenderReliabilityDiagramSvg(series)` | Each confidence bin's accuracy against its mean confidence, one line per classifier, with the diagonal of perfect calibration, each classifier's ECE, and the share of inputs in each bin below | `ClassificationReport`s (performance views, `viz/performance_views.hpp`) |
+| `RenderSliceErrorSvg(report, view)` | Each slice's error with its interval, worst first, the whole dataset's error as a dashed line, an optional reference such as a target miss rate, and each slice's p-value; slices worse than the rest in red | `SliceErrorReport` |
 | `RenderProjectionSvg(doc, x_axis, y_axis)` | Two axes of a projection, such as PC1 and PC2, on one scale: points colored by group (with a legend) or by value (with a color bar), each with its label on hover. UMAP and t-SNE plots get a note that their distances, cluster sizes and densities aren't meaningful | `ProjectionDocument` |
 
 ```cpp
@@ -62,6 +64,8 @@ pulsatrix_svg morris.json -o morris.svg                    # Morris screening sc
 pulsatrix_svg sobol.json -o sobol.svg                      # Sobol index bars
 pulsatrix_svg pca.json --axes 1,3 -o pca13.svg             # projection: PC1 against PC3
 pulsatrix_svg ph.json --view barcode --dims 1 -o h1.svg    # persistence: H1 as a barcode
+pulsatrix_svg one.json five.json -o reliability.svg        # classification reports: one reliability diagram
+pulsatrix_svg slices.json -o slices.svg                    # slice error: error by slice
 ```
 
 Other options: `--top-k N`, `--axes I,J` (a projection's axes, from 1), `--view diagram|barcode|betti` and `--dims D,...` (a persistence diagram's view and dimensions), `--width W`, `--font-size N`, `--title TEXT`.
