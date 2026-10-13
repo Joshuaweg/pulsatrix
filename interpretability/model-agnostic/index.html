@@ -748,6 +748,17 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#prototypes-and-protodash" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Prototypes and ProtoDash
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#pdp" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -2695,6 +2706,17 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#prototypes-and-protodash" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Prototypes and ProtoDash
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#pdp" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -2814,6 +2836,10 @@ models wrapped in a lambda.</p>
   held-out inputs.</li>
 <li><strong>Anchors</strong> (<code>anchors.hpp</code>): <code>FindAnchor</code> finds an if-then rule around one input that keeps the
   model's prediction with high estimated precision, and reports how much of the data it covers.</li>
+<li><strong>Prototypes</strong> (<code>prototypes.hpp</code>): <code>FindPrototypes</code> returns the background examples nearest
+  an input that the model classes the same way (its prototypes) and the nearest it classes
+  differently (its contrasts). <code>ProtoDash</code> chooses weighted prototypes that summarize a dataset
+  or a class.</li>
 <li><strong><code>PDP</code></strong> (<code>pdp.hpp</code>): a Partial Dependence Plot. It shows how the prediction changes as one
   feature varies, averaged over a set of background inputs.</li>
 <li><strong>ICE</strong> (<code>ice.hpp</code>): individual conditional expectation. <code>ComputeIce</code> draws one curve per
@@ -2867,6 +2893,18 @@ models wrapped in a lambda.</p>
 <td>One input</td>
 <td>Which conditions keep this prediction, as a rule a person can check</td>
 <td>Precision is estimated; coverage can be tiny; the rule is only as fine as the percentile cuts</td>
+</tr>
+<tr>
+<td>Prototypes</td>
+<td>One input</td>
+<td>"Classed like these, unlike those": examples a person can check</td>
+<td>Distances in mixed units need a scale; in high dimensions, an embedding</td>
+</tr>
+<tr>
+<td>ProtoDash</td>
+<td>A dataset or a class</td>
+<td>A few weighted examples that stand for the whole</td>
+<td>The kernel width sets what counts as alike</td>
 </tr>
 <tr>
 <td>Surrogate tree</td>
@@ -3100,6 +3138,33 @@ all 50 seeds then return the right one-predicate rule, at about 2.5 times the mo
 tested on some inputs the data never has. The reference implementation does this too, when too
 few rows satisfy every predicate at once. <code>ToJson</code> writes a <code>pulsatrix.anchor.v1</code> document.</p>
 <p>Test reference: <code>tests/anchors_test.cpp</code>.</p>
+<h3 id="prototypes-and-protodash">Prototypes and ProtoDash<a class="headerlink" href="#prototypes-and-protodash" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><span class="cp">#include</span><span class="w"> </span><span class="cpf">"pulsatrix/prototypes.hpp"</span>
+
+<span class="n">PrototypeOptions</span><span class="w"> </span><span class="n">options</span><span class="p">;</span>
+<span class="n">options</span><span class="p">.</span><span class="n">k</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">3</span><span class="p">;</span>
+<span class="n">options</span><span class="p">.</span><span class="n">scale</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">MedianAbsoluteDeviation</span><span class="p">(</span><span class="n">background</span><span class="p">);</span><span class="w">   </span><span class="c1">// tabular features in mixed units</span>
+<span class="n">PrototypeResult</span><span class="w"> </span><span class="n">r</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">FindPrototypes</span><span class="p">(</span><span class="n">predict</span><span class="p">,</span><span class="w"> </span><span class="n">input</span><span class="p">,</span><span class="w"> </span><span class="n">background</span><span class="p">,</span><span class="w"> </span><span class="n">options</span><span class="p">);</span>
+<span class="c1">// r.prototypes: the nearest examples with the input's class; r.contrasts: the nearest without</span>
+
+<span class="n">ProtoDashOptions</span><span class="w"> </span><span class="n">summary</span><span class="p">;</span>
+<span class="n">summary</span><span class="p">.</span><span class="n">count</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">5</span><span class="p">;</span>
+<span class="n">ProtoDashResult</span><span class="w"> </span><span class="n">p</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">ProtoDash</span><span class="p">(</span><span class="n">background</span><span class="p">,</span><span class="w"> </span><span class="n">background</span><span class="p">,</span><span class="w"> </span><span class="n">summary</span><span class="p">);</span><span class="w">   </span><span class="c1">// p.indices, p.weights</span>
+</code></pre></div>
+<p><strong>What's happening:</strong> <code>FindPrototypes</code> classes every background example with the model, ranks
+them by distance to the input, and keeps the k nearest on each side of the decision. Distances
+are in the input space with a per-feature scale, or in any representation you give as <code>embed</code>,
+such as a layer's activations.</p>
+<p><code>ProtoDash</code> (Gurumoorthy et al., ICDM 2019) chooses prototypes from a source set whose weighted
+Gaussian-kernel mean matches a target set's, an MMD criterion. It is greedy:
+- each step adds the point with the largest gradient of wᵀμ − ½wᵀKw;
+- then it re-fits the chosen points' weights under w ≥ 0, by coordinate descent;
+- it stops early when no point would improve the match.</p>
+<p>The kernel width defaults to the median distance between source points. Use the same set for
+both to summarize a dataset, or a class as the target to find what stands for that class. On
+three clusters of 60, 30 and 10 points, three prototypes come one from each cluster, largest
+first, with weights 0.6, 0.3 and 0.1.</p>
+<p>Test reference: <code>tests/prototypes_test.cpp</code>.</p>
 <h3 id="pdp">PDP<a class="headerlink" href="#pdp" title="Permanent link">&para;</a></h3>
 <div class="highlight"><pre><span></span><code><span class="cp">#include</span><span class="w"> </span><span class="cpf">"pulsatrix/pdp.hpp"</span>
 

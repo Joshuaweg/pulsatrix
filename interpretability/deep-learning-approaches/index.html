@@ -775,6 +775,17 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#pertinent-negatives-and-positives-cem" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Pertinent negatives and positives (CEM)
+      
+    </span>
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -2639,6 +2650,17 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#pertinent-negatives-and-positives-cem" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Pertinent negatives and positives (CEM)
+      
+    </span>
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -2708,6 +2730,10 @@ need its own graph-walking code.</p>
   and one-hot features. It answers "what would have to change?" <code>FindDiverseCounterfactuals</code>
   finds several that take different routes (DiCE), and <code>Plausibility</code> scores how typical a
   counterfactual is of real data.</li>
+<li><strong><code>FindPertinentNegative</code>, <code>FindPertinentPositive</code></strong> (<code>contrastive.hpp</code>): the contrastive
+  explanation method (CEM; Dhurandhar et al. 2018). A pertinent negative is what is absent from
+  the input and would change its class if present. A pertinent positive is the least of the
+  input that keeps the class on its own.</li>
 <li><strong><code>ComputeAttributionStability(runs)</code></strong> (<code>explainer_stability.hpp</code>): measures how much
   repeated runs of any explainer vary on the same input.</li>
 </ul>
@@ -2755,6 +2781,12 @@ propagates relevance with per-layer rules instead of gradients. It has its own p
 <td>Up to <code>rounds × steps</code> forward + backward passes</td>
 <td>"What is the smallest change that flips this?"</td>
 <td>On images it finds adversarial noise, not a meaningful change</td>
+</tr>
+<tr>
+<td><code>FindPertinentNegative</code>, <code>FindPertinentPositive</code></td>
+<td><code>search_steps × steps</code> × (2 forward + 1 backward)</td>
+<td>"What is missing that would change it?" and "what is enough to keep it?"</td>
+<td>No autoencoder term: on images the result can look like noise</td>
 </tr>
 <tr>
 <td><a href="../lrp/"><code>LRP</code></a></td>
@@ -2875,6 +2907,32 @@ them apart. Afterwards each one's unneeded changes are undone, smallest first, a
 that differ between pairs. <code>Plausibility</code> is the mean scaled distance to the <code>k</code> nearest
 background instances: a valid counterfactual far from all real data may describe nobody.</p>
 <p>Test reference: <code>tests/counterfactual_test.cpp</code>.</p>
+<h3 id="pertinent-negatives-and-positives-cem">Pertinent negatives and positives (CEM)<a class="headerlink" href="#pertinent-negatives-and-positives-cem" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><span class="cp">#include</span><span class="w"> </span><span class="cpf">"pulsatrix/contrastive.hpp"</span>
+
+<span class="n">ContrastiveResult</span><span class="w"> </span><span class="n">pn</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">FindPertinentNegative</span><span class="p">(</span><span class="n">ctx</span><span class="p">,</span><span class="w"> </span><span class="n">input</span><span class="p">);</span><span class="w">   </span><span class="c1">// what, if added, changes the class</span>
+<span class="n">ContrastiveResult</span><span class="w"> </span><span class="n">pp</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">FindPertinentPositive</span><span class="p">(</span><span class="n">ctx</span><span class="p">,</span><span class="w"> </span><span class="n">input</span><span class="p">);</span><span class="w">   </span><span class="c1">// the least that keeps the class</span>
+<span class="c1">// pn.delta, pn.features, pn.explanation (input + delta), pn.explanation_class</span>
+</code></pre></div>
+<p><strong>What's happening:</strong> both search for a sparse change δ by FISTA on an elastic-net objective,
+c · hinge + β|δ|₁ + |δ|², with a binary search over the weight c, as in the paper.
+- <strong>Absent features.</strong> A feature is absent when it equals its baseline, 0 by default; set
+  <code>options.baseline</code> otherwise.
+- <strong>Pertinent negative.</strong> δ may only raise absent features, up to <code>options.upper</code>, and the
+  hinge pushes the input's class below the strongest other class.
+- <strong>Pertinent positive.</strong> δ keeps part of each feature between the baseline and the input, and
+  the hinge keeps the input's class on top.</p>
+<p>Take the model z₀ = x₀ + x₁, z₁ = x₂ + 0.5x₃ and the input (1, 0, 0, 0), which is class 0.
+- Adding x₁ would only confirm class 0, so the pertinent negative leaves it alone.
+- It raises x₂ by 0.81 and x₃ by 0.38, the elastic net's exact optimum. A single feature would
+  also flip the class, but the |δ|² term spreads the change.
+- Raise <code>beta</code> for sparser explanations.</p>
+<p>Two differences from the paper:
+- <strong>No autoencoder term.</strong> The paper adds an autoencoder's reconstruction error to keep δ on
+  the data manifold. Without it, a pertinent negative on images can be noise a person wouldn't
+  recognize.
+- <strong>Absence is a fixed baseline.</strong> On standardized tabular data no value means "absent", so
+  pick the baseline deliberately.</p>
 <h2 id="before-you-explain">Before you explain<a class="headerlink" href="#before-you-explain" title="Permanent link">&para;</a></h2>
 <ul>
 <li>Call <code>model.set_training(false)</code> first if the model has BatchNorm or Dropout. Otherwise each

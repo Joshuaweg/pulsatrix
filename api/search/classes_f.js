@@ -46,6 +46,10 @@ var searchData=
   ['proteinfeature_43',['ProteinFeature',['../structpulsatrix_1_1ProteinFeature.html',1,'pulsatrix']]],
   ['proteingymassay_44',['ProteinGymAssay',['../structpulsatrix_1_1ProteinGymAssay.html',1,'pulsatrix']]],
   ['proteinstructure_45',['ProteinStructure',['../structpulsatrix_1_1ProteinStructure.html',1,'pulsatrix']]],
-  ['provider_46',['Provider',['../classpulsatrix_1_1orch_1_1Provider.html',1,'pulsatrix::orch']]],
-  ['providererror_47',['ProviderError',['../classpulsatrix_1_1orch_1_1ProviderError.html',1,'pulsatrix::orch']]]
+  ['protodashoptions_46',['ProtoDashOptions',['../structpulsatrix_1_1ProtoDashOptions.html',1,'pulsatrix']]],
+  ['protodashresult_47',['ProtoDashResult',['../structpulsatrix_1_1ProtoDashResult.html',1,'pulsatrix']]],
+  ['prototypeoptions_48',['PrototypeOptions',['../structpulsatrix_1_1PrototypeOptions.html',1,'pulsatrix']]],
+  ['prototyperesult_49',['PrototypeResult',['../structpulsatrix_1_1PrototypeResult.html',1,'pulsatrix']]],
+  ['provider_50',['Provider',['../classpulsatrix_1_1orch_1_1Provider.html',1,'pulsatrix::orch']]],
+  ['providererror_51',['ProviderError',['../classpulsatrix_1_1orch_1_1ProviderError.html',1,'pulsatrix::orch']]]
 ];
