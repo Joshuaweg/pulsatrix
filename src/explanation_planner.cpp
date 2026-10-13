@@ -114,6 +114,9 @@ const std::vector<OwnControl>& OwnControls() {
         {"SurrogateTree", "surrogate_fidelity", "pulsatrix/surrogate_tree.hpp", {"FitSurrogateTree"},
          "A tree that agrees with the model on too few held-out inputs (under about 85% at a readable depth) "
          "describes a different model; read its rules only when SurrogateFidelity::test is high."},
+        {"Anchors", "anchor_precision", "pulsatrix/anchors.hpp", {"FindAnchor"},
+         "Precision is estimated from samples: check that the rule met the threshold, its lower bound "
+         "(Anchor::precision_lower), and its coverage; a rule that holds on a sliver of the data says little."},
         {"Featurizers", "featurizer_metrics", "pulsatrix/featurizer_metrics.hpp", {"MeasureLossRecovered"},
          "Features that don't recover the model's loss when they replace its activations describe "
          "something other than what the model computes."},
