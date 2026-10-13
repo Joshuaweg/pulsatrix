@@ -2556,13 +2556,17 @@ structures, and explain their predictions.</p>
 <li><a href="interpretability/lrp/">Layer-wise Relevance Propagation</a>: Epsilon, Gamma, AlphaBeta and
   ZBox rules, Zennit's composite presets, and AttnLRP/MambaLRP for attention and state-space
   layers. AttnLRP matches LXT on real language models.</li>
-<li><a href="interpretability/model-agnostic/">Model-agnostic explainers</a>: KernelSHAP, LIME and partial
-  dependence plots.</li>
+<li><a href="interpretability/model-agnostic/">Model-agnostic explainers</a>: KernelSHAP, LIME, partial
+  dependence, ICE and ALE, sensitivity analysis, Anchors, a global surrogate tree, prototypes and
+  ProtoDash.</li>
 <li><a href="interpretability/deep-learning-approaches/">Gradient-based explainers</a>: Saliency,
-  Integrated Gradients and Grad-CAM.</li>
+  Integrated Gradients, Grad-CAM, counterfactuals, and pertinent negatives and positives (CEM).</li>
 <li><a href="interpretability/">Checking an explanation</a>: deletion and insertion curves (with
   ROAD), the model-parameter randomization test, sparseness and complexity, and a random-model
   baseline that shows whether an explanation depends on what the model learned.</li>
+<li><a href="interpretability/#planning-an-explanation">Planning and reporting</a>: name the question
+  and the reason, and pulsatrix picks the explainers, runs the checks the reason requires, and
+  reports what the explanation does and doesn't support.</li>
 </ul>
 <p><strong><a href="reinforcement-learning/">Reinforcement Learning</a></strong>: CartPole environments, replay and
 rollout buffers, and DQN, REINFORCE, A2C, PPO and SAC. Each algorithm's tests train it to a
