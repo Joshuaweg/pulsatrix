@@ -122,10 +122,10 @@ TEST(ExplainerCatalog, ExplainersForPutsThePrimaryAnswersFirst) {
     EXPECT_EQ(Names(ExplainersFor(XaiQuestion::Input)), (std::vector<std::string>{"NearestNeighbors"}));
 }
 
-// The gaps the roadmap lists: no explainer yet for these. XAI-4 (Anchors) and KS-3 (uncertainty)
-// fill the first two; when they land, this test changes with them.
+// The gaps the roadmap lists: no explainer yet for these. KS-3 (uncertainty) fills the first; when
+// it lands, this test changes with it. XAI-4's Anchors filled How to still be this.
 TEST(ExplainerCatalog, QuestionsWithNoExplainerYetComeBackEmpty) {
-    EXPECT_TRUE(ExplainersFor(XaiQuestion::HowToStillBeThis).empty());
+    EXPECT_EQ(Names(ExplainersFor(XaiQuestion::HowToStillBeThis)), (std::vector<std::string>{"Anchors"}));
     EXPECT_TRUE(ExplainersFor(XaiQuestion::Performance).empty());
     EXPECT_TRUE(ExplainersFor(XaiQuestion::Output).empty());
 }

@@ -243,6 +243,10 @@ std::vector<ExplainerCapabilities> BuildCatalog() {
                       "A set of counterfactuals that differ from each other (DiCE).", {Q::HowToBeThat, Q::WhyNot},
                       S::Local, A::Gradients, I::Tabular));
     // Input: the data the model sees.
+    c.push_back(Entry("Anchors", "anchors.hpp", {"FindAnchor", "DescribeAnchor"},
+                      "An if-then rule around the input that keeps the prediction with high estimated precision, "
+                      "and the share of the data it covers.",
+                      {Q::HowToStillBeThis, Q::Why}, S::Local, A::BlackBox, I::Tabular));
     c.push_back(Entry("NearestNeighbors", "nearest_neighbors.hpp", {"NearestNeighbors", "MutualNearestNeighbors"},
                       "The examples nearest an input in a representation space.", {Q::Input, Q::Why}, S::Local,
                       A::Activations, I::Representation));

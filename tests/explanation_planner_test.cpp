@@ -77,7 +77,7 @@ TEST(ExplanationPlanner, JustifyingWhyPutsCompleteAttributionsFirst) {
 TEST(ExplanationPlanner, ABlackBoxGetsTheModelAgnosticExplainersAndSaysWhyNotTheRest) {
     const ExplanationPlan plan =
         ExplanationPlanner().plan(XaiQuestion::Why, XaiReason::Justify, Traits(ModelAccess::BlackBox, InputKind::Tabular));
-    EXPECT_EQ(Names(plan), (std::vector<std::string>{"KernelSHAP", "LIME", "Occlusion"}));
+    EXPECT_EQ(Names(plan), (std::vector<std::string>{"KernelSHAP", "LIME", "Occlusion", "Anchors"}));
     EXPECT_EQ(FindExcluded(plan, "LRP")->reason, "needs an LRP rule at every layer; the model gives a prediction function");
     EXPECT_EQ(FindExcluded(plan, "IntegratedGradients")->reason, "needs gradients; the model gives a prediction function");
     // Access is checked before input, so Grad-CAM is excluded for its gradients.
@@ -89,7 +89,7 @@ TEST(ExplanationPlanner, ABlackBoxGetsTheModelAgnosticExplainersAndSaysWhyNotThe
     ModelTraits wide = Traits(ModelAccess::BlackBox, InputKind::Tabular);
     wide.features = 21;
     const ExplanationPlan many = ExplanationPlanner().plan(XaiQuestion::Why, XaiReason::Justify, wide);
-    EXPECT_EQ(Names(many), (std::vector<std::string>{"LIME", "Occlusion"}));
+    EXPECT_EQ(Names(many), (std::vector<std::string>{"LIME", "Occlusion", "Anchors"}));
     EXPECT_EQ(FindExcluded(many, "KernelSHAP")->reason, "takes at most 20 features; the input has 21");
     wide.features = 20;
     const ExplanationPlan fits = ExplanationPlanner().plan(XaiQuestion::Why, XaiReason::Justify, wide);
@@ -215,7 +215,7 @@ TEST(ExplanationPlanner, ImproveAggregatesLocalExplanationsOverTheData) {
 }
 
 TEST(ExplanationPlanner, QuestionsWithNoExplainerSaySo) {
-    for (XaiQuestion q : {XaiQuestion::Output, XaiQuestion::Performance, XaiQuestion::HowToStillBeThis}) {
+    for (XaiQuestion q : {XaiQuestion::Output, XaiQuestion::Performance}) {
         const ExplanationPlan plan = ExplanationPlanner().plan(q, XaiReason::Justify, Traits(ModelAccess::Relevance, InputKind::Any, true, true));
         EXPECT_TRUE(plan.explainers.empty());
         EXPECT_TRUE(plan.excluded.empty());
@@ -224,6 +224,22 @@ TEST(ExplanationPlanner, QuestionsWithNoExplainerSaySo) {
         ASSERT_EQ(plan.warnings.size(), 1u);
         EXPECT_EQ(plan.warnings.front().rfind("pulsatrix has no explainer yet", 0), 0u);
     }
+}
+
+// XAI-4: Anchors answer How to still be this, for a black box, and carry their own check.
+TEST(ExplanationPlanner, AnchorsAnswerHowToStillBeThis) {
+    const ExplanationPlan plan = ExplanationPlanner().plan(XaiQuestion::HowToStillBeThis, XaiReason::Justify,
+                                                           Traits(ModelAccess::BlackBox, InputKind::Tabular, false, true));
+    EXPECT_EQ(Names(plan), (std::vector<std::string>{"Anchors"}));
+    const PlannedCheck* precision = FindCheck(plan, "anchor_precision");
+    ASSERT_NE(precision, nullptr);
+    EXPECT_EQ(precision->priority, CheckPriority::Recommended);  // required only under Discover
+    EXPECT_TRUE(plan.complete());
+    // Anchors also answer Why, after the attributions.
+    const ExplanationPlan why = ExplanationPlanner().plan(XaiQuestion::Why, XaiReason::Justify,
+                                                          Traits(ModelAccess::BlackBox, InputKind::Tabular, false, true));
+    ASSERT_FALSE(why.explainers.empty());
+    EXPECT_EQ(why.explainers.back().capabilities->name, "Anchors");
 }
 
 TEST(ExplanationPlanner, CounterfactualsAnswerHowToBeThat) {

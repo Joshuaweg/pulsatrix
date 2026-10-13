@@ -34,11 +34,11 @@ categories of Liao, Gruen and Miller's XAI question bank (CHI 2020):
 | `Output` | What kind of output does the system give? | none yet |
 | `Performance` | How accurate/precise/reliable are the predictions? | none yet (KS-3) |
 | `HowGlobal` | How does the system make predictions? | Surrogate tree, PDP, ALE, Morris, Sobol, TCAV, probes, featurizers, representation comparison |
-| `Why` | Why/how is this instance given this prediction? | LRP, Integrated Gradients, Saliency, Grad-CAM, KernelSHAP, LIME, Occlusion |
+| `Why` | Why/how is this instance given this prediction? | LRP, Integrated Gradients, Saliency, Grad-CAM, KernelSHAP, LIME, Occlusion, Anchors |
 | `WhyNot` | Why is this instance NOT predicted to be Q? | Contrastive LRP, counterfactuals |
 | `WhatIf` | What would the system predict if this instance changes to…? | Local sensitivity, ICE, PDP, Occlusion, activation patching, steering |
 | `HowToBeThat` | How should this instance change to get a different prediction Q? | Counterfactuals |
-| `HowToStillBeThis` | What change is permitted for this instance to still get the same prediction? | none yet (Anchors, XAI-4) |
+| `HowToStillBeThis` | What change is permitted for this instance to still get the same prediction? | Anchors |
 
 There are also four reasons to explain (Adadi and Berrada, 2018), as `XaiReason`: to
 **justify** a decision, to **control** the model by finding its flaws, to **improve** it, and to
