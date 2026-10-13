@@ -16,6 +16,8 @@ models wrapped in a lambda.
 - **Surrogate tree** (`surrogate_tree.hpp`): `FitSurrogateTree` fits a shallow decision tree to
   the model's predictions, as rules a person can read, and measures its fidelity to the model on
   held-out inputs.
+- **Anchors** (`anchors.hpp`): `FindAnchor` finds an if-then rule around one input that keeps the
+  model's prediction with high estimated precision, and reports how much of the data it covers.
 - **`PDP`** (`pdp.hpp`): a Partial Dependence Plot. It shows how the prediction changes as one
   feature varies, averaged over a set of background inputs.
 - **ICE** (`ice.hpp`): individual conditional expectation. `ComputeIce` draws one curve per
@@ -48,6 +50,7 @@ Full API reference: [Doxygen: Model-Agnostic](../api/group__interpretability__ag
 |---|---|---|---|
 | `KernelSHAP` | One input | Exact additive attributions that sum to `f(input) - f(baseline)` | 2ⁿ model calls; at most 20 features |
 | `LIME` | One input | A fast local linear approximation | Random: fix `seed`; results depend on `sigma`; check `local_fidelity` |
+| Anchors | One input | Which conditions keep this prediction, as a rule a person can check | Precision is estimated; coverage can be tiny; the rule is only as fine as the percentile cuts |
 | Surrogate tree | Whole dataset | The model's overall logic, as if/else rules | Only as good as its held-out fidelity; a readable tree can't imitate a complicated model |
 | `PDP` | Whole dataset | The average effect of one feature on the output | Hides interactions between features |
 | ICE | Each input, and their average | Whether the feature's effect differs between inputs (an interaction) | Reads the model at unrealistic inputs when features are correlated |
@@ -193,6 +196,51 @@ already have.
 
 Test reference: `tests/surrogate_tree_test.cpp`, checked node by node against scikit-learn 1.9.1
 (`tools/generate_surrogate_tree_reference_values.py`).
+
+### Anchors
+
+```cpp
+#include "pulsatrix/anchors.hpp"
+
+Anchor a = FindAnchor(predict, input, background);
+std::cout << DescribeAnchor(a, {"income", "debt", "age"}) << "\n";
+// IF income > -0.02925 AND debt > 0.07842 THEN class 1 (precision 1, coverage 0.258)
+```
+
+**What's happening:** an anchor (Ribeiro, Singh and Guestrin, AAAI 2018) is a rule that keeps the
+prediction whatever the other features do. Every feature is cut at the background's quartiles,
+and every half-line at a cut that contains the input is a candidate predicate: `x > cut` below
+the input, `x <= cut` above it, as in the reference implementation. To test a rule,
+`FindAnchor` samples inputs that satisfy it: each sample takes a random background row and gives
+each anchored feature a background value inside its interval. A beam search adds one predicate at
+a time. KL-LUCB picks the most precise candidates with few model calls. Each one is then sampled
+until its precision is settled either way. Among the rules that reach `precision_threshold`
+(0.95), the one that covers the most background data wins.
+
+The rule above is for a model whose class is 1 when income > 0 and debt > 0. The input is
+(0.9, 0.9, 0). The anchor found the model's own rule, cut at the medians (−0.03 and 0.08), and it
+covers a quarter of the data. For an input with income −0.9 the anchor is
+`IF income <= -0.02925 THEN class 0`: one low feature is enough. When no rule reaches the
+threshold, `meets_threshold` is false and the result is the most precise rule found. For
+example, when the class flips with sin(40 · Σx), the best rule reaches a precision of 0.54.
+
+**Read the precision bound and the coverage, not just the rule.** Precision is estimated from
+samples: `precision_lower` is its bound at confidence `1 - delta`. Coverage can be a sliver of the
+data, and a rule that applies to 2% of inputs says little about the model.
+
+**Stricter than the reference.** The reference implementation accepts a rule when the lower
+bound is within `epsilon_stop = 0.05` of the threshold. On a model where `x0 > median` keeps the
+class for 92.5% of inputs, that acceptance let sampling noise lift `x0 > median` plus an
+irrelevant predicate just over 0.95. That rule covers more data, so it won. Over 50 seeds,
+22 accepted rules had a true precision below 0.95. Pulsatrix's default is `epsilon_stop = 0`:
+all 50 seeds then return the right one-predicate rule, at about 2.5 times the model calls. Set
+0.05 to match the reference.
+
+The samples draw each anchored feature independently, so a rule over correlated features is
+tested on some inputs the data never has. The reference implementation does this too, when too
+few rows satisfy every predicate at once. `ToJson` writes a `pulsatrix.anchor.v1` document.
+
+Test reference: `tests/anchors_test.cpp`.
 
 ### PDP
 

@@ -210,7 +210,7 @@ Fine-tune the models from v1.2 and explain what the fine-tuning changed.
 - XAI-1 (**done**, [#156](https://github.com/Joshuaweg/pulsatrix/pull/156)): which questions each explainer answers
 - XAI-2 (**done**, [#160](https://github.com/Joshuaweg/pulsatrix/pull/160)): the question-driven planner
 - XAI-3 (**done**, [#161](https://github.com/Joshuaweg/pulsatrix/pull/161)): explanation reports that run the checks and carry caveats
-- XAI-4 (surrogate tree and LIME fidelity **done**, [#162](https://github.com/Joshuaweg/pulsatrix/pull/162)): Anchors, prototypes and pertinent negatives to come
+- XAI-4 (surrogate tree, LIME fidelity and Anchors **done**, [#162](https://github.com/Joshuaweg/pulsatrix/pull/162), [#163](https://github.com/Joshuaweg/pulsatrix/pull/163)): prototypes and pertinent negatives to come
 - INT-1 to INT-8 (**done**, [#131](https://github.com/Joshuaweg/pulsatrix/pull/131) to
   [#139](https://github.com/Joshuaweg/pulsatrix/pull/139)): CKA, RSA and SVCCA, nearest
   neighbors, probe controls, layer geometry, PCA, TCAV and CRP, and export for UMAP and t-SNE
@@ -736,7 +736,7 @@ doesn't support.
 | What if | PDP, ICE, ALE, local and global (Morris, Sobol) sensitivity, occlusion, re-running with an edited input | Have ([CFS](#cfs-counterfactuals-and-sensitivity)) |
 | How (global) | Global surrogate tree, PDP, TCAV, CRP | Have |
 | How to be that | Counterfactual search | Have: gradient-based, model-agnostic and diverse sets ([CFS](#cfs-counterfactuals-and-sensitivity)) |
-| How to still be this | Anchors | Gap; XAI-4 |
+| How to still be this | Anchors | Have |
 | Performance | Metrics, calibration, per-slice error, uncertainty | Partial; KS-3 |
 | Input (data) | Dataset statistics, nearest training examples, data attribution | Partial; INT-1, KS-5 |
 | Output | Output schema and label documentation | Template only |
@@ -754,7 +754,7 @@ The reason changes the defaults:
 | XAI-1 | `XaiQuestion` (9 values) and `XaiReason` (4 values), and a `capabilities()` declaration on every explainer | Machine-readable "what this explainer answers" | — | P0–P1 | S | Done, [#156](https://github.com/Joshuaweg/pulsatrix/pull/156) |
 | XAI-2 | `ExplanationPlanner::plan(question, reason, model_traits)`, returning ranked explainers and the checks that must run. Optional, and never hides the direct explainer APIs | The framework users actually call | XAI-1 | P1 | M | Done, [#160](https://github.com/Joshuaweg/pulsatrix/pull/160) |
 | XAI-3 | An `Explanation` report: the attribution plus question, reason, method, settings, metric results and caveats. Caveats are filled in automatically from known failure modes | Explanations that say what they don't support | XAI-2 | P1 | M | Done, [#161](https://github.com/Joshuaweg/pulsatrix/pull/161) |
-| XAI-4 | The missing explainers: a global decision-tree surrogate with a fidelity score, local fidelity output for LIME, Anchors, prototypes from nearest neighbors, and pertinent negatives | Covers How to still be this and How (global); counterfactuals moved to CFS | XAI-1, INT-1 | P1 | M each | Partly done: surrogate tree and LIME fidelity, [#162](https://github.com/Joshuaweg/pulsatrix/pull/162) |
+| XAI-4 | The missing explainers: a global decision-tree surrogate with a fidelity score, local fidelity output for LIME, Anchors, prototypes from nearest neighbors, and pertinent negatives | Covers How to still be this and How (global); counterfactuals moved to CFS | XAI-1, INT-1 | P1 | M each | Partly done: surrogate tree and LIME fidelity, [#162](https://github.com/Joshuaweg/pulsatrix/pull/162); Anchors, [#163](https://github.com/Joshuaweg/pulsatrix/pull/163) |
 | XAI-5 | Explanation-quality metrics in the Quantus families: deletion and insertion curves (with the ROAD correction), the model-parameter randomization test, sparseness and complexity | Today pulsatrix has conservation and stability checks only | — | P0 | M | Done, [#53](https://github.com/Joshuaweg/pulsatrix/pull/53) |
 | XAI-6 | `NullModelBaseline`: re-run any explainer, probe or featurizer on a re-initialized copy of the model and report the difference | The baseline rule above, as one call | FND-1 | P0 | S–M | Done, [#54](https://github.com/Joshuaweg/pulsatrix/pull/54) |
 
@@ -804,6 +804,15 @@ The reason changes the defaults:
   readable depth reaches the 85% falsifier: held-out R² is 0.78 at depth 4 and 0.84 at depth 8,
   with 61 leaves. LIME's local fidelity is the weighted R² of its surrogate, without an intercept,
   so it can be negative. XAI-3 warns below 0.8.
+- **XAI-4, Anchors.** The predicates are the reference implementation's for ordinal features:
+  half-lines at the quartiles that contain the input. Whole quartile bins were tried first. On
+  x0 > 0 and x1 > 0, they gave a rule covering 4% of the data where the half-lines cover 26%.
+  The search is the paper's, a beam search with KL-LUCB, but the acceptance is stricter. The
+  reference accepts a rule whose precision bound is within 0.05 of the threshold. On a model
+  where one predicate had true precision 0.925, that let 22 of 50 seeds return that predicate plus
+  an irrelevant one. Requiring the bound to reach the threshold fixed every seed, for about 2.5
+  times the model calls. Anchored features are sampled independently, as the reference does when
+  too few rows satisfy the whole rule.
 - **XAI-5.** The metrics take a prediction function and a finished attribution, so they work with
   any explainer. ROAD's imputation solves every removed pixel jointly as the weighted mean of its
   neighbors, plus seeded noise. Sparseness and complexity score an all-zero attribution as 0,
