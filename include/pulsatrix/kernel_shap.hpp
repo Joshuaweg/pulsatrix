@@ -15,6 +15,7 @@
 #include "pulsatrix/assert.hpp"
 #include "pulsatrix/attribution.hpp"
 #include "pulsatrix/device_backend.hpp"
+#include "pulsatrix/explainer_capabilities.hpp"
 #include "pulsatrix/tensor.hpp"
 #include "pulsatrix/weighted_linear_regression.hpp"
 
@@ -64,6 +65,9 @@ inline float ShapKernelWeight(int64_t n, int64_t coalition_size) {
  */
 class KernelSHAP {
 public:
+    /** @brief What it answers and needs: its ExplainerCatalog() entry. */
+    [[nodiscard]] static const ExplainerCapabilities& capabilities() { return ExplainerCapabilitiesOf("KernelSHAP"); }
+
     /**
      * @brief Computes Shapley value approximations for one output index.
      * @param predict Forward-pass callable: input Tensor in, output Tensor out.

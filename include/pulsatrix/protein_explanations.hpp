@@ -25,6 +25,7 @@
 
 #include "pulsatrix/attnlrp_parity.hpp"  // LxtAttnLrpConfig
 #include "pulsatrix/encoder_lm.hpp"
+#include "pulsatrix/explainer_capabilities.hpp"
 #include "pulsatrix/protein_sequences.hpp"
 #include "pulsatrix/proteingym.hpp"
 #include "pulsatrix/relevance_graph.hpp"
@@ -97,6 +98,9 @@ struct ResidueRelevance {
  */
 class EncoderExplainer {
 public:
+    /** @brief What it answers and needs: its ExplainerCatalog() entry. */
+    [[nodiscard]] static const ExplainerCapabilities& capabilities() { return ExplainerCapabilitiesOf("ProteinRelevance"); }
+
     /** @param backend Where the model runs. The model, tokenizer and backend must outlive this. */
     EncoderExplainer(EncoderLM& model, const TextTokenizer& tokenizer, DeviceBackend* backend,
                      LRPRuleConfig config = LxtAttnLrpConfig());

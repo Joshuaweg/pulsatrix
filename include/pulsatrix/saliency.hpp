@@ -12,6 +12,7 @@
 #include "pulsatrix/assert.hpp"
 #include "pulsatrix/attribution.hpp"
 #include "pulsatrix/device_backend.hpp"
+#include "pulsatrix/explainer_capabilities.hpp"
 #include "pulsatrix/explainer_context.hpp"
 #include "pulsatrix/tensor.hpp"
 
@@ -28,6 +29,9 @@ namespace pulsatrix {
  */
 class Saliency {
 public:
+    /** @brief What it answers and needs: its ExplainerCatalog() entry. */
+    [[nodiscard]] static const ExplainerCapabilities& capabilities() { return ExplainerCapabilitiesOf("Saliency"); }
+
     /**
      * @brief Computes the saliency map for one output index.
      * @param ctx Context to run the forward/backward pass through.

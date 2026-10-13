@@ -207,7 +207,8 @@ Fine-tune the models from v1.2 and explain what the fine-tuning changed.
 - TRN-7 to TRN-11 (**done**, [#151](https://github.com/Joshuaweg/pulsatrix/pull/151) to
   [#155](https://github.com/Joshuaweg/pulsatrix/pull/155)): LoRA, LRP through LoRA, LoReFT, IA³, model diffing
 - KD-1, KD-2: distillation and teacher–student explanation agreement
-- XAI-1 to XAI-4: the question-driven planner, explanation reports, counterfactuals, surrogates,
+- XAI-1 (**done**, [#156](https://github.com/Joshuaweg/pulsatrix/pull/156)): which questions each explainer answers
+- XAI-2 to XAI-4: the question-driven planner, explanation reports, counterfactuals, surrogates,
   Anchors
 - INT-1 to INT-8 (**done**, [#131](https://github.com/Joshuaweg/pulsatrix/pull/131) to
   [#139](https://github.com/Joshuaweg/pulsatrix/pull/139)): CKA, RSA and SVCCA, nearest
@@ -746,7 +747,7 @@ The reason changes the defaults:
 
 | ID | Item | Why | Depends on | P | Effort | Status |
 |---|---|---|---|---|---|---|
-| XAI-1 | `XaiQuestion` (9 values) and `XaiReason` (4 values), and a `capabilities()` declaration on every explainer | Machine-readable "what this explainer answers" | — | P0–P1 | S | |
+| XAI-1 | `XaiQuestion` (9 values) and `XaiReason` (4 values), and a `capabilities()` declaration on every explainer | Machine-readable "what this explainer answers" | — | P0–P1 | S | Done, [#156](https://github.com/Joshuaweg/pulsatrix/pull/156) |
 | XAI-2 | `ExplanationPlanner::plan(question, reason, model_traits)`, returning ranked explainers and the checks that must run. Optional, and never hides the direct explainer APIs | The framework users actually call | XAI-1 | P1 | M | |
 | XAI-3 | An `Explanation` report: the attribution plus question, reason, method, settings, metric results and caveats. Caveats are filled in automatically from known failure modes | Explanations that say what they don't support | XAI-2 | P1 | M | |
 | XAI-4 | The missing explainers: a global decision-tree surrogate with a fidelity score, local fidelity output for LIME, Anchors, prototypes from nearest neighbors, and pertinent negatives | Covers How to still be this and How (global); counterfactuals moved to CFS | XAI-1, INT-1 | P1 | M each | |
@@ -755,6 +756,13 @@ The reason changes the defaults:
 
 ### How the XAI work departed from the plan
 
+- **XAI-1.** The explainers are separate classes and free functions with different signatures,
+  so the declarations live in one catalog, `ExplainerCatalog()`, and not in a method on each
+  explainer. The eight classes with an `explain()` method return their entry from a static
+  `capabilities()`. A declaration also says the explainer's scope, the least model access it needs,
+  and the inputs it takes, which XAI-2 matches against the model. Three questions have no explainer
+  yet: Output, Performance (KS-3) and How to still be this (Anchors, XAI-4). A test checks that
+  each declared entry point is declared in its header.
 - **XAI-5.** The metrics take a prediction function and a finished attribution, so they work with
   any explainer. ROAD's imputation solves every removed pixel jointly as the weighted mean of its
   neighbors, plus seeded noise. Sparseness and complexity score an all-zero attribution as 0,

@@ -12,6 +12,7 @@
 #include "pulsatrix/assert.hpp"
 #include "pulsatrix/attribution.hpp"
 #include "pulsatrix/device_backend.hpp"
+#include "pulsatrix/explainer_capabilities.hpp"
 #include "pulsatrix/explainer_context.hpp"
 #include "pulsatrix/saliency.hpp"
 #include "pulsatrix/tensor.hpp"
@@ -35,6 +36,9 @@ namespace pulsatrix {
  */
 class IntegratedGradients {
 public:
+    /** @brief What it answers and needs: its ExplainerCatalog() entry. */
+    [[nodiscard]] static const ExplainerCapabilities& capabilities() { return ExplainerCapabilitiesOf("IntegratedGradients"); }
+
     /**
      * @brief Computes the Integrated Gradients attribution for one output index.
      * @param ctx Context to run each interpolation step's forward/backward pass through.
