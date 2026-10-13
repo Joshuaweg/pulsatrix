@@ -300,6 +300,18 @@ std::vector<ExplainerCapabilities> BuildCatalog() {
     c.push_back(Entry("ContactPrediction", "protein_contacts.hpp", {"RankContactHeads", "ContactPredictor::predict"},
                       "Which attention heads track residue contacts, and how well.", {Q::HowGlobal}, S::Global,
                       A::Activations, I::Protein));
+    // Performance: how well the model does (KS-3). Each needs labeled predictions over a dataset.
+    c.push_back(Entry("ClassifierMetrics", "performance.hpp", {"EvaluateClassifier"},
+                      "Accuracy, log loss, the Brier score, the expected calibration error with its reliability "
+                      "diagram, and each class's precision, recall and F1.",
+                      {Q::Performance}, S::Global, A::BlackBox, I::Any));
+    c.push_back(Entry("RegressorMetrics", "performance.hpp", {"EvaluateRegressor"},
+                      "Mean squared and absolute error, and R squared.", {Q::Performance}, S::Global, A::BlackBox,
+                      I::Any));
+    c.push_back(Entry("PerSliceError", "performance.hpp", {"PerSliceError", "DescribeSliceError"},
+                      "The error on each slice of the data, each tested against the rest with a Bonferroni "
+                      "correction, so a failure confined to one group isn't averaged away.",
+                      {Q::Performance}, S::Global, A::BlackBox, I::Any));
     for (ExplainerCapabilities& e : c) {
         e.attribution = e.name == "LRP" || e.name == "Saliency" || e.name == "IntegratedGradients" || e.name == "GradCAM" ||
                         e.name == "KernelSHAP" || e.name == "LIME" || e.name == "Occlusion";

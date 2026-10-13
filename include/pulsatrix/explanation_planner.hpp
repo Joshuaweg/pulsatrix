@@ -42,6 +42,9 @@ struct ModelTraits {
     /** @brief Many inputs, not just the one being explained: global explainers need them, and so
      *         does aggregating explanations over a dataset. */
     bool has_dataset = false;
+    /** @brief The dataset's true labels, and a slice for each input (a group, a data source), for
+     *         the per-slice error check (KS-3). */
+    bool has_labels = false;
     /** @brief The model this one was fine-tuned from, for explainers that compare the two. */
     bool has_base_model = false;
     /** @brief How many features each input has, or 0 if unknown; explainers with a limit
@@ -133,7 +136,7 @@ struct ExplanationPlan {
  *  - Justify requires faithfulness (DeletionCurve / InsertionCurve) and stability, and
  *    conservation for complete explainers;
  *  - Control requires the model-parameter randomization test for attributions, the null-model
- *    baseline for the rest, and per-slice error, which pulsatrix doesn't have yet (KS-3);
+ *    baseline for the rest, and per-slice error (KS-3), which needs labels;
  *  - Improve requires aggregating the explanations over a dataset;
  *  - Discover requires the null-model baseline and each explainer's own controls (control tasks
  *    for probes, a significance test for persistent homology, split halves for PCA).
