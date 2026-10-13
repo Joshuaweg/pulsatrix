@@ -385,6 +385,10 @@ if(PULSATRIX_BUILD_EXAMPLES)
         COMMAND what_did_the_finetune_change_recipe "${CMAKE_CURRENT_SOURCE_DIR}/fixtures/hf_tiny/llama"
             "${CMAKE_CURRENT_BINARY_DIR}/recipe_what_did_the_finetune_change" --smoke --retain
             --tokenizer "${CMAKE_CURRENT_SOURCE_DIR}/fixtures/tokenizers/smollm2/tokenizer.json")
+    add_test(NAME Recipe.CanITrustThisExplanationSmoke
+        COMMAND can_i_trust_this_explanation_recipe "${CMAKE_CURRENT_SOURCE_DIR}/fixtures/hf_tiny/llama"
+            "${CMAKE_CURRENT_BINARY_DIR}/recipe_can_i_trust_this_explanation" --smoke
+            --tokenizer "${CMAKE_CURRENT_SOURCE_DIR}/fixtures/tokenizers/smollm2/tokenizer.json")
 endif()
 
 # XAI-2: the pulsatrix_plan command-line tool. It exits 1 when the plan has a warning.
