@@ -846,7 +846,7 @@ The reason changes the defaults:
 | Running the null-model baseline and the metrics from the report planner | XAI-6 | Done in XAI-3 (`BuildExplanation`) |
 | Input kinds finer than `Any`. LRP, Saliency and Integrated Gradients are declared for any input, but they run through an `ExplainerContext`, not a `CausalLM`, so the planner offers them to language models too | XAI-2 | An XAI-1 revision |
 | Faithfulness for token input: deletion fills token ids with a value, which is another token. A report on a language model needs removal in embedding space or by a mask token; XAI-3 marks it as a warning | XAI-3 | XAI-1 revision, with the input kinds |
-| An explanation report on a real model in a recipe | XAI-3 | Done: [Can I trust this explanation?](../recipes/interpretability/can_i_trust_this_explanation.md) |
+| An explanation report on a real model in a recipe | XAI-3 | Done, [#166](https://github.com/Joshuaweg/pulsatrix/pull/166): [Can I trust this explanation?](../recipes/interpretability/can_i_trust_this_explanation.md) |
 | A view for the `pulsatrix.explanation.v1` document | XAI-3 | VIZ |
 | Faithfulness removes features the way removal-based explainers (KernelSHAP, occlusion) do, so it favors them over AttnLRP by construction. A second removal operation, or a gradient-based faithfulness metric, would show whether the ranking holds | The SmolLM2 recipe | XAI-5 revision |
 | The plan as an MCP tool, so agents can ask which explainer to run | XAI-2 | AGT-5 |
