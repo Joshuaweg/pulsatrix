@@ -19,6 +19,11 @@ Every number matches scikit-learn's on the same data, and the slice test matches
 `tools/generate_performance_reference_values.py`; `tests/uncertainty_test.cpp` checks the
 uncertainty split against numpy.
 
+The recipe [How sure is the model?](../recipes/interpretability/how_sure_is_the_model.md) runs all
+of it on a real model: a head on ESM-2 that predicts which mutations of TEM-1 β-lactamase still
+work, with its calibration, its uncertainty at positions it never saw, and where its conformal
+guarantee breaks.
+
 ## Scoring a classifier
 
 `EvaluateClassifier` takes the model's probabilities, `(N, K)`, and the true classes:

@@ -44,6 +44,7 @@ Recipes link to the related full demo where one exists.
 - [LRP on a trained MNIST classifier](interpretability/mnist_lrp.md)
 - [LRP on ImageNet models (ResNet18, VGG16)](interpretability/imagenet_lrp.md)
 - [Can I trust this explanation? Four explainers of SmolLM2, each with a report](interpretability/can_i_trust_this_explanation.md)
+- [How sure is the model? Calibration, uncertainty and conformal prediction on TEM-1 with ESM-2](interpretability/how_sure_is_the_model.md)
 
 ## Reinforcement Learning
 
