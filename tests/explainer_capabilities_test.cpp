@@ -117,9 +117,12 @@ TEST(ExplainerCatalog, ExplainersForPutsThePrimaryAnswersFirst) {
     EXPECT_LT(at("ICE"), at("PDP"));
     EXPECT_EQ(Names(ExplainersFor(XaiQuestion::HowToBeThat)),
               (std::vector<std::string>{"GradientCounterfactual", "GrowingSpheres", "DiverseCounterfactuals"}));
-    // LRP's contrastive target answers Why not before the counterfactuals do.
-    EXPECT_EQ(Names(ExplainersFor(XaiQuestion::WhyNot)).front(), "LRP");
-    EXPECT_EQ(Names(ExplainersFor(XaiQuestion::Input)), (std::vector<std::string>{"NearestNeighbors"}));
+    // CEM's pertinent negatives answer Why not first; then LRP's contrastive target, before the
+    // counterfactuals.
+    const std::vector<std::string> why_not = Names(ExplainersFor(XaiQuestion::WhyNot));
+    EXPECT_EQ(why_not.front(), "ContrastiveExplanations");
+    EXPECT_EQ(why_not[1], "LRP");
+    EXPECT_EQ(Names(ExplainersFor(XaiQuestion::Input)), (std::vector<std::string>{"NearestNeighbors", "Prototypes", "ProtoDash"}));
 }
 
 // The gaps the roadmap lists: no explainer yet for these. KS-3 (uncertainty) fills the first; when

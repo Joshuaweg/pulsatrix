@@ -18,6 +18,10 @@ models wrapped in a lambda.
   held-out inputs.
 - **Anchors** (`anchors.hpp`): `FindAnchor` finds an if-then rule around one input that keeps the
   model's prediction with high estimated precision, and reports how much of the data it covers.
+- **Prototypes** (`prototypes.hpp`): `FindPrototypes` returns the background examples nearest
+  an input that the model classes the same way (its prototypes) and the nearest it classes
+  differently (its contrasts). `ProtoDash` chooses weighted prototypes that summarize a dataset
+  or a class.
 - **`PDP`** (`pdp.hpp`): a Partial Dependence Plot. It shows how the prediction changes as one
   feature varies, averaged over a set of background inputs.
 - **ICE** (`ice.hpp`): individual conditional expectation. `ComputeIce` draws one curve per
@@ -51,6 +55,8 @@ Full API reference: [Doxygen: Model-Agnostic](../api/group__interpretability__ag
 | `KernelSHAP` | One input | Exact additive attributions that sum to `f(input) - f(baseline)` | 2ⁿ model calls; at most 20 features |
 | `LIME` | One input | A fast local linear approximation | Random: fix `seed`; results depend on `sigma`; check `local_fidelity` |
 | Anchors | One input | Which conditions keep this prediction, as a rule a person can check | Precision is estimated; coverage can be tiny; the rule is only as fine as the percentile cuts |
+| Prototypes | One input | "Classed like these, unlike those": examples a person can check | Distances in mixed units need a scale; in high dimensions, an embedding |
+| ProtoDash | A dataset or a class | A few weighted examples that stand for the whole | The kernel width sets what counts as alike |
 | Surrogate tree | Whole dataset | The model's overall logic, as if/else rules | Only as good as its held-out fidelity; a readable tree can't imitate a complicated model |
 | `PDP` | Whole dataset | The average effect of one feature on the output | Hides interactions between features |
 | ICE | Each input, and their average | Whether the feature's effect differs between inputs (an interaction) | Reads the model at unrealistic inputs when features are correlated |
@@ -241,6 +247,40 @@ tested on some inputs the data never has. The reference implementation does this
 few rows satisfy every predicate at once. `ToJson` writes a `pulsatrix.anchor.v1` document.
 
 Test reference: `tests/anchors_test.cpp`.
+
+### Prototypes and ProtoDash
+
+```cpp
+#include "pulsatrix/prototypes.hpp"
+
+PrototypeOptions options;
+options.k = 3;
+options.scale = MedianAbsoluteDeviation(background);   // tabular features in mixed units
+PrototypeResult r = FindPrototypes(predict, input, background, options);
+// r.prototypes: the nearest examples with the input's class; r.contrasts: the nearest without
+
+ProtoDashOptions summary;
+summary.count = 5;
+ProtoDashResult p = ProtoDash(background, background, summary);   // p.indices, p.weights
+```
+
+**What's happening:** `FindPrototypes` classes every background example with the model, ranks
+them by distance to the input, and keeps the k nearest on each side of the decision. Distances
+are in the input space with a per-feature scale, or in any representation you give as `embed`,
+such as a layer's activations.
+
+`ProtoDash` (Gurumoorthy et al., ICDM 2019) chooses prototypes from a source set whose weighted
+Gaussian-kernel mean matches a target set's, an MMD criterion. It is greedy:
+- each step adds the point with the largest gradient of wᵀμ − ½wᵀKw;
+- then it re-fits the chosen points' weights under w ≥ 0, by coordinate descent;
+- it stops early when no point would improve the match.
+
+The kernel width defaults to the median distance between source points. Use the same set for
+both to summarize a dataset, or a class as the target to find what stands for that class. On
+three clusters of 60, 30 and 10 points, three prototypes come one from each cluster, largest
+first, with weights 0.6, 0.3 and 0.1.
+
+Test reference: `tests/prototypes_test.cpp`.
 
 ### PDP
 

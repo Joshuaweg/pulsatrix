@@ -243,6 +243,10 @@ std::vector<ExplainerCapabilities> BuildCatalog() {
                       "A set of counterfactuals that differ from each other (DiCE).", {Q::HowToBeThat, Q::WhyNot},
                       S::Local, A::Gradients, I::Tabular));
     // Input: the data the model sees.
+    c.push_back(Entry("ContrastiveExplanations", "contrastive.hpp", {"FindPertinentNegative", "FindPertinentPositive"},
+                      "CEM: what is absent and would change the class if present (a pertinent negative), and the "
+                      "least of the input that keeps it (a pertinent positive).",
+                      {Q::WhyNot, Q::Why}, S::Local, A::Gradients, I::Any));
     c.push_back(Entry("Anchors", "anchors.hpp", {"FindAnchor", "DescribeAnchor"},
                       "An if-then rule around the input that keeps the prediction with high estimated precision, "
                       "and the share of the data it covers.",
@@ -251,6 +255,13 @@ std::vector<ExplainerCapabilities> BuildCatalog() {
                       "The examples nearest an input in a representation space.", {Q::Input, Q::Why}, S::Local,
                       A::Activations, I::Representation));
     // How (global): what the model represents and how it works.
+    c.push_back(Entry("Prototypes", "prototypes.hpp", {"FindPrototypes"},
+                      "The background examples nearest the input that the model classes the same way, and the "
+                      "nearest it classes differently.",
+                      {Q::Input, Q::Why}, S::Local, A::BlackBox, I::Any));
+    c.push_back(Entry("ProtoDash", "prototypes.hpp", {"ProtoDash"},
+                      "Weighted prototypes whose kernel mean matches a dataset's or a class's (MMD).",
+                      {Q::Input, Q::HowGlobal}, S::Global, A::BlackBox, I::Any));
     c.push_back(Entry("TCAV", "tcav.hpp", {"RunTcav"},
                       "How sensitive a class is to a concept defined by examples, tested against random concepts.",
                       {Q::HowGlobal}, S::Global, A::Gradients, I::Any));
