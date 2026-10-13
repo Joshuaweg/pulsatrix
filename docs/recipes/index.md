@@ -43,6 +43,7 @@ Recipes link to the related full demo where one exists.
 - [Grad-CAM walkthrough](interpretability/grad_cam_walkthrough.md)
 - [LRP on a trained MNIST classifier](interpretability/mnist_lrp.md)
 - [LRP on ImageNet models (ResNet18, VGG16)](interpretability/imagenet_lrp.md)
+- [Can I trust this explanation? Four explainers of SmolLM2, each with a report](interpretability/can_i_trust_this_explanation.md)
 
 ## Reinforcement Learning
 
