@@ -22,6 +22,9 @@ every item in [FEAT](#feat-featurizers-sparse-autoencoders-and-goodfire-bsf) is 
 in [INT](#int-embedding-and-representation-analysis) is done.
 **The TDA epic's v1.3 scope is complete** (2026-10-12): TDA-1 to TDA-8 and TDA-11 in
 [TDA](#tda-topological-data-analysis) are done. TDA-9 is done too; TDA-10 and TDA-12 are scheduled for v1.4.
+**The XAI epic, question-driven explainability, is complete** (2026-10-13): every item in
+[XAI](#xai-question-driven-explainability-framework) is done. Every one of the nine questions has
+an explainer except Output (a template) and Performance (KS-3).
 
 - **Strong.** LRP covers every layer and is checked against Zennit and LXT. Saliency, Integrated
   Gradients and Grad-CAM are checked against Captum. LIME, KernelSHAP, PDP, logit lens,
