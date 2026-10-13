@@ -250,6 +250,101 @@ Re-initialization replaces each parameter tensor with Gaussian noise at that ten
 and leaves buffers such as BatchNorm's running statistics alone. `ParameterSnapshot` and
 `ReinitializeParameters` are available separately.
 
+## Reporting an explanation
+
+`BuildExplanation` (`include/pulsatrix/explanation_report.hpp`) runs an attribution explainer,
+then every check the plan asks for, and returns an `Explanation`. The report holds:
+
+- the question and reason, the method and its rank in the plan;
+- the attribution, its settings (the explainer's metadata, yours, and every check option) and two
+  metrics, sparseness and complexity;
+- one result per planned check: passed, failed, measured, or not run with the reason;
+- the **caveats**, derived from the rest.
+
+`supports_reason()` is false when any caveat is blocking.
+
+```cpp
+#include "pulsatrix/explanation_report.hpp"
+
+ExplanationRequest request;
+request.question = XaiQuestion::Why;
+request.reason = XaiReason::Justify;
+request.method = "KernelSHAP";
+request.traits.input = InputKind::Tabular;
+request.traits.can_reinitialize = true;
+request.baseline = zeros;  // what KernelSHAP measured from, for the conservation check
+
+PredictFn predict = [&](const Tensor& x) { return model.forward(x); };
+ExplainFn explain = [&](const Tensor& x) { return KernelSHAP().explain(predict, x, zeros, 0, &backend); };
+Explanation e = BuildExplanation(request, x, explain, predict, &model);
+std::cout << DescribeExplanation(e);
+```
+
+**What each check does:**
+
+| Check | How it runs | Passes when |
+|---|---|---|
+| faithfulness | Deletion and insertion curves, scored as insertion AUC minus deletion AUC, against 19 random orderings of the features | it beats them: p ≤ 0.05 |
+| stability | Two more runs on the same input, and three on the input plus 1% noise (not for token or symbolic input) | every Spearman correlation of attribution magnitudes is ≥ 0.8 |
+| conservation | The attributions' sum against LRP's seeded total, or f(input) − f(baseline) | the gap is ≤ 5% |
+| randomization | `ModelParameterRandomizationTest` | the fully randomized model's explanation correlates ≤ 0.5 with the original |
+| null_model | `NullModelBaseline` | the same threshold |
+| aggregate | The mean absolute attribution over `request.dataset`, kept in `Explanation::aggregate` | (measured, no verdict) |
+
+Every threshold is in `ExplanationCheckOptions`, and the report records the values used. A check
+pulsatrix can't run yet, such as per-slice error (KS-3), comes back as not run.
+
+**The caveats** follow from the report alone, so `DeriveCaveats()` gives the same caveats for a
+stored report:
+
+- **Blocking:**
+  - a required check failed or didn't run;
+  - the planner excluded the method for this model.
+- **Warning:**
+  - a recommended check failed;
+  - a known failure mode applies to these settings or this input: a constant fill on images,
+    a fill value substituted into token ids, or fewer than 50 Integrated Gradients steps.
+- **Note:**
+  - a recommended check that didn't run;
+  - the method's known limitations: Integrated Gradients' and KernelSHAP's baseline, LRP's rule
+    choice, LIME's sampling, Saliency's sensitivity, Grad-CAM's resolution, Occlusion's fill;
+  - for Justify, that an attribution shows what the model relied on, not whether it should have.
+
+On a 12-feature MLP the code above prints:
+
+```
+Explanation: KernelSHAP, for the why question. Why/how is this instance given this prediction?
+Reason: justify. Justify a decision to the people it affects or who must sign it off.
+Supports the reason: yes
+Plan: ranked 1 for this question, reason and model
+
+Largest attributions (kernel_shap, 12 features): [11] 0.116, [8] -0.112, [4] -0.0937, [7] 0.0756, [2] -0.0708
+Metrics: sparseness 0.416, complexity 2.17
+Settings: target_index=0, check.target=0, check.seed=0, check.imputation=constant:0, ...
+
+Checks:
+  [required] faithfulness: passed. Removing the features it ranks highest, and restoring them, moved the target output more than 19 of 19 random orderings did (insertion minus deletion AUC 0.47, p = 0.05).
+  [required] stability: passed. Repeated runs were identical; with noise of 1% of the input's spread, the ranking correlated 1 with the original on average.
+  [required] conservation: passed. The attributions add up to -0.0324 against -0.0324, f(input) - f(baseline): a gap of 0%.
+  [recommended] randomization: failed. With the 2 layers randomized from the output down, the explanation's ranking correlates 0.51 with the original (0.559 after the top layer alone).
+
+Caveats:
+  [warning] Randomization check failed. With the 2 layers randomized from the output down, ...
+  [note] An absent feature takes the baseline's value, so the Shapley values compare with the baseline and treat features as independent; correlated features split credit unpredictably (Kumar et al. 2020).
+  [note] An attribution shows what the model relied on for this prediction, not whether it should have: passing the checks means the ranking matches the model, not the world.
+```
+
+The randomization warning is a real result, not a fault of the example. The input's values range
+from 0.05 to 2.2, so any model's attributions grow with |x|, and a random network's ranking
+still correlates 0.51 with the trained one's. Adebayo et al. found the same of gradient × input.
+Justify only recommends the test, so the explanation still supports its reason. Asked to control
+the model, the same explanation would be blocked.
+
+`ToJson(e)` writes a `pulsatrix.explanation.v1` document. For explainers that don't return an
+attribution, such as a probe or persistent homology, run their checks yourself and pass the
+results to `ReportExplanation`. It matches them to the planned checks by name, marks the missing
+ones as not run, and derives the same caveats.
+
 ## Recipes
 
 New here? Start with the
