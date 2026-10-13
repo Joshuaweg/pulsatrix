@@ -23,6 +23,10 @@ need its own graph-walking code.
   and one-hot features. It answers "what would have to change?" `FindDiverseCounterfactuals`
   finds several that take different routes (DiCE), and `Plausibility` scores how typical a
   counterfactual is of real data.
+- **`FindPertinentNegative`, `FindPertinentPositive`** (`contrastive.hpp`): the contrastive
+  explanation method (CEM; Dhurandhar et al. 2018). A pertinent negative is what is absent from
+  the input and would change its class if present. A pertinent positive is the least of the
+  input that keeps the class on its own.
 - **`ComputeAttributionStability(runs)`** (`explainer_stability.hpp`): measures how much
   repeated runs of any explainer vary on the same input.
 
@@ -42,6 +46,7 @@ Full API reference: [Doxygen: Gradient-Based Explainers](../api/group__interpret
 | `GradCAM` | 1 forward + 1 backward | "Where in the image?" for CNNs | Coarse: feature-map resolution, not pixels |
 | `FindDiverseCounterfactuals` | `count × max_steps` forward + backward passes | Several different ways to change the outcome | The diversity and proximity weights trade off against each other |
 | `FindCounterfactual` | Up to `rounds × steps` forward + backward passes | "What is the smallest change that flips this?" | On images it finds adversarial noise, not a meaningful change |
+| `FindPertinentNegative`, `FindPertinentPositive` | `search_steps × steps` × (2 forward + 1 backward) | "What is missing that would change it?" and "what is enough to keep it?" | No autoencoder term: on images the result can look like noise |
 | [`LRP`](lrp.md) | 1 forward + 1 relevance pass | Per-feature relevance that (approximately) sums to the output score | The rule choice changes the result |
 
 ## How to implement
@@ -183,6 +188,38 @@ that differ between pairs. `Plausibility` is the mean scaled distance to the `k`
 background instances: a valid counterfactual far from all real data may describe nobody.
 
 Test reference: `tests/counterfactual_test.cpp`.
+
+### Pertinent negatives and positives (CEM)
+
+```cpp
+#include "pulsatrix/contrastive.hpp"
+
+ContrastiveResult pn = FindPertinentNegative(ctx, input);   // what, if added, changes the class
+ContrastiveResult pp = FindPertinentPositive(ctx, input);   // the least that keeps the class
+// pn.delta, pn.features, pn.explanation (input + delta), pn.explanation_class
+```
+
+**What's happening:** both search for a sparse change δ by FISTA on an elastic-net objective,
+c · hinge + β|δ|₁ + |δ|², with a binary search over the weight c, as in the paper.
+- **Absent features.** A feature is absent when it equals its baseline, 0 by default; set
+  `options.baseline` otherwise.
+- **Pertinent negative.** δ may only raise absent features, up to `options.upper`, and the
+  hinge pushes the input's class below the strongest other class.
+- **Pertinent positive.** δ keeps part of each feature between the baseline and the input, and
+  the hinge keeps the input's class on top.
+
+Take the model z₀ = x₀ + x₁, z₁ = x₂ + 0.5x₃ and the input (1, 0, 0, 0), which is class 0.
+- Adding x₁ would only confirm class 0, so the pertinent negative leaves it alone.
+- It raises x₂ by 0.81 and x₃ by 0.38, the elastic net's exact optimum. A single feature would
+  also flip the class, but the |δ|² term spreads the change.
+- Raise `beta` for sparser explanations.
+
+Two differences from the paper:
+- **No autoencoder term.** The paper adds an autoencoder's reconstruction error to keep δ on
+  the data manifold. Without it, a pertinent negative on images can be noise a person wouldn't
+  recognize.
+- **Absence is a fixed baseline.** On standardized tabular data no value means "absent", so
+  pick the baseline deliberately.
 
 ## Before you explain
 
