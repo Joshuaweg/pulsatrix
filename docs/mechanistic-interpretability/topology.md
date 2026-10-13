@@ -361,6 +361,12 @@ With m baselines the smallest p-value is 1 / (m + 1): use 19 for p = 0.05, 99 fo
 Use more than one. The universal null is cheapest, and the bootstrap needs no conjecture. The
 random-network baseline is the one that asks whether the structure was *learned*.
 
+For all of them on a real model, see the recipe
+[Is the shape real?](../recipes/mechanistic-interpretability/is_the_shape_real.md). It tests
+the calendar circle in SmolLM2-135M and Llama-3.2-1B, and one of its lessons is a caution: on
+points that come in tight clusters, the largest death/birth ratio can pick loops inside the
+clusters rather than the ring through them.
+
 ## Seeing the result
 
 `viz/topology_documents.hpp` saves diagrams as a `pulsatrix.persistence_diagram.v1` document,

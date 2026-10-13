@@ -6,6 +6,7 @@
 #include <fstream>
 #include <limits>
 #include <numeric>
+#include <set>
 #include <sstream>
 #include <stdexcept>
 #include <tuple>
@@ -648,7 +649,9 @@ JsonValue ToVegaLiteProjection(const ProjectionDocument& doc, const HtmlOptions&
     Obj mark{{"type", "circle"}, {"size", n > 500 ? 18 : 45}, {"opacity", 0.8}};
     JsonValue color;
     if (!doc.groups.empty()) {
-        color = Field("group", "nominal", Obj{{"scale", Obj{{"scheme", "tableau10"}}}});
+        // Ten colors while they suffice; twenty when there are more groups (twelve months, say).
+        const std::set<std::string> distinct(doc.groups.begin(), doc.groups.end());
+        color = Field("group", "nominal", Obj{{"scale", Obj{{"scheme", distinct.size() > 10 ? "tableau20" : "tableau10"}}}});
     } else if (!doc.values.empty()) {
         color = Field("value", "quantitative", Obj{{"scale", Obj{{"scheme", "viridis"}}}});
     } else {

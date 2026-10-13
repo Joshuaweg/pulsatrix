@@ -4,6 +4,7 @@
 #include <cmath>
 #include <cstdlib>
 #include <fstream>
+#include <set>
 #include <sstream>
 #include <stdexcept>
 #include <string>
@@ -144,6 +145,25 @@ TEST(ProjectionSvg, DrawsEveryPointWithItsGroupAndTheAxesShares) {
     ProjectionDocument empty = TwoAxes();
     empty.coordinates.clear();
     EXPECT_THROW((void)RenderProjectionSvg(empty), std::invalid_argument);
+}
+
+// Twelve months, twelve colors: groups past Tableau 10's ten take Tableau 20's light shades.
+TEST(ProjectionSvg, TwelveGroupsGetTwelveColors) {
+    ProjectionDocument doc;
+    doc.axes = {"PC1", "PC2"};
+    for (int g = 0; g < 12; ++g) {
+        doc.coordinates.push_back(static_cast<float>(std::cos(g * 0.5236)));
+        doc.coordinates.push_back(static_cast<float>(std::sin(g * 0.5236)));
+        doc.groups.push_back("month " + std::to_string(g + 1));
+    }
+    const std::string svg = RenderProjectionSvg(doc);
+    std::set<std::string> fills;
+    for (size_t at = svg.find("class=\"point\""); at != std::string::npos; at = svg.find("class=\"point\"", at + 1)) {
+        const size_t f = svg.find("fill=\"", at) + 6;
+        fills.insert(svg.substr(f, 7));
+    }
+    EXPECT_EQ(fills.size(), 12u);
+    EXPECT_NE(WriteJson(ToVegaLiteProjection(doc)).find("\"scheme\": \"tableau20\""), std::string::npos);
 }
 
 TEST(ProjectionHtml, ShowsThreePairsForThreeAxesAndOneZoomablePlotForTwo) {
