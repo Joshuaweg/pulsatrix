@@ -80,6 +80,7 @@ add_library(pulsatrix_core
     src/surrogate_tree.cpp
     src/anchors.cpp
     src/prototypes.cpp
+    src/performance.cpp
     src/contrastive.cpp
     src/relu_module.cpp
     src/softmax_module.cpp

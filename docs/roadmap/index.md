@@ -24,7 +24,8 @@ in [INT](#int-embedding-and-representation-analysis) is done.
 [TDA](#tda-topological-data-analysis) are done. TDA-9 is done too; TDA-10 and TDA-12 are scheduled for v1.4.
 **The XAI epic, question-driven explainability, is complete** (2026-10-13): every item in
 [XAI](#xai-question-driven-explainability-framework) is done. Every one of the nine questions has
-an explainer except Output (a template) and Performance (KS-3).
+an explainer except Output (a template). KS-3 answers Performance: metrics, calibration and
+per-slice error so far, with uncertainty and conformal prediction to come.
 
 - **Strong.** LRP covers every layer and is checked against Zennit and LXT. Saliency, Integrated
   Gradients and Grad-CAM are checked against Captum. LIME, KernelSHAP, PDP, logit lens,
@@ -219,7 +220,10 @@ Fine-tune the models from v1.2 and explain what the fine-tuning changed.
   neighbors, probe controls, layer geometry, PCA, TCAV and CRP, and export for UMAP and t-SNE
 - TDA-1 to TDA-8, TDA-11 (**done**, [#141](https://github.com/Joshuaweg/pulsatrix/pull/141) to
   [#149](https://github.com/Joshuaweg/pulsatrix/pull/149)): persistent homology with certified error bars, significance tests, and RTD
-- KS-3, KS-4: uncertainty and adversarial robustness
+- KS-3 (in progress): metrics, calibration and per-slice error
+  ([#168](https://github.com/Joshuaweg/pulsatrix/pull/168)); Monte Carlo dropout, deep ensembles
+  and split conformal prediction next
+- KS-4: adversarial robustness
 - Llama-3.2-1B and Qwen2.5-0.5B pass the golden-logit test
 
 ### v1.4 "Features and agents"
@@ -740,7 +744,7 @@ doesn't support.
 | How (global) | Global surrogate tree, PDP, TCAV, CRP | Have |
 | How to be that | Counterfactual search | Have: gradient-based, model-agnostic and diverse sets ([CFS](#cfs-counterfactuals-and-sensitivity)) |
 | How to still be this | Anchors | Have |
-| Performance | Metrics, calibration, per-slice error, uncertainty | Partial; KS-3 |
+| Performance | Metrics, calibration, per-slice error, uncertainty | Have metrics, calibration and per-slice error; uncertainty in KS-3 |
 | Input (data) | Dataset statistics, nearest training examples, data attribution | Partial; INT-1, KS-5 |
 | Output | Output schema and label documentation | Template only |
 
@@ -1843,7 +1847,7 @@ AGT-5 has to follow these security rules:
 |---|---|---|---|---|---|---|
 | KS-1 | CMake `install()` and a package config, so other projects can `find_package(pulsatrix)` | There's no install step today | — | P0 | S | Done, [#61](https://github.com/Joshuaweg/pulsatrix/pull/61) |
 | KS-2 | A benchmark suite: step time, explanation time, conservation error | Measures every HIP item and catches regressions | — | P1 | S | Done, [#64](https://github.com/Joshuaweg/pulsatrix/pull/64) (see below) |
-| KS-3 | Uncertainty: Monte Carlo dropout, deep ensembles, split conformal prediction | Answers the Performance question | — | P1 | S | |
+| KS-3 | Uncertainty: Monte Carlo dropout, deep ensembles, split conformal prediction | Answers the Performance question | — | P1 | S | Partly done: metrics, calibration and per-slice error, [#168](https://github.com/Joshuaweg/pulsatrix/pull/168) |
 | KS-4 | FGSM and PGD attacks, also used as a robustness test for explanations | Robustness and the Control reason | — | P1 | S | |
 | KS-5 | TracIn data attribution | Answers "which training examples caused this" | FND-1 | P2 | M | |
 | KS-6 | Fairness metrics, drift detection and a model-card generator | The Input question, and documentation | — | P2 | S each | |
@@ -1899,6 +1903,21 @@ AGT-5 has to follow these security rules:
   the conservation gate on the GPU. `scripts/setup_gpu_runner.sh` sets the machine up with a
   pinned, checksum-verified runner. It also closed the IO follow-up of writing safetensors from
   GPU memory, which had never run on hardware.
+
+- **KS-3** started with what the item took for granted: a way to score a model at all. The
+  Performance question needs metrics before uncertainty, and the Control reason's per-slice error
+  check, which XAI-2 listed as unavailable, needs a slice test. So the first part
+  ([#168](https://github.com/Joshuaweg/pulsatrix/pull/168)) adds `performance.hpp`:
+  - `EvaluateClassifier`: accuracy, log loss, Brier, ECE and MCE with the reliability diagram,
+    the confusion matrix and per-class precision, recall and F1, each matching scikit-learn 1.9.1;
+  - `EvaluateRegressor`: MSE, MAE and R²;
+  - `PerSliceError`: each slice against the rest, by Fisher's exact test (matching SciPy) for 0/1
+    errors or a permutation test for losses, Bonferroni-corrected.
+
+  The planner gained `ModelTraits::has_labels`, and `BuildExplanation` runs the per-slice check
+  from `ExplanationRequest::labels` and `::slices`, so a Control plan can be complete. A
+  re-initialized model is no baseline for a metric, so the planner asks for no null model for
+  the Performance explainers.
 
 ### Follow-ups the KS work surfaced
 

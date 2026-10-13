@@ -86,6 +86,7 @@ add_executable(pulsatrix_tests
     surrogate_tree_test.cpp
     anchors_test.cpp
     prototypes_test.cpp
+    performance_test.cpp
     contrastive_test.cpp
     relu_module_test.cpp
     softmax_module_test.cpp
@@ -399,6 +400,10 @@ set_tests_properties(PulsatrixPlan.JustifiesWhyWithLrpFirst PROPERTIES
 add_test(NAME PulsatrixPlan.ControlIsIncompleteWithoutPerSliceError
     COMMAND pulsatrix_plan --question why --reason control --access gradients --input image --reinitialize)
 set_tests_properties(PulsatrixPlan.ControlIsIncompleteWithoutPerSliceError PROPERTIES WILL_FAIL TRUE)
+add_test(NAME PulsatrixPlan.ControlIsCompleteWithLabels
+    COMMAND pulsatrix_plan --question why --reason control --access gradients --input image --reinitialize --labels)
+set_tests_properties(PulsatrixPlan.ControlIsCompleteWithLabels PROPERTIES
+    PASS_REGULAR_EXPRESSION "\\[required\\] per_slice_error")
 add_test(NAME PulsatrixPlan.WritesJson
     COMMAND pulsatrix_plan --question how_global --reason discover --input representation --reinitialize --json)
 set_tests_properties(PulsatrixPlan.WritesJson PROPERTIES
