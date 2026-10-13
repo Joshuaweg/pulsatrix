@@ -120,6 +120,9 @@ struct ExplainerCapabilities {
     bool complete = false;
     /** @brief It compares a model with the one it was fine-tuned from, so it needs both. */
     bool needs_base_model = false;
+    /** @brief It scores the model against true labels (the Performance metrics, conformal
+     *         calibration), so it needs a labeled dataset (ModelTraits::has_labels). */
+    bool needs_labels = false;
     /** @brief The most input features it can take, or 0 for no limit: KernelSHAP enumerates every
      *         coalition, so it takes at most 20. */
     int64_t max_features = 0;

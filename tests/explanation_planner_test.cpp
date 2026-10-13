@@ -237,23 +237,27 @@ TEST(ExplanationPlanner, QuestionsWithNoExplainerSaySo) {
 
 // KS-3: the Performance question is answered by the metrics, which look across a labeled dataset.
 TEST(ExplanationPlanner, PerformanceIsAnsweredByTheMetrics) {
-    const ExplanationPlan many = ExplanationPlanner().plan(XaiQuestion::Performance, XaiReason::Control,
-                                                          Traits(ModelAccess::BlackBox, InputKind::Any, false, true));
-    // Control looks across the dataset first; Monte Carlo dropout needs the Module.
-    EXPECT_EQ(Names(many), (std::vector<std::string>{"ClassifierMetrics", "RegressorMetrics", "PerSliceError", "DeepEnsemble"}));
-    const ExplanationPlan one = ExplanationPlanner().plan(XaiQuestion::Performance, XaiReason::Justify,
-                                                         Traits(ModelAccess::Gradients, InputKind::Any));
-    EXPECT_EQ(Names(one), (std::vector<std::string>{"MonteCarloDropout", "DeepEnsemble"}));
-    ASSERT_EQ(one.excluded.size(), 3u);
-    EXPECT_EQ(one.excluded.front().reason, "looks across a dataset, and there is only the one input");
-    // A re-initialized model is no baseline for a metric: Control needs per-slice error only.
+    // Without labels only the uncertainty explainers can run; the rest score against labels.
+    const ExplanationPlan unlabeled = ExplanationPlanner().plan(XaiQuestion::Performance, XaiReason::Control,
+                                                               Traits(ModelAccess::BlackBox, InputKind::Any, false, true));
+    EXPECT_EQ(Names(unlabeled), (std::vector<std::string>{"DeepEnsemble"}));
+    ASSERT_EQ(unlabeled.excluded.size(), 5u);  // the four that need labels, and Monte Carlo dropout the Module
+    EXPECT_EQ(unlabeled.excluded.front().reason, "scores the model against true labels, which aren't given");
+    // With labels, Control looks across the dataset first. A re-initialized model is no baseline for
+    // a metric, so Control needs per-slice error only.
     ModelTraits labeled = Traits(ModelAccess::BlackBox, InputKind::Any, false, true);
     labeled.has_labels = true;
     const ExplanationPlan control = ExplanationPlanner().plan(XaiQuestion::Performance, XaiReason::Control, labeled);
+    EXPECT_EQ(Names(control),
+              (std::vector<std::string>{"ClassifierMetrics", "RegressorMetrics", "PerSliceError", "DeepEnsemble", "SplitConformal"}));
     EXPECT_EQ(FindCheck(control, "null_model"), nullptr);
     ASSERT_EQ(control.checks.size(), 1u);
     EXPECT_EQ(control.checks.front().name, "per_slice_error");
     EXPECT_TRUE(control.complete());
+    // One input and a Module: Monte Carlo dropout first, for the prediction being justified.
+    const ExplanationPlan one = ExplanationPlanner().plan(XaiQuestion::Performance, XaiReason::Justify,
+                                                         Traits(ModelAccess::Gradients, InputKind::Any));
+    EXPECT_EQ(Names(one), (std::vector<std::string>{"MonteCarloDropout", "DeepEnsemble"}));
 }
 
 // XAI-4: Anchors answer How to still be this, for a black box, and carry their own check.
