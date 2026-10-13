@@ -387,6 +387,19 @@ TEST(ExplanationReport, ReportExplanationMatchesChecksByName) {
     EXPECT_THROW((void)ReportExplanation(request, std::nullopt, {}), std::invalid_argument);
 }
 
+// XAI-4: LIME reports how well its surrogate fits, and a poor fit is a warning.
+TEST(ExplanationReport, LowLimeFidelityWarns) {
+    CPUBackend backend;
+    ExplanationRequest request;
+    request.question = XaiQuestion::Why;
+    request.reason = XaiReason::Justify;
+    request.method = "LIME";
+    Attribution a{"lime", Tensor(Shape({1, 2}), &backend, {0.5f, -0.2f}), {{"local_fidelity", "-1.3"}}};
+    EXPECT_TRUE(HasCaveat(ReportExplanation(request, a, {}), "method.lime_local_fidelity", CaveatSeverity::Warning));
+    a.metadata["local_fidelity"] = "0.97";
+    EXPECT_FALSE(HasCaveat(ReportExplanation(request, a, {}), "method.lime_local_fidelity"));
+}
+
 TEST_F(ExplanationReportTest, JsonAndText) {
     ExplanationRequest request = Request(XaiReason::Justify, "KernelSHAP", ModelAccess::BlackBox);
     const Explanation e = BuildExplanation(request, x, shap, predict, &model);  // no baseline: blocked

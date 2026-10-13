@@ -57,7 +57,8 @@ public:
      * @param seed RNG seed, for reproducibility.
      * @param backend Backend to allocate intermediate tensors through.
      * @return An Attribution with method "lime", values = the local linear coefficients
-     *         (same shape as input), and metadata recording the sampling parameters used.
+     *         (same shape as input), and metadata recording the sampling parameters used and the
+     *         surrogate's "local_fidelity" (see local_fidelity()).
      * @throws std::invalid_argument if num_samples <= 0 or sigma <= 0 -- external boundary
      *         (campaign_exai_dl_library_adversarial_hardening.md, Mission 2, finding 11):
      *         escalated from PULSATRIX_ASSERT-only, which in Release left num_samples<=0
@@ -115,12 +116,46 @@ public:
         std::vector<float> coefficients = fit_weighted_linear_regression(samples, targets, weights, l2_lambda);
 
         coefficients.resize(static_cast<size_t>(n_features));
+        const double fidelity = local_fidelity(samples, targets, weights, coefficients);
         Tensor values(input.shape(), input_backend, coefficients, input.device());
 
         return Attribution{"lime", std::move(values),
                             {{"target_index", std::to_string(target_index)},
                              {"num_samples", std::to_string(num_samples)},
-                             {"sigma", std::to_string(sigma)}}};
+                             {"sigma", std::to_string(sigma)},
+                             {"local_fidelity", std::to_string(fidelity)}}};
+    }
+
+    /**
+     * @brief How well the surrogate fits the model where it was fitted: the locality-weighted R² of
+     *        w^T(z - x) against f(z) - f(x) over the perturbed samples, as the reference LIME
+     *        implementation's `score` (Ribeiro et al. 2016). 1 is a perfect local fit; at 0 the
+     *        surrogate explains none of the model's variation around the input, and the
+     *        coefficients shouldn't be read as the model's local behaviour.
+     * @note No intercept, as in explain(): the surrogate passes through f(x). So the score can be
+     *       negative, when the samples sit mostly to one side of f(x), as at a minimum.
+     * @return 1 when the targets don't vary and the fit is exact, 0 when they don't vary and it isn't.
+     */
+    [[nodiscard]] static double local_fidelity(const std::vector<std::vector<float>>& samples,
+                                               const std::vector<float>& targets, const std::vector<float>& weights,
+                                               const std::vector<float>& coefficients) {
+        double weight_sum = 0.0, mean = 0.0;
+        for (size_t s = 0; s < samples.size(); ++s) {
+            weight_sum += weights[s];
+            mean += static_cast<double>(weights[s]) * targets[s];
+        }
+        if (weight_sum <= 0.0) return 0.0;
+        mean /= weight_sum;
+        double residual = 0.0, total = 0.0;
+        for (size_t s = 0; s < samples.size(); ++s) {
+            double fit = 0.0;
+            for (size_t i = 0; i < coefficients.size(); ++i) fit += static_cast<double>(coefficients[i]) * samples[s][i];
+            const double e = targets[s] - fit, d = targets[s] - mean;
+            residual += weights[s] * e * e;
+            total += weights[s] * d * d;
+        }
+        if (total == 0.0) return residual == 0.0 ? 1.0 : 0.0;
+        return 1.0 - residual / total;
     }
 };
 

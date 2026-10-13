@@ -83,6 +83,7 @@ add_executable(pulsatrix_tests
     explainer_capabilities_test.cpp
     explanation_planner_test.cpp
     explanation_report_test.cpp
+    surrogate_tree_test.cpp
     relu_module_test.cpp
     softmax_module_test.cpp
     rope_module_test.cpp

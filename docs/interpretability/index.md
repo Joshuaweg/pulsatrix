@@ -33,7 +33,7 @@ categories of Liao, Gruen and Miller's XAI question bank (CHI 2020):
 | `Input` | What kind of data was the system trained on? | `NearestNeighbors` |
 | `Output` | What kind of output does the system give? | none yet |
 | `Performance` | How accurate/precise/reliable are the predictions? | none yet (KS-3) |
-| `HowGlobal` | How does the system make predictions? | PDP, ALE, Morris, Sobol, TCAV, probes, featurizers, representation comparison |
+| `HowGlobal` | How does the system make predictions? | Surrogate tree, PDP, ALE, Morris, Sobol, TCAV, probes, featurizers, representation comparison |
 | `Why` | Why/how is this instance given this prediction? | LRP, Integrated Gradients, Saliency, Grad-CAM, KernelSHAP, LIME, Occlusion |
 | `WhyNot` | Why is this instance NOT predicted to be Q? | Contrastive LRP, counterfactuals |
 | `WhatIf` | What would the system predict if this instance changes to…? | Local sensitivity, ICE, PDP, Occlusion, activation patching, steering |

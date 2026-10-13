@@ -111,6 +111,9 @@ const std::vector<OwnControl>& OwnControls() {
         {"PCA", "split_half", "pulsatrix/pca.hpp", {"PcaSplitHalfOverlap"},
          "Principal directions that change between two halves of the data aren't a property of the "
          "representation."},
+        {"SurrogateTree", "surrogate_fidelity", "pulsatrix/surrogate_tree.hpp", {"FitSurrogateTree"},
+         "A tree that agrees with the model on too few held-out inputs (under about 85% at a readable depth) "
+         "describes a different model; read its rules only when SurrogateFidelity::test is high."},
         {"Featurizers", "featurizer_metrics", "pulsatrix/featurizer_metrics.hpp", {"MeasureLossRecovered"},
          "Features that don't recover the model's loss when they replace its activations describe "
          "something other than what the model computes."},
