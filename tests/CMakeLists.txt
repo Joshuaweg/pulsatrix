@@ -82,6 +82,7 @@ add_executable(pulsatrix_tests
     fine_tune_diff_test.cpp
     explainer_capabilities_test.cpp
     explanation_planner_test.cpp
+    explanation_report_test.cpp
     relu_module_test.cpp
     softmax_module_test.cpp
     rope_module_test.cpp

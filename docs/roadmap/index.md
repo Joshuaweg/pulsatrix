@@ -209,7 +209,8 @@ Fine-tune the models from v1.2 and explain what the fine-tuning changed.
 - KD-1, KD-2: distillation and teacher–student explanation agreement
 - XAI-1 (**done**, [#156](https://github.com/Joshuaweg/pulsatrix/pull/156)): which questions each explainer answers
 - XAI-2 (**done**, [#160](https://github.com/Joshuaweg/pulsatrix/pull/160)): the question-driven planner
-- XAI-3, XAI-4: explanation reports, counterfactuals, surrogates, Anchors
+- XAI-3 (**done**, [#161](https://github.com/Joshuaweg/pulsatrix/pull/161)): explanation reports that run the checks and carry caveats
+- XAI-4: surrogates, Anchors, prototypes
 - INT-1 to INT-8 (**done**, [#131](https://github.com/Joshuaweg/pulsatrix/pull/131) to
   [#139](https://github.com/Joshuaweg/pulsatrix/pull/139)): CKA, RSA and SVCCA, nearest
   neighbors, probe controls, layer geometry, PCA, TCAV and CRP, and export for UMAP and t-SNE
@@ -752,7 +753,7 @@ The reason changes the defaults:
 |---|---|---|---|---|---|---|
 | XAI-1 | `XaiQuestion` (9 values) and `XaiReason` (4 values), and a `capabilities()` declaration on every explainer | Machine-readable "what this explainer answers" | — | P0–P1 | S | Done, [#156](https://github.com/Joshuaweg/pulsatrix/pull/156) |
 | XAI-2 | `ExplanationPlanner::plan(question, reason, model_traits)`, returning ranked explainers and the checks that must run. Optional, and never hides the direct explainer APIs | The framework users actually call | XAI-1 | P1 | M | Done, [#160](https://github.com/Joshuaweg/pulsatrix/pull/160) |
-| XAI-3 | An `Explanation` report: the attribution plus question, reason, method, settings, metric results and caveats. Caveats are filled in automatically from known failure modes | Explanations that say what they don't support | XAI-2 | P1 | M | |
+| XAI-3 | An `Explanation` report: the attribution plus question, reason, method, settings, metric results and caveats. Caveats are filled in automatically from known failure modes | Explanations that say what they don't support | XAI-2 | P1 | M | Done, [#161](https://github.com/Joshuaweg/pulsatrix/pull/161) |
 | XAI-4 | The missing explainers: a global decision-tree surrogate with a fidelity score, local fidelity output for LIME, Anchors, prototypes from nearest neighbors, and pertinent negatives | Covers How to still be this and How (global); counterfactuals moved to CFS | XAI-1, INT-1 | P1 | M each | |
 | XAI-5 | Explanation-quality metrics in the Quantus families: deletion and insertion curves (with the ROAD correction), the model-parameter randomization test, sparseness and complexity | Today pulsatrix has conservation and stability checks only | — | P0 | M | Done, [#53](https://github.com/Joshuaweg/pulsatrix/pull/53) |
 | XAI-6 | `NullModelBaseline`: re-run any explainer, probe or featurizer on a re-initialized copy of the model and report the difference | The baseline rule above, as one call | FND-1 | P0 | S–M | Done, [#54](https://github.com/Joshuaweg/pulsatrix/pull/54) |
@@ -779,6 +780,21 @@ The reason changes the defaults:
   facts that decide whether a global explainer or a check can run. Control's per-slice error is
   listed as required but unavailable until KS-3, so every Control plan is incomplete and says
   so. A `pulsatrix_plan` command-line tool prints the plan as text or JSON.
+- **XAI-3.** `BuildExplanation` runs the checks, not just lists them: it takes an explanation
+  function, a prediction function and the Module, and runs every planned check it can on one
+  input. Pass and fail needed thresholds the item didn't give, so each is an option with a
+  default, and the report records the values used:
+  - faithfulness is insertion minus deletion AUC against 19 random orderings, passing at p ≤ 0.05;
+  - stability needs a Spearman correlation of at least 0.8, between repeated runs and under 1% noise;
+  - conservation allows a 5% gap;
+  - randomization and the null model pass at a correlation of at most 0.5.
+
+  Caveats come from the report alone (`DeriveCaveats`). They are blocking when a required check
+  failed or didn't run, or the planner excluded the method; a report is usable for its reason
+  only when none is. Explainers that don't return an attribution report checks run elsewhere
+  through `ReportExplanation`. On the test MLP, KernelSHAP passes every Justify check but just
+  fails randomization (0.51), because the input's magnitudes dominate the ranking, as Adebayo et
+  al. found for gradient × input.
 - **XAI-5.** The metrics take a prediction function and a finished attribution, so they work with
   any explainer. ROAD's imputation solves every removed pixel jointly as the weighted mean of its
   neighbors, plus seeded noise. Sparseness and complexity score an all-zero attribution as 0,
@@ -793,11 +809,13 @@ The reason changes the defaults:
 
 | Follow-up | Found in | Belongs with |
 |---|---|---|
-| Per-pixel aggregation across channels; metrics treat each input element as a feature today | XAI-5 | VIZ-2 or XAI-3 |
+| Per-pixel aggregation across channels; metrics treat each input element as a feature today. XAI-3 reports it as a caveat on image explanations | XAI-5 | VIZ-2 |
 | Quantus's localisation, robustness and axiomatic families | XAI-5 | KS-4 (robustness), or its own item |
 | A built-in plain-linear-probe comparison, the second half of the baseline rule | XAI-6 | Done in INT-3 (`CompareToBaseline`) |
-| Running the null-model baseline and the metrics from the report planner | XAI-6 | XAI-3 (XAI-2 plans them; running them belongs with the report) |
-| Input kinds finer than `Any`. LRP, Saliency and Integrated Gradients are declared for any input, but they run through an `ExplainerContext`, not a `CausalLM`, so the planner offers them to language models too | XAI-2 | XAI-3, or an XAI-1 revision |
+| Running the null-model baseline and the metrics from the report planner | XAI-6 | Done in XAI-3 (`BuildExplanation`) |
+| Input kinds finer than `Any`. LRP, Saliency and Integrated Gradients are declared for any input, but they run through an `ExplainerContext`, not a `CausalLM`, so the planner offers them to language models too | XAI-2 | An XAI-1 revision |
+| Faithfulness for token input: deletion fills token ids with a value, which is another token. A report on a language model needs removal in embedding space or by a mask token; XAI-3 marks it as a warning | XAI-3 | XAI-1 revision, with the input kinds |
+| An explanation report on a real model in a recipe, and a view for the `pulsatrix.explanation.v1` document | XAI-3 | A recipe, and VIZ |
 | The plan as an MCP tool, so agents can ask which explainer to run | XAI-2 | AGT-5 |
 
 ## CFS: Counterfactuals and sensitivity
