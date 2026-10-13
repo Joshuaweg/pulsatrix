@@ -46,9 +46,15 @@ There are also four reasons to explain (Adadi and Berrada, 2018), as `XaiReason`
 
 Every explainer declares the questions it answers, the main one first. The declaration also gives
 its scope (one prediction or the whole model), the least model access it needs (black box,
-weights, activations, gradients or LRP rules) and the inputs it takes. The classes with an
-`explain()` method return their declaration from `capabilities()`. Every explainer, functions
-included, is in `ExplainerCatalog()`:
+weights, activations, gradients or LRP rules) and the inputs it takes. It also says:
+
+- whether it returns an `Attribution`, so that the metrics below apply;
+- whether its attributions are complete, adding up to the output;
+- whether it needs the base model of a fine-tune;
+- the most input features it takes.
+
+The classes with an `explain()` method return their declaration from `capabilities()`. Every
+explainer, functions included, is in `ExplainerCatalog()`:
 
 ```cpp
 #include "pulsatrix/explainer_capabilities.hpp"
@@ -65,6 +71,111 @@ std::string json = WriteJson(ExplainerCatalogDocument());   // pulsatrix.explain
 
 `ExplainersFor()` lists first the explainers whose main question it is. A question with no
 explainer yet returns an empty list, not a poor substitute.
+
+## Planning an explanation
+
+`ExplanationPlanner` turns a question and a reason into a plan. A plan lists the explainers that
+can answer the question for your model, best first, and the checks their results need before you
+rely on them. It only reads the catalog above and runs nothing, so every explainer it names is
+still called directly.
+
+```cpp
+#include "pulsatrix/explanation_planner.hpp"
+
+ModelTraits traits;
+traits.access = ModelAccess::Relevance;   // a pulsatrix network with an LRP rule at every layer
+traits.input = InputKind::Image;
+traits.can_reinitialize = true;           // for the randomization test and the null model
+ExplanationPlan plan = ExplanationPlanner().plan(XaiQuestion::Why, XaiReason::Justify, traits);
+
+plan.explainers.front().capabilities->name;   // "LRP"
+plan.checks;      // faithfulness, stability and conservation (required), randomization (recommended)
+plan.excluded;    // e.g. RelevanceGraph: "takes tokens input; the model takes image"
+plan.complete();  // true: some explainer applies and every required check can run
+std::cout << DescribePlan(plan);              // or WriteJson(ToJson(plan)): pulsatrix.explanation_plan.v1
+```
+
+`ModelTraits` says what you have:
+
+- `access`: the most the model gives, from a prediction function (`BlackBox`) to an LRP rule at
+  every layer (`Relevance`);
+- `input`: the kind of input (`Any` if unknown);
+- `can_reinitialize`: whether its weights can be redrawn and restored;
+- `has_dataset`: whether there are many inputs or just one;
+- `has_base_model`: whether the model it was fine-tuned from is also at hand;
+- `features`: the number of features per input, if known.
+
+An explainer that needs more than you have is **excluded**, with the reason. When the input kind
+or the feature count is unknown, explainers made for one kind, or limited to a few features
+(KernelSHAP, 20), stay in the plan with a **condition** instead.
+
+**The ranking** compares, in order:
+
+1. whether the question is the explainer's main one;
+2. the reason's preference:
+   - **justify:** complete explainers first, whose attributions add up to the output, then those
+     that return an `Attribution` the faithfulness checks can test;
+   - **control** and **improve:** global explainers first;
+   - **discover:** global explainers first, then those that read the model's internals;
+3. explainers made for your kind of input;
+4. more model access before less.
+
+Ties keep catalog order.
+
+**The checks** follow the reason:
+
+| Reason | Required | Recommended |
+|---|---|---|
+| Justify | faithfulness (`DeletionCurve`, `InsertionCurve`), stability, conservation for complete explainers | randomization, null model |
+| Control | randomization for attributions, the null model for the rest, per-slice error | faithfulness, stability, conservation |
+| Improve | aggregating the explanations over the dataset | faithfulness, stability, conservation, randomization, null model |
+| Discover | the null model, for everything, and each explainer's own controls | faithfulness, stability, conservation, randomization |
+
+The explainers' own controls are:
+
+- control tasks for probes (`MeasureSelectivity`, `CompareToBaseline`);
+- a significance test for persistent homology (`UniversalNullTest` and the rest);
+- split halves for PCA;
+- loss recovered for featurizers.
+
+A required check that can't run makes the plan incomplete and adds a warning. For example,
+Control requires per-slice error, which pulsatrix doesn't have yet (KS-3), so every Control plan
+says so. A question with no explainer, such as Output, comes back empty, with a warning, not a
+poor substitute.
+
+From the command line, `pulsatrix_plan` prints the same plan. It exits 1 when the plan has a
+warning:
+
+```
+$ pulsatrix_plan --question why --reason control --access relevance --input tokens --reinitialize --dataset
+Question: why. Why/how is this instance given this prediction?
+Reason: control. Control the model: find its flaws and failure modes.
+Model: an LRP rule at every layer, tokens input, can be re-initialized, a dataset
+
+Explainers, best first:
+  1. RelevanceGraph (pulsatrix/relevance_graph.hpp: BuildRelevanceGraph)
+     answers why as its main question; made for tokens input; needs an LRP rule at every layer
+  2. CircuitTracing (pulsatrix/circuit_tracing.hpp: TraceCircuit, ScoreCircuit)
+     answers why as its main question; made for tokens input; needs activations
+  3. LRP (pulsatrix/lrp.hpp: LRP::explain)
+     answers why as its main question; needs an LRP rule at every layer
+  ...
+
+Checks:
+  [required] randomization: ModelParameterRandomizationTest (pulsatrix/explanation_metrics.hpp), for LRP, Saliency, ...
+  [required] null_model: NullModelBaseline (pulsatrix/null_model_baseline.hpp), for RelevanceGraph, CircuitTracing, ...
+  [required, can't run] per_slice_error
+     can't run: pulsatrix has no per-slice error report yet (KS-3)
+  ...
+
+Warnings:
+  control requires the per_slice_error check, which can't run: pulsatrix has no per-slice error report yet (KS-3)
+```
+
+The plan is only as precise as the catalog. Explainers declared for any input are offered for
+every kind. For a language model, though, LRP, Saliency and Integrated Gradients run through an
+`ExplainerContext`, a list of modules, rather than a `CausalLM`. The `CausalLM` explainers are the
+token-specific ones at the top of this plan.
 
 ## Shared infrastructure
 
