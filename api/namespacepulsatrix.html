@@ -297,6 +297,9 @@ Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpulsatrix_1_1Cav.html">Cav</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">A concept activation vector.  <a href="structpulsatrix_1_1Cav.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpulsatrix_1_1Caveat.html">Caveat</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">One thing the explanation doesn't support, and why.  <a href="structpulsatrix_1_1Caveat.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpulsatrix_1_1CavOptions.html">CavOptions</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1CenterCropTransform.html">CenterCropTransform</a></td></tr>
@@ -310,6 +313,9 @@ Classes</h2></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpulsatrix_1_1CheckpointLoadOptions.html">CheckpointLoadOptions</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Options for <a class="el" href="namespacepulsatrix.html#abd2d723852104374608e931b7e4bb326" title="Loads parameters and buffers saved by SaveCheckpoint() (or any safetensors file whose names match) in...">LoadCheckpoint()</a>.  <a href="structpulsatrix_1_1CheckpointLoadOptions.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpulsatrix_1_1CheckResult.html">CheckResult</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">One check's result.  <a href="structpulsatrix_1_1CheckResult.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpulsatrix_1_1CircuitEdge.html">CircuitEdge</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">One directed edge of a <a class="el" href="classpulsatrix_1_1CircuitGraph.html" title="A copyable, self-contained circuit graph: every node of one forward pass with an ablation importance ...">CircuitGraph</a>, carrying a scalar weight.  <a href="structpulsatrix_1_1CircuitEdge.html#details">More...</a><br /></td></tr>
@@ -585,11 +591,20 @@ Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1ExplainerContext.html">ExplainerContext</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Wraps an ordered chain of Modules, running them via <a class="el" href="classpulsatrix_1_1Module.html#a91e80b510f8f04ca2911532dabe16879" title="Runs forward() while also registering a ComputationGraph node (tagged with this module&#39;s op_type(),...">Module::forward_traced</a> to build a real <a class="el" href="classpulsatrix_1_1ComputationGraph.html" title="Owns every Node in a computation graph and exposes read access for graph-walking code (autograd&#39;s bac...">ComputationGraph</a> and <a class="el" href="classpulsatrix_1_1Autograd.html" title="Computes gradients by walking a ComputationGraph in reverse topological order.">Autograd</a> backward wiring &ndash; graph-native explainers (Missions 2-3) use <a class="el" href="classpulsatrix_1_1ExplainerContext.html#a2b650e6b358c23b82b1033ba5f139088" title="The current graph (from the most recent forward_pass() call).">graph()</a>/backward_pass()/activation(); surrogate explainers (Phase 3) would use only <a class="el" href="classpulsatrix_1_1ExplainerContext.html#a96409d2bd7b29e914b3281105cf97c4e" title="Runs the full module chain forward, building a fresh graph and caching every node&#39;s activation value ...">forward_pass()</a>, per the charter's stated interface segregation.  <a href="classpulsatrix_1_1ExplainerContext.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpulsatrix_1_1Explanation.html">Explanation</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">An explanation and what it does and doesn't support (XAI-3).  <a href="structpulsatrix_1_1Explanation.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpulsatrix_1_1ExplanationCheckOptions.html">ExplanationCheckOptions</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">How <a class="el" href="namespacepulsatrix.html#a92c8d88604a10ba1689c6c0fbd2e98c6" title="Explains input with explain and runs the checks the plan asks for.">BuildExplanation()</a> runs the checks. The defaults are the published ones where there is one; each is recorded in <a class="el" href="structpulsatrix_1_1Explanation.html#a2eafd94af556cc8e26cbe740655de0ba" title="The explainer&#39;s metadata, sorted by key, then the caller&#39;s settings, then the checks&#39; own settings un...">Explanation::settings</a>.  <a href="structpulsatrix_1_1ExplanationCheckOptions.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpulsatrix_1_1ExplanationPlan.html">ExplanationPlan</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">What <a class="el" href="classpulsatrix_1_1ExplanationPlanner.html#a02ad456de8b14c8087284e64d484ecc6" title="The plan for question, asked for reason, about a model with traits.">ExplanationPlanner::plan()</a> returns.  <a href="structpulsatrix_1_1ExplanationPlan.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1ExplanationPlanner.html">ExplanationPlanner</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Plans explanations from the explainer catalog.  <a href="classpulsatrix_1_1ExplanationPlanner.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpulsatrix_1_1ExplanationRequest.html">ExplanationRequest</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">What to explain, why, and what the caller has.  <a href="structpulsatrix_1_1ExplanationRequest.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1ExplanationScoreCard.html">ExplanationScoreCard</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Aggregates, per prediction, a 2x2 panel: top row is "what was shown, how confident
@@ -1881,6 +1896,19 @@ Enumerations</h2></td></tr>
  }</td></tr>
 <tr class="memdesc:a66dda5647d05857f3fdf4e11a8b98d69"><td class="mdescLeft">&#160;</td><td class="mdescRight">How much a check matters for this reason.  <a href="namespacepulsatrix.html#a66dda5647d05857f3fdf4e11a8b98d69">More...</a><br /></td></tr>
 <tr class="separator:a66dda5647d05857f3fdf4e11a8b98d69"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4fc35ff5910d5ef172a504adc0677192" id="r_a4fc35ff5910d5ef172a504adc0677192"><td class="memItemLeft" align="right" valign="top">enum class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#a4fc35ff5910d5ef172a504adc0677192">CheckOutcome</a> { <a class="el" href="namespacepulsatrix.html#a4fc35ff5910d5ef172a504adc0677192aa0d0628f6b4e4d78d2ffef4d4d1c4b15">Passed</a>
+, <a class="el" href="namespacepulsatrix.html#a4fc35ff5910d5ef172a504adc0677192ad7c8c85bf79bbe1b7188497c32c3b0ca">Failed</a>
+, <a class="el" href="namespacepulsatrix.html#a4fc35ff5910d5ef172a504adc0677192a7835ba127b8ff3b62f8b53818d154ca4">Measured</a>
+, <a class="el" href="namespacepulsatrix.html#a4fc35ff5910d5ef172a504adc0677192a74fabe97ee9218565bedba910ea8934b">NotRun</a>
+ }</td></tr>
+<tr class="memdesc:a4fc35ff5910d5ef172a504adc0677192"><td class="mdescLeft">&#160;</td><td class="mdescRight">What a check found.  <a href="namespacepulsatrix.html#a4fc35ff5910d5ef172a504adc0677192">More...</a><br /></td></tr>
+<tr class="separator:a4fc35ff5910d5ef172a504adc0677192"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:acb493e7128783caad38099b6b83c42f3" id="r_acb493e7128783caad38099b6b83c42f3"><td class="memItemLeft" align="right" valign="top">enum class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#acb493e7128783caad38099b6b83c42f3">CaveatSeverity</a> { <a class="el" href="namespacepulsatrix.html#acb493e7128783caad38099b6b83c42f3abd0ca6be53b0f3d2886fd53fcb52574e">Blocking</a>
+, <a class="el" href="namespacepulsatrix.html#acb493e7128783caad38099b6b83c42f3a0eaadb4fcb48a0a0ed7bc9868be9fbaa">Warning</a>
+, <a class="el" href="namespacepulsatrix.html#acb493e7128783caad38099b6b83c42f3a3b0649c72650c313a357338dcdfb64ec">Note</a>
+ }</td></tr>
+<tr class="memdesc:acb493e7128783caad38099b6b83c42f3"><td class="mdescLeft">&#160;</td><td class="mdescRight">How much a caveat limits what the explanation supports.  <a href="namespacepulsatrix.html#acb493e7128783caad38099b6b83c42f3">More...</a><br /></td></tr>
+<tr class="separator:acb493e7128783caad38099b6b83c42f3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad77127af5416692cbd6eaeaba9ec0e0a" id="r_ad77127af5416692cbd6eaeaba9ec0e0a"><td class="memItemLeft" align="right" valign="top">enum class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#ad77127af5416692cbd6eaeaba9ec0e0a">FinishReason</a> { <a class="el" href="namespacepulsatrix.html#ad77127af5416692cbd6eaeaba9ec0e0aa86d16d93f97145c1c4532ada5501eaeb">Eos</a>
 , <a class="el" href="namespacepulsatrix.html#ad77127af5416692cbd6eaeaba9ec0e0aaba2a9c6c8c77e03f83ef8bf543612275">Length</a>
  }</td></tr>
@@ -2416,6 +2444,25 @@ Functions</h2></td></tr>
 <tr class="memitem:a0308126db30fa5050c09eee682905c6b" id="r_a0308126db30fa5050c09eee682905c6b"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#a0308126db30fa5050c09eee682905c6b">DescribePlan</a> (const <a class="el" href="structpulsatrix_1_1ExplanationPlan.html">ExplanationPlan</a> &amp;plan)</td></tr>
 <tr class="memdesc:a0308126db30fa5050c09eee682905c6b"><td class="mdescLeft">&#160;</td><td class="mdescRight">The plan as plain text, for a terminal or a log: the question, the explainers in order with their reasons, the checks, and the warnings.  <br /></td></tr>
 <tr class="separator:a0308126db30fa5050c09eee682905c6b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a92c8d88604a10ba1689c6c0fbd2e98c6" id="r_a92c8d88604a10ba1689c6c0fbd2e98c6"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structpulsatrix_1_1Explanation.html">Explanation</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#a92c8d88604a10ba1689c6c0fbd2e98c6">BuildExplanation</a> (const <a class="el" href="structpulsatrix_1_1ExplanationRequest.html">ExplanationRequest</a> &amp;request, const <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp;input, const <a class="el" href="namespacepulsatrix.html#af0e563c5452d92e9003dedfe6a588b6a">ExplainFn</a> &amp;explain, const <a class="el" href="namespacepulsatrix.html#a0cfe98a4b9d257145af8f113d714d226">PredictFn</a> &amp;predict, <a class="el" href="classpulsatrix_1_1Module.html">Module</a> *model, const <a class="el" href="structpulsatrix_1_1ExplanationCheckOptions.html">ExplanationCheckOptions</a> &amp;options={})</td></tr>
+<tr class="memdesc:a92c8d88604a10ba1689c6c0fbd2e98c6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Explains <code>input</code> with <code>explain</code> and runs the checks the plan asks for.  <br /></td></tr>
+<tr class="separator:a92c8d88604a10ba1689c6c0fbd2e98c6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae8613ac0a69f7dab2a7e2d03dd56c591" id="r_ae8613ac0a69f7dab2a7e2d03dd56c591"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structpulsatrix_1_1Explanation.html">Explanation</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#ae8613ac0a69f7dab2a7e2d03dd56c591">ReportExplanation</a> (const <a class="el" href="structpulsatrix_1_1ExplanationRequest.html">ExplanationRequest</a> &amp;request, std::optional&lt; <a class="el" href="structpulsatrix_1_1Attribution.html">Attribution</a> &gt; attribution, std::vector&lt; <a class="el" href="structpulsatrix_1_1CheckResult.html">CheckResult</a> &gt; checks)</td></tr>
+<tr class="memdesc:ae8613ac0a69f7dab2a7e2d03dd56c591"><td class="mdescLeft">&#160;</td><td class="mdescRight">The report for an explanation whose checks ran elsewhere: plans request.question and request.reason, matches <code>checks</code> to the planned ones by name (each takes the planned priority), marks the planned checks missing from <code>checks</code> NotRun, and derives the caveats.  <br /></td></tr>
+<tr class="separator:ae8613ac0a69f7dab2a7e2d03dd56c591"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a969702d713ebe3cbd9199d3f62fa683e" id="r_a969702d713ebe3cbd9199d3f62fa683e"><td class="memItemLeft" align="right" valign="top">std::vector&lt; <a class="el" href="structpulsatrix_1_1Caveat.html">Caveat</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#a969702d713ebe3cbd9199d3f62fa683e">DeriveCaveats</a> (const <a class="el" href="structpulsatrix_1_1Explanation.html">Explanation</a> &amp;explanation)</td></tr>
+<tr class="memdesc:a969702d713ebe3cbd9199d3f62fa683e"><td class="mdescLeft">&#160;</td><td class="mdescRight">The caveats an explanation carries, from the report alone:  <br /></td></tr>
+<tr class="separator:a969702d713ebe3cbd9199d3f62fa683e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af879b05dd895e2b7a6d5a83a91c40353" id="r_af879b05dd895e2b7a6d5a83a91c40353"><td class="memItemLeft" align="right" valign="top">std::string_view&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#af879b05dd895e2b7a6d5a83a91c40353">to_string</a> (<a class="el" href="namespacepulsatrix.html#a4fc35ff5910d5ef172a504adc0677192">CheckOutcome</a> outcome)</td></tr>
+<tr class="separator:af879b05dd895e2b7a6d5a83a91c40353"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2fb7e3835a908b9325ccd01b0cbea6ab" id="r_a2fb7e3835a908b9325ccd01b0cbea6ab"><td class="memItemLeft" align="right" valign="top">std::string_view&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#a2fb7e3835a908b9325ccd01b0cbea6ab">to_string</a> (<a class="el" href="namespacepulsatrix.html#acb493e7128783caad38099b6b83c42f3">CaveatSeverity</a> severity)</td></tr>
+<tr class="separator:a2fb7e3835a908b9325ccd01b0cbea6ab"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:adbde0045ad05d75702844315abc386e2" id="r_adbde0045ad05d75702844315abc386e2"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classpulsatrix_1_1JsonValue.html">JsonValue</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#adbde0045ad05d75702844315abc386e2">ToJson</a> (const <a class="el" href="structpulsatrix_1_1Explanation.html">Explanation</a> &amp;explanation)</td></tr>
+<tr class="memdesc:adbde0045ad05d75702844315abc386e2"><td class="mdescLeft">&#160;</td><td class="mdescRight">The explanation as a <code>pulsatrix.explanation.v1</code> document, attribution values included.  <br /></td></tr>
+<tr class="separator:adbde0045ad05d75702844315abc386e2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a56130d1eab8b5f9671e0903306d0574d" id="r_a56130d1eab8b5f9671e0903306d0574d"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#a56130d1eab8b5f9671e0903306d0574d">DescribeExplanation</a> (const <a class="el" href="structpulsatrix_1_1Explanation.html">Explanation</a> &amp;explanation)</td></tr>
+<tr class="memdesc:a56130d1eab8b5f9671e0903306d0574d"><td class="mdescLeft">&#160;</td><td class="mdescRight">The explanation as plain text: the question, whether it supports the reason, the largest attributions, the checks and the caveats.  <br /></td></tr>
+<tr class="separator:a56130d1eab8b5f9671e0903306d0574d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a97609000f48b7f7d190d002af3d09896" id="r_a97609000f48b7f7d190d002af3d09896"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#a97609000f48b7f7d190d002af3d09896">MeanL0</a> (const std::vector&lt; float &gt; &amp;codes, int64_t num_features, float threshold=0.0f)</td></tr>
 <tr class="memdesc:a97609000f48b7f7d190d002af3d09896"><td class="mdescLeft">&#160;</td><td class="mdescRight">The mean number of codes above <code>threshold</code> in magnitude per input (L0), for codes row-major <code>(N, num_features)</code>.  <br /></td></tr>
 <tr class="separator:a97609000f48b7f7d190d002af3d09896"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -4145,6 +4192,38 @@ Applied to the <a class="el" href="classpulsatrix_1_1ExplainerContext.html" titl
 
 </div>
 </div>
+<a id="acb493e7128783caad38099b6b83c42f3" name="acb493e7128783caad38099b6b83c42f3"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#acb493e7128783caad38099b6b83c42f3">&#9670;&#160;</a></span>CaveatSeverity</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">enum class <a class="el" href="namespacepulsatrix.html#acb493e7128783caad38099b6b83c42f3">pulsatrix::CaveatSeverity</a></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">strong</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>How much a caveat limits what the explanation supports. </p>
+<table class="fieldtable">
+<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="acb493e7128783caad38099b6b83c42f3abd0ca6be53b0f3d2886fd53fcb52574e" name="acb493e7128783caad38099b6b83c42f3abd0ca6be53b0f3d2886fd53fcb52574e"></a>Blocking&#160;</td><td class="fielddoc"><p>The explanation shouldn't be used for its reason: a required check failed or didn't run, or the planner excluded the method for this model. </p>
+</td></tr>
+<tr><td class="fieldname"><a id="acb493e7128783caad38099b6b83c42f3a0eaadb4fcb48a0a0ed7bc9868be9fbaa" name="acb493e7128783caad38099b6b83c42f3a0eaadb4fcb48a0a0ed7bc9868be9fbaa"></a>Warning&#160;</td><td class="fielddoc"><p>A recommended check failed, or a known failure mode applies to these settings. </p>
+</td></tr>
+<tr><td class="fieldname"><a id="acb493e7128783caad38099b6b83c42f3a3b0649c72650c313a357338dcdfb64ec" name="acb493e7128783caad38099b6b83c42f3a3b0649c72650c313a357338dcdfb64ec"></a>Note&#160;</td><td class="fielddoc"><p>A limitation of the method worth knowing whenever it is read. </p>
+</td></tr>
+</table>
+
+</div>
+</div>
 <a id="ae6ebe8206389518eb092b7e2e120f3f8" name="ae6ebe8206389518eb092b7e2e120f3f8"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ae6ebe8206389518eb092b7e2e120f3f8">&#9670;&#160;</a></span>CavMethod</h2>
 
@@ -4170,6 +4249,40 @@ Applied to the <a class="el" href="classpulsatrix_1_1ExplainerContext.html" titl
 <tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="ae6ebe8206389518eb092b7e2e120f3f8a6c9b5576a1fdfaccea4e06393e36e730" name="ae6ebe8206389518eb092b7e2e120f3f8a6c9b5576a1fdfaccea4e06393e36e730"></a>LogisticRegression&#160;</td><td class="fielddoc"><p>The weights of an L2-regularized logistic regression, as Kim et al. train them. The features are standardized while fitting and the direction mapped back. </p>
 </td></tr>
 <tr><td class="fieldname"><a id="ae6ebe8206389518eb092b7e2e120f3f8a9911bc5c5cedf60e6351cc4807c87c0e" name="ae6ebe8206389518eb092b7e2e120f3f8a9911bc5c5cedf60e6351cc4807c87c0e"></a>DifferenceOfMeans&#160;</td><td class="fielddoc"><p>The difference of the two sets' mean activations. It needs no fitting, and doesn't rotate towards dimensions that only separate the two samples by chance. </p>
+</td></tr>
+</table>
+
+</div>
+</div>
+<a id="a4fc35ff5910d5ef172a504adc0677192" name="a4fc35ff5910d5ef172a504adc0677192"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4fc35ff5910d5ef172a504adc0677192">&#9670;&#160;</a></span>CheckOutcome</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">enum class <a class="el" href="namespacepulsatrix.html#a4fc35ff5910d5ef172a504adc0677192">pulsatrix::CheckOutcome</a></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">strong</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>What a check found. </p>
+<table class="fieldtable">
+<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="a4fc35ff5910d5ef172a504adc0677192aa0d0628f6b4e4d78d2ffef4d4d1c4b15" name="a4fc35ff5910d5ef172a504adc0677192aa0d0628f6b4e4d78d2ffef4d4d1c4b15"></a>Passed&#160;</td><td class="fielddoc"><p>The check ran and the explanation met its criterion. </p>
+</td></tr>
+<tr><td class="fieldname"><a id="a4fc35ff5910d5ef172a504adc0677192ad7c8c85bf79bbe1b7188497c32c3b0ca" name="a4fc35ff5910d5ef172a504adc0677192ad7c8c85bf79bbe1b7188497c32c3b0ca"></a>Failed&#160;</td><td class="fielddoc"><p>The check ran and the explanation didn't meet it. </p>
+</td></tr>
+<tr><td class="fieldname"><a id="a4fc35ff5910d5ef172a504adc0677192a7835ba127b8ff3b62f8b53818d154ca4" name="a4fc35ff5910d5ef172a504adc0677192a7835ba127b8ff3b62f8b53818d154ca4"></a>Measured&#160;</td><td class="fielddoc"><p>The check ran and produced numbers with no pass or fail, such as an aggregate. </p>
+</td></tr>
+<tr><td class="fieldname"><a id="a4fc35ff5910d5ef172a504adc0677192a74fabe97ee9218565bedba910ea8934b" name="a4fc35ff5910d5ef172a504adc0677192a74fabe97ee9218565bedba910ea8934b"></a>NotRun&#160;</td><td class="fielddoc"><p>The check didn't run; <a class="el" href="structpulsatrix_1_1CheckResult.html#acedf5b17e020c4ac6932228ecc798969" title="One or two sentences: what was found, or why it didn&#39;t run.">CheckResult::summary</a> says why. </p>
 </td></tr>
 </table>
 
@@ -7015,6 +7128,83 @@ template&lt;typename RNG &gt; </div>
 
 </div>
 </div>
+<a id="a92c8d88604a10ba1689c6c0fbd2e98c6" name="a92c8d88604a10ba1689c6c0fbd2e98c6"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a92c8d88604a10ba1689c6c0fbd2e98c6">&#9670;&#160;</a></span>BuildExplanation()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="structpulsatrix_1_1Explanation.html">Explanation</a> pulsatrix::BuildExplanation </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="structpulsatrix_1_1ExplanationRequest.html">ExplanationRequest</a> &amp;&#160;</td>
+          <td class="paramname"><em>request</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp;&#160;</td>
+          <td class="paramname"><em>input</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="namespacepulsatrix.html#af0e563c5452d92e9003dedfe6a588b6a">ExplainFn</a> &amp;&#160;</td>
+          <td class="paramname"><em>explain</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="namespacepulsatrix.html#a0cfe98a4b9d257145af8f113d714d226">PredictFn</a> &amp;&#160;</td>
+          <td class="paramname"><em>predict</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="classpulsatrix_1_1Module.html">Module</a> *&#160;</td>
+          <td class="paramname"><em>model</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="structpulsatrix_1_1ExplanationCheckOptions.html">ExplanationCheckOptions</a> &amp;&#160;</td>
+          <td class="paramname"><em>options</em> = <code>{}</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Explains <code>input</code> with <code>explain</code> and runs the checks the plan asks for. </p>
+<p>What each check does:</p><ul>
+<li>faithfulness: DeletionCurve and InsertionCurve, scored as insertion AUC minus deletion AUC and compared with options.random_orderings random orderings of the features; it passes when the rank p-value is at most options.alpha. Not run when the attribution's shape isn't the input's (Grad-CAM).</li>
+<li>stability: repeated runs and runs on a noisy input, compared by the Spearman correlation of the attribution magnitudes, with ComputeAttributionStability's variance; passes when every correlation is at least options.min_stability.</li>
+<li>conservation: the attributions' sum against <a class="el" href="classpulsatrix_1_1LRP.html" title="Whole-model LRP: runs the forward pass, seeds relevance at the chosen output(s), and propagates it to...">LRP</a>'s seeded total (its metadata), or f(input) - f(baseline) when request.baseline is given; passes within options.conservation_tolerance.</li>
+<li>randomization: ModelParameterRandomizationTest; passes when the explanation of the fully randomized model correlates at most options.max_random_similarity with the original.</li>
+<li>null_model: NullModelBaseline, with the same threshold.</li>
+<li>aggregate: the mean absolute attribution over request.dataset (Measured). Any other check (per-slice error, which pulsatrix doesn't have yet) is NotRun.</li>
+</ul>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">input</td><td>The input to explain, with a leading batch dimension of 1. </td></tr>
+    <tr><td class="paramname">explain</td><td>Runs the explainer on its argument, reading the model as it is at that moment: the randomization test and the null model call it again on a randomized model. </td></tr>
+    <tr><td class="paramname">predict</td><td>The model as a function, as in <a class="el" href="namespacepulsatrix.html#a08ca823b9f2196df3e5f407dee95fcc5" title="Deletion (MoRF): removes features from most to least relevant, imputing them, and records the target ...">DeletionCurve()</a>. </td></tr>
+    <tr><td class="paramname">model</td><td>The <a class="el" href="classpulsatrix_1_1Module.html" title="Base class for every layer type (LinearModule, Conv2DModule, activations, ...).">Module</a> <code>explain</code> and <code>predict</code> read, for the randomization test and the null model; nullptr if there is none, and those checks don't run. It is restored exactly. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname">std::invalid_argument</td><td>if request.method isn't in the catalog, doesn't answer request.question, or doesn't return an attribution (use <a class="el" href="namespacepulsatrix.html#ae8613ac0a69f7dab2a7e2d03dd56c591" title="The report for an explanation whose checks ran elsewhere: plans request.question and request....">ReportExplanation()</a>). </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
 <a id="ae7086aa42f9ed760fa08b132212f3d3a" name="ae7086aa42f9ed760fa08b132212f3d3a"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ae7086aa42f9ed760fa08b132212f3d3a">&#9670;&#160;</a></span>BuildRelevanceGraph()</h2>
 
@@ -9828,6 +10018,51 @@ If a front is uniform in some objective (max == min across the whole front), tha
   </table>
   </dd>
 </dl>
+
+</div>
+</div>
+<a id="a969702d713ebe3cbd9199d3f62fa683e" name="a969702d713ebe3cbd9199d3f62fa683e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a969702d713ebe3cbd9199d3f62fa683e">&#9670;&#160;</a></span>DeriveCaveats()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::vector&lt; <a class="el" href="structpulsatrix_1_1Caveat.html">Caveat</a> &gt; pulsatrix::DeriveCaveats </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="structpulsatrix_1_1Explanation.html">Explanation</a> &amp;&#160;</td>
+          <td class="paramname"><em>explanation</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>The caveats an explanation carries, from the report alone: </p>
+<ul>
+<li>Blocking: a required check failed or didn't run, or the planner excluded the method;</li>
+<li>Warning: a recommended check failed, or a known failure mode applies to these settings or this input (a constant fill on images, discrete input, few Integrated Gradients steps);</li>
+<li>Note: a recommended check that didn't run, the method's own known limitations (a baseline, a rule choice, random sampling) and, for Justify, that an attribution shows what the model used, not whether it should have. </li>
+</ul>
+
+</div>
+</div>
+<a id="a56130d1eab8b5f9671e0903306d0574d" name="a56130d1eab8b5f9671e0903306d0574d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a56130d1eab8b5f9671e0903306d0574d">&#9670;&#160;</a></span>DescribeExplanation()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::string pulsatrix::DescribeExplanation </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="structpulsatrix_1_1Explanation.html">Explanation</a> &amp;&#160;</td>
+          <td class="paramname"><em>explanation</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>The explanation as plain text: the question, whether it supports the reason, the largest attributions, the checks and the caveats. </p>
 
 </div>
 </div>
@@ -20425,6 +20660,54 @@ template&lt;typename Genotype , typename FitnessT &gt; </div>
 
 </div>
 </div>
+<a id="ae8613ac0a69f7dab2a7e2d03dd56c591" name="ae8613ac0a69f7dab2a7e2d03dd56c591"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae8613ac0a69f7dab2a7e2d03dd56c591">&#9670;&#160;</a></span>ReportExplanation()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="structpulsatrix_1_1Explanation.html">Explanation</a> pulsatrix::ReportExplanation </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="structpulsatrix_1_1ExplanationRequest.html">ExplanationRequest</a> &amp;&#160;</td>
+          <td class="paramname"><em>request</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">std::optional&lt; <a class="el" href="structpulsatrix_1_1Attribution.html">Attribution</a> &gt;&#160;</td>
+          <td class="paramname"><em>attribution</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">std::vector&lt; <a class="el" href="structpulsatrix_1_1CheckResult.html">CheckResult</a> &gt;&#160;</td>
+          <td class="paramname"><em>checks</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>The report for an explanation whose checks ran elsewhere: plans request.question and request.reason, matches <code>checks</code> to the planned ones by name (each takes the planned priority), marks the planned checks missing from <code>checks</code> NotRun, and derives the caveats. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">attribution</td><td>What the explainer returned; empty for explainers that don't return an attribution. request.target, baseline and dataset aren't used. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname">std::invalid_argument</td><td>if request.method isn't in the catalog or doesn't answer request.question. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
 <a id="a8268a024ce0a91a261d8a34b8cd3686d" name="a8268a024ce0a91a261d8a34b8cd3686d"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a8268a024ce0a91a261d8a34b8cd3686d">&#9670;&#160;</a></span>RepresentationalDissimilarity()</h2>
 
@@ -24155,8 +24438,44 @@ template&lt;class Json &gt; </div>
 
 </div>
 </div>
+<a id="a2fb7e3835a908b9325ccd01b0cbea6ab" name="a2fb7e3835a908b9325ccd01b0cbea6ab"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2fb7e3835a908b9325ccd01b0cbea6ab">&#9670;&#160;</a></span>to_string() <span class="overload">[1/8]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::string_view pulsatrix::to_string </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="namespacepulsatrix.html#acb493e7128783caad38099b6b83c42f3">CaveatSeverity</a>&#160;</td>
+          <td class="paramname"><em>severity</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="af879b05dd895e2b7a6d5a83a91c40353" name="af879b05dd895e2b7a6d5a83a91c40353"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af879b05dd895e2b7a6d5a83a91c40353">&#9670;&#160;</a></span>to_string() <span class="overload">[2/8]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::string_view pulsatrix::to_string </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="namespacepulsatrix.html#a4fc35ff5910d5ef172a504adc0677192">CheckOutcome</a>&#160;</td>
+          <td class="paramname"><em>outcome</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
 <a id="a78ee9e0d1b891d47689770110fa6e213" name="a78ee9e0d1b891d47689770110fa6e213"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a78ee9e0d1b891d47689770110fa6e213">&#9670;&#160;</a></span>to_string() <span class="overload">[1/6]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a78ee9e0d1b891d47689770110fa6e213">&#9670;&#160;</a></span>to_string() <span class="overload">[3/8]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -24174,7 +24493,7 @@ template&lt;class Json &gt; </div>
 </div>
 </div>
 <a id="a8949d7845bb9cf164bf81db6ab41ab96" name="a8949d7845bb9cf164bf81db6ab41ab96"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a8949d7845bb9cf164bf81db6ab41ab96">&#9670;&#160;</a></span>to_string() <span class="overload">[2/6]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a8949d7845bb9cf164bf81db6ab41ab96">&#9670;&#160;</a></span>to_string() <span class="overload">[4/8]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -24192,7 +24511,7 @@ template&lt;class Json &gt; </div>
 </div>
 </div>
 <a id="a4e19b1c392718908bb252e94eb699eda" name="a4e19b1c392718908bb252e94eb699eda"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a4e19b1c392718908bb252e94eb699eda">&#9670;&#160;</a></span>to_string() <span class="overload">[3/6]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a4e19b1c392718908bb252e94eb699eda">&#9670;&#160;</a></span>to_string() <span class="overload">[5/8]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -24210,7 +24529,7 @@ template&lt;class Json &gt; </div>
 </div>
 </div>
 <a id="aed715983d4dd4b5eb4f1a4b240699e31" name="aed715983d4dd4b5eb4f1a4b240699e31"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aed715983d4dd4b5eb4f1a4b240699e31">&#9670;&#160;</a></span>to_string() <span class="overload">[4/6]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#aed715983d4dd4b5eb4f1a4b240699e31">&#9670;&#160;</a></span>to_string() <span class="overload">[6/8]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -24228,7 +24547,7 @@ template&lt;class Json &gt; </div>
 </div>
 </div>
 <a id="af1c980bc26f34e4edacb14b48985fa47" name="af1c980bc26f34e4edacb14b48985fa47"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#af1c980bc26f34e4edacb14b48985fa47">&#9670;&#160;</a></span>to_string() <span class="overload">[5/6]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#af1c980bc26f34e4edacb14b48985fa47">&#9670;&#160;</a></span>to_string() <span class="overload">[7/8]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -24246,7 +24565,7 @@ template&lt;class Json &gt; </div>
 </div>
 </div>
 <a id="a795d5ac760a0cf7583b4d607e8a34d9b" name="a795d5ac760a0cf7583b4d607e8a34d9b"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a795d5ac760a0cf7583b4d607e8a34d9b">&#9670;&#160;</a></span>to_string() <span class="overload">[6/6]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a795d5ac760a0cf7583b4d607e8a34d9b">&#9670;&#160;</a></span>to_string() <span class="overload">[8/8]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -24739,7 +25058,7 @@ template&lt;class Json &gt; </div>
 </div>
 </div>
 <a id="aa0b432bea4ddfc0135ebfd55d5b78818" name="aa0b432bea4ddfc0135ebfd55d5b78818"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aa0b432bea4ddfc0135ebfd55d5b78818">&#9670;&#160;</a></span>ToJson() <span class="overload">[1/20]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#aa0b432bea4ddfc0135ebfd55d5b78818">&#9670;&#160;</a></span>ToJson() <span class="overload">[1/21]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -24763,7 +25082,7 @@ template&lt;class Json &gt; </div>
 </div>
 </div>
 <a id="a013e5eb67a4e009e0c77adfe60ca3799" name="a013e5eb67a4e009e0c77adfe60ca3799"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a013e5eb67a4e009e0c77adfe60ca3799">&#9670;&#160;</a></span>ToJson() <span class="overload">[2/20]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a013e5eb67a4e009e0c77adfe60ca3799">&#9670;&#160;</a></span>ToJson() <span class="overload">[2/21]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -24787,7 +25106,7 @@ template&lt;class Json &gt; </div>
 </div>
 </div>
 <a id="a78fac3d6c2d0c19d16dae11ee8cf561a" name="a78fac3d6c2d0c19d16dae11ee8cf561a"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a78fac3d6c2d0c19d16dae11ee8cf561a">&#9670;&#160;</a></span>ToJson() <span class="overload">[3/20]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a78fac3d6c2d0c19d16dae11ee8cf561a">&#9670;&#160;</a></span>ToJson() <span class="overload">[3/21]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -24811,7 +25130,7 @@ template&lt;class Json &gt; </div>
 </div>
 </div>
 <a id="a81177bae8565dd9b82c6d1829b79b27c" name="a81177bae8565dd9b82c6d1829b79b27c"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a81177bae8565dd9b82c6d1829b79b27c">&#9670;&#160;</a></span>ToJson() <span class="overload">[4/20]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a81177bae8565dd9b82c6d1829b79b27c">&#9670;&#160;</a></span>ToJson() <span class="overload">[4/21]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -24835,7 +25154,7 @@ template&lt;class Json &gt; </div>
 </div>
 </div>
 <a id="ae1bd894b2f804084cd61b94d4e4bd520" name="ae1bd894b2f804084cd61b94d4e4bd520"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ae1bd894b2f804084cd61b94d4e4bd520">&#9670;&#160;</a></span>ToJson() <span class="overload">[5/20]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#ae1bd894b2f804084cd61b94d4e4bd520">&#9670;&#160;</a></span>ToJson() <span class="overload">[5/21]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -24859,7 +25178,7 @@ template&lt;class Json &gt; </div>
 </div>
 </div>
 <a id="aa4e8b5fb8a54c061c9a57a7449d9ecc2" name="aa4e8b5fb8a54c061c9a57a7449d9ecc2"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aa4e8b5fb8a54c061c9a57a7449d9ecc2">&#9670;&#160;</a></span>ToJson() <span class="overload">[6/20]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#aa4e8b5fb8a54c061c9a57a7449d9ecc2">&#9670;&#160;</a></span>ToJson() <span class="overload">[6/21]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -24878,8 +25197,28 @@ template&lt;class Json &gt; </div>
 
 </div>
 </div>
+<a id="adbde0045ad05d75702844315abc386e2" name="adbde0045ad05d75702844315abc386e2"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#adbde0045ad05d75702844315abc386e2">&#9670;&#160;</a></span>ToJson() <span class="overload">[7/21]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classpulsatrix_1_1JsonValue.html">JsonValue</a> pulsatrix::ToJson </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="structpulsatrix_1_1Explanation.html">Explanation</a> &amp;&#160;</td>
+          <td class="paramname"><em>explanation</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>The explanation as a <code>pulsatrix.explanation.v1</code> document, attribution values included. </p>
+
+</div>
+</div>
 <a id="aa02d539ab2f09dbd63a0d3c0669f02a9" name="aa02d539ab2f09dbd63a0d3c0669f02a9"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aa02d539ab2f09dbd63a0d3c0669f02a9">&#9670;&#160;</a></span>ToJson() <span class="overload">[7/20]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#aa02d539ab2f09dbd63a0d3c0669f02a9">&#9670;&#160;</a></span>ToJson() <span class="overload">[8/21]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -24899,7 +25238,7 @@ template&lt;class Json &gt; </div>
 </div>
 </div>
 <a id="ac0c52d3b599e7bf169118db77357e61c" name="ac0c52d3b599e7bf169118db77357e61c"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ac0c52d3b599e7bf169118db77357e61c">&#9670;&#160;</a></span>ToJson() <span class="overload">[8/20]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#ac0c52d3b599e7bf169118db77357e61c">&#9670;&#160;</a></span>ToJson() <span class="overload">[9/21]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -24923,7 +25262,7 @@ template&lt;class Json &gt; </div>
 </div>
 </div>
 <a id="ab956a7775fa51f615c268b6635ca4a58" name="ab956a7775fa51f615c268b6635ca4a58"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ab956a7775fa51f615c268b6635ca4a58">&#9670;&#160;</a></span>ToJson() <span class="overload">[9/20]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#ab956a7775fa51f615c268b6635ca4a58">&#9670;&#160;</a></span>ToJson() <span class="overload">[10/21]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -24947,7 +25286,7 @@ template&lt;class Json &gt; </div>
 </div>
 </div>
 <a id="a3723b86c310dfa94b0a9346dcaba88ef" name="a3723b86c310dfa94b0a9346dcaba88ef"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a3723b86c310dfa94b0a9346dcaba88ef">&#9670;&#160;</a></span>ToJson() <span class="overload">[10/20]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a3723b86c310dfa94b0a9346dcaba88ef">&#9670;&#160;</a></span>ToJson() <span class="overload">[11/21]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -24965,7 +25304,7 @@ template&lt;class Json &gt; </div>
 </div>
 </div>
 <a id="a48f09b49a4bfd7fcb0c6a187ad8e707e" name="a48f09b49a4bfd7fcb0c6a187ad8e707e"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a48f09b49a4bfd7fcb0c6a187ad8e707e">&#9670;&#160;</a></span>ToJson() <span class="overload">[11/20]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a48f09b49a4bfd7fcb0c6a187ad8e707e">&#9670;&#160;</a></span>ToJson() <span class="overload">[12/21]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -24989,7 +25328,7 @@ template&lt;class Json &gt; </div>
 </div>
 </div>
 <a id="a08917aaabe7b0581e886617112b4b22f" name="a08917aaabe7b0581e886617112b4b22f"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a08917aaabe7b0581e886617112b4b22f">&#9670;&#160;</a></span>ToJson() <span class="overload">[12/20]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a08917aaabe7b0581e886617112b4b22f">&#9670;&#160;</a></span>ToJson() <span class="overload">[13/21]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -25013,7 +25352,7 @@ template&lt;class Json &gt; </div>
 </div>
 </div>
 <a id="ad5af73b59a7c24eae3c7b17218833dc8" name="ad5af73b59a7c24eae3c7b17218833dc8"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ad5af73b59a7c24eae3c7b17218833dc8">&#9670;&#160;</a></span>ToJson() <span class="overload">[13/20]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#ad5af73b59a7c24eae3c7b17218833dc8">&#9670;&#160;</a></span>ToJson() <span class="overload">[14/21]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -25039,7 +25378,7 @@ template&lt;class Json &gt; </div>
 </div>
 </div>
 <a id="a511eca3c55a2af484ab7b0848552baab" name="a511eca3c55a2af484ab7b0848552baab"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a511eca3c55a2af484ab7b0848552baab">&#9670;&#160;</a></span>ToJson() <span class="overload">[14/20]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a511eca3c55a2af484ab7b0848552baab">&#9670;&#160;</a></span>ToJson() <span class="overload">[15/21]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -25063,7 +25402,7 @@ template&lt;class Json &gt; </div>
 </div>
 </div>
 <a id="a1cac87fb441609597ed45ef44a31fdf0" name="a1cac87fb441609597ed45ef44a31fdf0"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a1cac87fb441609597ed45ef44a31fdf0">&#9670;&#160;</a></span>ToJson() <span class="overload">[15/20]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a1cac87fb441609597ed45ef44a31fdf0">&#9670;&#160;</a></span>ToJson() <span class="overload">[16/21]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -25087,7 +25426,7 @@ template&lt;class Json &gt; </div>
 </div>
 </div>
 <a id="a619059d9817446489ce8017256877dd3" name="a619059d9817446489ce8017256877dd3"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a619059d9817446489ce8017256877dd3">&#9670;&#160;</a></span>ToJson() <span class="overload">[16/20]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a619059d9817446489ce8017256877dd3">&#9670;&#160;</a></span>ToJson() <span class="overload">[17/21]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -25105,7 +25444,7 @@ template&lt;class Json &gt; </div>
 </div>
 </div>
 <a id="a9876fb802002c15f93971e013d8d4061" name="a9876fb802002c15f93971e013d8d4061"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a9876fb802002c15f93971e013d8d4061">&#9670;&#160;</a></span>ToJson() <span class="overload">[17/20]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a9876fb802002c15f93971e013d8d4061">&#9670;&#160;</a></span>ToJson() <span class="overload">[18/21]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -25129,7 +25468,7 @@ template&lt;class Json &gt; </div>
 </div>
 </div>
 <a id="af8ed5eb7aa5da0fbf8687ee45f639029" name="af8ed5eb7aa5da0fbf8687ee45f639029"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#af8ed5eb7aa5da0fbf8687ee45f639029">&#9670;&#160;</a></span>ToJson() <span class="overload">[18/20]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#af8ed5eb7aa5da0fbf8687ee45f639029">&#9670;&#160;</a></span>ToJson() <span class="overload">[19/21]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -25147,7 +25486,7 @@ template&lt;class Json &gt; </div>
 </div>
 </div>
 <a id="ad3cdd9d157bcc91df671e6c976c56a21" name="ad3cdd9d157bcc91df671e6c976c56a21"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ad3cdd9d157bcc91df671e6c976c56a21">&#9670;&#160;</a></span>ToJson() <span class="overload">[19/20]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#ad3cdd9d157bcc91df671e6c976c56a21">&#9670;&#160;</a></span>ToJson() <span class="overload">[20/21]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -25171,7 +25510,7 @@ template&lt;class Json &gt; </div>
 </div>
 </div>
 <a id="a5c45799fc127623333c36aade7d18eb3" name="a5c45799fc127623333c36aade7d18eb3"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a5c45799fc127623333c36aade7d18eb3">&#9670;&#160;</a></span>ToJson() <span class="overload">[20/20]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a5c45799fc127623333c36aade7d18eb3">&#9670;&#160;</a></span>ToJson() <span class="overload">[21/21]</span></h2>
 
 <div class="memitem">
 <div class="memproto">

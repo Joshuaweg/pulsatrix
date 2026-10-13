@@ -19,7 +19,10 @@ var searchData=
   ['excludedexplainer_16',['ExcludedExplainer',['../structpulsatrix_1_1ExcludedExplainer.html',1,'pulsatrix']]],
   ['explainercapabilities_17',['ExplainerCapabilities',['../structpulsatrix_1_1ExplainerCapabilities.html',1,'pulsatrix']]],
   ['explainercontext_18',['ExplainerContext',['../classpulsatrix_1_1ExplainerContext.html',1,'pulsatrix']]],
-  ['explanationplan_19',['ExplanationPlan',['../structpulsatrix_1_1ExplanationPlan.html',1,'pulsatrix']]],
-  ['explanationplanner_20',['ExplanationPlanner',['../classpulsatrix_1_1ExplanationPlanner.html',1,'pulsatrix']]],
-  ['explanationscorecard_21',['ExplanationScoreCard',['../classpulsatrix_1_1ExplanationScoreCard.html',1,'pulsatrix']]]
+  ['explanation_19',['Explanation',['../structpulsatrix_1_1Explanation.html',1,'pulsatrix']]],
+  ['explanationcheckoptions_20',['ExplanationCheckOptions',['../structpulsatrix_1_1ExplanationCheckOptions.html',1,'pulsatrix']]],
+  ['explanationplan_21',['ExplanationPlan',['../structpulsatrix_1_1ExplanationPlan.html',1,'pulsatrix']]],
+  ['explanationplanner_22',['ExplanationPlanner',['../classpulsatrix_1_1ExplanationPlanner.html',1,'pulsatrix']]],
+  ['explanationrequest_23',['ExplanationRequest',['../structpulsatrix_1_1ExplanationRequest.html',1,'pulsatrix']]],
+  ['explanationscorecard_24',['ExplanationScoreCard',['../classpulsatrix_1_1ExplanationScoreCard.html',1,'pulsatrix']]]
 ];

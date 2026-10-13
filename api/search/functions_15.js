@@ -4,7 +4,7 @@ var searchData=
   ['v_5fproj_1',['v_proj',['../classpulsatrix_1_1MultiHeadAttentionModule.html#a8a0bc7addff5c5002331b4251794e5aa',1,'pulsatrix::MultiHeadAttentionModule']]],
   ['valid_5factions_5fmask_2',['valid_actions_mask',['../classpulsatrix_1_1HyperGridEnv.html#a2b57c2915f085f7603bd58c4758c0761',1,'pulsatrix::HyperGridEnv']]],
   ['validatejson_3',['ValidateJson',['../namespacepulsatrix_1_1orch.html#af30b7e037642928a055bd3d9dd81f70b',1,'pulsatrix::orch']]],
-  ['value_4',['value',['../classpulsatrix_1_1LearnableScalar.html#a32603478738aba8f626585eefc07c623',1,'pulsatrix::LearnableScalar::value()'],['../classpulsatrix_1_1datalog_1_1Term.html#a55baa2d599ffc7b3389843c21d4a4763',1,'pulsatrix::datalog::Term::value()']]],
+  ['value_4',['value',['../structpulsatrix_1_1CheckResult.html#a26e86c72bd6b0131f5d90108ba4f8ee0',1,'pulsatrix::CheckResult::value()'],['../classpulsatrix_1_1LearnableScalar.html#a32603478738aba8f626585eefc07c623',1,'pulsatrix::LearnableScalar::value()'],['../classpulsatrix_1_1datalog_1_1Term.html#a55baa2d599ffc7b3389843c21d4a4763',1,'pulsatrix::datalog::Term::value()']]],
   ['value_5frelevance_5',['value_relevance',['../classpulsatrix_1_1MultiHeadAttentionModule.html#ae3d5fcd6554971b76b17654a8f0a91b0',1,'pulsatrix::MultiHeadAttentionModule']]],
   ['values_6',['values',['../classpulsatrix_1_1KVCache.html#a6f0195ae7edef375b89f4bfc04f21c10',1,'pulsatrix::KVCache::values()'],['../classpulsatrix_1_1KVCache.html#a621fa49fb5a2d29cd87f3a62bf0ca750',1,'pulsatrix::KVCache::values() const'],['../classpulsatrix_1_1PointCloud.html#a146fef0931f32d0e763c55935ab9e80d',1,'pulsatrix::PointCloud::values()']]],
   ['variances_7',['variances',['../classpulsatrix_1_1CMAES.html#a680f302e138a195a0937fa7f59ae30bc',1,'pulsatrix::CMAES']]],

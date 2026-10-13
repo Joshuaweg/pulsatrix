@@ -4280,7 +4280,8 @@ machine, and explain it with the tools pulsatrix already has. Items on that path
 <li>KD-1, KD-2: distillation and teacher–student explanation agreement</li>
 <li>XAI-1 (<strong>done</strong>, <a href="https://github.com/Joshuaweg/pulsatrix/pull/156">#156</a>): which questions each explainer answers</li>
 <li>XAI-2 (<strong>done</strong>, <a href="https://github.com/Joshuaweg/pulsatrix/pull/160">#160</a>): the question-driven planner</li>
-<li>XAI-3, XAI-4: explanation reports, counterfactuals, surrogates, Anchors</li>
+<li>XAI-3 (<strong>done</strong>, <a href="https://github.com/Joshuaweg/pulsatrix/pull/161">#161</a>): explanation reports that run the checks and carry caveats</li>
+<li>XAI-4: surrogates, Anchors, prototypes</li>
 <li>INT-1 to INT-8 (<strong>done</strong>, <a href="https://github.com/Joshuaweg/pulsatrix/pull/131">#131</a> to
   <a href="https://github.com/Joshuaweg/pulsatrix/pull/139">#139</a>): CKA, RSA and SVCCA, nearest
   neighbors, probe controls, layer geometry, PCA, TCAV and CRP, and export for UMAP and t-SNE</li>
@@ -5503,7 +5504,7 @@ doesn't support.</p>
 <td>XAI-2</td>
 <td>P1</td>
 <td>M</td>
-<td></td>
+<td>Done, <a href="https://github.com/Joshuaweg/pulsatrix/pull/161">#161</a></td>
 </tr>
 <tr>
 <td>XAI-4</td>
@@ -5556,6 +5557,20 @@ doesn't support.</p>
   facts that decide whether a global explainer or a check can run. Control's per-slice error is
   listed as required but unavailable until KS-3, so every Control plan is incomplete and says
   so. A <code>pulsatrix_plan</code> command-line tool prints the plan as text or JSON.
+- <strong>XAI-3.</strong> <code>BuildExplanation</code> runs the checks, not just lists them: it takes an explanation
+  function, a prediction function and the Module, and runs every planned check it can on one
+  input. Pass and fail needed thresholds the item didn't give, so each is an option with a
+  default, and the report records the values used:
+  - faithfulness is insertion minus deletion AUC against 19 random orderings, passing at p ≤ 0.05;
+  - stability needs a Spearman correlation of at least 0.8, between repeated runs and under 1% noise;
+  - conservation allows a 5% gap;
+  - randomization and the null model pass at a correlation of at most 0.5.</p>
+<p>Caveats come from the report alone (<code>DeriveCaveats</code>). They are blocking when a required check
+  failed or didn't run, or the planner excluded the method; a report is usable for its reason
+  only when none is. Explainers that don't return an attribution report checks run elsewhere
+  through <code>ReportExplanation</code>. On the test MLP, KernelSHAP passes every Justify check but just
+  fails randomization (0.51), because the input's magnitudes dominate the ranking, as Adebayo et
+  al. found for gradient × input.
 - <strong>XAI-5.</strong> The metrics take a prediction function and a finished attribution, so they work with
   any explainer. ROAD's imputation solves every removed pixel jointly as the weighted mean of its
   neighbors, plus seeded noise. Sparseness and complexity score an all-zero attribution as 0,
@@ -5576,9 +5591,9 @@ doesn't support.</p>
 </thead>
 <tbody>
 <tr>
-<td>Per-pixel aggregation across channels; metrics treat each input element as a feature today</td>
+<td>Per-pixel aggregation across channels; metrics treat each input element as a feature today. XAI-3 reports it as a caveat on image explanations</td>
 <td>XAI-5</td>
-<td>VIZ-2 or XAI-3</td>
+<td>VIZ-2</td>
 </tr>
 <tr>
 <td>Quantus's localisation, robustness and axiomatic families</td>
@@ -5593,12 +5608,22 @@ doesn't support.</p>
 <tr>
 <td>Running the null-model baseline and the metrics from the report planner</td>
 <td>XAI-6</td>
-<td>XAI-3 (XAI-2 plans them; running them belongs with the report)</td>
+<td>Done in XAI-3 (<code>BuildExplanation</code>)</td>
 </tr>
 <tr>
 <td>Input kinds finer than <code>Any</code>. LRP, Saliency and Integrated Gradients are declared for any input, but they run through an <code>ExplainerContext</code>, not a <code>CausalLM</code>, so the planner offers them to language models too</td>
 <td>XAI-2</td>
-<td>XAI-3, or an XAI-1 revision</td>
+<td>An XAI-1 revision</td>
+</tr>
+<tr>
+<td>Faithfulness for token input: deletion fills token ids with a value, which is another token. A report on a language model needs removal in embedding space or by a mask token; XAI-3 marks it as a warning</td>
+<td>XAI-3</td>
+<td>XAI-1 revision, with the input kinds</td>
+</tr>
+<tr>
+<td>An explanation report on a real model in a recipe, and a view for the <code>pulsatrix.explanation.v1</code> document</td>
+<td>XAI-3</td>
+<td>A recipe, and VIZ</td>
 </tr>
 <tr>
 <td>The plan as an MCP tool, so agents can ask which explainer to run</td>
