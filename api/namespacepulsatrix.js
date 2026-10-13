@@ -163,8 +163,11 @@ var namespacepulsatrix =
     [ "ErrorTerm", "structpulsatrix_1_1ErrorTerm.html", "structpulsatrix_1_1ErrorTerm" ],
     [ "EsmContactHead", "structpulsatrix_1_1EsmContactHead.html", "structpulsatrix_1_1EsmContactHead" ],
     [ "ESResult", "structpulsatrix_1_1ESResult.html", "structpulsatrix_1_1ESResult" ],
+    [ "ExcludedExplainer", "structpulsatrix_1_1ExcludedExplainer.html", "structpulsatrix_1_1ExcludedExplainer" ],
     [ "ExplainerCapabilities", "structpulsatrix_1_1ExplainerCapabilities.html", "structpulsatrix_1_1ExplainerCapabilities" ],
     [ "ExplainerContext", "classpulsatrix_1_1ExplainerContext.html", "classpulsatrix_1_1ExplainerContext" ],
+    [ "ExplanationPlan", "structpulsatrix_1_1ExplanationPlan.html", "structpulsatrix_1_1ExplanationPlan" ],
+    [ "ExplanationPlanner", "classpulsatrix_1_1ExplanationPlanner.html", "classpulsatrix_1_1ExplanationPlanner" ],
     [ "ExplanationScoreCard", "classpulsatrix_1_1ExplanationScoreCard.html", "classpulsatrix_1_1ExplanationScoreCard" ],
     [ "FastaRecord", "structpulsatrix_1_1FastaRecord.html", "structpulsatrix_1_1FastaRecord" ],
     [ "FeatureActivityTracker", "classpulsatrix_1_1FeatureActivityTracker.html", "classpulsatrix_1_1FeatureActivityTracker" ],
@@ -273,6 +276,7 @@ var namespacepulsatrix =
     [ "MnistDatasetAdapter", "classpulsatrix_1_1MnistDatasetAdapter.html", "classpulsatrix_1_1MnistDatasetAdapter" ],
     [ "MnistIdxLoader", "classpulsatrix_1_1MnistIdxLoader.html", null ],
     [ "ModelToken", "structpulsatrix_1_1ModelToken.html", "structpulsatrix_1_1ModelToken" ],
+    [ "ModelTraits", "structpulsatrix_1_1ModelTraits.html", "structpulsatrix_1_1ModelTraits" ],
     [ "Module", "classpulsatrix_1_1Module.html", "classpulsatrix_1_1Module" ],
     [ "MorrisDocument", "structpulsatrix_1_1MorrisDocument.html", "structpulsatrix_1_1MorrisDocument" ],
     [ "MorrisOptions", "structpulsatrix_1_1MorrisOptions.html", "structpulsatrix_1_1MorrisOptions" ],
@@ -325,6 +329,8 @@ var namespacepulsatrix =
     [ "PersistenceViewOptions", "structpulsatrix_1_1PersistenceViewOptions.html", "structpulsatrix_1_1PersistenceViewOptions" ],
     [ "PerturbationCurve", "structpulsatrix_1_1PerturbationCurve.html", "structpulsatrix_1_1PerturbationCurve" ],
     [ "PerturbationOptions", "structpulsatrix_1_1PerturbationOptions.html", "structpulsatrix_1_1PerturbationOptions" ],
+    [ "PlannedCheck", "structpulsatrix_1_1PlannedCheck.html", "structpulsatrix_1_1PlannedCheck" ],
+    [ "PlannedExplainer", "structpulsatrix_1_1PlannedExplainer.html", "structpulsatrix_1_1PlannedExplainer" ],
     [ "Point3", "structpulsatrix_1_1Point3.html", "structpulsatrix_1_1Point3" ],
     [ "PointCloud", "classpulsatrix_1_1PointCloud.html", "classpulsatrix_1_1PointCloud" ],
     [ "PointCloudOptions", "structpulsatrix_1_1PointCloudOptions.html", "structpulsatrix_1_1PointCloudOptions" ],
@@ -536,6 +542,10 @@ var namespacepulsatrix =
     [ "CavMethod", "namespacepulsatrix.html#ae6ebe8206389518eb092b7e2e120f3f8", [
       [ "LogisticRegression", "namespacepulsatrix.html#ae6ebe8206389518eb092b7e2e120f3f8a6c9b5576a1fdfaccea4e06393e36e730", null ],
       [ "DifferenceOfMeans", "namespacepulsatrix.html#ae6ebe8206389518eb092b7e2e120f3f8a9911bc5c5cedf60e6351cc4807c87c0e", null ]
+    ] ],
+    [ "CheckPriority", "namespacepulsatrix.html#a66dda5647d05857f3fdf4e11a8b98d69", [
+      [ "Required", "namespacepulsatrix.html#a66dda5647d05857f3fdf4e11a8b98d69ab651efdb98a5d6bd2b3935d0c3f4a5e2", null ],
+      [ "Recommended", "namespacepulsatrix.html#a66dda5647d05857f3fdf4e11a8b98d69a654866693fd91ce8e9764a218f569918", null ]
     ] ],
     [ "CkaEstimator", "namespacepulsatrix.html#ac793506d330b9f7e81f562eed3ab8539", [
       [ "Debiased", "namespacepulsatrix.html#ac793506d330b9f7e81f562eed3ab8539a3b04dd98f4b6bfb00045042467cc909b", null ],
@@ -924,6 +934,7 @@ var namespacepulsatrix =
     [ "DeletionCheck", "namespacepulsatrix.html#a1ef34fda2ec9c92ef8729c53e906b051", null ],
     [ "DeletionCurve", "namespacepulsatrix.html#a08ca823b9f2196df3e5f407dee95fcc5", null ],
     [ "DeltaBounds", "namespacepulsatrix.html#abdd324a4cbc0618759d3b7ca9e489475", null ],
+    [ "DescribePlan", "namespacepulsatrix.html#a0308126db30fa5050c09eee682905c6b", null ],
     [ "deterministic", "namespacepulsatrix.html#a98943eb8830416b8c9243a5f3a620818", null ],
     [ "DiffAdapterRelevance", "namespacepulsatrix.html#a8d59b405f0ea8a3253013224d8a5914d", null ],
     [ "DifferenceOfMeans", "namespacepulsatrix.html#ad0c4189a448065ddbe2710704b2bec80", null ],
@@ -1299,6 +1310,7 @@ var namespacepulsatrix =
     [ "TimeIt", "namespacepulsatrix.html#a9a61731245dd8ff9ebe10415b973df2d", null ],
     [ "to_json", "namespacepulsatrix.html#a67958a23dcb78a6477ca7276457ea457", null ],
     [ "to_json", "namespacepulsatrix.html#ae6ac032290ca2bd170f7bbb0879b3e37", null ],
+    [ "to_string", "namespacepulsatrix.html#a78ee9e0d1b891d47689770110fa6e213", null ],
     [ "to_string", "namespacepulsatrix.html#a8949d7845bb9cf164bf81db6ab41ab96", null ],
     [ "to_string", "namespacepulsatrix.html#a4e19b1c392718908bb252e94eb699eda", null ],
     [ "to_string", "namespacepulsatrix.html#aed715983d4dd4b5eb4f1a4b240699e31", null ],
@@ -1325,6 +1337,7 @@ var namespacepulsatrix =
     [ "ToJson", "namespacepulsatrix.html#a81177bae8565dd9b82c6d1829b79b27c", null ],
     [ "ToJson", "namespacepulsatrix.html#ae1bd894b2f804084cd61b94d4e4bd520", null ],
     [ "ToJson", "namespacepulsatrix.html#aa4e8b5fb8a54c061c9a57a7449d9ecc2", null ],
+    [ "ToJson", "namespacepulsatrix.html#aa02d539ab2f09dbd63a0d3c0669f02a9", null ],
     [ "ToJson", "namespacepulsatrix.html#ac0c52d3b599e7bf169118db77357e61c", null ],
     [ "ToJson", "namespacepulsatrix.html#ab956a7775fa51f615c268b6635ca4a58", null ],
     [ "ToJson", "namespacepulsatrix.html#a3723b86c310dfa94b0a9346dcaba88ef", null ],

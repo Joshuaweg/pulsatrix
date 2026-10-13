@@ -86,6 +86,7 @@ var dir_549639eb5e09d856a0d6449a002be6ea =
     [ "explainer_context.hpp", "explainer__context_8hpp.html", "explainer__context_8hpp" ],
     [ "explainer_stability.hpp", "explainer__stability_8hpp.html", "explainer__stability_8hpp" ],
     [ "explanation_metrics.hpp", "explanation__metrics_8hpp.html", "explanation__metrics_8hpp" ],
+    [ "explanation_planner.hpp", "explanation__planner_8hpp.html", "explanation__planner_8hpp" ],
     [ "featurizer.hpp", "featurizer_8hpp.html", "featurizer_8hpp" ],
     [ "featurizer_metrics.hpp", "featurizer__metrics_8hpp.html", "featurizer__metrics_8hpp" ],
     [ "feed_forward_module.hpp", "feed__forward__module_8hpp.html", "feed__forward__module_8hpp" ],

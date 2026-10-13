@@ -4279,8 +4279,8 @@ machine, and explain it with the tools pulsatrix already has. Items on that path
   <a href="https://github.com/Joshuaweg/pulsatrix/pull/155">#155</a>): LoRA, LRP through LoRA, LoReFT, IA³, model diffing</li>
 <li>KD-1, KD-2: distillation and teacher–student explanation agreement</li>
 <li>XAI-1 (<strong>done</strong>, <a href="https://github.com/Joshuaweg/pulsatrix/pull/156">#156</a>): which questions each explainer answers</li>
-<li>XAI-2 to XAI-4: the question-driven planner, explanation reports, counterfactuals, surrogates,
-  Anchors</li>
+<li>XAI-2 (<strong>done</strong>, <a href="https://github.com/Joshuaweg/pulsatrix/pull/160">#160</a>): the question-driven planner</li>
+<li>XAI-3, XAI-4: explanation reports, counterfactuals, surrogates, Anchors</li>
 <li>INT-1 to INT-8 (<strong>done</strong>, <a href="https://github.com/Joshuaweg/pulsatrix/pull/131">#131</a> to
   <a href="https://github.com/Joshuaweg/pulsatrix/pull/139">#139</a>): CKA, RSA and SVCCA, nearest
   neighbors, probe controls, layer geometry, PCA, TCAV and CRP, and export for UMAP and t-SNE</li>
@@ -5494,7 +5494,7 @@ doesn't support.</p>
 <td>XAI-1</td>
 <td>P1</td>
 <td>M</td>
-<td></td>
+<td>Done, <a href="https://github.com/Joshuaweg/pulsatrix/pull/160">#160</a></td>
 </tr>
 <tr>
 <td>XAI-3</td>
@@ -5543,16 +5543,28 @@ doesn't support.</p>
   and the inputs it takes, which XAI-2 matches against the model. Three questions have no explainer
   yet: Output, Performance (KS-3) and How to still be this (Anchors, XAI-4). A test checks that
   each declared entry point is declared in its header.</li>
-<li><strong>XAI-5.</strong> The metrics take a prediction function and a finished attribution, so they work with
+<li><strong>XAI-2.</strong> The planner reads the catalog and runs nothing, as the item asked: it returns the
+  explainers ranked, the checks with the calls that run them, the explainers it excluded and why,
+  and warnings for what it can't deliver. Ranking took four facts the XAI-1 declarations didn't
+  have, so they were added to <code>ExplainerCapabilities</code>:</li>
+<li><code>attribution</code>: it returns an <code>Attribution</code>;</li>
+<li><code>complete</code>: its attributions add up to the output;</li>
+<li><code>needs_base_model</code>;</li>
+<li><code>max_features</code>: KernelSHAP enumerates every coalition, so it takes at most 20 features.</li>
+</ul>
+<p><code>ModelTraits</code> gained <code>has_dataset</code>, <code>can_reinitialize</code>, <code>has_base_model</code> and <code>features</code>, the
+  facts that decide whether a global explainer or a check can run. Control's per-slice error is
+  listed as required but unavailable until KS-3, so every Control plan is incomplete and says
+  so. A <code>pulsatrix_plan</code> command-line tool prints the plan as text or JSON.
+- <strong>XAI-5.</strong> The metrics take a prediction function and a finished attribution, so they work with
   any explainer. ROAD's imputation solves every removed pixel jointly as the weighted mean of its
   neighbors, plus seeded noise. Sparseness and complexity score an all-zero attribution as 0,
-  where Quantus returns NaN.</li>
-<li><strong>XAI-6.</strong> <code>NullModelBaseline</code> is a template over any analysis and any result type, not just
+  where Quantus returns NaN.
+- <strong>XAI-6.</strong> <code>NullModelBaseline</code> is a template over any analysis and any result type, not just
   explainers. Re-initialization draws each tensor from N(0, σ) with that tensor's own σ, keeps
   frozen flags and leaves buffers alone. XAI-5's randomization test was rebuilt on its
   <code>ParameterSnapshot</code> and <code>ReinitializeParameters</code>. Both use a portable random generator, so
-  results match on Linux and Windows.</li>
-</ul>
+  results match on Linux and Windows.</p>
 <h3 id="follow-ups-the-xai-work-surfaced">Follow-ups the XAI work surfaced<a class="headerlink" href="#follow-ups-the-xai-work-surfaced" title="Permanent link">&para;</a></h3>
 <table>
 <thead>
@@ -5581,7 +5593,17 @@ doesn't support.</p>
 <tr>
 <td>Running the null-model baseline and the metrics from the report planner</td>
 <td>XAI-6</td>
-<td>XAI-2, XAI-3</td>
+<td>XAI-3 (XAI-2 plans them; running them belongs with the report)</td>
+</tr>
+<tr>
+<td>Input kinds finer than <code>Any</code>. LRP, Saliency and Integrated Gradients are declared for any input, but they run through an <code>ExplainerContext</code>, not a <code>CausalLM</code>, so the planner offers them to language models too</td>
+<td>XAI-2</td>
+<td>XAI-3, or an XAI-1 revision</td>
+</tr>
+<tr>
+<td>The plan as an MCP tool, so agents can ask which explainer to run</td>
+<td>XAI-2</td>
+<td>AGT-5</td>
 </tr>
 </tbody>
 </table>
