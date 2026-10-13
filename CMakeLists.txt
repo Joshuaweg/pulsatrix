@@ -76,6 +76,7 @@ add_library(pulsatrix_core
     src/fine_tune_diff.cpp
     src/explainer_capabilities.cpp
     src/explanation_planner.cpp
+    src/explanation_report.cpp
     src/relu_module.cpp
     src/softmax_module.cpp
     src/rope_module.cpp
