@@ -82,6 +82,7 @@ var dir_549639eb5e09d856a0d6449a002be6ea =
     [ "environment.hpp", "environment_8hpp.html", "environment_8hpp" ],
     [ "evolution_strategies.hpp", "evolution__strategies_8hpp.html", "evolution__strategies_8hpp" ],
     [ "evolutionary_loop.hpp", "evolutionary__loop_8hpp.html", "evolutionary__loop_8hpp" ],
+    [ "explainer_capabilities.hpp", "explainer__capabilities_8hpp.html", "explainer__capabilities_8hpp" ],
     [ "explainer_context.hpp", "explainer__context_8hpp.html", "explainer__context_8hpp" ],
     [ "explainer_stability.hpp", "explainer__stability_8hpp.html", "explainer__stability_8hpp" ],
     [ "explanation_metrics.hpp", "explanation__metrics_8hpp.html", "explanation__metrics_8hpp" ],

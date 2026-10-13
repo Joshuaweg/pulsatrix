@@ -5,5 +5,8 @@ var searchData=
   ['hip_2',['Hip',['../namespacepulsatrix.html#a5480c8cbe462fe3f5a8eb04a8c579e6eaafcd5ccb84b5c522c66efa7836e17f92',1,'pulsatrix']]],
   ['hosttodevice_3',['HostToDevice',['../namespacepulsatrix.html#a5d9adebabff0df0875f22a763d77ad6baa9988afceee3dbd1517b549bbe0f5e92',1,'pulsatrix']]],
   ['hosttohost_4',['HostToHost',['../namespacepulsatrix.html#a5d9adebabff0df0875f22a763d77ad6ba297d3681581537b0677cb9f2a3b9e589',1,'pulsatrix']]],
-  ['httplib_5',['Httplib',['../namespacepulsatrix_1_1orch.html#a765c26f70e26c83078a483eb602ed2a6ac09dd353163bfb3b8fa9d892ba77938b',1,'pulsatrix::orch']]]
+  ['howglobal_5',['HowGlobal',['../namespacepulsatrix.html#a7d304e7a712c6931b0f6fb22e532c6b8a92184215324250b809caabc0862675cf',1,'pulsatrix']]],
+  ['howtobethat_6',['HowToBeThat',['../namespacepulsatrix.html#a7d304e7a712c6931b0f6fb22e532c6b8ad486569827ae2ad736fbeb61971f6e2c',1,'pulsatrix']]],
+  ['howtostillbethis_7',['HowToStillBeThis',['../namespacepulsatrix.html#a7d304e7a712c6931b0f6fb22e532c6b8a086f2bcef82bbf60b6c972bedcab2ae4',1,'pulsatrix']]],
+  ['httplib_8',['Httplib',['../namespacepulsatrix_1_1orch.html#a765c26f70e26c83078a483eb602ed2a6ac09dd353163bfb3b8fa9d892ba77938b',1,'pulsatrix::orch']]]
 ];

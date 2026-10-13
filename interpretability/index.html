@@ -614,6 +614,17 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
+  <a href="#which-explainer-answers-which-question" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Which explainer answers which question
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#shared-infrastructure" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -2451,6 +2462,17 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
+  <a href="#which-explainer-answers-which-question" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Which explainer answers which question
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#shared-infrastructure" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -2541,6 +2563,86 @@ sensible features, or show a user why it made a decision.</p>
 <strong><a href="../language-models/">Language Models</a></strong>. It covers AttnLRP on Hugging Face models,
 word-level scores and figures.</p>
 <p>Full API reference: <a href="../api/group__interpretability.html">Doxygen: Interpretability</a></p>
+<h2 id="which-explainer-answers-which-question">Which explainer answers which question<a class="headerlink" href="#which-explainer-answers-which-question" title="Permanent link">&para;</a></h2>
+<p>Different questions need different explainers. Pulsatrix sorts them by the nine question
+categories of Liao, Gruen and Miller's XAI question bank (CHI 2020):</p>
+<table>
+<thead>
+<tr>
+<th><code>XaiQuestion</code></th>
+<th>The question</th>
+<th>Explainers</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>Input</code></td>
+<td>What kind of data was the system trained on?</td>
+<td><code>NearestNeighbors</code></td>
+</tr>
+<tr>
+<td><code>Output</code></td>
+<td>What kind of output does the system give?</td>
+<td>none yet</td>
+</tr>
+<tr>
+<td><code>Performance</code></td>
+<td>How accurate/precise/reliable are the predictions?</td>
+<td>none yet (KS-3)</td>
+</tr>
+<tr>
+<td><code>HowGlobal</code></td>
+<td>How does the system make predictions?</td>
+<td>PDP, ALE, Morris, Sobol, TCAV, probes, featurizers, representation comparison</td>
+</tr>
+<tr>
+<td><code>Why</code></td>
+<td>Why/how is this instance given this prediction?</td>
+<td>LRP, Integrated Gradients, Saliency, Grad-CAM, KernelSHAP, LIME, Occlusion</td>
+</tr>
+<tr>
+<td><code>WhyNot</code></td>
+<td>Why is this instance NOT predicted to be Q?</td>
+<td>Contrastive LRP, counterfactuals</td>
+</tr>
+<tr>
+<td><code>WhatIf</code></td>
+<td>What would the system predict if this instance changes to…?</td>
+<td>Local sensitivity, ICE, PDP, Occlusion, activation patching, steering</td>
+</tr>
+<tr>
+<td><code>HowToBeThat</code></td>
+<td>How should this instance change to get a different prediction Q?</td>
+<td>Counterfactuals</td>
+</tr>
+<tr>
+<td><code>HowToStillBeThis</code></td>
+<td>What change is permitted for this instance to still get the same prediction?</td>
+<td>none yet (Anchors, XAI-4)</td>
+</tr>
+</tbody>
+</table>
+<p>There are also four reasons to explain (Adadi and Berrada, 2018), as <code>XaiReason</code>: to
+<strong>justify</strong> a decision, to <strong>control</strong> the model by finding its flaws, to <strong>improve</strong> it, and to
+<strong>discover</strong> something new from it.</p>
+<p>Every explainer declares the questions it answers, the main one first. The declaration also gives
+its scope (one prediction or the whole model), the least model access it needs (black box,
+weights, activations, gradients or LRP rules) and the inputs it takes. The classes with an
+<code>explain()</code> method return their declaration from <code>capabilities()</code>. Every explainer, functions
+included, is in <code>ExplainerCatalog()</code>:</p>
+<div class="highlight"><pre><span></span><code><span class="cp">#include</span><span class="w"> </span><span class="cpf">"pulsatrix/explainer_capabilities.hpp"</span>
+
+<span class="n">LRP</span><span class="o">::</span><span class="n">capabilities</span><span class="p">().</span><span class="n">answers</span><span class="p">(</span><span class="n">XaiQuestion</span><span class="o">::</span><span class="n">WhyNot</span><span class="p">);</span><span class="w">           </span><span class="c1">// true: contrastive LRP</span>
+<span class="n">ExplainerCapabilitiesOf</span><span class="p">(</span><span class="s">"GrowingSpheres"</span><span class="p">).</span><span class="n">access</span><span class="p">;</span><span class="w">           </span><span class="c1">// ModelAccess::BlackBox</span>
+
+<span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="n">ExplainerCapabilities</span><span class="o">*</span><span class="w"> </span><span class="n">e</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="n">ExplainersFor</span><span class="p">(</span><span class="n">XaiQuestion</span><span class="o">::</span><span class="n">HowToBeThat</span><span class="p">))</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">std</span><span class="o">::</span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">e</span><span class="o">-&gt;</span><span class="n">name</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">" in "</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">e</span><span class="o">-&gt;</span><span class="n">header</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">"</span><span class="se">\n</span><span class="s">"</span><span class="p">;</span><span class="w">    </span><span class="c1">// the three counterfactual searches</span>
+<span class="p">}</span>
+
+<span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="w"> </span><span class="n">json</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">WriteJson</span><span class="p">(</span><span class="n">ExplainerCatalogDocument</span><span class="p">());</span><span class="w">   </span><span class="c1">// pulsatrix.explainer_catalog.v1</span>
+</code></pre></div>
+<p><code>ExplainersFor()</code> lists first the explainers whose main question it is. A question with no
+explainer yet returns an empty list, not a poor substitute.</p>
 <h2 id="shared-infrastructure">Shared infrastructure<a class="headerlink" href="#shared-infrastructure" title="Permanent link">&para;</a></h2>
 <ul>
 <li><strong><code>Attribution</code></strong> (<code>include/pulsatrix/attribution.hpp</code>): the result type every explainer

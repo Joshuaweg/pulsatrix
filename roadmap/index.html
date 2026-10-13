@@ -4222,7 +4222,8 @@ machine, and explain it with the tools pulsatrix already has. Items on that path
 <li>TRN-7 to TRN-11 (<strong>done</strong>, <a href="https://github.com/Joshuaweg/pulsatrix/pull/151">#151</a> to
   <a href="https://github.com/Joshuaweg/pulsatrix/pull/155">#155</a>): LoRA, LRP through LoRA, LoReFT, IA³, model diffing</li>
 <li>KD-1, KD-2: distillation and teacher–student explanation agreement</li>
-<li>XAI-1 to XAI-4: the question-driven planner, explanation reports, counterfactuals, surrogates,
+<li>XAI-1 (<strong>done</strong>, <a href="https://github.com/Joshuaweg/pulsatrix/pull/156">#156</a>): which questions each explainer answers</li>
+<li>XAI-2 to XAI-4: the question-driven planner, explanation reports, counterfactuals, surrogates,
   Anchors</li>
 <li>INT-1 to INT-8 (<strong>done</strong>, <a href="https://github.com/Joshuaweg/pulsatrix/pull/131">#131</a> to
   <a href="https://github.com/Joshuaweg/pulsatrix/pull/139">#139</a>): CKA, RSA and SVCCA, nearest
@@ -5425,7 +5426,7 @@ doesn't support.</p>
 <td>—</td>
 <td>P0–P1</td>
 <td>S</td>
-<td></td>
+<td>Done, <a href="https://github.com/Joshuaweg/pulsatrix/pull/156">#156</a></td>
 </tr>
 <tr>
 <td>XAI-2</td>
@@ -5476,6 +5477,13 @@ doesn't support.</p>
 </table>
 <h3 id="how-the-xai-work-departed-from-the-plan">How the XAI work departed from the plan<a class="headerlink" href="#how-the-xai-work-departed-from-the-plan" title="Permanent link">&para;</a></h3>
 <ul>
+<li><strong>XAI-1.</strong> The explainers are separate classes and free functions with different signatures,
+  so the declarations live in one catalog, <code>ExplainerCatalog()</code>, and not in a method on each
+  explainer. The eight classes with an <code>explain()</code> method return their entry from a static
+  <code>capabilities()</code>. A declaration also says the explainer's scope, the least model access it needs,
+  and the inputs it takes, which XAI-2 matches against the model. Three questions have no explainer
+  yet: Output, Performance (KS-3) and How to still be this (Anchors, XAI-4). A test checks that
+  each declared entry point is declared in its header.</li>
 <li><strong>XAI-5.</strong> The metrics take a prediction function and a finished attribution, so they work with
   any explainer. ROAD's imputation solves every removed pixel jointly as the weighted mean of its
   neighbors, plus seeded noise. Sparseness and complexity score an all-zero attribution as 0,

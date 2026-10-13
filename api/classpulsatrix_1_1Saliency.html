@@ -95,6 +95,7 @@ $(document).ready(function(){initNavTree('classpulsatrix_1_1Saliency.html',''); 
 <div class="header">
   <div class="summary">
 <a href="#pub-methods">Public Member Functions</a> &#124;
+<a href="#pub-static-methods">Static Public Member Functions</a> &#124;
 <a href="classpulsatrix_1_1Saliency-members.html">List of all members</a>  </div>
   <div class="headertitle"><div class="title">pulsatrix::Saliency Class Reference</div></div>
 </div><!--header-->
@@ -110,6 +111,12 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a8bf60072cd33a12ba4e13b725874ab0d" id="r_a8bf60072cd33a12ba4e13b725874ab0d"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structpulsatrix_1_1Attribution.html">Attribution</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1Saliency.html#a8bf60072cd33a12ba4e13b725874ab0d">explain</a> (<a class="el" href="classpulsatrix_1_1ExplainerContext.html">ExplainerContext</a> &amp;ctx, const <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp;input, int64_t target_index, <a class="el" href="classpulsatrix_1_1DeviceBackend.html">DeviceBackend</a> *backend) const</td></tr>
 <tr class="memdesc:a8bf60072cd33a12ba4e13b725874ab0d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Computes the saliency map for one output index.  <br /></td></tr>
 <tr class="separator:a8bf60072cd33a12ba4e13b725874ab0d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-static-methods" name="pub-static-methods"></a>
+Static Public Member Functions</h2></td></tr>
+<tr class="memitem:adf9296f95e4574ee64ed3efed85d80ce" id="r_adf9296f95e4574ee64ed3efed85d80ce"><td class="memItemLeft" align="right" valign="top">static const <a class="el" href="structpulsatrix_1_1ExplainerCapabilities.html">ExplainerCapabilities</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1Saliency.html#adf9296f95e4574ee64ed3efed85d80ce">capabilities</a> ()</td></tr>
+<tr class="memdesc:adf9296f95e4574ee64ed3efed85d80ce"><td class="mdescLeft">&#160;</td><td class="mdescRight">What it answers and needs: its <a class="el" href="namespacepulsatrix.html#aaebde114c64c90e88b03e5c04cba260a" title="Every explainer pulsatrix has, in a fixed order.">ExplainerCatalog()</a> entry.  <br /></td></tr>
+<tr class="separator:adf9296f95e4574ee64ed3efed85d80ce"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Raw-gradient saliency: d(output[target_index])/d(input), computed by seeding <a class="el" href="classpulsatrix_1_1ExplainerContext.html#a6c37420ba0cf1a181dabf903a9fdb558" title="Runs Autograd::backward from the most recent forward_pass()&#39;s output node.">ExplainerContext::backward_pass</a> with a one-hot vector at target_index. </p>
@@ -117,6 +124,33 @@ Public Member Functions</h2></td></tr>
 <dd>
 Device-generic: forward/backward run on the network's device; only the one-hot seed is built on the host and uploaded beside the output (<a class="el" href="namespacepulsatrix_1_1explainer__detail.html" title="Shared helpers for the post-hoc explainers&#39; host boundary.">explainer_detail</a> host boundary). </dd></dl>
 </div><h2 class="groupheader">Member Function Documentation</h2>
+<a id="adf9296f95e4574ee64ed3efed85d80ce" name="adf9296f95e4574ee64ed3efed85d80ce"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#adf9296f95e4574ee64ed3efed85d80ce">&#9670;&#160;</a></span>capabilities()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static const <a class="el" href="structpulsatrix_1_1ExplainerCapabilities.html">ExplainerCapabilities</a> &amp; pulsatrix::Saliency::capabilities </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>What it answers and needs: its <a class="el" href="namespacepulsatrix.html#aaebde114c64c90e88b03e5c04cba260a" title="Every explainer pulsatrix has, in a fixed order.">ExplainerCatalog()</a> entry. </p>
+
+</div>
+</div>
 <a id="a8bf60072cd33a12ba4e13b725874ab0d" name="a8bf60072cd33a12ba4e13b725874ab0d"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a8bf60072cd33a12ba4e13b725874ab0d">&#9670;&#160;</a></span>explain()</h2>
 

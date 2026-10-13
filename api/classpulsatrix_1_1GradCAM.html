@@ -95,6 +95,7 @@ $(document).ready(function(){initNavTree('classpulsatrix_1_1GradCAM.html',''); i
 <div class="header">
   <div class="summary">
 <a href="#pub-methods">Public Member Functions</a> &#124;
+<a href="#pub-static-methods">Static Public Member Functions</a> &#124;
 <a href="classpulsatrix_1_1GradCAM-members.html">List of all members</a>  </div>
   <div class="headertitle"><div class="title">pulsatrix::GradCAM Class Reference</div></div>
 </div><!--header-->
@@ -110,6 +111,12 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:addf8b756810847f14a9dca10d2faab70" id="r_addf8b756810847f14a9dca10d2faab70"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structpulsatrix_1_1Attribution.html">Attribution</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1GradCAM.html#addf8b756810847f14a9dca10d2faab70">explain</a> (<a class="el" href="classpulsatrix_1_1ExplainerContext.html">ExplainerContext</a> &amp;ctx, const <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp;input, int64_t target_index, <a class="el" href="classpulsatrix_1_1DeviceBackend.html">DeviceBackend</a> *backend) const</td></tr>
 <tr class="memdesc:addf8b756810847f14a9dca10d2faab70"><td class="mdescLeft">&#160;</td><td class="mdescRight">Computes the Grad-CAM map for one target class index.  <br /></td></tr>
 <tr class="separator:addf8b756810847f14a9dca10d2faab70"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-static-methods" name="pub-static-methods"></a>
+Static Public Member Functions</h2></td></tr>
+<tr class="memitem:ae56b800ac5d51894b35cbcc91bbc419d" id="r_ae56b800ac5d51894b35cbcc91bbc419d"><td class="memItemLeft" align="right" valign="top">static const <a class="el" href="structpulsatrix_1_1ExplainerCapabilities.html">ExplainerCapabilities</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1GradCAM.html#ae56b800ac5d51894b35cbcc91bbc419d">capabilities</a> ()</td></tr>
+<tr class="memdesc:ae56b800ac5d51894b35cbcc91bbc419d"><td class="mdescLeft">&#160;</td><td class="mdescRight">What it answers and needs: its <a class="el" href="namespacepulsatrix.html#aaebde114c64c90e88b03e5c04cba260a" title="Every explainer pulsatrix has, in a fixed order.">ExplainerCatalog()</a> entry.  <br /></td></tr>
+<tr class="separator:ae56b800ac5d51894b35cbcc91bbc419d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>L^c = ReLU(sum_k alpha^c_k * A^k), where alpha^c_k = mean_ij(d(y^c)/d(A^k_ij)) and A is the last <a class="el" href="namespacepulsatrix.html#a94d9ac6240473b5362d1e8e5c11157bbacc31a669f6d086f816852dda3290a3ef">OpType::Conv</a> node's activation. </p>
@@ -123,6 +130,33 @@ A pure graph walker built entirely against <a class="el" href="classpulsatrix_1_
 <dd>
 Device-generic: the CAM weighting runs on host copies of the target node's activation/gradient; the seed and the CAM are uploaded beside the network's tensors. </dd></dl>
 </div><h2 class="groupheader">Member Function Documentation</h2>
+<a id="ae56b800ac5d51894b35cbcc91bbc419d" name="ae56b800ac5d51894b35cbcc91bbc419d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae56b800ac5d51894b35cbcc91bbc419d">&#9670;&#160;</a></span>capabilities()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static const <a class="el" href="structpulsatrix_1_1ExplainerCapabilities.html">ExplainerCapabilities</a> &amp; pulsatrix::GradCAM::capabilities </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>What it answers and needs: its <a class="el" href="namespacepulsatrix.html#aaebde114c64c90e88b03e5c04cba260a" title="Every explainer pulsatrix has, in a fixed order.">ExplainerCatalog()</a> entry. </p>
+
+</div>
+</div>
 <a id="addf8b756810847f14a9dca10d2faab70" name="addf8b756810847f14a9dca10d2faab70"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#addf8b756810847f14a9dca10d2faab70">&#9670;&#160;</a></span>explain()</h2>
 

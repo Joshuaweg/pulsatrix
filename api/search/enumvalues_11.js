@@ -10,5 +10,6 @@ var searchData=
   ['stopsequence_7',['StopSequence',['../namespacepulsatrix_1_1orch.html#a564085b8c3bca36f49e6c4076b0b955aa298e6493861e637a4dc9286d898d814e',1,'pulsatrix::orch']]],
   ['string_8',['String',['../classpulsatrix_1_1JsonValue.html#abc4394f62a71b7f447ca50e841ecc98da27118326006d3829667a400ad23d5d98',1,'pulsatrix::JsonValue']]],
   ['sum_9',['Sum',['../namespacepulsatrix.html#aaf1d7cc456b87e2b0713eff66fc17954aa0ec87054b5e5b7847d0d8780a01a3d5',1,'pulsatrix']]],
-  ['sumwithprevious_10',['SumWithPrevious',['../namespacepulsatrix.html#ae999cb7b2d1c9ba912797e3319968107a06d1956cc4184000b78741d2667533d1',1,'pulsatrix']]]
+  ['sumwithprevious_10',['SumWithPrevious',['../namespacepulsatrix.html#ae999cb7b2d1c9ba912797e3319968107a06d1956cc4184000b78741d2667533d1',1,'pulsatrix']]],
+  ['symbolic_11',['Symbolic',['../namespacepulsatrix.html#a6d5917966064f051ac4390de4120fc12aaddee1396a3e20ceea8071ed6da54866',1,'pulsatrix']]]
 ];
