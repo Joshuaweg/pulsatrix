@@ -1740,6 +1740,34 @@
   
   
     <li class="md-nav__item">
+      <a href="../recipes/deep-learning/what_did_the_finetune_change/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    What Did the Fine-Tune Change?
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../recipes/data-pipeline/csv_dataloader_training/" class="md-nav__link">
         
   
@@ -2028,6 +2056,34 @@
     
   
     GFlowNet on HyperGrid
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../recipes/mechanistic-interpretability/is_the_shape_real/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Is the Shape Real?
   
 
     
@@ -4007,7 +4063,7 @@ every item in <a href="#feat-featurizers-sparse-autoencoders-and-goodfire-bsf">F
 <strong>The INT epic, embedding and representation analysis, is complete</strong> (2026-10-11): every item
 in <a href="#int-embedding-and-representation-analysis">INT</a> is done.
 <strong>The TDA epic's v1.3 scope is complete</strong> (2026-10-12): TDA-1 to TDA-8 and TDA-11 in
-<a href="#tda-topological-data-analysis">TDA</a> are done; TDA-9, TDA-10 and TDA-12 are scheduled for v1.4.</p>
+<a href="#tda-topological-data-analysis">TDA</a> are done. TDA-9 is done too; TDA-10 and TDA-12 are scheduled for v1.4.</p>
 <ul>
 <li><strong>Strong.</strong> LRP covers every layer and is checked against Zennit and LXT. Saliency, Integrated
   Gradients and Grad-CAM are checked against Captum. LIME, KernelSHAP, PDP, logit lens,
@@ -4238,8 +4294,11 @@ machine, and explain it with the tools pulsatrix already has. Items on that path
 <ul>
 <li>FEAT-1 to FEAT-7 (<strong>done</strong>): the featurizer interface, TopK and its family, metrics,
   transcoders, BSF, steering</li>
-<li>TDA-9, TDA-10, TDA-12: topology views, the manifold verifier for featurizers, layer-wise
-  topology</li>
+<li>TDA-9 (<strong>done</strong>, <a href="https://github.com/Joshuaweg/pulsatrix/pull/157">#157</a>): topology views</li>
+<li>TDA-10, TDA-12: the manifold verifier for featurizers, layer-wise topology. The
+  <a href="../recipes/mechanistic-interpretability/is_the_shape_real/">"Is the shape real?"</a> recipe
+  ran TDA-10's tests on SmolLM2-135M and Llama-3.2-1B; what's left is <code>CircularCoordinates</code>,
+  <code>VerifyManifold</code> on a BSF block, and a loop test that sees clusters</li>
 <li>VIZ-4 (<strong>done</strong>), VIZ-6b, VIZ-6c: Neuronpedia export, feature dashboards, the embedding projector</li>
 <li>AGT-5, AGT-8: the native MCP server and automated feature descriptions</li>
 <li>NB-3: Python notebook display</li>
@@ -4837,7 +4896,7 @@ rate is tuned, plain LoRA matches or beats most of them.</p>
 </tr>
 <tr>
 <td>Rerun the TRN-6 recipe on SmolLM2-135M</td>
-<td>after IO-5 and LLM-6</td>
+<td>Done in the recipe <a href="../recipes/deep-learning/what_did_the_finetune_change/">What did the fine-tune change?</a>: <code>--method full</code> fine-tunes all of SmolLM2-135M and compares it with LoRA. TRN-6's from-scratch arm doesn't apply to a pretrained model</td>
 </tr>
 <tr>
 <td>Checkpointing an <code>LRScheduler</code> with the model (TRN-6 stores the step as metadata itself)</td>
@@ -6038,11 +6097,11 @@ GUDHI's GPL-licensed parts and giotto-ph (AGPL) are avoided.</p>
 <td>TDA-5, VIZ-1</td>
 <td>P1</td>
 <td>M</td>
-<td></td>
+<td>Done, <a href="https://github.com/Joshuaweg/pulsatrix/pull/157">#157</a></td>
 </tr>
 <tr>
 <td>TDA-10</td>
-<td><strong>A manifold verifier for featurizer blocks:</strong> decide whether a BSF or SAE block forms a circle or a torus, and recover a circular coordinate to steer along. It passes by reproducing the GPT-2 day-of-week circle (Engels et al.) against a random-network control</td>
+<td><strong>A manifold verifier for featurizer blocks:</strong> decide whether a BSF or SAE block forms a circle or a torus, and recover a circular coordinate to steer along. It passes by reproducing the GPT-2 day-of-week circle (Engels et al.) against a random-network control. Partly done: the <a href="../recipes/mechanistic-interpretability/is_the_shape_real/">"Is the shape real?"</a> recipe runs the tests on SmolLM2-135M and Llama-3.2-1B residual streams (GPT-2 isn't supported); the calendar order is certified, the loop isn't</td>
 <td>Goodfire measures block dimension with a linear method. Nobody has published a topological check, so this is new</td>
 <td>TDA-4, TDA-7, TDA-8, FEAT-6</td>
 <td>P1</td>
@@ -6179,6 +6238,12 @@ GUDHI's GPL-licensed parts and giotto-ph (AGPL) are avoided.</p>
   function, since only the caller can run its model. The random numbers come from mt19937's raw
   output (Box–Muller, multiply-shift), not the standard distributions, so results match across
   standard libraries.
+- <strong>TDA-9.</strong> One document kind, <code>pulsatrix.persistence_diagram.v1</code>, with three views, as an
+  attribution document has a bar chart and a waterfall. The document keeps each diagram's
+  certified error bound, and <code>AttachSignificance</code> and <code>AttachBootstrapBand</code> add the TDA-8 tests;
+  the views draw the bound (a band on the diagram, whiskers on the barcode) and mark which
+  features passed. <code>AttachSignificance</code> checks each tested feature's death/birth ratio, so a test
+  of another diagram is refused. SVG only for now: there is no HTML view yet.
 - <strong>TDA-11</strong> follows the plan in <code>tda/rtd.hpp</code>, with <code>CompareRepresentations()</code> (CKA,
   mutual-kNN alignment and RTD) as the report. The construction was checked against the paper
   (Equation 1's practical form, Algorithm 2's batches and 0.9-quantile normalization) and
@@ -6214,6 +6279,11 @@ weight variance.</p>
 <td>A bootstrap band with a proof for Rips filtrations; Fasy et al.'s proof covers distance functions, and for Rips it is the standard heuristic</td>
 <td>TDA-8</td>
 <td>Research Notes</td>
+</tr>
+<tr>
+<td>A loop test for clustered points. On the calendar words, the largest death/birth ratio picks small loops inside each word's cluster rather than the ring through them, so the ring isn't certified though the order is. Rips on the cluster centroids, with a null of the same size, or a circular coordinate</td>
+<td>The "Is the shape real?" recipe</td>
+<td>TDA-10</td>
 </tr>
 </tbody>
 </table>

@@ -1811,6 +1811,34 @@
   
   
     <li class="md-nav__item">
+      <a href="../../recipes/deep-learning/what_did_the_finetune_change/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    What Did the Fine-Tune Change?
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../../recipes/data-pipeline/csv_dataloader_training/" class="md-nav__link">
         
   
@@ -2099,6 +2127,34 @@
     
   
     GFlowNet on HyperGrid
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../recipes/mechanistic-interpretability/is_the_shape_real/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Is the Shape Real?
   
 
     
@@ -2587,6 +2643,12 @@ a file format outlasts any one viewer.</p>
 <td><code>ProjectionDocument</code></td>
 <td><code>title</code>, <code>method</code>, <code>axes</code>, <code>explained_variance_ratio</code> (one per axis, or empty), row-major <code>coordinates</code> (points × axes), and optional per-point <code>labels</code>, <code>groups</code> and <code>values</code></td>
 <td><code>MakeProjectionDocument(pca, scores)</code>, or <code>MakeProjectionDocument(coordinates, "umap")</code> for UMAP or t-SNE output</td>
+</tr>
+<tr>
+<td><code>pulsatrix.persistence_diagram.v1</code></td>
+<td><code>PersistenceDiagramDocument</code> (<code>viz/topology_documents.hpp</code>)</td>
+<td><code>title</code>, <code>filtration</code>, <code>source</code>, <code>num_points</code>, <code>threshold</code>, and per dimension its <code>births</code>, <code>deaths</code> (+∞ through <code>nonfinite</code>), certified <code>error_bound</code>, and optional <code>p_values</code> with their <code>significance_threshold</code> and <code>bootstrap_band</code></td>
+<td><code>RipsResult</code> or <code>PersistenceDiagram</code>s; <code>AttachSignificance(UniversalNullResult)</code>, <code>AttachBootstrapBand(BootstrapBandResult)</code></td>
 </tr>
 <tr>
 <td><code>pulsatrix.residue_tracks.v1</code></td>

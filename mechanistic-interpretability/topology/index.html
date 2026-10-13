@@ -979,6 +979,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#seeing-the-result" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Seeing the result
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#comparing-two-representations-topology-rtd" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -1888,6 +1899,34 @@
   
   
     <li class="md-nav__item">
+      <a href="../../recipes/deep-learning/what_did_the_finetune_change/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    What Did the Fine-Tune Change?
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../../recipes/data-pipeline/csv_dataloader_training/" class="md-nav__link">
         
   
@@ -2176,6 +2215,34 @@
     
   
     GFlowNet on HyperGrid
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../recipes/mechanistic-interpretability/is_the_shape_real/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Is the Shape Real?
   
 
     
@@ -2581,6 +2648,17 @@
     <span class="md-ellipsis">
       
         Is a feature real?
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#seeing-the-result" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Seeing the result
       
     </span>
   </a>
@@ -3012,6 +3090,36 @@ as <code>MaxPersistence()</code> of H1, on the data and on clouds with no struct
 <p>With m baselines the smallest p-value is 1 / (m + 1): use 19 for p = 0.05, 99 for 0.01.</p>
 <p>Use more than one. The universal null is cheapest, and the bootstrap needs no conjecture. The
 random-network baseline is the one that asks whether the structure was <em>learned</em>.</p>
+<p>For all of them on a real model, see the recipe
+<a href="../../recipes/mechanistic-interpretability/is_the_shape_real/">Is the shape real?</a>. It tests
+the calendar circle in SmolLM2-135M and Llama-3.2-1B, and one of its lessons is a caution: on
+points that come in tight clusters, the largest death/birth ratio can pick loops inside the
+clusters rather than the ring through them.</p>
+<h2 id="seeing-the-result">Seeing the result<a class="headerlink" href="#seeing-the-result" title="Permanent link">&para;</a></h2>
+<p><code>viz/topology_documents.hpp</code> saves diagrams as a <code>pulsatrix.persistence_diagram.v1</code> document,
+with each dimension's certified error bound and any test results. <code>viz/topology_views.hpp</code> draws
+the document three ways:</p>
+<ul>
+<li><strong><code>RenderPersistenceDiagramSvg</code></strong>: birth against death. A gray band along the diagonal covers
+  persistence up to twice the error bound, which errors in the distances alone could explain.
+  Features that never die sit on a dashed ∞ line.</li>
+<li><strong><code>RenderBarcodeSvg</code></strong>: one bar per feature, longest first, with ±error-bound whiskers.</li>
+<li><strong><code>RenderBettiCurveSvg</code></strong>: how many features are alive at each scale. The error bound doesn't
+  cover it, since short features can come and go; the figure says so.</li>
+</ul>
+<p>With a test attached, significant features are drawn filled (diagram) or solid (barcode), and the
+rest hollow or faint:</p>
+<div class="highlight"><pre><span></span><code><span class="cp">#include</span><span class="w"> </span><span class="cpf">"pulsatrix/viz/topology_views.hpp"</span>
+
+<span class="n">PersistenceDiagramDocument</span><span class="w"> </span><span class="n">doc</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">ToPersistenceDiagramDocument</span><span class="p">(</span><span class="n">r</span><span class="p">,</span><span class="w"> </span><span class="s">"Layer 12, weekday tokens"</span><span class="p">);</span>
+<span class="n">AttachSignificance</span><span class="p">(</span><span class="n">doc</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="n">UniversalNullTest</span><span class="p">(</span><span class="n">r</span><span class="p">.</span><span class="n">diagrams</span><span class="p">[</span><span class="mi">1</span><span class="p">]));</span><span class="w">   </span><span class="c1">// p-values on H1</span>
+<span class="n">std</span><span class="o">::</span><span class="n">ofstream</span><span class="p">(</span><span class="s">"diagram.svg"</span><span class="p">)</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">RenderPersistenceDiagramSvg</span><span class="p">(</span><span class="n">doc</span><span class="p">);</span>
+<span class="n">std</span><span class="o">::</span><span class="n">ofstream</span><span class="p">(</span><span class="s">"doc.json"</span><span class="p">)</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">ToJson</span><span class="p">(</span><span class="n">doc</span><span class="p">);</span><span class="w">   </span><span class="c1">// later: pulsatrix_svg doc.json --view barcode</span>
+</code></pre></div>
+<p><img alt="A persistence diagram: six H0 points on the death axis, one essential, and three H1 points, one far above the diagonal and filled, two near it and hollow" src="../figures/persistence_diagram.svg" /></p>
+<p><img alt="The same document as a barcode, grouped by dimension, with whiskers of the error bound" src="../figures/barcode.svg" /></p>
+<p>On the command line: <code>pulsatrix_svg doc.json --view diagram|barcode|betti [--dims 1]</code>. There is
+no HTML view yet.</p>
 <h2 id="comparing-two-representations-topology-rtd">Comparing two representations' topology (RTD)<a class="headerlink" href="#comparing-two-representations-topology-rtd" title="Permanent link">&para;</a></h2>
 <p><a href="../representations/#comparing-representations-cka">CKA</a> compares two representations' whole
 geometry at once. When most of the variance is in a few large distances, it can call two layers

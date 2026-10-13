@@ -628,6 +628,17 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#a-worked-example" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        A worked example
+      
+    </span>
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -1972,6 +1983,34 @@
   
   
     <li class="md-nav__item">
+      <a href="../../recipes/deep-learning/what_did_the_finetune_change/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    What Did the Fine-Tune Change?
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../../recipes/data-pipeline/csv_dataloader_training/" class="md-nav__link">
         
   
@@ -2260,6 +2299,34 @@
     
   
     GFlowNet on HyperGrid
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../recipes/mechanistic-interpretability/is_the_shape_real/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Is the Shape Real?
   
 
     
@@ -2761,6 +2828,17 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#a-worked-example" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        A worked example
+      
+    </span>
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -3166,8 +3244,14 @@ starting point, not a standard.</p>
   <code>(out, in)</code> weight. Here that is the output space of pulsatrix's <code>(in, out)</code> weight.
 - <strong>Absolute value.</strong> The paper's Algorithm 1 compares cosines without an absolute value. A
   singular vector's sign is arbitrary, so pulsatrix uses |cos|.
-- <strong>Cost.</strong> It computes the singular vectors as eigenvectors of WᵀW, in double on the CPU, which
-  costs O(out³) per layer.</p>
+- <strong>Cost.</strong> It computes the singular vectors as eigenvectors of WᵀW, or of WWᵀ when that is
+  smaller, in double on the CPU: O(min(in, out)³) per layer. All 210 LoRA layers of SmolLM2-135M
+  take about 3 minutes.</p>
+<h3 id="a-worked-example">A worked example<a class="headerlink" href="#a-worked-example" title="Permanent link">&para;</a></h3>
+<p>The recipe <a href="../../recipes/deep-learning/what_did_the_finetune_change/">What did the fine-tune change?</a>
+teaches SmolLM2-135M six false capitals with LoRA and with full fine-tuning, then uses everything
+in this section to find out what it learned. The explanations catch a shortcut that the training
+accuracy hides.</p>
 
 
 
