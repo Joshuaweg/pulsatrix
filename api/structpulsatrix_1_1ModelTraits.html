@@ -119,6 +119,9 @@ Public Attributes</h2></td></tr>
 <tr class="memitem:a8d1b5242ab731a2c490ca80836c523bc" id="r_a8d1b5242ab731a2c490ca80836c523bc"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpulsatrix_1_1ModelTraits.html#a8d1b5242ab731a2c490ca80836c523bc">has_dataset</a> = false</td></tr>
 <tr class="memdesc:a8d1b5242ab731a2c490ca80836c523bc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Many inputs, not just the one being explained: global explainers need them, and so does aggregating explanations over a dataset.  <br /></td></tr>
 <tr class="separator:a8d1b5242ab731a2c490ca80836c523bc"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6e52715d3aa40874b5d1a815d99dfea8" id="r_a6e52715d3aa40874b5d1a815d99dfea8"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpulsatrix_1_1ModelTraits.html#a6e52715d3aa40874b5d1a815d99dfea8">has_labels</a> = false</td></tr>
+<tr class="memdesc:a6e52715d3aa40874b5d1a815d99dfea8"><td class="mdescLeft">&#160;</td><td class="mdescRight">The dataset's true labels, and a slice for each input (a group, a data source), for the per-slice error check (KS-3).  <br /></td></tr>
+<tr class="separator:a6e52715d3aa40874b5d1a815d99dfea8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6716cfaeaa9ec35377046111754c2aca" id="r_a6716cfaeaa9ec35377046111754c2aca"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpulsatrix_1_1ModelTraits.html#a6716cfaeaa9ec35377046111754c2aca">has_base_model</a> = false</td></tr>
 <tr class="memdesc:a6716cfaeaa9ec35377046111754c2aca"><td class="mdescLeft">&#160;</td><td class="mdescRight">The model this one was fine-tuned from, for explainers that compare the two.  <br /></td></tr>
 <tr class="separator:a6716cfaeaa9ec35377046111754c2aca"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -206,6 +209,22 @@ Public Attributes</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Many inputs, not just the one being explained: global explainers need them, and so does aggregating explanations over a dataset. </p>
+
+</div>
+</div>
+<a id="a6e52715d3aa40874b5d1a815d99dfea8" name="a6e52715d3aa40874b5d1a815d99dfea8"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6e52715d3aa40874b5d1a815d99dfea8">&#9670;&#160;</a></span>has_labels</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool pulsatrix::ModelTraits::has_labels = false</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>The dataset's true labels, and a slice for each input (a group, a data source), for the per-slice error check (KS-3). </p>
 
 </div>
 </div>

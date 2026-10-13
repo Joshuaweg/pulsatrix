@@ -5,5 +5,6 @@ var structpulsatrix_1_1ModelTraits =
     [ "features", "structpulsatrix_1_1ModelTraits.html#a1f4f921ce4a45806ceccdea454838886", null ],
     [ "has_base_model", "structpulsatrix_1_1ModelTraits.html#a6716cfaeaa9ec35377046111754c2aca", null ],
     [ "has_dataset", "structpulsatrix_1_1ModelTraits.html#a8d1b5242ab731a2c490ca80836c523bc", null ],
+    [ "has_labels", "structpulsatrix_1_1ModelTraits.html#a6e52715d3aa40874b5d1a815d99dfea8", null ],
     [ "input", "structpulsatrix_1_1ModelTraits.html#a593a08826b124fca300b08c33e23dd86", null ]
 ];

@@ -20,6 +20,7 @@ var explanation__report_8hpp =
     [ "DeriveCaveats", "explanation__report_8hpp.html#a969702d713ebe3cbd9199d3f62fa683e", null ],
     [ "DescribeExplanation", "explanation__report_8hpp.html#a56130d1eab8b5f9671e0903306d0574d", null ],
     [ "ReportExplanation", "explanation__report_8hpp.html#ae8613ac0a69f7dab2a7e2d03dd56c591", null ],
+    [ "SliceErrorCheck", "explanation__report_8hpp.html#a200d8534ba1d2e5523dc5a5f37a37780", null ],
     [ "to_string", "explanation__report_8hpp.html#a2fb7e3835a908b9325ccd01b0cbea6ab", null ],
     [ "to_string", "explanation__report_8hpp.html#af879b05dd895e2b7a6d5a83a91c40353", null ],
     [ "ToJson", "explanation__report_8hpp.html#adbde0045ad05d75702844315abc386e2", null ]

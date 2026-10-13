@@ -352,6 +352,12 @@ Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpulsatrix_1_1CkaMatrix.html">CkaMatrix</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">CKA between every pair from two lists of representations, such as the layers of two models: <code>values[i * cols + j]</code> compares <code>a[i]</code> with <code>b[j]</code>.  <a href="structpulsatrix_1_1CkaMatrix.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpulsatrix_1_1ClassificationOptions.html">ClassificationOptions</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="namespacepulsatrix.html#adedd75758ad55813a06411bedc737d92" title="Scores a classifier&#39;s probabilities against the labels.">EvaluateClassifier()</a>'s settings.  <a href="structpulsatrix_1_1ClassificationOptions.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpulsatrix_1_1ClassificationReport.html">ClassificationReport</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">How well a classifier does on a labeled dataset.  <a href="structpulsatrix_1_1ClassificationReport.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1ClusterSampler.html">ClusterSampler</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Cluster-weighted sampling, as ESM-2 drew UniRef50: a cluster uniformly, then one of its members uniformly, so large families don't dominate. With every sequence its own cluster, it is uniform sampling with replacement.  <a href="classpulsatrix_1_1ClusterSampler.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -1193,10 +1199,16 @@ Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpulsatrix_1_1RecurrentCellArgs.html">RecurrentCellArgs</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Operand pointers for <a class="el" href="classpulsatrix_1_1DeviceBackend.html#a3f1a7579cba30481c5bc8cfab97c5bbd" title="One fused recurrent-cell pass over n elements (see RecurrentCellOp for slots).">DeviceBackend::recurrent_cell</a> (passed to kernels by value).  <a href="structpulsatrix_1_1RecurrentCellArgs.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpulsatrix_1_1RegressionReport.html">RegressionReport</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">How well a regressor does.  <a href="structpulsatrix_1_1RegressionReport.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpulsatrix_1_1RelevanceDiff.html">RelevanceDiff</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The two explanations of the same prediction, and their difference.  <a href="structpulsatrix_1_1RelevanceDiff.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpulsatrix_1_1RelevanceGraphOptions.html">RelevanceGraphOptions</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpulsatrix_1_1ReliabilityBin.html">ReliabilityBin</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">One confidence bin, (lower, upper]; the first bin also holds a confidence of 0.  <a href="structpulsatrix_1_1ReliabilityBin.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1ReluModule.html">ReluModule</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">y = max(x, 0), elementwise. No parameters, no parameter gradients.  <a href="classpulsatrix_1_1ReluModule.html#details">More...</a><br /></td></tr>
@@ -1384,6 +1396,15 @@ Classes</h2></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1ShuffleSampler.html">ShuffleSampler</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Visits indices [0, dataset_size) in a seeded pseudo-random permutation &ndash; reproducible across runs given the same seed (std::mt19937), re-shuffled fresh each <a class="el" href="classpulsatrix_1_1ShuffleSampler.html#a91bf87be5a5d3d7dc5c254f210e539f9" title="Begins a new epoch over a dataset of the given size.">reset()</a> call (a new epoch is a new permutation, not the same one repeated).  <a href="classpulsatrix_1_1ShuffleSampler.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpulsatrix_1_1SliceError.html">SliceError</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">One slice's error.  <a href="structpulsatrix_1_1SliceError.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpulsatrix_1_1SliceErrorOptions.html">SliceErrorOptions</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="namespacepulsatrix.html#ad7429b9dc5233630c08f7ccc05000171" title="The error on each slice of a dataset, each tested against the rest.">PerSliceError()</a>'s settings.  <a href="structpulsatrix_1_1SliceErrorOptions.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpulsatrix_1_1SliceErrorReport.html">SliceErrorReport</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="namespacepulsatrix.html#ad7429b9dc5233630c08f7ccc05000171" title="The error on each slice of a dataset, each tested against the rest.">PerSliceError()</a>'s result.  <a href="structpulsatrix_1_1SliceErrorReport.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpulsatrix_1_1SobolDocument.html">SobolDocument</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight"><code>pulsatrix.sobol.v1</code>: first- and total-order Sobol indices per feature (CFS-4).  <a href="structpulsatrix_1_1SobolDocument.html#details">More...</a><br /></td></tr>
@@ -2017,6 +2038,12 @@ Enumerations</h2></td></tr>
  }</td></tr>
 <tr class="memdesc:a610ac9f626db0e8067e0ab821a25656c"><td class="mdescLeft">&#160;</td><td class="mdescRight">How the masked model's output is compared with the target's.  <a href="namespacepulsatrix.html#a610ac9f626db0e8067e0ab821a25656c">More...</a><br /></td></tr>
 <tr class="separator:a610ac9f626db0e8067e0ab821a25656c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2b6bf1ccf4ae4b9cc008d14b9167db0d" id="r_a2b6bf1ccf4ae4b9cc008d14b9167db0d"><td class="memItemLeft" align="right" valign="top">enum class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#a2b6bf1ccf4ae4b9cc008d14b9167db0d">SliceTest</a> { <a class="el" href="namespacepulsatrix.html#a2b6bf1ccf4ae4b9cc008d14b9167db0da06b9281e396db002010bde1de57262eb">Auto</a>
+, <a class="el" href="namespacepulsatrix.html#a2b6bf1ccf4ae4b9cc008d14b9167db0da7b5c4ea03a00e418befa75804cef8eda">FisherExact</a>
+, <a class="el" href="namespacepulsatrix.html#a2b6bf1ccf4ae4b9cc008d14b9167db0dafc77ea6ca6b9d7a68b7820f4cc96496b">Permutation</a>
+ }</td></tr>
+<tr class="memdesc:a2b6bf1ccf4ae4b9cc008d14b9167db0d"><td class="mdescLeft">&#160;</td><td class="mdescRight">How PerSliceError() tests a slice against the rest.  <a href="namespacepulsatrix.html#a2b6bf1ccf4ae4b9cc008d14b9167db0d">More...</a><br /></td></tr>
+<tr class="separator:a2b6bf1ccf4ae4b9cc008d14b9167db0d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a73a0c4c4eb2de07fef8d33c69e4618cc" id="r_a73a0c4c4eb2de07fef8d33c69e4618cc"><td class="memItemLeft" align="right" valign="top">enum class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#a73a0c4c4eb2de07fef8d33c69e4618cc">ContactAtom</a> { <a class="el" href="namespacepulsatrix.html#a73a0c4c4eb2de07fef8d33c69e4618cca0b87d66b88c72957dfea8c9605016442">Beta</a>
 , <a class="el" href="namespacepulsatrix.html#a73a0c4c4eb2de07fef8d33c69e4618cca6132295fcf5570fb8b0a944ef322a598">Alpha</a>
 , <a class="el" href="namespacepulsatrix.html#a73a0c4c4eb2de07fef8d33c69e4618cca2cb2ce3670408b98b4bcc8e158585e38">VirtualBeta</a>
@@ -2521,6 +2548,9 @@ Functions</h2></td></tr>
 <tr class="memitem:ae8613ac0a69f7dab2a7e2d03dd56c591" id="r_ae8613ac0a69f7dab2a7e2d03dd56c591"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structpulsatrix_1_1Explanation.html">Explanation</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#ae8613ac0a69f7dab2a7e2d03dd56c591">ReportExplanation</a> (const <a class="el" href="structpulsatrix_1_1ExplanationRequest.html">ExplanationRequest</a> &amp;request, std::optional&lt; <a class="el" href="structpulsatrix_1_1Attribution.html">Attribution</a> &gt; attribution, std::vector&lt; <a class="el" href="structpulsatrix_1_1CheckResult.html">CheckResult</a> &gt; checks)</td></tr>
 <tr class="memdesc:ae8613ac0a69f7dab2a7e2d03dd56c591"><td class="mdescLeft">&#160;</td><td class="mdescRight">The report for an explanation whose checks ran elsewhere: plans request.question and request.reason, matches <code>checks</code> to the planned ones by name (each takes the planned priority), marks the planned checks missing from <code>checks</code> NotRun, and derives the caveats.  <br /></td></tr>
 <tr class="separator:ae8613ac0a69f7dab2a7e2d03dd56c591"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a200d8534ba1d2e5523dc5a5f37a37780" id="r_a200d8534ba1d2e5523dc5a5f37a37780"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structpulsatrix_1_1CheckResult.html">CheckResult</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#a200d8534ba1d2e5523dc5a5f37a37780">SliceErrorCheck</a> (const <a class="el" href="structpulsatrix_1_1SliceErrorReport.html">SliceErrorReport</a> &amp;report)</td></tr>
+<tr class="memdesc:a200d8534ba1d2e5523dc5a5f37a37780"><td class="mdescLeft">&#160;</td><td class="mdescRight">The per_slice_error check's result for a report <a class="el" href="namespacepulsatrix.html#ad7429b9dc5233630c08f7ccc05000171" title="The error on each slice of a dataset, each tested against the rest.">PerSliceError()</a> made: Failed when a slice is worse than the rest, Passed otherwise. For <a class="el" href="namespacepulsatrix.html#ae8613ac0a69f7dab2a7e2d03dd56c591" title="The report for an explanation whose checks ran elsewhere: plans request.question and request....">ReportExplanation()</a>, or a model <a class="el" href="namespacepulsatrix.html#a92c8d88604a10ba1689c6c0fbd2e98c6" title="Explains input with explain and runs the checks the plan asks for.">BuildExplanation()</a> can't score, such as a regressor.  <br /></td></tr>
+<tr class="separator:a200d8534ba1d2e5523dc5a5f37a37780"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a969702d713ebe3cbd9199d3f62fa683e" id="r_a969702d713ebe3cbd9199d3f62fa683e"><td class="memItemLeft" align="right" valign="top">std::vector&lt; <a class="el" href="structpulsatrix_1_1Caveat.html">Caveat</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#a969702d713ebe3cbd9199d3f62fa683e">DeriveCaveats</a> (const <a class="el" href="structpulsatrix_1_1Explanation.html">Explanation</a> &amp;explanation)</td></tr>
 <tr class="memdesc:a969702d713ebe3cbd9199d3f62fa683e"><td class="mdescLeft">&#160;</td><td class="mdescRight">The caveats an explanation carries, from the report alone:  <br /></td></tr>
 <tr class="separator:a969702d713ebe3cbd9199d3f62fa683e"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -2975,6 +3005,30 @@ Functions</h2></td></tr>
 <tr class="memitem:aa5fd5532bc92605669679861cef166ca" id="r_aa5fd5532bc92605669679861cef166ca"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#aa5fd5532bc92605669679861cef166ca">PcaSplitHalfOverlap</a> (const <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp;x, int64_t k, uint64_t seed=0)</td></tr>
 <tr class="memdesc:aa5fd5532bc92605669679861cef166ca"><td class="mdescLeft">&#160;</td><td class="mdescRight">Fits <code>k</code> components on each half of the rows, split at random, and returns their <a class="el" href="namespacepulsatrix.html#a81b0ee5fc57f31fcfe00e4d377b0837d" title="How much two PCAs&#39; first k components span the same space: the mean squared cosine of the principal a...">SubspaceOverlap()</a>. Near 1 means the k-dimensional picture is a property of the data; well below 1 means it depends on which inputs happened to be drawn.  <br /></td></tr>
 <tr class="separator:aa5fd5532bc92605669679861cef166ca"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:adedd75758ad55813a06411bedc737d92" id="r_adedd75758ad55813a06411bedc737d92"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structpulsatrix_1_1ClassificationReport.html">ClassificationReport</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#adedd75758ad55813a06411bedc737d92">EvaluateClassifier</a> (const <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp;probabilities, const std::vector&lt; int64_t &gt; &amp;labels, const <a class="el" href="structpulsatrix_1_1ClassificationOptions.html">ClassificationOptions</a> &amp;options={})</td></tr>
+<tr class="memdesc:adedd75758ad55813a06411bedc737d92"><td class="mdescLeft">&#160;</td><td class="mdescRight">Scores a classifier's probabilities against the labels.  <br /></td></tr>
+<tr class="separator:adedd75758ad55813a06411bedc737d92"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab06e602ba1bfc95b30ddcc998e16964f" id="r_ab06e602ba1bfc95b30ddcc998e16964f"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structpulsatrix_1_1RegressionReport.html">RegressionReport</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#ab06e602ba1bfc95b30ddcc998e16964f">EvaluateRegressor</a> (const std::vector&lt; double &gt; &amp;predictions, const std::vector&lt; double &gt; &amp;targets)</td></tr>
+<tr class="memdesc:ab06e602ba1bfc95b30ddcc998e16964f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Scores a regressor's predictions against the targets.  <br /></td></tr>
+<tr class="separator:ab06e602ba1bfc95b30ddcc998e16964f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad7429b9dc5233630c08f7ccc05000171" id="r_ad7429b9dc5233630c08f7ccc05000171"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structpulsatrix_1_1SliceErrorReport.html">SliceErrorReport</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#ad7429b9dc5233630c08f7ccc05000171">PerSliceError</a> (const std::vector&lt; double &gt; &amp;errors, const std::vector&lt; std::string &gt; &amp;slices, const <a class="el" href="structpulsatrix_1_1SliceErrorOptions.html">SliceErrorOptions</a> &amp;options={})</td></tr>
+<tr class="memdesc:ad7429b9dc5233630c08f7ccc05000171"><td class="mdescLeft">&#160;</td><td class="mdescRight">The error on each slice of a dataset, each tested against the rest.  <br /></td></tr>
+<tr class="separator:ad7429b9dc5233630c08f7ccc05000171"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa6c8cb9075295abcd1d30fd35aab917f" id="r_aa6c8cb9075295abcd1d30fd35aab917f"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structpulsatrix_1_1SliceErrorReport.html">SliceErrorReport</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#aa6c8cb9075295abcd1d30fd35aab917f">PerSliceError</a> (const <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp;probabilities, const std::vector&lt; int64_t &gt; &amp;labels, const std::vector&lt; std::string &gt; &amp;slices, const <a class="el" href="structpulsatrix_1_1SliceErrorOptions.html">SliceErrorOptions</a> &amp;options={})</td></tr>
+<tr class="memdesc:aa6c8cb9075295abcd1d30fd35aab917f"><td class="mdescLeft">&#160;</td><td class="mdescRight">A classifier's error rate on each slice: an input is wrong when its most probable class isn't its label.  <br /></td></tr>
+<tr class="separator:aa6c8cb9075295abcd1d30fd35aab917f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:acfcb68ea528ee9736dca6742b417d3c7" id="r_acfcb68ea528ee9736dca6742b417d3c7"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classpulsatrix_1_1JsonValue.html">JsonValue</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#acfcb68ea528ee9736dca6742b417d3c7">ToJson</a> (const <a class="el" href="structpulsatrix_1_1ClassificationReport.html">ClassificationReport</a> &amp;report)</td></tr>
+<tr class="memdesc:acfcb68ea528ee9736dca6742b417d3c7"><td class="mdescLeft">&#160;</td><td class="mdescRight">The report as a <code>pulsatrix.classification_report.v1</code> document.  <br /></td></tr>
+<tr class="separator:acfcb68ea528ee9736dca6742b417d3c7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad1543781766158e953e73420b3e7837d" id="r_ad1543781766158e953e73420b3e7837d"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classpulsatrix_1_1JsonValue.html">JsonValue</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#ad1543781766158e953e73420b3e7837d">ToJson</a> (const <a class="el" href="structpulsatrix_1_1RegressionReport.html">RegressionReport</a> &amp;report)</td></tr>
+<tr class="memdesc:ad1543781766158e953e73420b3e7837d"><td class="mdescLeft">&#160;</td><td class="mdescRight">The report as a <code>pulsatrix.regression_report.v1</code> document.  <br /></td></tr>
+<tr class="separator:ad1543781766158e953e73420b3e7837d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa32f8bf96528f433531e134108cee908" id="r_aa32f8bf96528f433531e134108cee908"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classpulsatrix_1_1JsonValue.html">JsonValue</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#aa32f8bf96528f433531e134108cee908">ToJson</a> (const <a class="el" href="structpulsatrix_1_1SliceErrorReport.html">SliceErrorReport</a> &amp;report)</td></tr>
+<tr class="memdesc:aa32f8bf96528f433531e134108cee908"><td class="mdescLeft">&#160;</td><td class="mdescRight">The report as a <code>pulsatrix.slice_error.v1</code> document.  <br /></td></tr>
+<tr class="separator:aa32f8bf96528f433531e134108cee908"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6544971c59a32b176835ffe5045dec85" id="r_a6544971c59a32b176835ffe5045dec85"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#a6544971c59a32b176835ffe5045dec85">DescribeSliceError</a> (const <a class="el" href="structpulsatrix_1_1SliceErrorReport.html">SliceErrorReport</a> &amp;report)</td></tr>
+<tr class="memdesc:a6544971c59a32b176835ffe5045dec85"><td class="mdescLeft">&#160;</td><td class="mdescRight">The slices as a plain-text table, worst first, with the test and whether any is worse.  <br /></td></tr>
+<tr class="separator:a6544971c59a32b176835ffe5045dec85"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a04988305f3fb93fa30aa30cfcbb09a6e" id="r_a04988305f3fb93fa30aa30cfcbb09a6e"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#a04988305f3fb93fa30aa30cfcbb09a6e">PolyakUpdate</a> (<a class="el" href="classpulsatrix_1_1Module.html">Module</a> &amp;source, <a class="el" href="classpulsatrix_1_1Module.html">Module</a> &amp;destination, float tau)</td></tr>
 <tr class="memdesc:a04988305f3fb93fa30aa30cfcbb09a6e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Soft target-network update (Lillicrap et al. 2016 / Haarnoja et al. 2018): <code>destination_param[i] = tau * source_param[i] + (1 - tau) * destination_param[i]</code>, element-wise and in place.  <br /></td></tr>
 <tr class="separator:a04988305f3fb93fa30aa30cfcbb09a6e"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -5673,6 +5727,38 @@ Every op here computes the <em>forward</em> value only &ndash; no derivative var
 
 </div>
 </div>
+<a id="a2b6bf1ccf4ae4b9cc008d14b9167db0d" name="a2b6bf1ccf4ae4b9cc008d14b9167db0d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2b6bf1ccf4ae4b9cc008d14b9167db0d">&#9670;&#160;</a></span>SliceTest</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">enum class <a class="el" href="namespacepulsatrix.html#a2b6bf1ccf4ae4b9cc008d14b9167db0d">pulsatrix::SliceTest</a></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">strong</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>How <a class="el" href="namespacepulsatrix.html#ad7429b9dc5233630c08f7ccc05000171" title="The error on each slice of a dataset, each tested against the rest.">PerSliceError()</a> tests a slice against the rest. </p>
+<table class="fieldtable">
+<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="a2b6bf1ccf4ae4b9cc008d14b9167db0da06b9281e396db002010bde1de57262eb" name="a2b6bf1ccf4ae4b9cc008d14b9167db0da06b9281e396db002010bde1de57262eb"></a>Auto&#160;</td><td class="fielddoc"><p>Fisher's exact test when every error is 0 or 1, a permutation test otherwise. </p>
+</td></tr>
+<tr><td class="fieldname"><a id="a2b6bf1ccf4ae4b9cc008d14b9167db0da7b5c4ea03a00e418befa75804cef8eda" name="a2b6bf1ccf4ae4b9cc008d14b9167db0da7b5c4ea03a00e418befa75804cef8eda"></a>FisherExact&#160;</td><td class="fielddoc"><p>Fisher's exact test, one-sided: whether the slice's errors are more frequent than the rest's. Needs every error to be 0 or 1. </p>
+</td></tr>
+<tr><td class="fieldname"><a id="a2b6bf1ccf4ae4b9cc008d14b9167db0dafc77ea6ca6b9d7a68b7820f4cc96496b" name="a2b6bf1ccf4ae4b9cc008d14b9167db0dafc77ea6ca6b9d7a68b7820f4cc96496b"></a>Permutation&#160;</td><td class="fielddoc"><p>A permutation test, one-sided, of the slice's mean error against the rest's. </p>
+</td></tr>
+</table>
+
+</div>
+</div>
 <a id="ae6aaf6ae4d4aeddc14425e5de53d6ed2" name="ae6aaf6ae4d4aeddc14425e5de53d6ed2"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ae6aaf6ae4d4aeddc14425e5de53d6ed2">&#9670;&#160;</a></span>SplitBehavior</h2>
 
@@ -7368,7 +7454,8 @@ template&lt;typename RNG &gt; </div>
 <li>conservation: the attributions' sum against <a class="el" href="classpulsatrix_1_1LRP.html" title="Whole-model LRP: runs the forward pass, seeds relevance at the chosen output(s), and propagates it to...">LRP</a>'s seeded total (its metadata), or f(input) - f(baseline) when request.baseline is given; passes within options.conservation_tolerance.</li>
 <li>randomization: ModelParameterRandomizationTest; passes when the explanation of the fully randomized model correlates at most options.max_random_similarity with the original.</li>
 <li>null_model: NullModelBaseline, with the same threshold.</li>
-<li>aggregate: the mean absolute attribution over request.dataset (Measured). Any other check (per-slice error, which pulsatrix doesn't have yet) is NotRun.</li>
+<li>aggregate: the mean absolute attribution over request.dataset (Measured).</li>
+<li>per_slice_error: <a class="el" href="namespacepulsatrix.html#ad7429b9dc5233630c08f7ccc05000171" title="The error on each slice of a dataset, each tested against the rest.">PerSliceError()</a> on request.dataset, with an input wrong when the index of predict's largest output isn't its label; fails when a slice is worse than the rest at options.alpha (<a class="el" href="namespacepulsatrix.html#a200d8534ba1d2e5523dc5a5f37a37780" title="The per_slice_error check&#39;s result for a report PerSliceError() made: Failed when a slice is worse th...">SliceErrorCheck()</a>). Any other check is NotRun.</li>
 </ul>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
@@ -10305,6 +10392,26 @@ If a front is uniform in some objective (max == min across the whole front), tha
 
 </div>
 </div>
+<a id="a6544971c59a32b176835ffe5045dec85" name="a6544971c59a32b176835ffe5045dec85"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6544971c59a32b176835ffe5045dec85">&#9670;&#160;</a></span>DescribeSliceError()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::string pulsatrix::DescribeSliceError </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="structpulsatrix_1_1SliceErrorReport.html">SliceErrorReport</a> &amp;&#160;</td>
+          <td class="paramname"><em>report</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>The slices as a plain-text table, worst first, with the test and whether any is worse. </p>
+
+</div>
+</div>
 <a id="a8f467584a40222a019d8373897053c8d" name="a8f467584a40222a019d8373897053c8d"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a8f467584a40222a019d8373897053c8d">&#9670;&#160;</a></span>DescribeSurrogateTree()</h2>
 
@@ -10982,6 +11089,55 @@ template&lt;typename FitnessFn , typename RNG &gt; </div>
 
 </div>
 </div>
+<a id="adedd75758ad55813a06411bedc737d92" name="adedd75758ad55813a06411bedc737d92"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#adedd75758ad55813a06411bedc737d92">&#9670;&#160;</a></span>EvaluateClassifier()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="structpulsatrix_1_1ClassificationReport.html">ClassificationReport</a> pulsatrix::EvaluateClassifier </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp;&#160;</td>
+          <td class="paramname"><em>probabilities</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const std::vector&lt; int64_t &gt; &amp;&#160;</td>
+          <td class="paramname"><em>labels</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="structpulsatrix_1_1ClassificationOptions.html">ClassificationOptions</a> &amp;&#160;</td>
+          <td class="paramname"><em>options</em> = <code>{}</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Scores a classifier's probabilities against the labels. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">probabilities</td><td>(N, K): each row the model's probabilities for one input, such as a softmax. Rows aren't renormalized; the predicted class is the most probable one, the lowest index on a tie. </td></tr>
+    <tr><td class="paramname">labels</td><td>The true class of each input, in [0, K). </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname">std::invalid_argument</td><td>if probabilities isn't (N, K) with N &gt;= 1 and K &gt;= 2, labels has another length or a class outside [0, K), a probability is negative or not finite, or options.bins &lt; 1. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
 <a id="a101a5b4793456098b9c27070e1fb1c41" name="a101a5b4793456098b9c27070e1fb1c41"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a101a5b4793456098b9c27070e1fb1c41">&#9670;&#160;</a></span>EvaluateContacts()</h2>
 
@@ -11298,6 +11454,42 @@ template&lt;typename Genotype , typename FitnessT , typename FitnessFn &gt; </di
 <dl class="exception"><dt>Exceptions</dt><dd>
   <table class="exception">
     <tr><td class="paramname">std::invalid_argument</td><td>for a batch that isn't <code>(N, input_dim)</code> with N &gt; 0, or batch &lt; 1. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="ab06e602ba1bfc95b30ddcc998e16964f" name="ab06e602ba1bfc95b30ddcc998e16964f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab06e602ba1bfc95b30ddcc998e16964f">&#9670;&#160;</a></span>EvaluateRegressor()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="structpulsatrix_1_1RegressionReport.html">RegressionReport</a> pulsatrix::EvaluateRegressor </td>
+          <td>(</td>
+          <td class="paramtype">const std::vector&lt; double &gt; &amp;&#160;</td>
+          <td class="paramname"><em>predictions</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const std::vector&lt; double &gt; &amp;&#160;</td>
+          <td class="paramname"><em>targets</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Scores a regressor's predictions against the targets. </p>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname">std::invalid_argument</td><td>if the two are empty, have different lengths or hold a value that isn't finite. </td></tr>
   </table>
   </dd>
 </dl>
@@ -18551,6 +18743,103 @@ template&lt;typename T &gt; </div>
 
 </div>
 </div>
+<a id="ad7429b9dc5233630c08f7ccc05000171" name="ad7429b9dc5233630c08f7ccc05000171"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad7429b9dc5233630c08f7ccc05000171">&#9670;&#160;</a></span>PerSliceError() <span class="overload">[1/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="structpulsatrix_1_1SliceErrorReport.html">SliceErrorReport</a> pulsatrix::PerSliceError </td>
+          <td>(</td>
+          <td class="paramtype">const std::vector&lt; double &gt; &amp;&#160;</td>
+          <td class="paramname"><em>errors</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const std::vector&lt; std::string &gt; &amp;&#160;</td>
+          <td class="paramname"><em>slices</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="structpulsatrix_1_1SliceErrorOptions.html">SliceErrorOptions</a> &amp;&#160;</td>
+          <td class="paramname"><em>options</em> = <code>{}</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>The error on each slice of a dataset, each tested against the rest. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">errors</td><td>Each input's error: 0 or 1 for right or wrong, or a loss. </td></tr>
+    <tr><td class="paramname">slices</td><td>The slice each input belongs to, such as a group or a data source. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname">std::invalid_argument</td><td>if errors is empty, slices has another length, an error isn't finite, options.test is FisherExact and an error isn't 0 or 1, alpha isn't in (0, 1), or permutations &lt; 1. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="aa6c8cb9075295abcd1d30fd35aab917f" name="aa6c8cb9075295abcd1d30fd35aab917f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa6c8cb9075295abcd1d30fd35aab917f">&#9670;&#160;</a></span>PerSliceError() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="structpulsatrix_1_1SliceErrorReport.html">SliceErrorReport</a> pulsatrix::PerSliceError </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp;&#160;</td>
+          <td class="paramname"><em>probabilities</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const std::vector&lt; int64_t &gt; &amp;&#160;</td>
+          <td class="paramname"><em>labels</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const std::vector&lt; std::string &gt; &amp;&#160;</td>
+          <td class="paramname"><em>slices</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="structpulsatrix_1_1SliceErrorOptions.html">SliceErrorOptions</a> &amp;&#160;</td>
+          <td class="paramname"><em>options</em> = <code>{}</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>A classifier's error rate on each slice: an input is wrong when its most probable class isn't its label. </p>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname">std::invalid_argument</td><td>as <a class="el" href="namespacepulsatrix.html#adedd75758ad55813a06411bedc737d92" title="Scores a classifier&#39;s probabilities against the labels.">EvaluateClassifier()</a> and <a class="el" href="namespacepulsatrix.html#ad7429b9dc5233630c08f7ccc05000171" title="The error on each slice of a dataset, each tested against the rest.">PerSliceError()</a> do. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
 <a id="a1278028152aeba3ba54ea1d9cd30ae00" name="a1278028152aeba3ba54ea1d9cd30ae00"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a1278028152aeba3ba54ea1d9cd30ae00">&#9670;&#160;</a></span>Plausibility()</h2>
 
@@ -24032,6 +24321,26 @@ Host boundary (GPU-native-kernels Mission 7): the embedding is computed on the h
 
 </div>
 </div>
+<a id="a200d8534ba1d2e5523dc5a5f37a37780" name="a200d8534ba1d2e5523dc5a5f37a37780"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a200d8534ba1d2e5523dc5a5f37a37780">&#9670;&#160;</a></span>SliceErrorCheck()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="structpulsatrix_1_1CheckResult.html">CheckResult</a> pulsatrix::SliceErrorCheck </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="structpulsatrix_1_1SliceErrorReport.html">SliceErrorReport</a> &amp;&#160;</td>
+          <td class="paramname"><em>report</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>The per_slice_error check's result for a report <a class="el" href="namespacepulsatrix.html#ad7429b9dc5233630c08f7ccc05000171" title="The error on each slice of a dataset, each tested against the rest.">PerSliceError()</a> made: Failed when a slice is worse than the rest, Passed otherwise. For <a class="el" href="namespacepulsatrix.html#ae8613ac0a69f7dab2a7e2d03dd56c591" title="The report for an explanation whose checks ran elsewhere: plans request.question and request....">ReportExplanation()</a>, or a model <a class="el" href="namespacepulsatrix.html#a92c8d88604a10ba1689c6c0fbd2e98c6" title="Explains input with explain and runs the checks the plan asks for.">BuildExplanation()</a> can't score, such as a regressor. </p>
+
+</div>
+</div>
 <a id="abc312204e032ea8f6f81f09aeae4d9e2" name="abc312204e032ea8f6f81f09aeae4d9e2"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#abc312204e032ea8f6f81f09aeae4d9e2">&#9670;&#160;</a></span>SolveLinearSystem()</h2>
 
@@ -25758,7 +26067,7 @@ template&lt;class Json &gt; </div>
 </div>
 </div>
 <a id="af0e72413bc90f49e775d7d5f87807c81" name="af0e72413bc90f49e775d7d5f87807c81"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#af0e72413bc90f49e775d7d5f87807c81">&#9670;&#160;</a></span>ToJson() <span class="overload">[1/25]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#af0e72413bc90f49e775d7d5f87807c81">&#9670;&#160;</a></span>ToJson() <span class="overload">[1/28]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -25788,7 +26097,7 @@ template&lt;class Json &gt; </div>
 </div>
 </div>
 <a id="aa0b432bea4ddfc0135ebfd55d5b78818" name="aa0b432bea4ddfc0135ebfd55d5b78818"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aa0b432bea4ddfc0135ebfd55d5b78818">&#9670;&#160;</a></span>ToJson() <span class="overload">[2/25]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#aa0b432bea4ddfc0135ebfd55d5b78818">&#9670;&#160;</a></span>ToJson() <span class="overload">[2/28]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -25812,7 +26121,7 @@ template&lt;class Json &gt; </div>
 </div>
 </div>
 <a id="a013e5eb67a4e009e0c77adfe60ca3799" name="a013e5eb67a4e009e0c77adfe60ca3799"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a013e5eb67a4e009e0c77adfe60ca3799">&#9670;&#160;</a></span>ToJson() <span class="overload">[3/25]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a013e5eb67a4e009e0c77adfe60ca3799">&#9670;&#160;</a></span>ToJson() <span class="overload">[3/28]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -25836,7 +26145,7 @@ template&lt;class Json &gt; </div>
 </div>
 </div>
 <a id="a78fac3d6c2d0c19d16dae11ee8cf561a" name="a78fac3d6c2d0c19d16dae11ee8cf561a"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a78fac3d6c2d0c19d16dae11ee8cf561a">&#9670;&#160;</a></span>ToJson() <span class="overload">[4/25]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a78fac3d6c2d0c19d16dae11ee8cf561a">&#9670;&#160;</a></span>ToJson() <span class="overload">[4/28]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -25859,8 +26168,28 @@ template&lt;class Json &gt; </div>
 
 </div>
 </div>
+<a id="acfcb68ea528ee9736dca6742b417d3c7" name="acfcb68ea528ee9736dca6742b417d3c7"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#acfcb68ea528ee9736dca6742b417d3c7">&#9670;&#160;</a></span>ToJson() <span class="overload">[5/28]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classpulsatrix_1_1JsonValue.html">JsonValue</a> pulsatrix::ToJson </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="structpulsatrix_1_1ClassificationReport.html">ClassificationReport</a> &amp;&#160;</td>
+          <td class="paramname"><em>report</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>The report as a <code>pulsatrix.classification_report.v1</code> document. </p>
+
+</div>
+</div>
 <a id="a81177bae8565dd9b82c6d1829b79b27c" name="a81177bae8565dd9b82c6d1829b79b27c"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a81177bae8565dd9b82c6d1829b79b27c">&#9670;&#160;</a></span>ToJson() <span class="overload">[5/25]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a81177bae8565dd9b82c6d1829b79b27c">&#9670;&#160;</a></span>ToJson() <span class="overload">[6/28]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -25884,7 +26213,7 @@ template&lt;class Json &gt; </div>
 </div>
 </div>
 <a id="a2ac9f728dfffa04b28687357b3345084" name="a2ac9f728dfffa04b28687357b3345084"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a2ac9f728dfffa04b28687357b3345084">&#9670;&#160;</a></span>ToJson() <span class="overload">[6/25]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a2ac9f728dfffa04b28687357b3345084">&#9670;&#160;</a></span>ToJson() <span class="overload">[7/28]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -25914,7 +26243,7 @@ template&lt;class Json &gt; </div>
 </div>
 </div>
 <a id="ae1bd894b2f804084cd61b94d4e4bd520" name="ae1bd894b2f804084cd61b94d4e4bd520"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ae1bd894b2f804084cd61b94d4e4bd520">&#9670;&#160;</a></span>ToJson() <span class="overload">[7/25]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#ae1bd894b2f804084cd61b94d4e4bd520">&#9670;&#160;</a></span>ToJson() <span class="overload">[8/28]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -25938,7 +26267,7 @@ template&lt;class Json &gt; </div>
 </div>
 </div>
 <a id="aa4e8b5fb8a54c061c9a57a7449d9ecc2" name="aa4e8b5fb8a54c061c9a57a7449d9ecc2"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aa4e8b5fb8a54c061c9a57a7449d9ecc2">&#9670;&#160;</a></span>ToJson() <span class="overload">[8/25]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#aa4e8b5fb8a54c061c9a57a7449d9ecc2">&#9670;&#160;</a></span>ToJson() <span class="overload">[9/28]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -25958,7 +26287,7 @@ template&lt;class Json &gt; </div>
 </div>
 </div>
 <a id="adbde0045ad05d75702844315abc386e2" name="adbde0045ad05d75702844315abc386e2"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#adbde0045ad05d75702844315abc386e2">&#9670;&#160;</a></span>ToJson() <span class="overload">[9/25]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#adbde0045ad05d75702844315abc386e2">&#9670;&#160;</a></span>ToJson() <span class="overload">[10/28]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -25978,7 +26307,7 @@ template&lt;class Json &gt; </div>
 </div>
 </div>
 <a id="aa02d539ab2f09dbd63a0d3c0669f02a9" name="aa02d539ab2f09dbd63a0d3c0669f02a9"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aa02d539ab2f09dbd63a0d3c0669f02a9">&#9670;&#160;</a></span>ToJson() <span class="overload">[10/25]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#aa02d539ab2f09dbd63a0d3c0669f02a9">&#9670;&#160;</a></span>ToJson() <span class="overload">[11/28]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -25998,7 +26327,7 @@ template&lt;class Json &gt; </div>
 </div>
 </div>
 <a id="ac0c52d3b599e7bf169118db77357e61c" name="ac0c52d3b599e7bf169118db77357e61c"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ac0c52d3b599e7bf169118db77357e61c">&#9670;&#160;</a></span>ToJson() <span class="overload">[11/25]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#ac0c52d3b599e7bf169118db77357e61c">&#9670;&#160;</a></span>ToJson() <span class="overload">[12/28]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -26022,7 +26351,7 @@ template&lt;class Json &gt; </div>
 </div>
 </div>
 <a id="ab956a7775fa51f615c268b6635ca4a58" name="ab956a7775fa51f615c268b6635ca4a58"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ab956a7775fa51f615c268b6635ca4a58">&#9670;&#160;</a></span>ToJson() <span class="overload">[12/25]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#ab956a7775fa51f615c268b6635ca4a58">&#9670;&#160;</a></span>ToJson() <span class="overload">[13/28]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -26046,7 +26375,7 @@ template&lt;class Json &gt; </div>
 </div>
 </div>
 <a id="a3723b86c310dfa94b0a9346dcaba88ef" name="a3723b86c310dfa94b0a9346dcaba88ef"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a3723b86c310dfa94b0a9346dcaba88ef">&#9670;&#160;</a></span>ToJson() <span class="overload">[13/25]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a3723b86c310dfa94b0a9346dcaba88ef">&#9670;&#160;</a></span>ToJson() <span class="overload">[14/28]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -26064,7 +26393,7 @@ template&lt;class Json &gt; </div>
 </div>
 </div>
 <a id="a48f09b49a4bfd7fcb0c6a187ad8e707e" name="a48f09b49a4bfd7fcb0c6a187ad8e707e"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a48f09b49a4bfd7fcb0c6a187ad8e707e">&#9670;&#160;</a></span>ToJson() <span class="overload">[14/25]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a48f09b49a4bfd7fcb0c6a187ad8e707e">&#9670;&#160;</a></span>ToJson() <span class="overload">[15/28]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -26088,7 +26417,7 @@ template&lt;class Json &gt; </div>
 </div>
 </div>
 <a id="a08917aaabe7b0581e886617112b4b22f" name="a08917aaabe7b0581e886617112b4b22f"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a08917aaabe7b0581e886617112b4b22f">&#9670;&#160;</a></span>ToJson() <span class="overload">[15/25]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a08917aaabe7b0581e886617112b4b22f">&#9670;&#160;</a></span>ToJson() <span class="overload">[16/28]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -26112,7 +26441,7 @@ template&lt;class Json &gt; </div>
 </div>
 </div>
 <a id="ad5af73b59a7c24eae3c7b17218833dc8" name="ad5af73b59a7c24eae3c7b17218833dc8"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ad5af73b59a7c24eae3c7b17218833dc8">&#9670;&#160;</a></span>ToJson() <span class="overload">[16/25]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#ad5af73b59a7c24eae3c7b17218833dc8">&#9670;&#160;</a></span>ToJson() <span class="overload">[17/28]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -26138,7 +26467,7 @@ template&lt;class Json &gt; </div>
 </div>
 </div>
 <a id="a511eca3c55a2af484ab7b0848552baab" name="a511eca3c55a2af484ab7b0848552baab"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a511eca3c55a2af484ab7b0848552baab">&#9670;&#160;</a></span>ToJson() <span class="overload">[17/25]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a511eca3c55a2af484ab7b0848552baab">&#9670;&#160;</a></span>ToJson() <span class="overload">[18/28]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -26162,7 +26491,7 @@ template&lt;class Json &gt; </div>
 </div>
 </div>
 <a id="ab64a3e193ebbd5172a8a84cc1fa7ab77" name="ab64a3e193ebbd5172a8a84cc1fa7ab77"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ab64a3e193ebbd5172a8a84cc1fa7ab77">&#9670;&#160;</a></span>ToJson() <span class="overload">[18/25]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#ab64a3e193ebbd5172a8a84cc1fa7ab77">&#9670;&#160;</a></span>ToJson() <span class="overload">[19/28]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -26181,8 +26510,28 @@ template&lt;class Json &gt; </div>
 
 </div>
 </div>
+<a id="ad1543781766158e953e73420b3e7837d" name="ad1543781766158e953e73420b3e7837d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad1543781766158e953e73420b3e7837d">&#9670;&#160;</a></span>ToJson() <span class="overload">[20/28]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classpulsatrix_1_1JsonValue.html">JsonValue</a> pulsatrix::ToJson </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="structpulsatrix_1_1RegressionReport.html">RegressionReport</a> &amp;&#160;</td>
+          <td class="paramname"><em>report</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>The report as a <code>pulsatrix.regression_report.v1</code> document. </p>
+
+</div>
+</div>
 <a id="a1cac87fb441609597ed45ef44a31fdf0" name="a1cac87fb441609597ed45ef44a31fdf0"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a1cac87fb441609597ed45ef44a31fdf0">&#9670;&#160;</a></span>ToJson() <span class="overload">[19/25]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a1cac87fb441609597ed45ef44a31fdf0">&#9670;&#160;</a></span>ToJson() <span class="overload">[21/28]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -26206,7 +26555,7 @@ template&lt;class Json &gt; </div>
 </div>
 </div>
 <a id="a619059d9817446489ce8017256877dd3" name="a619059d9817446489ce8017256877dd3"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a619059d9817446489ce8017256877dd3">&#9670;&#160;</a></span>ToJson() <span class="overload">[20/25]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a619059d9817446489ce8017256877dd3">&#9670;&#160;</a></span>ToJson() <span class="overload">[22/28]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -26224,7 +26573,7 @@ template&lt;class Json &gt; </div>
 </div>
 </div>
 <a id="a9876fb802002c15f93971e013d8d4061" name="a9876fb802002c15f93971e013d8d4061"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a9876fb802002c15f93971e013d8d4061">&#9670;&#160;</a></span>ToJson() <span class="overload">[21/25]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a9876fb802002c15f93971e013d8d4061">&#9670;&#160;</a></span>ToJson() <span class="overload">[23/28]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -26247,8 +26596,28 @@ template&lt;class Json &gt; </div>
 
 </div>
 </div>
+<a id="aa32f8bf96528f433531e134108cee908" name="aa32f8bf96528f433531e134108cee908"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa32f8bf96528f433531e134108cee908">&#9670;&#160;</a></span>ToJson() <span class="overload">[24/28]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classpulsatrix_1_1JsonValue.html">JsonValue</a> pulsatrix::ToJson </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="structpulsatrix_1_1SliceErrorReport.html">SliceErrorReport</a> &amp;&#160;</td>
+          <td class="paramname"><em>report</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>The report as a <code>pulsatrix.slice_error.v1</code> document. </p>
+
+</div>
+</div>
 <a id="af8ed5eb7aa5da0fbf8687ee45f639029" name="af8ed5eb7aa5da0fbf8687ee45f639029"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#af8ed5eb7aa5da0fbf8687ee45f639029">&#9670;&#160;</a></span>ToJson() <span class="overload">[22/25]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#af8ed5eb7aa5da0fbf8687ee45f639029">&#9670;&#160;</a></span>ToJson() <span class="overload">[25/28]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -26266,7 +26635,7 @@ template&lt;class Json &gt; </div>
 </div>
 </div>
 <a id="aac377b6bda0d2235c35aa5ee0616f96d" name="aac377b6bda0d2235c35aa5ee0616f96d"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aac377b6bda0d2235c35aa5ee0616f96d">&#9670;&#160;</a></span>ToJson() <span class="overload">[23/25]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#aac377b6bda0d2235c35aa5ee0616f96d">&#9670;&#160;</a></span>ToJson() <span class="overload">[26/28]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -26296,7 +26665,7 @@ template&lt;class Json &gt; </div>
 </div>
 </div>
 <a id="ad3cdd9d157bcc91df671e6c976c56a21" name="ad3cdd9d157bcc91df671e6c976c56a21"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ad3cdd9d157bcc91df671e6c976c56a21">&#9670;&#160;</a></span>ToJson() <span class="overload">[24/25]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#ad3cdd9d157bcc91df671e6c976c56a21">&#9670;&#160;</a></span>ToJson() <span class="overload">[27/28]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -26320,7 +26689,7 @@ template&lt;class Json &gt; </div>
 </div>
 </div>
 <a id="a5c45799fc127623333c36aade7d18eb3" name="a5c45799fc127623333c36aade7d18eb3"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a5c45799fc127623333c36aade7d18eb3">&#9670;&#160;</a></span>ToJson() <span class="overload">[25/25]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a5c45799fc127623333c36aade7d18eb3">&#9670;&#160;</a></span>ToJson() <span class="overload">[28/28]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
