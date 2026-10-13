@@ -375,6 +375,10 @@ if(PULSATRIX_BUILD_EXAMPLES)
         COMMAND is_the_shape_real_recipe "${CMAKE_CURRENT_SOURCE_DIR}/fixtures/hf_tiny/llama"
             "${CMAKE_CURRENT_BINARY_DIR}/recipe_is_the_shape_real" --smoke
             --tokenizer "${CMAKE_CURRENT_SOURCE_DIR}/fixtures/tokenizers/smollm2/tokenizer.json")
+    add_test(NAME Recipe.WhatDidTheFinetuneChangeSmoke
+        COMMAND what_did_the_finetune_change_recipe "${CMAKE_CURRENT_SOURCE_DIR}/fixtures/hf_tiny/llama"
+            "${CMAKE_CURRENT_BINARY_DIR}/recipe_what_did_the_finetune_change" --smoke --retain
+            --tokenizer "${CMAKE_CURRENT_SOURCE_DIR}/fixtures/tokenizers/smollm2/tokenizer.json")
 endif()
 
 # VIZ-2: the pulsatrix_svg command-line tool, on the VIZ-1 document fixtures.

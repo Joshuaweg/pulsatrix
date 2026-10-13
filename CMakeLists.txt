@@ -730,6 +730,10 @@ if(PULSATRIX_BUILD_EXAMPLES)
     add_executable(is_the_shape_real_recipe examples/recipes/is_the_shape_real.cpp)
     target_link_libraries(is_the_shape_real_recipe PRIVATE pulsatrix_core)
     target_compile_definitions(is_the_shape_real_recipe PRIVATE $<$<BOOL:${PULSATRIX_ENABLE_HIP}>:PULSATRIX_DEMO_WITH_HIP>)
+
+    add_executable(what_did_the_finetune_change_recipe examples/recipes/what_did_the_finetune_change.cpp)
+    target_link_libraries(what_did_the_finetune_change_recipe PRIVATE pulsatrix_core)
+    target_compile_definitions(what_did_the_finetune_change_recipe PRIVATE $<$<BOOL:${PULSATRIX_ENABLE_HIP}>:PULSATRIX_DEMO_WITH_HIP>)
 endif()
 
 if(PULSATRIX_BUILD_TESTS)
