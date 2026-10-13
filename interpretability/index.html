@@ -675,6 +675,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#reporting-an-explanation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Reporting an explanation
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#recipes" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -2590,6 +2601,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#reporting-an-explanation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Reporting an explanation
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#recipes" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -2909,6 +2931,122 @@ model and on a re-initialized one, then restores the model exactly:</p>
 <p>Re-initialization replaces each parameter tensor with Gaussian noise at that tensor's own scale,
 and leaves buffers such as BatchNorm's running statistics alone. <code>ParameterSnapshot</code> and
 <code>ReinitializeParameters</code> are available separately.</p>
+<h2 id="reporting-an-explanation">Reporting an explanation<a class="headerlink" href="#reporting-an-explanation" title="Permanent link">&para;</a></h2>
+<p><code>BuildExplanation</code> (<code>include/pulsatrix/explanation_report.hpp</code>) runs an attribution explainer,
+then every check the plan asks for, and returns an <code>Explanation</code>. The report holds:</p>
+<ul>
+<li>the question and reason, the method and its rank in the plan;</li>
+<li>the attribution, its settings (the explainer's metadata, yours, and every check option) and two
+  metrics, sparseness and complexity;</li>
+<li>one result per planned check: passed, failed, measured, or not run with the reason;</li>
+<li>the <strong>caveats</strong>, derived from the rest.</li>
+</ul>
+<p><code>supports_reason()</code> is false when any caveat is blocking.</p>
+<div class="highlight"><pre><span></span><code><span class="cp">#include</span><span class="w"> </span><span class="cpf">"pulsatrix/explanation_report.hpp"</span>
+
+<span class="n">ExplanationRequest</span><span class="w"> </span><span class="n">request</span><span class="p">;</span>
+<span class="n">request</span><span class="p">.</span><span class="n">question</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">XaiQuestion</span><span class="o">::</span><span class="n">Why</span><span class="p">;</span>
+<span class="n">request</span><span class="p">.</span><span class="n">reason</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">XaiReason</span><span class="o">::</span><span class="n">Justify</span><span class="p">;</span>
+<span class="n">request</span><span class="p">.</span><span class="n">method</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">"KernelSHAP"</span><span class="p">;</span>
+<span class="n">request</span><span class="p">.</span><span class="n">traits</span><span class="p">.</span><span class="n">input</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">InputKind</span><span class="o">::</span><span class="n">Tabular</span><span class="p">;</span>
+<span class="n">request</span><span class="p">.</span><span class="n">traits</span><span class="p">.</span><span class="n">can_reinitialize</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">true</span><span class="p">;</span>
+<span class="n">request</span><span class="p">.</span><span class="n">baseline</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">zeros</span><span class="p">;</span><span class="w">  </span><span class="c1">// what KernelSHAP measured from, for the conservation check</span>
+
+<span class="n">PredictFn</span><span class="w"> </span><span class="n">predict</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="o">&amp;</span><span class="p">](</span><span class="k">const</span><span class="w"> </span><span class="n">Tensor</span><span class="o">&amp;</span><span class="w"> </span><span class="n">x</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="k">return</span><span class="w"> </span><span class="n">model</span><span class="p">.</span><span class="n">forward</span><span class="p">(</span><span class="n">x</span><span class="p">);</span><span class="w"> </span><span class="p">};</span>
+<span class="n">ExplainFn</span><span class="w"> </span><span class="n">explain</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="o">&amp;</span><span class="p">](</span><span class="k">const</span><span class="w"> </span><span class="n">Tensor</span><span class="o">&amp;</span><span class="w"> </span><span class="n">x</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="k">return</span><span class="w"> </span><span class="n">KernelSHAP</span><span class="p">().</span><span class="n">explain</span><span class="p">(</span><span class="n">predict</span><span class="p">,</span><span class="w"> </span><span class="n">x</span><span class="p">,</span><span class="w"> </span><span class="n">zeros</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">backend</span><span class="p">);</span><span class="w"> </span><span class="p">};</span>
+<span class="n">Explanation</span><span class="w"> </span><span class="n">e</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">BuildExplanation</span><span class="p">(</span><span class="n">request</span><span class="p">,</span><span class="w"> </span><span class="n">x</span><span class="p">,</span><span class="w"> </span><span class="n">explain</span><span class="p">,</span><span class="w"> </span><span class="n">predict</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">model</span><span class="p">);</span>
+<span class="n">std</span><span class="o">::</span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">DescribeExplanation</span><span class="p">(</span><span class="n">e</span><span class="p">);</span>
+</code></pre></div>
+<p><strong>What each check does:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Check</th>
+<th>How it runs</th>
+<th>Passes when</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>faithfulness</td>
+<td>Deletion and insertion curves, scored as insertion AUC minus deletion AUC, against 19 random orderings of the features</td>
+<td>it beats them: p ≤ 0.05</td>
+</tr>
+<tr>
+<td>stability</td>
+<td>Two more runs on the same input, and three on the input plus 1% noise (not for token or symbolic input)</td>
+<td>every Spearman correlation of attribution magnitudes is ≥ 0.8</td>
+</tr>
+<tr>
+<td>conservation</td>
+<td>The attributions' sum against LRP's seeded total, or f(input) − f(baseline)</td>
+<td>the gap is ≤ 5%</td>
+</tr>
+<tr>
+<td>randomization</td>
+<td><code>ModelParameterRandomizationTest</code></td>
+<td>the fully randomized model's explanation correlates ≤ 0.5 with the original</td>
+</tr>
+<tr>
+<td>null_model</td>
+<td><code>NullModelBaseline</code></td>
+<td>the same threshold</td>
+</tr>
+<tr>
+<td>aggregate</td>
+<td>The mean absolute attribution over <code>request.dataset</code>, kept in <code>Explanation::aggregate</code></td>
+<td>(measured, no verdict)</td>
+</tr>
+</tbody>
+</table>
+<p>Every threshold is in <code>ExplanationCheckOptions</code>, and the report records the values used. A check
+pulsatrix can't run yet, such as per-slice error (KS-3), comes back as not run.</p>
+<p><strong>The caveats</strong> follow from the report alone, so <code>DeriveCaveats()</code> gives the same caveats for a
+stored report:</p>
+<ul>
+<li><strong>Blocking:</strong></li>
+<li>a required check failed or didn't run;</li>
+<li>the planner excluded the method for this model.</li>
+<li><strong>Warning:</strong></li>
+<li>a recommended check failed;</li>
+<li>a known failure mode applies to these settings or this input: a constant fill on images,
+    a fill value substituted into token ids, or fewer than 50 Integrated Gradients steps.</li>
+<li><strong>Note:</strong></li>
+<li>a recommended check that didn't run;</li>
+<li>the method's known limitations: Integrated Gradients' and KernelSHAP's baseline, LRP's rule
+    choice, LIME's sampling, Saliency's sensitivity, Grad-CAM's resolution, Occlusion's fill;</li>
+<li>for Justify, that an attribution shows what the model relied on, not whether it should have.</li>
+</ul>
+<p>On a 12-feature MLP the code above prints:</p>
+<div class="highlight"><pre><span></span><code>Explanation: KernelSHAP, for the why question. Why/how is this instance given this prediction?
+Reason: justify. Justify a decision to the people it affects or who must sign it off.
+Supports the reason: yes
+Plan: ranked 1 for this question, reason and model
+
+Largest attributions (kernel_shap, 12 features): [11] 0.116, [8] -0.112, [4] -0.0937, [7] 0.0756, [2] -0.0708
+Metrics: sparseness 0.416, complexity 2.17
+Settings: target_index=0, check.target=0, check.seed=0, check.imputation=constant:0, ...
+
+Checks:
+  [required] faithfulness: passed. Removing the features it ranks highest, and restoring them, moved the target output more than 19 of 19 random orderings did (insertion minus deletion AUC 0.47, p = 0.05).
+  [required] stability: passed. Repeated runs were identical; with noise of 1% of the input's spread, the ranking correlated 1 with the original on average.
+  [required] conservation: passed. The attributions add up to -0.0324 against -0.0324, f(input) - f(baseline): a gap of 0%.
+  [recommended] randomization: failed. With the 2 layers randomized from the output down, the explanation's ranking correlates 0.51 with the original (0.559 after the top layer alone).
+
+Caveats:
+  [warning] Randomization check failed. With the 2 layers randomized from the output down, ...
+  [note] An absent feature takes the baseline's value, so the Shapley values compare with the baseline and treat features as independent; correlated features split credit unpredictably (Kumar et al. 2020).
+  [note] An attribution shows what the model relied on for this prediction, not whether it should have: passing the checks means the ranking matches the model, not the world.
+</code></pre></div>
+<p>The randomization warning is a real result, not a fault of the example. The input's values range
+from 0.05 to 2.2, so any model's attributions grow with |x|, and a random network's ranking
+still correlates 0.51 with the trained one's. Adebayo et al. found the same of gradient × input.
+Justify only recommends the test, so the explanation still supports its reason. Asked to control
+the model, the same explanation would be blocked.</p>
+<p><code>ToJson(e)</code> writes a <code>pulsatrix.explanation.v1</code> document. For explainers that don't return an
+attribution, such as a probe or persistent homology, run their checks yourself and pass the
+results to <code>ReportExplanation</code>. It matches them to the planned checks by name, marks the missing
+ones as not run, and derives the same caveats.</p>
 <h2 id="recipes">Recipes<a class="headerlink" href="#recipes" title="Permanent link">&para;</a></h2>
 <p>New here? Start with the
 <a href="../recipes/interpretability/saliency_and_integrated_gradients/">Saliency and Integrated Gradients recipe</a>.
