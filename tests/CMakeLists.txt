@@ -88,6 +88,7 @@ add_executable(pulsatrix_tests
     prototypes_test.cpp
     performance_test.cpp
     uncertainty_test.cpp
+    conformal_test.cpp
     contrastive_test.cpp
     relu_module_test.cpp
     softmax_module_test.cpp

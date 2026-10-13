@@ -24,8 +24,8 @@ in [INT](#int-embedding-and-representation-analysis) is done.
 [TDA](#tda-topological-data-analysis) are done. TDA-9 is done too; TDA-10 and TDA-12 are scheduled for v1.4.
 **The XAI epic, question-driven explainability, is complete** (2026-10-13): every item in
 [XAI](#xai-question-driven-explainability-framework) is done. Every one of the nine questions has
-an explainer except Output (a template). KS-3 answers Performance: metrics, calibration,
-per-slice error and uncertainty so far, with conformal prediction to come.
+an explainer except Output (a template); KS-3 answered Performance with metrics, calibration,
+per-slice error, uncertainty and conformal prediction.
 
 - **Strong.** LRP covers every layer and is checked against Zennit and LXT. Saliency, Integrated
   Gradients and Grad-CAM are checked against Captum. LIME, KernelSHAP, PDP, logit lens,
@@ -220,9 +220,9 @@ Fine-tune the models from v1.2 and explain what the fine-tuning changed.
   neighbors, probe controls, layer geometry, PCA, TCAV and CRP, and export for UMAP and t-SNE
 - TDA-1 to TDA-8, TDA-11 (**done**, [#141](https://github.com/Joshuaweg/pulsatrix/pull/141) to
   [#149](https://github.com/Joshuaweg/pulsatrix/pull/149)): persistent homology with certified error bars, significance tests, and RTD
-- KS-3 (in progress): metrics, calibration and per-slice error
-  ([#168](https://github.com/Joshuaweg/pulsatrix/pull/168)); Monte Carlo dropout and deep ensembles
-  ([#169](https://github.com/Joshuaweg/pulsatrix/pull/169)); split conformal prediction next
+- KS-3 (**done**, [#168](https://github.com/Joshuaweg/pulsatrix/pull/168) to
+  [#170](https://github.com/Joshuaweg/pulsatrix/pull/170)): metrics, calibration and per-slice
+  error; Monte Carlo dropout and deep ensembles; split conformal prediction
 - KS-4: adversarial robustness
 - Llama-3.2-1B and Qwen2.5-0.5B pass the golden-logit test
 
@@ -744,7 +744,7 @@ doesn't support.
 | How (global) | Global surrogate tree, PDP, TCAV, CRP | Have |
 | How to be that | Counterfactual search | Have: gradient-based, model-agnostic and diverse sets ([CFS](#cfs-counterfactuals-and-sensitivity)) |
 | How to still be this | Anchors | Have |
-| Performance | Metrics, calibration, per-slice error, uncertainty | Have metrics, calibration, per-slice error and uncertainty; conformal prediction in KS-3 |
+| Performance | Metrics, calibration, per-slice error, uncertainty | Have (KS-3): metrics, calibration, per-slice error, uncertainty, conformal prediction |
 | Input (data) | Dataset statistics, nearest training examples, data attribution | Partial; INT-1, KS-5 |
 | Output | Output schema and label documentation | Template only |
 
@@ -1847,7 +1847,7 @@ AGT-5 has to follow these security rules:
 |---|---|---|---|---|---|---|
 | KS-1 | CMake `install()` and a package config, so other projects can `find_package(pulsatrix)` | There's no install step today | — | P0 | S | Done, [#61](https://github.com/Joshuaweg/pulsatrix/pull/61) |
 | KS-2 | A benchmark suite: step time, explanation time, conservation error | Measures every HIP item and catches regressions | — | P1 | S | Done, [#64](https://github.com/Joshuaweg/pulsatrix/pull/64) (see below) |
-| KS-3 | Uncertainty: Monte Carlo dropout, deep ensembles, split conformal prediction | Answers the Performance question | — | P1 | S | Partly done: metrics, calibration and per-slice error, [#168](https://github.com/Joshuaweg/pulsatrix/pull/168); Monte Carlo dropout and deep ensembles, [#169](https://github.com/Joshuaweg/pulsatrix/pull/169) |
+| KS-3 | Uncertainty: Monte Carlo dropout, deep ensembles, split conformal prediction | Answers the Performance question | — | P1 | S | Done: metrics, calibration and per-slice error, [#168](https://github.com/Joshuaweg/pulsatrix/pull/168); Monte Carlo dropout and deep ensembles, [#169](https://github.com/Joshuaweg/pulsatrix/pull/169); split conformal prediction, [#170](https://github.com/Joshuaweg/pulsatrix/pull/170) (see below) |
 | KS-4 | FGSM and PGD attacks, also used as a robustness test for explanations | Robustness and the Control reason | — | P1 | S | |
 | KS-5 | TracIn data attribution | Answers "which training examples caused this" | FND-1 | P2 | M | |
 | KS-6 | Fairness metrics, drift detection and a model-card generator | The Input question, and documentation | — | P2 | S each | |
@@ -1928,6 +1928,23 @@ AGT-5 has to follow these security rules:
   is no access level for "a pulsatrix Module", so Monte Carlo dropout declares Gradients, the
   first level that implies one.
 
+  The third part ([#170](https://github.com/Joshuaweg/pulsatrix/pull/170)) adds `conformal.hpp`:
+  split conformal sets with the LAC and APS scores (APS optionally randomized), absolute-residual
+  and CQR intervals, and coverage reports whose per-input misses go straight into
+  `PerSliceError`, so a group that is undercovered is tested like any other slice. Choices the
+  item didn't settle:
+  - **The quantile** is the ⌈(n + 1)(1 − α)⌉-th smallest score, as Angelopoulos and Bates state
+    it. MAPIE takes numpy's "higher" quantile at (n + 1)(1 − α)/n, which can land one rank
+    higher; the reference script checks that the two agree at the levels tested.
+  - **Sets hold every class scoring at most q̂**, so LAC sets can be empty, as the guarantee
+    allows, rather than MAPIE's 10⁻⁸ tolerance.
+  - **The reference:** LAC sets and absolute-residual intervals match MAPIE 1.1.0 on all 300 test
+    inputs. MAPIE 1.1.0 fails with scikit-learn 1.9.1, so its values come from scikit-learn 1.7.2.
+    MAPIE always randomizes APS calibration scores, so APS is checked against Angelopoulos and
+    Bates' reference code instead.
+  - **`ExplainerCapabilities::needs_labels`:** the metrics and conformal calibration need true
+    labels, so the planner now excludes them unless `ModelTraits::has_labels` is set.
+
 ### Follow-ups the KS work surfaced
 
 | Follow-up | Found in | Belongs with |
@@ -1941,6 +1958,10 @@ AGT-5 has to follow these security rules:
 | Bottleneck ResNets (ResNet50 and up) and VGG with BatchNorm, on the same builders | KS-9 | a later model-zoo item |
 | `AdaptiveAvgPool2DModule` for sizes that don't divide evenly (PyTorch's overlapping windows) | KS-9 | when a model needs it |
 | Python bindings for `TorchvisionResNet` and `TorchvisionVGG` | KS-9 | NB-3 |
+| Views for the reliability diagram, per-slice error and conformal coverage | KS-3 | VIZ |
+| A recipe on a real model: calibration, uncertainty on familiar and unfamiliar inputs, and conformal coverage by slice | KS-3 | a recipe |
+| Uncertainty in the Justify report: the planner says the report should carry it, and `Explanation` has no field for it yet | KS-3 | XAI-3 revision |
+| RAPS (Angelopoulos et al., ICLR 2021) and conformal risk control | KS-3 | when a user needs smaller sets |
 
 ## PLM: Protein language models
 

@@ -131,7 +131,7 @@ TEST(ExplainerCatalog, QuestionsWithNoExplainerYetComeBackEmpty) {
     EXPECT_EQ(Names(ExplainersFor(XaiQuestion::HowToStillBeThis)), (std::vector<std::string>{"Anchors"}));
     EXPECT_EQ(Names(ExplainersFor(XaiQuestion::Performance)),
               (std::vector<std::string>{"ClassifierMetrics", "RegressorMetrics", "PerSliceError", "MonteCarloDropout",
-                                        "DeepEnsemble"}));
+                                        "DeepEnsemble", "SplitConformal"}));
     EXPECT_TRUE(ExplainersFor(XaiQuestion::Output).empty());
 }
 
@@ -158,6 +158,7 @@ TEST(ExplainerCatalog, TheDocumentRoundTripsThroughJson) {
     EXPECT_EQ(lrp.find("entry_points")->as_array().front().as_string(), "LRP::explain");
     EXPECT_TRUE(lrp.find("complete")->as_bool());
     EXPECT_FALSE(lrp.find("needs_base_model")->as_bool());
+    EXPECT_FALSE(lrp.find("needs_labels")->as_bool());
 }
 
 TEST(ExplainerCatalog, CompletenessAndBaseModelsAreDeclared) {
@@ -167,6 +168,9 @@ TEST(ExplainerCatalog, CompletenessAndBaseModelsAreDeclared) {
     EXPECT_FALSE(LIME::capabilities().complete);
     EXPECT_TRUE(ExplainerCapabilitiesOf("FineTuneRelevanceDiff").needs_base_model);
     EXPECT_TRUE(ExplainerCapabilitiesOf("IntruderDimensions").needs_base_model);
+    EXPECT_TRUE(ExplainerCapabilitiesOf("SplitConformal").needs_labels);
+    EXPECT_TRUE(ExplainerCapabilitiesOf("PerSliceError").needs_labels);
+    EXPECT_FALSE(ExplainerCapabilitiesOf("DeepEnsemble").needs_labels);
     for (const ExplainerCapabilities& e : ExplainerCatalog()) {
         // Completeness is a property of attributions: of local explainers that answer Why.
         if (e.complete) EXPECT_TRUE(e.answers(XaiQuestion::Why)) << e.name;

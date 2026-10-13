@@ -28,6 +28,7 @@ std::string AccessText(ModelAccess access) {
 // Why @p c can't run on a model with @p t, or "" if it can.
 std::string Unusable(const ExplainerCapabilities& c, const ModelTraits& t) {
     if (c.needs_base_model && !t.has_base_model) return "compares the model with the one it was fine-tuned from, which isn't given";
+    if (c.needs_labels && !t.has_labels) return "scores the model against true labels, which aren't given";
     // Representations the caller already has need no access to the model to collect them.
     const bool has_representations = c.input == InputKind::Representation && t.input == InputKind::Representation;
     if (!has_representations && Level(c.access) > Level(t.access)) {

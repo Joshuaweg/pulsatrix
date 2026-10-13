@@ -322,12 +322,20 @@ std::vector<ExplainerCapabilities> BuildCatalog() {
                       "The predictions of several networks trained from different seeds, and their "
                       "uncertainty split into the aleatoric and epistemic parts.",
                       {Q::Performance}, S::Local, A::BlackBox, I::Any));
+    c.push_back(Entry("SplitConformal", "conformal.hpp",
+                      {"CalibrateConformalClassifier", "PredictionSets", "CalibrateConformalRegressor",
+                       "CalibrateConformalQuantileRegressor", "PredictionIntervals", "EvaluateCoverage"},
+                      "Prediction sets or intervals that hold the truth with a chosen probability, calibrated on "
+                      "held-out labeled examples, for any model.",
+                      {Q::Performance}, S::Local, A::BlackBox, I::Any));
     for (ExplainerCapabilities& e : c) {
         e.attribution = e.name == "LRP" || e.name == "Saliency" || e.name == "IntegratedGradients" || e.name == "GradCAM" ||
                         e.name == "KernelSHAP" || e.name == "LIME" || e.name == "Occlusion";
         e.complete = e.name == "LRP" || e.name == "IntegratedGradients" || e.name == "KernelSHAP" ||
                      e.name == "ConceptRelevance" || e.name == "ProteinRelevance" || e.name == "FineTuneRelevanceDiff";
         e.needs_base_model = e.name == "FineTuneRelevanceDiff" || e.name == "IntruderDimensions";
+        e.needs_labels = e.name == "ClassifierMetrics" || e.name == "RegressorMetrics" || e.name == "PerSliceError" ||
+                         e.name == "SplitConformal";
         e.max_features = e.name == "KernelSHAP" ? 20 : 0;
     }
     return c;
@@ -382,6 +390,7 @@ JsonValue ToJson(const ExplainerCapabilities& capabilities) {
         {"attribution", capabilities.attribution},
         {"complete", capabilities.complete},
         {"needs_base_model", capabilities.needs_base_model},
+        {"needs_labels", capabilities.needs_labels},
         {"max_features", JsonValue(capabilities.max_features)},
     });
 }
