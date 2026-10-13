@@ -21,9 +21,10 @@ var searchData=
   ['steering_2ehpp_18',['steering.hpp',['../steering_8hpp.html',1,'']]],
   ['subtb_5floss_2ehpp_19',['subtb_loss.hpp',['../subtb__loss_8hpp.html',1,'']]],
   ['successive_5fhalving_2ehpp_20',['successive_halving.hpp',['../successive__halving_8hpp.html',1,'']]],
-  ['survivor_5fselection_2ehpp_21',['survivor_selection.hpp',['../survivor__selection_8hpp.html',1,'']]],
-  ['svg_2ehpp_22',['svg.hpp',['../svg_8hpp.html',1,'']]],
-  ['swiglu_5fmodule_2ehpp_23',['swiglu_module.hpp',['../swiglu__module_8hpp.html',1,'']]],
-  ['system_5fmonitor_2ehpp_24',['system_monitor.hpp',['../system__monitor_8hpp.html',1,'']]],
-  ['system_5fmonitor_5fdetail_2ehpp_25',['system_monitor_detail.hpp',['../system__monitor__detail_8hpp.html',1,'']]]
+  ['surrogate_5ftree_2ehpp_21',['surrogate_tree.hpp',['../surrogate__tree_8hpp.html',1,'']]],
+  ['survivor_5fselection_2ehpp_22',['survivor_selection.hpp',['../survivor__selection_8hpp.html',1,'']]],
+  ['svg_2ehpp_23',['svg.hpp',['../svg_8hpp.html',1,'']]],
+  ['swiglu_5fmodule_2ehpp_24',['swiglu_module.hpp',['../swiglu__module_8hpp.html',1,'']]],
+  ['system_5fmonitor_2ehpp_25',['system_monitor.hpp',['../system__monitor_8hpp.html',1,'']]],
+  ['system_5fmonitor_5fdetail_2ehpp_26',['system_monitor_detail.hpp',['../system__monitor__detail_8hpp.html',1,'']]]
 ];

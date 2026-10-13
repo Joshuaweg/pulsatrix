@@ -216,6 +216,7 @@ var dir_549639eb5e09d856a0d6449a002be6ea =
     [ "steering.hpp", "steering_8hpp.html", "steering_8hpp" ],
     [ "subtb_loss.hpp", "subtb__loss_8hpp.html", "subtb__loss_8hpp" ],
     [ "successive_halving.hpp", "successive__halving_8hpp.html", "successive__halving_8hpp" ],
+    [ "surrogate_tree.hpp", "surrogate__tree_8hpp.html", "surrogate__tree_8hpp" ],
     [ "survivor_selection.hpp", "survivor__selection_8hpp.html", "survivor__selection_8hpp" ],
     [ "swiglu_module.hpp", "swiglu__module_8hpp.html", "swiglu__module_8hpp" ],
     [ "system_monitor.hpp", "system__monitor_8hpp.html", "system__monitor_8hpp" ],

@@ -1409,6 +1409,21 @@ Classes</h2></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The winning configuration, its final metric, and the total epoch-budget actually spent across every trial/rung (the exit-gate's own "reduces total training
        compute" measure).  <a href="structpulsatrix_1_1SuccessiveHalvingResult.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpulsatrix_1_1SurrogateFidelity.html">SurrogateFidelity</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">How well the tree imitates the model.  <a href="structpulsatrix_1_1SurrogateFidelity.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpulsatrix_1_1SurrogateNode.html">SurrogateNode</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">One node. A leaf has feature -1.  <a href="structpulsatrix_1_1SurrogateNode.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpulsatrix_1_1SurrogateTree.html">SurrogateTree</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">A fitted tree. nodes[0] is the root.  <a href="structpulsatrix_1_1SurrogateTree.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpulsatrix_1_1SurrogateTreeOptions.html">SurrogateTreeOptions</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">How the tree is grown.  <a href="structpulsatrix_1_1SurrogateTreeOptions.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpulsatrix_1_1SurrogateTreeResult.html">SurrogateTreeResult</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="namespacepulsatrix.html#ab73c992d2035e9ebb2dea799de9c3b38" title="Labels instances with the model, holds out options.test_fraction of them, fits a tree to the rest and...">FitSurrogateTree()</a>'s result.  <a href="structpulsatrix_1_1SurrogateTreeResult.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpulsatrix_1_1SvccaOptions.html">SvccaOptions</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="namespacepulsatrix.html#a5fafff22686c4cf7562ffe1ee9b50ae8" title="SVCCA: CanonicalCorrelations() between each representation&#39;s top singular directions.">Svcca()</a>'s settings.  <a href="structpulsatrix_1_1SvccaOptions.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -2037,6 +2052,11 @@ Enumerations</h2></td></tr>
  }</td></tr>
 <tr class="memdesc:ad7a1ebc92bdef322b1c30385aac7c066"><td class="mdescLeft">&#160;</td><td class="mdescRight">When Metaspace puts its replacement in front of a piece.  <a href="namespacepulsatrix.html#ad7a1ebc92bdef322b1c30385aac7c066">More...</a><br /></td></tr>
 <tr class="separator:ad7a1ebc92bdef322b1c30385aac7c066"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afe1fc738971130d1b72129ba8b15b637" id="r_afe1fc738971130d1b72129ba8b15b637"><td class="memItemLeft" align="right" valign="top">enum class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#afe1fc738971130d1b72129ba8b15b637">SurrogateTask</a> { <a class="el" href="namespacepulsatrix.html#afe1fc738971130d1b72129ba8b15b637a5c9335b28e6277ddbe0137f04e5e58a7">Classification</a>
+, <a class="el" href="namespacepulsatrix.html#afe1fc738971130d1b72129ba8b15b637aced9b681c2824b1aa4e53cfbd6965912">Regression</a>
+ }</td></tr>
+<tr class="memdesc:afe1fc738971130d1b72129ba8b15b637"><td class="mdescLeft">&#160;</td><td class="mdescRight">What the surrogate imitates.  <a href="namespacepulsatrix.html#afe1fc738971130d1b72129ba8b15b637">More...</a><br /></td></tr>
+<tr class="separator:afe1fc738971130d1b72129ba8b15b637"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a988785af20e321b62cf99997047a6985" id="r_a988785af20e321b62cf99997047a6985"><td class="memItemLeft" align="right" valign="top">enum class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#a988785af20e321b62cf99997047a6985">GatedActivation</a> { <a class="el" href="namespacepulsatrix.html#a988785af20e321b62cf99997047a6985a17aeea3715b4cdfdf861f237f4011edf">Silu</a>
 , <a class="el" href="namespacepulsatrix.html#a988785af20e321b62cf99997047a6985a2def035d9851f43e5bb24c50b324d47f">GeluTanh</a>
 , <a class="el" href="namespacepulsatrix.html#a988785af20e321b62cf99997047a6985af48cca1c6deaa6a1c34e4ee46954cf0b">Gelu</a>
@@ -3136,6 +3156,23 @@ Functions</h2></td></tr>
 <tr class="memitem:aca7e1f167f27418f95b6a8dec4c51955"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="structpulsatrix_1_1SuccessiveHalvingResult.html">SuccessiveHalvingResult</a>&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#aca7e1f167f27418f95b6a8dec4c51955">RunSuccessiveHalving</a> (const <a class="el" href="classpulsatrix_1_1SearchSpace.html">SearchSpace</a> &amp;space, const <a class="el" href="namespacepulsatrix.html#a6bc143576cb71fab19f76a88330f5a4f">TrialFactory</a> &amp;make_trial, size_t num_configs, int initial_epoch_budget, double eta, RNG &amp;rng)</td></tr>
 <tr class="memdesc:aca7e1f167f27418f95b6a8dec4c51955"><td class="mdescLeft">&#160;</td><td class="mdescRight">RNG-driven wrapper: draws num_configs configurations from space via RandomSample, then runs RunSuccessiveHalvingOnConfigs.  <br /></td></tr>
 <tr class="separator:aca7e1f167f27418f95b6a8dec4c51955"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1a6fb0345aa97b3ddebf83519cd1d1c0" id="r_a1a6fb0345aa97b3ddebf83519cd1d1c0"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structpulsatrix_1_1SurrogateTree.html">SurrogateTree</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#a1a6fb0345aa97b3ddebf83519cd1d1c0">FitDecisionTree</a> (const std::vector&lt; std::vector&lt; float &gt; &gt; &amp;x, const std::vector&lt; double &gt; &amp;y, <a class="el" href="namespacepulsatrix.html#afe1fc738971130d1b72129ba8b15b637">SurrogateTask</a> task, int64_t num_classes, const <a class="el" href="structpulsatrix_1_1SurrogateTreeOptions.html">SurrogateTreeOptions</a> &amp;options)</td></tr>
+<tr class="memdesc:a1a6fb0345aa97b3ddebf83519cd1d1c0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Fits CART to rows <code>x</code> and targets <code>y:</code> class indices for classification, values for regression. <a class="el" href="namespacepulsatrix.html#ab73c992d2035e9ebb2dea799de9c3b38" title="Labels instances with the model, holds out options.test_fraction of them, fits a tree to the rest and...">FitSurrogateTree()</a> calls this on the model's predictions; it is public so the tree can be checked on its own.  <br /></td></tr>
+<tr class="separator:a1a6fb0345aa97b3ddebf83519cd1d1c0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a04e8ed9caef3bbe19211e641c8313470" id="r_a04e8ed9caef3bbe19211e641c8313470"><td class="memItemLeft" align="right" valign="top">std::vector&lt; double &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#a04e8ed9caef3bbe19211e641c8313470">FeatureImportance</a> (const <a class="el" href="structpulsatrix_1_1SurrogateTree.html">SurrogateTree</a> &amp;tree)</td></tr>
+<tr class="memdesc:a04e8ed9caef3bbe19211e641c8313470"><td class="mdescLeft">&#160;</td><td class="mdescRight">Each feature's share of the tree's impurity decrease (scikit-learn's feature_importances_).  <br /></td></tr>
+<tr class="separator:a04e8ed9caef3bbe19211e641c8313470"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab73c992d2035e9ebb2dea799de9c3b38" id="r_ab73c992d2035e9ebb2dea799de9c3b38"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structpulsatrix_1_1SurrogateTreeResult.html">SurrogateTreeResult</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#ab73c992d2035e9ebb2dea799de9c3b38">FitSurrogateTree</a> (const std::function&lt; <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a>(const <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp;)&gt; &amp;predict, const std::vector&lt; <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &gt; &amp;instances, const <a class="el" href="structpulsatrix_1_1SurrogateTreeOptions.html">SurrogateTreeOptions</a> &amp;options={})</td></tr>
+<tr class="memdesc:ab73c992d2035e9ebb2dea799de9c3b38"><td class="mdescLeft">&#160;</td><td class="mdescRight">Labels <code>instances</code> with the model, holds out options.test_fraction of them, fits a tree to the rest and measures its fidelity on both parts.  <br /></td></tr>
+<tr class="separator:ab73c992d2035e9ebb2dea799de9c3b38"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8f467584a40222a019d8373897053c8d" id="r_a8f467584a40222a019d8373897053c8d"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#a8f467584a40222a019d8373897053c8d">DescribeSurrogateTree</a> (const <a class="el" href="structpulsatrix_1_1SurrogateTree.html">SurrogateTree</a> &amp;tree, const std::vector&lt; std::string &gt; &amp;feature_names={})</td></tr>
+<tr class="memdesc:a8f467584a40222a019d8373897053c8d"><td class="mdescLeft">&#160;</td><td class="mdescRight">The tree as nested if/else rules, one node per line: <code>if income &lt;= 41.5:</code> ... <code>class 1 (40 inputs, 95%)</code>.  <br /></td></tr>
+<tr class="separator:a8f467584a40222a019d8373897053c8d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aac377b6bda0d2235c35aa5ee0616f96d" id="r_aac377b6bda0d2235c35aa5ee0616f96d"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classpulsatrix_1_1JsonValue.html">JsonValue</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#aac377b6bda0d2235c35aa5ee0616f96d">ToJson</a> (const <a class="el" href="structpulsatrix_1_1SurrogateTreeResult.html">SurrogateTreeResult</a> &amp;result, const std::vector&lt; std::string &gt; &amp;feature_names={})</td></tr>
+<tr class="memdesc:aac377b6bda0d2235c35aa5ee0616f96d"><td class="mdescLeft">&#160;</td><td class="mdescRight">The result as a <code>pulsatrix.surrogate_tree.v1</code> document.  <br /></td></tr>
+<tr class="separator:aac377b6bda0d2235c35aa5ee0616f96d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6fa7511d6e4cee59163d22b5f8c2242e" id="r_a6fa7511d6e4cee59163d22b5f8c2242e"><td class="memItemLeft" align="right" valign="top">std::string_view&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#a6fa7511d6e4cee59163d22b5f8c2242e">to_string</a> (<a class="el" href="namespacepulsatrix.html#afe1fc738971130d1b72129ba8b15b637">SurrogateTask</a> task)</td></tr>
+<tr class="separator:a6fa7511d6e4cee59163d22b5f8c2242e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a32abab7e29e900f3ba6d669d8bdfa632" id="r_a32abab7e29e900f3ba6d669d8bdfa632"><td class="memTemplParams" colspan="2">template&lt;typename Genotype , typename FitnessT &gt; </td></tr>
 <tr class="memitem:a32abab7e29e900f3ba6d669d8bdfa632"><td class="memTemplItemLeft" align="right" valign="top">std::vector&lt; <a class="el" href="structpulsatrix_1_1Individual.html">Individual</a>&lt; Genotype, FitnessT &gt; &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#a32abab7e29e900f3ba6d669d8bdfa632">GenerationalReplacement</a> (const std::vector&lt; <a class="el" href="structpulsatrix_1_1Individual.html">Individual</a>&lt; Genotype, FitnessT &gt; &gt; &amp;, std::vector&lt; <a class="el" href="structpulsatrix_1_1Individual.html">Individual</a>&lt; Genotype, FitnessT &gt; &gt; offspring, size_t mu)</td></tr>
 <tr class="memdesc:a32abab7e29e900f3ba6d669d8bdfa632"><td class="mdescLeft">&#160;</td><td class="mdescRight">Generational replacement (DEAP's eaSimple): the offspring pool becomes the entire next generation; population is ignored (parents never survive).  <br /></td></tr>
@@ -5643,6 +5680,36 @@ Every op here computes the <em>forward</em> value only &ndash; no derivative var
 <tr><td class="fieldname"><a id="a9ea30dd018ca9a3db2acc46af2880883af885ed8e459ad9321616f3ce9e71e97f" name="a9ea30dd018ca9a3db2acc46af2880883af885ed8e459ad9321616f3ce9e71e97f"></a>RetnetReadout&#160;</td><td class="fielddoc"></td></tr>
 <tr><td class="fieldname"><a id="a9ea30dd018ca9a3db2acc46af2880883a08ac54865c115b01837b65f79eb12f97" name="a9ea30dd018ca9a3db2acc46af2880883a08ac54865c115b01837b65f79eb12f97"></a>RetnetLrpInput&#160;</td><td class="fielddoc"></td></tr>
 <tr><td class="fieldname"><a id="a9ea30dd018ca9a3db2acc46af2880883abe5b38bee7a84ed6af7101830bf9cae3" name="a9ea30dd018ca9a3db2acc46af2880883abe5b38bee7a84ed6af7101830bf9cae3"></a>ReverseTimeSum&#160;</td><td class="fielddoc"></td></tr>
+</table>
+
+</div>
+</div>
+<a id="afe1fc738971130d1b72129ba8b15b637" name="afe1fc738971130d1b72129ba8b15b637"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#afe1fc738971130d1b72129ba8b15b637">&#9670;&#160;</a></span>SurrogateTask</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">enum class <a class="el" href="namespacepulsatrix.html#afe1fc738971130d1b72129ba8b15b637">pulsatrix::SurrogateTask</a></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">strong</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>What the surrogate imitates. </p>
+<table class="fieldtable">
+<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="afe1fc738971130d1b72129ba8b15b637a5c9335b28e6277ddbe0137f04e5e58a7" name="afe1fc738971130d1b72129ba8b15b637a5c9335b28e6277ddbe0137f04e5e58a7"></a>Classification&#160;</td><td class="fielddoc"><p>The model's class: the index of its largest output. Fidelity is agreement. </p>
+</td></tr>
+<tr><td class="fieldname"><a id="afe1fc738971130d1b72129ba8b15b637aced9b681c2824b1aa4e53cfbd6965912" name="afe1fc738971130d1b72129ba8b15b637aced9b681c2824b1aa4e53cfbd6965912"></a>Regression&#160;</td><td class="fielddoc"><p>One output's value. Fidelity is R². </p>
+</td></tr>
 </table>
 
 </div>
@@ -10086,6 +10153,42 @@ If a front is uniform in some objective (max == min across the whole front), tha
 
 </div>
 </div>
+<a id="a8f467584a40222a019d8373897053c8d" name="a8f467584a40222a019d8373897053c8d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8f467584a40222a019d8373897053c8d">&#9670;&#160;</a></span>DescribeSurrogateTree()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::string pulsatrix::DescribeSurrogateTree </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="structpulsatrix_1_1SurrogateTree.html">SurrogateTree</a> &amp;&#160;</td>
+          <td class="paramname"><em>tree</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const std::vector&lt; std::string &gt; &amp;&#160;</td>
+          <td class="paramname"><em>feature_names</em> = <code>{}</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>The tree as nested if/else rules, one node per line: <code>if income &lt;= 41.5:</code> ... <code>class 1 (40 inputs, 95%)</code>. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">feature_names</td><td>A name per feature; <code>x[3]</code> where missing. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
 <a id="a98943eb8830416b8c9243a5f3a620818" name="a98943eb8830416b8c9243a5f3a620818"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a98943eb8830416b8c9243a5f3a620818">&#9670;&#160;</a></span>deterministic()</h2>
 
@@ -11601,6 +11704,26 @@ template&lt;typename RNG &gt; </div>
 
 </div>
 </div>
+<a id="a04e8ed9caef3bbe19211e641c8313470" name="a04e8ed9caef3bbe19211e641c8313470"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a04e8ed9caef3bbe19211e641c8313470">&#9670;&#160;</a></span>FeatureImportance()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::vector&lt; double &gt; pulsatrix::FeatureImportance </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="structpulsatrix_1_1SurrogateTree.html">SurrogateTree</a> &amp;&#160;</td>
+          <td class="paramname"><em>tree</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Each feature's share of the tree's impurity decrease (scikit-learn's feature_importances_). </p>
+
+</div>
+</div>
 <a id="a946e4344a18c0bf6211bf617f22bb7a3" name="a946e4344a18c0bf6211bf617f22bb7a3"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a946e4344a18c0bf6211bf617f22bb7a3">&#9670;&#160;</a></span>FeaturizerDirection()</h2>
 
@@ -11843,6 +11966,66 @@ template&lt;typename RNG &gt; </div>
 
 </div>
 </div>
+<a id="a1a6fb0345aa97b3ddebf83519cd1d1c0" name="a1a6fb0345aa97b3ddebf83519cd1d1c0"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1a6fb0345aa97b3ddebf83519cd1d1c0">&#9670;&#160;</a></span>FitDecisionTree()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="structpulsatrix_1_1SurrogateTree.html">SurrogateTree</a> pulsatrix::FitDecisionTree </td>
+          <td>(</td>
+          <td class="paramtype">const std::vector&lt; std::vector&lt; float &gt; &gt; &amp;&#160;</td>
+          <td class="paramname"><em>x</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const std::vector&lt; double &gt; &amp;&#160;</td>
+          <td class="paramname"><em>y</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="namespacepulsatrix.html#afe1fc738971130d1b72129ba8b15b637">SurrogateTask</a>&#160;</td>
+          <td class="paramname"><em>task</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int64_t&#160;</td>
+          <td class="paramname"><em>num_classes</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="structpulsatrix_1_1SurrogateTreeOptions.html">SurrogateTreeOptions</a> &amp;&#160;</td>
+          <td class="paramname"><em>options</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Fits CART to rows <code>x</code> and targets <code>y:</code> class indices for classification, values for regression. <a class="el" href="namespacepulsatrix.html#ab73c992d2035e9ebb2dea799de9c3b38" title="Labels instances with the model, holds out options.test_fraction of them, fits a tree to the rest and...">FitSurrogateTree()</a> calls this on the model's predictions; it is public so the tree can be checked on its own. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">num_classes</td><td>Classification: the number of classes; every y must be in [0, num_classes). </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname">std::invalid_argument</td><td>if x is empty, rows differ in length or don't match y, a class is out of range, max_depth &lt; 0 or min_samples_leaf &lt; 1. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
 <a id="a5a026f23e4fb0e67968bb3743e8c3c1a" name="a5a026f23e4fb0e67968bb3743e8c3c1a"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a5a026f23e4fb0e67968bb3743e8c3c1a">&#9670;&#160;</a></span>FitPca()</h2>
 
@@ -11886,6 +12069,55 @@ template&lt;typename RNG &gt; </div>
 <dl class="exception"><dt>Exceptions</dt><dd>
   <table class="exception">
     <tr><td class="paramname">std::invalid_argument</td><td>if x has rank below 2, fewer than 2 rows, or a NaN or infinity; if components is below 1 or above min(n, width); or if a requested component has no variance, so has no direction. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="ab73c992d2035e9ebb2dea799de9c3b38" name="ab73c992d2035e9ebb2dea799de9c3b38"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab73c992d2035e9ebb2dea799de9c3b38">&#9670;&#160;</a></span>FitSurrogateTree()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="structpulsatrix_1_1SurrogateTreeResult.html">SurrogateTreeResult</a> pulsatrix::FitSurrogateTree </td>
+          <td>(</td>
+          <td class="paramtype">const std::function&lt; <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a>(const <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp;)&gt; &amp;&#160;</td>
+          <td class="paramname"><em>predict</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const std::vector&lt; <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &gt; &amp;&#160;</td>
+          <td class="paramname"><em>instances</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="structpulsatrix_1_1SurrogateTreeOptions.html">SurrogateTreeOptions</a> &amp;&#160;</td>
+          <td class="paramname"><em>options</em> = <code>{}</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Labels <code>instances</code> with the model, holds out options.test_fraction of them, fits a tree to the rest and measures its fidelity on both parts. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">predict</td><td>The model as a function of one instance (a leading batch dimension of 1). </td></tr>
+    <tr><td class="paramname">instances</td><td>The inputs to imitate the model on, each flattened to one row of features. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname">std::invalid_argument</td><td>if instances is empty, their sizes differ, test_fraction isn't in [0, 1), fewer than one input would be left to fit, or target is outside the output. </td></tr>
   </table>
   </dd>
 </dl>
@@ -24439,7 +24671,7 @@ template&lt;class Json &gt; </div>
 </div>
 </div>
 <a id="a2fb7e3835a908b9325ccd01b0cbea6ab" name="a2fb7e3835a908b9325ccd01b0cbea6ab"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a2fb7e3835a908b9325ccd01b0cbea6ab">&#9670;&#160;</a></span>to_string() <span class="overload">[1/8]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a2fb7e3835a908b9325ccd01b0cbea6ab">&#9670;&#160;</a></span>to_string() <span class="overload">[1/9]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -24457,7 +24689,7 @@ template&lt;class Json &gt; </div>
 </div>
 </div>
 <a id="af879b05dd895e2b7a6d5a83a91c40353" name="af879b05dd895e2b7a6d5a83a91c40353"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#af879b05dd895e2b7a6d5a83a91c40353">&#9670;&#160;</a></span>to_string() <span class="overload">[2/8]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#af879b05dd895e2b7a6d5a83a91c40353">&#9670;&#160;</a></span>to_string() <span class="overload">[2/9]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -24475,7 +24707,7 @@ template&lt;class Json &gt; </div>
 </div>
 </div>
 <a id="a78ee9e0d1b891d47689770110fa6e213" name="a78ee9e0d1b891d47689770110fa6e213"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a78ee9e0d1b891d47689770110fa6e213">&#9670;&#160;</a></span>to_string() <span class="overload">[3/8]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a78ee9e0d1b891d47689770110fa6e213">&#9670;&#160;</a></span>to_string() <span class="overload">[3/9]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -24493,7 +24725,7 @@ template&lt;class Json &gt; </div>
 </div>
 </div>
 <a id="a8949d7845bb9cf164bf81db6ab41ab96" name="a8949d7845bb9cf164bf81db6ab41ab96"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a8949d7845bb9cf164bf81db6ab41ab96">&#9670;&#160;</a></span>to_string() <span class="overload">[4/8]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a8949d7845bb9cf164bf81db6ab41ab96">&#9670;&#160;</a></span>to_string() <span class="overload">[4/9]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -24511,7 +24743,7 @@ template&lt;class Json &gt; </div>
 </div>
 </div>
 <a id="a4e19b1c392718908bb252e94eb699eda" name="a4e19b1c392718908bb252e94eb699eda"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a4e19b1c392718908bb252e94eb699eda">&#9670;&#160;</a></span>to_string() <span class="overload">[5/8]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a4e19b1c392718908bb252e94eb699eda">&#9670;&#160;</a></span>to_string() <span class="overload">[5/9]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -24529,7 +24761,7 @@ template&lt;class Json &gt; </div>
 </div>
 </div>
 <a id="aed715983d4dd4b5eb4f1a4b240699e31" name="aed715983d4dd4b5eb4f1a4b240699e31"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aed715983d4dd4b5eb4f1a4b240699e31">&#9670;&#160;</a></span>to_string() <span class="overload">[6/8]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#aed715983d4dd4b5eb4f1a4b240699e31">&#9670;&#160;</a></span>to_string() <span class="overload">[6/9]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -24546,8 +24778,26 @@ template&lt;class Json &gt; </div>
 
 </div>
 </div>
+<a id="a6fa7511d6e4cee59163d22b5f8c2242e" name="a6fa7511d6e4cee59163d22b5f8c2242e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6fa7511d6e4cee59163d22b5f8c2242e">&#9670;&#160;</a></span>to_string() <span class="overload">[7/9]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::string_view pulsatrix::to_string </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="namespacepulsatrix.html#afe1fc738971130d1b72129ba8b15b637">SurrogateTask</a>&#160;</td>
+          <td class="paramname"><em>task</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
 <a id="af1c980bc26f34e4edacb14b48985fa47" name="af1c980bc26f34e4edacb14b48985fa47"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#af1c980bc26f34e4edacb14b48985fa47">&#9670;&#160;</a></span>to_string() <span class="overload">[7/8]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#af1c980bc26f34e4edacb14b48985fa47">&#9670;&#160;</a></span>to_string() <span class="overload">[8/9]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -24565,7 +24815,7 @@ template&lt;class Json &gt; </div>
 </div>
 </div>
 <a id="a795d5ac760a0cf7583b4d607e8a34d9b" name="a795d5ac760a0cf7583b4d607e8a34d9b"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a795d5ac760a0cf7583b4d607e8a34d9b">&#9670;&#160;</a></span>to_string() <span class="overload">[8/8]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a795d5ac760a0cf7583b4d607e8a34d9b">&#9670;&#160;</a></span>to_string() <span class="overload">[9/9]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -25058,7 +25308,7 @@ template&lt;class Json &gt; </div>
 </div>
 </div>
 <a id="aa0b432bea4ddfc0135ebfd55d5b78818" name="aa0b432bea4ddfc0135ebfd55d5b78818"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aa0b432bea4ddfc0135ebfd55d5b78818">&#9670;&#160;</a></span>ToJson() <span class="overload">[1/21]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#aa0b432bea4ddfc0135ebfd55d5b78818">&#9670;&#160;</a></span>ToJson() <span class="overload">[1/22]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -25082,7 +25332,7 @@ template&lt;class Json &gt; </div>
 </div>
 </div>
 <a id="a013e5eb67a4e009e0c77adfe60ca3799" name="a013e5eb67a4e009e0c77adfe60ca3799"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a013e5eb67a4e009e0c77adfe60ca3799">&#9670;&#160;</a></span>ToJson() <span class="overload">[2/21]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a013e5eb67a4e009e0c77adfe60ca3799">&#9670;&#160;</a></span>ToJson() <span class="overload">[2/22]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -25106,7 +25356,7 @@ template&lt;class Json &gt; </div>
 </div>
 </div>
 <a id="a78fac3d6c2d0c19d16dae11ee8cf561a" name="a78fac3d6c2d0c19d16dae11ee8cf561a"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a78fac3d6c2d0c19d16dae11ee8cf561a">&#9670;&#160;</a></span>ToJson() <span class="overload">[3/21]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a78fac3d6c2d0c19d16dae11ee8cf561a">&#9670;&#160;</a></span>ToJson() <span class="overload">[3/22]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -25130,7 +25380,7 @@ template&lt;class Json &gt; </div>
 </div>
 </div>
 <a id="a81177bae8565dd9b82c6d1829b79b27c" name="a81177bae8565dd9b82c6d1829b79b27c"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a81177bae8565dd9b82c6d1829b79b27c">&#9670;&#160;</a></span>ToJson() <span class="overload">[4/21]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a81177bae8565dd9b82c6d1829b79b27c">&#9670;&#160;</a></span>ToJson() <span class="overload">[4/22]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -25154,7 +25404,7 @@ template&lt;class Json &gt; </div>
 </div>
 </div>
 <a id="ae1bd894b2f804084cd61b94d4e4bd520" name="ae1bd894b2f804084cd61b94d4e4bd520"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ae1bd894b2f804084cd61b94d4e4bd520">&#9670;&#160;</a></span>ToJson() <span class="overload">[5/21]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#ae1bd894b2f804084cd61b94d4e4bd520">&#9670;&#160;</a></span>ToJson() <span class="overload">[5/22]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -25178,7 +25428,7 @@ template&lt;class Json &gt; </div>
 </div>
 </div>
 <a id="aa4e8b5fb8a54c061c9a57a7449d9ecc2" name="aa4e8b5fb8a54c061c9a57a7449d9ecc2"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aa4e8b5fb8a54c061c9a57a7449d9ecc2">&#9670;&#160;</a></span>ToJson() <span class="overload">[6/21]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#aa4e8b5fb8a54c061c9a57a7449d9ecc2">&#9670;&#160;</a></span>ToJson() <span class="overload">[6/22]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -25198,7 +25448,7 @@ template&lt;class Json &gt; </div>
 </div>
 </div>
 <a id="adbde0045ad05d75702844315abc386e2" name="adbde0045ad05d75702844315abc386e2"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#adbde0045ad05d75702844315abc386e2">&#9670;&#160;</a></span>ToJson() <span class="overload">[7/21]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#adbde0045ad05d75702844315abc386e2">&#9670;&#160;</a></span>ToJson() <span class="overload">[7/22]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -25218,7 +25468,7 @@ template&lt;class Json &gt; </div>
 </div>
 </div>
 <a id="aa02d539ab2f09dbd63a0d3c0669f02a9" name="aa02d539ab2f09dbd63a0d3c0669f02a9"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aa02d539ab2f09dbd63a0d3c0669f02a9">&#9670;&#160;</a></span>ToJson() <span class="overload">[8/21]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#aa02d539ab2f09dbd63a0d3c0669f02a9">&#9670;&#160;</a></span>ToJson() <span class="overload">[8/22]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -25238,7 +25488,7 @@ template&lt;class Json &gt; </div>
 </div>
 </div>
 <a id="ac0c52d3b599e7bf169118db77357e61c" name="ac0c52d3b599e7bf169118db77357e61c"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ac0c52d3b599e7bf169118db77357e61c">&#9670;&#160;</a></span>ToJson() <span class="overload">[9/21]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#ac0c52d3b599e7bf169118db77357e61c">&#9670;&#160;</a></span>ToJson() <span class="overload">[9/22]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -25262,7 +25512,7 @@ template&lt;class Json &gt; </div>
 </div>
 </div>
 <a id="ab956a7775fa51f615c268b6635ca4a58" name="ab956a7775fa51f615c268b6635ca4a58"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ab956a7775fa51f615c268b6635ca4a58">&#9670;&#160;</a></span>ToJson() <span class="overload">[10/21]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#ab956a7775fa51f615c268b6635ca4a58">&#9670;&#160;</a></span>ToJson() <span class="overload">[10/22]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -25286,7 +25536,7 @@ template&lt;class Json &gt; </div>
 </div>
 </div>
 <a id="a3723b86c310dfa94b0a9346dcaba88ef" name="a3723b86c310dfa94b0a9346dcaba88ef"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a3723b86c310dfa94b0a9346dcaba88ef">&#9670;&#160;</a></span>ToJson() <span class="overload">[11/21]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a3723b86c310dfa94b0a9346dcaba88ef">&#9670;&#160;</a></span>ToJson() <span class="overload">[11/22]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -25304,7 +25554,7 @@ template&lt;class Json &gt; </div>
 </div>
 </div>
 <a id="a48f09b49a4bfd7fcb0c6a187ad8e707e" name="a48f09b49a4bfd7fcb0c6a187ad8e707e"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a48f09b49a4bfd7fcb0c6a187ad8e707e">&#9670;&#160;</a></span>ToJson() <span class="overload">[12/21]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a48f09b49a4bfd7fcb0c6a187ad8e707e">&#9670;&#160;</a></span>ToJson() <span class="overload">[12/22]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -25328,7 +25578,7 @@ template&lt;class Json &gt; </div>
 </div>
 </div>
 <a id="a08917aaabe7b0581e886617112b4b22f" name="a08917aaabe7b0581e886617112b4b22f"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a08917aaabe7b0581e886617112b4b22f">&#9670;&#160;</a></span>ToJson() <span class="overload">[13/21]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a08917aaabe7b0581e886617112b4b22f">&#9670;&#160;</a></span>ToJson() <span class="overload">[13/22]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -25352,7 +25602,7 @@ template&lt;class Json &gt; </div>
 </div>
 </div>
 <a id="ad5af73b59a7c24eae3c7b17218833dc8" name="ad5af73b59a7c24eae3c7b17218833dc8"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ad5af73b59a7c24eae3c7b17218833dc8">&#9670;&#160;</a></span>ToJson() <span class="overload">[14/21]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#ad5af73b59a7c24eae3c7b17218833dc8">&#9670;&#160;</a></span>ToJson() <span class="overload">[14/22]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -25378,7 +25628,7 @@ template&lt;class Json &gt; </div>
 </div>
 </div>
 <a id="a511eca3c55a2af484ab7b0848552baab" name="a511eca3c55a2af484ab7b0848552baab"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a511eca3c55a2af484ab7b0848552baab">&#9670;&#160;</a></span>ToJson() <span class="overload">[15/21]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a511eca3c55a2af484ab7b0848552baab">&#9670;&#160;</a></span>ToJson() <span class="overload">[15/22]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -25402,7 +25652,7 @@ template&lt;class Json &gt; </div>
 </div>
 </div>
 <a id="a1cac87fb441609597ed45ef44a31fdf0" name="a1cac87fb441609597ed45ef44a31fdf0"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a1cac87fb441609597ed45ef44a31fdf0">&#9670;&#160;</a></span>ToJson() <span class="overload">[16/21]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a1cac87fb441609597ed45ef44a31fdf0">&#9670;&#160;</a></span>ToJson() <span class="overload">[16/22]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -25426,7 +25676,7 @@ template&lt;class Json &gt; </div>
 </div>
 </div>
 <a id="a619059d9817446489ce8017256877dd3" name="a619059d9817446489ce8017256877dd3"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a619059d9817446489ce8017256877dd3">&#9670;&#160;</a></span>ToJson() <span class="overload">[17/21]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a619059d9817446489ce8017256877dd3">&#9670;&#160;</a></span>ToJson() <span class="overload">[17/22]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -25444,7 +25694,7 @@ template&lt;class Json &gt; </div>
 </div>
 </div>
 <a id="a9876fb802002c15f93971e013d8d4061" name="a9876fb802002c15f93971e013d8d4061"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a9876fb802002c15f93971e013d8d4061">&#9670;&#160;</a></span>ToJson() <span class="overload">[18/21]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a9876fb802002c15f93971e013d8d4061">&#9670;&#160;</a></span>ToJson() <span class="overload">[18/22]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -25468,7 +25718,7 @@ template&lt;class Json &gt; </div>
 </div>
 </div>
 <a id="af8ed5eb7aa5da0fbf8687ee45f639029" name="af8ed5eb7aa5da0fbf8687ee45f639029"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#af8ed5eb7aa5da0fbf8687ee45f639029">&#9670;&#160;</a></span>ToJson() <span class="overload">[19/21]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#af8ed5eb7aa5da0fbf8687ee45f639029">&#9670;&#160;</a></span>ToJson() <span class="overload">[19/22]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -25485,8 +25735,38 @@ template&lt;class Json &gt; </div>
 
 </div>
 </div>
+<a id="aac377b6bda0d2235c35aa5ee0616f96d" name="aac377b6bda0d2235c35aa5ee0616f96d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aac377b6bda0d2235c35aa5ee0616f96d">&#9670;&#160;</a></span>ToJson() <span class="overload">[20/22]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classpulsatrix_1_1JsonValue.html">JsonValue</a> pulsatrix::ToJson </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="structpulsatrix_1_1SurrogateTreeResult.html">SurrogateTreeResult</a> &amp;&#160;</td>
+          <td class="paramname"><em>result</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const std::vector&lt; std::string &gt; &amp;&#160;</td>
+          <td class="paramname"><em>feature_names</em> = <code>{}</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>The result as a <code>pulsatrix.surrogate_tree.v1</code> document. </p>
+
+</div>
+</div>
 <a id="ad3cdd9d157bcc91df671e6c976c56a21" name="ad3cdd9d157bcc91df671e6c976c56a21"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ad3cdd9d157bcc91df671e6c976c56a21">&#9670;&#160;</a></span>ToJson() <span class="overload">[20/21]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#ad3cdd9d157bcc91df671e6c976c56a21">&#9670;&#160;</a></span>ToJson() <span class="overload">[21/22]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -25510,7 +25790,7 @@ template&lt;class Json &gt; </div>
 </div>
 </div>
 <a id="a5c45799fc127623333c36aade7d18eb3" name="a5c45799fc127623333c36aade7d18eb3"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a5c45799fc127623333c36aade7d18eb3">&#9670;&#160;</a></span>ToJson() <span class="overload">[21/21]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a5c45799fc127623333c36aade7d18eb3">&#9670;&#160;</a></span>ToJson() <span class="overload">[22/22]</span></h2>
 
 <div class="memitem">
 <div class="memproto">

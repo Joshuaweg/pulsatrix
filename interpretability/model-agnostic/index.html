@@ -726,6 +726,17 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#global-surrogate-tree" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Global surrogate tree
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#pdp" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -2651,6 +2662,17 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#global-surrogate-tree" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Global surrogate tree
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#pdp" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -2763,7 +2785,11 @@ models wrapped in a lambda.</p>
   the prediction. It enumerates all 2ⁿ feature coalitions and fits a SHAP-kernel-weighted
   linear regression. The result is exact (no sampling), so it is limited to 20 features.</li>
 <li><strong><code>LIME</code></strong> (<code>lime.hpp</code>): fits a simple linear model around one input, using random Gaussian
-  perturbations weighted by how close they stay to that input.</li>
+  perturbations weighted by how close they stay to that input. Its <code>local_fidelity</code> says how well
+  that linear model fits.</li>
+<li><strong>Surrogate tree</strong> (<code>surrogate_tree.hpp</code>): <code>FitSurrogateTree</code> fits a shallow decision tree to
+  the model's predictions, as rules a person can read, and measures its fidelity to the model on
+  held-out inputs.</li>
 <li><strong><code>PDP</code></strong> (<code>pdp.hpp</code>): a Partial Dependence Plot. It shows how the prediction changes as one
   feature varies, averaged over a set of background inputs.</li>
 <li><strong>ICE</strong> (<code>ice.hpp</code>): individual conditional expectation. <code>ComputeIce</code> draws one curve per
@@ -2810,7 +2836,13 @@ models wrapped in a lambda.</p>
 <td><code>LIME</code></td>
 <td>One input</td>
 <td>A fast local linear approximation</td>
-<td>Random: fix <code>seed</code>; results depend on <code>sigma</code></td>
+<td>Random: fix <code>seed</code>; results depend on <code>sigma</code>; check <code>local_fidelity</code></td>
+</tr>
+<tr>
+<td>Surrogate tree</td>
+<td>Whole dataset</td>
+<td>The model's overall logic, as if/else rules</td>
+<td>Only as good as its held-out fidelity; a readable tree can't imitate a complicated model</td>
 </tr>
 <tr>
 <td><code>PDP</code></td>
@@ -2912,8 +2944,96 @@ between 1 and 20 features, or <code>explain()</code> throws <code>std::invalid_a
 standard deviation <code>sigma</code>. It weights each one by a Gaussian locality kernel of the same
 width. It then fits a ridge-regularized linear model <code>g(z) = f(x) + wᵀ(z − x)</code>. The coefficients
 <code>w</code> are the attribution: the model's local sensitivity around <code>x</code>, not a global explanation.</p>
+<p><strong>Local fidelity.</strong> <code>result.metadata["local_fidelity"]</code> is the locality-weighted R² of the
+linear model on the perturbed samples, the <code>score</code> the reference LIME implementation reports.
+Near 1, the coefficients describe the model around <code>x</code>. Near 0 or below, they don't, and the
+model is not linear at this scale. At the bottom of a bowl, f(z) = |z|², every slope is zero, and
+LIME's coefficients are noise; the score there is negative. It can go below 0 because the linear
+model has no intercept: it passes through f(x), so samples that all sit on one side of f(x) fit
+worse than their mean does. A smaller <code>sigma</code> usually fits better. An <code>Explanation</code> report (XAI-3)
+warns below 0.8.</p>
 <p>Test reference: <code>tests/lime_test.cpp</code>. Recipe:
 <a href="../../recipes/interpretability/lime_basics/">LIME basics</a>.</p>
+<h3 id="global-surrogate-tree">Global surrogate tree<a class="headerlink" href="#global-surrogate-tree" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><span class="cp">#include</span><span class="w"> </span><span class="cpf">"pulsatrix/surrogate_tree.hpp"</span>
+
+<span class="n">SurrogateTreeOptions</span><span class="w"> </span><span class="n">options</span><span class="p">;</span>
+<span class="n">options</span><span class="p">.</span><span class="n">max_depth</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">2</span><span class="p">;</span><span class="w">      </span><span class="c1">// three or four levels is the most a person reads</span>
+<span class="n">SurrogateTreeResult</span><span class="w"> </span><span class="n">s</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">FitSurrogateTree</span><span class="p">(</span><span class="n">predict</span><span class="p">,</span><span class="w"> </span><span class="n">background</span><span class="p">,</span><span class="w"> </span><span class="n">options</span><span class="p">);</span>
+<span class="n">std</span><span class="o">::</span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">DescribeSurrogateTree</span><span class="p">(</span><span class="n">s</span><span class="p">.</span><span class="n">tree</span><span class="p">,</span><span class="w"> </span><span class="p">{</span><span class="s">"income"</span><span class="p">,</span><span class="w"> </span><span class="s">"debt"</span><span class="p">,</span><span class="w"> </span><span class="s">"age"</span><span class="p">});</span>
+<span class="n">std</span><span class="o">::</span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">"held-out agreement: "</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">s</span><span class="p">.</span><span class="n">fidelity</span><span class="p">.</span><span class="n">test</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">"</span><span class="se">\n</span><span class="s">"</span><span class="p">;</span>
+</code></pre></div>
+<p><strong>What's happening:</strong> <code>FitSurrogateTree</code> labels each background input with the model's class
+(the index of its largest output) or, with <code>SurrogateTask::Regression</code>, one output's value. It
+holds out 30% of the inputs, fits a CART decision tree to the rest, and measures the tree's
+<strong>fidelity</strong> on both parts:
+- for classes, the share of inputs where the tree and the model agree;
+- for values, R².</p>
+<p>The tree is grown exactly as scikit-learn's <code>DecisionTreeClassifier</code> and
+<code>DecisionTreeRegressor</code> grow it, with Gini or squared-error splits. Ties between features go to
+the lower index, where scikit-learn breaks them at random. <code>FeatureImportance</code> gives each
+feature's share of the impurity decrease, as <code>feature_importances_</code> does.</p>
+<p>On a model whose class is set by two thresholds, income &gt; 0.2 and debt &gt; −0.1, a depth-2 tree
+finds both:</p>
+<div class="highlight"><pre><span></span><code>if income &lt;= 0.2052:
+  if debt &lt;= -0.1038:
+    class 0 (62 inputs, 100%)
+  else:
+    class 2 (95 inputs, 100%)
+else:
+  if debt &lt;= -0.112:
+    class 1 (49 inputs, 100%)
+  else:
+    class 3 (74 inputs, 100%)
+</code></pre></div>
+<p>It agrees with the model on 99% of the held-out inputs. Age never appears, and its importance is 0.</p>
+<p><strong>Read the fidelity before the rules.</strong> A tree that agrees with the model on 70% of new inputs
+describes a different model the other 30% of the time. Below about 85% at a depth a person can
+read, the rules aren't a description of the model (Craven and Shavlik, 1996). Fitted to
+sin(4x₀) + cos(3x₁)·x₂, the held-out R² grows with depth:</p>
+<table>
+<thead>
+<tr>
+<th>Depth</th>
+<th>Leaves</th>
+<th>Held-out R²</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>2</td>
+<td>0.24</td>
+</tr>
+<tr>
+<td>2</td>
+<td>4</td>
+<td>0.46</td>
+</tr>
+<tr>
+<td>3</td>
+<td>8</td>
+<td>0.57</td>
+</tr>
+<tr>
+<td>4</td>
+<td>15</td>
+<td>0.78</td>
+</tr>
+<tr>
+<td>8</td>
+<td>61</td>
+<td>0.84</td>
+</tr>
+</tbody>
+</table>
+<p>No depth anyone could read reaches 0.85. Here PDP, ALE or Sobol indices tell you more than the
+rules do. The planner (XAI-2) lists the held-out fidelity as the tree's own check.</p>
+<p><code>ToJson(s, names)</code> writes a <code>pulsatrix.surrogate_tree.v1</code> document, with every node, both
+fidelities and the importances. <code>FitDecisionTree</code> fits the same tree to rows and targets you
+already have.</p>
+<p>Test reference: <code>tests/surrogate_tree_test.cpp</code>, checked node by node against scikit-learn 1.9.1
+(<code>tools/generate_surrogate_tree_reference_values.py</code>).</p>
 <h3 id="pdp">PDP<a class="headerlink" href="#pdp" title="Permanent link">&para;</a></h3>
 <div class="highlight"><pre><span></span><code><span class="cp">#include</span><span class="w"> </span><span class="cpf">"pulsatrix/pdp.hpp"</span>
 
