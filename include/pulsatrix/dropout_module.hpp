@@ -51,6 +51,9 @@ public:
      *         this way draws its own masks -- reproducibly for a given set_seed(). */
     DropoutModule(float p, DeviceBackend* backend);
 
+    /** @brief The drop probability. */
+    [[nodiscard]] float p() const { return p_; }
+
     /**
      * @brief Computes the gradient w.r.t. this module's input: grad_output * mask * scale,
      *        the true gradient of the actual (masked/scaled) forward computation. If the

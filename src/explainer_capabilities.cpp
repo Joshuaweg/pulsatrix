@@ -312,6 +312,16 @@ std::vector<ExplainerCapabilities> BuildCatalog() {
                       "The error on each slice of the data, each tested against the rest with a Bonferroni "
                       "correction, so a failure confined to one group isn't averaged away.",
                       {Q::Performance}, S::Global, A::BlackBox, I::Any));
+    // There is no access level for "a pulsatrix Module": Monte Carlo dropout declares Gradients, the
+    // first level that implies one, since it switches the Module's dropout layers on.
+    c.push_back(Entry("MonteCarloDropout", "uncertainty.hpp", {"McDropoutSamples", "DecomposeUncertainty"},
+                      "Predictions with the dropout layers left on, and their uncertainty split into the "
+                      "aleatoric part (noise) and the epistemic part (the samples disagree).",
+                      {Q::Performance}, S::Local, A::Gradients, I::Any));
+    c.push_back(Entry("DeepEnsemble", "uncertainty.hpp", {"EnsembleSamples", "DecomposeUncertainty", "CombineGaussians"},
+                      "The predictions of several networks trained from different seeds, and their "
+                      "uncertainty split into the aleatoric and epistemic parts.",
+                      {Q::Performance}, S::Local, A::BlackBox, I::Any));
     for (ExplainerCapabilities& e : c) {
         e.attribution = e.name == "LRP" || e.name == "Saliency" || e.name == "IntegratedGradients" || e.name == "GradCAM" ||
                         e.name == "KernelSHAP" || e.name == "LIME" || e.name == "Occlusion";
