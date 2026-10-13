@@ -137,11 +137,16 @@ PlannedCheck Check(std::string name, std::string header, std::vector<std::string
 }
 
 std::vector<PlannedCheck> Checks(const std::vector<PlannedExplainer>& planned, XaiReason r, const ModelTraits& t) {
-    std::vector<std::string> attribution, complete, local, other, all;
+    // studied: the explainers a re-initialized model is a baseline for. A metric describes how the
+    // model behaves, not what it learned, so the Performance explainers get no null-model check.
+    std::vector<std::string> attribution, complete, local, other, all, studied;
     for (const PlannedExplainer& p : planned) {
         const ExplainerCapabilities& c = *p.capabilities;
         all.push_back(c.name);
-        (c.attribution ? attribution : other).push_back(c.name);
+        if (c.questions.front() != XaiQuestion::Performance) {
+            studied.push_back(c.name);
+            (c.attribution ? attribution : other).push_back(c.name);
+        }
         if (c.complete) complete.push_back(c.name);
         if (c.scope == ExplanationScope::Local) local.push_back(c.name);
     }
@@ -174,8 +179,9 @@ std::vector<PlannedCheck> Checks(const std::vector<PlannedExplainer>& planned, X
     }
     // Discover needs every result compared with a random model's; the others need it for whatever the
     // randomization test doesn't cover.
-    const std::vector<std::string> null_targets = r == XaiReason::Discover ? std::vector<std::string>{} : other;
-    if (r == XaiReason::Discover ? !all.empty() : !other.empty()) {
+    const std::vector<std::string> null_targets =
+        r != XaiReason::Discover ? other : studied.size() == all.size() ? std::vector<std::string>{} : studied;
+    if (r == XaiReason::Discover ? !studied.empty() : !other.empty()) {
         const CheckPriority p = r == XaiReason::Discover || r == XaiReason::Control ? CheckPriority::Required : CheckPriority::Recommended;
         PlannedCheck c = Check("null_model", "pulsatrix/null_model_baseline.hpp", {"NullModelBaseline"},
                                "The same analysis of a randomly re-initialized model: a result it also gives isn't "
@@ -197,12 +203,11 @@ std::vector<PlannedCheck> Checks(const std::vector<PlannedExplainer>& planned, X
         checks.push_back(std::move(c));
     }
     if (r == XaiReason::Control) {
-        PlannedCheck c = Check("per_slice_error", "", {},
-                               "The model's error on each slice of the data, so a failure confined to one group "
-                               "isn't averaged away.",
+        PlannedCheck c = Check("per_slice_error", "pulsatrix/performance.hpp", {"PerSliceError"},
+                               "The model's error on each slice of the data, each tested against the rest, so a "
+                               "failure confined to one group isn't averaged away.",
                                CheckPriority::Required, {});
-        c.available = false;
-        c.unavailable_reason = "pulsatrix has no per-slice error report yet (KS-3)";
+        if (!t.has_labels) c.available = false, c.unavailable_reason = "needs a labeled dataset with a slice for each input";
         checks.push_back(std::move(c));
     }
     std::stable_sort(checks.begin(), checks.end(), [](const PlannedCheck& a, const PlannedCheck& b) {
@@ -340,6 +345,7 @@ JsonValue ToJson(const ExplanationPlan& plan) {
                        {"input", std::string(to_string(plan.traits.input))},
                        {"can_reinitialize", plan.traits.can_reinitialize},
                        {"has_dataset", plan.traits.has_dataset},
+                       {"has_labels", plan.traits.has_labels},
                        {"has_base_model", plan.traits.has_base_model},
                        {"features", JsonValue(plan.traits.features)},
                    })},
@@ -359,6 +365,7 @@ std::string DescribePlan(const ExplanationPlan& plan) {
     out << "Model: " << AccessText(t.access) << ", "
         << (t.input == InputKind::Any ? std::string("input of unknown kind") : std::string(to_string(t.input)) + " input")
         << (t.can_reinitialize ? ", can be re-initialized" : "") << (t.has_dataset ? ", a dataset" : ", one input")
+        << (t.has_labels ? " with labels and slices" : "")
         << (t.has_base_model ? ", a base model" : "")
         << (t.features > 0 ? ", " + std::to_string(t.features) + " features per input" : std::string()) << "\n";
     out << "\nExplainers, best first:\n";

@@ -152,7 +152,7 @@ TEST_F(ExplanationReportTest, AReversedRankingFailsFaithfulnessAndBlocksJustify)
 
 // Adebayo et al.'s finding: a map that reads only the input stays the same however the model is
 // randomized. Control requires the randomization test, so it blocks; it also needs per-slice error,
-// which pulsatrix doesn't have yet.
+// which needs labels this request doesn't have.
 TEST_F(ExplanationReportTest, AnInputOnlyMapFailsRandomizationUnderControl) {
     const ExplanationRequest request = Request(XaiReason::Control, "Saliency", ModelAccess::Gradients);
     ExplainFn input_only = [this](const Tensor& in) {
@@ -173,10 +173,65 @@ TEST_F(ExplanationReportTest, AnInputOnlyMapFailsRandomizationUnderControl) {
     const CheckResult* slices = e.check("per_slice_error");
     ASSERT_NE(slices, nullptr);
     EXPECT_EQ(slices->outcome, CheckOutcome::NotRun);
-    EXPECT_NE(slices->summary.find("KS-3"), std::string::npos);
+    EXPECT_NE(slices->summary.find("labeled dataset"), std::string::npos);
     EXPECT_TRUE(HasCaveat(e, "check.per_slice_error", CaveatSeverity::Blocking));
     EXPECT_FALSE(e.supports_reason());
     EXPECT_TRUE(HasCaveat(e, "method.saliency_sensitivity", CaveatSeverity::Note));
+}
+
+// KS-3: with labels and slices, BuildExplanation runs the per-slice error check. Slice "b" is
+// labeled against the model on half its inputs, so it is worse than "a", where the model is always
+// right.
+TEST_F(ExplanationReportTest, PerSliceErrorRunsOnALabeledDataset) {
+    ExplanationRequest request = Request(XaiReason::Control, "KernelSHAP", ModelAccess::BlackBox);
+    request.traits.has_dataset = true;
+    request.traits.has_labels = true;
+    for (int i = 0; i < 40; ++i) {
+        std::vector<float> v(kFeatures);
+        for (int64_t f = 0; f < kFeatures; ++f) v[static_cast<size_t>(f)] = 1.5f * std::sin(0.9f * static_cast<float>(i) + 0.61f * static_cast<float>(f));
+        Tensor input(Shape({1, kFeatures}), &backend, v);
+        const std::vector<float> out = values_of(predict(input));
+        const int64_t predicted = out[1] > out[0] ? 1 : 0;
+        request.slices.push_back(i % 2 == 0 ? "a" : "b");
+        request.labels.push_back(i % 4 == 3 ? 1 - predicted : predicted);
+        request.dataset.push_back(input);
+    }
+    ExplanationCheckOptions options;
+    options.required_only = true;
+    const Explanation e = BuildExplanation(request, x, shap, predict, &model, options);
+    const CheckResult* slices = e.check("per_slice_error");
+    ASSERT_NE(slices, nullptr);
+    EXPECT_EQ(slices->priority, CheckPriority::Required);
+    EXPECT_EQ(slices->outcome, CheckOutcome::Failed);
+    EXPECT_DOUBLE_EQ(*slices->value("error"), 0.25);
+    EXPECT_DOUBLE_EQ(*slices->value("worst_slice_error"), 0.5);
+    EXPECT_DOUBLE_EQ(*slices->value("worse_slices"), 1.0);
+    EXPECT_NE(slices->summary.find("Worse than the rest at alpha 0.05: b."), std::string::npos);
+    EXPECT_TRUE(HasCaveat(e, "check.per_slice_error", CaveatSeverity::Blocking));
+
+    // Labels that agree with the model everywhere: no slice is worse.
+    for (size_t i = 0; i < request.labels.size(); ++i) {
+        if (i % 4 == 3) request.labels[i] = 1 - request.labels[i];
+    }
+    const Explanation fixed = BuildExplanation(request, x, shap, predict, &model, options);
+    EXPECT_EQ(fixed.check("per_slice_error")->outcome, CheckOutcome::Passed);
+    EXPECT_FALSE(HasCaveat(fixed, "check.per_slice_error", CaveatSeverity::Blocking));
+
+    // Labels that don't match the dataset are a caller's mistake.
+    request.labels.pop_back();
+    EXPECT_THROW((void)BuildExplanation(request, x, shap, predict, &model, options), std::invalid_argument);
+}
+
+// A regressor's per-slice error comes from PerSliceError and reaches the report as SliceErrorCheck.
+TEST_F(ExplanationReportTest, SliceErrorCheckReportsALossNotAClass) {
+    const SliceErrorReport report = PerSliceError({0.1, 0.2, 0.1, 0.9, 1.1, 1.0}, {"x", "x", "x", "y", "y", "y"});
+    const CheckResult check = SliceErrorCheck(report);
+    EXPECT_EQ(check.name, "per_slice_error");
+    EXPECT_EQ(check.outcome, CheckOutcome::Passed);  // 3 inputs a slice: about 1 relabeling in 20 does as well, p ~ 0.05 > 0.05 / 2
+    EXPECT_DOUBLE_EQ(*check.value("worst_slice_error"), 1.0);
+    ExplanationRequest request = Request(XaiReason::Control, "KernelSHAP", ModelAccess::BlackBox);
+    const Explanation e = ReportExplanation(request, std::nullopt, {check});
+    EXPECT_EQ(e.check("per_slice_error")->outcome, CheckOutcome::Passed);
 }
 
 TEST_F(ExplanationReportTest, ChecksThatCantRunSayWhy) {
