@@ -123,7 +123,7 @@ LRP conservation, with an A/B comparison between two builds.
 Python. See [Getting Started](getting-started.md#python-bindings).
 
 Everything is implemented in C++ with no Python dependency at runtime, and covered by about
-2,900 CPU tests (3,000 with the HIP backend) that run in CI on Windows and Linux.
+3,050 CPU tests (3,150 with the HIP backend) that run in CI on Windows and Linux.
 
 ## More resources
 
