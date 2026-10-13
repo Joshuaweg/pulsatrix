@@ -340,6 +340,9 @@ still correlates 0.51 with the trained one's. Adebayo et al. found the same of g
 Justify only recommends the test, so the explanation still supports its reason. Asked to control
 the model, the same explanation would be blocked.
 
+The recipe [Can I trust this explanation?](../recipes/interpretability/can_i_trust_this_explanation.md)
+runs four explainers of SmolLM2 through `BuildExplanation`, with words as features.
+
 `ToJson(e)` writes a `pulsatrix.explanation.v1` document. For explainers that don't return an
 attribution, such as a probe or persistent homology, run their checks yourself and pass the
 results to `ReportExplanation`. It matches them to the planned checks by name, marks the missing
