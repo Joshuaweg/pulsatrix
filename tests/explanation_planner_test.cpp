@@ -239,10 +239,11 @@ TEST(ExplanationPlanner, QuestionsWithNoExplainerSaySo) {
 TEST(ExplanationPlanner, PerformanceIsAnsweredByTheMetrics) {
     const ExplanationPlan many = ExplanationPlanner().plan(XaiQuestion::Performance, XaiReason::Control,
                                                           Traits(ModelAccess::BlackBox, InputKind::Any, false, true));
-    EXPECT_EQ(Names(many), (std::vector<std::string>{"ClassifierMetrics", "RegressorMetrics", "PerSliceError"}));
-    const ExplanationPlan one = ExplanationPlanner().plan(XaiQuestion::Performance, XaiReason::Control,
-                                                         Traits(ModelAccess::BlackBox, InputKind::Any));
-    EXPECT_TRUE(one.explainers.empty());
+    // Control looks across the dataset first; Monte Carlo dropout needs the Module.
+    EXPECT_EQ(Names(many), (std::vector<std::string>{"ClassifierMetrics", "RegressorMetrics", "PerSliceError", "DeepEnsemble"}));
+    const ExplanationPlan one = ExplanationPlanner().plan(XaiQuestion::Performance, XaiReason::Justify,
+                                                         Traits(ModelAccess::Gradients, InputKind::Any));
+    EXPECT_EQ(Names(one), (std::vector<std::string>{"MonteCarloDropout", "DeepEnsemble"}));
     ASSERT_EQ(one.excluded.size(), 3u);
     EXPECT_EQ(one.excluded.front().reason, "looks across a dataset, and there is only the one input");
     // A re-initialized model is no baseline for a metric: Control needs per-slice error only.
