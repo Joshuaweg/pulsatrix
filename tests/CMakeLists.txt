@@ -85,6 +85,8 @@ add_executable(pulsatrix_tests
     explanation_report_test.cpp
     surrogate_tree_test.cpp
     anchors_test.cpp
+    prototypes_test.cpp
+    contrastive_test.cpp
     relu_module_test.cpp
     softmax_module_test.cpp
     rope_module_test.cpp
