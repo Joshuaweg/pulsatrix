@@ -740,6 +740,10 @@ if(PULSATRIX_BUILD_EXAMPLES)
     add_executable(what_did_the_finetune_change_recipe examples/recipes/what_did_the_finetune_change.cpp)
     target_link_libraries(what_did_the_finetune_change_recipe PRIVATE pulsatrix_core)
     target_compile_definitions(what_did_the_finetune_change_recipe PRIVATE $<$<BOOL:${PULSATRIX_ENABLE_HIP}>:PULSATRIX_DEMO_WITH_HIP>)
+
+    add_executable(can_i_trust_this_explanation_recipe examples/recipes/can_i_trust_this_explanation.cpp)
+    target_link_libraries(can_i_trust_this_explanation_recipe PRIVATE pulsatrix_core)
+    target_compile_definitions(can_i_trust_this_explanation_recipe PRIVATE $<$<BOOL:${PULSATRIX_ENABLE_HIP}>:PULSATRIX_DEMO_WITH_HIP>)
 endif()
 
 if(PULSATRIX_BUILD_TESTS)
