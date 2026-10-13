@@ -263,6 +263,32 @@ CheckResult Aggregate(const PlannedCheck& planned, const CheckInputs& in, std::o
     return r;
 }
 
+CheckResult PerSlice(const PlannedCheck& planned, const CheckInputs& in) {
+    const ExplanationRequest& q = in.request;
+    if (q.dataset.empty() || q.labels.empty() || q.slices.empty()) {
+        return Result(planned, CheckOutcome::NotRun,
+                      "Needs a labeled dataset: ExplanationRequest::dataset, ::labels and ::slices.");
+    }
+    if (q.labels.size() != q.dataset.size() || q.slices.size() != q.dataset.size()) {
+        throw std::invalid_argument("BuildExplanation: " + std::to_string(q.dataset.size()) + " dataset inputs, " +
+                                    std::to_string(q.labels.size()) + " labels and " + std::to_string(q.slices.size()) +
+                                    " slices");
+    }
+    std::vector<double> errors;
+    for (size_t i = 0; i < q.dataset.size(); ++i) {
+        const std::vector<float> out = in.predict(q.dataset[i]).to_host_vector();
+        if (out.empty()) throw std::invalid_argument("BuildExplanation: the model's output for a dataset input is empty");
+        const int64_t predicted = static_cast<int64_t>(std::max_element(out.begin(), out.end()) - out.begin());
+        errors.push_back(predicted == q.labels[i] ? 0.0 : 1.0);
+    }
+    SliceErrorOptions options;
+    options.alpha = in.options.alpha;
+    options.seed = in.options.seed;
+    CheckResult r = SliceErrorCheck(PerSliceError(errors, q.slices, options));
+    r.priority = planned.priority;
+    return r;
+}
+
 // --- Assembly ------------------------------------------------------------------------------------
 
 const ExplainerCapabilities& Method(const ExplanationRequest& request) {
@@ -473,6 +499,8 @@ Explanation BuildExplanation(const ExplanationRequest& request, const Tensor& in
             e.checks.push_back(NullModel(planned, in));
         } else if (planned.name == "aggregate") {
             e.checks.push_back(Aggregate(planned, in, e.aggregate));
+        } else if (planned.name == "per_slice_error") {
+            e.checks.push_back(PerSlice(planned, in));
         } else {
             e.checks.push_back(Result(planned, CheckOutcome::NotRun,
                                       "BuildExplanation can't run it; run it and report it with ReportExplanation."));
@@ -480,6 +508,32 @@ Explanation BuildExplanation(const ExplanationRequest& request, const Tensor& in
     }
     e.caveats = DeriveCaveats(e);
     return e;
+}
+
+CheckResult SliceErrorCheck(const SliceErrorReport& report) {
+    if (report.slices.empty()) throw std::invalid_argument("SliceErrorCheck: the report has no slices");
+    const SliceError& worst = report.slices.front();
+    CheckResult r;
+    r.name = "per_slice_error";
+    r.priority = CheckPriority::Required;
+    r.outcome = report.any_worse() ? CheckOutcome::Failed : CheckOutcome::Passed;
+    std::string worse;
+    for (const SliceError& s : report.slices) {
+        if (s.worse) worse += (worse.empty() ? "" : ", ") + s.name;
+    }
+    r.summary = "Error " + Fmt(report.error) + " over " + std::to_string(report.n) + " inputs; the worst of " +
+                std::to_string(report.slices.size()) + " slices, " + worst.name + ", has " + Fmt(worst.error) +
+                " against " + Fmt(worst.rest_error) + " for the rest (p = " + Fmt(worst.p_value) + "). " +
+                (worse.empty() ? "No slice is worse than the rest at alpha " + Fmt(report.alpha) + "."
+                               : "Worse than the rest at alpha " + Fmt(report.alpha) + ": " + worse + ".");
+    int64_t count = 0;
+    for (const SliceError& s : report.slices) count += s.worse ? 1 : 0;
+    r.values = {{"error", report.error},
+                {"slices", static_cast<double>(report.slices.size())},
+                {"worse_slices", static_cast<double>(count)},
+                {"worst_slice_error", worst.error},
+                {"worst_slice_p_value", worst.p_value}};
+    return r;
 }
 
 Explanation ReportExplanation(const ExplanationRequest& request, std::optional<Attribution> attribution,
@@ -637,6 +691,7 @@ JsonValue ToJson(const Explanation& e) {
                           {"input", std::string(to_string(e.traits.input))},
                           {"can_reinitialize", e.traits.can_reinitialize},
                           {"has_dataset", e.traits.has_dataset},
+                          {"has_labels", e.traits.has_labels},
                           {"has_base_model", e.traits.has_base_model},
                           {"features", JsonValue(e.traits.features)},
                       }));

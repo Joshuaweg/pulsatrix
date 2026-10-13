@@ -6,11 +6,12 @@
 //                  --reason justify|control|improve|discover
 //                  [--access black_box|weights|activations|gradients|relevance]
 //                  [--input any|tabular|image|tokens|protein|symbolic|representation]
-//                  [--reinitialize] [--dataset] [--base-model] [--features N] [--json]
+//                  [--reinitialize] [--dataset] [--labels] [--base-model] [--features N] [--json]
 //
 // The defaults are the least a caller can have: a black box, input of unknown kind, one input.
 // --reinitialize: the model is a pulsatrix Module whose weights can be redrawn and restored.
 // --dataset: there are many inputs, not just the one being explained.
+// --labels: the dataset has true labels and a slice for each input, for per-slice error; implies --dataset.
 // --base-model: the model it was fine-tuned from is at hand too.
 // --features N: each input has N features; explainers with a lower limit (KernelSHAP: 20) drop out.
 // --json prints a pulsatrix.explanation_plan.v1 document instead of text.
@@ -31,7 +32,7 @@ namespace {
 [[noreturn]] void Usage(const std::string& problem) {
     std::cerr << "pulsatrix_plan: " << problem << "\n"
               << "usage: pulsatrix_plan --question QUESTION --reason REASON [--access ACCESS] [--input INPUT]\n"
-              << "                      [--reinitialize] [--dataset] [--base-model] [--features N] [--json]\n"
+              << "                      [--reinitialize] [--dataset] [--labels] [--base-model] [--features N] [--json]\n"
               << "  QUESTION: input output performance how_global why why_not what_if how_to_be_that how_to_still_be_this\n"
               << "  REASON:   justify control improve discover\n"
               << "  ACCESS:   black_box weights activations gradients relevance (default black_box)\n"
@@ -84,6 +85,9 @@ int main(int argc, char** argv) {
             traits.can_reinitialize = true;
         } else if (a == "--dataset") {
             traits.has_dataset = true;
+        } else if (a == "--labels") {
+            traits.has_dataset = true;
+            traits.has_labels = true;
         } else if (a == "--base-model") {
             traits.has_base_model = true;
         } else if (a == "--features") {

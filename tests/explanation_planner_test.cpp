@@ -125,7 +125,8 @@ TEST(ExplanationPlanner, ControlRequiresRandomizationAndPerSliceErrorAndSaysWhat
     const PlannedCheck* slices = FindCheck(plan, "per_slice_error");
     ASSERT_NE(slices, nullptr);
     EXPECT_FALSE(slices->available);
-    EXPECT_NE(slices->unavailable_reason.find("KS-3"), std::string::npos);
+    EXPECT_EQ(slices->header, "pulsatrix/performance.hpp");
+    EXPECT_NE(slices->unavailable_reason.find("labeled dataset"), std::string::npos);
     EXPECT_FALSE(plan.complete());
     ASSERT_EQ(plan.warnings.size(), 3u);  // randomization, the null model (for LogitLens and the rest), slices
     EXPECT_EQ(plan.warnings.front().rfind("control requires the randomization check", 0), 0u);
@@ -135,6 +136,14 @@ TEST(ExplanationPlanner, ControlRequiresRandomizationAndPerSliceErrorAndSaysWhat
     EXPECT_TRUE(FindCheck(reinit, "randomization")->available);
     EXPECT_EQ(reinit.warnings.size(), 1u);  // per-slice error is still missing
     EXPECT_FALSE(reinit.complete());
+
+    // KS-3: with labels and slices, per-slice error can run and the plan is complete.
+    ModelTraits labeled = Traits(ModelAccess::Gradients, InputKind::Image, true, true);
+    labeled.has_labels = true;
+    const ExplanationPlan complete = ExplanationPlanner().plan(XaiQuestion::Why, XaiReason::Control, labeled);
+    EXPECT_TRUE(FindCheck(complete, "per_slice_error")->available);
+    EXPECT_TRUE(complete.warnings.empty());
+    EXPECT_TRUE(complete.complete());
 }
 
 TEST(ExplanationPlanner, GlobalExplainersNeedADatasetButWeightsDoNot) {
@@ -215,7 +224,7 @@ TEST(ExplanationPlanner, ImproveAggregatesLocalExplanationsOverTheData) {
 }
 
 TEST(ExplanationPlanner, QuestionsWithNoExplainerSaySo) {
-    for (XaiQuestion q : {XaiQuestion::Output, XaiQuestion::Performance}) {
+    for (XaiQuestion q : {XaiQuestion::Output}) {
         const ExplanationPlan plan = ExplanationPlanner().plan(q, XaiReason::Justify, Traits(ModelAccess::Relevance, InputKind::Any, true, true));
         EXPECT_TRUE(plan.explainers.empty());
         EXPECT_TRUE(plan.excluded.empty());
@@ -224,6 +233,26 @@ TEST(ExplanationPlanner, QuestionsWithNoExplainerSaySo) {
         ASSERT_EQ(plan.warnings.size(), 1u);
         EXPECT_EQ(plan.warnings.front().rfind("pulsatrix has no explainer yet", 0), 0u);
     }
+}
+
+// KS-3: the Performance question is answered by the metrics, which look across a labeled dataset.
+TEST(ExplanationPlanner, PerformanceIsAnsweredByTheMetrics) {
+    const ExplanationPlan many = ExplanationPlanner().plan(XaiQuestion::Performance, XaiReason::Control,
+                                                          Traits(ModelAccess::BlackBox, InputKind::Any, false, true));
+    EXPECT_EQ(Names(many), (std::vector<std::string>{"ClassifierMetrics", "RegressorMetrics", "PerSliceError"}));
+    const ExplanationPlan one = ExplanationPlanner().plan(XaiQuestion::Performance, XaiReason::Control,
+                                                         Traits(ModelAccess::BlackBox, InputKind::Any));
+    EXPECT_TRUE(one.explainers.empty());
+    ASSERT_EQ(one.excluded.size(), 3u);
+    EXPECT_EQ(one.excluded.front().reason, "looks across a dataset, and there is only the one input");
+    // A re-initialized model is no baseline for a metric: Control needs per-slice error only.
+    ModelTraits labeled = Traits(ModelAccess::BlackBox, InputKind::Any, false, true);
+    labeled.has_labels = true;
+    const ExplanationPlan control = ExplanationPlanner().plan(XaiQuestion::Performance, XaiReason::Control, labeled);
+    EXPECT_EQ(FindCheck(control, "null_model"), nullptr);
+    ASSERT_EQ(control.checks.size(), 1u);
+    EXPECT_EQ(control.checks.front().name, "per_slice_error");
+    EXPECT_TRUE(control.complete());
 }
 
 // XAI-4: Anchors answer How to still be this, for a black box, and carry their own check.

@@ -40,6 +40,7 @@
 #include "pulsatrix/explanation_planner.hpp"
 #include "pulsatrix/json.hpp"
 #include "pulsatrix/module.hpp"
+#include "pulsatrix/performance.hpp"
 
 namespace pulsatrix {
 
@@ -140,6 +141,10 @@ struct ExplanationRequest {
     std::optional<Tensor> baseline;
     /** @brief Inputs to aggregate explanations over, each shaped like the one explained. */
     std::vector<Tensor> dataset;
+    /** @brief For the per-slice error check: the true class of each dataset input, and the slice it
+     *         belongs to. */
+    std::vector<int64_t> labels;
+    std::vector<std::string> slices;
     /** @brief Anything about how the explanation was made that the explainer's metadata leaves out. */
     std::vector<std::pair<std::string, std::string>> settings;
 };
@@ -200,7 +205,10 @@ struct ExplanationCheckOptions {
  *    randomized model correlates at most options.max_random_similarity with the original.
  *  - null_model: NullModelBaseline, with the same threshold.
  *  - aggregate: the mean absolute attribution over request.dataset (Measured).
- * Any other check (per-slice error, which pulsatrix doesn't have yet) is NotRun.
+ *  - per_slice_error: PerSliceError() on request.dataset, with an input wrong when the index of
+ *    predict's largest output isn't its label; fails when a slice is worse than the rest at
+ *    options.alpha (SliceErrorCheck()).
+ * Any other check is NotRun.
  *
  * @param input The input to explain, with a leading batch dimension of 1.
  * @param explain Runs the explainer on its argument, reading the model as it is at that moment:
@@ -226,6 +234,13 @@ struct ExplanationCheckOptions {
  */
 [[nodiscard]] Explanation ReportExplanation(const ExplanationRequest& request, std::optional<Attribution> attribution,
                                             std::vector<CheckResult> checks);
+
+/**
+ * @brief The per_slice_error check's result for a report PerSliceError() made: Failed when a slice
+ *        is worse than the rest, Passed otherwise. For ReportExplanation(), or a model
+ *        BuildExplanation() can't score, such as a regressor.
+ */
+[[nodiscard]] CheckResult SliceErrorCheck(const SliceErrorReport& report);
 
 /**
  * @brief The caveats an explanation carries, from the report alone:
