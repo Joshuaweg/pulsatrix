@@ -22,6 +22,9 @@ magnitudes.
 | `RenderSequenceLogoSvg(doc)` | A sequence logo: letters stacked to each position's information content | `SequenceLogoDocument` |
 | `RenderContactMapSvg(doc)` | Predicted contacts above the diagonal; the structure's contacts and the top L predictions, right or wrong, below | `ContactMapDocument` |
 | `RenderResidueTracksSvg(doc)` | Per-residue tracks and annotated features under the sequence | `ResidueTracksDocument` |
+| `RenderPersistenceDiagramSvg(doc, view)` | Birth against death per feature, a band of the certified error along the diagonal, essential features on a ∞ line, significant ones filled | `PersistenceDiagramDocument` (topology views, `viz/topology_views.hpp`) |
+| `RenderBarcodeSvg(doc, view)` | A bar per feature from birth to death, by dimension and longest first, with ±error-bound whiskers | `PersistenceDiagramDocument` |
+| `RenderBettiCurveSvg(doc, view)` | The number of features alive at each scale, per dimension | `PersistenceDiagramDocument` |
 | `RenderProjectionSvg(doc, x_axis, y_axis)` | Two axes of a projection, such as PC1 and PC2, on one scale: points colored by group (with a legend) or by value (with a color bar), each with its label on hover. UMAP and t-SNE plots get a note that their distances, cluster sizes and densities aren't meaningful | `ProjectionDocument` |
 
 ```cpp
@@ -58,9 +61,10 @@ pulsatrix_svg cf1.json cf2.json cf3.json -o set.svg        # several counterfact
 pulsatrix_svg morris.json -o morris.svg                    # Morris screening scatter
 pulsatrix_svg sobol.json -o sobol.svg                      # Sobol index bars
 pulsatrix_svg pca.json --axes 1,3 -o pca13.svg             # projection: PC1 against PC3
+pulsatrix_svg ph.json --view barcode --dims 1 -o h1.svg    # persistence: H1 as a barcode
 ```
 
-Other options: `--top-k N`, `--axes I,J` (a projection's axes, from 1), `--width W`, `--font-size N`, `--title TEXT`.
+Other options: `--top-k N`, `--axes I,J` (a projection's axes, from 1), `--view diagram|barcode|betti` and `--dims D,...` (a persistence diagram's view and dimensions), `--width W`, `--font-size N`, `--title TEXT`.
 
 **Details:**
 

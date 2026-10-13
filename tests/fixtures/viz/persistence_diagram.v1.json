@@ -1,0 +1,28 @@
+{
+  "schema": "pulsatrix.persistence_diagram.v1",
+  "title": "Two loops",
+  "filtration": "rips",
+  "source": "a noisy circle",
+  "num_points": 6,
+  "threshold": 2.5,
+  "diagrams": [
+    {
+      "dimension": 0,
+      "births": [0, 0, 0, 0, 0, 0],
+      "deaths": [0.1, 0.15, 0.2, 0.25, 0.4, null],
+      "error_bound": 0.02
+    },
+    {
+      "dimension": 1,
+      "births": [0.3, 0.5, 0.45],
+      "deaths": [1.8, 0.55, 0.6],
+      "error_bound": 0.02,
+      "p_values": [0.0004, 0.6, null],
+      "significance_threshold": 0.025
+    }
+  ],
+  "nonfinite": {
+    "/diagrams/0/deaths/5": "inf",
+    "/diagrams/1/p_values/2": "nan"
+  }
+}

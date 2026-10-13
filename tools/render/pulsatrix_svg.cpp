@@ -17,6 +17,9 @@
 //   pulsatrix_svg contacts.json -o contacts.svg                # contact_map (PLM-5)
 //   pulsatrix_svg tracks.json -o tracks.svg                    # residue_tracks (PLM-5)
 //   pulsatrix_svg pca.json --axes 1,3 -o pca13.svg             # projection: PC1 against PC3 (INT-5)
+//   pulsatrix_svg ph.json -o diagram.svg                       # persistence_diagram (TDA-9)
+//   pulsatrix_svg ph.json --view barcode --dims 1 -o bars.svg  # the same, as a barcode of H1
+//   pulsatrix_svg ph.json --view betti -o betti.svg            # the same, as Betti curves
 //
 //   pulsatrix_svg explanation.json -o explanation.html          # interactive: hover, zoom, export
 //   pulsatrix_svg run.json -o run.html                          # training_log (HTML only)
@@ -26,7 +29,8 @@
 //   pulsatrix_svg circuit.json --neuronpedia -o graph.json      # circuit graph for Neuronpedia (VIZ-4)
 //
 // Options: -o FILE (default stdout), --html, --inline-js DIR (or $PULSATRIX_VEGA_DIR), --offline, --top-k N,
-//          --ice raw|centered|derivative, --max-curves N, --axes I,J, --width W, --font-size N, --title TEXT.
+//          --ice raw|centered|derivative, --max-curves N, --axes I,J, --view diagram|barcode|betti, --dims D,...,
+//          --width W, --font-size N, --title TEXT.
 // Exit status: 0 on success, 1 if a document can't be read or drawn, 2 on a usage error.
 #include <cstdio>
 #include <cstdlib>
@@ -42,13 +46,14 @@
 #include "pulsatrix/viz/html.hpp"
 #include "pulsatrix/viz/protein_views.hpp"
 #include "pulsatrix/viz/svg.hpp"
+#include "pulsatrix/viz/topology_views.hpp"
 
 namespace {
 
 constexpr const char* kUsage =
     "usage: pulsatrix_svg DOCUMENT.json... [-o FILE] [--top-k N] [--waterfall BASELINE]\n"
     "                     [--beeswarm I,J,...] [--ice raw|centered|derivative] [--max-curves N] [--axes I,J]\n"
-    "                     [--width W] [--font-size N] [--title TEXT] [--html] [--inline-js DIR] [--offline]\n"
+    "                     [--view diagram|barcode|betti] [--dims D,...] [--width W] [--font-size N] [--title TEXT] [--html] [--inline-js DIR] [--offline]\n"
     "                     [--neuronpedia [--slug S] [--scan MODEL_ID]]\n";
 
 [[noreturn]] void Usage(const std::string& problem) {
@@ -145,6 +150,8 @@ int main(int argc, char** argv) {
     std::vector<int64_t> beeswarm_features;
     int x_axis = 0, y_axis = 1;  // a projection's axes, from --axes (1-based)
     PartialDependenceSvgOptions pd_options;
+    std::string persistence_view = "diagram";  // a persistence diagram's view, from --view
+    PersistenceViewOptions persistence_options;
     bool html = false;
     bool neuronpedia = false;
     std::string slug = "circuit-graph", scan = "pulsatrix";
@@ -182,6 +189,18 @@ int main(int argc, char** argv) {
             if (comma == std::string::npos) Usage("--axes needs two axis numbers, such as 1,3");
             x_axis = static_cast<int>(ParseInt(v.substr(0, comma), "--axes")) - 1;
             y_axis = static_cast<int>(ParseInt(v.substr(comma + 1), "--axes")) - 1;
+        } else if (a == "--view") {
+            persistence_view = value();
+            if (persistence_view != "diagram" && persistence_view != "barcode" && persistence_view != "betti") {
+                Usage("--view needs diagram, barcode or betti, got \"" + persistence_view + "\"");
+            }
+        } else if (a == "--dims") {
+            std::stringstream list(value());
+            std::string item;
+            while (std::getline(list, item, ',')) {
+                persistence_options.dimensions.push_back(static_cast<int>(ParseInt(item, "--dims")));
+            }
+            if (persistence_options.dimensions.empty()) Usage("--dims needs homology dimensions, such as 1,2");
         } else if (a == "--beeswarm") {
             std::stringstream list(value());
             std::string item;
@@ -298,6 +317,11 @@ int main(int argc, char** argv) {
                 svg = RenderResidueTracksSvg(ParseResidueTracksDocument(json), options);
             } else if (kind == "projection") {
                 svg = RenderProjectionSvg(ParseProjectionDocument(json), x_axis, y_axis, options);
+            } else if (kind == "persistence_diagram") {
+                const PersistenceDiagramDocument doc = ParsePersistenceDiagramDocument(json);
+                svg = persistence_view == "barcode" ? RenderBarcodeSvg(doc, persistence_options, options)
+                      : persistence_view == "betti" ? RenderBettiCurveSvg(doc, persistence_options, options)
+                                                    : RenderPersistenceDiagramSvg(doc, persistence_options, options);
             } else {
                 throw std::invalid_argument("there is no SVG view for " + kind + " documents yet");
             }
