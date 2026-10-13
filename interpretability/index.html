@@ -2096,6 +2096,34 @@
   
   
     <li class="md-nav__item">
+      <a href="../recipes/interpretability/can_i_trust_this_explanation/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Can I Trust This Explanation?
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../recipes/rl/dqn_cartpole/" class="md-nav__link">
         
   
@@ -3043,6 +3071,8 @@ from 0.05 to 2.2, so any model's attributions grow with |x|, and a random networ
 still correlates 0.51 with the trained one's. Adebayo et al. found the same of gradient × input.
 Justify only recommends the test, so the explanation still supports its reason. Asked to control
 the model, the same explanation would be blocked.</p>
+<p>The recipe <a href="../recipes/interpretability/can_i_trust_this_explanation/">Can I trust this explanation?</a>
+runs four explainers of SmolLM2 through <code>BuildExplanation</code>, with words as features.</p>
 <p><code>ToJson(e)</code> writes a <code>pulsatrix.explanation.v1</code> document. For explainers that don't return an
 attribution, such as a probe or persistent homology, run their checks yourself and pass the
 results to <code>ReportExplanation</code>. It matches them to the planned checks by name, marks the missing
