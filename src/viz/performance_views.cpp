@@ -197,8 +197,11 @@ std::string RenderReliabilityDiagramSvg(const std::vector<ReliabilitySeries>& se
     auto Y = [&](double v) { return y_bottom - (std::max(v, lo) - lo) / (1.0 - lo) * side; };
 
     f.line("diagonal", X(lo), Y(lo), X(1), Y(1), kAxisColor, 1.0, "4 3");
-    f.text("diagonal-label", X(1) - fs * 0.3, Y(1) + fs * 1.2, "calibrated", "end", kMutedColor,
-           " font-size=\"" + Num(fs * 0.8) + "\" transform=\"rotate(-45 " + Num(X(1) - fs * 0.3) + " " + Num(Y(1) + fs * 1.2) + ")\"");
+    // The label sits below the low end of the diagonal: the most confident bins, which hold most
+    // inputs, crowd the top end.
+    const double lx0 = X(lo + 0.04 * (1 - lo)) + fs * 0.9, ly0 = Y(lo + 0.04 * (1 - lo)) + fs * 0.9;
+    f.text("diagonal-label", lx0, ly0, "calibrated", "start", kMutedColor,
+           " font-size=\"" + Num(fs * 0.8) + "\" transform=\"rotate(-45 " + Num(lx0) + " " + Num(ly0) + ")\"");
     const double r_max = fs * 0.55, r_min = fs * 0.18;
     for (size_t k = 0; k < series.size(); ++k) {
         const ReliabilitySeries& s = series[k];
