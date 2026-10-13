@@ -147,12 +147,28 @@ TEST(ExplanationPlanner, GlobalExplainersNeedADatasetButWeightsDoNot) {
 
     const ExplanationPlan with =
         ExplanationPlanner().plan(XaiQuestion::HowGlobal, XaiReason::Improve, Traits(ModelAccess::BlackBox, InputKind::Tabular, false, true));
-    EXPECT_EQ(Names(with), (std::vector<std::string>{"PDP", "PartialDependence2D", "ALE", "Morris", "Sobol", "ICE"}));
+    EXPECT_EQ(Names(with), (std::vector<std::string>{"SurrogateTree", "PDP", "PartialDependence2D", "ALE", "Morris", "Sobol", "ICE"}));
 
     ModelTraits fine_tuned = Traits(ModelAccess::Weights, InputKind::Any);
     fine_tuned.has_base_model = true;
     EXPECT_EQ(Names(ExplanationPlanner().plan(XaiQuestion::HowGlobal, XaiReason::Discover, fine_tuned)),
               (std::vector<std::string>{"IntruderDimensions"}));
+}
+
+// XAI-4: the surrogate tree answers How (global) for any tabular model, and its fidelity is its
+// own control.
+TEST(ExplanationPlanner, TheSurrogateTreeIsCheckedByItsFidelity) {
+    const ExplanationPlan plan = ExplanationPlanner().plan(XaiQuestion::HowGlobal, XaiReason::Discover,
+                                                           Traits(ModelAccess::BlackBox, InputKind::Tabular, true, true));
+    ASSERT_FALSE(plan.explainers.empty());
+    EXPECT_EQ(plan.explainers.front().capabilities->name, "SurrogateTree");
+    const PlannedCheck* fidelity = FindCheck(plan, "surrogate_fidelity");
+    ASSERT_NE(fidelity, nullptr);
+    EXPECT_EQ(fidelity->priority, CheckPriority::Required);
+    EXPECT_EQ(fidelity->applies_to, (std::vector<std::string>{"SurrogateTree"}));
+    EXPECT_FALSE(Has(Names(ExplanationPlanner().plan(XaiQuestion::HowGlobal, XaiReason::Discover,
+                                                     Traits(ModelAccess::BlackBox, InputKind::Image, true, true))),
+                     "SurrogateTree"));  // rules over pixels aren't readable
 }
 
 // Discovering from representations the caller already has: no model access needed, and every

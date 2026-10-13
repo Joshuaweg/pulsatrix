@@ -77,6 +77,7 @@ add_library(pulsatrix_core
     src/explainer_capabilities.cpp
     src/explanation_planner.cpp
     src/explanation_report.cpp
+    src/surrogate_tree.cpp
     src/relu_module.cpp
     src/softmax_module.cpp
     src/rope_module.cpp

@@ -168,7 +168,7 @@ std::vector<ExplainerCapabilities> BuildCatalog() {
                       "Exact Shapley values over every coalition of features, against a baseline.", {Q::Why},
                       S::Local, A::BlackBox, I::Any));
     c.push_back(Entry("LIME", "lime.hpp", {"LIME::explain"},
-                      "A weighted linear surrogate fitted to the model around the input.", {Q::Why}, S::Local,
+                      "A weighted linear surrogate fitted to the model around the input, with its local fidelity.", {Q::Why}, S::Local,
                       A::BlackBox, I::Any));
     c.push_back(Entry("Occlusion", "sensitivity.hpp", {"Occlusion"},
                       "The change in the output when a sliding window of the input is replaced by a baseline.",
@@ -207,6 +207,10 @@ std::vector<ExplainerCapabilities> BuildCatalog() {
     c.push_back(Entry("ICE", "ice.hpp", {"ComputeIce"},
                       "Individual conditional expectation: each instance's output as one feature moves over a grid.",
                       {Q::WhatIf, Q::HowGlobal}, S::Global, A::BlackBox, I::Tabular));
+    c.push_back(Entry("SurrogateTree", "surrogate_tree.hpp", {"FitSurrogateTree", "DescribeSurrogateTree"},
+                      "A shallow decision tree fitted to the model's predictions, as readable rules, with its "
+                      "fidelity to the model on held-out inputs.",
+                      {Q::HowGlobal}, S::Global, A::BlackBox, I::Tabular));
     c.push_back(Entry("PDP", "pdp.hpp", {"PDP::explain"},
                       "Partial dependence: the mean output as one feature moves over a grid.",
                       {Q::HowGlobal, Q::WhatIf}, S::Global, A::BlackBox, I::Tabular));

@@ -11,7 +11,11 @@ models wrapped in a lambda.
   the prediction. It enumerates all 2ⁿ feature coalitions and fits a SHAP-kernel-weighted
   linear regression. The result is exact (no sampling), so it is limited to 20 features.
 - **`LIME`** (`lime.hpp`): fits a simple linear model around one input, using random Gaussian
-  perturbations weighted by how close they stay to that input.
+  perturbations weighted by how close they stay to that input. Its `local_fidelity` says how well
+  that linear model fits.
+- **Surrogate tree** (`surrogate_tree.hpp`): `FitSurrogateTree` fits a shallow decision tree to
+  the model's predictions, as rules a person can read, and measures its fidelity to the model on
+  held-out inputs.
 - **`PDP`** (`pdp.hpp`): a Partial Dependence Plot. It shows how the prediction changes as one
   feature varies, averaged over a set of background inputs.
 - **ICE** (`ice.hpp`): individual conditional expectation. `ComputeIce` draws one curve per
@@ -43,7 +47,8 @@ Full API reference: [Doxygen: Model-Agnostic](../api/group__interpretability__ag
 | Method | Scope | Good for | Watch out for |
 |---|---|---|---|
 | `KernelSHAP` | One input | Exact additive attributions that sum to `f(input) - f(baseline)` | 2ⁿ model calls; at most 20 features |
-| `LIME` | One input | A fast local linear approximation | Random: fix `seed`; results depend on `sigma` |
+| `LIME` | One input | A fast local linear approximation | Random: fix `seed`; results depend on `sigma`; check `local_fidelity` |
+| Surrogate tree | Whole dataset | The model's overall logic, as if/else rules | Only as good as its held-out fidelity; a readable tree can't imitate a complicated model |
 | `PDP` | Whole dataset | The average effect of one feature on the output | Hides interactions between features |
 | ICE | Each input, and their average | Whether the feature's effect differs between inputs (an interaction) | Reads the model at unrealistic inputs when features are correlated |
 | 2-D partial dependence | Whole dataset | How two features interact | grid_x × grid_y × background model calls |
@@ -112,8 +117,82 @@ standard deviation `sigma`. It weights each one by a Gaussian locality kernel of
 width. It then fits a ridge-regularized linear model `g(z) = f(x) + wᵀ(z − x)`. The coefficients
 `w` are the attribution: the model's local sensitivity around `x`, not a global explanation.
 
+**Local fidelity.** `result.metadata["local_fidelity"]` is the locality-weighted R² of the
+linear model on the perturbed samples, the `score` the reference LIME implementation reports.
+Near 1, the coefficients describe the model around `x`. Near 0 or below, they don't, and the
+model is not linear at this scale. At the bottom of a bowl, f(z) = |z|², every slope is zero, and
+LIME's coefficients are noise; the score there is negative. It can go below 0 because the linear
+model has no intercept: it passes through f(x), so samples that all sit on one side of f(x) fit
+worse than their mean does. A smaller `sigma` usually fits better. An `Explanation` report (XAI-3)
+warns below 0.8.
+
 Test reference: `tests/lime_test.cpp`. Recipe:
 [LIME basics](../recipes/interpretability/lime_basics.md).
+
+### Global surrogate tree
+
+```cpp
+#include "pulsatrix/surrogate_tree.hpp"
+
+SurrogateTreeOptions options;
+options.max_depth = 2;      // three or four levels is the most a person reads
+SurrogateTreeResult s = FitSurrogateTree(predict, background, options);
+std::cout << DescribeSurrogateTree(s.tree, {"income", "debt", "age"});
+std::cout << "held-out agreement: " << s.fidelity.test << "\n";
+```
+
+**What's happening:** `FitSurrogateTree` labels each background input with the model's class
+(the index of its largest output) or, with `SurrogateTask::Regression`, one output's value. It
+holds out 30% of the inputs, fits a CART decision tree to the rest, and measures the tree's
+**fidelity** on both parts:
+- for classes, the share of inputs where the tree and the model agree;
+- for values, R².
+
+The tree is grown exactly as scikit-learn's `DecisionTreeClassifier` and
+`DecisionTreeRegressor` grow it, with Gini or squared-error splits. Ties between features go to
+the lower index, where scikit-learn breaks them at random. `FeatureImportance` gives each
+feature's share of the impurity decrease, as `feature_importances_` does.
+
+On a model whose class is set by two thresholds, income > 0.2 and debt > −0.1, a depth-2 tree
+finds both:
+
+```
+if income <= 0.2052:
+  if debt <= -0.1038:
+    class 0 (62 inputs, 100%)
+  else:
+    class 2 (95 inputs, 100%)
+else:
+  if debt <= -0.112:
+    class 1 (49 inputs, 100%)
+  else:
+    class 3 (74 inputs, 100%)
+```
+
+It agrees with the model on 99% of the held-out inputs. Age never appears, and its importance is 0.
+
+**Read the fidelity before the rules.** A tree that agrees with the model on 70% of new inputs
+describes a different model the other 30% of the time. Below about 85% at a depth a person can
+read, the rules aren't a description of the model (Craven and Shavlik, 1996). Fitted to
+sin(4x₀) + cos(3x₁)·x₂, the held-out R² grows with depth:
+
+| Depth | Leaves | Held-out R² |
+|---|---|---|
+| 1 | 2 | 0.24 |
+| 2 | 4 | 0.46 |
+| 3 | 8 | 0.57 |
+| 4 | 15 | 0.78 |
+| 8 | 61 | 0.84 |
+
+No depth anyone could read reaches 0.85. Here PDP, ALE or Sobol indices tell you more than the
+rules do. The planner (XAI-2) lists the held-out fidelity as the tree's own check.
+
+`ToJson(s, names)` writes a `pulsatrix.surrogate_tree.v1` document, with every node, both
+fidelities and the importances. `FitDecisionTree` fits the same tree to rows and targets you
+already have.
+
+Test reference: `tests/surrogate_tree_test.cpp`, checked node by node against scikit-learn 1.9.1
+(`tools/generate_surrogate_tree_reference_values.py`).
 
 ### PDP
 
