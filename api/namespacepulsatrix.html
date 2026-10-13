@@ -160,6 +160,15 @@ Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpulsatrix_1_1AleResult.html">AleResult</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">First-order accumulated local effects (Apley and Zhu 2020) of one feature.  <a href="structpulsatrix_1_1AleResult.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpulsatrix_1_1Anchor.html">Anchor</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="namespacepulsatrix.html#a3c958329e270de46bbc23c05d0d14136" title="Finds an anchor for the model&#39;s prediction on input.">FindAnchor()</a>'s result.  <a href="structpulsatrix_1_1Anchor.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpulsatrix_1_1AnchorOptions.html">AnchorOptions</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">FindAnchor's settings. The defaults are the reference implementation's, except a beam of 2 and epsilon_stop.  <a href="structpulsatrix_1_1AnchorOptions.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpulsatrix_1_1AnchorPredicate.html">AnchorPredicate</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight"><code>lower &lt; x[feature] &lt;= upper</code>; a missing side is infinite.  <a href="structpulsatrix_1_1AnchorPredicate.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpulsatrix_1_1AnnotatedProtein.html">AnnotatedProtein</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1AsciiLowercase.html">AsciiLowercase</a></td></tr>
@@ -2135,6 +2144,15 @@ Functions</h2></td></tr>
 <tr class="memitem:a3de09b80f2b9d5933d7f452615305b59" id="r_a3de09b80f2b9d5933d7f452615305b59"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#a3de09b80f2b9d5933d7f452615305b59">UpperConfidenceBound</a> (double mean, double variance, double kappa=2.0)</td></tr>
 <tr class="memdesc:a3de09b80f2b9d5933d7f452615305b59"><td class="mdescLeft">&#160;</td><td class="mdescRight">GP-Upper-Confidence-Bound: mean + kappa * sqrt(variance).  <br /></td></tr>
 <tr class="separator:a3de09b80f2b9d5933d7f452615305b59"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3c958329e270de46bbc23c05d0d14136" id="r_a3c958329e270de46bbc23c05d0d14136"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structpulsatrix_1_1Anchor.html">Anchor</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#a3c958329e270de46bbc23c05d0d14136">FindAnchor</a> (const std::function&lt; <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a>(const <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp;)&gt; &amp;predict, const <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp;input, const std::vector&lt; <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &gt; &amp;background, const <a class="el" href="structpulsatrix_1_1AnchorOptions.html">AnchorOptions</a> &amp;options={})</td></tr>
+<tr class="memdesc:a3c958329e270de46bbc23c05d0d14136"><td class="mdescLeft">&#160;</td><td class="mdescRight">Finds an anchor for the model's prediction on <code>input</code>.  <br /></td></tr>
+<tr class="separator:a3c958329e270de46bbc23c05d0d14136"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:addd68953735720f77e66e85377cee226" id="r_addd68953735720f77e66e85377cee226"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#addd68953735720f77e66e85377cee226">DescribeAnchor</a> (const <a class="el" href="structpulsatrix_1_1Anchor.html">Anchor</a> &amp;anchor, const std::vector&lt; std::string &gt; &amp;feature_names={})</td></tr>
+<tr class="memdesc:addd68953735720f77e66e85377cee226"><td class="mdescLeft">&#160;</td><td class="mdescRight"><code>IF income &gt; 0.71 AND debt &lt;= -0.12 THEN class 1 (precision 0.97, coverage 0.21)</code>.  <br /></td></tr>
+<tr class="separator:addd68953735720f77e66e85377cee226"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af0e72413bc90f49e775d7d5f87807c81" id="r_af0e72413bc90f49e775d7d5f87807c81"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classpulsatrix_1_1JsonValue.html">JsonValue</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#af0e72413bc90f49e775d7d5f87807c81">ToJson</a> (const <a class="el" href="structpulsatrix_1_1Anchor.html">Anchor</a> &amp;anchor, const std::vector&lt; std::string &gt; &amp;feature_names={})</td></tr>
+<tr class="memdesc:af0e72413bc90f49e775d7d5f87807c81"><td class="mdescLeft">&#160;</td><td class="mdescRight">The anchor as a <code>pulsatrix.anchor.v1</code> document; an infinite bound is null.  <br /></td></tr>
+<tr class="separator:af0e72413bc90f49e775d7d5f87807c81"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a448cab9e47c5525c719965887897a03d" id="r_a448cab9e47c5525c719965887897a03d"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structpulsatrix_1_1ASHAResult.html">ASHAResult</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#a448cab9e47c5525c719965887897a03d">RunASHAOnConfigQueue</a> (std::vector&lt; <a class="el" href="namespacepulsatrix.html#a58099b24d92ae2c4916748b60ecf36e3">Configuration</a> &gt; config_queue, const <a class="el" href="namespacepulsatrix.html#a6bc143576cb71fab19f76a88330f5a4f">TrialFactory</a> &amp;make_trial, int initial_epoch_budget, double eta, int num_rungs)</td></tr>
 <tr class="memdesc:a448cab9e47c5525c719965887897a03d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Runs ASHA, drawing new configurations from an explicit, ordered queue (rather than sampling indefinitely) &ndash; the pure, deterministic core; RunASHA (below) is the thin SearchSpace/RNG-sampling wrapper around it.  <br /></td></tr>
 <tr class="separator:a448cab9e47c5525c719965887897a03d"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -3752,7 +3770,7 @@ Functions</h2></td></tr>
 <tr class="memdesc:ad5af73b59a7c24eae3c7b17218833dc8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Writes the document.  <br /></td></tr>
 <tr class="separator:ad5af73b59a7c24eae3c7b17218833dc8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7ce86cf964b876f3170f68833edb6434" id="r_a7ce86cf964b876f3170f68833edb6434"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structpulsatrix_1_1PersistenceDiagramDocument.html">PersistenceDiagramDocument</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#a7ce86cf964b876f3170f68833edb6434">ParsePersistenceDiagramDocument</a> (std::string_view json)</td></tr>
-<tr class="memdesc:a7ce86cf964b876f3170f68833edb6434"><td class="mdescLeft">&#160;</td><td class="mdescRight">Reads a document <a class="el" href="namespacepulsatrix.html#a013e5eb67a4e009e0c77adfe60ca3799">ToJson()</a> wrote.  <br /></td></tr>
+<tr class="memdesc:a7ce86cf964b876f3170f68833edb6434"><td class="mdescLeft">&#160;</td><td class="mdescRight">Reads a document <a class="el" href="namespacepulsatrix.html#af0e72413bc90f49e775d7d5f87807c81" title="The anchor as a pulsatrix.anchor.v1 document; an infinite bound is null.">ToJson()</a> wrote.  <br /></td></tr>
 <tr class="separator:a7ce86cf964b876f3170f68833edb6434"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a01d0d562e2007b7399cadc66cf8c3143" id="r_a01d0d562e2007b7399cadc66cf8c3143"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#a01d0d562e2007b7399cadc66cf8c3143">RenderPersistenceDiagramSvg</a> (const <a class="el" href="structpulsatrix_1_1PersistenceDiagramDocument.html">PersistenceDiagramDocument</a> &amp;doc, const <a class="el" href="structpulsatrix_1_1PersistenceViewOptions.html">PersistenceViewOptions</a> &amp;view={}, const <a class="el" href="structpulsatrix_1_1SvgOptions.html">SvgOptions</a> &amp;options={})</td></tr>
 <tr class="memdesc:a01d0d562e2007b7399cadc66cf8c3143"><td class="mdescLeft">&#160;</td><td class="mdescRight">Birth against death, one point per feature. Points far above the diagonal persist long. A shaded band along the diagonal marks persistence within twice the certified error bound, which the distances' own error could explain. Essential features sit on a dashed line marked ∞. When tests are attached, significant features are filled and the others hollow; a bootstrap band is drawn as a dashed line parallel to the diagonal.  <br /></td></tr>
@@ -3781,6 +3799,16 @@ Functions</h2></td></tr>
 <tr class="memitem:a9969ba30da557b617c083a42527ae783" id="r_a9969ba30da557b617c083a42527ae783"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structpulsatrix_1_1WordScores.html">WordScores</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#a9969ba30da557b617c083a42527ae783">AggregateToWords</a> (std::string_view text, const <a class="el" href="structpulsatrix_1_1Encoding.html">Encoding</a> &amp;encoding, const std::vector&lt; float &gt; &amp;token_scores, <a class="el" href="namespacepulsatrix.html#aaf1d7cc456b87e2b0713eff66fc17954">WordAggregation</a> aggregation=<a class="el" href="namespacepulsatrix.html#aaf1d7cc456b87e2b0713eff66fc17954aa0ec87054b5e5b7847d0d8780a01a3d5">WordAggregation::Sum</a>, <a class="el" href="namespacepulsatrix.html#a1c796f1d1ffa3966d6cc310c29a720b4">WordSplit</a> split=<a class="el" href="namespacepulsatrix.html#a1c796f1d1ffa3966d6cc310c29a720b4a79e192157e129c1c826c7488bb3769b4">WordSplit::WordsAndPunctuation</a>)</td></tr>
 <tr class="memdesc:a9969ba30da557b617c083a42527ae783"><td class="mdescLeft">&#160;</td><td class="mdescRight">AggregateToWords over an <a class="el" href="structpulsatrix_1_1Encoding.html" title="The result of encoding one text.">Encoding</a> of <code>text</code>, with words from SplitWords(<code>text</code>, <code>split</code>).  <br /></td></tr>
 <tr class="separator:a9969ba30da557b617c083a42527ae783"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr><td colspan="2"><div class="groupHeader">The KL bounds KL-LUCB uses (Kaufmann and Kalyanakrishnan 2013), as in the reference code.</div></td></tr>
+<tr class="memitem:abb56cd52fca62177124968ff70213b71" id="r_abb56cd52fca62177124968ff70213b71"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#abb56cd52fca62177124968ff70213b71">BernoulliKl</a> (double p, double q)</td></tr>
+<tr class="memdesc:abb56cd52fca62177124968ff70213b71"><td class="mdescLeft">&#160;</td><td class="mdescRight">KL divergence between Bernoulli(p) and Bernoulli(q), with p and q clipped to (0, 1).  <br /></td></tr>
+<tr class="separator:abb56cd52fca62177124968ff70213b71"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a94c8eca5788dca9dac74d7e90b97ef6e" id="r_a94c8eca5788dca9dac74d7e90b97ef6e"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#a94c8eca5788dca9dac74d7e90b97ef6e">KlUpperBound</a> (double p, double level)</td></tr>
+<tr class="memdesc:a94c8eca5788dca9dac74d7e90b97ef6e"><td class="mdescLeft">&#160;</td><td class="mdescRight">The largest q &gt;= p with BernoulliKl(p, q) &lt;= level.  <br /></td></tr>
+<tr class="separator:a94c8eca5788dca9dac74d7e90b97ef6e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a911fdf4ad49023f37a94a87d94563fa6" id="r_a911fdf4ad49023f37a94a87d94563fa6"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#a911fdf4ad49023f37a94a87d94563fa6">KlLowerBound</a> (double p, double level)</td></tr>
+<tr class="memdesc:a911fdf4ad49023f37a94a87d94563fa6"><td class="mdescLeft">&#160;</td><td class="mdescRight">The smallest q &lt;= p with BernoulliKl(p, q) &lt;= level.  <br /></td></tr>
+<tr class="separator:a911fdf4ad49023f37a94a87d94563fa6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr><td colspan="2"><div class="groupHeader">Names. Lower-case snake case, as in reports and JSON: "how_global", "justify".</div></td></tr>
 <tr class="memitem:af1c980bc26f34e4edacb14b48985fa47" id="r_af1c980bc26f34e4edacb14b48985fa47"><td class="memItemLeft" align="right" valign="top">std::string_view&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#af1c980bc26f34e4edacb14b48985fa47">to_string</a> (<a class="el" href="namespacepulsatrix.html#a7d304e7a712c6931b0f6fb22e532c6b8">XaiQuestion</a> question)</td></tr>
 <tr class="separator:af1c980bc26f34e4edacb14b48985fa47"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -6878,6 +6906,36 @@ Every op here computes the <em>forward</em> value only &ndash; no derivative var
   </table>
   </dd>
 </dl>
+
+</div>
+</div>
+<a id="abb56cd52fca62177124968ff70213b71" name="abb56cd52fca62177124968ff70213b71"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#abb56cd52fca62177124968ff70213b71">&#9670;&#160;</a></span>BernoulliKl()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">double pulsatrix::BernoulliKl </td>
+          <td>(</td>
+          <td class="paramtype">double&#160;</td>
+          <td class="paramname"><em>p</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">double&#160;</td>
+          <td class="paramname"><em>q</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>KL divergence between Bernoulli(p) and Bernoulli(q), with p and q clipped to (0, 1). </p>
 
 </div>
 </div>
@@ -10113,6 +10171,42 @@ If a front is uniform in some objective (max == min across the whole front), tha
 
 </div>
 </div>
+<a id="addd68953735720f77e66e85377cee226" name="addd68953735720f77e66e85377cee226"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#addd68953735720f77e66e85377cee226">&#9670;&#160;</a></span>DescribeAnchor()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::string pulsatrix::DescribeAnchor </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="structpulsatrix_1_1Anchor.html">Anchor</a> &amp;&#160;</td>
+          <td class="paramname"><em>anchor</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const std::vector&lt; std::string &gt; &amp;&#160;</td>
+          <td class="paramname"><em>feature_names</em> = <code>{}</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p><code>IF income &gt; 0.71 AND debt &lt;= -0.12 THEN class 1 (precision 0.97, coverage 0.21)</code>. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">feature_names</td><td>A name per feature; <code>x[3]</code> where missing. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
 <a id="a56130d1eab8b5f9671e0903306d0574d" name="a56130d1eab8b5f9671e0903306d0574d"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a56130d1eab8b5f9671e0903306d0574d">&#9670;&#160;</a></span>DescribeExplanation()</h2>
 
@@ -11754,6 +11848,62 @@ template&lt;typename RNG &gt; </div>
 
 </div>
 </div>
+<a id="a3c958329e270de46bbc23c05d0d14136" name="a3c958329e270de46bbc23c05d0d14136"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3c958329e270de46bbc23c05d0d14136">&#9670;&#160;</a></span>FindAnchor()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="structpulsatrix_1_1Anchor.html">Anchor</a> pulsatrix::FindAnchor </td>
+          <td>(</td>
+          <td class="paramtype">const std::function&lt; <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a>(const <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp;)&gt; &amp;&#160;</td>
+          <td class="paramname"><em>predict</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp;&#160;</td>
+          <td class="paramname"><em>input</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const std::vector&lt; <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &gt; &amp;&#160;</td>
+          <td class="paramname"><em>background</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="structpulsatrix_1_1AnchorOptions.html">AnchorOptions</a> &amp;&#160;</td>
+          <td class="paramname"><em>options</em> = <code>{}</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Finds an anchor for the model's prediction on <code>input</code>. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">predict</td><td>The model as a function of one input (a leading batch dimension of 1); its class is the index of its largest output. </td></tr>
+    <tr><td class="paramname">input</td><td>The input to explain; every element is a feature. </td></tr>
+    <tr><td class="paramname">background</td><td>Inputs shaped like <code>input</code>, from the data the model sees: the bins, the samples and the coverage all come from them. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname">std::invalid_argument</td><td>if background is empty, its inputs aren't the input's size, percentiles aren't increasing within (0, 100), or an option is out of range. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
 <a id="a8a82a07b90dfe58bbd2ba7737817bf38" name="a8a82a07b90dfe58bbd2ba7737817bf38"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a8a82a07b90dfe58bbd2ba7737817bf38">&#9670;&#160;</a></span>FindCounterfactual()</h2>
 
@@ -13124,6 +13274,66 @@ template&lt;typename Genotype , typename FitnessT &gt; </div>
 </div><div class="memdoc">
 
 <p>Whether feature <code>i</code> of <code>entry</code> passed the attached tests: its p-value is below the threshold, or, with only a bootstrap band, its persistence is above twice the band. True for every feature when no test is attached. </p>
+
+</div>
+</div>
+<a id="a911fdf4ad49023f37a94a87d94563fa6" name="a911fdf4ad49023f37a94a87d94563fa6"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a911fdf4ad49023f37a94a87d94563fa6">&#9670;&#160;</a></span>KlLowerBound()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">double pulsatrix::KlLowerBound </td>
+          <td>(</td>
+          <td class="paramtype">double&#160;</td>
+          <td class="paramname"><em>p</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">double&#160;</td>
+          <td class="paramname"><em>level</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>The smallest q &lt;= p with BernoulliKl(p, q) &lt;= level. </p>
+
+</div>
+</div>
+<a id="a94c8eca5788dca9dac74d7e90b97ef6e" name="a94c8eca5788dca9dac74d7e90b97ef6e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a94c8eca5788dca9dac74d7e90b97ef6e">&#9670;&#160;</a></span>KlUpperBound()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">double pulsatrix::KlUpperBound </td>
+          <td>(</td>
+          <td class="paramtype">double&#160;</td>
+          <td class="paramname"><em>p</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">double&#160;</td>
+          <td class="paramname"><em>level</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>The largest q &gt;= p with BernoulliKl(p, q) &lt;= level. </p>
 
 </div>
 </div>
@@ -14644,7 +14854,7 @@ template&lt;typename Genotype , typename FitnessT &gt; </div>
 </dl>
 <dl class="exception"><dt>Exceptions</dt><dd>
   <table class="exception">
-    <tr><td class="paramname">std::invalid_argument</td><td>if coordinates isn't (n, 2 or more), method is empty, or as <a class="el" href="namespacepulsatrix.html#a013e5eb67a4e009e0c77adfe60ca3799">ToJson()</a> does. </td></tr>
+    <tr><td class="paramname">std::invalid_argument</td><td>if coordinates isn't (n, 2 or more), method is empty, or as <a class="el" href="namespacepulsatrix.html#af0e72413bc90f49e775d7d5f87807c81" title="The anchor as a pulsatrix.anchor.v1 document; an infinite bound is null.">ToJson()</a> does. </td></tr>
   </table>
   </dd>
 </dl>
@@ -17695,7 +17905,7 @@ template&lt;typename T &gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p>Reads a document <a class="el" href="namespacepulsatrix.html#a013e5eb67a4e009e0c77adfe60ca3799">ToJson()</a> wrote. </p>
+<p>Reads a document <a class="el" href="namespacepulsatrix.html#af0e72413bc90f49e775d7d5f87807c81" title="The anchor as a pulsatrix.anchor.v1 document; an infinite bound is null.">ToJson()</a> wrote. </p>
 <dl class="exception"><dt>Exceptions</dt><dd>
   <table class="exception">
     <tr><td class="paramname">std::invalid_argument</td><td>naming the JSON Pointer of the first problem. </td></tr>
@@ -20253,7 +20463,7 @@ template&lt;typename Genotype , typename FitnessT &gt; </div>
 <p>Birth against death, one point per feature. Points far above the diagonal persist long. A shaded band along the diagonal marks persistence within twice the certified error bound, which the distances' own error could explain. Essential features sit on a dashed line marked ∞. When tests are attached, significant features are filled and the others hollow; a bootstrap band is drawn as a dashed line parallel to the diagonal. </p>
 <dl class="exception"><dt>Exceptions</dt><dd>
   <table class="exception">
-    <tr><td class="paramname">std::invalid_argument</td><td>for a document <a class="el" href="namespacepulsatrix.html#a013e5eb67a4e009e0c77adfe60ca3799">ToJson()</a> rejects, a dimension it doesn't hold, or unusable options. </td></tr>
+    <tr><td class="paramname">std::invalid_argument</td><td>for a document <a class="el" href="namespacepulsatrix.html#af0e72413bc90f49e775d7d5f87807c81" title="The anchor as a pulsatrix.anchor.v1 document; an infinite bound is null.">ToJson()</a> rejects, a dimension it doesn't hold, or unusable options. </td></tr>
   </table>
   </dd>
 </dl>
@@ -20335,7 +20545,7 @@ template&lt;typename Genotype , typename FitnessT &gt; </div>
 </dl>
 <dl class="exception"><dt>Exceptions</dt><dd>
   <table class="exception">
-    <tr><td class="paramname">std::invalid_argument</td><td>for a document <a class="el" href="namespacepulsatrix.html#a013e5eb67a4e009e0c77adfe60ca3799">ToJson()</a> rejects, one with no points, or axes that aren't two different axes of the document. </td></tr>
+    <tr><td class="paramname">std::invalid_argument</td><td>for a document <a class="el" href="namespacepulsatrix.html#af0e72413bc90f49e775d7d5f87807c81" title="The anchor as a pulsatrix.anchor.v1 document; an infinite bound is null.">ToJson()</a> rejects, one with no points, or axes that aren't two different axes of the document. </td></tr>
   </table>
   </dd>
 </dl>
@@ -25307,8 +25517,38 @@ template&lt;class Json &gt; </div>
 
 </div>
 </div>
+<a id="af0e72413bc90f49e775d7d5f87807c81" name="af0e72413bc90f49e775d7d5f87807c81"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af0e72413bc90f49e775d7d5f87807c81">&#9670;&#160;</a></span>ToJson() <span class="overload">[1/23]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classpulsatrix_1_1JsonValue.html">JsonValue</a> pulsatrix::ToJson </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="structpulsatrix_1_1Anchor.html">Anchor</a> &amp;&#160;</td>
+          <td class="paramname"><em>anchor</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const std::vector&lt; std::string &gt; &amp;&#160;</td>
+          <td class="paramname"><em>feature_names</em> = <code>{}</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>The anchor as a <code>pulsatrix.anchor.v1</code> document; an infinite bound is null. </p>
+
+</div>
+</div>
 <a id="aa0b432bea4ddfc0135ebfd55d5b78818" name="aa0b432bea4ddfc0135ebfd55d5b78818"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aa0b432bea4ddfc0135ebfd55d5b78818">&#9670;&#160;</a></span>ToJson() <span class="overload">[1/22]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#aa0b432bea4ddfc0135ebfd55d5b78818">&#9670;&#160;</a></span>ToJson() <span class="overload">[2/23]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -25332,7 +25572,7 @@ template&lt;class Json &gt; </div>
 </div>
 </div>
 <a id="a013e5eb67a4e009e0c77adfe60ca3799" name="a013e5eb67a4e009e0c77adfe60ca3799"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a013e5eb67a4e009e0c77adfe60ca3799">&#9670;&#160;</a></span>ToJson() <span class="overload">[2/22]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a013e5eb67a4e009e0c77adfe60ca3799">&#9670;&#160;</a></span>ToJson() <span class="overload">[3/23]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -25356,7 +25596,7 @@ template&lt;class Json &gt; </div>
 </div>
 </div>
 <a id="a78fac3d6c2d0c19d16dae11ee8cf561a" name="a78fac3d6c2d0c19d16dae11ee8cf561a"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a78fac3d6c2d0c19d16dae11ee8cf561a">&#9670;&#160;</a></span>ToJson() <span class="overload">[3/22]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a78fac3d6c2d0c19d16dae11ee8cf561a">&#9670;&#160;</a></span>ToJson() <span class="overload">[4/23]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -25380,7 +25620,7 @@ template&lt;class Json &gt; </div>
 </div>
 </div>
 <a id="a81177bae8565dd9b82c6d1829b79b27c" name="a81177bae8565dd9b82c6d1829b79b27c"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a81177bae8565dd9b82c6d1829b79b27c">&#9670;&#160;</a></span>ToJson() <span class="overload">[4/22]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a81177bae8565dd9b82c6d1829b79b27c">&#9670;&#160;</a></span>ToJson() <span class="overload">[5/23]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -25404,7 +25644,7 @@ template&lt;class Json &gt; </div>
 </div>
 </div>
 <a id="ae1bd894b2f804084cd61b94d4e4bd520" name="ae1bd894b2f804084cd61b94d4e4bd520"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ae1bd894b2f804084cd61b94d4e4bd520">&#9670;&#160;</a></span>ToJson() <span class="overload">[5/22]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#ae1bd894b2f804084cd61b94d4e4bd520">&#9670;&#160;</a></span>ToJson() <span class="overload">[6/23]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -25428,7 +25668,7 @@ template&lt;class Json &gt; </div>
 </div>
 </div>
 <a id="aa4e8b5fb8a54c061c9a57a7449d9ecc2" name="aa4e8b5fb8a54c061c9a57a7449d9ecc2"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aa4e8b5fb8a54c061c9a57a7449d9ecc2">&#9670;&#160;</a></span>ToJson() <span class="overload">[6/22]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#aa4e8b5fb8a54c061c9a57a7449d9ecc2">&#9670;&#160;</a></span>ToJson() <span class="overload">[7/23]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -25448,7 +25688,7 @@ template&lt;class Json &gt; </div>
 </div>
 </div>
 <a id="adbde0045ad05d75702844315abc386e2" name="adbde0045ad05d75702844315abc386e2"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#adbde0045ad05d75702844315abc386e2">&#9670;&#160;</a></span>ToJson() <span class="overload">[7/22]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#adbde0045ad05d75702844315abc386e2">&#9670;&#160;</a></span>ToJson() <span class="overload">[8/23]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -25468,7 +25708,7 @@ template&lt;class Json &gt; </div>
 </div>
 </div>
 <a id="aa02d539ab2f09dbd63a0d3c0669f02a9" name="aa02d539ab2f09dbd63a0d3c0669f02a9"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aa02d539ab2f09dbd63a0d3c0669f02a9">&#9670;&#160;</a></span>ToJson() <span class="overload">[8/22]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#aa02d539ab2f09dbd63a0d3c0669f02a9">&#9670;&#160;</a></span>ToJson() <span class="overload">[9/23]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -25488,7 +25728,7 @@ template&lt;class Json &gt; </div>
 </div>
 </div>
 <a id="ac0c52d3b599e7bf169118db77357e61c" name="ac0c52d3b599e7bf169118db77357e61c"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ac0c52d3b599e7bf169118db77357e61c">&#9670;&#160;</a></span>ToJson() <span class="overload">[9/22]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#ac0c52d3b599e7bf169118db77357e61c">&#9670;&#160;</a></span>ToJson() <span class="overload">[10/23]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -25512,7 +25752,7 @@ template&lt;class Json &gt; </div>
 </div>
 </div>
 <a id="ab956a7775fa51f615c268b6635ca4a58" name="ab956a7775fa51f615c268b6635ca4a58"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ab956a7775fa51f615c268b6635ca4a58">&#9670;&#160;</a></span>ToJson() <span class="overload">[10/22]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#ab956a7775fa51f615c268b6635ca4a58">&#9670;&#160;</a></span>ToJson() <span class="overload">[11/23]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -25536,7 +25776,7 @@ template&lt;class Json &gt; </div>
 </div>
 </div>
 <a id="a3723b86c310dfa94b0a9346dcaba88ef" name="a3723b86c310dfa94b0a9346dcaba88ef"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a3723b86c310dfa94b0a9346dcaba88ef">&#9670;&#160;</a></span>ToJson() <span class="overload">[11/22]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a3723b86c310dfa94b0a9346dcaba88ef">&#9670;&#160;</a></span>ToJson() <span class="overload">[12/23]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -25554,7 +25794,7 @@ template&lt;class Json &gt; </div>
 </div>
 </div>
 <a id="a48f09b49a4bfd7fcb0c6a187ad8e707e" name="a48f09b49a4bfd7fcb0c6a187ad8e707e"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a48f09b49a4bfd7fcb0c6a187ad8e707e">&#9670;&#160;</a></span>ToJson() <span class="overload">[12/22]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a48f09b49a4bfd7fcb0c6a187ad8e707e">&#9670;&#160;</a></span>ToJson() <span class="overload">[13/23]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -25578,7 +25818,7 @@ template&lt;class Json &gt; </div>
 </div>
 </div>
 <a id="a08917aaabe7b0581e886617112b4b22f" name="a08917aaabe7b0581e886617112b4b22f"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a08917aaabe7b0581e886617112b4b22f">&#9670;&#160;</a></span>ToJson() <span class="overload">[13/22]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a08917aaabe7b0581e886617112b4b22f">&#9670;&#160;</a></span>ToJson() <span class="overload">[14/23]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -25602,7 +25842,7 @@ template&lt;class Json &gt; </div>
 </div>
 </div>
 <a id="ad5af73b59a7c24eae3c7b17218833dc8" name="ad5af73b59a7c24eae3c7b17218833dc8"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ad5af73b59a7c24eae3c7b17218833dc8">&#9670;&#160;</a></span>ToJson() <span class="overload">[14/22]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#ad5af73b59a7c24eae3c7b17218833dc8">&#9670;&#160;</a></span>ToJson() <span class="overload">[15/23]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -25628,7 +25868,7 @@ template&lt;class Json &gt; </div>
 </div>
 </div>
 <a id="a511eca3c55a2af484ab7b0848552baab" name="a511eca3c55a2af484ab7b0848552baab"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a511eca3c55a2af484ab7b0848552baab">&#9670;&#160;</a></span>ToJson() <span class="overload">[15/22]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a511eca3c55a2af484ab7b0848552baab">&#9670;&#160;</a></span>ToJson() <span class="overload">[16/23]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -25652,7 +25892,7 @@ template&lt;class Json &gt; </div>
 </div>
 </div>
 <a id="a1cac87fb441609597ed45ef44a31fdf0" name="a1cac87fb441609597ed45ef44a31fdf0"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a1cac87fb441609597ed45ef44a31fdf0">&#9670;&#160;</a></span>ToJson() <span class="overload">[16/22]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a1cac87fb441609597ed45ef44a31fdf0">&#9670;&#160;</a></span>ToJson() <span class="overload">[17/23]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -25676,7 +25916,7 @@ template&lt;class Json &gt; </div>
 </div>
 </div>
 <a id="a619059d9817446489ce8017256877dd3" name="a619059d9817446489ce8017256877dd3"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a619059d9817446489ce8017256877dd3">&#9670;&#160;</a></span>ToJson() <span class="overload">[17/22]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a619059d9817446489ce8017256877dd3">&#9670;&#160;</a></span>ToJson() <span class="overload">[18/23]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -25694,7 +25934,7 @@ template&lt;class Json &gt; </div>
 </div>
 </div>
 <a id="a9876fb802002c15f93971e013d8d4061" name="a9876fb802002c15f93971e013d8d4061"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a9876fb802002c15f93971e013d8d4061">&#9670;&#160;</a></span>ToJson() <span class="overload">[18/22]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a9876fb802002c15f93971e013d8d4061">&#9670;&#160;</a></span>ToJson() <span class="overload">[19/23]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -25718,7 +25958,7 @@ template&lt;class Json &gt; </div>
 </div>
 </div>
 <a id="af8ed5eb7aa5da0fbf8687ee45f639029" name="af8ed5eb7aa5da0fbf8687ee45f639029"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#af8ed5eb7aa5da0fbf8687ee45f639029">&#9670;&#160;</a></span>ToJson() <span class="overload">[19/22]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#af8ed5eb7aa5da0fbf8687ee45f639029">&#9670;&#160;</a></span>ToJson() <span class="overload">[20/23]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -25736,7 +25976,7 @@ template&lt;class Json &gt; </div>
 </div>
 </div>
 <a id="aac377b6bda0d2235c35aa5ee0616f96d" name="aac377b6bda0d2235c35aa5ee0616f96d"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aac377b6bda0d2235c35aa5ee0616f96d">&#9670;&#160;</a></span>ToJson() <span class="overload">[20/22]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#aac377b6bda0d2235c35aa5ee0616f96d">&#9670;&#160;</a></span>ToJson() <span class="overload">[21/23]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -25766,7 +26006,7 @@ template&lt;class Json &gt; </div>
 </div>
 </div>
 <a id="ad3cdd9d157bcc91df671e6c976c56a21" name="ad3cdd9d157bcc91df671e6c976c56a21"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ad3cdd9d157bcc91df671e6c976c56a21">&#9670;&#160;</a></span>ToJson() <span class="overload">[21/22]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#ad3cdd9d157bcc91df671e6c976c56a21">&#9670;&#160;</a></span>ToJson() <span class="overload">[22/23]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -25790,7 +26030,7 @@ template&lt;class Json &gt; </div>
 </div>
 </div>
 <a id="a5c45799fc127623333c36aade7d18eb3" name="a5c45799fc127623333c36aade7d18eb3"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a5c45799fc127623333c36aade7d18eb3">&#9670;&#160;</a></span>ToJson() <span class="overload">[22/22]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a5c45799fc127623333c36aade7d18eb3">&#9670;&#160;</a></span>ToJson() <span class="overload">[23/23]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
