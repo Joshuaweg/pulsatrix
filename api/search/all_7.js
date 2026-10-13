@@ -2,7 +2,7 @@ var searchData=
 [
   ['h0_2ehpp_0',['h0.hpp',['../h0_8hpp.html',1,'']]],
   ['h0result_1',['H0Result',['../structpulsatrix_1_1H0Result.html',1,'pulsatrix']]],
-  ['handler_2',['handler',['../structpulsatrix_1_1orch_1_1Tool.html#a522ee06bf931ac0f6f978e177c60d901',1,'pulsatrix::orch::Tool::handler'],['../classpulsatrix_1_1orch_1_1SseParser.html#adddfed7f931a0bca71932aca39380639',1,'pulsatrix::orch::SseParser::Handler']]],
+  ['handler_2',['handler',['../classpulsatrix_1_1orch_1_1SseParser.html#adddfed7f931a0bca71932aca39380639',1,'pulsatrix::orch::SseParser::Handler'],['../structpulsatrix_1_1orch_1_1Tool.html#a522ee06bf931ac0f6f978e177c60d901',1,'pulsatrix::orch::Tool::handler']]],
   ['has_5fbase_5fmodel_3',['has_base_model',['../structpulsatrix_1_1ModelTraits.html#a6716cfaeaa9ec35377046111754c2aca',1,'pulsatrix::ModelTraits']]],
   ['has_5fdataset_4',['has_dataset',['../structpulsatrix_1_1ModelTraits.html#a8d1b5242ab731a2c490ca80836c523bc',1,'pulsatrix::ModelTraits']]],
   ['has_5fgradient_5',['has_gradient',['../classpulsatrix_1_1Autograd.html#a431dd728bc9d2038903e6e4494390350',1,'pulsatrix::Autograd']]],

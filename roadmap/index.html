@@ -4281,7 +4281,7 @@ machine, and explain it with the tools pulsatrix already has. Items on that path
 <li>XAI-1 (<strong>done</strong>, <a href="https://github.com/Joshuaweg/pulsatrix/pull/156">#156</a>): which questions each explainer answers</li>
 <li>XAI-2 (<strong>done</strong>, <a href="https://github.com/Joshuaweg/pulsatrix/pull/160">#160</a>): the question-driven planner</li>
 <li>XAI-3 (<strong>done</strong>, <a href="https://github.com/Joshuaweg/pulsatrix/pull/161">#161</a>): explanation reports that run the checks and carry caveats</li>
-<li>XAI-4 (surrogate tree, LIME fidelity and Anchors <strong>done</strong>, <a href="https://github.com/Joshuaweg/pulsatrix/pull/162">#162</a>, <a href="https://github.com/Joshuaweg/pulsatrix/pull/163">#163</a>): prototypes and pertinent negatives to come</li>
+<li>XAI-4 (<strong>done</strong>, <a href="https://github.com/Joshuaweg/pulsatrix/pull/162">#162</a> to <a href="https://github.com/Joshuaweg/pulsatrix/pull/164">#164</a>): a surrogate tree, LIME fidelity, Anchors, prototypes, ProtoDash and CEM</li>
 <li>INT-1 to INT-8 (<strong>done</strong>, <a href="https://github.com/Joshuaweg/pulsatrix/pull/131">#131</a> to
   <a href="https://github.com/Joshuaweg/pulsatrix/pull/139">#139</a>): CKA, RSA and SVCCA, nearest
   neighbors, probe controls, layer geometry, PCA, TCAV and CRP, and export for UMAP and t-SNE</li>
@@ -5513,7 +5513,7 @@ doesn't support.</p>
 <td>XAI-1, INT-1</td>
 <td>P1</td>
 <td>M each</td>
-<td>Partly done: surrogate tree and LIME fidelity, <a href="https://github.com/Joshuaweg/pulsatrix/pull/162">#162</a>; Anchors, <a href="https://github.com/Joshuaweg/pulsatrix/pull/163">#163</a></td>
+<td>Done: surrogate tree and LIME fidelity, <a href="https://github.com/Joshuaweg/pulsatrix/pull/162">#162</a>; Anchors, <a href="https://github.com/Joshuaweg/pulsatrix/pull/163">#163</a>; prototypes, ProtoDash and CEM, <a href="https://github.com/Joshuaweg/pulsatrix/pull/164">#164</a></td>
 </tr>
 <tr>
 <td>XAI-5</td>
@@ -5589,6 +5589,15 @@ doesn't support.</p>
   an irrelevant one. Requiring the bound to reach the threshold fixed every seed, for about 2.5
   times the model calls. Anchored features are sampled independently, as the reference does when
   too few rows satisfy the whole rule.
+- <strong>XAI-4, prototypes and pertinent negatives.</strong> "Prototypes from nearest neighbors" became
+  two calls:
+  - <code>FindPrototypes</code>, the nearest examples with the input's class and the nearest without;
+  - <code>ProtoDash</code>, from the research notes: greedy, with the weights re-fitted by non-negative
+    coordinate descent.</p>
+<p>Pertinent negatives brought pertinent positives with them, since the method (CEM) finds
+  both. CEM runs through an <code>ExplainerContext</code>, like the gradient counterfactual. On linear
+  models it reaches the elastic net's optimum to four decimals. The paper's autoencoder term is
+  left out, so nothing keeps a pertinent negative on the data manifold.
 - <strong>XAI-5.</strong> The metrics take a prediction function and a finished attribution, so they work with
   any explainer. ROAD's imputation solves every removed pixel jointly as the weighted mean of its
   neighbors, plus seeded noise. Sparseness and complexity score an all-zero attribution as 0,
@@ -5652,6 +5661,16 @@ doesn't support.</p>
 <td>A tree view for the <code>pulsatrix.surrogate_tree.v1</code> document; today it is text (<code>DescribeSurrogateTree</code>) and JSON</td>
 <td>XAI-4</td>
 <td>VIZ</td>
+</tr>
+<tr>
+<td>CEM's autoencoder term, which keeps pertinent negatives on the data manifold, for images</td>
+<td>XAI-4</td>
+<td>Its own item, with a trained autoencoder</td>
+</tr>
+<tr>
+<td>ProtoDash checked against AIX360's implementation; today it is tested on clusters with known answers</td>
+<td>XAI-4</td>
+<td>A test fixture</td>
 </tr>
 </tbody>
 </table>

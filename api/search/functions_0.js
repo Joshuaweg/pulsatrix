@@ -1,7 +1,7 @@
 var searchData=
 [
-  ['a_0',['a',['../classpulsatrix_1_1LoRAAdapter.html#a7148a7be89421780c6e89ad97ad7596b',1,'pulsatrix::LoRAAdapter::a()'],['../classpulsatrix_1_1MambaModule.html#a4f150207c0d6f533a2fa4992652d8af9',1,'pulsatrix::MambaModule::A() const']]],
-  ['a_5fgrad_1',['a_grad',['../classpulsatrix_1_1MambaModule.html#ae74d42f084f52bcc4d2f34ea8073dac7',1,'pulsatrix::MambaModule::A_grad()'],['../classpulsatrix_1_1LoRAAdapter.html#a6004484971657b6f47047d6f1e132a22',1,'pulsatrix::LoRAAdapter::a_grad()']]],
+  ['a_0',['a',['../classpulsatrix_1_1LoRAAdapter.html#a7148a7be89421780c6e89ad97ad7596b',1,'pulsatrix::LoRAAdapter::a()'],['../classpulsatrix_1_1MambaModule.html#a4f150207c0d6f533a2fa4992652d8af9',1,'pulsatrix::MambaModule::A()']]],
+  ['a_5fgrad_1',['a_grad',['../classpulsatrix_1_1LoRAAdapter.html#a6004484971657b6f47047d6f1e132a22',1,'pulsatrix::LoRAAdapter::a_grad()'],['../classpulsatrix_1_1MambaModule.html#ae74d42f084f52bcc4d2f34ea8073dac7',1,'pulsatrix::MambaModule::A_grad()']]],
   ['ablationhook_2',['AblationHook',['../namespacepulsatrix.html#a1184cf3eab567420501e3a607b99a2b4',1,'pulsatrix']]],
   ['accumulate_3',['accumulate',['../classpulsatrix_1_1Tensor.html#a6f94effb892e616403b9f129acd3cb8e',1,'pulsatrix::Tensor']]],
   ['accumulate_5fgrad_4',['accumulate_grad',['../classpulsatrix_1_1LearnableScalar.html#af988771a15c0733b8e4250db6aa35e29',1,'pulsatrix::LearnableScalar']]],
@@ -85,7 +85,7 @@ var searchData=
   ['askgivensamples_82',['AskGivenSamples',['../namespacepulsatrix.html#a314a4a59c2e126269885c0c51ffbd6bc',1,'pulsatrix']]],
   ['assistant_83',['Assistant',['../structpulsatrix_1_1orch_1_1Message.html#a16aeb814d0eab73f1f093f72753bfbb6',1,'pulsatrix::orch::Message']]],
   ['at_84',['at',['../structpulsatrix_1_1ResidueLogProbs.html#aae100791bc03a37290add7337cbbc0c4',1,'pulsatrix::ResidueLogProbs::at()'],['../classpulsatrix_1_1Tensor.html#a23011d8605237d7303d905f7fea47912',1,'pulsatrix::Tensor::at(std::initializer_list&lt; int64_t &gt; index) const'],['../classpulsatrix_1_1Tensor.html#ab9cb31cbcc6b063d31bab7e4d3766c01',1,'pulsatrix::Tensor::at(std::initializer_list&lt; int64_t &gt; index)'],['../structpulsatrix_1_1DistanceMatrix.html#a539fc932c5fb148bd31d6c302cdd8888',1,'pulsatrix::DistanceMatrix::at()'],['../structpulsatrix_1_1Rdm.html#ae5e6850d907efc5ac727d67052c12813',1,'pulsatrix::Rdm::at()'],['../structpulsatrix_1_1CkaMatrix.html#ae0bd9d958f5f4427dc43dce12ae6222c',1,'pulsatrix::CkaMatrix::at()'],['../structpulsatrix_1_1ContactMap.html#aa4f659815bd4c75669d2183bd7592e1a',1,'pulsatrix::ContactMap::at()']]],
-  ['atom_85',['atom',['../structpulsatrix_1_1StructureResidue.html#a760919a2b2d7e28b8f8fd1c9a6eab71f',1,'pulsatrix::StructureResidue::atom()'],['../classpulsatrix_1_1datalog_1_1Atom.html#a8e6f8fa069e0befa45b3ffdd0abe53bd',1,'pulsatrix::datalog::Atom::Atom()']]],
+  ['atom_85',['atom',['../classpulsatrix_1_1datalog_1_1Atom.html#a8e6f8fa069e0befa45b3ffdd0abe53bd',1,'pulsatrix::datalog::Atom::Atom()'],['../structpulsatrix_1_1StructureResidue.html#a760919a2b2d7e28b8f8fd1c9a6eab71f',1,'pulsatrix::StructureResidue::atom()']]],
   ['attach_5fia3_86',['attach_ia3',['../classpulsatrix_1_1LinearModule.html#a14d6cf6237dce5f163e9e1e17b947e01',1,'pulsatrix::LinearModule']]],
   ['attach_5flora_87',['attach_lora',['../classpulsatrix_1_1LinearModule.html#afe2a9be2b5d32fdabcee32a33afdeedd',1,'pulsatrix::LinearModule']]],
   ['attachbootstrapband_88',['AttachBootstrapBand',['../namespacepulsatrix.html#a3a404934bc5c7aae1a51aca6e8767644',1,'pulsatrix']]],
