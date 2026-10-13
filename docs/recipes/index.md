@@ -29,6 +29,7 @@ Recipes link to the related full demo where one exists.
 - [RNN vs. LSTM vs. GRU on a parity task](deep-learning/sequence_models_rnn_lstm_gru.md)
 - [Residual connections and normalization layers](deep-learning/residual_and_norm_layers.md)
 - [Full fine-tuning: pretrain, save, reload, fine-tune](deep-learning/tagger_finetune.md)
+- [What did the fine-tune change? LoRA and full fine-tuning of SmolLM2, explained](deep-learning/what_did_the_finetune_change.md)
 
 ## Data Loading, Transformation & Validation
 

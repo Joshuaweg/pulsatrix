@@ -115,24 +115,57 @@ private:
     CausalLM* lm_ = nullptr;
 };
 
-// The output-space singular vectors of a (in, out) weight, largest first: the eigenvectors of W^T W,
-// row-major (out, out), and its eigenvalues.
+// The output-space singular vectors of a (in, out) weight, largest first, and their squared singular
+// values. Row-major: at least min(in, out) rows of length out. With out <= in they are the eigenvectors
+// of W^T W. With out > in, W W^T is the smaller matrix: each of its eigenvectors v, with eigenvalue
+// s^2, gives u = W^T v / s, so a 576 x 1536 MLP weight costs a 576-dimensional eigendecomposition, not
+// a 1536-dimensional one (about 18 times less). A u with s = 0 is left as zeros; it matches nothing.
 DoubleEigenResult OutputSpace(const Tensor& w) {
     const int64_t in = w.shape().dim(0), out = w.shape().dim(1);
     const std::vector<float> v = w.to_host_vector();
-    std::vector<double> gram(static_cast<std::size_t>(out * out), 0.0);
+    if (out <= in) {
+        std::vector<double> gram(static_cast<std::size_t>(out * out), 0.0);
+        for (int64_t i = 0; i < in; ++i) {
+            const float* row = &v[static_cast<std::size_t>(i * out)];
+            for (int64_t a = 0; a < out; ++a) {
+                const double ra = row[a];
+                if (ra == 0) continue;
+                double* g = &gram[static_cast<std::size_t>(a * out)];
+                for (int64_t b = a; b < out; ++b) g[b] += ra * row[b];
+            }
+        }
+        for (int64_t a = 0; a < out; ++a)
+            for (int64_t b = 0; b < a; ++b) gram[static_cast<std::size_t>(a * out + b)] = gram[static_cast<std::size_t>(b * out + a)];
+        return SymmetricEigenInDouble(std::move(gram), out);
+    }
+    std::vector<double> gram(static_cast<std::size_t>(in * in), 0.0);
     for (int64_t i = 0; i < in; ++i) {
-        const float* row = &v[static_cast<std::size_t>(i * out)];
-        for (int64_t a = 0; a < out; ++a) {
-            const double ra = row[a];
-            if (ra == 0) continue;
-            double* g = &gram[static_cast<std::size_t>(a * out)];
-            for (int64_t b = a; b < out; ++b) g[b] += ra * row[b];
+        const float* ri = &v[static_cast<std::size_t>(i * out)];
+        for (int64_t j = i; j < in; ++j) {
+            const float* rj = &v[static_cast<std::size_t>(j * out)];
+            double dot = 0;
+            for (int64_t a = 0; a < out; ++a) dot += static_cast<double>(ri[a]) * rj[a];
+            gram[static_cast<std::size_t>(i * in + j)] = gram[static_cast<std::size_t>(j * in + i)] = dot;
         }
     }
-    for (int64_t a = 0; a < out; ++a)
-        for (int64_t b = 0; b < a; ++b) gram[static_cast<std::size_t>(a * out + b)] = gram[static_cast<std::size_t>(b * out + a)];
-    return SymmetricEigenInDouble(std::move(gram), out);
+    const DoubleEigenResult small = SymmetricEigenInDouble(std::move(gram), in);
+    DoubleEigenResult r;
+    r.values = small.values;
+    r.vectors.assign(static_cast<std::size_t>(in * out), 0.0);
+    const double floor = 1e-12 * std::max(small.values.empty() ? 0.0 : small.values.front(), 0.0);
+    for (int64_t j = 0; j < in; ++j) {
+        const double s2 = small.values[static_cast<std::size_t>(j)];
+        if (!(s2 > floor)) continue;
+        double* u = &r.vectors[static_cast<std::size_t>(j * out)];
+        for (int64_t i = 0; i < in; ++i) {
+            const double c = small.vectors[static_cast<std::size_t>(j * in + i)];
+            const float* row = &v[static_cast<std::size_t>(i * out)];
+            for (int64_t a = 0; a < out; ++a) u[a] += c * row[a];
+        }
+        const double inv = 1.0 / std::sqrt(s2);
+        for (int64_t a = 0; a < out; ++a) u[a] *= inv;
+    }
+    return r;
 }
 
 }  // namespace

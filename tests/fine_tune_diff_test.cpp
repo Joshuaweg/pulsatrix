@@ -192,6 +192,35 @@ TEST(IntruderDimensionsTest, ANewTopDirectionIsAnIntruderAndASmallNudgeIsNot) {
     EXPECT_THROW((void)IntruderDimensions(base, base, 10, 1.5), std::invalid_argument);
 }
 
+// With out > in, the output space comes from the smaller W W^T: the same singular values as the
+// transpose (which takes the W^T W path), and the same intruder found.
+TEST(IntruderDimensionsTest, AWideMatrixTakesTheSmallerGramAndAgrees) {
+    CPUBackend backend;
+    const int64_t in = 24, out = 64;
+    const std::vector<float> w0 = Random(static_cast<std::size_t>(in * out), 4, 0.1f);
+    std::vector<float> t0(w0.size());
+    for (int64_t i = 0; i < in; ++i)
+        for (int64_t a = 0; a < out; ++a) t0[static_cast<std::size_t>(a * in + i)] = w0[static_cast<std::size_t>(i * out + a)];
+    const Tensor wide(Shape({in, out}), &backend, w0), tall(Shape({out, in}), &backend, t0);
+
+    const IntruderResult same = IntruderDimensions(wide, wide, 24);
+    EXPECT_EQ(same.count, 0);
+    for (double s : same.max_similarity) EXPECT_NEAR(s, 1.0, 1e-6);
+    const IntruderResult transposed = IntruderDimensions(tall, tall, 24);
+    ASSERT_EQ(same.singular_values.size(), transposed.singular_values.size());
+    for (std::size_t j = 0; j < same.singular_values.size(); ++j) EXPECT_NEAR(same.singular_values[j], transposed.singular_values[j], 1e-9);
+
+    std::vector<float> u(static_cast<std::size_t>(out), 1.0f / std::sqrt(static_cast<float>(out)));
+    for (std::size_t a = 1; a < u.size(); a += 2) u[a] = -u[a];
+    const std::vector<float> v = Random(static_cast<std::size_t>(in), 5);
+    std::vector<float> intruded = w0;
+    for (int64_t i = 0; i < in; ++i)
+        for (int64_t a = 0; a < out; ++a) intruded[static_cast<std::size_t>(i * out + a)] += 2.0f * v[static_cast<std::size_t>(i)] * u[static_cast<std::size_t>(a)];
+    const IntruderResult big = IntruderDimensions(wide, Tensor(Shape({in, out}), &backend, intruded), 1);
+    EXPECT_LT(big.max_similarity[0], 0.6);
+    EXPECT_EQ(big.count, 1);
+}
+
 TEST(IntruderDimensionsTest, PerLayerForLoraAndForTwoModels) {
     CPUBackend backend;
     std::unique_ptr<CausalLM> model = LoadCausalLM(Fixture("qwen2"), &backend);
