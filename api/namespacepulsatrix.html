@@ -1035,6 +1035,12 @@ Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpulsatrix_1_1PersistenceDiagram.html">PersistenceDiagram</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The features of one homology dimension: H0 for components, H1 for loops, H2 for voids.  <a href="structpulsatrix_1_1PersistenceDiagram.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpulsatrix_1_1PersistenceDiagramDocument.html">PersistenceDiagramDocument</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Persistence diagrams of one point cloud, one entry per homology dimension.  <a href="structpulsatrix_1_1PersistenceDiagramDocument.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpulsatrix_1_1PersistenceDiagramEntry.html">PersistenceDiagramEntry</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">One homology dimension of a <a class="el" href="structpulsatrix_1_1PersistenceDiagramDocument.html" title="Persistence diagrams of one point cloud, one entry per homology dimension.">PersistenceDiagramDocument</a>.  <a href="structpulsatrix_1_1PersistenceDiagramEntry.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpulsatrix_1_1PersistenceImage.html">PersistenceImage</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">A persistence image: values[row * width + column], row 0 at persistence 0.  <a href="structpulsatrix_1_1PersistenceImage.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -1046,6 +1052,9 @@ Classes</h2></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpulsatrix_1_1PersistencePair.html">PersistencePair</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">One feature of a persistence diagram.  <a href="structpulsatrix_1_1PersistencePair.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpulsatrix_1_1PersistenceViewOptions.html">PersistenceViewOptions</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Settings shared by the three views.  <a href="structpulsatrix_1_1PersistenceViewOptions.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpulsatrix_1_1PerturbationCurve.html">PerturbationCurve</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">A perturbation curve: the target score after each fraction of features was changed.  <a href="structpulsatrix_1_1PerturbationCurve.html#details">More...</a><br /></td></tr>
@@ -3609,6 +3618,36 @@ Functions</h2></td></tr>
 <tr class="memitem:ae0fad8b255ac061cc8652aac55293e51" id="r_ae0fad8b255ac061cc8652aac55293e51"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structpulsatrix_1_1TokenRelevanceDocument.html">TokenRelevanceDocument</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#ae0fad8b255ac061cc8652aac55293e51">MakeWordRelevanceDocument</a> (std::string_view text, const <a class="el" href="structpulsatrix_1_1WordScores.html">WordScores</a> &amp;words, std::string method, std::string target=&quot;&quot;)</td></tr>
 <tr class="memdesc:ae0fad8b255ac061cc8652aac55293e51"><td class="mdescLeft">&#160;</td><td class="mdescRight">A word-level document for <code>text</code> from <a class="el" href="namespacepulsatrix.html#ad632e662dfcc2dd85fab54b1ee8e9b1f" title="Merges per-token scores into the given words.">AggregateToWords()</a>: each word scored, the text between words as unscored pieces, and the words' unassigned relevance carried over.  <br /></td></tr>
 <tr class="separator:ae0fad8b255ac061cc8652aac55293e51"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad76836c97f1d3051f2d3b93a3f7b816c" id="r_ad76836c97f1d3051f2d3b93a3f7b816c"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structpulsatrix_1_1PersistenceDiagramDocument.html">PersistenceDiagramDocument</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#ad76836c97f1d3051f2d3b93a3f7b816c">ToPersistenceDiagramDocument</a> (const std::vector&lt; <a class="el" href="structpulsatrix_1_1PersistenceDiagram.html">PersistenceDiagram</a> &gt; &amp;diagrams, std::string title=&quot;&quot;)</td></tr>
+<tr class="memdesc:ad76836c97f1d3051f2d3b93a3f7b816c"><td class="mdescLeft">&#160;</td><td class="mdescRight">The diagrams as a document: births, deaths and each diagram's error bound.  <br /></td></tr>
+<tr class="separator:ad76836c97f1d3051f2d3b93a3f7b816c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a959dd980d2cefcb4469ec392c46fb0c2" id="r_a959dd980d2cefcb4469ec392c46fb0c2"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structpulsatrix_1_1PersistenceDiagramDocument.html">PersistenceDiagramDocument</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#a959dd980d2cefcb4469ec392c46fb0c2">ToPersistenceDiagramDocument</a> (const <a class="el" href="structpulsatrix_1_1RipsResult.html">RipsResult</a> &amp;result, std::string title=&quot;&quot;)</td></tr>
+<tr class="memdesc:a959dd980d2cefcb4469ec392c46fb0c2"><td class="mdescLeft">&#160;</td><td class="mdescRight">The same, from <a class="el" href="namespacepulsatrix.html#ad9dd7a45897a7198b95aec08abbf1ba5" title="Persistent homology of the Vietoris-Rips filtration on the given distances, in dimensions 0 to option...">ComputeRipsPersistence()</a>, with its threshold.  <br /></td></tr>
+<tr class="separator:a959dd980d2cefcb4469ec392c46fb0c2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a32832d5cbb8724b71ca37b0774af6218" id="r_a32832d5cbb8724b71ca37b0774af6218"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#a32832d5cbb8724b71ca37b0774af6218">AttachSignificance</a> (<a class="el" href="structpulsatrix_1_1PersistenceDiagramDocument.html">PersistenceDiagramDocument</a> &amp;doc, int dimension, const <a class="el" href="structpulsatrix_1_1UniversalNullResult.html">UniversalNullResult</a> &amp;test)</td></tr>
+<tr class="memdesc:a32832d5cbb8724b71ca37b0774af6218"><td class="mdescLeft">&#160;</td><td class="mdescRight">Adds <a class="el" href="namespacepulsatrix.html#a1fa53a86ebe5a5ab398fb1005285d53d" title="Bobrowski and Skraba&#39;s universal null test for every feature of a Vietoris-Rips diagram in dimension ...">UniversalNullTest()</a>'s p-values and corrected threshold to the entry for <code>dimension</code>. Features the test skipped get NaN.  <br /></td></tr>
+<tr class="separator:a32832d5cbb8724b71ca37b0774af6218"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3a404934bc5c7aae1a51aca6e8767644" id="r_a3a404934bc5c7aae1a51aca6e8767644"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#a3a404934bc5c7aae1a51aca6e8767644">AttachBootstrapBand</a> (<a class="el" href="structpulsatrix_1_1PersistenceDiagramDocument.html">PersistenceDiagramDocument</a> &amp;doc, int dimension, const <a class="el" href="structpulsatrix_1_1BootstrapBandResult.html">BootstrapBandResult</a> &amp;band)</td></tr>
+<tr class="memdesc:a3a404934bc5c7aae1a51aca6e8767644"><td class="mdescLeft">&#160;</td><td class="mdescRight">Adds <a class="el" href="namespacepulsatrix.html#a9e08f6f3a186e2668ebcfb8f6a1de15a" title="A bootstrap confidence band for a Rips diagram (after Fasy, Lecci, Rinaldo, Wasserman,...">BootstrapBand()</a>'s band to the entry for <code>dimension</code>.  <br /></td></tr>
+<tr class="separator:a3a404934bc5c7aae1a51aca6e8767644"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a26d698f2c83608cb28bd3f06986a5c26" id="r_a26d698f2c83608cb28bd3f06986a5c26"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#a26d698f2c83608cb28bd3f06986a5c26">IsSignificant</a> (const <a class="el" href="structpulsatrix_1_1PersistenceDiagramEntry.html">PersistenceDiagramEntry</a> &amp;entry, size_t i)</td></tr>
+<tr class="memdesc:a26d698f2c83608cb28bd3f06986a5c26"><td class="mdescLeft">&#160;</td><td class="mdescRight">Whether feature <code>i</code> of <code>entry</code> passed the attached tests: its p-value is below the threshold, or, with only a bootstrap band, its persistence is above twice the band. True for every feature when no test is attached.  <br /></td></tr>
+<tr class="separator:a26d698f2c83608cb28bd3f06986a5c26"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad5af73b59a7c24eae3c7b17218833dc8" id="r_ad5af73b59a7c24eae3c7b17218833dc8"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#ad5af73b59a7c24eae3c7b17218833dc8">ToJson</a> (const <a class="el" href="structpulsatrix_1_1PersistenceDiagramDocument.html">PersistenceDiagramDocument</a> &amp;doc)</td></tr>
+<tr class="memdesc:ad5af73b59a7c24eae3c7b17218833dc8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Writes the document.  <br /></td></tr>
+<tr class="separator:ad5af73b59a7c24eae3c7b17218833dc8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7ce86cf964b876f3170f68833edb6434" id="r_a7ce86cf964b876f3170f68833edb6434"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structpulsatrix_1_1PersistenceDiagramDocument.html">PersistenceDiagramDocument</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#a7ce86cf964b876f3170f68833edb6434">ParsePersistenceDiagramDocument</a> (std::string_view json)</td></tr>
+<tr class="memdesc:a7ce86cf964b876f3170f68833edb6434"><td class="mdescLeft">&#160;</td><td class="mdescRight">Reads a document <a class="el" href="namespacepulsatrix.html#a013e5eb67a4e009e0c77adfe60ca3799">ToJson()</a> wrote.  <br /></td></tr>
+<tr class="separator:a7ce86cf964b876f3170f68833edb6434"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a01d0d562e2007b7399cadc66cf8c3143" id="r_a01d0d562e2007b7399cadc66cf8c3143"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#a01d0d562e2007b7399cadc66cf8c3143">RenderPersistenceDiagramSvg</a> (const <a class="el" href="structpulsatrix_1_1PersistenceDiagramDocument.html">PersistenceDiagramDocument</a> &amp;doc, const <a class="el" href="structpulsatrix_1_1PersistenceViewOptions.html">PersistenceViewOptions</a> &amp;view={}, const <a class="el" href="structpulsatrix_1_1SvgOptions.html">SvgOptions</a> &amp;options={})</td></tr>
+<tr class="memdesc:a01d0d562e2007b7399cadc66cf8c3143"><td class="mdescLeft">&#160;</td><td class="mdescRight">Birth against death, one point per feature. Points far above the diagonal persist long. A shaded band along the diagonal marks persistence within twice the certified error bound, which the distances' own error could explain. Essential features sit on a dashed line marked ∞. When tests are attached, significant features are filled and the others hollow; a bootstrap band is drawn as a dashed line parallel to the diagonal.  <br /></td></tr>
+<tr class="separator:a01d0d562e2007b7399cadc66cf8c3143"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3101c4878fc24a27fdd3dc6b6c07a868" id="r_a3101c4878fc24a27fdd3dc6b6c07a868"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#a3101c4878fc24a27fdd3dc6b6c07a868">RenderBarcodeSvg</a> (const <a class="el" href="structpulsatrix_1_1PersistenceDiagramDocument.html">PersistenceDiagramDocument</a> &amp;doc, const <a class="el" href="structpulsatrix_1_1PersistenceViewOptions.html">PersistenceViewOptions</a> &amp;view={}, const <a class="el" href="structpulsatrix_1_1SvgOptions.html">SvgOptions</a> &amp;options={})</td></tr>
+<tr class="memdesc:a3101c4878fc24a27fdd3dc6b6c07a868"><td class="mdescLeft">&#160;</td><td class="mdescRight">One bar per feature, from its birth to its death, grouped by dimension and longest first. Each end has a whisker of ±the certified error bound; essential bars end in an arrow. Features that failed an attached test are drawn faint.  <br /></td></tr>
+<tr class="separator:a3101c4878fc24a27fdd3dc6b6c07a868"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aedb10bb8a35dcc3250c62216441c5ca2" id="r_aedb10bb8a35dcc3250c62216441c5ca2"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#aedb10bb8a35dcc3250c62216441c5ca2">RenderBettiCurveSvg</a> (const <a class="el" href="structpulsatrix_1_1PersistenceDiagramDocument.html">PersistenceDiagramDocument</a> &amp;doc, const <a class="el" href="structpulsatrix_1_1PersistenceViewOptions.html">PersistenceViewOptions</a> &amp;view={}, const <a class="el" href="structpulsatrix_1_1SvgOptions.html">SvgOptions</a> &amp;options={})</td></tr>
+<tr class="memdesc:aedb10bb8a35dcc3250c62216441c5ca2"><td class="mdescLeft">&#160;</td><td class="mdescRight">The Betti curve of each dimension: how many features are alive at each scale (<a class="el" href="namespacepulsatrix.html#a1cbde18104fc299319955109745cfc23" title="The Betti curve: how many features are alive, birth &lt;= t &lt; death, at each scale t.">BettiCurve()</a>).  <br /></td></tr>
+<tr class="separator:aedb10bb8a35dcc3250c62216441c5ca2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6dcdc5579c39f1cdd2cad537f85f6847" id="r_a6dcdc5579c39f1cdd2cad537f85f6847"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classpulsatrix_1_1Vocabulary.html">Vocabulary</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#a6dcdc5579c39f1cdd2cad537f85f6847">BuildVocabulary</a> (const std::vector&lt; std::vector&lt; std::string &gt; &gt; &amp;tokenized_corpus, int64_t max_vocab_size=-1)</td></tr>
 <tr class="memdesc:a6dcdc5579c39f1cdd2cad537f85f6847"><td class="mdescLeft">&#160;</td><td class="mdescRight">Builds a <a class="el" href="classpulsatrix_1_1Vocabulary.html" title="Token&lt;-&gt;index lookup table. Index 0 is always the reserved &quot;&lt;unk&gt;&quot; token – guaranteed by construction...">Vocabulary</a> from a tokenized corpus, ranked by descending token frequency (ties broken by first-seen order, for determinism).  <br /></td></tr>
 <tr class="separator:a6dcdc5579c39f1cdd2cad537f85f6847"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -3688,6 +3727,8 @@ Functions</h2></td></tr>
 <tr class="separator:af01877b8e7b3d8f50cec63a2d878ca7a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a16c3a4bc0a1be9a51f178f5d70fe37db" id="r_a16c3a4bc0a1be9a51f178f5d70fe37db"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structpulsatrix_1_1MimeBundle.html">MimeBundle</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#a16c3a4bc0a1be9a51f178f5d70fe37db">mime_bundle_repr</a> (const <a class="el" href="structpulsatrix_1_1ResidueTracksDocument.html">ResidueTracksDocument</a> &amp;doc)</td></tr>
 <tr class="separator:a16c3a4bc0a1be9a51f178f5d70fe37db"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2076145e3d4412b8025e0258e832f602" id="r_a2076145e3d4412b8025e0258e832f602"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structpulsatrix_1_1MimeBundle.html">MimeBundle</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#a2076145e3d4412b8025e0258e832f602">mime_bundle_repr</a> (const <a class="el" href="structpulsatrix_1_1PersistenceDiagramDocument.html">PersistenceDiagramDocument</a> &amp;doc)</td></tr>
+<tr class="separator:a2076145e3d4412b8025e0258e832f602"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="var-members" name="var-members"></a>
 Variables</h2></td></tr>
@@ -6359,6 +6400,96 @@ Every op here computes the <em>forward</em> value only &ndash; no derivative var
 <dl class="exception"><dt>Exceptions</dt><dd>
   <table class="exception">
     <tr><td class="paramname">std::invalid_argument</td><td>if any z_sample's dimension doesn't match state.mean's. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="a3a404934bc5c7aae1a51aca6e8767644" name="a3a404934bc5c7aae1a51aca6e8767644"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3a404934bc5c7aae1a51aca6e8767644">&#9670;&#160;</a></span>AttachBootstrapBand()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void pulsatrix::AttachBootstrapBand </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structpulsatrix_1_1PersistenceDiagramDocument.html">PersistenceDiagramDocument</a> &amp;&#160;</td>
+          <td class="paramname"><em>doc</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>dimension</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="structpulsatrix_1_1BootstrapBandResult.html">BootstrapBandResult</a> &amp;&#160;</td>
+          <td class="paramname"><em>band</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Adds <a class="el" href="namespacepulsatrix.html#a9e08f6f3a186e2668ebcfb8f6a1de15a" title="A bootstrap confidence band for a Rips diagram (after Fasy, Lecci, Rinaldo, Wasserman,...">BootstrapBand()</a>'s band to the entry for <code>dimension</code>. </p>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname">std::invalid_argument</td><td>if the document has no such dimension. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="a32832d5cbb8724b71ca37b0774af6218" name="a32832d5cbb8724b71ca37b0774af6218"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a32832d5cbb8724b71ca37b0774af6218">&#9670;&#160;</a></span>AttachSignificance()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void pulsatrix::AttachSignificance </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structpulsatrix_1_1PersistenceDiagramDocument.html">PersistenceDiagramDocument</a> &amp;&#160;</td>
+          <td class="paramname"><em>doc</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>dimension</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="structpulsatrix_1_1UniversalNullResult.html">UniversalNullResult</a> &amp;&#160;</td>
+          <td class="paramname"><em>test</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Adds <a class="el" href="namespacepulsatrix.html#a1fa53a86ebe5a5ab398fb1005285d53d" title="Bobrowski and Skraba&#39;s universal null test for every feature of a Vietoris-Rips diagram in dimension ...">UniversalNullTest()</a>'s p-values and corrected threshold to the entry for <code>dimension</code>. Features the test skipped get NaN. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">test</td><td>The test of that dimension's diagram, exactly as the document holds it. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname">std::invalid_argument</td><td>if the document has no such dimension, or a tested feature isn't in it: its index is out of range, or the pair there has a different death / birth. </td></tr>
   </table>
   </dd>
 </dl>
@@ -12340,7 +12471,7 @@ template&lt;typename Genotype , typename FitnessT &gt; </div>
   </table>
   </dd>
 </dl>
-<dl class="section note"><dt>Note</dt><dd>The paper's Algorithm 1 compares cosines without an absolute value. A singular vector's sign is arbitrary, so this uses |cos|. Two O(out^3) eigendecompositions of W^T W, on the CPU in double (SymmetricEigen takes about 0.8 s at n = 512 in a Release build). </dd></dl>
+<dl class="section note"><dt>Note</dt><dd>The paper's Algorithm 1 compares cosines without an absolute value. A singular vector's sign is arbitrary, so this uses |cos|. Two eigendecompositions, on the CPU in double, of W^T W or W W^T, whichever is smaller: O(min(in, out)^3) (SymmetricEigen takes about 0.8 s at n = 512 in a Release build). </dd></dl>
 <dl class="exception"><dt>Exceptions</dt><dd>
   <table class="exception">
     <tr><td class="paramname">std::invalid_argument</td><td>if the shapes differ or aren't rank 2, k &lt; 1, or epsilon isn't in (0, 1]. </td></tr>
@@ -12415,6 +12546,36 @@ template&lt;typename Genotype , typename FitnessT &gt; </div>
 </div><div class="memdoc">
 
 <p>Whether the document's method is UMAP or t-SNE (<code>umap</code>, <code>tsne</code>, <code>t-sne</code> or <code>opentsne</code>, any case), whose plots keep neighbors but not distances, cluster sizes or densities. The views say so on such plots. </p>
+
+</div>
+</div>
+<a id="a26d698f2c83608cb28bd3f06986a5c26" name="a26d698f2c83608cb28bd3f06986a5c26"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a26d698f2c83608cb28bd3f06986a5c26">&#9670;&#160;</a></span>IsSignificant()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool pulsatrix::IsSignificant </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="structpulsatrix_1_1PersistenceDiagramEntry.html">PersistenceDiagramEntry</a> &amp;&#160;</td>
+          <td class="paramname"><em>entry</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">size_t&#160;</td>
+          <td class="paramname"><em>i</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Whether feature <code>i</code> of <code>entry</code> passed the attached tests: its p-value is below the threshold, or, with only a bootstrap band, its persistence is above twice the band. True for every feature when no test is attached. </p>
 
 </div>
 </div>
@@ -14999,7 +15160,7 @@ template&lt;typename Genotype , typename FitnessT &gt; </div>
 </div>
 </div>
 <a id="a10fa8d2b1fde640f55f4f7c3d87e9190" name="a10fa8d2b1fde640f55f4f7c3d87e9190"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a10fa8d2b1fde640f55f4f7c3d87e9190">&#9670;&#160;</a></span>mime_bundle_repr() <span class="overload">[1/18]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a10fa8d2b1fde640f55f4f7c3d87e9190">&#9670;&#160;</a></span>mime_bundle_repr() <span class="overload">[1/19]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -15017,7 +15178,7 @@ template&lt;typename Genotype , typename FitnessT &gt; </div>
 </div>
 </div>
 <a id="ad4dbcb8ec9b7d8408367e7618f7de178" name="ad4dbcb8ec9b7d8408367e7618f7de178"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ad4dbcb8ec9b7d8408367e7618f7de178">&#9670;&#160;</a></span>mime_bundle_repr() <span class="overload">[2/18]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#ad4dbcb8ec9b7d8408367e7618f7de178">&#9670;&#160;</a></span>mime_bundle_repr() <span class="overload">[2/19]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -15035,7 +15196,7 @@ template&lt;typename Genotype , typename FitnessT &gt; </div>
 </div>
 </div>
 <a id="a718fd41444d4333f05b342ad37b0dd56" name="a718fd41444d4333f05b342ad37b0dd56"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a718fd41444d4333f05b342ad37b0dd56">&#9670;&#160;</a></span>mime_bundle_repr() <span class="overload">[3/18]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a718fd41444d4333f05b342ad37b0dd56">&#9670;&#160;</a></span>mime_bundle_repr() <span class="overload">[3/19]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -15053,7 +15214,7 @@ template&lt;typename Genotype , typename FitnessT &gt; </div>
 </div>
 </div>
 <a id="aea9e03f554b09c01e0ecfa1a4f5253ff" name="aea9e03f554b09c01e0ecfa1a4f5253ff"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aea9e03f554b09c01e0ecfa1a4f5253ff">&#9670;&#160;</a></span>mime_bundle_repr() <span class="overload">[4/18]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#aea9e03f554b09c01e0ecfa1a4f5253ff">&#9670;&#160;</a></span>mime_bundle_repr() <span class="overload">[4/19]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -15071,7 +15232,7 @@ template&lt;typename Genotype , typename FitnessT &gt; </div>
 </div>
 </div>
 <a id="af01877b8e7b3d8f50cec63a2d878ca7a" name="af01877b8e7b3d8f50cec63a2d878ca7a"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#af01877b8e7b3d8f50cec63a2d878ca7a">&#9670;&#160;</a></span>mime_bundle_repr() <span class="overload">[5/18]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#af01877b8e7b3d8f50cec63a2d878ca7a">&#9670;&#160;</a></span>mime_bundle_repr() <span class="overload">[5/19]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -15089,7 +15250,7 @@ template&lt;typename Genotype , typename FitnessT &gt; </div>
 </div>
 </div>
 <a id="a79ac13943c8636e5c163a3393758398d" name="a79ac13943c8636e5c163a3393758398d"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a79ac13943c8636e5c163a3393758398d">&#9670;&#160;</a></span>mime_bundle_repr() <span class="overload">[6/18]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a79ac13943c8636e5c163a3393758398d">&#9670;&#160;</a></span>mime_bundle_repr() <span class="overload">[6/19]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -15107,7 +15268,7 @@ template&lt;typename Genotype , typename FitnessT &gt; </div>
 </div>
 </div>
 <a id="a0a96592fc3296784644c9a50a98356e3" name="a0a96592fc3296784644c9a50a98356e3"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a0a96592fc3296784644c9a50a98356e3">&#9670;&#160;</a></span>mime_bundle_repr() <span class="overload">[7/18]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a0a96592fc3296784644c9a50a98356e3">&#9670;&#160;</a></span>mime_bundle_repr() <span class="overload">[7/19]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -15125,7 +15286,7 @@ template&lt;typename Genotype , typename FitnessT &gt; </div>
 </div>
 </div>
 <a id="a2c22c9057f5981696ca0a404cf7a5d45" name="a2c22c9057f5981696ca0a404cf7a5d45"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a2c22c9057f5981696ca0a404cf7a5d45">&#9670;&#160;</a></span>mime_bundle_repr() <span class="overload">[8/18]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a2c22c9057f5981696ca0a404cf7a5d45">&#9670;&#160;</a></span>mime_bundle_repr() <span class="overload">[8/19]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -15143,7 +15304,7 @@ template&lt;typename Genotype , typename FitnessT &gt; </div>
 </div>
 </div>
 <a id="a3f6249854f36483286fb2e988ea0f529" name="a3f6249854f36483286fb2e988ea0f529"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a3f6249854f36483286fb2e988ea0f529">&#9670;&#160;</a></span>mime_bundle_repr() <span class="overload">[9/18]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a3f6249854f36483286fb2e988ea0f529">&#9670;&#160;</a></span>mime_bundle_repr() <span class="overload">[9/19]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -15161,7 +15322,7 @@ template&lt;typename Genotype , typename FitnessT &gt; </div>
 </div>
 </div>
 <a id="a6e04a44ae6552e0612c827d8a384132a" name="a6e04a44ae6552e0612c827d8a384132a"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a6e04a44ae6552e0612c827d8a384132a">&#9670;&#160;</a></span>mime_bundle_repr() <span class="overload">[10/18]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a6e04a44ae6552e0612c827d8a384132a">&#9670;&#160;</a></span>mime_bundle_repr() <span class="overload">[10/19]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -15178,8 +15339,26 @@ template&lt;typename Genotype , typename FitnessT &gt; </div>
 
 </div>
 </div>
+<a id="a2076145e3d4412b8025e0258e832f602" name="a2076145e3d4412b8025e0258e832f602"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2076145e3d4412b8025e0258e832f602">&#9670;&#160;</a></span>mime_bundle_repr() <span class="overload">[11/19]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="structpulsatrix_1_1MimeBundle.html">MimeBundle</a> pulsatrix::mime_bundle_repr </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="structpulsatrix_1_1PersistenceDiagramDocument.html">PersistenceDiagramDocument</a> &amp;&#160;</td>
+          <td class="paramname"><em>doc</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
 <a id="a4a18186dd78ab69f1a6e63e6d453c266" name="a4a18186dd78ab69f1a6e63e6d453c266"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a4a18186dd78ab69f1a6e63e6d453c266">&#9670;&#160;</a></span>mime_bundle_repr() <span class="overload">[11/18]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a4a18186dd78ab69f1a6e63e6d453c266">&#9670;&#160;</a></span>mime_bundle_repr() <span class="overload">[12/19]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -15197,7 +15376,7 @@ template&lt;typename Genotype , typename FitnessT &gt; </div>
 </div>
 </div>
 <a id="a16c3a4bc0a1be9a51f178f5d70fe37db" name="a16c3a4bc0a1be9a51f178f5d70fe37db"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a16c3a4bc0a1be9a51f178f5d70fe37db">&#9670;&#160;</a></span>mime_bundle_repr() <span class="overload">[12/18]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a16c3a4bc0a1be9a51f178f5d70fe37db">&#9670;&#160;</a></span>mime_bundle_repr() <span class="overload">[13/19]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -15215,7 +15394,7 @@ template&lt;typename Genotype , typename FitnessT &gt; </div>
 </div>
 </div>
 <a id="a5d1031a366e1377496a6abd0c66825b1" name="a5d1031a366e1377496a6abd0c66825b1"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a5d1031a366e1377496a6abd0c66825b1">&#9670;&#160;</a></span>mime_bundle_repr() <span class="overload">[13/18]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a5d1031a366e1377496a6abd0c66825b1">&#9670;&#160;</a></span>mime_bundle_repr() <span class="overload">[14/19]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -15233,7 +15412,7 @@ template&lt;typename Genotype , typename FitnessT &gt; </div>
 </div>
 </div>
 <a id="a99ab3a4a86c7d737fb6830e4d12441f3" name="a99ab3a4a86c7d737fb6830e4d12441f3"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a99ab3a4a86c7d737fb6830e4d12441f3">&#9670;&#160;</a></span>mime_bundle_repr() <span class="overload">[14/18]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a99ab3a4a86c7d737fb6830e4d12441f3">&#9670;&#160;</a></span>mime_bundle_repr() <span class="overload">[15/19]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -15251,7 +15430,7 @@ template&lt;typename Genotype , typename FitnessT &gt; </div>
 </div>
 </div>
 <a id="a27045a862ccecd46ccbf77554962ebcc" name="a27045a862ccecd46ccbf77554962ebcc"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a27045a862ccecd46ccbf77554962ebcc">&#9670;&#160;</a></span>mime_bundle_repr() <span class="overload">[15/18]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a27045a862ccecd46ccbf77554962ebcc">&#9670;&#160;</a></span>mime_bundle_repr() <span class="overload">[16/19]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -15269,7 +15448,7 @@ template&lt;typename Genotype , typename FitnessT &gt; </div>
 </div>
 </div>
 <a id="a71b7ebedf3ae3a9f8f43f2ceeaa3b5b5" name="a71b7ebedf3ae3a9f8f43f2ceeaa3b5b5"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a71b7ebedf3ae3a9f8f43f2ceeaa3b5b5">&#9670;&#160;</a></span>mime_bundle_repr() <span class="overload">[16/18]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a71b7ebedf3ae3a9f8f43f2ceeaa3b5b5">&#9670;&#160;</a></span>mime_bundle_repr() <span class="overload">[17/19]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -15287,7 +15466,7 @@ template&lt;typename Genotype , typename FitnessT &gt; </div>
 </div>
 </div>
 <a id="ae99119c089ef19e4e1d65076dbaf8e89" name="ae99119c089ef19e4e1d65076dbaf8e89"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ae99119c089ef19e4e1d65076dbaf8e89">&#9670;&#160;</a></span>mime_bundle_repr() <span class="overload">[17/18]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#ae99119c089ef19e4e1d65076dbaf8e89">&#9670;&#160;</a></span>mime_bundle_repr() <span class="overload">[18/19]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -15305,7 +15484,7 @@ template&lt;typename Genotype , typename FitnessT &gt; </div>
 </div>
 </div>
 <a id="aa37231ff279eb9a9310bc53f081287e6" name="aa37231ff279eb9a9310bc53f081287e6"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aa37231ff279eb9a9310bc53f081287e6">&#9670;&#160;</a></span>mime_bundle_repr() <span class="overload">[18/18]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#aa37231ff279eb9a9310bc53f081287e6">&#9670;&#160;</a></span>mime_bundle_repr() <span class="overload">[19/19]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -16949,6 +17128,32 @@ template&lt;typename T &gt; </div>
 </dl>
 </li>
 </ul>
+
+</div>
+</div>
+<a id="a7ce86cf964b876f3170f68833edb6434" name="a7ce86cf964b876f3170f68833edb6434"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7ce86cf964b876f3170f68833edb6434">&#9670;&#160;</a></span>ParsePersistenceDiagramDocument()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="structpulsatrix_1_1PersistenceDiagramDocument.html">PersistenceDiagramDocument</a> pulsatrix::ParsePersistenceDiagramDocument </td>
+          <td>(</td>
+          <td class="paramtype">std::string_view&#160;</td>
+          <td class="paramname"><em>json</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Reads a document <a class="el" href="namespacepulsatrix.html#a013e5eb67a4e009e0c77adfe60ca3799">ToJson()</a> wrote. </p>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname">std::invalid_argument</td><td>naming the JSON Pointer of the first problem. </td></tr>
+  </table>
+  </dd>
+</dl>
 
 </div>
 </div>
@@ -18716,6 +18921,48 @@ template&lt;typename Genotype , typename FitnessT &gt; </div>
 
 </div>
 </div>
+<a id="a3101c4878fc24a27fdd3dc6b6c07a868" name="a3101c4878fc24a27fdd3dc6b6c07a868"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3101c4878fc24a27fdd3dc6b6c07a868">&#9670;&#160;</a></span>RenderBarcodeSvg()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::string pulsatrix::RenderBarcodeSvg </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="structpulsatrix_1_1PersistenceDiagramDocument.html">PersistenceDiagramDocument</a> &amp;&#160;</td>
+          <td class="paramname"><em>doc</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="structpulsatrix_1_1PersistenceViewOptions.html">PersistenceViewOptions</a> &amp;&#160;</td>
+          <td class="paramname"><em>view</em> = <code>{}</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="structpulsatrix_1_1SvgOptions.html">SvgOptions</a> &amp;&#160;</td>
+          <td class="paramname"><em>options</em> = <code>{}</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>One bar per feature, from its birth to its death, grouped by dimension and longest first. Each end has a whisker of ±the certified error bound; essential bars end in an arrow. Features that failed an attached test are drawn faint. </p>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname">std::invalid_argument</td><td>as <a class="el" href="namespacepulsatrix.html#a01d0d562e2007b7399cadc66cf8c3143" title="Birth against death, one point per feature. Points far above the diagonal persist long....">RenderPersistenceDiagramSvg()</a> does, or if max_bars &lt; 1. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
 <a id="a8a9a4ba49a0267187c81ccee5c5b18f9" name="a8a9a4ba49a0267187c81ccee5c5b18f9"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a8a9a4ba49a0267187c81ccee5c5b18f9">&#9670;&#160;</a></span>RenderBeeswarmHtml()</h2>
 
@@ -18792,6 +19039,49 @@ template&lt;typename Genotype , typename FitnessT &gt; </div>
 <dl class="exception"><dt>Exceptions</dt><dd>
   <table class="exception">
     <tr><td class="paramname">std::invalid_argument</td><td>if <code>docs</code> or <code>feature_indices</code> is empty, a feature index is out of range for any document, a value is non-finite, or for invalid options. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="aedb10bb8a35dcc3250c62216441c5ca2" name="aedb10bb8a35dcc3250c62216441c5ca2"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aedb10bb8a35dcc3250c62216441c5ca2">&#9670;&#160;</a></span>RenderBettiCurveSvg()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::string pulsatrix::RenderBettiCurveSvg </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="structpulsatrix_1_1PersistenceDiagramDocument.html">PersistenceDiagramDocument</a> &amp;&#160;</td>
+          <td class="paramname"><em>doc</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="structpulsatrix_1_1PersistenceViewOptions.html">PersistenceViewOptions</a> &amp;&#160;</td>
+          <td class="paramname"><em>view</em> = <code>{}</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="structpulsatrix_1_1SvgOptions.html">SvgOptions</a> &amp;&#160;</td>
+          <td class="paramname"><em>options</em> = <code>{}</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>The Betti curve of each dimension: how many features are alive at each scale (<a class="el" href="namespacepulsatrix.html#a1cbde18104fc299319955109745cfc23" title="The Betti curve: how many features are alive, birth &lt;= t &lt; death, at each scale t.">BettiCurve()</a>). </p>
+<dl class="section note"><dt>Note</dt><dd>The curve isn't covered by the error bound: features near the diagonal can appear or vanish under a small change in the distances, and the figure says so. </dd></dl>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname">std::invalid_argument</td><td>as <a class="el" href="namespacepulsatrix.html#a01d0d562e2007b7399cadc66cf8c3143" title="Birth against death, one point per feature. Points far above the diagonal persist long....">RenderPersistenceDiagramSvg()</a> does, or if grid_points &lt; 2. </td></tr>
   </table>
   </dd>
 </dl>
@@ -19374,6 +19664,48 @@ template&lt;typename Genotype , typename FitnessT &gt; </div>
 <dl class="exception"><dt>Exceptions</dt><dd>
   <table class="exception">
     <tr><td class="paramname">std::invalid_argument</td><td>for a document ToJson rejects, a non-finite value, a style other than Raw for a document without ICE curves, negative max_curves, or unusable options. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="a01d0d562e2007b7399cadc66cf8c3143" name="a01d0d562e2007b7399cadc66cf8c3143"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a01d0d562e2007b7399cadc66cf8c3143">&#9670;&#160;</a></span>RenderPersistenceDiagramSvg()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::string pulsatrix::RenderPersistenceDiagramSvg </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="structpulsatrix_1_1PersistenceDiagramDocument.html">PersistenceDiagramDocument</a> &amp;&#160;</td>
+          <td class="paramname"><em>doc</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="structpulsatrix_1_1PersistenceViewOptions.html">PersistenceViewOptions</a> &amp;&#160;</td>
+          <td class="paramname"><em>view</em> = <code>{}</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="structpulsatrix_1_1SvgOptions.html">SvgOptions</a> &amp;&#160;</td>
+          <td class="paramname"><em>options</em> = <code>{}</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Birth against death, one point per feature. Points far above the diagonal persist long. A shaded band along the diagonal marks persistence within twice the certified error bound, which the distances' own error could explain. Essential features sit on a dashed line marked ∞. When tests are attached, significant features are filled and the others hollow; a bootstrap band is drawn as a dashed line parallel to the diagonal. </p>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname">std::invalid_argument</td><td>for a document <a class="el" href="namespacepulsatrix.html#a013e5eb67a4e009e0c77adfe60ca3799">ToJson()</a> rejects, a dimension it doesn't hold, or unusable options. </td></tr>
   </table>
   </dd>
 </dl>
@@ -24308,7 +24640,7 @@ template&lt;class Json &gt; </div>
 </div>
 </div>
 <a id="aa0b432bea4ddfc0135ebfd55d5b78818" name="aa0b432bea4ddfc0135ebfd55d5b78818"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aa0b432bea4ddfc0135ebfd55d5b78818">&#9670;&#160;</a></span>ToJson() <span class="overload">[1/18]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#aa0b432bea4ddfc0135ebfd55d5b78818">&#9670;&#160;</a></span>ToJson() <span class="overload">[1/19]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -24332,7 +24664,7 @@ template&lt;class Json &gt; </div>
 </div>
 </div>
 <a id="a013e5eb67a4e009e0c77adfe60ca3799" name="a013e5eb67a4e009e0c77adfe60ca3799"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a013e5eb67a4e009e0c77adfe60ca3799">&#9670;&#160;</a></span>ToJson() <span class="overload">[2/18]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a013e5eb67a4e009e0c77adfe60ca3799">&#9670;&#160;</a></span>ToJson() <span class="overload">[2/19]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -24356,7 +24688,7 @@ template&lt;class Json &gt; </div>
 </div>
 </div>
 <a id="a78fac3d6c2d0c19d16dae11ee8cf561a" name="a78fac3d6c2d0c19d16dae11ee8cf561a"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a78fac3d6c2d0c19d16dae11ee8cf561a">&#9670;&#160;</a></span>ToJson() <span class="overload">[3/18]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a78fac3d6c2d0c19d16dae11ee8cf561a">&#9670;&#160;</a></span>ToJson() <span class="overload">[3/19]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -24380,7 +24712,7 @@ template&lt;class Json &gt; </div>
 </div>
 </div>
 <a id="a81177bae8565dd9b82c6d1829b79b27c" name="a81177bae8565dd9b82c6d1829b79b27c"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a81177bae8565dd9b82c6d1829b79b27c">&#9670;&#160;</a></span>ToJson() <span class="overload">[4/18]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a81177bae8565dd9b82c6d1829b79b27c">&#9670;&#160;</a></span>ToJson() <span class="overload">[4/19]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -24404,7 +24736,7 @@ template&lt;class Json &gt; </div>
 </div>
 </div>
 <a id="ae1bd894b2f804084cd61b94d4e4bd520" name="ae1bd894b2f804084cd61b94d4e4bd520"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ae1bd894b2f804084cd61b94d4e4bd520">&#9670;&#160;</a></span>ToJson() <span class="overload">[5/18]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#ae1bd894b2f804084cd61b94d4e4bd520">&#9670;&#160;</a></span>ToJson() <span class="overload">[5/19]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -24428,7 +24760,7 @@ template&lt;class Json &gt; </div>
 </div>
 </div>
 <a id="aa4e8b5fb8a54c061c9a57a7449d9ecc2" name="aa4e8b5fb8a54c061c9a57a7449d9ecc2"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aa4e8b5fb8a54c061c9a57a7449d9ecc2">&#9670;&#160;</a></span>ToJson() <span class="overload">[6/18]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#aa4e8b5fb8a54c061c9a57a7449d9ecc2">&#9670;&#160;</a></span>ToJson() <span class="overload">[6/19]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -24448,7 +24780,7 @@ template&lt;class Json &gt; </div>
 </div>
 </div>
 <a id="ac0c52d3b599e7bf169118db77357e61c" name="ac0c52d3b599e7bf169118db77357e61c"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ac0c52d3b599e7bf169118db77357e61c">&#9670;&#160;</a></span>ToJson() <span class="overload">[7/18]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#ac0c52d3b599e7bf169118db77357e61c">&#9670;&#160;</a></span>ToJson() <span class="overload">[7/19]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -24472,7 +24804,7 @@ template&lt;class Json &gt; </div>
 </div>
 </div>
 <a id="ab956a7775fa51f615c268b6635ca4a58" name="ab956a7775fa51f615c268b6635ca4a58"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ab956a7775fa51f615c268b6635ca4a58">&#9670;&#160;</a></span>ToJson() <span class="overload">[8/18]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#ab956a7775fa51f615c268b6635ca4a58">&#9670;&#160;</a></span>ToJson() <span class="overload">[8/19]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -24496,7 +24828,7 @@ template&lt;class Json &gt; </div>
 </div>
 </div>
 <a id="a3723b86c310dfa94b0a9346dcaba88ef" name="a3723b86c310dfa94b0a9346dcaba88ef"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a3723b86c310dfa94b0a9346dcaba88ef">&#9670;&#160;</a></span>ToJson() <span class="overload">[9/18]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a3723b86c310dfa94b0a9346dcaba88ef">&#9670;&#160;</a></span>ToJson() <span class="overload">[9/19]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -24514,7 +24846,7 @@ template&lt;class Json &gt; </div>
 </div>
 </div>
 <a id="a48f09b49a4bfd7fcb0c6a187ad8e707e" name="a48f09b49a4bfd7fcb0c6a187ad8e707e"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a48f09b49a4bfd7fcb0c6a187ad8e707e">&#9670;&#160;</a></span>ToJson() <span class="overload">[10/18]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a48f09b49a4bfd7fcb0c6a187ad8e707e">&#9670;&#160;</a></span>ToJson() <span class="overload">[10/19]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -24538,7 +24870,7 @@ template&lt;class Json &gt; </div>
 </div>
 </div>
 <a id="a08917aaabe7b0581e886617112b4b22f" name="a08917aaabe7b0581e886617112b4b22f"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a08917aaabe7b0581e886617112b4b22f">&#9670;&#160;</a></span>ToJson() <span class="overload">[11/18]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a08917aaabe7b0581e886617112b4b22f">&#9670;&#160;</a></span>ToJson() <span class="overload">[11/19]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -24561,8 +24893,34 @@ template&lt;class Json &gt; </div>
 
 </div>
 </div>
+<a id="ad5af73b59a7c24eae3c7b17218833dc8" name="ad5af73b59a7c24eae3c7b17218833dc8"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad5af73b59a7c24eae3c7b17218833dc8">&#9670;&#160;</a></span>ToJson() <span class="overload">[12/19]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::string pulsatrix::ToJson </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="structpulsatrix_1_1PersistenceDiagramDocument.html">PersistenceDiagramDocument</a> &amp;&#160;</td>
+          <td class="paramname"><em>doc</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Writes the document. </p>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname">std::invalid_argument</td><td>naming the JSON Pointer of the first problem. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
 <a id="a511eca3c55a2af484ab7b0848552baab" name="a511eca3c55a2af484ab7b0848552baab"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a511eca3c55a2af484ab7b0848552baab">&#9670;&#160;</a></span>ToJson() <span class="overload">[12/18]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a511eca3c55a2af484ab7b0848552baab">&#9670;&#160;</a></span>ToJson() <span class="overload">[13/19]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -24586,7 +24944,7 @@ template&lt;class Json &gt; </div>
 </div>
 </div>
 <a id="a1cac87fb441609597ed45ef44a31fdf0" name="a1cac87fb441609597ed45ef44a31fdf0"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a1cac87fb441609597ed45ef44a31fdf0">&#9670;&#160;</a></span>ToJson() <span class="overload">[13/18]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a1cac87fb441609597ed45ef44a31fdf0">&#9670;&#160;</a></span>ToJson() <span class="overload">[14/19]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -24610,7 +24968,7 @@ template&lt;class Json &gt; </div>
 </div>
 </div>
 <a id="a619059d9817446489ce8017256877dd3" name="a619059d9817446489ce8017256877dd3"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a619059d9817446489ce8017256877dd3">&#9670;&#160;</a></span>ToJson() <span class="overload">[14/18]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a619059d9817446489ce8017256877dd3">&#9670;&#160;</a></span>ToJson() <span class="overload">[15/19]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -24628,7 +24986,7 @@ template&lt;class Json &gt; </div>
 </div>
 </div>
 <a id="a9876fb802002c15f93971e013d8d4061" name="a9876fb802002c15f93971e013d8d4061"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a9876fb802002c15f93971e013d8d4061">&#9670;&#160;</a></span>ToJson() <span class="overload">[15/18]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a9876fb802002c15f93971e013d8d4061">&#9670;&#160;</a></span>ToJson() <span class="overload">[16/19]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -24652,7 +25010,7 @@ template&lt;class Json &gt; </div>
 </div>
 </div>
 <a id="af8ed5eb7aa5da0fbf8687ee45f639029" name="af8ed5eb7aa5da0fbf8687ee45f639029"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#af8ed5eb7aa5da0fbf8687ee45f639029">&#9670;&#160;</a></span>ToJson() <span class="overload">[16/18]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#af8ed5eb7aa5da0fbf8687ee45f639029">&#9670;&#160;</a></span>ToJson() <span class="overload">[17/19]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -24670,7 +25028,7 @@ template&lt;class Json &gt; </div>
 </div>
 </div>
 <a id="ad3cdd9d157bcc91df671e6c976c56a21" name="ad3cdd9d157bcc91df671e6c976c56a21"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ad3cdd9d157bcc91df671e6c976c56a21">&#9670;&#160;</a></span>ToJson() <span class="overload">[17/18]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#ad3cdd9d157bcc91df671e6c976c56a21">&#9670;&#160;</a></span>ToJson() <span class="overload">[18/19]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -24694,7 +25052,7 @@ template&lt;class Json &gt; </div>
 </div>
 </div>
 <a id="a5c45799fc127623333c36aade7d18eb3" name="a5c45799fc127623333c36aade7d18eb3"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a5c45799fc127623333c36aade7d18eb3">&#9670;&#160;</a></span>ToJson() <span class="overload">[18/18]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a5c45799fc127623333c36aade7d18eb3">&#9670;&#160;</a></span>ToJson() <span class="overload">[19/19]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -24908,6 +25266,72 @@ Selection only &ndash; no gradient. A module that routes gradients through a top
 </div><div class="memdoc">
 
 <p>Copies <code>result</code>, its partial dependence curve included. </p>
+
+</div>
+</div>
+<a id="a959dd980d2cefcb4469ec392c46fb0c2" name="a959dd980d2cefcb4469ec392c46fb0c2"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a959dd980d2cefcb4469ec392c46fb0c2">&#9670;&#160;</a></span>ToPersistenceDiagramDocument() <span class="overload">[1/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="structpulsatrix_1_1PersistenceDiagramDocument.html">PersistenceDiagramDocument</a> pulsatrix::ToPersistenceDiagramDocument </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="structpulsatrix_1_1RipsResult.html">RipsResult</a> &amp;&#160;</td>
+          <td class="paramname"><em>result</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">std::string&#160;</td>
+          <td class="paramname"><em>title</em> = <code>&quot;&quot;</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>The same, from <a class="el" href="namespacepulsatrix.html#ad9dd7a45897a7198b95aec08abbf1ba5" title="Persistent homology of the Vietoris-Rips filtration on the given distances, in dimensions 0 to option...">ComputeRipsPersistence()</a>, with its threshold. </p>
+
+</div>
+</div>
+<a id="ad76836c97f1d3051f2d3b93a3f7b816c" name="ad76836c97f1d3051f2d3b93a3f7b816c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad76836c97f1d3051f2d3b93a3f7b816c">&#9670;&#160;</a></span>ToPersistenceDiagramDocument() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="structpulsatrix_1_1PersistenceDiagramDocument.html">PersistenceDiagramDocument</a> pulsatrix::ToPersistenceDiagramDocument </td>
+          <td>(</td>
+          <td class="paramtype">const std::vector&lt; <a class="el" href="structpulsatrix_1_1PersistenceDiagram.html">PersistenceDiagram</a> &gt; &amp;&#160;</td>
+          <td class="paramname"><em>diagrams</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">std::string&#160;</td>
+          <td class="paramname"><em>title</em> = <code>&quot;&quot;</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>The diagrams as a document: births, deaths and each diagram's error bound. </p>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname">std::invalid_argument</td><td>for a diagram the document can't hold (a NaN, a death before its birth, a dimension given twice). </td></tr>
+  </table>
+  </dd>
+</dl>
 
 </div>
 </div>

@@ -24,6 +24,8 @@ var dir_1df8ff9027259fc5f483c2d1b9c2e5ad =
     [ "text_relevance.hpp", "text__relevance_8hpp.html", "text__relevance_8hpp" ],
     [ "texture_cache.hpp", "texture__cache_8hpp.html", "texture__cache_8hpp" ],
     [ "token_relevance_view.hpp", "token__relevance__view_8hpp.html", "token__relevance__view_8hpp" ],
+    [ "topology_documents.hpp", "topology__documents_8hpp.html", "topology__documents_8hpp" ],
+    [ "topology_views.hpp", "topology__views_8hpp.html", "topology__views_8hpp" ],
     [ "training_dashboard.hpp", "training__dashboard_8hpp.html", "training__dashboard_8hpp" ],
     [ "window.hpp", "window_8hpp.html", "window_8hpp" ]
 ];
