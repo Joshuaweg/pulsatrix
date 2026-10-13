@@ -117,6 +117,9 @@ Static Public Member Functions</h2></td></tr>
 <tr class="memitem:a160067e49228ee0870c3479aac021206" id="r_a160067e49228ee0870c3479aac021206"><td class="memItemLeft" align="right" valign="top">static const <a class="el" href="structpulsatrix_1_1ExplainerCapabilities.html">ExplainerCapabilities</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1LIME.html#a160067e49228ee0870c3479aac021206">capabilities</a> ()</td></tr>
 <tr class="memdesc:a160067e49228ee0870c3479aac021206"><td class="mdescLeft">&#160;</td><td class="mdescRight">What it answers and needs: its <a class="el" href="namespacepulsatrix.html#aaebde114c64c90e88b03e5c04cba260a" title="Every explainer pulsatrix has, in a fixed order.">ExplainerCatalog()</a> entry.  <br /></td></tr>
 <tr class="separator:a160067e49228ee0870c3479aac021206"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a36cf11eae82591086718394c6036ab40" id="r_a36cf11eae82591086718394c6036ab40"><td class="memItemLeft" align="right" valign="top">static double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1LIME.html#a36cf11eae82591086718394c6036ab40">local_fidelity</a> (const std::vector&lt; std::vector&lt; float &gt; &gt; &amp;samples, const std::vector&lt; float &gt; &amp;targets, const std::vector&lt; float &gt; &amp;weights, const std::vector&lt; float &gt; &amp;coefficients)</td></tr>
+<tr class="memdesc:a36cf11eae82591086718394c6036ab40"><td class="mdescLeft">&#160;</td><td class="mdescRight">How well the surrogate fits the model where it was fitted: the locality-weighted R² of w^T(z - x) against f(z) - f(x) over the perturbed samples, as the reference <a class="el" href="classpulsatrix_1_1LIME.html" title="Fits a locality-weighted linear surrogate around one input: perturb x with Gaussian noise,...">LIME</a> implementation's <code>score</code> (Ribeiro et al. 2016). 1 is a perfect local fit; at 0 the surrogate explains none of the model's variation around the input, and the coefficients shouldn't be read as the model's local behaviour.  <br /></td></tr>
+<tr class="separator:a36cf11eae82591086718394c6036ab40"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Fits a locality-weighted linear surrogate around one input: perturb x with Gaussian noise, weight each perturbed sample by an exponential locality kernel pi(z) = exp(-||z-x||^2 / (2*sigma^2)), fit w* = argmin_w sum_i pi_i*(f(z_i) - f(x) - w^T(z_i-x))^2 + l2_lambda*||w||^2 via fit_weighted_linear_regression. </p>
@@ -239,13 +242,65 @@ Device-generic host boundary: perturbation and the surrogate fit run on the host
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>An <a class="el" href="structpulsatrix_1_1Attribution.html" title="An explanation result: the raw attribution values, the method that produced them, and any relevant me...">Attribution</a> with method "lime", values = the local linear coefficients (same shape as input), and metadata recording the sampling parameters used. </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>An <a class="el" href="structpulsatrix_1_1Attribution.html" title="An explanation result: the raw attribution values, the method that produced them, and any relevant me...">Attribution</a> with method "lime", values = the local linear coefficients (same shape as input), and metadata recording the sampling parameters used and the surrogate's "local_fidelity" (see <a class="el" href="classpulsatrix_1_1LIME.html#a36cf11eae82591086718394c6036ab40" title="How well the surrogate fits the model where it was fitted: the locality-weighted R² of w^T(z - x) aga...">local_fidelity()</a>). </dd></dl>
 <dl class="exception"><dt>Exceptions</dt><dd>
   <table class="exception">
     <tr><td class="paramname">std::invalid_argument</td><td>if num_samples &lt;= 0 or sigma &lt;= 0 &ndash; external boundary (campaign_exai_dl_library_adversarial_hardening.md, Mission 2, finding 11): escalated from PULSATRIX_ASSERT-only, which in Release left num_samples&lt;=0 reaching vector::reserve as a huge (wrapped) size_t, throwing an unhelpful std::length_error instead of a clear, actionable error. </td></tr>
   </table>
   </dd>
 </dl>
+
+</div>
+</div>
+<a id="a36cf11eae82591086718394c6036ab40" name="a36cf11eae82591086718394c6036ab40"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a36cf11eae82591086718394c6036ab40">&#9670;&#160;</a></span>local_fidelity()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static double pulsatrix::LIME::local_fidelity </td>
+          <td>(</td>
+          <td class="paramtype">const std::vector&lt; std::vector&lt; float &gt; &gt; &amp;&#160;</td>
+          <td class="paramname"><em>samples</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const std::vector&lt; float &gt; &amp;&#160;</td>
+          <td class="paramname"><em>targets</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const std::vector&lt; float &gt; &amp;&#160;</td>
+          <td class="paramname"><em>weights</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const std::vector&lt; float &gt; &amp;&#160;</td>
+          <td class="paramname"><em>coefficients</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>How well the surrogate fits the model where it was fitted: the locality-weighted R² of w^T(z - x) against f(z) - f(x) over the perturbed samples, as the reference <a class="el" href="classpulsatrix_1_1LIME.html" title="Fits a locality-weighted linear surrogate around one input: perturb x with Gaussian noise,...">LIME</a> implementation's <code>score</code> (Ribeiro et al. 2016). 1 is a perfect local fit; at 0 the surrogate explains none of the model's variation around the input, and the coefficients shouldn't be read as the model's local behaviour. </p>
+<dl class="section note"><dt>Note</dt><dd>No intercept, as in <a class="el" href="classpulsatrix_1_1LIME.html#a567e20df12b7965504e16d3e7e638c0a" title="Computes the LIME local surrogate explanation for one output index.">explain()</a>: the surrogate passes through f(x). So the score can be negative, when the samples sit mostly to one side of f(x), as at a minimum. </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>1 when the targets don't vary and the fit is exact, 0 when they don't vary and it isn't. </dd></dl>
 
 </div>
 </div>

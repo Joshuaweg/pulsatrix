@@ -4281,7 +4281,7 @@ machine, and explain it with the tools pulsatrix already has. Items on that path
 <li>XAI-1 (<strong>done</strong>, <a href="https://github.com/Joshuaweg/pulsatrix/pull/156">#156</a>): which questions each explainer answers</li>
 <li>XAI-2 (<strong>done</strong>, <a href="https://github.com/Joshuaweg/pulsatrix/pull/160">#160</a>): the question-driven planner</li>
 <li>XAI-3 (<strong>done</strong>, <a href="https://github.com/Joshuaweg/pulsatrix/pull/161">#161</a>): explanation reports that run the checks and carry caveats</li>
-<li>XAI-4: surrogates, Anchors, prototypes</li>
+<li>XAI-4 (surrogate tree and LIME fidelity <strong>done</strong>, <a href="https://github.com/Joshuaweg/pulsatrix/pull/162">#162</a>): Anchors, prototypes and pertinent negatives to come</li>
 <li>INT-1 to INT-8 (<strong>done</strong>, <a href="https://github.com/Joshuaweg/pulsatrix/pull/131">#131</a> to
   <a href="https://github.com/Joshuaweg/pulsatrix/pull/139">#139</a>): CKA, RSA and SVCCA, nearest
   neighbors, probe controls, layer geometry, PCA, TCAV and CRP, and export for UMAP and t-SNE</li>
@@ -5429,7 +5429,7 @@ doesn't support.</p>
 <tr>
 <td>How (global)</td>
 <td>Global surrogate tree, PDP, TCAV, CRP</td>
-<td>Partial; XAI-4, INT-6</td>
+<td>Have</td>
 </tr>
 <tr>
 <td>How to be that</td>
@@ -5513,7 +5513,7 @@ doesn't support.</p>
 <td>XAI-1, INT-1</td>
 <td>P1</td>
 <td>M each</td>
-<td></td>
+<td>Partly done: surrogate tree and LIME fidelity, <a href="https://github.com/Joshuaweg/pulsatrix/pull/162">#162</a></td>
 </tr>
 <tr>
 <td>XAI-5</td>
@@ -5571,6 +5571,15 @@ doesn't support.</p>
   through <code>ReportExplanation</code>. On the test MLP, KernelSHAP passes every Justify check but just
   fails randomization (0.51), because the input's magnitudes dominate the ranking, as Adebayo et
   al. found for gradient × input.
+- <strong>XAI-4, surrogate tree and LIME fidelity.</strong> The tree is CART grown the way scikit-learn grows
+  it, so it is checked node by node against <code>DecisionTreeClassifier</code> and <code>DecisionTreeRegressor</code>.
+  scikit-learn breaks ties between features at random and pulsatrix by the lower index. With 80
+  rows, deep classification nodes tied often enough to change scikit-learn's tree between random
+  states, so the reference trees use 200 rows, where they don't change. Fidelity is measured on a
+  held-out 30%, and the planner lists it as the tree's own check. On sin(4x₀) + cos(3x₁)·x₂, no
+  readable depth reaches the 85% falsifier: held-out R² is 0.78 at depth 4 and 0.84 at depth 8,
+  with 61 leaves. LIME's local fidelity is the weighted R² of its surrogate, without an intercept,
+  so it can be negative. XAI-3 warns below 0.8.
 - <strong>XAI-5.</strong> The metrics take a prediction function and a finished attribution, so they work with
   any explainer. ROAD's imputation solves every removed pixel jointly as the weighted mean of its
   neighbors, plus seeded noise. Sparseness and complexity score an all-zero attribution as 0,
@@ -5629,6 +5638,11 @@ doesn't support.</p>
 <td>The plan as an MCP tool, so agents can ask which explainer to run</td>
 <td>XAI-2</td>
 <td>AGT-5</td>
+</tr>
+<tr>
+<td>A tree view for the <code>pulsatrix.surrogate_tree.v1</code> document; today it is text (<code>DescribeSurrogateTree</code>) and JSON</td>
+<td>XAI-4</td>
+<td>VIZ</td>
 </tr>
 </tbody>
 </table>

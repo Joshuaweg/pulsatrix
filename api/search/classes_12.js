@@ -49,11 +49,16 @@ var searchData=
   ['structureresidue_46',['StructureResidue',['../structpulsatrix_1_1StructureResidue.html',1,'pulsatrix']]],
   ['subtbloss_47',['SubTBLoss',['../classpulsatrix_1_1SubTBLoss.html',1,'pulsatrix']]],
   ['successivehalvingresult_48',['SuccessiveHalvingResult',['../structpulsatrix_1_1SuccessiveHalvingResult.html',1,'pulsatrix']]],
-  ['svccaoptions_49',['SvccaOptions',['../structpulsatrix_1_1SvccaOptions.html',1,'pulsatrix']]],
-  ['svccaresult_50',['SvccaResult',['../structpulsatrix_1_1SvccaResult.html',1,'pulsatrix']]],
-  ['svdresult_51',['SVDResult',['../structpulsatrix_1_1SVDResult.html',1,'pulsatrix']]],
-  ['svgoptions_52',['SvgOptions',['../structpulsatrix_1_1SvgOptions.html',1,'pulsatrix']]],
-  ['swiglumodule_53',['SwiGLUModule',['../classpulsatrix_1_1SwiGLUModule.html',1,'pulsatrix']]],
-  ['systemmonitor_54',['SystemMonitor',['../classpulsatrix_1_1SystemMonitor.html',1,'pulsatrix']]],
-  ['systemsample_55',['SystemSample',['../structpulsatrix_1_1SystemSample.html',1,'pulsatrix']]]
+  ['surrogatefidelity_49',['SurrogateFidelity',['../structpulsatrix_1_1SurrogateFidelity.html',1,'pulsatrix']]],
+  ['surrogatenode_50',['SurrogateNode',['../structpulsatrix_1_1SurrogateNode.html',1,'pulsatrix']]],
+  ['surrogatetree_51',['SurrogateTree',['../structpulsatrix_1_1SurrogateTree.html',1,'pulsatrix']]],
+  ['surrogatetreeoptions_52',['SurrogateTreeOptions',['../structpulsatrix_1_1SurrogateTreeOptions.html',1,'pulsatrix']]],
+  ['surrogatetreeresult_53',['SurrogateTreeResult',['../structpulsatrix_1_1SurrogateTreeResult.html',1,'pulsatrix']]],
+  ['svccaoptions_54',['SvccaOptions',['../structpulsatrix_1_1SvccaOptions.html',1,'pulsatrix']]],
+  ['svccaresult_55',['SvccaResult',['../structpulsatrix_1_1SvccaResult.html',1,'pulsatrix']]],
+  ['svdresult_56',['SVDResult',['../structpulsatrix_1_1SVDResult.html',1,'pulsatrix']]],
+  ['svgoptions_57',['SvgOptions',['../structpulsatrix_1_1SvgOptions.html',1,'pulsatrix']]],
+  ['swiglumodule_58',['SwiGLUModule',['../classpulsatrix_1_1SwiGLUModule.html',1,'pulsatrix']]],
+  ['systemmonitor_59',['SystemMonitor',['../classpulsatrix_1_1SystemMonitor.html',1,'pulsatrix']]],
+  ['systemsample_60',['SystemSample',['../structpulsatrix_1_1SystemSample.html',1,'pulsatrix']]]
 ];
