@@ -4,6 +4,7 @@ var group__interpretability =
     [ "Gradient-Based Explainers", "group__interpretability__dl.html", "group__interpretability__dl" ],
     [ "Layer-wise Relevance Propagation", "group__interpretability__lrp.html", "group__interpretability__lrp" ],
     [ "explainer_capabilities.hpp", "explainer__capabilities_8hpp.html", null ],
+    [ "explanation_planner.hpp", "explanation__planner_8hpp.html", null ],
     [ "fitness_metrics.hpp", "fitness__metrics_8hpp.html", null ],
     [ "protein_concepts.hpp", "protein__concepts_8hpp.html", null ],
     [ "protein_contacts.hpp", "protein__contacts_8hpp.html", null ],

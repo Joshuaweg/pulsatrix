@@ -162,8 +162,11 @@ var hierarchy =
     [ "pulsatrix::EsmContactHead", "structpulsatrix_1_1EsmContactHead.html", null ],
     [ "pulsatrix::ESResult", "structpulsatrix_1_1ESResult.html", null ],
     [ "pulsatrix::FeatureDashboardDocument::Example", "structpulsatrix_1_1FeatureDashboardDocument_1_1Example.html", null ],
+    [ "pulsatrix::ExcludedExplainer", "structpulsatrix_1_1ExcludedExplainer.html", null ],
     [ "pulsatrix::ExplainerCapabilities", "structpulsatrix_1_1ExplainerCapabilities.html", null ],
     [ "pulsatrix::ExplainerContext", "classpulsatrix_1_1ExplainerContext.html", null ],
+    [ "pulsatrix::ExplanationPlan", "structpulsatrix_1_1ExplanationPlan.html", null ],
+    [ "pulsatrix::ExplanationPlanner", "classpulsatrix_1_1ExplanationPlanner.html", null ],
     [ "pulsatrix::ExplanationScoreCard", "classpulsatrix_1_1ExplanationScoreCard.html", null ],
     [ "pulsatrix::datalog::FactDatabase", "classpulsatrix_1_1datalog_1_1FactDatabase.html", null ],
     [ "pulsatrix::FastaRecord", "structpulsatrix_1_1FastaRecord.html", null ],
@@ -281,6 +284,7 @@ var hierarchy =
     [ "pulsatrix::MnistDataset", "structpulsatrix_1_1MnistDataset.html", null ],
     [ "pulsatrix::MnistIdxLoader", "classpulsatrix_1_1MnistIdxLoader.html", null ],
     [ "pulsatrix::ModelToken", "structpulsatrix_1_1ModelToken.html", null ],
+    [ "pulsatrix::ModelTraits", "structpulsatrix_1_1ModelTraits.html", null ],
     [ "pulsatrix::Module", "classpulsatrix_1_1Module.html", [
       [ "pulsatrix::ActivationModule", "classpulsatrix_1_1ActivationModule.html", null ],
       [ "pulsatrix::AdaptiveAvgPool2DModule", "classpulsatrix_1_1AdaptiveAvgPool2DModule.html", null ],
@@ -393,6 +397,8 @@ var hierarchy =
     [ "pulsatrix::PerturbationCurve", "structpulsatrix_1_1PerturbationCurve.html", null ],
     [ "pulsatrix::PerturbationOptions", "structpulsatrix_1_1PerturbationOptions.html", null ],
     [ "pulsatrix::NormalizedString::Piece", "structpulsatrix_1_1NormalizedString_1_1Piece.html", null ],
+    [ "pulsatrix::PlannedCheck", "structpulsatrix_1_1PlannedCheck.html", null ],
+    [ "pulsatrix::PlannedExplainer", "structpulsatrix_1_1PlannedExplainer.html", null ],
     [ "pulsatrix::detail::PlatformSources", "classpulsatrix_1_1detail_1_1PlatformSources.html", [
       [ "pulsatrix::detail::LinuxSources", "classpulsatrix_1_1detail_1_1LinuxSources.html", null ]
     ] ],

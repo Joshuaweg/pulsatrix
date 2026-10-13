@@ -135,6 +135,18 @@ Public Attributes</h2></td></tr>
 <tr class="separator:aebc39df6f50dab8d29275a3b7e1ec1e5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:abd84d11ff6f52258b4d4cdf10f04f230" id="r_abd84d11ff6f52258b4d4cdf10f04f230"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespacepulsatrix.html#a6d5917966064f051ac4390de4120fc12">InputKind</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpulsatrix_1_1ExplainerCapabilities.html#abd84d11ff6f52258b4d4cdf10f04f230">input</a> = <a class="el" href="namespacepulsatrix.html#a6d5917966064f051ac4390de4120fc12aed36a1ef76a59ee3f15180e0441188ad">InputKind::Any</a></td></tr>
 <tr class="separator:abd84d11ff6f52258b4d4cdf10f04f230"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac55f6346ad5f3a252c36b37eae52d76c" id="r_ac55f6346ad5f3a252c36b37eae52d76c"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpulsatrix_1_1ExplainerCapabilities.html#ac55f6346ad5f3a252c36b37eae52d76c">attribution</a> = false</td></tr>
+<tr class="memdesc:ac55f6346ad5f3a252c36b37eae52d76c"><td class="mdescLeft">&#160;</td><td class="mdescRight">It returns an <a class="el" href="structpulsatrix_1_1Attribution.html" title="An explanation result: the raw attribution values, the method that produced them, and any relevant me...">Attribution</a> with one value per input element, so the metrics in <a class="el" href="explanation__metrics_8hpp.html" title="Explanation-quality metrics in the Quantus families (roadmap XAI-5): faithfulness (deletion and inser...">explanation_metrics.hpp</a> (deletion, insertion, randomization, sparseness) apply.  <br /></td></tr>
+<tr class="separator:ac55f6346ad5f3a252c36b37eae52d76c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2f69e25950cc4235c9d17285b63db2da" id="r_a2f69e25950cc4235c9d17285b63db2da"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpulsatrix_1_1ExplainerCapabilities.html#a2f69e25950cc4235c9d17285b63db2da">complete</a> = false</td></tr>
+<tr class="memdesc:a2f69e25950cc4235c9d17285b63db2da"><td class="mdescLeft">&#160;</td><td class="mdescRight">The attributions add up to the output, minus a baseline's where there is one: <a class="el" href="classpulsatrix_1_1LRP.html" title="Whole-model LRP: runs the forward pass, seeds relevance at the chosen output(s), and propagates it to...">LRP</a>'s conservation, Integrated Gradients' completeness, Shapley values' efficiency. It can be checked on every explanation (<a class="el" href="namespacepulsatrix.html#a65a61a87205c4d889e1c16baf4d439a9" title="Sums relevance_in and relevance_out independently and reports their gap.">ComputeConservation()</a>), and <a class="el" href="classpulsatrix_1_1LRP.html" title="Whole-model LRP: runs the forward pass, seeds relevance at the chosen output(s), and propagates it to...">LRP</a>'s ε rules keep it only approximately.  <br /></td></tr>
+<tr class="separator:a2f69e25950cc4235c9d17285b63db2da"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae6b4e603af03b996fdfd8e7b2fc5ea28" id="r_ae6b4e603af03b996fdfd8e7b2fc5ea28"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpulsatrix_1_1ExplainerCapabilities.html#ae6b4e603af03b996fdfd8e7b2fc5ea28">needs_base_model</a> = false</td></tr>
+<tr class="memdesc:ae6b4e603af03b996fdfd8e7b2fc5ea28"><td class="mdescLeft">&#160;</td><td class="mdescRight">It compares a model with the one it was fine-tuned from, so it needs both.  <br /></td></tr>
+<tr class="separator:ae6b4e603af03b996fdfd8e7b2fc5ea28"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac3191360482a80f705ac2ea84551a051" id="r_ac3191360482a80f705ac2ea84551a051"><td class="memItemLeft" align="right" valign="top">int64_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpulsatrix_1_1ExplainerCapabilities.html#ac3191360482a80f705ac2ea84551a051">max_features</a> = 0</td></tr>
+<tr class="memdesc:ac3191360482a80f705ac2ea84551a051"><td class="mdescLeft">&#160;</td><td class="mdescRight">The most input features it can take, or 0 for no limit: <a class="el" href="classpulsatrix_1_1KernelSHAP.html" title="Approximates Shapley values via full coalition enumeration + SHAP-kernel-weighted linear regression,...">KernelSHAP</a> enumerates every coalition, so it takes at most 20.  <br /></td></tr>
+<tr class="separator:ac3191360482a80f705ac2ea84551a051"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>One explainer's declaration: what it answers and what it needs. </p>
@@ -171,6 +183,38 @@ Public Attributes</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+
+</div>
+</div>
+<a id="ac55f6346ad5f3a252c36b37eae52d76c" name="ac55f6346ad5f3a252c36b37eae52d76c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac55f6346ad5f3a252c36b37eae52d76c">&#9670;&#160;</a></span>attribution</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool pulsatrix::ExplainerCapabilities::attribution = false</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>It returns an <a class="el" href="structpulsatrix_1_1Attribution.html" title="An explanation result: the raw attribution values, the method that produced them, and any relevant me...">Attribution</a> with one value per input element, so the metrics in <a class="el" href="explanation__metrics_8hpp.html" title="Explanation-quality metrics in the Quantus families (roadmap XAI-5): faithfulness (deletion and inser...">explanation_metrics.hpp</a> (deletion, insertion, randomization, sparseness) apply. </p>
+
+</div>
+</div>
+<a id="a2f69e25950cc4235c9d17285b63db2da" name="a2f69e25950cc4235c9d17285b63db2da"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2f69e25950cc4235c9d17285b63db2da">&#9670;&#160;</a></span>complete</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool pulsatrix::ExplainerCapabilities::complete = false</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>The attributions add up to the output, minus a baseline's where there is one: <a class="el" href="classpulsatrix_1_1LRP.html" title="Whole-model LRP: runs the forward pass, seeds relevance at the chosen output(s), and propagates it to...">LRP</a>'s conservation, Integrated Gradients' completeness, Shapley values' efficiency. It can be checked on every explanation (<a class="el" href="namespacepulsatrix.html#a65a61a87205c4d889e1c16baf4d439a9" title="Sums relevance_in and relevance_out independently and reports their gap.">ComputeConservation()</a>), and <a class="el" href="classpulsatrix_1_1LRP.html" title="Whole-model LRP: runs the forward pass, seeds relevance at the chosen output(s), and propagates it to...">LRP</a>'s ε rules keep it only approximately. </p>
 
 </div>
 </div>
@@ -220,6 +264,22 @@ Public Attributes</h2></td></tr>
 
 </div>
 </div>
+<a id="ac3191360482a80f705ac2ea84551a051" name="ac3191360482a80f705ac2ea84551a051"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac3191360482a80f705ac2ea84551a051">&#9670;&#160;</a></span>max_features</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int64_t pulsatrix::ExplainerCapabilities::max_features = 0</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>The most input features it can take, or 0 for no limit: <a class="el" href="classpulsatrix_1_1KernelSHAP.html" title="Approximates Shapley values via full coalition enumeration + SHAP-kernel-weighted linear regression,...">KernelSHAP</a> enumerates every coalition, so it takes at most 20. </p>
+
+</div>
+</div>
 <a id="a805b54c721601a4753b52f9ddb83fb6c" name="a805b54c721601a4753b52f9ddb83fb6c"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a805b54c721601a4753b52f9ddb83fb6c">&#9670;&#160;</a></span>name</h2>
 
@@ -233,6 +293,22 @@ Public Attributes</h2></td></tr>
 </div><div class="memdoc">
 
 <p>A stable identifier, the class or function name: "IntegratedGradients". </p>
+
+</div>
+</div>
+<a id="ae6b4e603af03b996fdfd8e7b2fc5ea28" name="ae6b4e603af03b996fdfd8e7b2fc5ea28"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae6b4e603af03b996fdfd8e7b2fc5ea28">&#9670;&#160;</a></span>needs_base_model</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool pulsatrix::ExplainerCapabilities::needs_base_model = false</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>It compares a model with the one it was fine-tuned from, so it needs both. </p>
 
 </div>
 </div>

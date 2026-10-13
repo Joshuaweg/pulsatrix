@@ -13,5 +13,6 @@ var searchData=
   ['explainer_5fcontext_2ehpp_10',['explainer_context.hpp',['../explainer__context_8hpp.html',1,'']]],
   ['explainer_5fstability_2ehpp_11',['explainer_stability.hpp',['../explainer__stability_8hpp.html',1,'']]],
   ['explanation_5fmetrics_2ehpp_12',['explanation_metrics.hpp',['../explanation__metrics_8hpp.html',1,'']]],
-  ['explanation_5fscore_5fcard_2ehpp_13',['explanation_score_card.hpp',['../explanation__score__card_8hpp.html',1,'']]]
+  ['explanation_5fplanner_2ehpp_13',['explanation_planner.hpp',['../explanation__planner_8hpp.html',1,'']]],
+  ['explanation_5fscore_5fcard_2ehpp_14',['explanation_score_card.hpp',['../explanation__score__card_8hpp.html',1,'']]]
 ];

@@ -16,7 +16,10 @@ var searchData=
   ['esmcontacthead_13',['EsmContactHead',['../structpulsatrix_1_1EsmContactHead.html',1,'pulsatrix']]],
   ['esresult_14',['ESResult',['../structpulsatrix_1_1ESResult.html',1,'pulsatrix']]],
   ['example_15',['Example',['../structpulsatrix_1_1FeatureDashboardDocument_1_1Example.html',1,'pulsatrix::FeatureDashboardDocument']]],
-  ['explainercapabilities_16',['ExplainerCapabilities',['../structpulsatrix_1_1ExplainerCapabilities.html',1,'pulsatrix']]],
-  ['explainercontext_17',['ExplainerContext',['../classpulsatrix_1_1ExplainerContext.html',1,'pulsatrix']]],
-  ['explanationscorecard_18',['ExplanationScoreCard',['../classpulsatrix_1_1ExplanationScoreCard.html',1,'pulsatrix']]]
+  ['excludedexplainer_16',['ExcludedExplainer',['../structpulsatrix_1_1ExcludedExplainer.html',1,'pulsatrix']]],
+  ['explainercapabilities_17',['ExplainerCapabilities',['../structpulsatrix_1_1ExplainerCapabilities.html',1,'pulsatrix']]],
+  ['explainercontext_18',['ExplainerContext',['../classpulsatrix_1_1ExplainerContext.html',1,'pulsatrix']]],
+  ['explanationplan_19',['ExplanationPlan',['../structpulsatrix_1_1ExplanationPlan.html',1,'pulsatrix']]],
+  ['explanationplanner_20',['ExplanationPlanner',['../classpulsatrix_1_1ExplanationPlanner.html',1,'pulsatrix']]],
+  ['explanationscorecard_21',['ExplanationScoreCard',['../classpulsatrix_1_1ExplanationScoreCard.html',1,'pulsatrix']]]
 ];

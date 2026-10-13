@@ -104,7 +104,8 @@ $(document).ready(function(){initNavTree('explainer__capabilities_8hpp.html','')
 
 <p>What each explainer answers: the nine question categories (Liao, Gruen and Miller, CHI 2020), the four reasons to explain (Adadi and Berrada, 2018), and a machine-readable declaration of every explainer's question, scope, model access and inputs (XAI-1).  
 <a href="#details">More...</a></p>
-<div class="textblock"><code>#include &lt;optional&gt;</code><br />
+<div class="textblock"><code>#include &lt;cstdint&gt;</code><br />
+<code>#include &lt;optional&gt;</code><br />
 <code>#include &lt;string&gt;</code><br />
 <code>#include &lt;string_view&gt;</code><br />
 <code>#include &lt;vector&gt;</code><br />
@@ -114,24 +115,25 @@ Include dependency graph for explainer_capabilities.hpp:</div>
 <div class="dyncontent">
 <div class="center"><img src="explainer__capabilities_8hpp__incl.png" border="0" usemap="#ainclude_2pulsatrix_2explainer__capabilities_8hpp" alt=""/></div>
 <map name="ainclude_2pulsatrix_2explainer__capabilities_8hpp" id="ainclude_2pulsatrix_2explainer__capabilities_8hpp">
-<area shape="rect" title="What each explainer answers: the nine question categories (Liao, Gruen and Miller,..." alt="" coords="71,5,265,45"/>
-<area shape="rect" title=" " alt="" coords="5,93,80,119"/>
-<area shape="poly" title=" " alt="" coords="139,48,74,88,71,84,136,43"/>
-<area shape="rect" title=" " alt="" coords="37,167,96,192"/>
-<area shape="poly" title=" " alt="" coords="157,47,84,157,80,154,153,44"/>
-<area shape="rect" title=" " alt="" coords="121,167,218,192"/>
-<area shape="poly" title=" " alt="" coords="171,46,172,153,166,153,166,46"/>
-<area shape="rect" title=" " alt="" coords="418,167,481,192"/>
-<area shape="poly" title=" " alt="" coords="242,43,300,63,357,91,399,122,432,155,429,158,396,126,355,96,298,68,241,48"/>
-<area shape="rect" href="json_8hpp.html" title="A small strict JSON value, parser and deterministic writer (RFC 8259)." alt="" coords="205,93,344,119"/>
-<area shape="poly" title=" " alt="" coords="195,43,249,83,246,87,192,48"/>
-<area shape="poly" title=" " alt="" coords="242,121,110,166,109,161,240,116"/>
-<area shape="poly" title=" " alt="" coords="259,121,199,161,196,157,256,116"/>
-<area shape="poly" title=" " alt="" coords="304,116,409,159,407,164,302,121"/>
-<area shape="rect" title=" " alt="" coords="327,167,393,192"/>
-<area shape="poly" title=" " alt="" coords="290,117,337,156,334,160,287,121"/>
-<area shape="rect" title=" " alt="" coords="242,167,302,192"/>
-<area shape="poly" title=" " alt="" coords="277,119,276,153,270,153,272,119"/>
+<area shape="rect" title="What each explainer answers: the nine question categories (Liao, Gruen and Miller,..." alt="" coords="165,5,360,45"/>
+<area shape="rect" title=" " alt="" coords="5,167,72,192"/>
+<area shape="poly" title=" " alt="" coords="208,48,162,68,116,95,83,126,57,157,53,153,79,122,113,91,159,64,206,43"/>
+<area shape="rect" title=" " alt="" coords="404,93,479,119"/>
+<area shape="poly" title=" " alt="" coords="307,43,404,85,402,90,304,48"/>
+<area shape="rect" title=" " alt="" coords="96,167,155,192"/>
+<area shape="poly" title=" " alt="" coords="193,48,158,67,143,80,130,95,124,108,121,123,122,153,117,153,116,123,119,107,126,92,139,76,155,62,190,43"/>
+<area shape="rect" title=" " alt="" coords="263,167,361,192"/>
+<area shape="poly" title=" " alt="" coords="274,45,293,92,309,152,304,154,288,94,269,47"/>
+<area shape="rect" title=" " alt="" coords="385,167,447,192"/>
+<area shape="poly" title=" " alt="" coords="284,44,396,155,392,159,280,48"/>
+<area shape="rect" href="json_8hpp.html" title="A small strict JSON value, parser and deterministic writer (RFC 8259)." alt="" coords="140,93,279,119"/>
+<area shape="poly" title=" " alt="" coords="252,47,227,83,223,80,248,44"/>
+<area shape="poly" title=" " alt="" coords="183,121,80,164,78,159,181,116"/>
+<area shape="poly" title=" " alt="" coords="198,121,151,160,148,155,194,117"/>
+<area shape="poly" title=" " alt="" coords="227,116,285,156,282,161,224,121"/>
+<area shape="poly" title=" " alt="" coords="243,116,372,160,371,165,242,121"/>
+<area shape="rect" title=" " alt="" coords="179,167,239,192"/>
+<area shape="poly" title=" " alt="" coords="212,119,212,153,207,153,207,119"/>
 </map>
 </div>
 </div><div class="textblock"><div class="dynheader">
@@ -139,26 +141,28 @@ This graph shows which files directly or indirectly include this file:</div>
 <div class="dyncontent">
 <div class="center"><img src="explainer__capabilities_8hpp__dep__incl.png" border="0" usemap="#ainclude_2pulsatrix_2explainer__capabilities_8hppdep" alt=""/></div>
 <map name="ainclude_2pulsatrix_2explainer__capabilities_8hppdep" id="ainclude_2pulsatrix_2explainer__capabilities_8hppdep">
-<area shape="rect" title="What each explainer answers: the nine question categories (Liao, Gruen and Miller,..." alt="" coords="695,5,889,45"/>
-<area shape="rect" href="grad__cam_8hpp.html" title="Grad&#45;CAM – gradient&#45;weighted class activation mapping over the last conv layer (charter Part 1,..." alt="" coords="5,93,168,133"/>
-<area shape="poly" title=" " alt="" coords="681,38,450,61,180,96,168,98,168,93,180,91,450,56,681,33"/>
-<area shape="rect" href="integrated__gradients_8hpp.html" title="Integrated Gradients – baseline&#45;interpolated gradient integral (charter Part 1, Phase 2; theory: xai_..." alt="" coords="479,181,681,221"/>
-<area shape="poly" title=" " alt="" coords="820,55,832,74,840,94,842,115,834,135,810,153,773,167,681,189,680,183,772,162,808,148,830,132,837,115,835,96,827,76,816,58"/>
-<area shape="rect" href="kernel__shap_8hpp.html" title="KernelSHAP – model&#45;agnostic Shapley value approximation via weighted linear regression (charter Part ..." alt="" coords="431,93,606,133"/>
-<area shape="poly" title=" " alt="" coords="720,52,579,96,578,91,718,47"/>
-<area shape="rect" href="lime_8hpp.html" title="LIME – local interpretable model&#45;agnostic explanations (charter Part 1, Phase 3; theory: xai_context...." alt="" coords="630,101,821,126"/>
-<area shape="poly" title=" " alt="" coords="771,58,737,102,732,99,767,55"/>
-<area shape="rect" href="lrp_8hpp.html" title="LRP – whole&#45;model Layer&#45;wise Relevance Propagation explainer." alt="" coords="1312,101,1491,126"/>
-<area shape="poly" title=" " alt="" coords="903,37,1090,60,1300,91,1343,98,1342,103,1300,96,1089,66,903,42"/>
-<area shape="rect" href="pdp_8hpp.html" title="Partial Dependence Plot – a global marginal&#45;effect technique, sweeping one feature&#39;s value while aver..." alt="" coords="896,101,1083,126"/>
-<area shape="poly" title=" " alt="" coords="849,48,964,98,962,103,847,53"/>
-<area shape="rect" href="protein__explanations_8hpp.html" title="Explaining a protein language model residue by residue (PLM&#45;6): AttnLRP from a masked residue&#39;s predi..." alt="" coords="1107,93,1287,133"/>
-<area shape="poly" title=" " alt="" coords="895,46,1109,91,1108,96,894,51"/>
-<area shape="rect" href="saliency_8hpp.html" title="Saliency maps – raw gradient of a target output w.r.t. the input (charter Part 1, Phase 2)." alt="" coords="193,101,407,126"/>
-<area shape="poly" title=" " alt="" coords="681,49,366,103,365,98,680,43"/>
-<area shape="rect" href="concept__relevance_8hpp.html" title="Concept Relevance Propagation (INT&#45;6): which of a layer&#39;s channels an LRP explanation passes through,..." alt="" coords="1309,181,1494,221"/>
-<area shape="poly" title=" " alt="" coords="1404,140,1404,181,1399,181,1399,140"/>
-<area shape="poly" title=" " alt="" coords="352,128,519,179,517,184,350,133"/>
+<area shape="rect" title="What each explainer answers: the nine question categories (Liao, Gruen and Miller,..." alt="" coords="675,5,869,45"/>
+<area shape="rect" href="explanation__planner_8hpp.html" title="Turns a question and a reason into a plan: which explainers can answer the question for this model,..." alt="" coords="5,93,216,133"/>
+<area shape="poly" title=" " alt="" coords="661,42,228,96,217,98,216,92,228,91,661,36"/>
+<area shape="rect" href="grad__cam_8hpp.html" title="Grad&#45;CAM – gradient&#45;weighted class activation mapping over the last conv layer (charter Part 1,..." alt="" coords="240,93,403,133"/>
+<area shape="poly" title=" " alt="" coords="662,50,403,99,402,94,661,45"/>
+<area shape="rect" href="integrated__gradients_8hpp.html" title="Integrated Gradients – baseline&#45;interpolated gradient integral (charter Part 1, Phase 2; theory: xai_..." alt="" coords="619,181,821,221"/>
+<area shape="poly" title=" " alt="" coords="662,39,602,47,544,59,496,75,479,85,467,95,457,115,459,131,471,146,491,158,551,177,620,189,619,194,550,182,489,163,467,150,454,133,452,114,463,92,476,80,494,70,543,54,601,42,661,34"/>
+<area shape="rect" href="kernel__shap_8hpp.html" title="KernelSHAP – model&#45;agnostic Shapley value approximation via weighted linear regression (charter Part ..." alt="" coords="478,93,653,133"/>
+<area shape="poly" title=" " alt="" coords="715,53,612,96,610,91,713,48"/>
+<area shape="rect" href="lime_8hpp.html" title="LIME – local interpretable model&#45;agnostic explanations (charter Part 1, Phase 3; theory: xai_context...." alt="" coords="677,101,867,126"/>
+<area shape="poly" title=" " alt="" coords="775,59,775,100,769,100,769,59"/>
+<area shape="rect" href="lrp_8hpp.html" title="LRP – whole&#45;model Layer&#45;wise Relevance Propagation explainer." alt="" coords="1547,101,1725,126"/>
+<area shape="poly" title=" " alt="" coords="884,30,1179,52,1357,69,1535,91,1580,98,1579,103,1534,96,1356,75,1178,58,883,36"/>
+<area shape="rect" href="pdp_8hpp.html" title="Partial Dependence Plot – a global marginal&#45;effect technique, sweeping one feature&#39;s value while aver..." alt="" coords="1131,101,1317,126"/>
+<area shape="poly" title=" " alt="" coords="883,45,1164,98,1163,103,882,50"/>
+<area shape="rect" href="protein__explanations_8hpp.html" title="Explaining a protein language model residue by residue (PLM&#45;6): AttnLRP from a masked residue&#39;s predi..." alt="" coords="1342,93,1522,133"/>
+<area shape="poly" title=" " alt="" coords="883,35,1091,59,1330,91,1342,93,1341,98,1329,96,1090,64,883,41"/>
+<area shape="rect" href="saliency_8hpp.html" title="Saliency maps – raw gradient of a target output w.r.t. the input (charter Part 1, Phase 2)." alt="" coords="891,101,1106,126"/>
+<area shape="poly" title=" " alt="" coords="835,48,969,98,968,103,833,53"/>
+<area shape="rect" href="concept__relevance_8hpp.html" title="Concept Relevance Propagation (INT&#45;6): which of a layer&#39;s channels an LRP explanation passes through,..." alt="" coords="1543,181,1729,221"/>
+<area shape="poly" title=" " alt="" coords="1639,140,1639,181,1633,181,1633,140"/>
+<area shape="poly" title=" " alt="" coords="949,133,782,184,781,179,947,128"/>
 </map>
 </div>
 </div>

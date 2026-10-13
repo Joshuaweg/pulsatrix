@@ -67,7 +67,7 @@ var searchData=
   ['lime_64',['LIME',['../classpulsatrix_1_1LIME.html',1,'pulsatrix']]],
   ['lime_2ehpp_65',['lime.hpp',['../lime_8hpp.html',1,'']]],
   ['line_66',['line',['../structpulsatrix_1_1TokenizerMismatch.html#a41fc1c8b093e8977157297c197b4bc5f',1,'pulsatrix::TokenizerMismatch']]],
-  ['linear_67',['linear',['../classpulsatrix_1_1LRSchedule.html#a90920633abfbf1e0ca2927da96486f12',1,'pulsatrix::LRSchedule::Linear()'],['../classpulsatrix_1_1SequenceHead.html#a4d4b52ea612eca82cf07ee0e0ab625be',1,'pulsatrix::SequenceHead::linear()'],['../namespacepulsatrix.html#a94d9ac6240473b5362d1e8e5c11157bba32a843da6ea40ab3b17a3421ccdf671b',1,'pulsatrix::Linear']]],
+  ['linear_67',['linear',['../classpulsatrix_1_1SequenceHead.html#a4d4b52ea612eca82cf07ee0e0ab625be',1,'pulsatrix::SequenceHead::linear()'],['../classpulsatrix_1_1LRSchedule.html#a90920633abfbf1e0ca2927da96486f12',1,'pulsatrix::LRSchedule::Linear()'],['../namespacepulsatrix.html#a94d9ac6240473b5362d1e8e5c11157bba32a843da6ea40ab3b17a3421ccdf671b',1,'pulsatrix::Linear']]],
   ['linear1_68',['linear1',['../classpulsatrix_1_1XorNetwork.html#aea8944b7f9aa6259490ff2d4410b8dc1',1,'pulsatrix::XorNetwork']]],
   ['linear1_5fweight_69',['linear1_weight',['../classpulsatrix_1_1XorNetwork.html#ada65cdc5d77e6dd24102008ab05004e0',1,'pulsatrix::XorNetwork']]],
   ['linear2_70',['linear2',['../classpulsatrix_1_1XorNetwork.html#a5f219f9c5bf674697fd69f353aabbdc3',1,'pulsatrix::XorNetwork']]],
