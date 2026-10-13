@@ -10,6 +10,7 @@ var dir_549639eb5e09d856a0d6449a002be6ea =
     [ "adaptive_avg_pool2d_module.hpp", "adaptive__avg__pool2d__module_8hpp.html", "adaptive__avg__pool2d__module_8hpp" ],
     [ "agent.hpp", "agent_8hpp.html", "agent_8hpp" ],
     [ "aggregator_module.hpp", "aggregator__module_8hpp.html", "aggregator__module_8hpp" ],
+    [ "anchors.hpp", "anchors_8hpp.html", "anchors_8hpp" ],
     [ "asha.hpp", "asha_8hpp.html", "asha_8hpp" ],
     [ "assert.hpp", "assert_8hpp.html", "assert_8hpp" ],
     [ "attnlrp_parity.hpp", "attnlrp__parity_8hpp.html", "attnlrp__parity_8hpp" ],

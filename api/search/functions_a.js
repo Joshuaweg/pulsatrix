@@ -9,5 +9,7 @@ var searchData=
   ['keys_6',['keys',['../classpulsatrix_1_1KVCache.html#a8731cd32d501d3430230e12c44f78ff0',1,'pulsatrix::KVCache::keys()'],['../classpulsatrix_1_1KVCache.html#a03d4887cafd4ba429caefe16775d17c2',1,'pulsatrix::KVCache::keys() const']]],
   ['kind_7',['kind',['../classpulsatrix_1_1datalog_1_1Term.html#a7863c28de0df284fc10fe6a001c0a82c',1,'pulsatrix::datalog::Term::kind()'],['../classpulsatrix_1_1orch_1_1HttpError.html#a4c8253890cc135cd5d93854eebdff34c',1,'pulsatrix::orch::HttpError::kind()']]],
   ['kldivergenceloss_8',['KLDivergenceLoss',['../classpulsatrix_1_1KLDivergenceLoss.html#a3482d2b0e38e3be249685506ddbcbc84',1,'pulsatrix::KLDivergenceLoss']]],
-  ['kvcache_9',['KVCache',['../classpulsatrix_1_1KVCache.html#aacb983515174bc92d0ff3aee98f1d04b',1,'pulsatrix::KVCache']]]
+  ['kllowerbound_9',['KlLowerBound',['../namespacepulsatrix.html#a911fdf4ad49023f37a94a87d94563fa6',1,'pulsatrix']]],
+  ['klupperbound_10',['KlUpperBound',['../namespacepulsatrix.html#a94c8eca5788dca9dac74d7e90b97ef6e',1,'pulsatrix']]],
+  ['kvcache_11',['KVCache',['../classpulsatrix_1_1KVCache.html#aacb983515174bc92d0ff3aee98f1d04b',1,'pulsatrix::KVCache']]]
 ];

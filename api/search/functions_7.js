@@ -11,9 +11,10 @@ var searchData=
   ['hidden_5fstates_8',['hidden_states',['../classpulsatrix_1_1EncoderLM.html#a6f891751deb596726404c51198083765',1,'pulsatrix::EncoderLM']]],
   ['hipbackend_9',['hipbackend',['../classpulsatrix_1_1HIPBackend.html#ab62ba66f083956b40cf612fd866cc2ac',1,'pulsatrix::HIPBackend::HIPBackend()'],['../classpulsatrix_1_1HIPBackend.html#a2b3cbaa24088f1b54bfd160b9f7e5d53',1,'pulsatrix::HIPBackend::HIPBackend(const HIPBackend &amp;)=delete']]],
   ['history_10',['history',['../classpulsatrix_1_1SystemMonitor.html#a7091379ce598130849103dfe45c4c251',1,'pulsatrix::SystemMonitor']]],
-  ['httpbackendavailable_11',['HttpBackendAvailable',['../namespacepulsatrix_1_1orch.html#a6831d578a80f89e4a14552616263db54',1,'pulsatrix::orch']]],
-  ['httperror_12',['HttpError',['../classpulsatrix_1_1orch_1_1HttpError.html#a7df01960633127c49e04d556ac4d0535',1,'pulsatrix::orch::HttpError']]],
-  ['httpssupported_13',['HttpsSupported',['../namespacepulsatrix_1_1orch.html#a0a47b5ca62f0d085a928776a6d3a6217',1,'pulsatrix::orch']]],
-  ['huggingfacemapping_14',['HuggingFaceMapping',['../namespacepulsatrix.html#a01f1d9da2c67634f355455908a59b7e0',1,'pulsatrix']]],
-  ['hypergridenv_15',['HyperGridEnv',['../classpulsatrix_1_1HyperGridEnv.html#a05b3e614825178fe75ec70336f284265',1,'pulsatrix::HyperGridEnv']]]
+  ['holds_11',['holds',['../structpulsatrix_1_1AnchorPredicate.html#a2567912aff3118a4da934ed0f152a66e',1,'pulsatrix::AnchorPredicate']]],
+  ['httpbackendavailable_12',['HttpBackendAvailable',['../namespacepulsatrix_1_1orch.html#a6831d578a80f89e4a14552616263db54',1,'pulsatrix::orch']]],
+  ['httperror_13',['HttpError',['../classpulsatrix_1_1orch_1_1HttpError.html#a7df01960633127c49e04d556ac4d0535',1,'pulsatrix::orch::HttpError']]],
+  ['httpssupported_14',['HttpsSupported',['../namespacepulsatrix_1_1orch.html#a0a47b5ca62f0d085a928776a6d3a6217',1,'pulsatrix::orch']]],
+  ['huggingfacemapping_15',['HuggingFaceMapping',['../namespacepulsatrix.html#a01f1d9da2c67634f355455908a59b7e0',1,'pulsatrix']]],
+  ['hypergridenv_16',['HyperGridEnv',['../classpulsatrix_1_1HyperGridEnv.html#a05b3e614825178fe75ec70336f284265',1,'pulsatrix::HyperGridEnv']]]
 ];
