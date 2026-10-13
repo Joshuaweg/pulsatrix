@@ -59,8 +59,8 @@ structures, and explain their predictions.
   and the reason, and pulsatrix picks the explainers, runs the checks the reason requires, and
   reports what the explanation does and doesn't support.
 - [Performance](interpretability/performance.md): accuracy, log loss, the Brier score,
-  calibration with a reliability diagram, and the error on each slice of the data, tested against
-  the rest.
+  calibration with a reliability diagram, the error on each slice of the data, tested against
+  the rest, and uncertainty from Monte Carlo dropout and deep ensembles.
 
 **[Reinforcement Learning](reinforcement-learning/index.md)**: CartPole environments, replay and
 rollout buffers, and DQN, REINFORCE, A2C, PPO and SAC. Each algorithm's tests train it to a

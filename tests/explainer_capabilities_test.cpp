@@ -130,7 +130,8 @@ TEST(ExplainerCatalog, ExplainersForPutsThePrimaryAnswersFirst) {
 TEST(ExplainerCatalog, QuestionsWithNoExplainerYetComeBackEmpty) {
     EXPECT_EQ(Names(ExplainersFor(XaiQuestion::HowToStillBeThis)), (std::vector<std::string>{"Anchors"}));
     EXPECT_EQ(Names(ExplainersFor(XaiQuestion::Performance)),
-              (std::vector<std::string>{"ClassifierMetrics", "RegressorMetrics", "PerSliceError"}));
+              (std::vector<std::string>{"ClassifierMetrics", "RegressorMetrics", "PerSliceError", "MonteCarloDropout",
+                                        "DeepEnsemble"}));
     EXPECT_TRUE(ExplainersFor(XaiQuestion::Output).empty());
 }
 

@@ -32,7 +32,7 @@ categories of Liao, Gruen and Miller's XAI question bank (CHI 2020):
 |---|---|---|
 | `Input` | What kind of data was the system trained on? | `NearestNeighbors`, prototypes, ProtoDash |
 | `Output` | What kind of output does the system give? | none yet |
-| `Performance` | How accurate/precise/reliable are the predictions? | Classifier and regressor metrics, calibration, per-slice error ([Performance](performance.md)) |
+| `Performance` | How accurate/precise/reliable are the predictions? | Classifier and regressor metrics, calibration, per-slice error, Monte Carlo dropout, deep ensembles ([Performance](performance.md)) |
 | `HowGlobal` | How does the system make predictions? | Surrogate tree, ProtoDash, PDP, ALE, Morris, Sobol, TCAV, probes, featurizers, representation comparison |
 | `Why` | Why/how is this instance given this prediction? | LRP, Integrated Gradients, Saliency, Grad-CAM, KernelSHAP, LIME, Occlusion, Anchors |
 | `WhyNot` | Why is this instance NOT predicted to be Q? | Pertinent negatives (CEM), contrastive LRP, counterfactuals |
