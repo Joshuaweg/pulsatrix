@@ -463,7 +463,7 @@ rate is tuned, plain LoRA matches or beats most of them.
 | Follow-up | Belongs with |
 |---|---|
 | A causal attention mask, which next-token language-model training needs | Done in LLM-1 |
-| Rerun the TRN-6 recipe on SmolLM2-135M | after IO-5 and LLM-6 |
+| Rerun the TRN-6 recipe on SmolLM2-135M | Done in the recipe [What did the fine-tune change?](../recipes/deep-learning/what_did_the_finetune_change.md): `--method full` fine-tunes all of SmolLM2-135M and compares it with LoRA. TRN-6's from-scratch arm doesn't apply to a pretrained model |
 | Checkpointing an `LRScheduler` with the model (TRN-6 stores the step as metadata itself) | IO-2 follow-up |
 
 ## LLM: Running real language models

@@ -121,8 +121,9 @@ struct IntruderResult {
  * @param epsilon The paper sweeps it (it calls 0.6 to 0.9 typical for full fine-tuning); 0.6 is a
  *        starting point, not a standard. max_similarity lets a caller apply any other threshold.
  * @note The paper's Algorithm 1 compares cosines without an absolute value. A singular vector's sign
- *       is arbitrary, so this uses |cos|. Two O(out^3) eigendecompositions of W^T W, on the CPU in
- *       double (SymmetricEigen takes about 0.8 s at n = 512 in a Release build).
+ *       is arbitrary, so this uses |cos|. Two eigendecompositions, on the CPU in double, of W^T W or
+ *       W W^T, whichever is smaller: O(min(in, out)^3) (SymmetricEigen takes about 0.8 s at n = 512 in
+ *       a Release build).
  * @throws std::invalid_argument if the shapes differ or aren't rank 2, k < 1, or epsilon isn't in (0, 1].
  */
 [[nodiscard]] IntruderResult IntruderDimensions(const Tensor& base, const Tensor& tuned, int64_t k = 10, double epsilon = 0.6);

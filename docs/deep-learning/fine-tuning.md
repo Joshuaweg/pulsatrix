@@ -409,5 +409,13 @@ How this follows the paper:
   `(out, in)` weight. Here that is the output space of pulsatrix's `(in, out)` weight.
 - **Absolute value.** The paper's Algorithm 1 compares cosines without an absolute value. A
   singular vector's sign is arbitrary, so pulsatrix uses |cos|.
-- **Cost.** It computes the singular vectors as eigenvectors of WᵀW, in double on the CPU, which
-  costs O(out³) per layer.
+- **Cost.** It computes the singular vectors as eigenvectors of WᵀW, or of WWᵀ when that is
+  smaller, in double on the CPU: O(min(in, out)³) per layer. All 210 LoRA layers of SmolLM2-135M
+  take about 3 minutes.
+
+### A worked example
+
+The recipe [What did the fine-tune change?](../recipes/deep-learning/what_did_the_finetune_change.md)
+teaches SmolLM2-135M six false capitals with LoRA and with full fine-tuning, then uses everything
+in this section to find out what it learned. The explanations catch a shortcut that the training
+accuracy hides.
