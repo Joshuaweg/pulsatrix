@@ -6531,7 +6531,7 @@ weight variance.</p>
 <td>KD-1, IO-2</td>
 <td>P3</td>
 <td>—</td>
-<td></td>
+<td>In progress: the library pieces, <a href="https://github.com/Joshuaweg/pulsatrix/pull/186">#186</a> (see below)</td>
 </tr>
 </tbody>
 </table>
@@ -6565,6 +6565,13 @@ weight variance.</p>
     and the facts are computed outside the engine.</li>
 <li><strong>Follow-ups:</strong> comparison built-ins in the engine; simplifying rules across leaves (merging
     rules of the same class, as C4.5rules does); a soft tree's rules pruned to its likely paths.</li>
+<li><strong>KD-4</strong> starts with the library pieces. <code>layer_student.hpp</code> has DistilBERT's student,
+  <code>MakeStudentFromLayers</code>, which copies chosen teacher layers into a shallower <code>CausalLM</code>, and its
+  cosine loss on hidden states, <code>HiddenStateCosineLoss</code>. Its gradient enters the model through a
+  <code>HiddenStateTap</code> intervention, since <code>CausalLM::backward()</code> starts at the logits.
+  <code>born_again.hpp</code> has the generations' ensemble and Furlanello et al.'s permuted-dark-knowledge
+  control. Their confidence-weighted control is left out: it needs per-example weights in the
+  cross-entropy loss.</li>
 </ul>
 <h2 id="feat-featurizers-sparse-autoencoders-and-goodfire-bsf">FEAT: Featurizers, sparse autoencoders and Goodfire BSF<a class="headerlink" href="#feat-featurizers-sparse-autoencoders-and-goodfire-bsf" title="Permanent link">&para;</a></h2>
 <p><strong>Complete</strong> (2026-10-09, PRs <a href="https://github.com/Joshuaweg/pulsatrix/pull/102">#102</a> and

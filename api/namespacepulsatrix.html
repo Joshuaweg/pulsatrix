@@ -790,6 +790,12 @@ Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpulsatrix_1_1HfRopeScaling.html">HfRopeScaling</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">A <code>rope_scaling</code> (or <code>rope_parameters</code>) entry other than the default.  <a href="structpulsatrix_1_1HfRopeScaling.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1HiddenStateCosineLoss.html">HiddenStateCosineLoss</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">DistilBERT's cosine loss: the mean over kept rows of 1 − cos(s, t), with s and t the student's and teacher's vectors, (..., width); PyTorch's CosineEmbeddingLoss with target 1.  <a href="classpulsatrix_1_1HiddenStateCosineLoss.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1HiddenStateTap.html">HiddenStateTap</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">An identity intervention that keeps the hidden states it sees and adds a gradient to the one flowing back through it: the way to train a <a class="el" href="classpulsatrix_1_1CausalLM.html" title="Token embedding, num_hidden_layers pre-norm transformer blocks, a final RMSNorm and a language-model ...">CausalLM</a> on a loss of a layer's output.  <a href="classpulsatrix_1_1HiddenStateTap.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1HintLoss.html">HintLoss</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">FitNets' hint loss: mean((r(student) − teacher)²), with r a learned linear map from the student's feature width to the teacher's.  <a href="classpulsatrix_1_1HintLoss.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -2367,6 +2373,12 @@ Functions</h2></td></tr>
 <tr class="separator:a3c327b66f98c42b444d2cd79d260b628"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a73f2520d8735527576929fd5740651cb" id="r_a73f2520d8735527576929fd5740651cb"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structpulsatrix_1_1DescriptionLength.html">DescriptionLength</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#a73f2520d8735527576929fd5740651cb">MeasureDescriptionLength</a> (<a class="el" href="classpulsatrix_1_1Featurizer.html">Featurizer</a> &amp;featurizer, const <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp;x, double distortion_fraction=0.1, int64_t batch=4096)</td></tr>
 <tr class="separator:a73f2520d8735527576929fd5740651cb"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab5a306417df429fdc37e6415aa0d0f86" id="r_ab5a306417df429fdc37e6415aa0d0f86"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#ab5a306417df429fdc37e6415aa0d0f86">EnsembleLogProbabilities</a> (const std::vector&lt; <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &gt; &amp;logits, <a class="el" href="classpulsatrix_1_1DeviceBackend.html">DeviceBackend</a> *backend)</td></tr>
+<tr class="memdesc:ab5a306417df429fdc37e6415aa0d0f86"><td class="mdescLeft">&#160;</td><td class="mdescRight">log((1/G) Σ_g softmax(logits_g)) row by row, (..., classes), on the first tensor's device.  <br /></td></tr>
+<tr class="separator:ab5a306417df429fdc37e6415aa0d0f86"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0f356111148b389a6c583c1dac5b8f8e" id="r_a0f356111148b389a6c583c1dac5b8f8e"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#a0f356111148b389a6c583c1dac5b8f8e">PermuteDarkKnowledge</a> (const <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp;teacher_logits, uint64_t seed, <a class="el" href="classpulsatrix_1_1DeviceBackend.html">DeviceBackend</a> *backend)</td></tr>
+<tr class="memdesc:a0f356111148b389a6c583c1dac5b8f8e"><td class="mdescLeft">&#160;</td><td class="mdescRight">The teacher's logits with each row's non-maximal entries shuffled among themselves by a portable generator seeded with <code>seed:</code> the same result on every platform. The largest entry (the first, if tied) stays in place.  <br /></td></tr>
+<tr class="separator:a0f356111148b389a6c583c1dac5b8f8e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a576b276dd82c852f80a4e69764137dc0" id="r_a576b276dd82c852f80a4e69764137dc0"><td class="memItemLeft" align="right" valign="top">const std::vector&lt; std::string &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#a576b276dd82c852f80a4e69764137dc0">ByteLevelAlphabet</a> ()</td></tr>
 <tr class="memdesc:a576b276dd82c852f80a4e69764137dc0"><td class="mdescLeft">&#160;</td><td class="mdescRight">The GPT-2 byte-to-character table byte-level BPE uses: printable bytes stand for themselves, the rest for U+0100 onward.  <br /></td></tr>
 <tr class="separator:a576b276dd82c852f80a4e69764137dc0"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -2964,6 +2976,12 @@ Functions</h2></td></tr>
 <tr class="memitem:adebe05440de121e54cb2437642152e9a" id="r_adebe05440de121e54cb2437642152e9a"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#adebe05440de121e54cb2437642152e9a">WriteJsonCompact</a> (const <a class="el" href="classpulsatrix_1_1JsonValue.html">JsonValue</a> &amp;value)</td></tr>
 <tr class="memdesc:adebe05440de121e54cb2437642152e9a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Writes <code>value</code> as JSON on one line, with no whitespace and no trailing newline.  <br /></td></tr>
 <tr class="separator:adebe05440de121e54cb2437642152e9a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a368bfcd73430bbfc5a283e1831a599ef" id="r_a368bfcd73430bbfc5a283e1831a599ef"><td class="memItemLeft" align="right" valign="top">std::vector&lt; int64_t &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#a368bfcd73430bbfc5a283e1831a599ef">EveryOtherLayer</a> (int64_t num_layers)</td></tr>
+<tr class="memdesc:a368bfcd73430bbfc5a283e1831a599ef"><td class="mdescLeft">&#160;</td><td class="mdescRight">Layers 0, 2, 4, ... of a <code>num_layers</code> model: one out of two, DistilBERT's choice.  <br /></td></tr>
+<tr class="separator:a368bfcd73430bbfc5a283e1831a599ef"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afe593f2fea0c9618e7efa487b24f8a93" id="r_afe593f2fea0c9618e7efa487b24f8a93"><td class="memItemLeft" align="right" valign="top">std::unique_ptr&lt; <a class="el" href="classpulsatrix_1_1CausalLM.html">CausalLM</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#afe593f2fea0c9618e7efa487b24f8a93">MakeStudentFromLayers</a> (<a class="el" href="classpulsatrix_1_1CausalLM.html">CausalLM</a> &amp;teacher, const std::vector&lt; int64_t &gt; &amp;layers, <a class="el" href="classpulsatrix_1_1DeviceBackend.html">DeviceBackend</a> *backend)</td></tr>
+<tr class="memdesc:afe593f2fea0c9618e7efa487b24f8a93"><td class="mdescLeft">&#160;</td><td class="mdescRight">A <a class="el" href="classpulsatrix_1_1CausalLM.html" title="Token embedding, num_hidden_layers pre-norm transformer blocks, a final RMSNorm and a language-model ...">CausalLM</a> with <code>teacher's</code> config and weights but only the blocks in <code>layers</code>, in that order: the student's block j is a copy of the teacher's block layers[j]. The embedding, final norm and head are copied too; <code>layer_types</code> keeps the chosen layers'.  <br /></td></tr>
+<tr class="separator:afe593f2fea0c9618e7efa487b24f8a93"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:abc312204e032ea8f6f81f09aeae4d9e2" id="r_abc312204e032ea8f6f81f09aeae4d9e2"><td class="memItemLeft" align="right" valign="top">std::vector&lt; float &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#abc312204e032ea8f6f81f09aeae4d9e2">SolveLinearSystem</a> (std::vector&lt; std::vector&lt; float &gt; &gt; a, std::vector&lt; float &gt; b)</td></tr>
 <tr class="memdesc:abc312204e032ea8f6f81f09aeae4d9e2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Solves A*x = b via Gaussian elimination with partial pivoting.  <br /></td></tr>
 <tr class="separator:abc312204e032ea8f6f81f09aeae4d9e2"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -11591,6 +11609,43 @@ If a front is uniform in some objective (max == min across the whole front), tha
 
 </div>
 </div>
+<a id="ab5a306417df429fdc37e6415aa0d0f86" name="ab5a306417df429fdc37e6415aa0d0f86"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab5a306417df429fdc37e6415aa0d0f86">&#9670;&#160;</a></span>EnsembleLogProbabilities()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> pulsatrix::EnsembleLogProbabilities </td>
+          <td>(</td>
+          <td class="paramtype">const std::vector&lt; <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &gt; &amp;&#160;</td>
+          <td class="paramname"><em>logits</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="classpulsatrix_1_1DeviceBackend.html">DeviceBackend</a> *&#160;</td>
+          <td class="paramname"><em>backend</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>log((1/G) Σ_g softmax(logits_g)) row by row, (..., classes), on the first tensor's device. </p>
+<dl class="section note"><dt>Note</dt><dd>Computed on the host in double precision, with each softmax shifted by its row's maximum. </dd></dl>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname">std::invalid_argument</td><td>if <code>logits</code> is empty, a rank is below 2, or the shapes or devices differ. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
 <a id="af277ccc6c1e1c23e92698ce181668201" name="af277ccc6c1e1c23e92698ce181668201"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#af277ccc6c1e1c23e92698ce181668201">&#9670;&#160;</a></span>EnsembleSamples()</h2>
 
@@ -12317,6 +12372,26 @@ template&lt;typename Genotype , typename FitnessT , typename FitnessFn &gt; </di
   </table>
   </dd>
 </dl>
+
+</div>
+</div>
+<a id="a368bfcd73430bbfc5a283e1831a599ef" name="a368bfcd73430bbfc5a283e1831a599ef"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a368bfcd73430bbfc5a283e1831a599ef">&#9670;&#160;</a></span>EveryOtherLayer()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::vector&lt; int64_t &gt; pulsatrix::EveryOtherLayer </td>
+          <td>(</td>
+          <td class="paramtype">int64_t&#160;</td>
+          <td class="paramname"><em>num_layers</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Layers 0, 2, 4, ... of a <code>num_layers</code> model: one out of two, DistilBERT's choice. </p>
 
 </div>
 </div>
@@ -16414,6 +16489,49 @@ template&lt;typename Genotype , typename FitnessT &gt; </div>
 
 </div>
 </div>
+<a id="afe593f2fea0c9618e7efa487b24f8a93" name="afe593f2fea0c9618e7efa487b24f8a93"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#afe593f2fea0c9618e7efa487b24f8a93">&#9670;&#160;</a></span>MakeStudentFromLayers()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::unique_ptr&lt; <a class="el" href="classpulsatrix_1_1CausalLM.html">CausalLM</a> &gt; pulsatrix::MakeStudentFromLayers </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classpulsatrix_1_1CausalLM.html">CausalLM</a> &amp;&#160;</td>
+          <td class="paramname"><em>teacher</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const std::vector&lt; int64_t &gt; &amp;&#160;</td>
+          <td class="paramname"><em>layers</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="classpulsatrix_1_1DeviceBackend.html">DeviceBackend</a> *&#160;</td>
+          <td class="paramname"><em>backend</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>A <a class="el" href="classpulsatrix_1_1CausalLM.html" title="Token embedding, num_hidden_layers pre-norm transformer blocks, a final RMSNorm and a language-model ...">CausalLM</a> with <code>teacher's</code> config and weights but only the blocks in <code>layers</code>, in that order: the student's block j is a copy of the teacher's block layers[j]. The embedding, final norm and head are copied too; <code>layer_types</code> keeps the chosen layers'. </p>
+<dl class="section note"><dt>Note</dt><dd>The student is a separate model on <code>backend's</code> device: training it leaves the teacher alone. The teacher's interventions aren't copied. </dd></dl>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname">std::invalid_argument</td><td>if <code>layers</code> is empty, has an index out of range or repeats one, or a teacher parameter has no counterpart of the same shape (a teacher with LoRA adapters, say). </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
 <a id="af53e6ecf02fb76a731ba39e140ba653d" name="af53e6ecf02fb76a731ba39e140ba653d"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#af53e6ecf02fb76a731ba39e140ba653d">&#9670;&#160;</a></span>MakeTaggingBatch()</h2>
 
@@ -19973,6 +20091,48 @@ template&lt;typename T &gt; </div>
 </div><div class="memdoc">
 
 <p>The q-th percentile (0 to 100) with linear interpolation (numpy's default). </p>
+
+</div>
+</div>
+<a id="a0f356111148b389a6c583c1dac5b8f8e" name="a0f356111148b389a6c583c1dac5b8f8e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0f356111148b389a6c583c1dac5b8f8e">&#9670;&#160;</a></span>PermuteDarkKnowledge()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> pulsatrix::PermuteDarkKnowledge </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp;&#160;</td>
+          <td class="paramname"><em>teacher_logits</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">uint64_t&#160;</td>
+          <td class="paramname"><em>seed</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="classpulsatrix_1_1DeviceBackend.html">DeviceBackend</a> *&#160;</td>
+          <td class="paramname"><em>backend</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>The teacher's logits with each row's non-maximal entries shuffled among themselves by a portable generator seeded with <code>seed:</code> the same result on every platform. The largest entry (the first, if tied) stays in place. </p>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname">std::invalid_argument</td><td>if the rank is below 2. </td></tr>
+  </table>
+  </dd>
+</dl>
 
 </div>
 </div>
