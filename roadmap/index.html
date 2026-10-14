@@ -4423,6 +4423,9 @@ machine, and explain it with the tools pulsatrix already has. Items on that path
   <a href="https://github.com/Joshuaweg/pulsatrix/pull/155">#155</a>): LoRA, LRP through LoRA, LoReFT, IA³, model diffing</li>
 <li>KD-1 (<strong>done</strong>, <a href="https://github.com/Joshuaweg/pulsatrix/pull/178">#178</a>): a distillation loss</li>
 <li>KD-2 (<strong>done</strong>, <a href="https://github.com/Joshuaweg/pulsatrix/pull/180">#180</a>): teacher–student explanation agreement</li>
+<li>KD-3 and KD-4 (<strong>done</strong>, from the backlog, <a href="https://github.com/Joshuaweg/pulsatrix/pull/182">#182</a> to
+  <a href="https://github.com/Joshuaweg/pulsatrix/pull/188">#188</a>): interpretable students, rules for the Datalog engine,
+  DistilBERT-style students and born-again networks, with recipes</li>
 <li>XAI-1 (<strong>done</strong>, <a href="https://github.com/Joshuaweg/pulsatrix/pull/156">#156</a>): which questions each explainer answers</li>
 <li>XAI-2 (<strong>done</strong>, <a href="https://github.com/Joshuaweg/pulsatrix/pull/160">#160</a>): the question-driven planner</li>
 <li>XAI-3 (<strong>done</strong>, <a href="https://github.com/Joshuaweg/pulsatrix/pull/161">#161</a>): explanation reports that run the checks and carry caveats</li>
@@ -4478,7 +4481,7 @@ machine, and explain it with the tools pulsatrix already has. Items on that path
 </ul>
 <h3 id="backlog-not-yet-scheduled">Backlog, not yet scheduled<a class="headerlink" href="#backlog-not-yet-scheduled" title="Permanent link">&para;</a></h3>
 <p>These P2 and P3 items wait until a milestone needs them or someone asks: TRN-12, TRN-13, IO-10,
-IO-11, TDA-13 to TDA-19, KD-3, KD-4, FEAT-8 (<strong>done</strong>), ARCH-4 to ARCH-10, VIZ-7, HIP-10,
+IO-11, TDA-13 to TDA-19, KD-3 and KD-4 (<strong>done</strong>), FEAT-8 (<strong>done</strong>), ARCH-4 to ARCH-10, VIZ-7, HIP-10,
 AGT-6, AGT-7, AGT-9, NB-4, NB-5, KS-6 and KS-7.</p>
 <h3 id="v20">v2.0<a class="headerlink" href="#v20" title="Permanent link">&para;</a></h3>
 <p>Larger changes that touch every module or backend.</p>
@@ -6540,6 +6543,11 @@ weight variance.</p>
 </tbody>
 </table>
 <h2 id="kd-surrogates-and-student-teacher">KD: Surrogates and student-teacher<a class="headerlink" href="#kd-surrogates-and-student-teacher" title="Permanent link">&para;</a></h2>
+<p><strong>Complete</strong> (2026-10-14, PRs <a href="https://github.com/Joshuaweg/pulsatrix/pull/178">#178</a> to
+<a href="https://github.com/Joshuaweg/pulsatrix/pull/188">#188</a>). The user guide is the knowledge-distillation
+section of <a href="../deep-learning/#knowledge-distillation">Deep Learning</a>, with the recipes
+<a href="../recipes/deep-learning/born_again_networks/">Is the student born better?</a> and
+<a href="../recipes/deep-learning/half_the_layers/">Half the layers</a>.</p>
 <table>
 <thead>
 <tr>
