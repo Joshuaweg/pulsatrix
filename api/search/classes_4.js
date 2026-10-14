@@ -24,5 +24,6 @@ var searchData=
   ['explanationplan_21',['ExplanationPlan',['../structpulsatrix_1_1ExplanationPlan.html',1,'pulsatrix']]],
   ['explanationplanner_22',['ExplanationPlanner',['../classpulsatrix_1_1ExplanationPlanner.html',1,'pulsatrix']]],
   ['explanationrequest_23',['ExplanationRequest',['../structpulsatrix_1_1ExplanationRequest.html',1,'pulsatrix']]],
-  ['explanationscorecard_24',['ExplanationScoreCard',['../classpulsatrix_1_1ExplanationScoreCard.html',1,'pulsatrix']]]
+  ['explanationscorecard_24',['ExplanationScoreCard',['../classpulsatrix_1_1ExplanationScoreCard.html',1,'pulsatrix']]],
+  ['extractedrule_25',['ExtractedRule',['../structpulsatrix_1_1ExtractedRule.html',1,'pulsatrix']]]
 ];

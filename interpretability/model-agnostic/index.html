@@ -734,6 +734,23 @@
     </span>
   </a>
   
+    <nav class="md-nav" aria-label="Global surrogate tree">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#the-tree-as-datalog-rules" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The tree as Datalog rules
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
 </li>
         
           <li class="md-nav__item">
@@ -2776,6 +2793,23 @@
     </span>
   </a>
   
+    <nav class="md-nav" aria-label="Global surrogate tree">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#the-tree-as-datalog-rules" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The tree as Datalog rules
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
 </li>
         
           <li class="md-nav__item">
@@ -3186,6 +3220,45 @@ fidelities and the importances. <code>FitDecisionTree</code> fits the same tree 
 already have.</p>
 <p>Test reference: <code>tests/surrogate_tree_test.cpp</code>, checked node by node against scikit-learn 1.9.1
 (<code>tools/generate_surrogate_tree_reference_values.py</code>).</p>
+<h4 id="the-tree-as-datalog-rules">The tree as Datalog rules<a class="headerlink" href="#the-tree-as-datalog-rules" title="Permanent link">&para;</a></h4>
+<p><code>ExtractRules</code> turns a classification tree into a Datalog program, one rule per leaf, that the
+library's Datalog engine runs. Rules can then be combined with other knowledge, or explained
+with the engine's own LRP:</p>
+<div class="highlight"><pre><span></span><code><span class="cp">#include</span><span class="w"> </span><span class="cpf">"pulsatrix/rule_extraction.hpp"</span>
+
+<span class="n">TreeRules</span><span class="w"> </span><span class="n">rules</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">ExtractRules</span><span class="p">(</span><span class="n">s</span><span class="p">.</span><span class="n">tree</span><span class="p">,</span><span class="w"> </span><span class="p">{</span><span class="s">"length"</span><span class="p">,</span><span class="w"> </span><span class="s">"width"</span><span class="p">},</span><span class="w"> </span><span class="p">{</span><span class="s">"a"</span><span class="p">,</span><span class="w"> </span><span class="s">"b"</span><span class="p">,</span><span class="w"> </span><span class="s">"c"</span><span class="p">});</span>
+<span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="n">ExtractedRule</span><span class="o">&amp;</span><span class="w"> </span><span class="n">r</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="n">rules</span><span class="p">.</span><span class="n">rules</span><span class="p">)</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">FormatRule</span><span class="p">(</span><span class="n">r</span><span class="p">.</span><span class="n">rule</span><span class="p">)</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">"</span><span class="se">\n</span><span class="s">"</span><span class="p">;</span>
+<span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">int64_t</span><span class="o">&gt;</span><span class="w"> </span><span class="n">classes</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">ClassifyWithRules</span><span class="p">(</span><span class="n">rules</span><span class="p">,</span><span class="w"> </span><span class="n">inputs</span><span class="p">);</span><span class="w">  </span><span class="c1">// the engine's answer, input by input</span>
+</code></pre></div>
+<p>For the tree "length ≤ 0.5? (length ≤ 0.25? a : (width ≤ 0.3? b : a)) : c" (the one in
+<code>tests/rule_extraction_test.cpp</code>) this prints:</p>
+<div class="highlight"><pre><span></span><code>predict(S, a) :- sample(S), le(S, length, 0.25).
+predict(S, b) :- sample(S), le(S, length, 0.5), gt(S, length, 0.25), le(S, width, 0.3).
+predict(S, a) :- sample(S), le(S, length, 0.5), gt(S, length, 0.25), gt(S, width, 0.3).
+predict(S, c) :- sample(S), gt(S, length, 0.5).
+</code></pre></div>
+<ul>
+<li><strong>Facts:</strong> <code>rules.Facts("s1", x)</code> writes the facts for one input: <code>sample(s1)</code>, and <code>le</code> or
+  <code>gt</code> for every threshold the rules test. Datalog's constants are strings, so thresholds are
+  written with 9 significant digits, in the rules and the facts alike.</li>
+<li><strong>Merging:</strong> two tests in the same direction on one feature merge into the tighter one, as in
+  the first rule, where length ≤ 0.5 and length ≤ 0.25 become length ≤ 0.25.</li>
+<li><strong>Each rule records:</strong> the leaf's training support, and its confidence, the share of that
+  support in the rule's class. <code>ToJson</code> writes them all as a <code>pulsatrix.tree_rules.v1</code> document.</li>
+<li><strong>Checked:</strong> on a fitted depth-5 tree, the engine derives exactly one <code>predict</code> fact for each
+  of 300 inputs, and it is always the tree's class.</li>
+</ul>
+<p>A <code>SoftDecisionTree</code> (see <a href="../../deep-learning/#knowledge-distillation">Knowledge distillation</a>)
+gives weighted rules instead:</p>
+<div class="highlight"><pre><span></span><code>predict(S, C) :- right(S, n0), left(S, n2), right(S, n5), leaf(l5, C).
+</code></pre></div>
+<ul>
+<li><strong>The facts:</strong> <code>right(s, n)</code> carries the probability of going right at node n, <code>left(s, n)</code> its
+  complement, and <code>leaf(l, c)</code> leaf l's probability of class c.</li>
+<li><strong>The result:</strong> over the real semiring, the engine sums the product of the weights over every
+  derivation. So the derived <code>predict(s, c)</code> is exactly the tree's probability of class c
+  (<code>ClassProbabilitiesFromRules</code>), within 1e-12 in the tests.</li>
+</ul>
 <h3 id="anchors">Anchors<a class="headerlink" href="#anchors" title="Permanent link">&para;</a></h3>
 <div class="highlight"><pre><span></span><code><span class="cp">#include</span><span class="w"> </span><span class="cpf">"pulsatrix/anchors.hpp"</span>
 
