@@ -62,8 +62,9 @@ enum class CheckPriority {
 
 /** @brief One check the plan asks for. */
 struct PlannedCheck {
-    /** @brief A stable identifier: "faithfulness", "stability", "conservation", "randomization",
-     *         "null_model", "aggregate", "per_slice_error", or an explainer's own control such as
+    /** @brief A stable identifier: "faithfulness", "stability", "robustness", "conservation",
+     *         "randomization", "null_model", "aggregate", "per_slice_error", or an explainer's own
+     *         control such as
      *         "probe_controls". */
     std::string name;
     /** @brief The header and the calls that run it; empty when pulsatrix has none yet. */
@@ -135,8 +136,9 @@ struct ExplanationPlan {
  * The checks follow the reason (the roadmap's XAI table):
  *  - Justify requires faithfulness (DeletionCurve / InsertionCurve) and stability, and
  *    conservation for complete explainers;
- *  - Control requires the model-parameter randomization test for attributions, the null-model
- *    baseline for the rest, and per-slice error (KS-3), which needs labels;
+ *  - Control requires the model-parameter randomization test and robustness (KS-4: the
+ *    explanation shouldn't change much when the input barely does) for attributions, the
+ *    null-model baseline for the rest, and per-slice error (KS-3), which needs labels;
  *  - Improve requires aggregating the explanations over a dataset;
  *  - Discover requires the null-model baseline and each explainer's own controls (control tasks
  *    for probes, a significance test for persistent homology, split halves for PCA).

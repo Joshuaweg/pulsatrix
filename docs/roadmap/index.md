@@ -226,7 +226,9 @@ Fine-tune the models from v1.2 and explain what the fine-tuning changed.
   ([#172](https://github.com/Joshuaweg/pulsatrix/pull/172)) and a recipe on ESM-2,
   [How sure is the model?](../recipes/interpretability/how_sure_is_the_model.md)
   ([#173](https://github.com/Joshuaweg/pulsatrix/pull/173)), followed
-- KS-4: adversarial robustness
+- KS-4 (**done**, [#175](https://github.com/Joshuaweg/pulsatrix/pull/175) and
+  [#176](https://github.com/Joshuaweg/pulsatrix/pull/176)): FGSM and PGD attacks, robust accuracy,
+  and explanation sensitivity as a required check under Control
 - Llama-3.2-1B and Qwen2.5-0.5B pass the golden-logit test
 
 ### v1.4 "Features and agents"
@@ -1851,7 +1853,7 @@ AGT-5 has to follow these security rules:
 | KS-1 | CMake `install()` and a package config, so other projects can `find_package(pulsatrix)` | There's no install step today | — | P0 | S | Done, [#61](https://github.com/Joshuaweg/pulsatrix/pull/61) |
 | KS-2 | A benchmark suite: step time, explanation time, conservation error | Measures every HIP item and catches regressions | — | P1 | S | Done, [#64](https://github.com/Joshuaweg/pulsatrix/pull/64) (see below) |
 | KS-3 | Uncertainty: Monte Carlo dropout, deep ensembles, split conformal prediction | Answers the Performance question | — | P1 | S | Done: metrics, calibration and per-slice error, [#168](https://github.com/Joshuaweg/pulsatrix/pull/168); Monte Carlo dropout and deep ensembles, [#169](https://github.com/Joshuaweg/pulsatrix/pull/169); split conformal prediction, [#170](https://github.com/Joshuaweg/pulsatrix/pull/170); views, [#172](https://github.com/Joshuaweg/pulsatrix/pull/172); recipe, [#173](https://github.com/Joshuaweg/pulsatrix/pull/173) (see below) |
-| KS-4 | FGSM and PGD attacks, also used as a robustness test for explanations | Robustness and the Control reason | — | P1 | S | In progress: FGSM, PGD and robust accuracy, [#175](https://github.com/Joshuaweg/pulsatrix/pull/175) |
+| KS-4 | FGSM and PGD attacks, also used as a robustness test for explanations | Robustness and the Control reason | — | P1 | S | Done: FGSM, PGD and robust accuracy, [#175](https://github.com/Joshuaweg/pulsatrix/pull/175); explanation sensitivity and the `robustness` check, [#176](https://github.com/Joshuaweg/pulsatrix/pull/176) (see below) |
 | KS-5 | TracIn data attribution | Answers "which training examples caused this" | FND-1 | P2 | M | |
 | KS-6 | Fairness metrics, drift detection and a model-card generator | The Input question, and documentation | — | P2 | S each | |
 | KS-7 | Wire the existing thread pool into `DataLoader`'s `num_workers` | Built but not connected | — | P2 | M | |
@@ -1948,6 +1950,31 @@ AGT-5 has to follow these security rules:
   - **`ExplainerCapabilities::needs_labels`:** the metrics and conformal calibration need true
     labels, so the planner now excludes them unless `ModelTraits::has_labels` is set.
 
+- **KS-4** came in two parts.
+  - **The attacks** ([#175](https://github.com/Joshuaweg/pulsatrix/pull/175)):
+    - `adversarial.hpp` has FGSM, PGD and `RobustAccuracyCurve`, under L∞ or L2, untargeted or
+      targeted, on any `DifferentiableClassifier` (a `Module`, an `ExplainerContext`, or a
+      forward and backward pair).
+    - The updates follow torchattacks', and a numpy reimplementation is the reference: there is no
+      torch here.
+    - On a linear model PGD finds the closed-form optimum.
+  - **"A robustness test for explanations"** ([#176](https://github.com/Joshuaweg/pulsatrix/pull/176)):
+    - `ExplanationSensitivity` gives Quantus's max- and average-sensitivity and the local
+      Lipschitz estimate over sampled perturbations, and the sensitivity at FGSM's point, which
+      is how the attacks test explanations.
+    - **Departure:** only perturbations that keep the predicted class count, as Agarwal et al.'s
+      relative stability does but Yeh et al.'s sensitivity doesn't. An explanation should change
+      when the prediction does.
+  - **The planner's `robustness` check:** required under Control for attribution explainers, and
+    `BuildExplanation` runs it.
+    - **The threshold is my default:** max-sensitivity and the FGSM point at most 0.5, at a radius
+      of 5% of the input's spread.
+    - **For token, protein and symbolic input** it is recommended and unavailable, so it can't
+      block a language model's Control plan.
+  - **Parameter gradients:** FGSM's point goes through `Module::backward`, so `BuildExplanation`
+    restores the parameters' gradients afterwards. The gradient explainers, run through an
+    `ExplainerContext`, accumulate into them anyway.
+
 ### Follow-ups the KS work surfaced
 
 | Follow-up | Found in | Belongs with |
@@ -1966,6 +1993,10 @@ AGT-5 has to follow these security rules:
 | A conformal score scaled by an ensemble's spread (normalized residuals), so intervals widen where the members disagree; the recipe's intervals cover 82% at unseen positions | KS-3 recipe | when a user needs it |
 | Uncertainty in the Justify report: the planner says the report should carry it, and `Explanation` has no field for it yet | KS-3 | XAI-3 revision |
 | RAPS (Angelopoulos et al., ICLR 2021) and conformal risk control | KS-3 | when a user needs smaller sets |
+| Relative input, representation and output stability (Agarwal et al., NeurIPS 2022), Quantus's remaining robustness metrics | KS-4 | when a user needs them |
+| Explanation-targeted attacks (Ghorbani et al., AAAI 2019; Dombrowski et al., NeurIPS 2019): perturbations that keep the prediction and change the explanation as much as they can. They need the gradient of the explanation, a second-order pass pulsatrix doesn't have | KS-4 | after second-order autograd |
+| A view of the robustness curve, and a recipe that attacks a real model (ResNet18 on ImageNet images) | KS-4 | VIZ, a recipe |
+| `ExplainerContext::backward_pass` accumulates into the parameters' gradients, so a gradient explainer changes them; explainers could snapshot and restore them, as `BuildExplanation`'s robustness check does | KS-4 | FND |
 
 ## PLM: Protein language models
 

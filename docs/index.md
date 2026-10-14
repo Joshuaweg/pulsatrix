@@ -53,8 +53,9 @@ structures, and explain their predictions.
 - [Gradient-based explainers](interpretability/deep-learning-approaches.md): Saliency,
   Integrated Gradients, Grad-CAM, counterfactuals, and pertinent negatives and positives (CEM).
 - [Checking an explanation](interpretability/index.md): deletion and insertion curves (with
-  ROAD), the model-parameter randomization test, sparseness and complexity, and a random-model
-  baseline that shows whether an explanation depends on what the model learned.
+  ROAD), the model-parameter randomization test, sensitivity to small and adversarial
+  perturbations, sparseness and complexity, and a random-model baseline that shows whether an
+  explanation depends on what the model learned.
 - [Planning and reporting](interpretability/index.md#planning-an-explanation): name the question
   and the reason, and pulsatrix picks the explainers, runs the checks the reason requires, and
   reports what the explanation does and doesn't support.

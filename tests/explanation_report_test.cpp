@@ -8,9 +8,11 @@
 #include <vector>
 
 #include "pulsatrix/cpu_backend.hpp"
+#include "pulsatrix/explainer_context.hpp"
 #include "pulsatrix/kernel_shap.hpp"
 #include "pulsatrix/linear_module.hpp"
 #include "pulsatrix/relu_module.hpp"
+#include "pulsatrix/saliency.hpp"
 #include "pulsatrix/sequential_module.hpp"
 
 namespace pulsatrix {
@@ -177,6 +179,66 @@ TEST_F(ExplanationReportTest, AnInputOnlyMapFailsRandomizationUnderControl) {
     EXPECT_TRUE(HasCaveat(e, "check.per_slice_error", CaveatSeverity::Blocking));
     EXPECT_FALSE(e.supports_reason());
     EXPECT_TRUE(HasCaveat(e, "method.saliency_sensitivity", CaveatSeverity::Note));
+}
+
+// KS-4: under Control the robustness check runs, with FGSM's point through the model, whose
+// parameter gradients come back unchanged. A ReLU network's saliency map is constant between
+// activation boundaries, so it barely moves; an explanation that jumps with the input fails, and
+// blocks Control.
+TEST_F(ExplanationReportTest, RobustnessRunsUnderControlAndCatchesAFragileExplanation) {
+    const ExplanationRequest request = Request(XaiReason::Control, "Saliency", ModelAccess::Gradients);
+    ExplainerContext ctx({&l0, &relu, &l1});
+    const ExplainFn saliency = [&](const Tensor& in) { return Saliency().explain(ctx, in, 0, &backend); };
+    const Explanation steady = BuildExplanation(request, x, saliency, predict, &model);
+    const CheckResult* r = steady.check("robustness");
+    ASSERT_NE(r, nullptr);
+    EXPECT_EQ(r->priority, CheckPriority::Required);
+    EXPECT_EQ(r->outcome, CheckOutcome::Passed) << r->summary;
+    EXPECT_LE(*r->value("max_sensitivity"), 0.5);
+    ASSERT_TRUE(r->value("adversarial_sensitivity").has_value());
+    EXPECT_GT(*r->value("kept"), 0.0);
+
+    // Saliency's backward passes add to the parameters' gradients themselves; with an explainer that
+    // never runs backward, only FGSM's pass could change them, and it must not.
+    const ExplainFn input_only = [this](const Tensor& in) {
+        std::vector<float> v = values_of(in);
+        for (float& f : v) f = std::fabs(f);
+        return Attribution{"edges", Tensor(in.shape(), &backend, v), {}};
+    };
+    std::vector<std::vector<float>> grads;
+    for (ParamRef p : model.parameters()) grads.push_back(values_of(*p.grad));
+    const Explanation edges = BuildExplanation(request, x, input_only, predict, &model);
+    ASSERT_TRUE(edges.check("robustness")->value("adversarial_sensitivity").has_value());
+    std::vector<std::vector<float>> after;
+    for (ParamRef p : model.parameters()) after.push_back(values_of(*p.grad));
+    EXPECT_EQ(after, grads);
+
+    const ExplainFn fragile = [this](const Tensor& in) {
+        std::vector<float> v = values_of(in);
+        for (float& f : v) f = std::sin(1000.0f * f);
+        return Attribution{"fragile", Tensor(in.shape(), &backend, v), {}};
+    };
+    const Explanation jumpy = BuildExplanation(request, x, fragile, predict, &model);
+    const CheckResult* f = jumpy.check("robustness");
+    ASSERT_NE(f, nullptr);
+    EXPECT_EQ(f->outcome, CheckOutcome::Failed);
+    EXPECT_GT(*f->value("max_sensitivity"), 0.5);
+    EXPECT_TRUE(HasCaveat(jumpy, "check.robustness", CaveatSeverity::Blocking));
+}
+
+TEST_F(ExplanationReportTest, RobustnessNeedsContinuousInput) {
+    ExplanationRequest request = Request(XaiReason::Control, "Saliency", ModelAccess::Gradients);
+    request.traits.input = InputKind::Tokens;
+    const ExplanationPlan plan = ExplanationPlanner().plan(request.question, request.reason, request.traits);
+    bool found = false;
+    for (const PlannedCheck& c : plan.checks) {
+        if (c.name != "robustness") continue;
+        found = true;
+        EXPECT_FALSE(c.available);
+        EXPECT_EQ(c.priority, CheckPriority::Recommended);  // it doesn't apply, so it can't block the plan
+        EXPECT_NE(c.unavailable_reason.find("continuous input"), std::string::npos);
+    }
+    EXPECT_TRUE(found);
 }
 
 // KS-3: with labels and slices, BuildExplanation runs the per-slice error check. Slice "b" is

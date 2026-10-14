@@ -163,6 +163,17 @@ std::vector<PlannedCheck> Checks(const std::vector<PlannedExplainer>& planned, X
         checks.push_back(Check("stability", "pulsatrix/explainer_stability.hpp", {"ComputeAttributionStability"},
                                "Repeated runs, and slightly perturbed inputs, should give the same explanation.",
                                need(XaiReason::Justify), attribution));
+        PlannedCheck c = Check("robustness", "pulsatrix/explanation_robustness.hpp", {"ExplanationSensitivity"},
+                               "Changes to the input too small to change the prediction, including the one an attacker "
+                               "would try first (FGSM's), shouldn't change the explanation much.",
+                               need(XaiReason::Control), attribution);
+        // A token can't be changed by a little. The check doesn't apply, so it can't make a plan
+        // incomplete; the report notes it.
+        if (t.input == InputKind::Tokens || t.input == InputKind::Protein || t.input == InputKind::Symbolic) {
+            c.priority = CheckPriority::Recommended;
+            c.available = false, c.unavailable_reason = "needs continuous input; a token can't be changed by a little";
+        }
+        checks.push_back(std::move(c));
     }
     if (!complete.empty()) {
         checks.push_back(Check("conservation", "pulsatrix/lrp_conservation.hpp", {"ComputeConservation"},
