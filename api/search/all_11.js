@@ -293,7 +293,7 @@ var searchData=
   ['rtd_5fba_290',['rtd_ba',['../structpulsatrix_1_1RtdResult.html#a143b90dcc6c72ac2483a0a85c2c5d270',1,'pulsatrix::RtdResult']]],
   ['rtdoptions_291',['RtdOptions',['../structpulsatrix_1_1RtdOptions.html',1,'pulsatrix']]],
   ['rtdresult_292',['RtdResult',['../structpulsatrix_1_1RtdResult.html',1,'pulsatrix']]],
-  ['rule_293',['rule',['../classpulsatrix_1_1datalog_1_1Rule.html',1,'pulsatrix::datalog::Rule'],['../classpulsatrix_1_1datalog_1_1Rule.html#a1bdf21f58b3a0210aa66e55cc2aaedd4',1,'pulsatrix::datalog::Rule::Rule()'],['../structpulsatrix_1_1LRPRuleConfig.html#af2058e16402ec127db79a8f37bdaf489',1,'pulsatrix::LRPRuleConfig::rule']]],
+  ['rule_293',['rule',['../classpulsatrix_1_1datalog_1_1Rule.html',1,'pulsatrix::datalog::Rule'],['../structpulsatrix_1_1LRPRuleConfig.html#af2058e16402ec127db79a8f37bdaf489',1,'pulsatrix::LRPRuleConfig::rule'],['../classpulsatrix_1_1datalog_1_1Rule.html#a1bdf21f58b3a0210aa66e55cc2aaedd4',1,'pulsatrix::datalog::Rule::Rule()']]],
   ['rule_5fconfigs_294',['rule_configs',['../classpulsatrix_1_1LRP.html#a45be12db06ffa07a5dbc74e84a93e196',1,'pulsatrix::LRP']]],
   ['run_295',['run',['../classpulsatrix_1_1VizWindow.html#a1c7208c9be6720936abc4648d5202cd5',1,'pulsatrix::VizWindow::run(const std::function&lt; void()&gt; &amp;draw_frame)'],['../classpulsatrix_1_1VizWindow.html#a33f85929a9f9358dd05c9b7de7e381d5',1,'pulsatrix::VizWindow::run(const std::function&lt; void()&gt; &amp;draw_frame, const std::function&lt; void(int, int)&gt; &amp;after_render)']]],
   ['runasha_296',['RunASHA',['../namespacepulsatrix.html#aba99c25698e39330189ccaf49b9cd27a',1,'pulsatrix']]],

@@ -669,6 +669,17 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#do-two-models-use-the-same-evidence" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Do two models use the same evidence?
+      
+    </span>
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -2679,6 +2690,17 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#do-two-models-use-the-same-evidence" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Do two models use the same evidence?
+      
+    </span>
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -3015,6 +3037,39 @@ model and on a re-initialized one, then restores the model exactly:</p>
 <p>Re-initialization replaces each parameter tensor with Gaussian noise at that tensor's own scale,
 and leaves buffers such as BatchNorm's running statistics alone. <code>ParameterSnapshot</code> and
 <code>ReinitializeParameters</code> are available separately.</p>
+<h3 id="do-two-models-use-the-same-evidence">Do two models use the same evidence?<a class="headerlink" href="#do-two-models-use-the-same-evidence" title="Permanent link">&para;</a></h3>
+<p>A distilled student can match its teacher's outputs while relying on different features, and so
+can a fine-tuned model and its base. <code>ExplanationAgreement</code> explains the same inputs with both
+models and compares the maps:</p>
+<div class="highlight"><pre><span></span><code><span class="cp">#include</span><span class="w"> </span><span class="cpf">"pulsatrix/explanation_agreement.hpp"</span>
+
+<span class="n">AgreementOptions</span><span class="w"> </span><span class="n">o</span><span class="p">;</span><span class="w">  </span><span class="c1">// compares |attribution| by default; 999 permutations</span>
+<span class="n">AgreementReport</span><span class="w"> </span><span class="n">r</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">ExplanationAgreement</span><span class="p">(</span><span class="n">inputs</span><span class="p">,</span><span class="w"> </span><span class="n">explain_with_teacher</span><span class="p">,</span><span class="w"> </span><span class="n">explain_with_student</span><span class="p">,</span><span class="w"> </span><span class="n">o</span><span class="p">);</span>
+<span class="c1">// r.spearman, r.top_k_overlap, r.cosine: means over inputs (r.per_input has each one)</span>
+<span class="c1">// r.cka: whether the maps vary from input to input the same way</span>
+<span class="c1">// r.mismatched_spearman, r.p_value: is the agreement about each input, or about every input?</span>
+</code></pre></div>
+<p><code>CompareExplanations</code> does the same with attributions already computed.</p>
+<ul>
+<li><strong>Per input:</strong></li>
+<li>the Spearman rank correlation of the two maps;</li>
+<li>the top-k overlap, the share of the teacher's k most relevant features that are also among the
+    student's, with k a fraction of the features (Quantus's TopKIntersection);</li>
+<li>their cosine similarity.</li>
+<li><strong>Across inputs:</strong> the debiased linear CKA of the two (inputs × features) matrices.</li>
+<li><strong>Against the shared shape:</strong> maps can agree only because every map looks alike. An image
+  model's relevance gathers in the middle of every image, and a language model's on the last
+  token. So the student's map of each input is also compared with the teacher's maps of the
+  other inputs (<code>mismatched_spearman</code>). A permutation test relabels the student's inputs and asks
+  whether the true pairing agrees more than the relabeled ones (<code>p_value</code>). Only an agreement well
+  above <code>mismatched_spearman</code>, with a small p-value, says the two models reason the same way
+  about each input.</li>
+</ul>
+<p>The values match scipy and numpy on the same data and shuffles
+(<code>tools/generate_explanation_agreement_reference_values.py</code>). The tests include two students
+that compute exactly the teacher's function from duplicated input features: the one that uses the
+teacher's copy agrees (Spearman above 0.99, p &lt; 0.01); the one that uses the duplicate has the
+same outputs and none of the same top features.</p>
 <h2 id="reporting-an-explanation">Reporting an explanation<a class="headerlink" href="#reporting-an-explanation" title="Permanent link">&para;</a></h2>
 <p><code>BuildExplanation</code> (<code>include/pulsatrix/explanation_report.hpp</code>) runs an attribution explainer,
 then every check the plan asks for, and returns an <code>Explanation</code>. The report holds:</p>

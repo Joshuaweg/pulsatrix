@@ -4366,7 +4366,7 @@ machine, and explain it with the tools pulsatrix already has. Items on that path
 <li>TRN-7 to TRN-11 (<strong>done</strong>, <a href="https://github.com/Joshuaweg/pulsatrix/pull/151">#151</a> to
   <a href="https://github.com/Joshuaweg/pulsatrix/pull/155">#155</a>): LoRA, LRP through LoRA, LoReFT, IA³, model diffing</li>
 <li>KD-1 (<strong>done</strong>, <a href="https://github.com/Joshuaweg/pulsatrix/pull/178">#178</a>): a distillation loss</li>
-<li>KD-2: teacher–student explanation agreement</li>
+<li>KD-2 (<strong>done</strong>, <a href="https://github.com/Joshuaweg/pulsatrix/pull/180">#180</a>): teacher–student explanation agreement</li>
 <li>XAI-1 (<strong>done</strong>, <a href="https://github.com/Joshuaweg/pulsatrix/pull/156">#156</a>): which questions each explainer answers</li>
 <li>XAI-2 (<strong>done</strong>, <a href="https://github.com/Joshuaweg/pulsatrix/pull/160">#160</a>): the question-driven planner</li>
 <li>XAI-3 (<strong>done</strong>, <a href="https://github.com/Joshuaweg/pulsatrix/pull/161">#161</a>): explanation reports that run the checks and carry caveats</li>
@@ -6513,7 +6513,7 @@ weight variance.</p>
 <td>KD-1, INT-2</td>
 <td>P1</td>
 <td>S</td>
-<td></td>
+<td>Done, <a href="https://github.com/Joshuaweg/pulsatrix/pull/180">#180</a> (see below)</td>
 </tr>
 <tr>
 <td>KD-3</td>
@@ -6542,6 +6542,12 @@ weight variance.</p>
   (MiniLLM's), mixes in the hard labels by <code>alpha</code>, and leaves out rows whose target is <code>-100</code>.
   The mean is over rows, so over tokens for a language model. Values and gradients match a numpy
   reference with finite-difference gradients, and the HIP backend matches the CPU.</li>
+<li><strong>KD-2</strong> is <code>ExplanationAgreement</code> and <code>CompareExplanations</code> (<code>explanation_agreement.hpp</code>):
+  per-input Spearman, top-k overlap and cosine, CKA across inputs, and one addition to the plan, a
+  permutation test against the student's maps of <em>other</em> inputs. Without it, maps that share a
+  shape for every input (a centered blob, the last token) look like agreement. It isn't tied to
+  distillation: any two models with the same input work, such as a fine-tune and its base.
+  Follow-ups: a recipe that distills a real model and compares the two, and a view.</li>
 </ul>
 <h2 id="feat-featurizers-sparse-autoencoders-and-goodfire-bsf">FEAT: Featurizers, sparse autoencoders and Goodfire BSF<a class="headerlink" href="#feat-featurizers-sparse-autoencoders-and-goodfire-bsf" title="Permanent link">&para;</a></h2>
 <p><strong>Complete</strong> (2026-10-09, PRs <a href="https://github.com/Joshuaweg/pulsatrix/pull/102">#102</a> and

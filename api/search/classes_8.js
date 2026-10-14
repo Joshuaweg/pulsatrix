@@ -12,8 +12,9 @@ var searchData=
   ['individual_9',['Individual',['../structpulsatrix_1_1Individual.html',1,'pulsatrix']]],
   ['innovationtracker_10',['InnovationTracker',['../classpulsatrix_1_1InnovationTracker.html',1,'pulsatrix']]],
   ['input_11',['Input',['../structpulsatrix_1_1ExplanationScoreCard_1_1Input.html',1,'pulsatrix::ExplanationScoreCard']]],
-  ['integratedgradients_12',['IntegratedGradients',['../classpulsatrix_1_1IntegratedGradients.html',1,'pulsatrix']]],
-  ['intruderresult_13',['IntruderResult',['../structpulsatrix_1_1IntruderResult.html',1,'pulsatrix']]],
-  ['item_14',['Item',['../structpulsatrix_1_1TemplatePostProcessor_1_1Item.html',1,'pulsatrix::TemplatePostProcessor']]],
-  ['iterabledataset_15',['IterableDataset',['../classpulsatrix_1_1IterableDataset.html',1,'pulsatrix']]]
+  ['inputagreement_12',['InputAgreement',['../structpulsatrix_1_1InputAgreement.html',1,'pulsatrix']]],
+  ['integratedgradients_13',['IntegratedGradients',['../classpulsatrix_1_1IntegratedGradients.html',1,'pulsatrix']]],
+  ['intruderresult_14',['IntruderResult',['../structpulsatrix_1_1IntruderResult.html',1,'pulsatrix']]],
+  ['item_15',['Item',['../structpulsatrix_1_1TemplatePostProcessor_1_1Item.html',1,'pulsatrix::TemplatePostProcessor']]],
+  ['iterabledataset_16',['IterableDataset',['../classpulsatrix_1_1IterableDataset.html',1,'pulsatrix']]]
 ];

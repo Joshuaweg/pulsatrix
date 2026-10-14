@@ -13,6 +13,8 @@ var hierarchy =
       [ "pulsatrix::CategoricalPolicyAgent", "classpulsatrix_1_1CategoricalPolicyAgent.html", null ],
       [ "pulsatrix::DQNAgent", "classpulsatrix_1_1DQNAgent.html", null ]
     ] ],
+    [ "pulsatrix::AgreementOptions", "structpulsatrix_1_1AgreementOptions.html", null ],
+    [ "pulsatrix::AgreementReport", "structpulsatrix_1_1AgreementReport.html", null ],
     [ "pulsatrix::AleResult", "structpulsatrix_1_1AleResult.html", null ],
     [ "pulsatrix::detail::AmdGpuDevice", "structpulsatrix_1_1detail_1_1AmdGpuDevice.html", null ],
     [ "pulsatrix::Anchor", "structpulsatrix_1_1Anchor.html", null ],
@@ -260,6 +262,7 @@ var hierarchy =
     [ "pulsatrix::Individual< Genotype, FitnessT >", "structpulsatrix_1_1Individual.html", null ],
     [ "pulsatrix::InnovationTracker", "classpulsatrix_1_1InnovationTracker.html", null ],
     [ "pulsatrix::ExplanationScoreCard::Input", "structpulsatrix_1_1ExplanationScoreCard_1_1Input.html", null ],
+    [ "pulsatrix::InputAgreement", "structpulsatrix_1_1InputAgreement.html", null ],
     [ "pulsatrix::IntegratedGradients", "classpulsatrix_1_1IntegratedGradients.html", null ],
     [ "pulsatrix::IntruderResult", "structpulsatrix_1_1IntruderResult.html", null ],
     [ "pulsatrix::TemplatePostProcessor::Item", "structpulsatrix_1_1TemplatePostProcessor_1_1Item.html", null ],

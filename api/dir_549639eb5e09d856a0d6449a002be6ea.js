@@ -90,6 +90,7 @@ var dir_549639eb5e09d856a0d6449a002be6ea =
     [ "explainer_capabilities.hpp", "explainer__capabilities_8hpp.html", "explainer__capabilities_8hpp" ],
     [ "explainer_context.hpp", "explainer__context_8hpp.html", "explainer__context_8hpp" ],
     [ "explainer_stability.hpp", "explainer__stability_8hpp.html", "explainer__stability_8hpp" ],
+    [ "explanation_agreement.hpp", "explanation__agreement_8hpp.html", "explanation__agreement_8hpp" ],
     [ "explanation_metrics.hpp", "explanation__metrics_8hpp.html", "explanation__metrics_8hpp" ],
     [ "explanation_planner.hpp", "explanation__planner_8hpp.html", "explanation__planner_8hpp" ],
     [ "explanation_report.hpp", "explanation__report_8hpp.html", "explanation__report_8hpp" ],
