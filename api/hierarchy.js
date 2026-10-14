@@ -193,6 +193,7 @@ var hierarchy =
     [ "pulsatrix::ExplanationPlanner", "classpulsatrix_1_1ExplanationPlanner.html", null ],
     [ "pulsatrix::ExplanationRequest", "structpulsatrix_1_1ExplanationRequest.html", null ],
     [ "pulsatrix::ExplanationScoreCard", "classpulsatrix_1_1ExplanationScoreCard.html", null ],
+    [ "pulsatrix::ExtractedRule", "structpulsatrix_1_1ExtractedRule.html", null ],
     [ "pulsatrix::datalog::FactDatabase", "classpulsatrix_1_1datalog_1_1FactDatabase.html", null ],
     [ "pulsatrix::FastaRecord", "structpulsatrix_1_1FastaRecord.html", null ],
     [ "pulsatrix::CircuitTrace::Feature", "structpulsatrix_1_1CircuitTrace_1_1Feature.html", null ],
@@ -512,6 +513,7 @@ var hierarchy =
     [ "pulsatrix::RtdOptions", "structpulsatrix_1_1RtdOptions.html", null ],
     [ "pulsatrix::RtdResult", "structpulsatrix_1_1RtdResult.html", null ],
     [ "pulsatrix::datalog::Rule", "classpulsatrix_1_1datalog_1_1Rule.html", null ],
+    [ "pulsatrix::RuleCondition", "structpulsatrix_1_1RuleCondition.html", null ],
     [ "std::runtime_error", null, [
       [ "pulsatrix::orch::HttpError", "classpulsatrix_1_1orch_1_1HttpError.html", null ],
       [ "pulsatrix::orch::ProviderError", "classpulsatrix_1_1orch_1_1ProviderError.html", null ]
@@ -548,6 +550,7 @@ var hierarchy =
     [ "pulsatrix::SobolOptions", "structpulsatrix_1_1SobolOptions.html", null ],
     [ "pulsatrix::SobolResult", "structpulsatrix_1_1SobolResult.html", null ],
     [ "pulsatrix::SoftDecisionTreeOptions", "structpulsatrix_1_1SoftDecisionTreeOptions.html", null ],
+    [ "pulsatrix::SoftTreeRules", "structpulsatrix_1_1SoftTreeRules.html", null ],
     [ "pulsatrix::SparseCodes", "structpulsatrix_1_1SparseCodes.html", null ],
     [ "pulsatrix::SpeciesAssignment", "structpulsatrix_1_1SpeciesAssignment.html", null ],
     [ "pulsatrix::orch::SseEvent", "structpulsatrix_1_1orch_1_1SseEvent.html", null ],
@@ -626,6 +629,7 @@ var hierarchy =
       [ "pulsatrix::UniformFrameSampleTransform", "classpulsatrix_1_1UniformFrameSampleTransform.html", null ]
     ] ],
     [ "pulsatrix::TransformerBlockOptions", "structpulsatrix_1_1TransformerBlockOptions.html", null ],
+    [ "pulsatrix::TreeRules", "structpulsatrix_1_1TreeRules.html", null ],
     [ "pulsatrix::Trial", "classpulsatrix_1_1Trial.html", null ],
     [ "pulsatrix::TTestResult", "structpulsatrix_1_1TTestResult.html", null ],
     [ "pulsatrix::TwoNNResult", "structpulsatrix_1_1TwoNNResult.html", null ],

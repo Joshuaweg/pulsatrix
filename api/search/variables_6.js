@@ -14,9 +14,10 @@ var searchData=
   ['grad_5fmu_11',['grad_mu',['../structpulsatrix_1_1ReparamGrad.html#ae5a4d22298fdb71fa94b20796596cfc6',1,'pulsatrix::ReparamGrad']]],
   ['grad_5fwrt_5fpredicate_5foutput_12',['grad_wrt_predicate_output',['../structpulsatrix_1_1datalog_1_1NeuralPredicateQueryResult.html#adc4546f4598f6e602cb107d071fc9d91',1,'pulsatrix::datalog::NeuralPredicateQueryResult']]],
   ['granularity_13',['granularity',['../structpulsatrix_1_1TokenRelevanceDocument.html#a2e7e2a6d2f180dc0642ed0f513c18920',1,'pulsatrix::TokenRelevanceDocument']]],
-  ['grid_14',['grid',['../structpulsatrix_1_1IceResult.html#a420ebe5c715fadda56e6bee8219a5e03',1,'pulsatrix::IceResult::grid'],['../structpulsatrix_1_1PersistenceLandscape.html#af06f017a99fe3baa002cd8b846b565f2',1,'pulsatrix::PersistenceLandscape::grid'],['../structpulsatrix_1_1PartialDependenceDocument.html#af9bf2c480fab85541d22edc0095ff817',1,'pulsatrix::PartialDependenceDocument::grid']]],
-  ['grid_5fpoints_15',['grid_points',['../structpulsatrix_1_1PersistenceViewOptions.html#ae98c49de52feb6f156e31462a66e9442',1,'pulsatrix::PersistenceViewOptions']]],
-  ['grid_5fx_16',['grid_x',['../structpulsatrix_1_1PartialDependence2D.html#afaf0a1b0deeaef96612a77854dbcdc55',1,'pulsatrix::PartialDependence2D']]],
-  ['grid_5fy_17',['grid_y',['../structpulsatrix_1_1PartialDependence2D.html#a4f98efa4382165641ea337c06ee1c6fb',1,'pulsatrix::PartialDependence2D']]],
-  ['groups_18',['groups',['../structpulsatrix_1_1ProjectionDocument.html#ae85a02fe4dbf079e468cb4bf13039fc9',1,'pulsatrix::ProjectionDocument']]]
+  ['greater_14',['greater',['../structpulsatrix_1_1RuleCondition.html#a48fda1ec2be5e8c66e8c0971ee1db3ba',1,'pulsatrix::RuleCondition']]],
+  ['grid_15',['grid',['../structpulsatrix_1_1IceResult.html#a420ebe5c715fadda56e6bee8219a5e03',1,'pulsatrix::IceResult::grid'],['../structpulsatrix_1_1PersistenceLandscape.html#af06f017a99fe3baa002cd8b846b565f2',1,'pulsatrix::PersistenceLandscape::grid'],['../structpulsatrix_1_1PartialDependenceDocument.html#af9bf2c480fab85541d22edc0095ff817',1,'pulsatrix::PartialDependenceDocument::grid']]],
+  ['grid_5fpoints_16',['grid_points',['../structpulsatrix_1_1PersistenceViewOptions.html#ae98c49de52feb6f156e31462a66e9442',1,'pulsatrix::PersistenceViewOptions']]],
+  ['grid_5fx_17',['grid_x',['../structpulsatrix_1_1PartialDependence2D.html#afaf0a1b0deeaef96612a77854dbcdc55',1,'pulsatrix::PartialDependence2D']]],
+  ['grid_5fy_18',['grid_y',['../structpulsatrix_1_1PartialDependence2D.html#a4f98efa4382165641ea337c06ee1c6fb',1,'pulsatrix::PartialDependence2D']]],
+  ['groups_19',['groups',['../structpulsatrix_1_1ProjectionDocument.html#ae85a02fe4dbf079e468cb4bf13039fc9',1,'pulsatrix::ProjectionDocument']]]
 ];

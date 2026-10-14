@@ -49,7 +49,8 @@ var searchData=
   ['transformdataset_46',['TransformDataset',['../classpulsatrix_1_1TransformDataset.html',1,'pulsatrix']]],
   ['transformerblock_47',['TransformerBlock',['../classpulsatrix_1_1TransformerBlock.html',1,'pulsatrix']]],
   ['transformerblockoptions_48',['TransformerBlockOptions',['../structpulsatrix_1_1TransformerBlockOptions.html',1,'pulsatrix']]],
-  ['trial_49',['Trial',['../classpulsatrix_1_1Trial.html',1,'pulsatrix']]],
-  ['ttestresult_50',['TTestResult',['../structpulsatrix_1_1TTestResult.html',1,'pulsatrix']]],
-  ['twonnresult_51',['TwoNNResult',['../structpulsatrix_1_1TwoNNResult.html',1,'pulsatrix']]]
+  ['treerules_49',['TreeRules',['../structpulsatrix_1_1TreeRules.html',1,'pulsatrix']]],
+  ['trial_50',['Trial',['../classpulsatrix_1_1Trial.html',1,'pulsatrix']]],
+  ['ttestresult_51',['TTestResult',['../structpulsatrix_1_1TTestResult.html',1,'pulsatrix']]],
+  ['twonnresult_52',['TwoNNResult',['../structpulsatrix_1_1TwoNNResult.html',1,'pulsatrix']]]
 ];

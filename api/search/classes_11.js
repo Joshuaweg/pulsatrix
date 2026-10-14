@@ -54,5 +54,6 @@ var searchData=
   ['rtdoptions_51',['RtdOptions',['../structpulsatrix_1_1RtdOptions.html',1,'pulsatrix']]],
   ['rtdresult_52',['RtdResult',['../structpulsatrix_1_1RtdResult.html',1,'pulsatrix']]],
   ['rule_53',['Rule',['../classpulsatrix_1_1datalog_1_1Rule.html',1,'pulsatrix::datalog']]],
-  ['rwkvmodule_54',['RWKVModule',['../classpulsatrix_1_1RWKVModule.html',1,'pulsatrix']]]
+  ['rulecondition_54',['RuleCondition',['../structpulsatrix_1_1RuleCondition.html',1,'pulsatrix']]],
+  ['rwkvmodule_55',['RWKVModule',['../classpulsatrix_1_1RWKVModule.html',1,'pulsatrix']]]
 ];

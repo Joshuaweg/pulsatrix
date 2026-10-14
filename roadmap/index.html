@@ -6522,7 +6522,7 @@ weight variance.</p>
 <td>KD-1</td>
 <td>P2</td>
 <td>—</td>
-<td>In progress: feature distillation, <a href="https://github.com/Joshuaweg/pulsatrix/pull/182">#182</a>; a soft decision tree, <a href="https://github.com/Joshuaweg/pulsatrix/pull/183">#183</a> (see below)</td>
+<td>Done: feature distillation, <a href="https://github.com/Joshuaweg/pulsatrix/pull/182">#182</a>; a soft decision tree, <a href="https://github.com/Joshuaweg/pulsatrix/pull/183">#183</a>; rules for the Datalog engine, <a href="https://github.com/Joshuaweg/pulsatrix/pull/184">#184</a> (see below)</td>
 </tr>
 <tr>
 <td>KD-4</td>
@@ -6555,8 +6555,16 @@ weight variance.</p>
   gradient through its attention probabilities. The second part is <code>SoftDecisionTree</code>
   (<code>soft_decision_tree.hpp</code>), Frosst and Hinton's. Its output is the log of the leaf mixture, so
   <code>DistillationLoss</code> trains it. Its balance penalty uses the current batch's α, not the paper's
-  moving average, and β is fixed, not learned. The third part is rule extraction into the
-  Datalog engine.</li>
+  moving average, and β is fixed, not learned. The third part, <code>rule_extraction.hpp</code>, turns a
+  tree into Datalog rules, one per leaf:</li>
+<li><strong>A crisp tree's rules</strong> test <code>le</code> and <code>gt</code> facts. The engine's fixpoint gives the tree's
+    class for every input.</li>
+<li><strong>A soft tree's rules</strong> are weighted. Evaluated over the real semiring, they give the tree's
+    class probabilities exactly.</li>
+<li><strong>No numeric comparisons:</strong> the engine has none, so each threshold becomes a string constant,
+    and the facts are computed outside the engine.</li>
+<li><strong>Follow-ups:</strong> comparison built-ins in the engine; simplifying rules across leaves (merging
+    rules of the same class, as C4.5rules does); a soft tree's rules pruned to its likely paths.</li>
 </ul>
 <h2 id="feat-featurizers-sparse-autoencoders-and-goodfire-bsf">FEAT: Featurizers, sparse autoencoders and Goodfire BSF<a class="headerlink" href="#feat-featurizers-sparse-autoencoders-and-goodfire-bsf" title="Permanent link">&para;</a></h2>
 <p><strong>Complete</strong> (2026-10-09, PRs <a href="https://github.com/Joshuaweg/pulsatrix/pull/102">#102</a> and

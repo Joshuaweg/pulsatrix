@@ -12,6 +12,7 @@ var group__interpretability__agnostic =
     [ "null_model_baseline.hpp", "null__model__baseline_8hpp.html", null ],
     [ "pdp.hpp", "pdp_8hpp.html", null ],
     [ "prototypes.hpp", "prototypes_8hpp.html", null ],
+    [ "rule_extraction.hpp", "rule__extraction_8hpp.html", null ],
     [ "sensitivity.hpp", "sensitivity_8hpp.html", null ],
     [ "surrogate_tree.hpp", "surrogate__tree_8hpp.html", null ],
     [ "weighted_linear_regression.hpp", "weighted__linear__regression_8hpp.html", null ]
