@@ -1239,7 +1239,7 @@ weight variance.
 | KD-1 | A knowledge-distillation loss (softened teacher outputs, with the T² scaling) | A student trained on what the teacher believes, not only on the labels | — | P1 | S | Done, [#178](https://github.com/Joshuaweg/pulsatrix/pull/178) (see below) |
 | KD-2 | A teacher–student explanation-agreement test: compare LRP or IG maps with CKA or rank correlation | Turns distillation into a test of whether the student uses the same evidence | KD-1, INT-2 | P1 | S | Done, [#180](https://github.com/Joshuaweg/pulsatrix/pull/180) (see below) |
 | KD-3 | Feature and attention distillation, soft decision trees, and rule extraction that feeds the Datalog engine | Interpretable students; rules connect to pulsatrix's neuro-symbolic side | KD-1 | P2 | — | Done: feature distillation, [#182](https://github.com/Joshuaweg/pulsatrix/pull/182); a soft decision tree, [#183](https://github.com/Joshuaweg/pulsatrix/pull/183); rules for the Datalog engine, [#184](https://github.com/Joshuaweg/pulsatrix/pull/184) (see below) |
-| KD-4 | Born-again networks and a DistilBERT-style recipe | Small and inconsistent gains | KD-1, IO-2 | P3 | — | |
+| KD-4 | Born-again networks and a DistilBERT-style recipe | Small and inconsistent gains | KD-1, IO-2 | P3 | — | In progress: the library pieces, [#186](https://github.com/Joshuaweg/pulsatrix/pull/186) (see below) |
 
 - **KD-1** is `DistillationLoss` (`distillation_loss.hpp`), not a wrapper around
   `KLDivergenceLoss` as planned: that loss is the KL between a VAE's Gaussian posterior and its
@@ -1270,6 +1270,13 @@ weight variance.
     and the facts are computed outside the engine.
   - **Follow-ups:** comparison built-ins in the engine; simplifying rules across leaves (merging
     rules of the same class, as C4.5rules does); a soft tree's rules pruned to its likely paths.
+- **KD-4** starts with the library pieces. `layer_student.hpp` has DistilBERT's student,
+  `MakeStudentFromLayers`, which copies chosen teacher layers into a shallower `CausalLM`, and its
+  cosine loss on hidden states, `HiddenStateCosineLoss`. Its gradient enters the model through a
+  `HiddenStateTap` intervention, since `CausalLM::backward()` starts at the logits.
+  `born_again.hpp` has the generations' ensemble and Furlanello et al.'s permuted-dark-knowledge
+  control. Their confidence-weighted control is left out: it needs per-example weights in the
+  cross-entropy loss.
 
 ## FEAT: Featurizers, sparse autoencoders and Goodfire BSF
 
