@@ -178,6 +178,14 @@ struct ExplanationCheckOptions {
      *         between repeated runs and under input noise. */
     double min_stability = 0.8;
 
+    /** @brief Robustness: perturbations sampled uniformly within this fraction of the input's spread
+     *         (L∞), kept when they keep the predicted class. */
+    double robustness_radius = 0.05;
+    int64_t robustness_samples = 10;
+    /** @brief Robustness: the largest relative change of the explanation that passes, both the
+     *         largest over the samples (max-sensitivity) and at FGSM's point. */
+    double max_sensitivity = 0.5;
+
     /** @brief Conservation: the largest gap between the attributions' sum and the output they
      *         explain, as a fraction of that output. */
     double conservation_tolerance = 0.05;
@@ -198,6 +206,10 @@ struct ExplanationCheckOptions {
  *  - stability: repeated runs and runs on a noisy input, compared by the Spearman correlation of the
  *    attribution magnitudes, with ComputeAttributionStability's variance; passes when every
  *    correlation is at least options.min_stability.
+ *  - robustness: ExplanationSensitivity() with options.robustness_radius and
+ *    robustness_samples, and FGSM's point through @p model when there is one (its parameter
+ *    gradients are restored); passes when the max-sensitivity and the sensitivity at FGSM's point
+ *    are at most options.max_sensitivity. NotRun when every perturbation changed the prediction.
  *  - conservation: the attributions' sum against LRP's seeded total (its metadata), or
  *    f(input) - f(baseline) when request.baseline is given; passes within
  *    options.conservation_tolerance.

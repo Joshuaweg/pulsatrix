@@ -278,6 +278,35 @@ it. On a linear model, where the best attack is known in closed form, PGD finds 
     masking, where a model's gradients are uninformative rather than its decisions robust, makes
     gradient attacks look weaker than they are (Athalye, Carlini and Wagner, ICML 2018).
 
+## Explanation robustness
+
+An explanation that changes a lot when the input barely does says more about the explainer than
+the model. Ghorbani, Abid and Zou (AAAI 2019) changed saliency maps beyond recognition with
+imperceptible perturbations. `ExplanationSensitivity` (in `pulsatrix/explanation_robustness.hpp`)
+measures it the way Quantus does:
+
+- **max- and average-sensitivity** (Yeh et al., NeurIPS 2019): ‖E(x′) − E(x)‖₂ / ‖E(x)‖₂ over
+  samples x′ drawn uniformly within `radius` times the input's spread, the largest and the mean;
+- **the local Lipschitz estimate** (Alvarez-Melis and Jaakkola, 2018): the largest
+  ‖E(x′) − E(x)‖₂ / ‖x′ − x‖₂;
+- **adversarial sensitivity:** the same ratio at FGSM's point, the perturbation an attacker would
+  try first. The step is halved until the prediction stays.
+
+Only samples that keep the predicted class count: an explanation should change when the
+prediction does.
+
+```cpp
+#include "pulsatrix/explanation_robustness.hpp"
+
+DifferentiableClassifier classifier = ClassifierFrom(model);
+SensitivityReport s = ExplanationSensitivity(x, explain, predict, &classifier, &backend);
+// s.max_sensitivity, s.avg_sensitivity, s.local_lipschitz, s.adversarial_sensitivity, s.kept
+```
+
+`tools/generate_explanation_robustness_reference_values.py` computes the same metrics in numpy, on
+the same samples, and the tests match it. Under the Control reason, the planner requires it as the
+`robustness` check, and `BuildExplanation` runs it ([Reporting an explanation](index.md#reporting-an-explanation)).
+
 ## In a report
 
 The Control reason requires per-slice error. The planner marks it available when the caller has
