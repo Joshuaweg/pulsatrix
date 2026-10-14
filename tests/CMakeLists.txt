@@ -148,6 +148,7 @@ add_executable(pulsatrix_tests
     grad_clipping_test.cpp
     lr_scheduler_test.cpp
     token_cross_entropy_test.cpp
+    distillation_loss_test.cpp
     tagger_finetune_test.cpp
     explanation_metrics_test.cpp
     null_model_baseline_test.cpp
@@ -317,7 +318,8 @@ if(PULSATRIX_ENABLE_HIP)
                                        vision_models_hip_test.cpp conv2d_chunking_hip_test.cpp
                                        fused_ops_hip_test.cpp
                                        safetensors_hip_test.cpp distance_matrix_hip_test.cpp
-                                       lora_hip_test.cpp adversarial_hip_test.cpp)
+                                       lora_hip_test.cpp adversarial_hip_test.cpp
+                                       distillation_loss_hip_test.cpp)
 endif()
 
 if(PULSATRIX_ENABLE_ORCHESTRATOR)
