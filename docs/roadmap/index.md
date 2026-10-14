@@ -222,7 +222,10 @@ Fine-tune the models from v1.2 and explain what the fine-tuning changed.
   [#149](https://github.com/Joshuaweg/pulsatrix/pull/149)): persistent homology with certified error bars, significance tests, and RTD
 - KS-3 (**done**, [#168](https://github.com/Joshuaweg/pulsatrix/pull/168) to
   [#170](https://github.com/Joshuaweg/pulsatrix/pull/170)): metrics, calibration and per-slice
-  error; Monte Carlo dropout and deep ensembles; split conformal prediction
+  error; Monte Carlo dropout and deep ensembles; split conformal prediction. Its views
+  ([#172](https://github.com/Joshuaweg/pulsatrix/pull/172)) and a recipe on ESM-2,
+  [How sure is the model?](../recipes/interpretability/how_sure_is_the_model.md)
+  ([#173](https://github.com/Joshuaweg/pulsatrix/pull/173)), followed
 - KS-4: adversarial robustness
 - Llama-3.2-1B and Qwen2.5-0.5B pass the golden-logit test
 
@@ -1847,7 +1850,7 @@ AGT-5 has to follow these security rules:
 |---|---|---|---|---|---|---|
 | KS-1 | CMake `install()` and a package config, so other projects can `find_package(pulsatrix)` | There's no install step today | — | P0 | S | Done, [#61](https://github.com/Joshuaweg/pulsatrix/pull/61) |
 | KS-2 | A benchmark suite: step time, explanation time, conservation error | Measures every HIP item and catches regressions | — | P1 | S | Done, [#64](https://github.com/Joshuaweg/pulsatrix/pull/64) (see below) |
-| KS-3 | Uncertainty: Monte Carlo dropout, deep ensembles, split conformal prediction | Answers the Performance question | — | P1 | S | Done: metrics, calibration and per-slice error, [#168](https://github.com/Joshuaweg/pulsatrix/pull/168); Monte Carlo dropout and deep ensembles, [#169](https://github.com/Joshuaweg/pulsatrix/pull/169); split conformal prediction, [#170](https://github.com/Joshuaweg/pulsatrix/pull/170) (see below) |
+| KS-3 | Uncertainty: Monte Carlo dropout, deep ensembles, split conformal prediction | Answers the Performance question | — | P1 | S | Done: metrics, calibration and per-slice error, [#168](https://github.com/Joshuaweg/pulsatrix/pull/168); Monte Carlo dropout and deep ensembles, [#169](https://github.com/Joshuaweg/pulsatrix/pull/169); split conformal prediction, [#170](https://github.com/Joshuaweg/pulsatrix/pull/170); views, [#172](https://github.com/Joshuaweg/pulsatrix/pull/172); recipe, [#173](https://github.com/Joshuaweg/pulsatrix/pull/173) (see below) |
 | KS-4 | FGSM and PGD attacks, also used as a robustness test for explanations | Robustness and the Control reason | — | P1 | S | |
 | KS-5 | TracIn data attribution | Answers "which training examples caused this" | FND-1 | P2 | M | |
 | KS-6 | Fairness metrics, drift detection and a model-card generator | The Input question, and documentation | — | P2 | S each | |
