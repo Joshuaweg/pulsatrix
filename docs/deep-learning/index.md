@@ -614,6 +614,9 @@ loop is ordinary training with `DistillationLoss`. `born_again.hpp` adds two pie
 Their other control, which weights each example's label loss by the teacher's confidence, isn't
 available: it needs per-example weights in the cross-entropy loss.
 
+The recipe [Is the student born better?](../recipes/deep-learning/born_again_networks.md) runs
+both on MNIST over five seeds, with the explanation test from KD-2.
+
 ### Gradient clipping
 
 `ClipGradNorm(model, max_norm)` scales all trainable gradients by one factor so their global L2
