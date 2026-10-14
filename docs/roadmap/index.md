@@ -211,7 +211,7 @@ Fine-tune the models from v1.2 and explain what the fine-tuning changed.
 - TRN-7 to TRN-11 (**done**, [#151](https://github.com/Joshuaweg/pulsatrix/pull/151) to
   [#155](https://github.com/Joshuaweg/pulsatrix/pull/155)): LoRA, LRP through LoRA, LoReFT, IA³, model diffing
 - KD-1 (**done**, [#178](https://github.com/Joshuaweg/pulsatrix/pull/178)): a distillation loss
-- KD-2: teacher–student explanation agreement
+- KD-2 (**done**, [#180](https://github.com/Joshuaweg/pulsatrix/pull/180)): teacher–student explanation agreement
 - XAI-1 (**done**, [#156](https://github.com/Joshuaweg/pulsatrix/pull/156)): which questions each explainer answers
 - XAI-2 (**done**, [#160](https://github.com/Joshuaweg/pulsatrix/pull/160)): the question-driven planner
 - XAI-3 (**done**, [#161](https://github.com/Joshuaweg/pulsatrix/pull/161)): explanation reports that run the checks and carry caveats
@@ -1237,7 +1237,7 @@ weight variance.
 | ID | Item | Why | Depends on | P | Effort | Status |
 |---|---|---|---|---|---|---|
 | KD-1 | A knowledge-distillation loss (softened teacher outputs, with the T² scaling) | A student trained on what the teacher believes, not only on the labels | — | P1 | S | Done, [#178](https://github.com/Joshuaweg/pulsatrix/pull/178) (see below) |
-| KD-2 | A teacher–student explanation-agreement test: compare LRP or IG maps with CKA or rank correlation | Turns distillation into a test of whether the student uses the same evidence | KD-1, INT-2 | P1 | S | |
+| KD-2 | A teacher–student explanation-agreement test: compare LRP or IG maps with CKA or rank correlation | Turns distillation into a test of whether the student uses the same evidence | KD-1, INT-2 | P1 | S | Done, [#180](https://github.com/Joshuaweg/pulsatrix/pull/180) (see below) |
 | KD-3 | Feature and attention distillation, soft decision trees, and rule extraction that feeds the Datalog engine | Interpretable students; rules connect to pulsatrix's neuro-symbolic side | KD-1 | P2 | — | |
 | KD-4 | Born-again networks and a DistilBERT-style recipe | Small and inconsistent gains | KD-1, IO-2 | P3 | — | |
 
@@ -1247,6 +1247,12 @@ weight variance.
   (MiniLLM's), mixes in the hard labels by `alpha`, and leaves out rows whose target is `-100`.
   The mean is over rows, so over tokens for a language model. Values and gradients match a numpy
   reference with finite-difference gradients, and the HIP backend matches the CPU.
+- **KD-2** is `ExplanationAgreement` and `CompareExplanations` (`explanation_agreement.hpp`):
+  per-input Spearman, top-k overlap and cosine, CKA across inputs, and one addition to the plan, a
+  permutation test against the student's maps of *other* inputs. Without it, maps that share a
+  shape for every input (a centered blob, the last token) look like agreement. It isn't tied to
+  distillation: any two models with the same input work, such as a fine-tune and its base.
+  Follow-ups: a recipe that distills a real model and compares the two, and a view.
 
 ## FEAT: Featurizers, sparse autoencoders and Goodfire BSF
 
