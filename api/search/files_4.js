@@ -12,9 +12,10 @@ var searchData=
   ['explainer_5fcapabilities_2ehpp_9',['explainer_capabilities.hpp',['../explainer__capabilities_8hpp.html',1,'']]],
   ['explainer_5fcontext_2ehpp_10',['explainer_context.hpp',['../explainer__context_8hpp.html',1,'']]],
   ['explainer_5fstability_2ehpp_11',['explainer_stability.hpp',['../explainer__stability_8hpp.html',1,'']]],
-  ['explanation_5fmetrics_2ehpp_12',['explanation_metrics.hpp',['../explanation__metrics_8hpp.html',1,'']]],
-  ['explanation_5fplanner_2ehpp_13',['explanation_planner.hpp',['../explanation__planner_8hpp.html',1,'']]],
-  ['explanation_5freport_2ehpp_14',['explanation_report.hpp',['../explanation__report_8hpp.html',1,'']]],
-  ['explanation_5frobustness_2ehpp_15',['explanation_robustness.hpp',['../explanation__robustness_8hpp.html',1,'']]],
-  ['explanation_5fscore_5fcard_2ehpp_16',['explanation_score_card.hpp',['../explanation__score__card_8hpp.html',1,'']]]
+  ['explanation_5fagreement_2ehpp_12',['explanation_agreement.hpp',['../explanation__agreement_8hpp.html',1,'']]],
+  ['explanation_5fmetrics_2ehpp_13',['explanation_metrics.hpp',['../explanation__metrics_8hpp.html',1,'']]],
+  ['explanation_5fplanner_2ehpp_14',['explanation_planner.hpp',['../explanation__planner_8hpp.html',1,'']]],
+  ['explanation_5freport_2ehpp_15',['explanation_report.hpp',['../explanation__report_8hpp.html',1,'']]],
+  ['explanation_5frobustness_2ehpp_16',['explanation_robustness.hpp',['../explanation__robustness_8hpp.html',1,'']]],
+  ['explanation_5fscore_5fcard_2ehpp_17',['explanation_score_card.hpp',['../explanation__score__card_8hpp.html',1,'']]]
 ];
