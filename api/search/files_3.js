@@ -21,9 +21,10 @@ var searchData=
   ['diagram_5fdistance_2ehpp_18',['diagram_distance.hpp',['../diagram__distance_8hpp.html',1,'']]],
   ['disjunction_5fmodule_2ehpp_19',['disjunction_module.hpp',['../disjunction__module_8hpp.html',1,'']]],
   ['distance_5fmatrix_2ehpp_20',['distance_matrix.hpp',['../distance__matrix_8hpp.html',1,'']]],
-  ['document_2ehpp_21',['document.hpp',['../document_8hpp.html',1,'']]],
-  ['dqn_5fagent_2ehpp_22',['dqn_agent.hpp',['../dqn__agent_8hpp.html',1,'']]],
-  ['dqn_5floss_2ehpp_23',['dqn_loss.hpp',['../dqn__loss_8hpp.html',1,'']]],
-  ['dqn_5ftarget_2ehpp_24',['dqn_target.hpp',['../dqn__target_8hpp.html',1,'']]],
-  ['dropout_5fmodule_2ehpp_25',['dropout_module.hpp',['../dropout__module_8hpp.html',1,'']]]
+  ['distillation_5floss_2ehpp_21',['distillation_loss.hpp',['../distillation__loss_8hpp.html',1,'']]],
+  ['document_2ehpp_22',['document.hpp',['../document_8hpp.html',1,'']]],
+  ['dqn_5fagent_2ehpp_23',['dqn_agent.hpp',['../dqn__agent_8hpp.html',1,'']]],
+  ['dqn_5floss_2ehpp_24',['dqn_loss.hpp',['../dqn__loss_8hpp.html',1,'']]],
+  ['dqn_5ftarget_2ehpp_25',['dqn_target.hpp',['../dqn__target_8hpp.html',1,'']]],
+  ['dropout_5fmodule_2ehpp_26',['dropout_module.hpp',['../dropout__module_8hpp.html',1,'']]]
 ];

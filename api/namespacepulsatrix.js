@@ -157,6 +157,8 @@ var namespacepulsatrix =
     [ "DisjunctionModule", "classpulsatrix_1_1DisjunctionModule.html", "classpulsatrix_1_1DisjunctionModule" ],
     [ "DistanceMatrix", "structpulsatrix_1_1DistanceMatrix.html", "structpulsatrix_1_1DistanceMatrix" ],
     [ "DistanceOptions", "structpulsatrix_1_1DistanceOptions.html", "structpulsatrix_1_1DistanceOptions" ],
+    [ "DistillationLoss", "classpulsatrix_1_1DistillationLoss.html", "classpulsatrix_1_1DistillationLoss" ],
+    [ "DistillationOptions", "structpulsatrix_1_1DistillationOptions.html", "structpulsatrix_1_1DistillationOptions" ],
     [ "DiverseCounterfactualOptions", "structpulsatrix_1_1DiverseCounterfactualOptions.html", "structpulsatrix_1_1DiverseCounterfactualOptions" ],
     [ "DiverseCounterfactualResult", "structpulsatrix_1_1DiverseCounterfactualResult.html", "structpulsatrix_1_1DiverseCounterfactualResult" ],
     [ "DmsVariants", "structpulsatrix_1_1DmsVariants.html", "structpulsatrix_1_1DmsVariants" ],
@@ -642,6 +644,10 @@ var namespacepulsatrix =
     [ "DistanceMethod", "namespacepulsatrix.html#a6aec8b41f4e464852c7d0b56cfee6843", [
       [ "Gemm", "namespacepulsatrix.html#a6aec8b41f4e464852c7d0b56cfee6843a67d92e041230138abff74328d18b03a1", null ],
       [ "Exact", "namespacepulsatrix.html#a6aec8b41f4e464852c7d0b56cfee6843a1649aed298f99d587e2eb30c1db5946b", null ]
+    ] ],
+    [ "DistillationDivergence", "namespacepulsatrix.html#ac3da2e922bee53159b132d1220b12633", [
+      [ "Forward", "namespacepulsatrix.html#ac3da2e922bee53159b132d1220b12633a67d2f6740a8eaebf4d5c6f79be8da481", null ],
+      [ "Reverse", "namespacepulsatrix.html#ac3da2e922bee53159b132d1220b12633a67f115c1fddc4ce1aeb1c754001585bc", null ]
     ] ],
     [ "ElementwiseOp", "namespacepulsatrix.html#afec27fa326532e4ad62b32d54558b503", [
       [ "Relu", "namespacepulsatrix.html#afec27fa326532e4ad62b32d54558b503a7bfde445daa113a9903d4eaa43b41e2b", null ],

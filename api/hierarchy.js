@@ -153,6 +153,8 @@ var hierarchy =
     [ "pulsatrix::DiffTarget", "structpulsatrix_1_1DiffTarget.html", null ],
     [ "pulsatrix::DistanceMatrix", "structpulsatrix_1_1DistanceMatrix.html", null ],
     [ "pulsatrix::DistanceOptions", "structpulsatrix_1_1DistanceOptions.html", null ],
+    [ "pulsatrix::DistillationLoss", "classpulsatrix_1_1DistillationLoss.html", null ],
+    [ "pulsatrix::DistillationOptions", "structpulsatrix_1_1DistillationOptions.html", null ],
     [ "pulsatrix::DiverseCounterfactualOptions", "structpulsatrix_1_1DiverseCounterfactualOptions.html", null ],
     [ "pulsatrix::DiverseCounterfactualResult", "structpulsatrix_1_1DiverseCounterfactualResult.html", null ],
     [ "pulsatrix::DmsVariants", "structpulsatrix_1_1DmsVariants.html", null ],

@@ -545,6 +545,17 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#knowledge-distillation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Knowledge distillation
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#gradient-clipping" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -2845,6 +2856,17 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#knowledge-distillation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Knowledge distillation
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#gradient-clipping" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -2995,7 +3017,8 @@ whole network, see <a href="../interpretability/lrp/">Layer-wise Relevance Propa
   4-block, 128-wide model take 47 ms instead of 3.3 s.</li>
 <li><strong>Optimizers &amp; losses</strong>: <code>SGDOptimizer</code> (momentum, Nesterov), <code>AdamOptimizer</code>,
   <code>AdamWOptimizer</code>, all with parameter groups; <code>MSELoss</code>, <code>CrossEntropyLoss</code>,
-  <code>TokenCrossEntropyLoss</code>, <code>BCEWithLogitsLoss</code>, <code>KLDivergenceLoss</code>, <code>CalibrationLoss</code></li>
+  <code>TokenCrossEntropyLoss</code>, <code>DistillationLoss</code>, <code>BCEWithLogitsLoss</code>, <code>KLDivergenceLoss</code>,
+  <code>CalibrationLoss</code></li>
 <li><strong>Generative building blocks</strong>: <code>Reparameterize</code> (VAE), <code>NoiseSchedule</code> and
   <code>SinusoidalTimestepEmbedding()</code> (diffusion)</li>
 <li><strong>Training utilities</strong>: <code>ClipGradNorm</code>, <code>LRSchedule</code>/<code>LRScheduler</code>, parameter groups
@@ -3292,6 +3315,44 @@ of the whole window:</p>
 <span class="n">optimizer</span><span class="p">.</span><span class="n">step</span><span class="p">(</span><span class="n">model</span><span class="p">);</span>
 </code></pre></div>
 <p>The accumulated gradients then equal those of one batch holding every micro-batch.</p>
+<h3 id="knowledge-distillation">Knowledge distillation<a class="headerlink" href="#knowledge-distillation" title="Permanent link">&para;</a></h3>
+<p><code>DistillationLoss</code> trains a student on a teacher's softened outputs (Hinton, Vinyals and Dean,
+2015). Both sets of logits are divided by a temperature T before the softmax, which spreads the
+teacher's probability over the classes it finds similar, and the soft term is T² times the KL
+divergence between them. The T² keeps the soft term's gradient the same size as the hard term's
+whatever T is. With targets, the loss is <code>alpha</code> times the soft term plus <code>1 - alpha</code> times the
+cross-entropy with the labels:</p>
+<div class="highlight"><pre><span></span><code><span class="cp">#include</span><span class="w"> </span><span class="cpf">"pulsatrix/distillation_loss.hpp"</span>
+
+<span class="n">DistillationOptions</span><span class="w"> </span><span class="n">o</span><span class="p">;</span>
+<span class="n">o</span><span class="p">.</span><span class="n">temperature</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">2.0f</span><span class="p">;</span><span class="w">  </span><span class="c1">// the default; DistilBERT used 2</span>
+<span class="n">o</span><span class="p">.</span><span class="n">alpha</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">0.5f</span><span class="p">;</span><span class="w">        </span><span class="c1">// soft term's weight, used only with targets</span>
+<span class="n">DistillationLoss</span><span class="w"> </span><span class="nf">loss</span><span class="p">(</span><span class="o">&amp;</span><span class="n">backend</span><span class="p">,</span><span class="w"> </span><span class="n">o</span><span class="p">);</span>
+
+<span class="n">Tensor</span><span class="w"> </span><span class="n">teacher_logits</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">teacher</span><span class="p">.</span><span class="n">forward</span><span class="p">(</span><span class="n">inputs</span><span class="p">);</span><span class="w">  </span><span class="c1">// no backward through the teacher</span>
+<span class="kt">float</span><span class="w"> </span><span class="n">value</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">loss</span><span class="p">.</span><span class="n">forward</span><span class="p">(</span><span class="n">student</span><span class="p">.</span><span class="n">forward</span><span class="p">(</span><span class="n">inputs</span><span class="p">),</span><span class="w"> </span><span class="n">teacher_logits</span><span class="p">,</span><span class="w"> </span><span class="n">targets</span><span class="p">);</span>
+<span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="n">student</span><span class="p">.</span><span class="n">backward</span><span class="p">(</span><span class="n">loss</span><span class="p">.</span><span class="n">backward</span><span class="p">());</span>
+<span class="n">optimizer</span><span class="p">.</span><span class="n">step</span><span class="p">(</span><span class="n">student</span><span class="p">);</span>
+</code></pre></div>
+<ul>
+<li><strong>Shapes:</strong> logits are <code>(..., classes)</code>, like <code>TokenCrossEntropyLoss</code>'s, and the mean is over
+  rows. For <code>(N, classes)</code> that is PyTorch's
+  <code>F.kl_div(F.log_softmax(s / T, -1), F.softmax(t / T, -1), reduction="batchmean") * T * T</code>. For a
+  language model's <code>(batch, length, vocab)</code> it is the mean over tokens, which is what
+  distilling a language model wants (<code>batchmean</code> would divide by the batch size alone).</li>
+<li><strong>Padding:</strong> rows whose target is <code>-100</code> are left out of both terms. Without targets every row
+  counts and the loss is the soft term alone.</li>
+<li><strong>Direction:</strong> <code>DistillationDivergence::Forward</code>, KL(teacher ‖ student), is Hinton's: the student
+  spreads its mass over everything the teacher considers. <code>Reverse</code>, KL(student ‖ teacher), is
+  MiniLLM's choice for language models (Gu et al., ICLR 2024): the student settles on the
+  teacher's main modes instead of covering the long tail it can't fit.</li>
+<li><strong>Accumulation:</strong> pass the window's row count as the normalizer, as for
+  <code>TokenCrossEntropyLoss</code>.</li>
+<li><code>soft_loss()</code> and <code>hard_loss()</code> return the two terms of the last <code>forward()</code>, unweighted.</li>
+</ul>
+<p>The values and gradients are checked against a numpy implementation, with gradients by finite
+differences (<code>tools/generate_distillation_reference_values.py</code>), and the HIP backend gives the
+CPU's.</p>
 <h3 id="gradient-clipping">Gradient clipping<a class="headerlink" href="#gradient-clipping" title="Permanent link">&para;</a></h3>
 <p><code>ClipGradNorm(model, max_norm)</code> scales all trainable gradients by one factor so their global L2
 norm is at most <code>max_norm</code>, as <code>torch.nn.utils.clip_grad_norm_</code> does. It returns the norm before

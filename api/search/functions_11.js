@@ -7,7 +7,7 @@ var searchData=
   ['rankcontactheads_4',['RankContactHeads',['../namespacepulsatrix.html#a9521995a242e243082cd61ff252b255e',1,'pulsatrix']]],
   ['rankselect_5',['RankSelect',['../namespacepulsatrix.html#a22532e4874cd35681db7270ced4fc066',1,'pulsatrix']]],
   ['rankselectbydraw_6',['RankSelectByDraw',['../namespacepulsatrix.html#a440d49a4d556810d54bd803b384b14e6',1,'pulsatrix']]],
-  ['read_7',['read',['../classpulsatrix_1_1SafetensorsFile.html#a8956e82d2421e257b9a97663eb6eb01c',1,'pulsatrix::SafetensorsFile::Read()'],['../classpulsatrix_1_1detail_1_1PlatformSources.html#ac350742d733587cf72f40d405e81bdc1',1,'pulsatrix::detail::PlatformSources::read()'],['../classpulsatrix_1_1detail_1_1LinuxSources.html#adb460b3c3f220284548c0049a0b2d445',1,'pulsatrix::detail::LinuxSources::read() override']]],
+  ['read_7',['read',['../classpulsatrix_1_1detail_1_1PlatformSources.html#ac350742d733587cf72f40d405e81bdc1',1,'pulsatrix::detail::PlatformSources::read()'],['../classpulsatrix_1_1detail_1_1LinuxSources.html#adb460b3c3f220284548c0049a0b2d445',1,'pulsatrix::detail::LinuxSources::read()'],['../classpulsatrix_1_1SafetensorsFile.html#a8956e82d2421e257b9a97663eb6eb01c',1,'pulsatrix::SafetensorsFile::Read()']]],
   ['read_5famd_5fgpu_8',['read_amd_gpu',['../classpulsatrix_1_1detail_1_1LinuxSources.html#ae288787bd453db8eab8e8098cd78f8eb',1,'pulsatrix::detail::LinuxSources']]],
   ['read_5fcpu_5ftemperature_5fc_9',['read_cpu_temperature_c',['../classpulsatrix_1_1detail_1_1LinuxSources.html#ac327cb1fe1ba7f752f967fb5d5654cd2',1,'pulsatrix::detail::LinuxSources']]],
   ['read_5felement_10',['read_element',['../classpulsatrix_1_1Tensor.html#a9a2059bfdff6da4fd98a44bd2aaba9f5',1,'pulsatrix::Tensor']]],

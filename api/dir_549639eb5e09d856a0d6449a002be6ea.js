@@ -73,6 +73,7 @@ var dir_549639eb5e09d856a0d6449a002be6ea =
     [ "determinism.hpp", "determinism_8hpp.html", "determinism_8hpp" ],
     [ "device_backend.hpp", "device__backend_8hpp.html", "device__backend_8hpp" ],
     [ "disjunction_module.hpp", "disjunction__module_8hpp.html", "disjunction__module_8hpp" ],
+    [ "distillation_loss.hpp", "distillation__loss_8hpp.html", "distillation__loss_8hpp" ],
     [ "dqn_agent.hpp", "dqn__agent_8hpp.html", "dqn__agent_8hpp" ],
     [ "dqn_loss.hpp", "dqn__loss_8hpp.html", "dqn__loss_8hpp" ],
     [ "dqn_target.hpp", "dqn__target_8hpp.html", "dqn__target_8hpp" ],
