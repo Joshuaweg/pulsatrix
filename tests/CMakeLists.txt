@@ -151,6 +151,7 @@ add_executable(pulsatrix_tests
     distillation_loss_test.cpp
     feature_distillation_test.cpp
     soft_decision_tree_test.cpp
+    rule_extraction_test.cpp
     tagger_finetune_test.cpp
     explanation_metrics_test.cpp
     null_model_baseline_test.cpp

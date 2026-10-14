@@ -1238,7 +1238,7 @@ weight variance.
 |---|---|---|---|---|---|---|
 | KD-1 | A knowledge-distillation loss (softened teacher outputs, with the T² scaling) | A student trained on what the teacher believes, not only on the labels | — | P1 | S | Done, [#178](https://github.com/Joshuaweg/pulsatrix/pull/178) (see below) |
 | KD-2 | A teacher–student explanation-agreement test: compare LRP or IG maps with CKA or rank correlation | Turns distillation into a test of whether the student uses the same evidence | KD-1, INT-2 | P1 | S | Done, [#180](https://github.com/Joshuaweg/pulsatrix/pull/180) (see below) |
-| KD-3 | Feature and attention distillation, soft decision trees, and rule extraction that feeds the Datalog engine | Interpretable students; rules connect to pulsatrix's neuro-symbolic side | KD-1 | P2 | — | In progress: feature distillation, [#182](https://github.com/Joshuaweg/pulsatrix/pull/182); a soft decision tree, [#183](https://github.com/Joshuaweg/pulsatrix/pull/183) (see below) |
+| KD-3 | Feature and attention distillation, soft decision trees, and rule extraction that feeds the Datalog engine | Interpretable students; rules connect to pulsatrix's neuro-symbolic side | KD-1 | P2 | — | Done: feature distillation, [#182](https://github.com/Joshuaweg/pulsatrix/pull/182); a soft decision tree, [#183](https://github.com/Joshuaweg/pulsatrix/pull/183); rules for the Datalog engine, [#184](https://github.com/Joshuaweg/pulsatrix/pull/184) (see below) |
 | KD-4 | Born-again networks and a DistilBERT-style recipe | Small and inconsistent gains | KD-1, IO-2 | P3 | — | |
 
 - **KD-1** is `DistillationLoss` (`distillation_loss.hpp`), not a wrapper around
@@ -1260,8 +1260,16 @@ weight variance.
   gradient through its attention probabilities. The second part is `SoftDecisionTree`
   (`soft_decision_tree.hpp`), Frosst and Hinton's. Its output is the log of the leaf mixture, so
   `DistillationLoss` trains it. Its balance penalty uses the current batch's α, not the paper's
-  moving average, and β is fixed, not learned. The third part is rule extraction into the
-  Datalog engine.
+  moving average, and β is fixed, not learned. The third part, `rule_extraction.hpp`, turns a
+  tree into Datalog rules, one per leaf:
+  - **A crisp tree's rules** test `le` and `gt` facts. The engine's fixpoint gives the tree's
+    class for every input.
+  - **A soft tree's rules** are weighted. Evaluated over the real semiring, they give the tree's
+    class probabilities exactly.
+  - **No numeric comparisons:** the engine has none, so each threshold becomes a string constant,
+    and the facts are computed outside the engine.
+  - **Follow-ups:** comparison built-ins in the engine; simplifying rules across leaves (merging
+    rules of the same class, as C4.5rules does); a soft tree's rules pruned to its likely paths.
 
 ## FEAT: Featurizers, sparse autoencoders and Goodfire BSF
 

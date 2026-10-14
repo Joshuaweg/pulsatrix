@@ -155,6 +155,7 @@ add_library(pulsatrix_core
     src/distillation_loss.cpp
     src/feature_distillation.cpp
     src/soft_decision_tree.cpp
+    src/rule_extraction.cpp
     src/tagger_finetune_example.cpp
     src/explanation_metrics.cpp
     src/featurizer.cpp
