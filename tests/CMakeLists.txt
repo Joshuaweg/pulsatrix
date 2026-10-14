@@ -149,6 +149,7 @@ add_executable(pulsatrix_tests
     lr_scheduler_test.cpp
     token_cross_entropy_test.cpp
     distillation_loss_test.cpp
+    feature_distillation_test.cpp
     tagger_finetune_test.cpp
     explanation_metrics_test.cpp
     null_model_baseline_test.cpp

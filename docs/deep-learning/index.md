@@ -469,6 +469,44 @@ The values and gradients are checked against a numpy implementation, with gradie
 differences (`tools/generate_distillation_reference_values.py`), and the HIP backend gives the
 CPU's.
 
+#### Distilling features
+
+A student can also be taught what the teacher computes on the way to its output:
+
+- **`HintLoss`** (FitNets, Romero et al., ICLR 2015): the mean squared error between a student
+  layer's features, mapped to the teacher's width by a learned linear regressor, and a teacher
+  layer's. The regressor starts the way PyTorch's `nn.Linear` does (uniform in ±1/√width, from a
+  seed). `LinearModule` itself starts at zero, which would pass no gradient back to the student.
+  Step `loss.regressor()` with an optimizer too. `HintLoss(backend)` compares features of the
+  same width as they are.
+- **`AttentionTransferLoss`** (Zagoruyko and Komodakis, ICLR 2017): for convolutional features
+  `(N, C, H, W)`, each example's spatial map, the mean over channels of the squared activation,
+  normalized to unit length. The loss is the mean squared difference of the student's and
+  teacher's maps, so the channel counts may differ, but the spatial sizes must match.
+  `AttentionMap` returns the map itself, for a figure.
+
+Both return the gradient at the student's layer. To combine it with an output loss, run the
+student in two parts and add it where the parts meet:
+
+```cpp
+#include "pulsatrix/feature_distillation.hpp"
+
+SequentialModule front({&s1, &relu});  // the student up to the hinted layer
+HintLoss hint(8, 16, &backend, /*seed=*/0);
+
+Tensor hidden = front.forward(x);
+float kd = distill.forward(head.forward(hidden), teacher_logits);
+float h = hint.forward(hidden, teacher_hidden);
+Tensor g = head.backward(distill.backward());          // the output loss's gradient at `hidden`
+backend.axpby(1.0f, hint.backward().data(), 1.0f, g.data(), g.data(), static_cast<size_t>(g.numel()));
+(void)front.backward(g);
+```
+
+Attention transfer is checked against the authors' code, and the hint loss against numpy, with
+gradients by finite differences (`tools/generate_feature_distillation_reference_values.py`).
+MiniLM's distillation of self-attention distributions isn't available: it needs a gradient
+through `MultiHeadAttentionModule`'s attention probabilities, which the module doesn't take.
+
 ### Gradient clipping
 
 `ClipGradNorm(model, max_norm)` scales all trainable gradients by one factor so their global L2

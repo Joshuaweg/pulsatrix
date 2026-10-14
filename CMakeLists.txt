@@ -153,6 +153,7 @@ add_library(pulsatrix_core
     src/grad_clipping.cpp
     src/token_cross_entropy_loss.cpp
     src/distillation_loss.cpp
+    src/feature_distillation.cpp
     src/tagger_finetune_example.cpp
     src/explanation_metrics.cpp
     src/featurizer.cpp
