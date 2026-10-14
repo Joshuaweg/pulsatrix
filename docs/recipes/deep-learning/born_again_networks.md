@@ -219,3 +219,5 @@ expect to differ can come out different.
 
 - [Knowledge distillation](../../deep-learning/index.md#knowledge-distillation): `DistillationLoss`,
   and the born-again pieces in `born_again.hpp`.
+- [Half the layers](half_the_layers.md): distillation into a student half the depth of its
+  teacher, on a language model.

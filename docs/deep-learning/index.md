@@ -595,6 +595,10 @@ backend.axpby(2.0f, token_loss.backward().data(), 5.0f, g.data(), g.data(), stat
   model for the tap. The HIP backend gives the CPU's values, and a student built on the GPU from a
   CPU teacher computes its logits.
 
+The recipe [Half the layers](../recipes/deep-learning/half_the_layers.md) distills
+SmolLM2-135M-Instruct into 15 of its 30 blocks this way, against students trained without the
+teacher, without the cosine loss and from random blocks.
+
 #### Born-again networks
 
 A born-again network (Furlanello et al., ICML 2018) is a student the same size as its teacher,
