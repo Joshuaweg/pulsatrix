@@ -127,7 +127,7 @@ Ties keep catalog order.
 | Reason | Required | Recommended |
 |---|---|---|
 | Justify | faithfulness (`DeletionCurve`, `InsertionCurve`), stability, conservation for complete explainers | randomization, null model |
-| Control | randomization for attributions, the null model for the rest, per-slice error | faithfulness, stability, conservation |
+| Control | randomization and robustness for attributions, the null model for the rest, per-slice error | faithfulness, stability, conservation |
 | Improve | aggregating the explanations over the dataset | faithfulness, stability, conservation, randomization, null model |
 | Discover | the null model, for everything, and each explainer's own controls | faithfulness, stability, conservation, randomization |
 
@@ -286,6 +286,7 @@ std::cout << DescribeExplanation(e);
 |---|---|---|
 | faithfulness | Deletion and insertion curves, scored as insertion AUC minus deletion AUC, against 19 random orderings of the features | it beats them: p ≤ 0.05 |
 | stability | Two more runs on the same input, and three on the input plus 1% noise (not for token or symbolic input) | every Spearman correlation of attribution magnitudes is ≥ 0.8 |
+| robustness | [`ExplanationSensitivity`](performance.md#explanation-robustness): ten perturbations within 5% of the input's spread that keep the prediction, and FGSM's point through the model (not for token, protein or symbolic input) | the explanation changes by at most 0.5 of its size, at every sample and at FGSM's point |
 | conservation | The attributions' sum against LRP's seeded total, or f(input) − f(baseline) | the gap is ≤ 5% |
 | randomization | `ModelParameterRandomizationTest` | the fully randomized model's explanation correlates ≤ 0.5 with the original |
 | null_model | `NullModelBaseline` | the same threshold |
