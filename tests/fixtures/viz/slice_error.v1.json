@@ -1,0 +1,59 @@
+{
+  "schema": "pulsatrix.slice_error.v1",
+  "n": 200,
+  "error": 0.18,
+  "test": "fisher_exact",
+  "alpha": 0.05,
+  "slices": [
+    {
+      "name": "night",
+      "count": 40,
+      "error": 0.45,
+      "lower": 0.30705307800702886,
+      "upper": 0.6017090821255902,
+      "rest_error": 0.1125,
+      "p_value": 0.000005599770651714406,
+      "worse": true
+    },
+    {
+      "name": "snow",
+      "count": 40,
+      "error": 0.15,
+      "lower": 0.0706118771310804,
+      "upper": 0.2907232437972525,
+      "rest_error": 0.1875,
+      "p_value": 0.7791788025882493,
+      "worse": false
+    },
+    {
+      "name": "dusk",
+      "count": 40,
+      "error": 0.125,
+      "lower": 0.0545950024741451,
+      "upper": 0.2611211985204973,
+      "rest_error": 0.19375,
+      "p_value": 0.8967743653034983,
+      "worse": false
+    },
+    {
+      "name": "rain",
+      "count": 40,
+      "error": 0.1,
+      "lower": 0.03957952865447907,
+      "upper": 0.23051775240647288,
+      "rest_error": 0.2,
+      "p_value": 0.9626156308862539,
+      "worse": false
+    },
+    {
+      "name": "day",
+      "count": 40,
+      "error": 0.075,
+      "lower": 0.02583602575401095,
+      "upper": 0.19864233537325043,
+      "rest_error": 0.20625,
+      "p_value": 0.9902247447096533,
+      "worse": false
+    }
+  ]
+}
