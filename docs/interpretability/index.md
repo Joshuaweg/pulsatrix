@@ -250,6 +250,44 @@ Re-initialization replaces each parameter tensor with Gaussian noise at that ten
 and leaves buffers such as BatchNorm's running statistics alone. `ParameterSnapshot` and
 `ReinitializeParameters` are available separately.
 
+### Do two models use the same evidence?
+
+A distilled student can match its teacher's outputs while relying on different features, and so
+can a fine-tuned model and its base. `ExplanationAgreement` explains the same inputs with both
+models and compares the maps:
+
+```cpp
+#include "pulsatrix/explanation_agreement.hpp"
+
+AgreementOptions o;  // compares |attribution| by default; 999 permutations
+AgreementReport r = ExplanationAgreement(inputs, explain_with_teacher, explain_with_student, o);
+// r.spearman, r.top_k_overlap, r.cosine: means over inputs (r.per_input has each one)
+// r.cka: whether the maps vary from input to input the same way
+// r.mismatched_spearman, r.p_value: is the agreement about each input, or about every input?
+```
+
+`CompareExplanations` does the same with attributions already computed.
+
+- **Per input:**
+  - the Spearman rank correlation of the two maps;
+  - the top-k overlap, the share of the teacher's k most relevant features that are also among the
+    student's, with k a fraction of the features (Quantus's TopKIntersection);
+  - their cosine similarity.
+- **Across inputs:** the debiased linear CKA of the two (inputs × features) matrices.
+- **Against the shared shape:** maps can agree only because every map looks alike. An image
+  model's relevance gathers in the middle of every image, and a language model's on the last
+  token. So the student's map of each input is also compared with the teacher's maps of the
+  other inputs (`mismatched_spearman`). A permutation test relabels the student's inputs and asks
+  whether the true pairing agrees more than the relabeled ones (`p_value`). Only an agreement well
+  above `mismatched_spearman`, with a small p-value, says the two models reason the same way
+  about each input.
+
+The values match scipy and numpy on the same data and shuffles
+(`tools/generate_explanation_agreement_reference_values.py`). The tests include two students
+that compute exactly the teacher's function from duplicated input features: the one that uses the
+teacher's copy agrees (Spearman above 0.99, p < 0.01); the one that uses the duplicate has the
+same outputs and none of the same top features.
+
 ## Reporting an explanation
 
 `BuildExplanation` (`include/pulsatrix/explanation_report.hpp`) runs an attribution explainer,
