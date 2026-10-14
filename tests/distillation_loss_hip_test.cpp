@@ -9,6 +9,7 @@
 #include "pulsatrix/distillation_loss.hpp"
 #include "pulsatrix/feature_distillation.hpp"
 #include "pulsatrix/hip_backend.hpp"
+#include "pulsatrix/soft_decision_tree.hpp"
 
 namespace pulsatrix {
 namespace {
@@ -76,6 +77,31 @@ TEST(FeatureDistillationHip, TheGpuGivesTheCpusLossesAndGradients) {
     HIPBackend hip;
     CPUBackend cpu;
     const std::vector<std::vector<float>> g = FeatureLosses(&hip), c = FeatureLosses(&cpu);
+    for (size_t part = 0; part < g.size(); ++part) {
+        ASSERT_EQ(g[part].size(), c[part].size());
+        for (size_t k = 0; k < g[part].size(); ++k) EXPECT_NEAR(g[part][k], c[part][k], 1e-5 * std::abs(c[part][k]) + 1e-6) << part << " " << k;
+    }
+}
+
+// KD-3: the soft decision tree with its gates on the GPU gives the CPU's output and gradients.
+std::vector<std::vector<float>> SoftTree(DeviceBackend* backend) {
+    SoftDecisionTreeOptions o;
+    o.depth = 3;
+    o.beta = 1.5f;
+    o.penalty = 0.1f;
+    o.seed = 5;
+    SoftDecisionTree tree(4, 3, backend, o);
+    const Tensor y = tree.forward(Tensor(Shape({6, 4}), backend, Wave(24, 0.37, 0.5), backend->device()));
+    const Tensor dx = tree.backward(Tensor(Shape({6, 3}), backend, Wave(18, 0.6, 0.9), backend->device()));
+    EXPECT_EQ(y.device(), backend->device());
+    std::vector<NamedParamRef> params = tree.named_parameters();
+    return {y.to_host_vector(), dx.to_host_vector(), params[0].ref.grad->to_host_vector(), params[2].ref.grad->to_host_vector()};
+}
+
+TEST(SoftDecisionTreeHip, TheGpuGivesTheCpusOutputAndGradients) {
+    HIPBackend hip;
+    CPUBackend cpu;
+    const std::vector<std::vector<float>> g = SoftTree(&hip), c = SoftTree(&cpu);
     for (size_t part = 0; part < g.size(); ++part) {
         ASSERT_EQ(g[part].size(), c[part].size());
         for (size_t k = 0; k < g[part].size(); ++k) EXPECT_NEAR(g[part][k], c[part][k], 1e-5 * std::abs(c[part][k]) + 1e-6) << part << " " << k;

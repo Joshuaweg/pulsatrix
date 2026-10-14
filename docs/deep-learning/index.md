@@ -507,6 +507,46 @@ gradients by finite differences (`tools/generate_feature_distillation_reference_
 MiniLM's distillation of self-attention distributions isn't available: it needs a gradient
 through `MultiHeadAttentionModule`'s attention probabilities, which the module doesn't take.
 
+#### Distilling into a soft decision tree
+
+`SoftDecisionTree` (Frosst and Hinton, "Distilling a Neural Network Into a Soft Decision Tree",
+2017) is a student you can read. It is a complete binary tree:
+
+- **Inner nodes:** each one sends an input right with probability σ(β (x · wᵢ + bᵢ)), one
+  learned linear filter per decision.
+- **Leaves:** each holds a distribution over the classes.
+- **Output:** the log of the mixture of the leaf distributions, weighted by each leaf's path
+  probability. So it trains with `DistillationLoss` on a teacher's logits, or with
+  `CrossEntropyLoss` on labels.
+
+```cpp
+#include "pulsatrix/soft_decision_tree.hpp"
+
+SoftDecisionTreeOptions o;
+o.depth = 4;          // 16 leaves
+o.penalty = 0.01f;    // Frosst and Hinton's balance penalty, λ
+SoftDecisionTree tree(inputs, classes, &backend, o);
+
+(void)loss.forward(tree.forward(x), teacher.forward(x));
+(void)tree.backward(loss.backward());   // adds the penalty's gradient too
+optimizer.step(tree);
+
+// Explaining a prediction: the greedy path and what it tests.
+(void)tree.forward(x);
+int64_t leaf = tree.MostProbableLeaf()[0];
+for (auto [node, right] : tree.PathTo(leaf)) { /* column `node` of tree.gates()'s weight */ }
+```
+
+- **Penalty:** it stops a node from sending almost everything one way. α is the share of the
+  probability reaching the node that goes right, and the penalty adds −λ 2^(−depth) · ½ (log α +
+  log(1 − α)) per node. Here α is computed over the current batch, not as the paper's moving
+  average.
+- **Where it runs:** the gates' linear layer runs on the backend's device, and the routing on the
+  host. A 2-input, depth-3 tree distilled from a 2→16→3 network agrees with it on 125 of 128
+  held-out points in the tests.
+- **Checked against:** a numpy implementation, with gradients by finite differences
+  (`tools/generate_soft_decision_tree_reference_values.py`).
+
 ### Gradient clipping
 
 `ClipGradNorm(model, max_norm)` scales all trainable gradients by one factor so their global L2
