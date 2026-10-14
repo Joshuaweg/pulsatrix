@@ -250,6 +250,7 @@ add_executable(pulsatrix_tests
     projection_view_test.cpp
     topology_views_test.cpp
     performance_views_test.cpp
+    adversarial_test.cpp
     tcav_test.cpp
     concept_relevance_test.cpp
     rsa_svcca_test.cpp
@@ -315,7 +316,7 @@ if(PULSATRIX_ENABLE_HIP)
                                        vision_models_hip_test.cpp conv2d_chunking_hip_test.cpp
                                        fused_ops_hip_test.cpp
                                        safetensors_hip_test.cpp distance_matrix_hip_test.cpp
-                                       lora_hip_test.cpp)
+                                       lora_hip_test.cpp adversarial_hip_test.cpp)
 endif()
 
 if(PULSATRIX_ENABLE_ORCHESTRATOR)

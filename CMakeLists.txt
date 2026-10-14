@@ -81,6 +81,7 @@ add_library(pulsatrix_core
     src/anchors.cpp
     src/prototypes.cpp
     src/performance.cpp
+    src/adversarial.cpp
     src/uncertainty.cpp
     src/conformal.cpp
     src/contrastive.cpp
