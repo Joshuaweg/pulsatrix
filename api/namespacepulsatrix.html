@@ -198,6 +198,9 @@ Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpulsatrix_1_1AttentionHead.html">AttentionHead</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">One attention head: <code>layer</code> from 0, <code>head</code> within it from 0.  <a href="structpulsatrix_1_1AttentionHead.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1AttentionTransferLoss.html">AttentionTransferLoss</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Attention transfer: mean over examples and positions of (q_s − q_t)², where q is the L2-normalized map mean_c |A_c|^p of each example's features.  <a href="classpulsatrix_1_1AttentionTransferLoss.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpulsatrix_1_1AttnLrpReport.html">AttnLrpReport</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">A model's comparison against an AttnLRP reference file.  <a href="structpulsatrix_1_1AttnLrpReport.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -783,6 +786,9 @@ Classes</h2></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpulsatrix_1_1HfRopeScaling.html">HfRopeScaling</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">A <code>rope_scaling</code> (or <code>rope_parameters</code>) entry other than the default.  <a href="structpulsatrix_1_1HfRopeScaling.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1HintLoss.html">HintLoss</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">FitNets' hint loss: mean((r(student) − teacher)²), with r a learned linear map from the student's feature width to the teacher's.  <a href="classpulsatrix_1_1HintLoss.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1HIPBackend.html">HIPBackend</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">HIP-resident <a class="el" href="classpulsatrix_1_1DeviceBackend.html" title="Vendor-agnostic compute/memory backend. CPUBackend, CUDABackend (Phase 1.5), and HIPBackend (Phase 1....">DeviceBackend</a> implementation, targeting AMD GPUs via ROCm.  <a href="classpulsatrix_1_1HIPBackend.html#details">More...</a><br /></td></tr>
@@ -1477,6 +1483,12 @@ Classes</h2></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpulsatrix_1_1SobolResult.html">SobolResult</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sobol indices, one entry per varied feature (SALib's <code>sobol.analyze</code>, first and total order).  <a href="structpulsatrix_1_1SobolResult.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1SoftDecisionTree.html">SoftDecisionTree</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Frosst and Hinton's soft decision tree, (N, inputs) to (N, classes) log-probabilities.  <a href="classpulsatrix_1_1SoftDecisionTree.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpulsatrix_1_1SoftDecisionTreeOptions.html">SoftDecisionTreeOptions</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="classpulsatrix_1_1SoftDecisionTree.html" title="Frosst and Hinton&#39;s soft decision tree, (N, inputs) to (N, classes) log-probabilities.">SoftDecisionTree</a>'s settings.  <a href="structpulsatrix_1_1SoftDecisionTreeOptions.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1SoftmaxModule.html">SoftmaxModule</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Softmax over the tensor's last dimension, applied independently to every "row" (every fixed combination of all leading dimensions).  <a href="classpulsatrix_1_1SoftmaxModule.html#details">More...</a><br /></td></tr>
@@ -2706,6 +2718,9 @@ Functions</h2></td></tr>
 <tr class="memitem:a07228eb00c58363cb06a3787e0d41738" id="r_a07228eb00c58363cb06a3787e0d41738"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classpulsatrix_1_1JsonValue.html">JsonValue</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#a07228eb00c58363cb06a3787e0d41738">ToJson</a> (const <a class="el" href="structpulsatrix_1_1SensitivityReport.html">SensitivityReport</a> &amp;report)</td></tr>
 <tr class="memdesc:a07228eb00c58363cb06a3787e0d41738"><td class="mdescLeft">&#160;</td><td class="mdescRight">The report as a <code>pulsatrix.explanation_sensitivity.v1</code> document.  <br /></td></tr>
 <tr class="separator:a07228eb00c58363cb06a3787e0d41738"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8b81a5297943d73b57d7a439fd330b56" id="r_a8b81a5297943d73b57d7a439fd330b56"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#a8b81a5297943d73b57d7a439fd330b56">AttentionMap</a> (const <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp;features, <a class="el" href="classpulsatrix_1_1DeviceBackend.html">DeviceBackend</a> *backend, double p=2.0)</td></tr>
+<tr class="memdesc:a8b81a5297943d73b57d7a439fd330b56"><td class="mdescLeft">&#160;</td><td class="mdescRight">The attention map <a class="el" href="classpulsatrix_1_1AttentionTransferLoss.html" title="Attention transfer: mean over examples and positions of (q_s − q_t)², where q is the L2-normalized ma...">AttentionTransferLoss</a> compares: (N, positions), each row L2-normalized, on <code>features'</code> device.  <br /></td></tr>
+<tr class="separator:a8b81a5297943d73b57d7a439fd330b56"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a97609000f48b7f7d190d002af3d09896" id="r_a97609000f48b7f7d190d002af3d09896"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#a97609000f48b7f7d190d002af3d09896">MeanL0</a> (const std::vector&lt; float &gt; &amp;codes, int64_t num_features, float threshold=0.0f)</td></tr>
 <tr class="memdesc:a97609000f48b7f7d190d002af3d09896"><td class="mdescLeft">&#160;</td><td class="mdescRight">The mean number of codes above <code>threshold</code> in magnitude per input (L0), for codes row-major <code>(N, num_features)</code>.  <br /></td></tr>
 <tr class="separator:a97609000f48b7f7d190d002af3d09896"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -7167,6 +7182,48 @@ Every op here computes the <em>forward</em> value only &ndash; no derivative var
 <dl class="exception"><dt>Exceptions</dt><dd>
   <table class="exception">
     <tr><td class="paramname">std::invalid_argument</td><td>if the document has no such dimension, or a tested feature isn't in it: its index is out of range, or the pair there has a different death / birth. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="a8b81a5297943d73b57d7a439fd330b56" name="a8b81a5297943d73b57d7a439fd330b56"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8b81a5297943d73b57d7a439fd330b56">&#9670;&#160;</a></span>AttentionMap()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> pulsatrix::AttentionMap </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp;&#160;</td>
+          <td class="paramname"><em>features</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="classpulsatrix_1_1DeviceBackend.html">DeviceBackend</a> *&#160;</td>
+          <td class="paramname"><em>backend</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">double&#160;</td>
+          <td class="paramname"><em>p</em> = <code>2.0</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>The attention map <a class="el" href="classpulsatrix_1_1AttentionTransferLoss.html" title="Attention transfer: mean over examples and positions of (q_s − q_t)², where q is the L2-normalized ma...">AttentionTransferLoss</a> compares: (N, positions), each row L2-normalized, on <code>features'</code> device. </p>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname">std::invalid_argument</td><td>if the rank is below 3. </td></tr>
   </table>
   </dd>
 </dl>

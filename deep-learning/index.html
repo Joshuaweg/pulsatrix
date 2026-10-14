@@ -553,6 +553,34 @@
     </span>
   </a>
   
+    <nav class="md-nav" aria-label="Knowledge distillation">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#distilling-features" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Distilling features
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#distilling-into-a-soft-decision-tree" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Distilling into a soft decision tree
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
 </li>
         
           <li class="md-nav__item">
@@ -2864,6 +2892,34 @@
     </span>
   </a>
   
+    <nav class="md-nav" aria-label="Knowledge distillation">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#distilling-features" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Distilling features
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#distilling-into-a-soft-decision-tree" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Distilling into a soft decision tree
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
 </li>
         
           <li class="md-nav__item">
@@ -3353,6 +3409,77 @@ cross-entropy with the labels:</p>
 <p>The values and gradients are checked against a numpy implementation, with gradients by finite
 differences (<code>tools/generate_distillation_reference_values.py</code>), and the HIP backend gives the
 CPU's.</p>
+<h4 id="distilling-features">Distilling features<a class="headerlink" href="#distilling-features" title="Permanent link">&para;</a></h4>
+<p>A student can also be taught what the teacher computes on the way to its output:</p>
+<ul>
+<li><strong><code>HintLoss</code></strong> (FitNets, Romero et al., ICLR 2015): the mean squared error between a student
+  layer's features, mapped to the teacher's width by a learned linear regressor, and a teacher
+  layer's. The regressor starts the way PyTorch's <code>nn.Linear</code> does (uniform in ±1/√width, from a
+  seed). <code>LinearModule</code> itself starts at zero, which would pass no gradient back to the student.
+  Step <code>loss.regressor()</code> with an optimizer too. <code>HintLoss(backend)</code> compares features of the
+  same width as they are.</li>
+<li><strong><code>AttentionTransferLoss</code></strong> (Zagoruyko and Komodakis, ICLR 2017): for convolutional features
+  <code>(N, C, H, W)</code>, each example's spatial map, the mean over channels of the squared activation,
+  normalized to unit length. The loss is the mean squared difference of the student's and
+  teacher's maps, so the channel counts may differ, but the spatial sizes must match.
+  <code>AttentionMap</code> returns the map itself, for a figure.</li>
+</ul>
+<p>Both return the gradient at the student's layer. To combine it with an output loss, run the
+student in two parts and add it where the parts meet:</p>
+<div class="highlight"><pre><span></span><code><span class="cp">#include</span><span class="w"> </span><span class="cpf">"pulsatrix/feature_distillation.hpp"</span>
+
+<span class="n">SequentialModule</span><span class="w"> </span><span class="nf">front</span><span class="p">({</span><span class="o">&amp;</span><span class="n">s1</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">relu</span><span class="p">});</span><span class="w">  </span><span class="c1">// the student up to the hinted layer</span>
+<span class="n">HintLoss</span><span class="w"> </span><span class="nf">hint</span><span class="p">(</span><span class="mi">8</span><span class="p">,</span><span class="w"> </span><span class="mi">16</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">backend</span><span class="p">,</span><span class="w"> </span><span class="cm">/*seed=*/</span><span class="mi">0</span><span class="p">);</span>
+
+<span class="n">Tensor</span><span class="w"> </span><span class="n">hidden</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">front</span><span class="p">.</span><span class="n">forward</span><span class="p">(</span><span class="n">x</span><span class="p">);</span>
+<span class="kt">float</span><span class="w"> </span><span class="n">kd</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">distill</span><span class="p">.</span><span class="n">forward</span><span class="p">(</span><span class="n">head</span><span class="p">.</span><span class="n">forward</span><span class="p">(</span><span class="n">hidden</span><span class="p">),</span><span class="w"> </span><span class="n">teacher_logits</span><span class="p">);</span>
+<span class="kt">float</span><span class="w"> </span><span class="n">h</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">hint</span><span class="p">.</span><span class="n">forward</span><span class="p">(</span><span class="n">hidden</span><span class="p">,</span><span class="w"> </span><span class="n">teacher_hidden</span><span class="p">);</span>
+<span class="n">Tensor</span><span class="w"> </span><span class="n">g</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">head</span><span class="p">.</span><span class="n">backward</span><span class="p">(</span><span class="n">distill</span><span class="p">.</span><span class="n">backward</span><span class="p">());</span><span class="w">          </span><span class="c1">// the output loss's gradient at `hidden`</span>
+<span class="n">backend</span><span class="p">.</span><span class="n">axpby</span><span class="p">(</span><span class="mf">1.0f</span><span class="p">,</span><span class="w"> </span><span class="n">hint</span><span class="p">.</span><span class="n">backward</span><span class="p">().</span><span class="n">data</span><span class="p">(),</span><span class="w"> </span><span class="mf">1.0f</span><span class="p">,</span><span class="w"> </span><span class="n">g</span><span class="p">.</span><span class="n">data</span><span class="p">(),</span><span class="w"> </span><span class="n">g</span><span class="p">.</span><span class="n">data</span><span class="p">(),</span><span class="w"> </span><span class="k">static_cast</span><span class="o">&lt;</span><span class="kt">size_t</span><span class="o">&gt;</span><span class="p">(</span><span class="n">g</span><span class="p">.</span><span class="n">numel</span><span class="p">()));</span>
+<span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="n">front</span><span class="p">.</span><span class="n">backward</span><span class="p">(</span><span class="n">g</span><span class="p">);</span>
+</code></pre></div>
+<p>Attention transfer is checked against the authors' code, and the hint loss against numpy, with
+gradients by finite differences (<code>tools/generate_feature_distillation_reference_values.py</code>).
+MiniLM's distillation of self-attention distributions isn't available: it needs a gradient
+through <code>MultiHeadAttentionModule</code>'s attention probabilities, which the module doesn't take.</p>
+<h4 id="distilling-into-a-soft-decision-tree">Distilling into a soft decision tree<a class="headerlink" href="#distilling-into-a-soft-decision-tree" title="Permanent link">&para;</a></h4>
+<p><code>SoftDecisionTree</code> (Frosst and Hinton, "Distilling a Neural Network Into a Soft Decision Tree",
+2017) is a student you can read. It is a complete binary tree:</p>
+<ul>
+<li><strong>Inner nodes:</strong> each one sends an input right with probability σ(β (x · wᵢ + bᵢ)), one
+  learned linear filter per decision.</li>
+<li><strong>Leaves:</strong> each holds a distribution over the classes.</li>
+<li><strong>Output:</strong> the log of the mixture of the leaf distributions, weighted by each leaf's path
+  probability. So it trains with <code>DistillationLoss</code> on a teacher's logits, or with
+  <code>CrossEntropyLoss</code> on labels.</li>
+</ul>
+<div class="highlight"><pre><span></span><code><span class="cp">#include</span><span class="w"> </span><span class="cpf">"pulsatrix/soft_decision_tree.hpp"</span>
+
+<span class="n">SoftDecisionTreeOptions</span><span class="w"> </span><span class="n">o</span><span class="p">;</span>
+<span class="n">o</span><span class="p">.</span><span class="n">depth</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">4</span><span class="p">;</span><span class="w">          </span><span class="c1">// 16 leaves</span>
+<span class="n">o</span><span class="p">.</span><span class="n">penalty</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">0.01f</span><span class="p">;</span><span class="w">    </span><span class="c1">// Frosst and Hinton's balance penalty, λ</span>
+<span class="n">SoftDecisionTree</span><span class="w"> </span><span class="nf">tree</span><span class="p">(</span><span class="n">inputs</span><span class="p">,</span><span class="w"> </span><span class="n">classes</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">backend</span><span class="p">,</span><span class="w"> </span><span class="n">o</span><span class="p">);</span>
+
+<span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="n">loss</span><span class="p">.</span><span class="n">forward</span><span class="p">(</span><span class="n">tree</span><span class="p">.</span><span class="n">forward</span><span class="p">(</span><span class="n">x</span><span class="p">),</span><span class="w"> </span><span class="n">teacher</span><span class="p">.</span><span class="n">forward</span><span class="p">(</span><span class="n">x</span><span class="p">));</span>
+<span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="n">tree</span><span class="p">.</span><span class="n">backward</span><span class="p">(</span><span class="n">loss</span><span class="p">.</span><span class="n">backward</span><span class="p">());</span><span class="w">   </span><span class="c1">// adds the penalty's gradient too</span>
+<span class="n">optimizer</span><span class="p">.</span><span class="n">step</span><span class="p">(</span><span class="n">tree</span><span class="p">);</span>
+
+<span class="c1">// Explaining a prediction: the greedy path and what it tests.</span>
+<span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="n">tree</span><span class="p">.</span><span class="n">forward</span><span class="p">(</span><span class="n">x</span><span class="p">);</span>
+<span class="kt">int64_t</span><span class="w"> </span><span class="n">leaf</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">tree</span><span class="p">.</span><span class="n">MostProbableLeaf</span><span class="p">()[</span><span class="mi">0</span><span class="p">];</span>
+<span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="k">auto</span><span class="w"> </span><span class="p">[</span><span class="n">node</span><span class="p">,</span><span class="w"> </span><span class="n">right</span><span class="p">]</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="n">tree</span><span class="p">.</span><span class="n">PathTo</span><span class="p">(</span><span class="n">leaf</span><span class="p">))</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="cm">/* column `node` of tree.gates()'s weight */</span><span class="w"> </span><span class="p">}</span>
+</code></pre></div>
+<ul>
+<li><strong>Penalty:</strong> it stops a node from sending almost everything one way. α is the share of the
+  probability reaching the node that goes right, and the penalty adds −λ 2^(−depth) · ½ (log α +
+  log(1 − α)) per node. Here α is computed over the current batch, not as the paper's moving
+  average.</li>
+<li><strong>Where it runs:</strong> the gates' linear layer runs on the backend's device, and the routing on the
+  host. A 2-input, depth-3 tree distilled from a 2→16→3 network agrees with it on 125 of 128
+  held-out points in the tests.</li>
+<li><strong>Checked against:</strong> a numpy implementation, with gradients by finite differences
+  (<code>tools/generate_soft_decision_tree_reference_values.py</code>).</li>
+</ul>
 <h3 id="gradient-clipping">Gradient clipping<a class="headerlink" href="#gradient-clipping" title="Permanent link">&para;</a></h3>
 <p><code>ClipGradNorm(model, max_norm)</code> scales all trainable gradients by one factor so their global L2
 norm is at most <code>max_norm</code>, as <code>torch.nn.utils.clip_grad_norm_</code> does. It returns the norm before
