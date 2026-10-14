@@ -759,6 +759,28 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#uncertainty" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Uncertainty
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#conformal-prediction" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Conformal prediction
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#in-a-report" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -2590,6 +2612,28 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#uncertainty" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Uncertainty
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#conformal-prediction" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Conformal prediction
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#in-a-report" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -2629,11 +2673,16 @@ prediction, not whether the prediction is right. Pulsatrix answers it with the m
 <li><strong><code>EvaluateClassifier</code>:</strong> accuracy, log loss, the Brier score, calibration with a reliability
   diagram, a confusion matrix, and each class's precision, recall and F1;</li>
 <li><strong><code>EvaluateRegressor</code>:</strong> mean squared and absolute error, and R²;</li>
-<li><strong><code>PerSliceError</code>:</strong> the error on each slice of the data, each tested against the rest.</li>
+<li><strong><code>PerSliceError</code>:</strong> the error on each slice of the data, each tested against the rest;</li>
+<li><strong><code>McDropoutSamples</code></strong> and <strong><code>EnsembleSamples</code></strong>, in <code>pulsatrix/uncertainty.hpp</code>: how sure the
+  model is of each prediction, and whether more data would make it surer;</li>
+<li><strong>split conformal prediction</strong>, in <code>pulsatrix/conformal.hpp</code>: prediction sets and intervals that
+  hold the truth with a chosen probability, for any model.</li>
 </ul>
 <p>Every number matches scikit-learn's on the same data, and the slice test matches SciPy's
 <code>fisher_exact</code>. <code>tests/performance_test.cpp</code> checks them against values from
-<code>tools/generate_performance_reference_values.py</code>.</p>
+<code>tools/generate_performance_reference_values.py</code>; <code>tests/uncertainty_test.cpp</code> checks the
+uncertainty split against numpy.</p>
 <h2 id="scoring-a-classifier">Scoring a classifier<a class="headerlink" href="#scoring-a-classifier" title="Permanent link">&para;</a></h2>
 <p><code>EvaluateClassifier</code> takes the model's probabilities, <code>(N, K)</code>, and the true classes:</p>
 <div class="highlight"><pre><span></span><code><span class="cp">#include</span><span class="w"> </span><span class="cpf">"pulsatrix/performance.hpp"</span>
@@ -2733,6 +2782,123 @@ at least one slice is worse than the rest
 </ul>
 <p>A slice that isn't flagged hasn't been shown to be fine. A small slice can have a high error and
 still not be significantly worse; its interval shows how little is known.</p>
+<h2 id="uncertainty">Uncertainty<a class="headerlink" href="#uncertainty" title="Permanent link">&para;</a></h2>
+<p>A probability of 0.6 from one network doesn't say whether the network has seen inputs like this
+one. Several predictions of the same input that disagree do. <code>pulsatrix/uncertainty.hpp</code> gets them
+two ways:</p>
+<ul>
+<li><strong>Monte Carlo dropout</strong> (Gal and Ghahramani, ICML 2016): <code>McDropoutSamples</code> keeps the dropout
+  layers on at inference and runs the network several times. Everything else stays in eval mode,
+  so BatchNorm uses its running statistics, and each module's mode is restored afterwards. LoRA
+  adapters with dropout count as dropout layers.</li>
+<li><strong>Deep ensembles</strong> (Lakshminarayanan, Pritzel and Blundell, NeurIPS 2017): train several
+  networks from different seeds, and <code>EnsembleSamples</code> runs each one.</li>
+</ul>
+<div class="highlight"><pre><span></span><code><span class="cp">#include</span><span class="w"> </span><span class="cpf">"pulsatrix/uncertainty.hpp"</span>
+
+<span class="k">auto</span><span class="w"> </span><span class="n">predict</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="o">&amp;</span><span class="p">](</span><span class="k">const</span><span class="w"> </span><span class="n">Tensor</span><span class="o">&amp;</span><span class="w"> </span><span class="n">x</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="k">return</span><span class="w"> </span><span class="n">softmax</span><span class="p">.</span><span class="n">forward</span><span class="p">(</span><span class="n">model</span><span class="p">.</span><span class="n">forward</span><span class="p">(</span><span class="n">x</span><span class="p">));</span><span class="w"> </span><span class="p">};</span>
+<span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="n">Tensor</span><span class="o">&gt;</span><span class="w"> </span><span class="n">samples</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">McDropoutSamples</span><span class="p">(</span><span class="n">model</span><span class="p">,</span><span class="w"> </span><span class="n">predict</span><span class="p">,</span><span class="w"> </span><span class="n">inputs</span><span class="p">,</span><span class="w"> </span><span class="mi">30</span><span class="p">);</span>
+<span class="n">UncertaintyDecomposition</span><span class="w"> </span><span class="n">u</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">DecomposeUncertainty</span><span class="p">(</span><span class="n">samples</span><span class="p">);</span>
+<span class="c1">// u.mean: the prediction to use; u.total, u.aleatoric, u.epistemic: per input, in nats</span>
+</code></pre></div>
+<p><code>DecomposeUncertainty</code> splits the entropy of the mean prediction into two parts (Depeweg et al.,
+ICML 2018):</p>
+<table>
+<thead>
+<tr>
+<th>Part</th>
+<th>Formula</th>
+<th>What it means</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>total</td>
+<td>H[E p], the entropy of the mean</td>
+<td>how unsure the prediction is</td>
+</tr>
+<tr>
+<td>aleatoric</td>
+<td>E H[p], the samples' mean entropy</td>
+<td>noise in the data: each sample is unsure too, and more data wouldn't help</td>
+</tr>
+<tr>
+<td>epistemic</td>
+<td>total − aleatoric, the mutual information (BALD)</td>
+<td>the samples disagree: the model hasn't learned this region, and more data would help</td>
+</tr>
+</tbody>
+</table>
+<p>Samples that agree on 50/50 give all aleatoric uncertainty; confident samples that disagree give
+the same total, all epistemic. <code>agreement</code> is the fraction of samples that pick the mean's class.</p>
+<p><strong>For regression</strong>, each member predicts a mean and a variance, trained with <code>GaussianNLLLoss</code>: the
+network outputs (μ, s) and its variance is softplus(s) + 10⁻⁶, as Lakshminarayanan et al. did.
+<code>CombineGaussians</code> mixes the members: the aleatoric part is their mean variance, and the epistemic
+part is the variance of their means.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The decomposition is only as good as the samples. Dropout samples come from one network and
+tend to agree more than an ensemble's do. Neither is the true posterior, and the epistemic
+part says how much these samples disagree, nothing more.</p>
+</div>
+<h2 id="conformal-prediction">Conformal prediction<a class="headerlink" href="#conformal-prediction" title="Permanent link">&para;</a></h2>
+<p>A probability of 0.9 doesn't mean the model is right 90% of the time; calibration says how far
+off it is, but not what to do about it. Split conformal prediction (Vovk, Gammerman and Shafer;
+Angelopoulos and Bates, arXiv 2107.07511) turns any model's scores into a guarantee:</p>
+<ol>
+<li>Score each example of a held-out calibration set, which the model wasn't trained on, by how
+   badly the model fits it.</li>
+<li>Take q̂, the ⌈(n + 1)(1 − α)⌉-th smallest score.</li>
+<li>A new input's prediction set holds every answer that would score at most q̂.</li>
+</ol>
+<p>If the calibration examples and the new one are exchangeable, the set holds the true answer with
+probability at least 1 − α:</p>
+<div class="highlight"><pre><span></span><code><span class="cp">#include</span><span class="w"> </span><span class="cpf">"pulsatrix/conformal.hpp"</span>
+
+<span class="n">ConformalOptions</span><span class="w"> </span><span class="n">options</span><span class="p">;</span>
+<span class="n">options</span><span class="p">.</span><span class="n">alpha</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">0.1</span><span class="p">;</span><span class="w">                       </span><span class="c1">// 90% coverage</span>
+<span class="n">options</span><span class="p">.</span><span class="n">score</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">ConformalScore</span><span class="o">::</span><span class="n">Aps</span><span class="p">;</span>
+<span class="n">ConformalClassifier</span><span class="w"> </span><span class="n">c</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">CalibrateConformalClassifier</span><span class="p">(</span><span class="n">calibration_probabilities</span><span class="p">,</span><span class="w"> </span><span class="n">calibration_labels</span><span class="p">,</span><span class="w"> </span><span class="n">options</span><span class="p">);</span>
+<span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">int64_t</span><span class="o">&gt;&gt;</span><span class="w"> </span><span class="n">sets</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">PredictionSets</span><span class="p">(</span><span class="n">c</span><span class="p">,</span><span class="w"> </span><span class="n">test_probabilities</span><span class="p">);</span>
+<span class="n">CoverageReport</span><span class="w"> </span><span class="n">r</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">EvaluateCoverage</span><span class="p">(</span><span class="n">sets</span><span class="p">,</span><span class="w"> </span><span class="n">test_labels</span><span class="p">);</span>
+</code></pre></div>
+<table>
+<thead>
+<tr>
+<th>Score</th>
+<th>Definition</th>
+<th>Sets</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>Lac</code></td>
+<td>1 − p(true class) (Sadinle, Lei and Wasserman, 2019)</td>
+<td>the smallest on average, but they can be empty, and hard inputs are undercovered</td>
+</tr>
+<tr>
+<td><code>Aps</code></td>
+<td>the mass of the classes ranked at or above the true one (Romano, Sesia and Candès, 2020)</td>
+<td>larger for harder inputs; <code>randomized</code> brings coverage close to exactly 1 − α</td>
+</tr>
+</tbody>
+</table>
+<p>For regression, <code>CalibrateConformalRegressor</code> scores the absolute residual and gives ŷ ± q̂.
+<code>CalibrateConformalQuantileRegressor</code> takes a quantile regressor's lower and upper predictions and
+gives CQR's [lo − q̂, hi + q̂] (Romano, Patterson and Candès, 2019), narrower where the noise is.</p>
+<p><code>EvaluateCoverage</code> reports the coverage, the mean set size or interval width, how many sets were
+empty, and the coverage of each set size. Large sets that are undercovered are a sign the score
+doesn't adapt to hard inputs.</p>
+<p><strong>The guarantee is marginal:</strong> it holds on average over inputs, not for each input or each
+group. A model can cover 90% overall and 70% of one group. <code>CoverageReport::misses</code> holds a 0 or 1
+per input, so <code>PerSliceError(r.misses, slices)</code> tests each group's coverage like any other error.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>With too few calibration examples, the rank ⌈(n + 1)(1 − α)⌉ is above n, q̂ is infinite and
+every set holds every class: at α = 0.1 that takes fewer than 9 examples.</p>
+</div>
+<p>LAC sets and absolute-residual intervals match MAPIE 1.1.0's, and APS sets Angelopoulos and
+Bates' reference code (<code>tools/generate_conformal_reference_values.py</code>).</p>
 <h2 id="in-a-report">In a report<a class="headerlink" href="#in-a-report" title="Permanent link">&para;</a></h2>
 <p>The Control reason requires per-slice error. The planner marks it available when the caller has
 the dataset's labels and slices (<code>ModelTraits::has_labels</code>, or <code>pulsatrix_plan --labels</code>).
@@ -2748,11 +2914,13 @@ check fails, and blocks the report, when a slice is worse than the rest:</p>
 </code></pre></div>
 <p>For a regressor, or any model whose error isn't the wrong class, run <code>PerSliceError</code> on its losses
 and pass <code>SliceErrorCheck(report)</code> to <code>ReportExplanation</code>.</p>
-<p>The Performance question itself plans <code>ClassifierMetrics</code>, <code>RegressorMetrics</code> and
-<code>PerSliceError</code>. They describe how the model behaves, not what it learned, so the planner doesn't
+<p>The Performance question itself plans <code>ClassifierMetrics</code>, <code>RegressorMetrics</code>,
+<code>PerSliceError</code>, <code>MonteCarloDropout</code>, <code>DeepEnsemble</code> and <code>SplitConformal</code>. Those that score
+against true labels (the metrics and conformal calibration) need <code>ModelTraits::has_labels</code>. They describe how the model behaves, not what it learned, so the planner doesn't
 ask for a null-model baseline for them.</p>
 <p>Each report has a JSON document: <code>pulsatrix.classification_report.v1</code>,
-<code>pulsatrix.regression_report.v1</code> and <code>pulsatrix.slice_error.v1</code>.</p>
+<code>pulsatrix.regression_report.v1</code>, <code>pulsatrix.slice_error.v1</code>, <code>pulsatrix.uncertainty.v1</code> and
+<code>pulsatrix.coverage.v1</code>.</p>
 
 
 

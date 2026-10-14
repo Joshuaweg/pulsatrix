@@ -144,6 +144,9 @@ Public Attributes</h2></td></tr>
 <tr class="memitem:ae6b4e603af03b996fdfd8e7b2fc5ea28" id="r_ae6b4e603af03b996fdfd8e7b2fc5ea28"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpulsatrix_1_1ExplainerCapabilities.html#ae6b4e603af03b996fdfd8e7b2fc5ea28">needs_base_model</a> = false</td></tr>
 <tr class="memdesc:ae6b4e603af03b996fdfd8e7b2fc5ea28"><td class="mdescLeft">&#160;</td><td class="mdescRight">It compares a model with the one it was fine-tuned from, so it needs both.  <br /></td></tr>
 <tr class="separator:ae6b4e603af03b996fdfd8e7b2fc5ea28"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab03ce298232af6804f632ed508216b61" id="r_ab03ce298232af6804f632ed508216b61"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpulsatrix_1_1ExplainerCapabilities.html#ab03ce298232af6804f632ed508216b61">needs_labels</a> = false</td></tr>
+<tr class="memdesc:ab03ce298232af6804f632ed508216b61"><td class="mdescLeft">&#160;</td><td class="mdescRight">It scores the model against true labels (the Performance metrics, conformal calibration), so it needs a labeled dataset (<a class="el" href="structpulsatrix_1_1ModelTraits.html#a6e52715d3aa40874b5d1a815d99dfea8" title="The dataset&#39;s true labels, and a slice for each input (a group, a data source), for the per-slice err...">ModelTraits::has_labels</a>).  <br /></td></tr>
+<tr class="separator:ab03ce298232af6804f632ed508216b61"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac3191360482a80f705ac2ea84551a051" id="r_ac3191360482a80f705ac2ea84551a051"><td class="memItemLeft" align="right" valign="top">int64_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpulsatrix_1_1ExplainerCapabilities.html#ac3191360482a80f705ac2ea84551a051">max_features</a> = 0</td></tr>
 <tr class="memdesc:ac3191360482a80f705ac2ea84551a051"><td class="mdescLeft">&#160;</td><td class="mdescRight">The most input features it can take, or 0 for no limit: <a class="el" href="classpulsatrix_1_1KernelSHAP.html" title="Approximates Shapley values via full coalition enumeration + SHAP-kernel-weighted linear regression,...">KernelSHAP</a> enumerates every coalition, so it takes at most 20.  <br /></td></tr>
 <tr class="separator:ac3191360482a80f705ac2ea84551a051"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -309,6 +312,22 @@ Public Attributes</h2></td></tr>
 </div><div class="memdoc">
 
 <p>It compares a model with the one it was fine-tuned from, so it needs both. </p>
+
+</div>
+</div>
+<a id="ab03ce298232af6804f632ed508216b61" name="ab03ce298232af6804f632ed508216b61"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab03ce298232af6804f632ed508216b61">&#9670;&#160;</a></span>needs_labels</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool pulsatrix::ExplainerCapabilities::needs_labels = false</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>It scores the model against true labels (the Performance metrics, conformal calibration), so it needs a labeled dataset (<a class="el" href="structpulsatrix_1_1ModelTraits.html#a6e52715d3aa40874b5d1a815d99dfea8" title="The dataset&#39;s true labels, and a slice for each input (a group, a data source), for the per-slice err...">ModelTraits::has_labels</a>). </p>
 
 </div>
 </div>
