@@ -72,7 +72,8 @@ whole network, see [Layer-wise Relevance Propagation](../interpretability/lrp.md
   4-block, 128-wide model take 47 ms instead of 3.3 s.
 - **Optimizers & losses**: `SGDOptimizer` (momentum, Nesterov), `AdamOptimizer`,
   `AdamWOptimizer`, all with parameter groups; `MSELoss`, `CrossEntropyLoss`,
-  `TokenCrossEntropyLoss`, `BCEWithLogitsLoss`, `KLDivergenceLoss`, `CalibrationLoss`
+  `TokenCrossEntropyLoss`, `DistillationLoss`, `BCEWithLogitsLoss`, `KLDivergenceLoss`,
+  `CalibrationLoss`
 - **Generative building blocks**: `Reparameterize` (VAE), `NoiseSchedule` and
   `SinusoidalTimestepEmbedding()` (diffusion)
 - **Training utilities**: `ClipGradNorm`, `LRSchedule`/`LRScheduler`, parameter groups
@@ -425,6 +426,48 @@ optimizer.step(model);
 ```
 
 The accumulated gradients then equal those of one batch holding every micro-batch.
+
+### Knowledge distillation
+
+`DistillationLoss` trains a student on a teacher's softened outputs (Hinton, Vinyals and Dean,
+2015). Both sets of logits are divided by a temperature T before the softmax, which spreads the
+teacher's probability over the classes it finds similar, and the soft term is T² times the KL
+divergence between them. The T² keeps the soft term's gradient the same size as the hard term's
+whatever T is. With targets, the loss is `alpha` times the soft term plus `1 - alpha` times the
+cross-entropy with the labels:
+
+```cpp
+#include "pulsatrix/distillation_loss.hpp"
+
+DistillationOptions o;
+o.temperature = 2.0f;  // the default; DistilBERT used 2
+o.alpha = 0.5f;        // soft term's weight, used only with targets
+DistillationLoss loss(&backend, o);
+
+Tensor teacher_logits = teacher.forward(inputs);  // no backward through the teacher
+float value = loss.forward(student.forward(inputs), teacher_logits, targets);
+(void)student.backward(loss.backward());
+optimizer.step(student);
+```
+
+- **Shapes:** logits are `(..., classes)`, like `TokenCrossEntropyLoss`'s, and the mean is over
+  rows. For `(N, classes)` that is PyTorch's
+  `F.kl_div(F.log_softmax(s / T, -1), F.softmax(t / T, -1), reduction="batchmean") * T * T`. For a
+  language model's `(batch, length, vocab)` it is the mean over tokens, which is what
+  distilling a language model wants (`batchmean` would divide by the batch size alone).
+- **Padding:** rows whose target is `-100` are left out of both terms. Without targets every row
+  counts and the loss is the soft term alone.
+- **Direction:** `DistillationDivergence::Forward`, KL(teacher ‖ student), is Hinton's: the student
+  spreads its mass over everything the teacher considers. `Reverse`, KL(student ‖ teacher), is
+  MiniLLM's choice for language models (Gu et al., ICLR 2024): the student settles on the
+  teacher's main modes instead of covering the long tail it can't fit.
+- **Accumulation:** pass the window's row count as the normalizer, as for
+  `TokenCrossEntropyLoss`.
+- `soft_loss()` and `hard_loss()` return the two terms of the last `forward()`, unweighted.
+
+The values and gradients are checked against a numpy implementation, with gradients by finite
+differences (`tools/generate_distillation_reference_values.py`), and the HIP backend gives the
+CPU's.
 
 ### Gradient clipping
 
