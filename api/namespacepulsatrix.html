@@ -1231,6 +1231,9 @@ Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpulsatrix_1_1ReliabilityBin.html">ReliabilityBin</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">One confidence bin, (lower, upper]; the first bin also holds a confidence of 0.  <a href="structpulsatrix_1_1ReliabilityBin.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpulsatrix_1_1ReliabilitySeries.html">ReliabilitySeries</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">One classifier on a reliability diagram.  <a href="structpulsatrix_1_1ReliabilitySeries.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1ReluModule.html">ReluModule</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">y = max(x, 0), elementwise. No parameters, no parameter gradients.  <a href="classpulsatrix_1_1ReluModule.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -1426,6 +1429,9 @@ Classes</h2></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpulsatrix_1_1SliceErrorReport.html">SliceErrorReport</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="namespacepulsatrix.html#ad7429b9dc5233630c08f7ccc05000171" title="The error on each slice of a dataset, each tested against the rest.">PerSliceError()</a>'s result.  <a href="structpulsatrix_1_1SliceErrorReport.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpulsatrix_1_1SliceErrorViewOptions.html">SliceErrorViewOptions</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="namespacepulsatrix.html#aecc13419e6ae499bb6340e6a5d180b1e" title="The error on each slice, worst first: a point with its interval, the error of the whole dataset as a ...">RenderSliceErrorSvg()</a>'s settings.  <a href="structpulsatrix_1_1SliceErrorViewOptions.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpulsatrix_1_1SobolDocument.html">SobolDocument</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight"><code>pulsatrix.sobol.v1</code>: first- and total-order Sobol indices per feature (CFS-4).  <a href="structpulsatrix_1_1SobolDocument.html#details">More...</a><br /></td></tr>
@@ -3780,6 +3786,21 @@ Functions</h2></td></tr>
 <tr class="memitem:ae6ac032290ca2bd170f7bbb0879b3e37"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#ae6ac032290ca2bd170f7bbb0879b3e37">to_json</a> (Json &amp;j, const <a class="el" href="structpulsatrix_1_1MimeBundle.html">MimeBundle</a> &amp;bundle)</td></tr>
 <tr class="memdesc:ae6ac032290ca2bd170f7bbb0879b3e37"><td class="mdescLeft">&#160;</td><td class="mdescRight">The bundle as a JSON object of MIME type to data (see <a class="el" href="namespacepulsatrix.html#a67958a23dcb78a6477ca7276457ea457" title="Converts a JsonValue to another JSON library&#39;s value type by its common interface (assignment from nu...">to_json(Json&amp;, const JsonValue&amp;)</a>).  <br /></td></tr>
 <tr class="separator:ae6ac032290ca2bd170f7bbb0879b3e37"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aef42dbb81cdd1381473421831084d3bb" id="r_aef42dbb81cdd1381473421831084d3bb"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structpulsatrix_1_1ClassificationReport.html">ClassificationReport</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#aef42dbb81cdd1381473421831084d3bb">ParseClassificationReport</a> (std::string_view json)</td></tr>
+<tr class="memdesc:aef42dbb81cdd1381473421831084d3bb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Reads a <code>pulsatrix.classification_report.v1</code> document, as ToJson(ClassificationReport) writes it.  <br /></td></tr>
+<tr class="separator:aef42dbb81cdd1381473421831084d3bb"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a540e7a05429af4871d5d7606376187e9" id="r_a540e7a05429af4871d5d7606376187e9"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structpulsatrix_1_1SliceErrorReport.html">SliceErrorReport</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#a540e7a05429af4871d5d7606376187e9">ParseSliceErrorReport</a> (std::string_view json)</td></tr>
+<tr class="memdesc:a540e7a05429af4871d5d7606376187e9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Reads a <code>pulsatrix.slice_error.v1</code> document, as ToJson(SliceErrorReport) writes it.  <br /></td></tr>
+<tr class="separator:a540e7a05429af4871d5d7606376187e9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6eb8564b6c1559b7f3133fc8bcfb7410" id="r_a6eb8564b6c1559b7f3133fc8bcfb7410"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#a6eb8564b6c1559b7f3133fc8bcfb7410">RenderReliabilityDiagramSvg</a> (const std::vector&lt; <a class="el" href="structpulsatrix_1_1ReliabilitySeries.html">ReliabilitySeries</a> &gt; &amp;series, const <a class="el" href="structpulsatrix_1_1SvgOptions.html">SvgOptions</a> &amp;options={})</td></tr>
+<tr class="memdesc:a6eb8564b6c1559b7f3133fc8bcfb7410"><td class="mdescLeft">&#160;</td><td class="mdescRight">A reliability diagram (Guo et al., ICML 2017): each confidence bin's accuracy against its mean confidence, one line per classifier. A calibrated classifier lies on the diagonal; points below it are overconfident, above it underconfident. The marks grow with the bin's share of the inputs, and a strip below shows that share, since a bin of three inputs can sit far from the diagonal by chance. The legend gives each one's ECE.  <br /></td></tr>
+<tr class="separator:a6eb8564b6c1559b7f3133fc8bcfb7410"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac3f325303d9a946abb46fff4a9a8e1b6" id="r_ac3f325303d9a946abb46fff4a9a8e1b6"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#ac3f325303d9a946abb46fff4a9a8e1b6">RenderReliabilityDiagramSvg</a> (const <a class="el" href="structpulsatrix_1_1ClassificationReport.html">ClassificationReport</a> &amp;report, const <a class="el" href="structpulsatrix_1_1SvgOptions.html">SvgOptions</a> &amp;options={})</td></tr>
+<tr class="memdesc:ac3f325303d9a946abb46fff4a9a8e1b6"><td class="mdescLeft">&#160;</td><td class="mdescRight">The diagram of one classifier.  <br /></td></tr>
+<tr class="separator:ac3f325303d9a946abb46fff4a9a8e1b6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aecc13419e6ae499bb6340e6a5d180b1e" id="r_aecc13419e6ae499bb6340e6a5d180b1e"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#aecc13419e6ae499bb6340e6a5d180b1e">RenderSliceErrorSvg</a> (const <a class="el" href="structpulsatrix_1_1SliceErrorReport.html">SliceErrorReport</a> &amp;report, const <a class="el" href="structpulsatrix_1_1SliceErrorViewOptions.html">SliceErrorViewOptions</a> &amp;view={}, const <a class="el" href="structpulsatrix_1_1SvgOptions.html">SvgOptions</a> &amp;options={})</td></tr>
+<tr class="memdesc:aecc13419e6ae499bb6340e6a5d180b1e"><td class="mdescLeft">&#160;</td><td class="mdescRight">The error on each slice, worst first: a point with its interval, the error of the whole dataset as a dashed line, and each slice's p-value. Slices worse than the rest, after Bonferroni's correction, are red.  <br /></td></tr>
+<tr class="separator:aecc13419e6ae499bb6340e6a5d180b1e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab81a9c0a4ab6fc4d1d737368b0ec12b9" id="r_ab81a9c0a4ab6fc4d1d737368b0ec12b9"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structpulsatrix_1_1BarSeries.html">BarSeries</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#ab81a9c0a4ab6fc4d1d737368b0ec12b9">ToFeatureImportanceBars</a> (const <a class="el" href="structpulsatrix_1_1Attribution.html">Attribution</a> &amp;attr, int <a class="el" href="namespacepulsatrix.html#a307af1ed1935c2c78f7e2aead3f70c45">top_k</a>)</td></tr>
 <tr class="memdesc:ab81a9c0a4ab6fc4d1d737368b0ec12b9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Converts an <a class="el" href="structpulsatrix_1_1Attribution.html" title="An explanation result: the raw attribution values, the method that produced them, and any relevant me...">Attribution</a>'s per-feature values into labeled, magnitude-sorted bars for a horizontal bar chart &ndash; the canonical XAI feature-importance encoding (hc_information_visualization.md SS5: position on a shared axis, Cleveland-McGill rank 1).  <br /></td></tr>
 <tr class="separator:ab81a9c0a4ab6fc4d1d737368b0ec12b9"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -4037,6 +4058,10 @@ Functions</h2></td></tr>
 <tr class="separator:a16c3a4bc0a1be9a51f178f5d70fe37db"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2076145e3d4412b8025e0258e832f602" id="r_a2076145e3d4412b8025e0258e832f602"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structpulsatrix_1_1MimeBundle.html">MimeBundle</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#a2076145e3d4412b8025e0258e832f602">mime_bundle_repr</a> (const <a class="el" href="structpulsatrix_1_1PersistenceDiagramDocument.html">PersistenceDiagramDocument</a> &amp;doc)</td></tr>
 <tr class="separator:a2076145e3d4412b8025e0258e832f602"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a75744ac8822bf93735f3f6bd5cd9c378" id="r_a75744ac8822bf93735f3f6bd5cd9c378"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structpulsatrix_1_1MimeBundle.html">MimeBundle</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#a75744ac8822bf93735f3f6bd5cd9c378">mime_bundle_repr</a> (const <a class="el" href="structpulsatrix_1_1ClassificationReport.html">ClassificationReport</a> &amp;report)</td></tr>
+<tr class="separator:a75744ac8822bf93735f3f6bd5cd9c378"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a924296ed69d5837fceb5cb82c4c6f7b8" id="r_a924296ed69d5837fceb5cb82c4c6f7b8"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structpulsatrix_1_1MimeBundle.html">MimeBundle</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#a924296ed69d5837fceb5cb82c4c6f7b8">mime_bundle_repr</a> (const <a class="el" href="structpulsatrix_1_1SliceErrorReport.html">SliceErrorReport</a> &amp;report)</td></tr>
+<tr class="separator:a924296ed69d5837fceb5cb82c4c6f7b8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="var-members" name="var-members"></a>
 Variables</h2></td></tr>
@@ -16787,7 +16812,7 @@ template&lt;typename Genotype , typename FitnessT &gt; </div>
 </div>
 </div>
 <a id="a10fa8d2b1fde640f55f4f7c3d87e9190" name="a10fa8d2b1fde640f55f4f7c3d87e9190"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a10fa8d2b1fde640f55f4f7c3d87e9190">&#9670;&#160;</a></span>mime_bundle_repr() <span class="overload">[1/19]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a10fa8d2b1fde640f55f4f7c3d87e9190">&#9670;&#160;</a></span>mime_bundle_repr() <span class="overload">[1/21]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -16805,7 +16830,7 @@ template&lt;typename Genotype , typename FitnessT &gt; </div>
 </div>
 </div>
 <a id="ad4dbcb8ec9b7d8408367e7618f7de178" name="ad4dbcb8ec9b7d8408367e7618f7de178"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ad4dbcb8ec9b7d8408367e7618f7de178">&#9670;&#160;</a></span>mime_bundle_repr() <span class="overload">[2/19]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#ad4dbcb8ec9b7d8408367e7618f7de178">&#9670;&#160;</a></span>mime_bundle_repr() <span class="overload">[2/21]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -16823,7 +16848,7 @@ template&lt;typename Genotype , typename FitnessT &gt; </div>
 </div>
 </div>
 <a id="a718fd41444d4333f05b342ad37b0dd56" name="a718fd41444d4333f05b342ad37b0dd56"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a718fd41444d4333f05b342ad37b0dd56">&#9670;&#160;</a></span>mime_bundle_repr() <span class="overload">[3/19]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a718fd41444d4333f05b342ad37b0dd56">&#9670;&#160;</a></span>mime_bundle_repr() <span class="overload">[3/21]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -16841,7 +16866,7 @@ template&lt;typename Genotype , typename FitnessT &gt; </div>
 </div>
 </div>
 <a id="aea9e03f554b09c01e0ecfa1a4f5253ff" name="aea9e03f554b09c01e0ecfa1a4f5253ff"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aea9e03f554b09c01e0ecfa1a4f5253ff">&#9670;&#160;</a></span>mime_bundle_repr() <span class="overload">[4/19]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#aea9e03f554b09c01e0ecfa1a4f5253ff">&#9670;&#160;</a></span>mime_bundle_repr() <span class="overload">[4/21]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -16858,8 +16883,26 @@ template&lt;typename Genotype , typename FitnessT &gt; </div>
 
 </div>
 </div>
+<a id="a75744ac8822bf93735f3f6bd5cd9c378" name="a75744ac8822bf93735f3f6bd5cd9c378"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a75744ac8822bf93735f3f6bd5cd9c378">&#9670;&#160;</a></span>mime_bundle_repr() <span class="overload">[5/21]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="structpulsatrix_1_1MimeBundle.html">MimeBundle</a> pulsatrix::mime_bundle_repr </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="structpulsatrix_1_1ClassificationReport.html">ClassificationReport</a> &amp;&#160;</td>
+          <td class="paramname"><em>report</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
 <a id="af01877b8e7b3d8f50cec63a2d878ca7a" name="af01877b8e7b3d8f50cec63a2d878ca7a"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#af01877b8e7b3d8f50cec63a2d878ca7a">&#9670;&#160;</a></span>mime_bundle_repr() <span class="overload">[5/19]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#af01877b8e7b3d8f50cec63a2d878ca7a">&#9670;&#160;</a></span>mime_bundle_repr() <span class="overload">[6/21]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -16877,7 +16920,7 @@ template&lt;typename Genotype , typename FitnessT &gt; </div>
 </div>
 </div>
 <a id="a79ac13943c8636e5c163a3393758398d" name="a79ac13943c8636e5c163a3393758398d"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a79ac13943c8636e5c163a3393758398d">&#9670;&#160;</a></span>mime_bundle_repr() <span class="overload">[6/19]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a79ac13943c8636e5c163a3393758398d">&#9670;&#160;</a></span>mime_bundle_repr() <span class="overload">[7/21]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -16895,7 +16938,7 @@ template&lt;typename Genotype , typename FitnessT &gt; </div>
 </div>
 </div>
 <a id="a0a96592fc3296784644c9a50a98356e3" name="a0a96592fc3296784644c9a50a98356e3"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a0a96592fc3296784644c9a50a98356e3">&#9670;&#160;</a></span>mime_bundle_repr() <span class="overload">[7/19]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a0a96592fc3296784644c9a50a98356e3">&#9670;&#160;</a></span>mime_bundle_repr() <span class="overload">[8/21]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -16913,7 +16956,7 @@ template&lt;typename Genotype , typename FitnessT &gt; </div>
 </div>
 </div>
 <a id="a2c22c9057f5981696ca0a404cf7a5d45" name="a2c22c9057f5981696ca0a404cf7a5d45"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a2c22c9057f5981696ca0a404cf7a5d45">&#9670;&#160;</a></span>mime_bundle_repr() <span class="overload">[8/19]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a2c22c9057f5981696ca0a404cf7a5d45">&#9670;&#160;</a></span>mime_bundle_repr() <span class="overload">[9/21]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -16931,7 +16974,7 @@ template&lt;typename Genotype , typename FitnessT &gt; </div>
 </div>
 </div>
 <a id="a3f6249854f36483286fb2e988ea0f529" name="a3f6249854f36483286fb2e988ea0f529"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a3f6249854f36483286fb2e988ea0f529">&#9670;&#160;</a></span>mime_bundle_repr() <span class="overload">[9/19]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a3f6249854f36483286fb2e988ea0f529">&#9670;&#160;</a></span>mime_bundle_repr() <span class="overload">[10/21]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -16949,7 +16992,7 @@ template&lt;typename Genotype , typename FitnessT &gt; </div>
 </div>
 </div>
 <a id="a6e04a44ae6552e0612c827d8a384132a" name="a6e04a44ae6552e0612c827d8a384132a"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a6e04a44ae6552e0612c827d8a384132a">&#9670;&#160;</a></span>mime_bundle_repr() <span class="overload">[10/19]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a6e04a44ae6552e0612c827d8a384132a">&#9670;&#160;</a></span>mime_bundle_repr() <span class="overload">[11/21]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -16967,7 +17010,7 @@ template&lt;typename Genotype , typename FitnessT &gt; </div>
 </div>
 </div>
 <a id="a2076145e3d4412b8025e0258e832f602" name="a2076145e3d4412b8025e0258e832f602"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a2076145e3d4412b8025e0258e832f602">&#9670;&#160;</a></span>mime_bundle_repr() <span class="overload">[11/19]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a2076145e3d4412b8025e0258e832f602">&#9670;&#160;</a></span>mime_bundle_repr() <span class="overload">[12/21]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -16985,7 +17028,7 @@ template&lt;typename Genotype , typename FitnessT &gt; </div>
 </div>
 </div>
 <a id="a4a18186dd78ab69f1a6e63e6d453c266" name="a4a18186dd78ab69f1a6e63e6d453c266"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a4a18186dd78ab69f1a6e63e6d453c266">&#9670;&#160;</a></span>mime_bundle_repr() <span class="overload">[12/19]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a4a18186dd78ab69f1a6e63e6d453c266">&#9670;&#160;</a></span>mime_bundle_repr() <span class="overload">[13/21]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -17003,7 +17046,7 @@ template&lt;typename Genotype , typename FitnessT &gt; </div>
 </div>
 </div>
 <a id="a16c3a4bc0a1be9a51f178f5d70fe37db" name="a16c3a4bc0a1be9a51f178f5d70fe37db"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a16c3a4bc0a1be9a51f178f5d70fe37db">&#9670;&#160;</a></span>mime_bundle_repr() <span class="overload">[13/19]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a16c3a4bc0a1be9a51f178f5d70fe37db">&#9670;&#160;</a></span>mime_bundle_repr() <span class="overload">[14/21]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -17021,7 +17064,7 @@ template&lt;typename Genotype , typename FitnessT &gt; </div>
 </div>
 </div>
 <a id="a5d1031a366e1377496a6abd0c66825b1" name="a5d1031a366e1377496a6abd0c66825b1"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a5d1031a366e1377496a6abd0c66825b1">&#9670;&#160;</a></span>mime_bundle_repr() <span class="overload">[14/19]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a5d1031a366e1377496a6abd0c66825b1">&#9670;&#160;</a></span>mime_bundle_repr() <span class="overload">[15/21]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -17039,7 +17082,7 @@ template&lt;typename Genotype , typename FitnessT &gt; </div>
 </div>
 </div>
 <a id="a99ab3a4a86c7d737fb6830e4d12441f3" name="a99ab3a4a86c7d737fb6830e4d12441f3"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a99ab3a4a86c7d737fb6830e4d12441f3">&#9670;&#160;</a></span>mime_bundle_repr() <span class="overload">[15/19]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a99ab3a4a86c7d737fb6830e4d12441f3">&#9670;&#160;</a></span>mime_bundle_repr() <span class="overload">[16/21]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -17056,8 +17099,26 @@ template&lt;typename Genotype , typename FitnessT &gt; </div>
 
 </div>
 </div>
+<a id="a924296ed69d5837fceb5cb82c4c6f7b8" name="a924296ed69d5837fceb5cb82c4c6f7b8"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a924296ed69d5837fceb5cb82c4c6f7b8">&#9670;&#160;</a></span>mime_bundle_repr() <span class="overload">[17/21]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="structpulsatrix_1_1MimeBundle.html">MimeBundle</a> pulsatrix::mime_bundle_repr </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="structpulsatrix_1_1SliceErrorReport.html">SliceErrorReport</a> &amp;&#160;</td>
+          <td class="paramname"><em>report</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
 <a id="a27045a862ccecd46ccbf77554962ebcc" name="a27045a862ccecd46ccbf77554962ebcc"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a27045a862ccecd46ccbf77554962ebcc">&#9670;&#160;</a></span>mime_bundle_repr() <span class="overload">[16/19]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a27045a862ccecd46ccbf77554962ebcc">&#9670;&#160;</a></span>mime_bundle_repr() <span class="overload">[18/21]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -17075,7 +17136,7 @@ template&lt;typename Genotype , typename FitnessT &gt; </div>
 </div>
 </div>
 <a id="a71b7ebedf3ae3a9f8f43f2ceeaa3b5b5" name="a71b7ebedf3ae3a9f8f43f2ceeaa3b5b5"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a71b7ebedf3ae3a9f8f43f2ceeaa3b5b5">&#9670;&#160;</a></span>mime_bundle_repr() <span class="overload">[17/19]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a71b7ebedf3ae3a9f8f43f2ceeaa3b5b5">&#9670;&#160;</a></span>mime_bundle_repr() <span class="overload">[19/21]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -17093,7 +17154,7 @@ template&lt;typename Genotype , typename FitnessT &gt; </div>
 </div>
 </div>
 <a id="ae99119c089ef19e4e1d65076dbaf8e89" name="ae99119c089ef19e4e1d65076dbaf8e89"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ae99119c089ef19e4e1d65076dbaf8e89">&#9670;&#160;</a></span>mime_bundle_repr() <span class="overload">[18/19]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#ae99119c089ef19e4e1d65076dbaf8e89">&#9670;&#160;</a></span>mime_bundle_repr() <span class="overload">[20/21]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -17111,7 +17172,7 @@ template&lt;typename Genotype , typename FitnessT &gt; </div>
 </div>
 </div>
 <a id="aa37231ff279eb9a9310bc53f081287e6" name="aa37231ff279eb9a9310bc53f081287e6"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aa37231ff279eb9a9310bc53f081287e6">&#9670;&#160;</a></span>mime_bundle_repr() <span class="overload">[19/19]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#aa37231ff279eb9a9310bc53f081287e6">&#9670;&#160;</a></span>mime_bundle_repr() <span class="overload">[21/21]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -18382,6 +18443,32 @@ template&lt;typename T &gt; </div>
 
 </div>
 </div>
+<a id="aef42dbb81cdd1381473421831084d3bb" name="aef42dbb81cdd1381473421831084d3bb"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aef42dbb81cdd1381473421831084d3bb">&#9670;&#160;</a></span>ParseClassificationReport()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="structpulsatrix_1_1ClassificationReport.html">ClassificationReport</a> pulsatrix::ParseClassificationReport </td>
+          <td>(</td>
+          <td class="paramtype">std::string_view&#160;</td>
+          <td class="paramname"><em>json</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Reads a <code>pulsatrix.classification_report.v1</code> document, as ToJson(ClassificationReport) writes it. </p>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname">std::invalid_argument</td><td>if it isn't one, or doesn't hold together: a score outside its range, bins out of order or whose counts don't sum to n, or a confusion matrix or per-class list that isn't classes long. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
 <a id="a652b908174731d5464c59241c6d9d165" name="a652b908174731d5464c59241c6d9d165"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a652b908174731d5464c59241c6d9d165">&#9670;&#160;</a></span>ParseContactMapDocument()</h2>
 
@@ -18853,6 +18940,32 @@ template&lt;typename T &gt; </div>
         </tr>
       </table>
 </div><div class="memdoc">
+
+</div>
+</div>
+<a id="a540e7a05429af4871d5d7606376187e9" name="a540e7a05429af4871d5d7606376187e9"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a540e7a05429af4871d5d7606376187e9">&#9670;&#160;</a></span>ParseSliceErrorReport()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="structpulsatrix_1_1SliceErrorReport.html">SliceErrorReport</a> pulsatrix::ParseSliceErrorReport </td>
+          <td>(</td>
+          <td class="paramtype">std::string_view&#160;</td>
+          <td class="paramname"><em>json</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Reads a <code>pulsatrix.slice_error.v1</code> document, as ToJson(SliceErrorReport) writes it. </p>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname">std::invalid_argument</td><td>if it isn't one, or doesn't hold together: no slices, counts that don't sum to n, an error outside its interval, a p-value outside [0, 1] or alpha outside (0, 1). </td></tr>
+  </table>
+  </dd>
+</dl>
 
 </div>
 </div>
@@ -21680,6 +21793,72 @@ template&lt;typename Genotype , typename FitnessT &gt; </div>
 
 </div>
 </div>
+<a id="ac3f325303d9a946abb46fff4a9a8e1b6" name="ac3f325303d9a946abb46fff4a9a8e1b6"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac3f325303d9a946abb46fff4a9a8e1b6">&#9670;&#160;</a></span>RenderReliabilityDiagramSvg() <span class="overload">[1/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::string pulsatrix::RenderReliabilityDiagramSvg </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="structpulsatrix_1_1ClassificationReport.html">ClassificationReport</a> &amp;&#160;</td>
+          <td class="paramname"><em>report</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="structpulsatrix_1_1SvgOptions.html">SvgOptions</a> &amp;&#160;</td>
+          <td class="paramname"><em>options</em> = <code>{}</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>The diagram of one classifier. </p>
+
+</div>
+</div>
+<a id="a6eb8564b6c1559b7f3133fc8bcfb7410" name="a6eb8564b6c1559b7f3133fc8bcfb7410"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6eb8564b6c1559b7f3133fc8bcfb7410">&#9670;&#160;</a></span>RenderReliabilityDiagramSvg() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::string pulsatrix::RenderReliabilityDiagramSvg </td>
+          <td>(</td>
+          <td class="paramtype">const std::vector&lt; <a class="el" href="structpulsatrix_1_1ReliabilitySeries.html">ReliabilitySeries</a> &gt; &amp;&#160;</td>
+          <td class="paramname"><em>series</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="structpulsatrix_1_1SvgOptions.html">SvgOptions</a> &amp;&#160;</td>
+          <td class="paramname"><em>options</em> = <code>{}</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>A reliability diagram (Guo et al., ICML 2017): each confidence bin's accuracy against its mean confidence, one line per classifier. A calibrated classifier lies on the diagonal; points below it are overconfident, above it underconfident. The marks grow with the bin's share of the inputs, and a strip below shows that share, since a bin of three inputs can sit far from the diagonal by chance. The legend gives each one's ECE. </p>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname">std::invalid_argument</td><td>if there are no series, more than 10, a report has no reliability bins, or the options are unusable. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
 <a id="a4955f9a444fe6d18d996976696f4878b" name="a4955f9a444fe6d18d996976696f4878b"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a4955f9a444fe6d18d996976696f4878b">&#9670;&#160;</a></span>RenderResidueTracksHtml()</h2>
 
@@ -21803,6 +21982,48 @@ template&lt;typename Genotype , typename FitnessT &gt; </div>
 <dl class="exception"><dt>Exceptions</dt><dd>
   <table class="exception">
     <tr><td class="paramname">std::invalid_argument</td><td>for a document ToJson rejects, or unusable options. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="aecc13419e6ae499bb6340e6a5d180b1e" name="aecc13419e6ae499bb6340e6a5d180b1e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aecc13419e6ae499bb6340e6a5d180b1e">&#9670;&#160;</a></span>RenderSliceErrorSvg()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::string pulsatrix::RenderSliceErrorSvg </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="structpulsatrix_1_1SliceErrorReport.html">SliceErrorReport</a> &amp;&#160;</td>
+          <td class="paramname"><em>report</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="structpulsatrix_1_1SliceErrorViewOptions.html">SliceErrorViewOptions</a> &amp;&#160;</td>
+          <td class="paramname"><em>view</em> = <code>{}</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="structpulsatrix_1_1SvgOptions.html">SvgOptions</a> &amp;&#160;</td>
+          <td class="paramname"><em>options</em> = <code>{}</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>The error on each slice, worst first: a point with its interval, the error of the whole dataset as a dashed line, and each slice's p-value. Slices worse than the rest, after Bonferroni's correction, are red. </p>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname">std::invalid_argument</td><td>if the report has no slices, max_slices &lt; 1, the reference is infinite or negative, or the options are unusable. </td></tr>
   </table>
   </dd>
 </dl>

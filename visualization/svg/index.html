@@ -2032,6 +2032,34 @@
   
   
     <li class="md-nav__item">
+      <a href="../../recipes/interpretability/how_sure_is_the_model/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    How Sure Is the Model?
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../../recipes/rl/dqn_cartpole/" class="md-nav__link">
         
   
@@ -2592,6 +2620,16 @@ magnitudes.</p>
 <td><code>PersistenceDiagramDocument</code></td>
 </tr>
 <tr>
+<td><code>RenderReliabilityDiagramSvg(series)</code></td>
+<td>Each confidence bin's accuracy against its mean confidence, one line per classifier, with the diagonal of perfect calibration, each classifier's ECE, and the share of inputs in each bin below</td>
+<td><code>ClassificationReport</code>s (performance views, <code>viz/performance_views.hpp</code>)</td>
+</tr>
+<tr>
+<td><code>RenderSliceErrorSvg(report, view)</code></td>
+<td>Each slice's error with its interval, worst first, the whole dataset's error as a dashed line, an optional reference such as a target miss rate, and each slice's p-value; slices worse than the rest in red</td>
+<td><code>SliceErrorReport</code></td>
+</tr>
+<tr>
 <td><code>RenderProjectionSvg(doc, x_axis, y_axis)</code></td>
 <td>Two axes of a projection, such as PC1 and PC2, on one scale: points colored by group (with a legend) or by value (with a color bar), each with its label on hover. UMAP and t-SNE plots get a note that their distances, cluster sizes and densities aren't meaningful</td>
 <td><code>ProjectionDocument</code></td>
@@ -2626,6 +2664,8 @@ pulsatrix_svg<span class="w"> </span>morris.json<span class="w"> </span>-o<span 
 pulsatrix_svg<span class="w"> </span>sobol.json<span class="w"> </span>-o<span class="w"> </span>sobol.svg<span class="w">                      </span><span class="c1"># Sobol index bars</span>
 pulsatrix_svg<span class="w"> </span>pca.json<span class="w"> </span>--axes<span class="w"> </span><span class="m">1</span>,3<span class="w"> </span>-o<span class="w"> </span>pca13.svg<span class="w">             </span><span class="c1"># projection: PC1 against PC3</span>
 pulsatrix_svg<span class="w"> </span>ph.json<span class="w"> </span>--view<span class="w"> </span>barcode<span class="w"> </span>--dims<span class="w"> </span><span class="m">1</span><span class="w"> </span>-o<span class="w"> </span>h1.svg<span class="w">    </span><span class="c1"># persistence: H1 as a barcode</span>
+pulsatrix_svg<span class="w"> </span>one.json<span class="w"> </span>five.json<span class="w"> </span>-o<span class="w"> </span>reliability.svg<span class="w">        </span><span class="c1"># classification reports: one reliability diagram</span>
+pulsatrix_svg<span class="w"> </span>slices.json<span class="w"> </span>-o<span class="w"> </span>slices.svg<span class="w">                    </span><span class="c1"># slice error: error by slice</span>
 </code></pre></div>
 <p>Other options: <code>--top-k N</code>, <code>--axes I,J</code> (a projection's axes, from 1), <code>--view diagram|barcode|betti</code> and <code>--dims D,...</code> (a persistence diagram's view and dimensions), <code>--width W</code>, <code>--font-size N</code>, <code>--title TEXT</code>.</p>
 <p><strong>Details:</strong></p>

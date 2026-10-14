@@ -2020,6 +2020,34 @@
   
   
     <li class="md-nav__item">
+      <a href="../recipes/interpretability/how_sure_is_the_model/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    How Sure Is the Model?
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../recipes/rl/dqn_cartpole/" class="md-nav__link">
         
   
@@ -8058,12 +8086,17 @@ that only offers tools is small. The genuinely hard parts are narrow:</p>
 <tr>
 <td>Views for the reliability diagram, per-slice error and conformal coverage</td>
 <td>KS-3</td>
-<td>VIZ</td>
+<td>Done, <a href="https://github.com/Joshuaweg/pulsatrix/pull/172">#172</a>: <code>RenderReliabilityDiagramSvg</code> and <code>RenderSliceErrorSvg</code>, which draws coverage by slice with the target miss rate as its reference; <code>pulsatrix_svg</code> reads both reports</td>
 </tr>
 <tr>
 <td>A recipe on a real model: calibration, uncertainty on familiar and unfamiliar inputs, and conformal coverage by slice</td>
 <td>KS-3</td>
-<td>a recipe</td>
+<td>Done, <a href="https://github.com/Joshuaweg/pulsatrix/pull/173">#173</a>: <a href="../recipes/interpretability/how_sure_is_the_model/">How sure is the model?</a></td>
+</tr>
+<tr>
+<td>A conformal score scaled by an ensemble's spread (normalized residuals), so intervals widen where the members disagree; the recipe's intervals cover 82% at unseen positions</td>
+<td>KS-3 recipe</td>
+<td>when a user needs it</td>
 </tr>
 <tr>
 <td>Uncertainty in the Justify report: the planner says the report should carry it, and <code>Explanation</code> has no field for it yet</td>
