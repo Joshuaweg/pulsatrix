@@ -203,6 +203,53 @@ already have.
 Test reference: `tests/surrogate_tree_test.cpp`, checked node by node against scikit-learn 1.9.1
 (`tools/generate_surrogate_tree_reference_values.py`).
 
+#### The tree as Datalog rules
+
+`ExtractRules` turns a classification tree into a Datalog program, one rule per leaf, that the
+library's Datalog engine runs. Rules can then be combined with other knowledge, or explained
+with the engine's own LRP:
+
+```cpp
+#include "pulsatrix/rule_extraction.hpp"
+
+TreeRules rules = ExtractRules(s.tree, {"length", "width"}, {"a", "b", "c"});
+for (const ExtractedRule& r : rules.rules) std::cout << FormatRule(r.rule) << "\n";
+std::vector<int64_t> classes = ClassifyWithRules(rules, inputs);  // the engine's answer, input by input
+```
+
+For the tree "length ≤ 0.5? (length ≤ 0.25? a : (width ≤ 0.3? b : a)) : c" (the one in
+`tests/rule_extraction_test.cpp`) this prints:
+
+```
+predict(S, a) :- sample(S), le(S, length, 0.25).
+predict(S, b) :- sample(S), le(S, length, 0.5), gt(S, length, 0.25), le(S, width, 0.3).
+predict(S, a) :- sample(S), le(S, length, 0.5), gt(S, length, 0.25), gt(S, width, 0.3).
+predict(S, c) :- sample(S), gt(S, length, 0.5).
+```
+
+- **Facts:** `rules.Facts("s1", x)` writes the facts for one input: `sample(s1)`, and `le` or
+  `gt` for every threshold the rules test. Datalog's constants are strings, so thresholds are
+  written with 9 significant digits, in the rules and the facts alike.
+- **Merging:** two tests in the same direction on one feature merge into the tighter one, as in
+  the first rule, where length ≤ 0.5 and length ≤ 0.25 become length ≤ 0.25.
+- **Each rule records:** the leaf's training support, and its confidence, the share of that
+  support in the rule's class. `ToJson` writes them all as a `pulsatrix.tree_rules.v1` document.
+- **Checked:** on a fitted depth-5 tree, the engine derives exactly one `predict` fact for each
+  of 300 inputs, and it is always the tree's class.
+
+A `SoftDecisionTree` (see [Knowledge distillation](../deep-learning/index.md#knowledge-distillation))
+gives weighted rules instead:
+
+```
+predict(S, C) :- right(S, n0), left(S, n2), right(S, n5), leaf(l5, C).
+```
+
+- **The facts:** `right(s, n)` carries the probability of going right at node n, `left(s, n)` its
+  complement, and `leaf(l, c)` leaf l's probability of class c.
+- **The result:** over the real semiring, the engine sums the product of the weights over every
+  derivation. So the derived `predict(s, c)` is exactly the tree's probability of class c
+  (`ClassProbabilitiesFromRules`), within 1e-12 in the tests.
+
 ### Anchors
 
 ```cpp
