@@ -1239,7 +1239,7 @@ weight variance.
 | KD-1 | A knowledge-distillation loss (softened teacher outputs, with the T² scaling) | A student trained on what the teacher believes, not only on the labels | — | P1 | S | Done, [#178](https://github.com/Joshuaweg/pulsatrix/pull/178) (see below) |
 | KD-2 | A teacher–student explanation-agreement test: compare LRP or IG maps with CKA or rank correlation | Turns distillation into a test of whether the student uses the same evidence | KD-1, INT-2 | P1 | S | Done, [#180](https://github.com/Joshuaweg/pulsatrix/pull/180) (see below) |
 | KD-3 | Feature and attention distillation, soft decision trees, and rule extraction that feeds the Datalog engine | Interpretable students; rules connect to pulsatrix's neuro-symbolic side | KD-1 | P2 | — | Done: feature distillation, [#182](https://github.com/Joshuaweg/pulsatrix/pull/182); a soft decision tree, [#183](https://github.com/Joshuaweg/pulsatrix/pull/183); rules for the Datalog engine, [#184](https://github.com/Joshuaweg/pulsatrix/pull/184) (see below) |
-| KD-4 | Born-again networks and a DistilBERT-style recipe | Small and inconsistent gains | KD-1, IO-2 | P3 | — | In progress: the library pieces, [#186](https://github.com/Joshuaweg/pulsatrix/pull/186); a born-again recipe, [#187](https://github.com/Joshuaweg/pulsatrix/pull/187) (see below) |
+| KD-4 | Born-again networks and a DistilBERT-style recipe | Small and inconsistent gains | KD-1, IO-2 | P3 | — | Done: the library pieces, [#186](https://github.com/Joshuaweg/pulsatrix/pull/186); a born-again recipe, [#187](https://github.com/Joshuaweg/pulsatrix/pull/187); a DistilBERT-style recipe, [#188](https://github.com/Joshuaweg/pulsatrix/pull/188) (see below) |
 
 - **KD-1** is `DistillationLoss` (`distillation_loss.hpp`), not a wrapper around
   `KLDivergenceLoss` as planned: that loss is the KL between a VAE's Gaussian posterior and its
@@ -1283,6 +1283,14 @@ weight variance.
   teacher's, and three label networks ensemble better than three generations. At T = 4, a
   follow-up, students copy more of their teacher's evidence (KD-2's test) and are less accurate.
   Follow-up: CWTM, once the cross-entropy loss takes per-example weights.
+- **KD-4's DistilBERT-style recipe** (`half_the_layers_recipe`) halves SmolLM2-135M-Instruct to 15
+  blocks and trains five students for 300 steps on chat text. Distillation brings the student's
+  outputs three times closer to the teacher's (KL) and wins on the text after the conversations'
+  shared system prompt, but loses on overall perplexity, because the students memorize that prompt
+  and the teacher predicts it badly. The teacher's blocks matter far more than the losses, and the
+  cosine loss doesn't matter here. The distilled student's token relevance (AttnLRP) is no closer
+  to the teacher's than the language-modeling student's. Follow-ups: distill on text without a
+  repeated opening, and longer runs.
 
 ## FEAT: Featurizers, sparse autoencoders and Goodfire BSF
 
