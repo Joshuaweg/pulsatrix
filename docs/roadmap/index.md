@@ -212,6 +212,9 @@ Fine-tune the models from v1.2 and explain what the fine-tuning changed.
   [#155](https://github.com/Joshuaweg/pulsatrix/pull/155)): LoRA, LRP through LoRA, LoReFT, IA³, model diffing
 - KD-1 (**done**, [#178](https://github.com/Joshuaweg/pulsatrix/pull/178)): a distillation loss
 - KD-2 (**done**, [#180](https://github.com/Joshuaweg/pulsatrix/pull/180)): teacher–student explanation agreement
+- KD-3 and KD-4 (**done**, from the backlog, [#182](https://github.com/Joshuaweg/pulsatrix/pull/182) to
+  [#188](https://github.com/Joshuaweg/pulsatrix/pull/188)): interpretable students, rules for the Datalog engine,
+  DistilBERT-style students and born-again networks, with recipes
 - XAI-1 (**done**, [#156](https://github.com/Joshuaweg/pulsatrix/pull/156)): which questions each explainer answers
 - XAI-2 (**done**, [#160](https://github.com/Joshuaweg/pulsatrix/pull/160)): the question-driven planner
 - XAI-3 (**done**, [#161](https://github.com/Joshuaweg/pulsatrix/pull/161)): explanation reports that run the checks and carry caveats
@@ -270,7 +273,7 @@ Its own epic, started 2026-10-07 after VIZ-4. **Complete** (2026-10-08, PRs
 ### Backlog, not yet scheduled
 
 These P2 and P3 items wait until a milestone needs them or someone asks: TRN-12, TRN-13, IO-10,
-IO-11, TDA-13 to TDA-19, KD-3, KD-4, FEAT-8 (**done**), ARCH-4 to ARCH-10, VIZ-7, HIP-10,
+IO-11, TDA-13 to TDA-19, KD-3 and KD-4 (**done**), FEAT-8 (**done**), ARCH-4 to ARCH-10, VIZ-7, HIP-10,
 AGT-6, AGT-7, AGT-9, NB-4, NB-5, KS-6 and KS-7.
 
 ### v2.0
@@ -1233,6 +1236,12 @@ weight variance.
 | A loop test for clustered points. On the calendar words, the largest death/birth ratio picks small loops inside each word's cluster rather than the ring through them, so the ring isn't certified though the order is. Rips on the cluster centroids, with a null of the same size, or a circular coordinate | The "Is the shape real?" recipe | TDA-10 |
 
 ## KD: Surrogates and student-teacher
+
+**Complete** (2026-10-14, PRs [#178](https://github.com/Joshuaweg/pulsatrix/pull/178) to
+[#188](https://github.com/Joshuaweg/pulsatrix/pull/188)). The user guide is the knowledge-distillation
+section of [Deep Learning](../deep-learning/index.md#knowledge-distillation), with the recipes
+[Is the student born better?](../recipes/deep-learning/born_again_networks.md) and
+[Half the layers](../recipes/deep-learning/half_the_layers.md).
 
 | ID | Item | Why | Depends on | P | Effort | Status |
 |---|---|---|---|---|---|---|
