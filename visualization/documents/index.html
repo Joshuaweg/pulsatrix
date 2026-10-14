@@ -2091,6 +2091,34 @@
   
   
     <li class="md-nav__item">
+      <a href="../../recipes/interpretability/how_sure_is_the_model/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    How Sure Is the Model?
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../../recipes/rl/dqn_cartpole/" class="md-nav__link">
         
   
@@ -2705,6 +2733,18 @@ a file format outlasts any one viewer.</p>
 <td><code>PersistenceDiagramDocument</code> (<code>viz/topology_documents.hpp</code>)</td>
 <td><code>title</code>, <code>filtration</code>, <code>source</code>, <code>num_points</code>, <code>threshold</code>, and per dimension its <code>births</code>, <code>deaths</code> (+∞ through <code>nonfinite</code>), certified <code>error_bound</code>, and optional <code>p_values</code> with their <code>significance_threshold</code> and <code>bootstrap_band</code></td>
 <td><code>RipsResult</code> or <code>PersistenceDiagram</code>s; <code>AttachSignificance(UniversalNullResult)</code>, <code>AttachBootstrapBand(BootstrapBandResult)</code></td>
+</tr>
+<tr>
+<td><code>pulsatrix.classification_report.v1</code></td>
+<td><code>ClassificationReport</code> (<code>performance.hpp</code>; read by <code>ParseClassificationReport</code> in <code>viz/performance_views.hpp</code>)</td>
+<td><code>n</code>, <code>classes</code>, <code>accuracy</code>, <code>log_loss</code>, <code>brier</code>, <code>ece</code>, <code>mce</code>, <code>macro_f1</code>, <code>reliability</code> (per bin <code>lower</code>, <code>upper</code>, <code>count</code>, <code>confidence</code>, <code>accuracy</code>), <code>confusion</code> (classes × classes) and <code>per_class</code> (<code>precision</code>, <code>recall</code>, <code>f1</code>, <code>support</code>)</td>
+<td><code>EvaluateClassifier</code></td>
+</tr>
+<tr>
+<td><code>pulsatrix.slice_error.v1</code></td>
+<td><code>SliceErrorReport</code> (<code>performance.hpp</code>; read by <code>ParseSliceErrorReport</code>)</td>
+<td><code>n</code>, <code>error</code>, <code>test</code>, <code>alpha</code>, and per slice its <code>name</code>, <code>count</code>, <code>error</code>, <code>lower</code>, <code>upper</code>, <code>rest_error</code>, <code>p_value</code> and <code>worse</code></td>
+<td><code>PerSliceError</code>, also of <code>CoverageReport::misses</code></td>
 </tr>
 <tr>
 <td><code>pulsatrix.residue_tracks.v1</code></td>

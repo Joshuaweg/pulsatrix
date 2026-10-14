@@ -2135,6 +2135,34 @@
   
   
     <li class="md-nav__item">
+      <a href="../../recipes/interpretability/how_sure_is_the_model/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    How Sure Is the Model?
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../../recipes/rl/dqn_cartpole/" class="md-nav__link">
         
   
@@ -2683,6 +2711,10 @@ prediction, not whether the prediction is right. Pulsatrix answers it with the m
 <code>fisher_exact</code>. <code>tests/performance_test.cpp</code> checks them against values from
 <code>tools/generate_performance_reference_values.py</code>; <code>tests/uncertainty_test.cpp</code> checks the
 uncertainty split against numpy.</p>
+<p>The recipe <a href="../../recipes/interpretability/how_sure_is_the_model/">How sure is the model?</a> runs all
+of it on a real model: a head on ESM-2 that predicts which mutations of TEM-1 β-lactamase still
+work, with its calibration, its uncertainty at positions it never saw, and where its conformal
+guarantee breaks.</p>
 <h2 id="scoring-a-classifier">Scoring a classifier<a class="headerlink" href="#scoring-a-classifier" title="Permanent link">&para;</a></h2>
 <p><code>EvaluateClassifier</code> takes the model's probabilities, <code>(N, K)</code>, and the true classes:</p>
 <div class="highlight"><pre><span></span><code><span class="cp">#include</span><span class="w"> </span><span class="cpf">"pulsatrix/performance.hpp"</span>
@@ -2750,6 +2782,17 @@ probability: 15 by default, as Guo et al. used (<code>ClassificationOptions::bin
 (0.867, 0.933]  n=23  confidence 0.904  accuracy 0.696
 </code></pre></div>
 <p>Its most confident predictions are right far less often than it claims.</p>
+<p><code>RenderReliabilityDiagramSvg</code> draws the bins, one line per classifier, so two models can be
+compared on one figure. A calibrated classifier lies on the diagonal. The marks grow with the bin's
+share of the inputs, and the strip below shows that share: a bin of three inputs can sit far from
+the diagonal by chance.</p>
+<div class="highlight"><pre><span></span><code><span class="cp">#include</span><span class="w"> </span><span class="cpf">"pulsatrix/viz/performance_views.hpp"</span>
+
+<span class="n">std</span><span class="o">::</span><span class="n">ofstream</span><span class="p">(</span><span class="s">"reliability.svg"</span><span class="p">)</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">RenderReliabilityDiagramSvg</span><span class="p">({{</span><span class="s">"one network"</span><span class="p">,</span><span class="w"> </span><span class="n">single</span><span class="p">},</span><span class="w"> </span><span class="p">{</span><span class="s">"ensemble"</span><span class="p">,</span><span class="w"> </span><span class="n">ensemble</span><span class="p">}});</span>
+</code></pre></div>
+<p><code>pulsatrix_svg one.json ensemble.json -o reliability.svg</code> draws the same from the reports' documents
+(<code>WriteJson(ToJson(report))</code>), each named after its file.</p>
+<p><img alt="A reliability diagram of two classifiers that make the same guesses, one more confidently: its points sit further below the diagonal, and its ECE is higher" src="../figures/reliability_diagram.svg" /></p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
 <p>The ECE depends on the number of bins, and with few predictions per bin it is biased upward.
@@ -2782,6 +2825,9 @@ at least one slice is worse than the rest
 </ul>
 <p>A slice that isn't flagged hasn't been shown to be fine. A small slice can have a high error and
 still not be significantly worse; its interval shows how little is known.</p>
+<p><code>RenderSliceErrorSvg(s)</code> draws the report, worst first, with each interval and p-value; slices
+worse than the rest are red. <code>SliceErrorViewOptions</code> names the metric and adds a reference line:</p>
+<p><img alt="Five slices' error rates with their intervals; the night slice is red and far above the overall error of 0.18" src="../figures/slice_error.svg" /></p>
 <h2 id="uncertainty">Uncertainty<a class="headerlink" href="#uncertainty" title="Permanent link">&para;</a></h2>
 <p>A probability of 0.6 from one network doesn't say whether the network has seen inputs like this
 one. Several predictions of the same input that disagree do. <code>pulsatrix/uncertainty.hpp</code> gets them
@@ -2891,7 +2937,14 @@ empty, and the coverage of each set size. Large sets that are undercovered are a
 doesn't adapt to hard inputs.</p>
 <p><strong>The guarantee is marginal:</strong> it holds on average over inputs, not for each input or each
 group. A model can cover 90% overall and 70% of one group. <code>CoverageReport::misses</code> holds a 0 or 1
-per input, so <code>PerSliceError(r.misses, slices)</code> tests each group's coverage like any other error.</p>
+per input, so <code>PerSliceError(r.misses, slices)</code> tests each group's coverage like any other error.
+Draw it with the target miss rate as the reference:</p>
+<div class="highlight"><pre><span></span><code><span class="n">SliceErrorViewOptions</span><span class="w"> </span><span class="n">view</span><span class="p">;</span>
+<span class="n">view</span><span class="p">.</span><span class="n">metric</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">"miss rate"</span><span class="p">;</span>
+<span class="n">view</span><span class="p">.</span><span class="n">reference</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">0.1</span><span class="p">;</span><span class="w">          </span><span class="c1">// alpha</span>
+<span class="n">view</span><span class="p">.</span><span class="n">reference_label</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">"target"</span><span class="p">;</span>
+<span class="n">std</span><span class="o">::</span><span class="n">ofstream</span><span class="p">(</span><span class="s">"coverage.svg"</span><span class="p">)</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">RenderSliceErrorSvg</span><span class="p">(</span><span class="n">PerSliceError</span><span class="p">(</span><span class="n">r</span><span class="p">.</span><span class="n">misses</span><span class="p">,</span><span class="w"> </span><span class="n">slices</span><span class="p">),</span><span class="w"> </span><span class="n">view</span><span class="p">);</span>
+</code></pre></div>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
 <p>With too few calibration examples, the rank ⌈(n + 1)(1 − α)⌉ is above n, q̂ is infinite and

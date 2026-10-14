@@ -1,7 +1,7 @@
 var searchData=
 [
-  ['a_0',['a',['../classpulsatrix_1_1LoRAAdapter.html#a7148a7be89421780c6e89ad97ad7596b',1,'pulsatrix::LoRAAdapter::a()'],['../structpulsatrix_1_1MstEdge.html#af292bb789324bacc31ba2bb058f1e726',1,'pulsatrix::MstEdge::a'],['../classpulsatrix_1_1MambaModule.html#a4f150207c0d6f533a2fa4992652d8af9',1,'pulsatrix::MambaModule::A()']]],
-  ['a_5fgrad_1',['a_grad',['../classpulsatrix_1_1LoRAAdapter.html#a6004484971657b6f47047d6f1e132a22',1,'pulsatrix::LoRAAdapter::a_grad()'],['../classpulsatrix_1_1MambaModule.html#ae74d42f084f52bcc4d2f34ea8073dac7',1,'pulsatrix::MambaModule::A_grad()']]],
+  ['a_0',['a',['../classpulsatrix_1_1LoRAAdapter.html#a7148a7be89421780c6e89ad97ad7596b',1,'pulsatrix::LoRAAdapter::a()'],['../structpulsatrix_1_1MstEdge.html#af292bb789324bacc31ba2bb058f1e726',1,'pulsatrix::MstEdge::a'],['../classpulsatrix_1_1MambaModule.html#a4f150207c0d6f533a2fa4992652d8af9',1,'pulsatrix::MambaModule::A() const']]],
+  ['a_5fgrad_1',['a_grad',['../classpulsatrix_1_1MambaModule.html#ae74d42f084f52bcc4d2f34ea8073dac7',1,'pulsatrix::MambaModule::A_grad()'],['../classpulsatrix_1_1LoRAAdapter.html#a6004484971657b6f47047d6f1e132a22',1,'pulsatrix::LoRAAdapter::a_grad()']]],
   ['ablated_2',['ablated',['../structpulsatrix_1_1LossRecovered.html#ae4bf760b87f2659a2cde1240e8d79136',1,'pulsatrix::LossRecovered']]],
   ['ablation_5feffect_3',['ablation_effect',['../structpulsatrix_1_1CircuitGraphDocument_1_1Node.html#a479ce59da4c3972bcffbeb7c15125815',1,'pulsatrix::CircuitGraphDocument::Node::ablation_effect'],['../structpulsatrix_1_1CircuitNode.html#a1f94bfdd9448bdae4f6d529da9688232',1,'pulsatrix::CircuitNode::ablation_effect']]],
   ['ablationhook_4',['AblationHook',['../namespacepulsatrix.html#a1184cf3eab567420501e3a607b99a2b4',1,'pulsatrix']]],
