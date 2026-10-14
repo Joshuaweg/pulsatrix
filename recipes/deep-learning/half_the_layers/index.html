@@ -1,0 +1,3032 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="ExAI-first C++ deep learning library">
+      
+      
+      
+        <link rel="canonical" href="https://joshuaweg.github.io/pulsatrix/recipes/deep-learning/half_the_layers/">
+      
+      
+        <link rel="prev" href="../born_again_networks/">
+      
+      
+        <link rel="next" href="../../data-pipeline/csv_dataloader_training/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../../../assets/pulsatrix_icon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.7">
+    
+    
+      
+        <title>Half the Layers - Pulsatrix</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../../assets/stylesheets/main.ec1eaa64.min.css">
+      
+        
+        <link rel="stylesheet" href="../../../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../../stylesheets/extra.css">
+    
+    <script>__md_scope=new URL("../../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="green" data-md-color-accent="teal">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#recipe-half-the-layers" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../../.." title="Pulsatrix" class="md-header__button md-logo" aria-label="Pulsatrix" data-md-component="logo">
+      
+  <img src="../../../assets/pulsatrix_icon.png" alt="logo">
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Pulsatrix
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Half the Layers
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="green" data-md-color-accent="teal"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a4 4 0 0 0-4 4 4 4 0 0 0 4 4 4 4 0 0 0 4-4 4 4 0 0 0-4-4m0 10a6 6 0 0 1-6-6 6 6 0 0 1 6-6 6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="green" data-md-color-accent="teal"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 18c-.89 0-1.74-.2-2.5-.55C11.56 16.5 13 14.42 13 12s-1.44-4.5-3.5-5.45C10.26 6.2 11.11 6 12 6a6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/Joshuaweg/pulsatrix" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    Joshuaweg/pulsatrix
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../../.." title="Pulsatrix" class="md-nav__button md-logo" aria-label="Pulsatrix" data-md-component="logo">
+      
+  <img src="../../../assets/pulsatrix_icon.png" alt="logo">
+
+    </a>
+    Pulsatrix
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/Joshuaweg/pulsatrix" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    Joshuaweg/pulsatrix
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Home
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../getting-started/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Getting Started
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Deep Learning Modules and Layers
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Deep Learning Modules and Layers
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../deep-learning/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Overview
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../deep-learning/fine-tuning/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Parameter-Efficient Fine-Tuning
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../data-pipeline/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Data Loading, Transformation & Validation
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../language-models/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Language Models
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../protein-models/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Protein Language Models
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7" >
+        
+          
+          <label class="md-nav__link" for="__nav_7" id="__nav_7_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Interpretability
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_7_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_7">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Interpretability
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../interpretability/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Overview
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../interpretability/lrp/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Layer-wise Relevance Propagation
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../interpretability/model-agnostic/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Model-Agnostic Explainers
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../interpretability/deep-learning-approaches/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Gradient-Based Explainers
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../interpretability/performance/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Performance
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../reinforcement-learning/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Reinforcement Learning
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_9" >
+        
+          
+          <label class="md-nav__link" for="__nav_9" id="__nav_9_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Mechanistic Interpretability
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_9_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_9">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Mechanistic Interpretability
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../mechanistic-interpretability/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Overview
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../mechanistic-interpretability/probes-and-concepts/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Probes and Concepts
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../mechanistic-interpretability/representations/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Analyzing Representations
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../mechanistic-interpretability/topology/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Topology of Representations
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../mechanistic-interpretability/featurizers/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Finding Features
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../mechanistic-interpretability/evaluating-features/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Evaluating Features
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../mechanistic-interpretability/steering/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Steering
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../mechanistic-interpretability/model-diffing/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Model Diffing
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../mechanistic-interpretability/parameter-decomposition/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Parameter Decomposition
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../mechanistic-interpretability/attribution-graphs/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Attribution Graphs
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../mechanistic-interpretability/gflownets/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    GFlowNets
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../neuro-symbolic/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Neuro-Symbolic Reasoning
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../evolutionary-computation/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Evolutionary Computation
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../hyperparameter-optimization/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Hyperparameter Optimization
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../agents/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    LLM Agents
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_14" >
+        
+          
+          <label class="md-nav__link" for="__nav_14" id="__nav_14_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Visualization
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_14_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_14">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Visualization
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../visualization/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Overview
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../visualization/notebooks/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Notebooks and Reports
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../visualization/svg/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    SVG Figures
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../visualization/html/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Interactive HTML
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../visualization/documents/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    JSON Documents
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../visualization/attribution-graphs/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Attribution Graph Viewers
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../visualization/desktop/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Desktop Windows (ImGui)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../system-monitoring/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    System Monitoring
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../gpu-profiling/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    GPU Profiling (HIP)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../gpu-ci/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    GPU CI
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../benchmarks/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Benchmarks
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../customization/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Customization
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_20" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_20" id="__nav_20_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Recipes
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_20_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_20">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Recipes
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Overview
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../xor_training/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    XOR Training
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../sequence_models_rnn_lstm_gru/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    RNN vs. LSTM vs. GRU
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../residual_and_norm_layers/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Residual and Normalization Layers
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../tagger_finetune/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Full Fine-Tuning
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../what_did_the_finetune_change/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    What Did the Fine-Tune Change?
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../born_again_networks/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Is the Student Born Better?
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Half the Layers
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Half the Layers
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#code" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Code
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#expected-output" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Expected output
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#whats-happening" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        What's happening
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="What&#39;s happening">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#two-instruments-that-needed-fixing" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Two instruments that needed fixing
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#see-also" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        See also
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../data-pipeline/csv_dataloader_training/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    CSV + DataLoader Training
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../interpretability/mnist_lrp/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    LRP on MNIST
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../interpretability/imagenet_lrp/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    LRP on ImageNet Models
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../interpretability/saliency_and_integrated_gradients/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Saliency and Integrated Gradients
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../interpretability/grad_cam_walkthrough/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Grad-CAM
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../interpretability/kernel_shap_basics/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    KernelSHAP
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../interpretability/lime_basics/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    LIME
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../interpretability/can_i_trust_this_explanation/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Can I Trust This Explanation?
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../interpretability/how_sure_is_the_model/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    How Sure Is the Model?
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../rl/dqn_cartpole/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    DQN on CartPole
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../rl/gae_and_ppo_clipped/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    GAE and PPO Clipping
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../mechanistic-interpretability/sparse_autoencoder_probe/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Sparse Autoencoder + Probe
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../mechanistic-interpretability/gflownet_hypergrid/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    GFlowNet on HyperGrid
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../mechanistic-interpretability/is_the_shape_real/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Is the Shape Real?
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../neuro-symbolic/datalog_lrp_bridge/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Datalog LRP Bridge
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../protein-models/protein_tem1/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    TEM-1 End to End
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../visualization/notebook_report/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Notebook Report
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../visualization/training_dashboard/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Training Dashboard
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_21" >
+        
+          
+          <label class="md-nav__link" for="__nav_21" id="__nav_21_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Roadmap
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_21_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_21">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Roadmap
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../roadmap/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Overview
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../roadmap/research-notes/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Research Notes
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../roadmap/protein-language-models/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Protein Language Models
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../api/index.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    API Reference
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#code" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Code
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#expected-output" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Expected output
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#whats-happening" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        What's happening
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="What&#39;s happening">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#two-instruments-that-needed-fixing" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Two instruments that needed fixing
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#see-also" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        See also
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+  
+  
+
+
+<h1 id="recipe-half-the-layers">Recipe: Half the Layers<a class="headerlink" href="#recipe-half-the-layers" title="Permanent link">&para;</a></h1>
+<p><strong>What you'll build:</strong> a student language model half the depth of its teacher, made the way
+DistilBERT was (Sanh et al., 2019). SmolLM2-135M-Instruct has 30 blocks. The student keeps blocks
+0, 2, 4, ..., 28, starts from their weights, and trains on chat text with DistilBERT's three
+losses: the teacher's softened outputs, the next token, and a cosine loss pulling the student's
+last hidden states toward the teacher's. Five students, the same 300 steps on the same batches:</p>
+<ul>
+<li><strong>untrained:</strong> the 15 kept blocks as they are;</li>
+<li><strong>language modeling:</strong> next-token cross-entropy alone;</li>
+<li><strong>distilled:</strong> DistilBERT's 5 : 2 : 1 mix of distillation (T = 2), cross-entropy and cosine;</li>
+<li><strong>distilled without the cosine loss:</strong> 5 : 2;</li>
+<li><strong>distilled from random blocks:</strong> the 5 : 2 : 1 mix, with every block's weight matrices redrawn
+  at random (each at its own scale). The embedding and the norms are still the teacher's.</li>
+</ul>
+<p>Then a question the loss can't answer: does the distilled student predict the next token from the
+same tokens as the teacher? AttnLRP token relevance for the teacher's top next token, compared
+between teacher and student with KD-2's test.</p>
+<p>The predictions were written down before the first run:</p>
+<ol>
+<li>Half the layers, untrained, breaks the model: held-out perplexity more than 10 times the
+   teacher's.</li>
+<li>Distillation beats language modeling alone: lower held-out perplexity and more of the
+   teacher's top-1 next tokens.</li>
+<li>Starting from the teacher's blocks matters more than the loss: the student from random blocks
+   ends with more than twice the language-modeling student's perplexity.</li>
+<li>The cosine loss matters little here: dropping it moves held-out perplexity by less than 5%.</li>
+<li>The distilled student's token relevance agrees with the teacher's more than the
+   language-modeling student's does (mean Spearman).</li>
+</ol>
+<p>Predictions 1, 3 and 4 hold; 2 and 5 fail. Distillation makes the student's <em>outputs</em> much more
+like the teacher's (a third of the KL divergence) without making its <em>explanations</em> any more like
+the teacher's. And the headline perplexity hides two different things, which the recipe separates.</p>
+<p>CMake target: <code>half_the_layers_recipe</code> (<code>examples/recipes/half_the_layers.cpp</code>).</p>
+<div class="highlight"><pre><span></span><code>./build/half_the_layers_recipe<span class="w"> </span>MODEL_DIR<span class="w"> </span>out/<span class="w"> </span>--text<span class="w"> </span>conversations.jsonl<span class="w"> </span><span class="o">[</span>--device<span class="w"> </span>hip<span class="o">]</span><span class="w"> </span><span class="o">[</span>--steps<span class="w"> </span><span class="m">300</span><span class="o">]</span>
+</code></pre></div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The recipe needs <a href="https://huggingface.co/HuggingFaceTB/SmolLM2-135M-Instruct"><code>HuggingFaceTB/SmolLM2-135M-Instruct</code></a>
+(270 MB): <code>model.safetensors</code>, <code>config.json</code> and <code>tokenizer.json</code> in one directory, and a JSONL
+file of chat conversations from <code>tools/explain/fetch_chat_sample.py</code>. On a GPU a run takes
+about 15 minutes. <code>--smoke</code> runs the tiny test model (<code>tests/fixtures/hf_tiny/llama</code>) on a few
+built-in sentences to check the plumbing; its numbers mean nothing.</p>
+</div>
+<h2 id="code">Code<a class="headerlink" href="#code" title="Permanent link">&para;</a></h2>
+<p>The text is cut into windows of 128 tokens. Whole conversations go to training (the first 90%) or
+to the held-out set, so none is in both. The student, and taps that give the cosine loss its
+gradient:</p>
+<div class="highlight"><pre><span></span><code><span class="n">std</span><span class="o">::</span><span class="n">unique_ptr</span><span class="o">&lt;</span><span class="n">CausalLM</span><span class="o">&gt;</span><span class="w"> </span><span class="n">student</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">MakeStudentFromLayers</span><span class="p">(</span><span class="o">*</span><span class="n">teacher</span><span class="p">,</span><span class="w"> </span><span class="n">EveryOtherLayer</span><span class="p">(</span><span class="mi">30</span><span class="p">),</span><span class="w"> </span><span class="n">backend</span><span class="p">);</span>
+<span class="n">student</span><span class="o">-&gt;</span><span class="n">set_intervention</span><span class="p">(</span><span class="mi">14</span><span class="p">,</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">make_unique</span><span class="o">&lt;</span><span class="n">HiddenStateTap</span><span class="o">&gt;</span><span class="p">(</span><span class="n">backend</span><span class="p">));</span>
+<span class="n">teacher</span><span class="o">-&gt;</span><span class="n">set_intervention</span><span class="p">(</span><span class="mi">29</span><span class="p">,</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">make_unique</span><span class="o">&lt;</span><span class="n">HiddenStateTap</span><span class="o">&gt;</span><span class="p">(</span><span class="n">backend</span><span class="p">));</span>
+</code></pre></div>
+<p>One distillation step, with DistilBERT's weights: <code>DistillationLoss</code> with alpha = 5/7 mixes the
+soft and hard terms 5 : 2, and the cosine loss enters at 1/7:</p>
+<div class="highlight"><pre><span></span><code><span class="n">DistillationOptions</span><span class="w"> </span><span class="n">dopt</span><span class="p">;</span>
+<span class="n">dopt</span><span class="p">.</span><span class="n">temperature</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">2.0f</span><span class="p">;</span>
+<span class="n">dopt</span><span class="p">.</span><span class="n">alpha</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">5.0f</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="mf">7.0f</span><span class="p">;</span>
+<span class="n">DistillationLoss</span><span class="w"> </span><span class="nf">kd</span><span class="p">(</span><span class="n">backend</span><span class="p">,</span><span class="w"> </span><span class="n">dopt</span><span class="p">);</span>
+
+<span class="k">const</span><span class="w"> </span><span class="n">Tensor</span><span class="w"> </span><span class="n">logits</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">student</span><span class="o">-&gt;</span><span class="n">forward</span><span class="p">(</span><span class="n">ids</span><span class="p">);</span>
+<span class="kt">float</span><span class="w"> </span><span class="n">loss</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">kd</span><span class="p">.</span><span class="n">forward</span><span class="p">(</span><span class="n">logits</span><span class="p">,</span><span class="w"> </span><span class="n">teacher</span><span class="o">-&gt;</span><span class="n">forward</span><span class="p">(</span><span class="n">ids</span><span class="p">),</span><span class="w"> </span><span class="n">targets</span><span class="p">);</span>
+<span class="n">loss</span><span class="w"> </span><span class="o">+=</span><span class="w"> </span><span class="n">cos</span><span class="p">.</span><span class="n">forward</span><span class="p">(</span><span class="n">tap</span><span class="o">-&gt;</span><span class="n">hidden</span><span class="p">(),</span><span class="w"> </span><span class="n">teacher_tap</span><span class="o">-&gt;</span><span class="n">hidden</span><span class="p">())</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="mf">7.0f</span><span class="p">;</span>
+<span class="n">Tensor</span><span class="w"> </span><span class="n">g</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">cos</span><span class="p">.</span><span class="n">backward</span><span class="p">();</span>
+<span class="n">backend</span><span class="o">-&gt;</span><span class="n">axpby</span><span class="p">(</span><span class="mf">1.0f</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="mf">7.0f</span><span class="p">,</span><span class="w"> </span><span class="n">g</span><span class="p">.</span><span class="n">data</span><span class="p">(),</span><span class="w"> </span><span class="mf">0.0f</span><span class="p">,</span><span class="w"> </span><span class="n">g</span><span class="p">.</span><span class="n">data</span><span class="p">(),</span><span class="w"> </span><span class="n">g</span><span class="p">.</span><span class="n">data</span><span class="p">(),</span><span class="w"> </span><span class="k">static_cast</span><span class="o">&lt;</span><span class="kt">size_t</span><span class="o">&gt;</span><span class="p">(</span><span class="n">g</span><span class="p">.</span><span class="n">numel</span><span class="p">()));</span>
+<span class="n">tap</span><span class="o">-&gt;</span><span class="n">add_gradient</span><span class="p">(</span><span class="n">g</span><span class="p">);</span>
+<span class="n">student</span><span class="o">-&gt;</span><span class="n">backward</span><span class="p">(</span><span class="n">kd</span><span class="p">.</span><span class="n">backward</span><span class="p">());</span>
+<span class="n">ClipGradNorm</span><span class="p">(</span><span class="o">*</span><span class="n">student</span><span class="p">,</span><span class="w"> </span><span class="mf">1.0f</span><span class="p">);</span>
+<span class="n">opt</span><span class="p">.</span><span class="n">step</span><span class="p">(</span><span class="o">*</span><span class="n">student</span><span class="p">);</span><span class="w">                                  </span><span class="c1">// AdamW, lr 2e-4</span>
+</code></pre></div>
+<p>The explanations are <code>DiffRelevance(teacher, student, ids, target, LxtAttnLrpConfig())</code> on 24
+held-out prompts of 32 tokens, with the target fixed to the teacher's top next token, so both
+models explain the same prediction.</p>
+<h2 id="expected-output">Expected output<a class="headerlink" href="#expected-output" title="Permanent link">&para;</a></h2>
+<p>On a Radeon 8060S (gfx1151):</p>
+<div class="highlight"><pre><span></span><code>Teacher: build-hip10-release/models/SmolLM2-135M-Instruct (30 blocks, hidden 576)
+Students: blocks 0, 2, ..., 28 (15 blocks)
+Text: 2393 training and 64 held-out windows of 128 tokens
+Training: 300 steps of 8 windows, AdamW lr 2e-4, gradients clipped at 1
+
+Teacher: held-out perplexity 6.08
+Untrained student: held-out perplexity 1423820.74
+
+Student: language modeling
+    step 50: objective 2.833, held-out perplexity 12.41
+    step 100: objective 1.933, held-out perplexity 7.50
+    step 150: objective 1.882, held-out perplexity 5.97
+    step 200: objective 1.618, held-out perplexity 5.20
+    step 250: objective 1.561, held-out perplexity 4.86
+    step 300: objective 1.530, held-out perplexity 4.55
+    131 s
+
+Student: distilled
+    step 50: objective 4.251, held-out perplexity 14.97
+    step 100: objective 2.431, held-out perplexity 7.83
+    step 150: objective 2.125, held-out perplexity 6.11
+    step 200: objective 1.876, held-out perplexity 5.41
+    step 250: objective 1.698, held-out perplexity 4.92
+    step 300: objective 1.805, held-out perplexity 4.60
+    240 s
+
+Student: distilled without the cosine loss
+    step 50: objective 4.152, held-out perplexity 15.29
+    step 100: objective 2.365, held-out perplexity 7.92
+    step 150: objective 2.057, held-out perplexity 6.14
+    step 200: objective 1.822, held-out perplexity 5.36
+    step 250: objective 1.648, held-out perplexity 4.92
+    step 300: objective 1.748, held-out perplexity 4.61
+    240 s
+
+Student: distilled from random blocks
+    step 50: objective 6.490, held-out perplexity 48.92
+    step 100: objective 4.358, held-out perplexity 22.71
+    step 150: objective 4.090, held-out perplexity 19.24
+    step 200: objective 3.919, held-out perplexity 16.90
+    step 250: objective 3.437, held-out perplexity 15.35
+    step 300: objective 3.902, held-out perplexity 15.05
+    240 s
+
+On 64 held-out windows (8128 predicted tokens; 59 of the windows start with the opening every conversation shares, 24 tokens):
+  model                                perplexity   opening   rest    KL from teacher   teacher's top-1
+  teacher                              6.08         229.87    2.94
+  untrained                            1423820.74   1084399.79 1503845.96 13.031            0.2%
+  language modeling                    4.55         1.00      6.15    2.814             61.1%
+  distilled                            4.60         1.48      5.78    0.898             63.8%
+  distilled without the cosine loss    4.61         1.41      5.85    0.910             65.1%
+  distilled from random blocks         15.05        1.49      23.94   2.036             54.1%
+
+Token relevance (AttnLRP) of the teacher's top next token, 24 prompts of 32 tokens after the shared opening, against the teacher's:
+  untrained           Spearman 0.144 (p 0.877), top-25% overlap 0.391, CKA 0.045
+  language modeling   Spearman 0.657 (p 0.001), top-25% overlap 0.677, CKA 0.453
+  distilled           Spearman 0.624 (p 0.001), top-25% overlap 0.635, CKA 0.601
+
+The predictions:
+  1. untrained / teacher perplexity: 234066.1x: as predicted
+  2. distilled vs language modeling: perplexity 4.60 vs 4.55, teacher's top-1 63.8% vs 61.1%: not as predicted
+  3. random blocks / language modeling perplexity: 3.3x: as predicted
+  4. dropping the cosine loss moves perplexity by 0.2%: as predicted
+  5. relevance Spearman with the teacher, distilled vs language modeling: 0.624 vs 0.657: not as predicted
+     prompt by prompt, the distilled student is the closer of the two on 7 of 24
+</code></pre></div>
+<p>The runs are deterministic: the same command gives the same numbers.</p>
+<h2 id="whats-happening">What's happening<a class="headerlink" href="#whats-happening" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>Prediction</th>
+<th>Result</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>Untrained, perplexity over 10 times the teacher's</td>
+<td><strong>Holds:</strong> 234,066 times</td>
+</tr>
+<tr>
+<td>2</td>
+<td>Distilled beats language modeling on perplexity and the teacher's top-1</td>
+<td><strong>Fails:</strong> perplexity 4.60 against 4.55; top-1 63.8% against 61.1%</td>
+</tr>
+<tr>
+<td>3</td>
+<td>Random blocks end over twice as perplexed as language modeling</td>
+<td><strong>Holds:</strong> 3.3 times</td>
+</tr>
+<tr>
+<td>4</td>
+<td>Dropping the cosine loss moves perplexity under 5%</td>
+<td><strong>Holds:</strong> 0.2%</td>
+</tr>
+<tr>
+<td>5</td>
+<td>Distilled relevance closer to the teacher's than language modeling's</td>
+<td><strong>Fails:</strong> Spearman 0.624 against 0.657; closer on 7 of 24 prompts</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Taking out every other block breaks the model completely.</strong> The untrained student's perplexity
+is over a million, and it picks the teacher's top token 0.2% of the time. The blocks that are left
+were never trained to follow one another. Yet 300 steps, about one pass over the training text,
+turn every student that started from them back into a working model: perplexity 6.15 or less on
+the text after the opening, against the teacher's 2.94.</p>
+<p><strong>Students "beat" the teacher, and that isn't what it looks like.</strong> Every trained student but one
+has a lower held-out perplexity than the teacher: 4.55 against 6.08. All 2,379 conversations open
+with the same 24 tokens, a system prompt naming the assistant, and 59 of the 64 held-out windows
+start with them. The teacher predicts these tokens badly (perplexity 229.87), and the students
+learn them within a few hundred steps (1.00 to 1.49). On the rest of each window, the teacher is
+far better than any student: 2.94 against 5.78 at best. The split was added after the first run
+showed the students ahead of their teacher. It explains a number; it isn't part of a test.</p>
+<p><strong>So prediction 2 fails on the number it named, and the split shows why.</strong> On the rest of the
+text the distilled student is better than the language-modeling one (5.78 against 6.15), picks the
+teacher's top token more often (63.8% against 61.1%), and is three times closer to the teacher's
+whole distribution (KL 0.90 against 2.81). On the opening it is worse (1.48 against 1.00), because
+it is partly trained toward a teacher that predicts the opening badly. The opening is a fifth of
+the tokens in most windows, enough to tip the total.</p>
+<p><strong>The teacher's weights matter more than any loss.</strong> From random blocks, with the same losses and
+steps, the student ends at 15.05, and at 23.94 on the rest of the text. <strong>The cosine loss doesn't
+matter here:</strong> without it, perplexity moves 0.2%, and the top-1 agreement is even a little higher
+(65.1%).</p>
+<p><strong>The explanations don't follow the outputs.</strong> Both trained students explain their predictions
+much like the teacher: Spearman 0.62 and 0.66, where the untrained student is at 0.14 and no
+better than its maps of other prompts (p = 0.877). But distillation doesn't bring the student's
+relevance closer to the teacher's. The language-modeling student is closer on Spearman and on the
+top 25% of tokens, and the distilled student is the closer one on only 7 of the 24 prompts. Only CKA, which compares the pattern across
+prompts, favors the distilled student (0.601 against 0.453). Matching the teacher's output
+distribution three times more closely didn't make the student use the teacher's evidence more. The
+<a href="../born_again_networks/">born-again recipe</a> found the reverse: a student that copied more of its
+teacher's evidence and got less accurate. Output agreement and explanation agreement are separate
+things, and each has to be measured.</p>
+<h3 id="two-instruments-that-needed-fixing">Two instruments that needed fixing<a class="headerlink" href="#two-instruments-that-needed-fixing" title="Permanent link">&para;</a></h3>
+<p>Both were found by reading the raw numbers of the first run, and both changes are in the code
+above.</p>
+<ul>
+<li><strong>Perplexity over everything.</strong> The first run printed only the overall perplexity, which put
+  every trained student ahead of its teacher. Splitting off the shared opening showed why.</li>
+<li><strong>Explanation prompts that were all the same.</strong> The first run explained the first 32 tokens of
+  each window, so most prompts were the same 24-token system prompt plus 8 more tokens. The
+  language-modeling student's 24 per-prompt agreements took only 7 distinct values. On those near-copies,
+  prediction 5 held (Spearman 0.610 against 0.582). With each prompt starting after the shared
+  opening, it fails (0.624 against 0.657). The fix went against the prediction. Check that a test's
+  inputs really differ before reading its result.</li>
+</ul>
+<h2 id="see-also">See also<a class="headerlink" href="#see-also" title="Permanent link">&para;</a></h2>
+<ul>
+<li><a href="../../../deep-learning/#knowledge-distillation">Knowledge distillation</a>, and
+  "A smaller language model, DistilBERT's way" in the same guide.</li>
+<li><a href="../born_again_networks/">Is the student born better?</a>: distillation into a student the size of
+  its teacher.</li>
+</ul>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../../..", "features": ["navigation.instant", "navigation.tracking", "navigation.top", "content.code.copy"], "search": "../../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../../../assets/javascripts/bundle.d7400e89.min.js"></script>
+      
+    
+  </body>
+</html>
