@@ -72,8 +72,8 @@ whole network, see [Layer-wise Relevance Propagation](../interpretability/lrp.md
   4-block, 128-wide model take 47 ms instead of 3.3 s.
 - **Optimizers & losses**: `SGDOptimizer` (momentum, Nesterov), `AdamOptimizer`,
   `AdamWOptimizer`, all with parameter groups; `MSELoss`, `CrossEntropyLoss`,
-  `TokenCrossEntropyLoss`, `DistillationLoss`, `BCEWithLogitsLoss`, `KLDivergenceLoss`,
-  `CalibrationLoss`
+  `TokenCrossEntropyLoss`, `DistillationLoss`, `HiddenStateCosineLoss`, `BCEWithLogitsLoss`,
+  `KLDivergenceLoss`, `CalibrationLoss`
 - **Generative building blocks**: `Reparameterize` (VAE), `NoiseSchedule` and
   `SinusoidalTimestepEmbedding()` (diffusion)
 - **Training utilities**: `ClipGradNorm`, `LRSchedule`/`LRScheduler`, parameter groups
@@ -546,6 +546,73 @@ for (auto [node, right] : tree.PathTo(leaf)) { /* column `node` of tree.gates()'
   held-out points in the tests.
 - **Checked against:** a numpy implementation, with gradients by finite differences
   (`tools/generate_soft_decision_tree_reference_values.py`).
+
+#### A smaller language model, DistilBERT's way
+
+DistilBERT (Sanh et al., 2019) keeps its teacher's width, halves its depth, and starts the student
+from the teacher's own weights, one layer out of two. `MakeStudentFromLayers` builds that student
+from any `CausalLM`: block j of the student is a copy of the teacher's block `layers[j]`, and the
+embedding, final norm and head are copied too. A student given every layer computes exactly the
+teacher's logits.
+
+The student trains on three losses, which DistilBERT weights 5 : 2 : 1:
+
+- `DistillationLoss` on the teacher's logits;
+- the language-modeling loss on the data;
+- `HiddenStateCosineLoss`: 1 − cos(h_s, h_t) between the two models' last hidden states, averaged
+  over the tokens the mask keeps (PyTorch's `CosineEmbeddingLoss` with target 1).
+
+`CausalLM::backward()` starts at the logits, so the cosine loss's gradient goes in through a
+`HiddenStateTap`, an identity intervention that keeps the states it sees and adds a gradient to
+the one flowing back:
+
+```cpp
+#include "pulsatrix/layer_student.hpp"
+
+std::unique_ptr<CausalLM> student = MakeStudentFromLayers(*teacher, EveryOtherLayer(teacher->num_layers()), &backend);
+const int64_t last = student->num_layers() - 1;
+student->set_intervention(last, std::make_unique<HiddenStateTap>(&backend));
+teacher->set_intervention(teacher->num_layers() - 1, std::make_unique<HiddenStateTap>(&backend));
+auto* tap = static_cast<HiddenStateTap*>(student->intervention(last));
+auto* teacher_tap = static_cast<HiddenStateTap*>(teacher->intervention(teacher->num_layers() - 1));
+
+const Tensor teacher_logits = teacher->forward(ids);
+const Tensor logits = student->forward(ids);
+float kd = distill.forward(logits, teacher_logits);      // DistillationLoss, alpha = 1
+float lm = token_loss.forward(logits, targets);          // TokenCrossEntropyLoss
+float cos = cosine.forward(tap->hidden(), teacher_tap->hidden(), mask);
+tap->add_gradient(cosine.backward());                    // weight 1
+Tensor g = distill.backward();                           // then 5 · g + 2 · the token loss's gradient
+backend.axpby(2.0f, token_loss.backward().data(), 5.0f, g.data(), g.data(), static_cast<size_t>(g.numel()));
+(void)student->backward(g);
+```
+
+- **Pre-norm models:** in Llama and its relatives the last layer's output is the residual stream
+  before the final RMSNorm, not the normalized states BERT returns. The cosine ignores the vectors'
+  lengths, but the stream's few large dimensions weigh on their direction.
+- **Checked against:** numpy for the cosine loss, with gradients by finite differences
+  (`tools/generate_layer_student_reference_values.py`), and finite differences through a whole
+  model for the tap. The HIP backend gives the CPU's values, and a student built on the GPU from a
+  CPU teacher computes its logits.
+
+#### Born-again networks
+
+A born-again network (Furlanello et al., ICML 2018) is a student the same size as its teacher,
+trained on the teacher's softened outputs, which then teaches the next generation. Furlanello et
+al. found students that beat their teachers and an ensemble of the generations that did better
+still; later work found the gains small and not always there, so compare over several seeds. The
+loop is ordinary training with `DistillationLoss`. `born_again.hpp` adds two pieces:
+
+- **`EnsembleLogProbabilities(logits, backend)`:** log of the generations' mean distribution. It
+  is the ensemble's prediction, and, given to `DistillationLoss` as the teacher's logits, a
+  teacher made of several generations.
+- **`PermuteDarkKnowledge(teacher_logits, seed, backend)`:** Furlanello et al.'s control. Each row
+  keeps its largest logit in place and shuffles the rest among the other classes, so the teacher's
+  top class and confidence stay and what it says about the other classes is scrambled. If a
+  student taught this way does as well, the gain didn't come from that dark knowledge.
+
+Their other control, which weights each example's label loss by the teacher's confidence, isn't
+available: it needs per-example weights in the cross-entropy loss.
 
 ### Gradient clipping
 

@@ -156,6 +156,8 @@ add_library(pulsatrix_core
     src/feature_distillation.cpp
     src/soft_decision_tree.cpp
     src/rule_extraction.cpp
+    src/layer_student.cpp
+    src/born_again.cpp
     src/tagger_finetune_example.cpp
     src/explanation_metrics.cpp
     src/featurizer.cpp
