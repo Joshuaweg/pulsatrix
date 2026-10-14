@@ -83,6 +83,7 @@ add_library(pulsatrix_core
     src/performance.cpp
     src/adversarial.cpp
     src/explanation_robustness.cpp
+    src/explanation_agreement.cpp
     src/uncertainty.cpp
     src/conformal.cpp
     src/contrastive.cpp
