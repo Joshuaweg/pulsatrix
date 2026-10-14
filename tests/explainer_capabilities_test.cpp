@@ -131,7 +131,7 @@ TEST(ExplainerCatalog, QuestionsWithNoExplainerYetComeBackEmpty) {
     EXPECT_EQ(Names(ExplainersFor(XaiQuestion::HowToStillBeThis)), (std::vector<std::string>{"Anchors"}));
     EXPECT_EQ(Names(ExplainersFor(XaiQuestion::Performance)),
               (std::vector<std::string>{"ClassifierMetrics", "RegressorMetrics", "PerSliceError", "MonteCarloDropout",
-                                        "DeepEnsemble", "SplitConformal"}));
+                                        "DeepEnsemble", "SplitConformal", "AdversarialAttack"}));
     EXPECT_TRUE(ExplainersFor(XaiQuestion::Output).empty());
 }
 
@@ -170,6 +170,7 @@ TEST(ExplainerCatalog, CompletenessAndBaseModelsAreDeclared) {
     EXPECT_TRUE(ExplainerCapabilitiesOf("IntruderDimensions").needs_base_model);
     EXPECT_TRUE(ExplainerCapabilitiesOf("SplitConformal").needs_labels);
     EXPECT_TRUE(ExplainerCapabilitiesOf("PerSliceError").needs_labels);
+    EXPECT_TRUE(ExplainerCapabilitiesOf("AdversarialAttack").needs_labels);
     EXPECT_FALSE(ExplainerCapabilitiesOf("DeepEnsemble").needs_labels);
     for (const ExplainerCapabilities& e : ExplainerCatalog()) {
         // Completeness is a property of attributions: of local explainers that answer Why.
