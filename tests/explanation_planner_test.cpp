@@ -241,7 +241,7 @@ TEST(ExplanationPlanner, PerformanceIsAnsweredByTheMetrics) {
     const ExplanationPlan unlabeled = ExplanationPlanner().plan(XaiQuestion::Performance, XaiReason::Control,
                                                                Traits(ModelAccess::BlackBox, InputKind::Any, false, true));
     EXPECT_EQ(Names(unlabeled), (std::vector<std::string>{"DeepEnsemble"}));
-    ASSERT_EQ(unlabeled.excluded.size(), 5u);  // the four that need labels, and Monte Carlo dropout the Module
+    ASSERT_EQ(unlabeled.excluded.size(), 6u);  // the four that need labels, and the two that need the Module
     EXPECT_EQ(unlabeled.excluded.front().reason, "scores the model against true labels, which aren't given");
     // With labels, Control looks across the dataset first. A re-initialized model is no baseline for
     // a metric, so Control needs per-slice error only.
@@ -258,6 +258,12 @@ TEST(ExplanationPlanner, PerformanceIsAnsweredByTheMetrics) {
     const ExplanationPlan one = ExplanationPlanner().plan(XaiQuestion::Performance, XaiReason::Justify,
                                                          Traits(ModelAccess::Gradients, InputKind::Any));
     EXPECT_EQ(Names(one), (std::vector<std::string>{"MonteCarloDropout", "DeepEnsemble"}));
+    // KS-4: with gradients and labels, the adversarial attack joins the Control plan.
+    ModelTraits differentiable = Traits(ModelAccess::Gradients, InputKind::Any, false, true);
+    differentiable.has_labels = true;
+    const std::vector<std::string> attacked =
+        Names(ExplanationPlanner().plan(XaiQuestion::Performance, XaiReason::Control, differentiable));
+    EXPECT_NE(std::find(attacked.begin(), attacked.end(), "AdversarialAttack"), attacked.end());
 }
 
 // XAI-4: Anchors answer How to still be this, for a black box, and carry their own check.
