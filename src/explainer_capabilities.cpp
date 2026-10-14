@@ -328,6 +328,11 @@ std::vector<ExplainerCapabilities> BuildCatalog() {
                       "Prediction sets or intervals that hold the truth with a chosen probability, calibrated on "
                       "held-out labeled examples, for any model.",
                       {Q::Performance}, S::Local, A::BlackBox, I::Any));
+    // KS-4. It perturbs the input itself, so a language model's inputs are its embeddings.
+    c.push_back(Entry("AdversarialAttack", "adversarial.hpp", {"Fgsm", "Pgd", "RobustAccuracyCurve"},
+                      "The smallest changes to the input, within a budget, that make the model misclassify it "
+                      "(FGSM and PGD), and how fast the accuracy falls as the budget grows.",
+                      {Q::Performance}, S::Local, A::Gradients, I::Any));
     for (ExplainerCapabilities& e : c) {
         e.attribution = e.name == "LRP" || e.name == "Saliency" || e.name == "IntegratedGradients" || e.name == "GradCAM" ||
                         e.name == "KernelSHAP" || e.name == "LIME" || e.name == "Occlusion";
@@ -335,7 +340,7 @@ std::vector<ExplainerCapabilities> BuildCatalog() {
                      e.name == "ConceptRelevance" || e.name == "ProteinRelevance" || e.name == "FineTuneRelevanceDiff";
         e.needs_base_model = e.name == "FineTuneRelevanceDiff" || e.name == "IntruderDimensions";
         e.needs_labels = e.name == "ClassifierMetrics" || e.name == "RegressorMetrics" || e.name == "PerSliceError" ||
-                         e.name == "SplitConformal";
+                         e.name == "SplitConformal" || e.name == "AdversarialAttack";
         e.max_features = e.name == "KernelSHAP" ? 20 : 0;
     }
     return c;

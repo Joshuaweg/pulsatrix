@@ -235,6 +235,49 @@ std::ofstream("coverage.svg") << RenderSliceErrorSvg(PerSliceError(r.misses, sli
 LAC sets and absolute-residual intervals match MAPIE 1.1.0's, and APS sets Angelopoulos and
 Bates' reference code (`tools/generate_conformal_reference_values.py`).
 
+## Adversarial robustness
+
+How small a change to the input makes the model change its answer? `pulsatrix/adversarial.hpp`
+searches for one by following the gradient of the loss with respect to the input:
+
+- **FGSM** (Goodfellow, Shlens and Szegedy, ICLR 2015) takes one step of size ε: the sign of the
+  gradient under the L∞ norm, its direction under L2.
+- **PGD** (Madry et al., ICLR 2018) starts at a random point within ε of the input, takes `steps`
+  smaller steps, and after each one projects back within ε and into the input's valid range.
+- **Targeted** attacks push the input toward a chosen class instead of away from its own.
+
+```cpp
+#include "pulsatrix/adversarial.hpp"
+
+AttackOptions options;
+options.epsilon = 8.0 / 255;          // L∞ budget, for pixels in [0, 1]
+options.clip_min = 0;
+options.clip_max = 1;
+AttackResult r = Pgd(ClassifierFrom(model), images, labels, &backend, options);
+// r.adversarial, r.success, r.robust_accuracy, r.perturbation
+
+RobustnessCurve curve = RobustAccuracyCurve(ClassifierFrom(model), images, labels, {1.0 / 255, 2.0 / 255, 4.0 / 255, 8.0 / 255},
+                                            &backend, options);
+```
+
+`ClassifierFrom` takes a `Module` or an `ExplainerContext`. For any other model, fill a
+`DifferentiableClassifier` with its forward pass to logits and its backward pass to the input.
+
+`RobustAccuracyCurve` gives the accuracy that survives untargeted PGD at each ε. It also gives the
+fraction of correctly classified inputs each attack flipped, and the mean size of the successful
+perturbations. The results are `pulsatrix.attack.v1` and `pulsatrix.robustness_curve.v1`
+documents.
+
+The steps, projection, clipping and random start follow torchattacks' FGSM, PGD and PGDL2.
+`tools/generate_adversarial_reference_values.py` reimplements them in numpy, and the tests match
+it. On a linear model, where the best attack is known in closed form, PGD finds it.
+
+!!! note
+    PGD finds adversarial examples; it doesn't prove there are none. A model that resists it may
+    fall to a stronger attack, so the robust accuracy it reports is an upper bound. Gradient
+    masking, where a model's gradients are uninformative rather than its decisions robust, makes
+    gradient attacks look weaker than they are (Athalye, Carlini and Wagner, ICML 2018).
+
 ## In a report
 
 The Control reason requires per-slice error. The planner marks it available when the caller has
@@ -256,8 +299,9 @@ For a regressor, or any model whose error isn't the wrong class, run `PerSliceEr
 and pass `SliceErrorCheck(report)` to `ReportExplanation`.
 
 The Performance question itself plans `ClassifierMetrics`, `RegressorMetrics`,
-`PerSliceError`, `MonteCarloDropout`, `DeepEnsemble` and `SplitConformal`. Those that score
-against true labels (the metrics and conformal calibration) need `ModelTraits::has_labels`. They describe how the model behaves, not what it learned, so the planner doesn't
+`PerSliceError`, `MonteCarloDropout`, `DeepEnsemble`, `SplitConformal` and
+`AdversarialAttack`. Those that score against true labels (the metrics, conformal calibration and
+the attacks) need `ModelTraits::has_labels`. They describe how the model behaves, not what it learned, so the planner doesn't
 ask for a null-model baseline for them.
 
 Each report has a JSON document: `pulsatrix.classification_report.v1`,
