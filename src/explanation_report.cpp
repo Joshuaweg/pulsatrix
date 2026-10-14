@@ -11,6 +11,7 @@
 
 #include "portable_random.hpp"
 #include "pulsatrix/explainer_stability.hpp"
+#include "pulsatrix/explanation_robustness.hpp"
 #include "pulsatrix/null_model_baseline.hpp"
 
 namespace pulsatrix {
@@ -171,6 +172,56 @@ CheckResult Stability(const PlannedCheck& planned, const CheckInputs& in) {
     if (perturb) r.values.emplace_back("perturbed_similarity", perturbed);
     r.values.emplace_back("mean_variance", variance.mean_variance);
     r.values.emplace_back("deterministic", variance.is_deterministic ? 1.0 : 0.0);
+    return r;
+}
+
+CheckResult Robustness(const PlannedCheck& planned, const CheckInputs& in) {
+    const ExplanationCheckOptions& o = in.options;
+    SensitivityOptions so;
+    so.radius = o.robustness_radius;
+    so.samples = o.robustness_samples;
+    so.seed = o.seed ^ 0x2545F4914F6CDD1DULL;
+    SensitivityReport s;
+    std::string fgsm_note;
+    if (in.model != nullptr) {
+        // FGSM's point goes through Module::backward, which adds to the parameters' gradients.
+        std::vector<std::pair<Tensor*, Tensor>> saved;
+        for (const NamedParamRef& p : in.model->named_parameters()) {
+            if (p.ref.grad != nullptr) saved.emplace_back(p.ref.grad, *p.ref.grad);
+        }
+        const DifferentiableClassifier classifier = ClassifierFrom(*in.model);
+        try {
+            s = ExplanationSensitivity(in.input, in.explain, in.predict, &classifier, in.input.backend(), so);
+        } catch (const std::invalid_argument& e) {
+            // The model's output isn't logits FGSM can use; measure the sampled perturbations only.
+            s = ExplanationSensitivity(in.input, in.explain, in.predict, nullptr, in.input.backend(), so);
+            fgsm_note = std::string("; FGSM's point wasn't measured: ") + e.what();
+        }
+        for (auto& [target, value] : saved) *target = value;
+    } else {
+        s = ExplanationSensitivity(in.input, in.explain, in.predict, nullptr, in.input.backend(), so);
+    }
+    if (s.kept == 0) {
+        return Result(planned, CheckOutcome::NotRun,
+                      "Every perturbation of " + Percent(o.robustness_radius) +
+                          " of the input's spread changed the prediction; lower ExplanationCheckOptions::robustness_radius.");
+    }
+    const bool passed = s.max_sensitivity <= o.max_sensitivity &&
+                        (!s.adversarial_sensitivity || *s.adversarial_sensitivity <= o.max_sensitivity);
+    std::string summary = "Under " + std::to_string(s.kept) + " perturbations of up to " + Percent(o.robustness_radius) +
+                          " of the input's spread that kept the prediction, the explanation changed by at most " +
+                          Fmt(s.max_sensitivity) + " of its size (" + Fmt(s.avg_sensitivity) + " on average)";
+    if (s.adversarial_sensitivity) summary += "; at FGSM's point, by " + Fmt(*s.adversarial_sensitivity);
+    CheckResult r = Result(planned, passed ? CheckOutcome::Passed : CheckOutcome::Failed, summary + fgsm_note + ".");
+    r.values.emplace_back("max_sensitivity", s.max_sensitivity);
+    r.values.emplace_back("avg_sensitivity", s.avg_sensitivity);
+    r.values.emplace_back("local_lipschitz", s.local_lipschitz);
+    if (s.adversarial_sensitivity) {
+        r.values.emplace_back("adversarial_sensitivity", *s.adversarial_sensitivity);
+        r.values.emplace_back("adversarial_epsilon", s.adversarial_epsilon);
+    }
+    r.values.emplace_back("kept", static_cast<double>(s.kept));
+    r.values.emplace_back("radius", s.radius);
     return r;
 }
 
@@ -344,6 +395,9 @@ void Validate(const ExplanationCheckOptions& o) {
     if (o.stability_repeats < 0 || o.perturbations < 0) {
         throw std::invalid_argument("BuildExplanation: stability_repeats and perturbations must not be negative");
     }
+    if (!(std::isfinite(o.robustness_radius) && o.robustness_radius > 0) || o.robustness_samples < 1) {
+        throw std::invalid_argument("BuildExplanation: robustness_radius must be positive and robustness_samples at least 1");
+    }
 }
 
 // --- Caveats ---------------------------------------------------------------------------------------
@@ -474,6 +528,9 @@ Explanation BuildExplanation(const ExplanationRequest& request, const Tensor& in
                                             {"check.perturbations", std::to_string(o.perturbations)},
                                             {"check.perturbation_scale", Fmt(o.perturbation_scale)},
                                             {"check.min_stability", Fmt(o.min_stability)},
+                                            {"check.robustness_radius", Fmt(o.robustness_radius)},
+                                            {"check.robustness_samples", std::to_string(o.robustness_samples)},
+                                            {"check.max_sensitivity", Fmt(o.max_sensitivity)},
                                             {"check.conservation_tolerance", Fmt(o.conservation_tolerance)},
                                             {"check.max_random_similarity", Fmt(o.max_random_similarity)},
                                         });
@@ -491,6 +548,8 @@ Explanation BuildExplanation(const ExplanationRequest& request, const Tensor& in
             e.checks.push_back(Faithfulness(planned, in));
         } else if (planned.name == "stability") {
             e.checks.push_back(Stability(planned, in));
+        } else if (planned.name == "robustness") {
+            e.checks.push_back(Robustness(planned, in));
         } else if (planned.name == "conservation") {
             e.checks.push_back(Conservation(planned, in));
         } else if (planned.name == "randomization") {
