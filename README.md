@@ -240,13 +240,14 @@ target_link_libraries(my_app PRIVATE pulsatrix::core)
   way: its representation-analysis (INT), topological data analysis (TDA) and question-driven
   explainability (XAI) work is done, and so are KS-3, which scores models (metrics, calibration,
   uncertainty and conformal prediction), KS-4, which attacks them (FGSM, PGD, robust
-  accuracy, and how much an explanation moves under a small perturbation), and KD-1 and KD-2:
-  a knowledge-distillation loss, and a test of whether a student explains its inputs with the
-  teacher's evidence. The CMake project version is still
+  accuracy, and how much an explanation moves under a small perturbation), and KD-1 to KD-3:
+  a knowledge-distillation loss, a test of whether a student explains its inputs with the
+  teacher's evidence, and interpretable students (feature distillation, a soft decision tree,
+  and trees turned into rules the Datalog engine runs). The CMake project version is still
   1.1.0, and the API may still change between minor versions.
 - What's planned next, and why, is in the
   [Roadmap](https://joshuaweg.github.io/pulsatrix/roadmap/).
-- About 3,110 tests on the CPU, and 3,200 with the HIP backend. CI builds and tests every push
+- About 3,120 tests on the CPU, and 3,220 with the HIP backend. CI builds and tests every push
   and pull request on Windows (MSVC) and Linux (GCC), runs the Python binding tests, and
   compiles the CUDA and HIP backends.
 - macOS with Clang should work but isn't tested in CI.
