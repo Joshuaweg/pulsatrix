@@ -2894,7 +2894,7 @@ or the feature count is unknown, explainers made for one kind, or limited to a f
 </tr>
 <tr>
 <td>Control</td>
-<td>randomization for attributions, the null model for the rest, per-slice error</td>
+<td>randomization and robustness for attributions, the null model for the rest, per-slice error</td>
 <td>faithfulness, stability, conservation</td>
 </tr>
 <tr>
@@ -3060,6 +3060,11 @@ then every check the plan asks for, and returns an <code>Explanation</code>. The
 <td>stability</td>
 <td>Two more runs on the same input, and three on the input plus 1% noise (not for token or symbolic input)</td>
 <td>every Spearman correlation of attribution magnitudes is ≥ 0.8</td>
+</tr>
+<tr>
+<td>robustness</td>
+<td><a href="performance/#explanation-robustness"><code>ExplanationSensitivity</code></a>: ten perturbations within 5% of the input's spread that keep the prediction, and FGSM's point through the model (not for token, protein or symbolic input)</td>
+<td>the explanation changes by at most 0.5 of its size, at every sample and at FGSM's point</td>
 </tr>
 <tr>
 <td>conservation</td>

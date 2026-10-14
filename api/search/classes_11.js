@@ -45,12 +45,14 @@ var searchData=
   ['rlrowargs_42',['RlRowArgs',['../structpulsatrix_1_1RlRowArgs.html',1,'pulsatrix']]],
   ['rmsnormmodule_43',['RMSNormModule',['../classpulsatrix_1_1RMSNormModule.html',1,'pulsatrix']]],
   ['rnnmodule_44',['RNNModule',['../classpulsatrix_1_1RNNModule.html',1,'pulsatrix']]],
-  ['rolloutbatch_45',['RolloutBatch',['../structpulsatrix_1_1RolloutBatch.html',1,'pulsatrix']]],
-  ['rolloutbuffer_46',['RolloutBuffer',['../classpulsatrix_1_1RolloutBuffer.html',1,'pulsatrix']]],
-  ['ropemodule_47',['RoPEModule',['../classpulsatrix_1_1RoPEModule.html',1,'pulsatrix']]],
-  ['rsatestresult_48',['RsaTestResult',['../structpulsatrix_1_1RsaTestResult.html',1,'pulsatrix']]],
-  ['rtdoptions_49',['RtdOptions',['../structpulsatrix_1_1RtdOptions.html',1,'pulsatrix']]],
-  ['rtdresult_50',['RtdResult',['../structpulsatrix_1_1RtdResult.html',1,'pulsatrix']]],
-  ['rule_51',['Rule',['../classpulsatrix_1_1datalog_1_1Rule.html',1,'pulsatrix::datalog']]],
-  ['rwkvmodule_52',['RWKVModule',['../classpulsatrix_1_1RWKVModule.html',1,'pulsatrix']]]
+  ['robustnesscurve_45',['RobustnessCurve',['../structpulsatrix_1_1RobustnessCurve.html',1,'pulsatrix']]],
+  ['robustnesspoint_46',['RobustnessPoint',['../structpulsatrix_1_1RobustnessPoint.html',1,'pulsatrix']]],
+  ['rolloutbatch_47',['RolloutBatch',['../structpulsatrix_1_1RolloutBatch.html',1,'pulsatrix']]],
+  ['rolloutbuffer_48',['RolloutBuffer',['../classpulsatrix_1_1RolloutBuffer.html',1,'pulsatrix']]],
+  ['ropemodule_49',['RoPEModule',['../classpulsatrix_1_1RoPEModule.html',1,'pulsatrix']]],
+  ['rsatestresult_50',['RsaTestResult',['../structpulsatrix_1_1RsaTestResult.html',1,'pulsatrix']]],
+  ['rtdoptions_51',['RtdOptions',['../structpulsatrix_1_1RtdOptions.html',1,'pulsatrix']]],
+  ['rtdresult_52',['RtdResult',['../structpulsatrix_1_1RtdResult.html',1,'pulsatrix']]],
+  ['rule_53',['Rule',['../classpulsatrix_1_1datalog_1_1Rule.html',1,'pulsatrix::datalog']]],
+  ['rwkvmodule_54',['RWKVModule',['../classpulsatrix_1_1RWKVModule.html',1,'pulsatrix']]]
 ];

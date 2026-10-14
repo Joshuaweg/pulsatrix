@@ -1,17 +1,19 @@
 var searchData=
 [
   ['l1_0',['L1',['../namespacepulsatrix.html#a2bdea6033ff2f2ff94e5f71059a33843a9ec4c0afd450ceac7adb81c3bcfc9732',1,'pulsatrix']]],
-  ['lac_1',['Lac',['../namespacepulsatrix.html#a4a0fc3bfcfed0352e33ddc9f7699b8d9a736b6039f07dc28432644d2a9997abe7',1,'pulsatrix']]],
-  ['last_2',['Last',['../namespacepulsatrix.html#afac97d73c04740a34d6f4ce4298789d8ad55b30607c2a9a2616347d6edb789f6b',1,'pulsatrix']]],
-  ['layernorm_3',['LayerNorm',['../namespacepulsatrix.html#aa9b603c42e9e2a6f3680d4709c4745cdac363ac7ca063bb8a75fb8a11883bcb2c',1,'pulsatrix']]],
-  ['leastsquares_4',['LeastSquares',['../namespacepulsatrix.html#ab997921e8dd2fcb16daefdcc05ce6550ad143c366b3274edc1e5496e302795a46',1,'pulsatrix']]],
-  ['length_5',['Length',['../namespacepulsatrix.html#ad77127af5416692cbd6eaeaba9ec0e0aaba2a9c6c8c77e03f83ef8bf543612275',1,'pulsatrix']]],
-  ['linear_6',['Linear',['../namespacepulsatrix.html#a94d9ac6240473b5362d1e8e5c11157bba32a843da6ea40ab3b17a3421ccdf671b',1,'pulsatrix']]],
-  ['local_7',['Local',['../namespacepulsatrix.html#a51afa06976af080a2b978c0815224a32a509820290d57f333403f490dde7316f4',1,'pulsatrix']]],
-  ['logisticregression_8',['LogisticRegression',['../namespacepulsatrix.html#ae6ebe8206389518eb092b7e2e120f3f8a6c9b5576a1fdfaccea4e06393e36e730',1,'pulsatrix']]],
-  ['loguniform_9',['LogUniform',['../namespacepulsatrix.html#abb575cb311c04812afe7f12350d86eeca47b37c2621e5c41ed665857cebbed045',1,'pulsatrix']]],
-  ['lstmbackward_10',['LstmBackward',['../namespacepulsatrix.html#ac55b0127cfe9bf4ce7793fef9db97400aafa50372cfb2e47402477809626c0887',1,'pulsatrix']]],
-  ['lstmforward_11',['LstmForward',['../namespacepulsatrix.html#ac55b0127cfe9bf4ce7793fef9db97400ab17570322128d1651d18c17847ead959',1,'pulsatrix']]],
-  ['lstmlrp_12',['LstmLrp',['../namespacepulsatrix.html#ac55b0127cfe9bf4ce7793fef9db97400a651b9b5b61c6f9c608a91c977f1d1731',1,'pulsatrix']]],
-  ['lukasiewicz_13',['lukasiewicz',['../classpulsatrix_1_1ConjunctionModule.html#ac337b697d16a8cdac0dda3744c73346fad0f758f4f092310da74b1523c78793bb',1,'pulsatrix::ConjunctionModule::Lukasiewicz'],['../classpulsatrix_1_1DisjunctionModule.html#aa262bae9403da4b2852f4d66c158da3ead0f758f4f092310da74b1523c78793bb',1,'pulsatrix::DisjunctionModule::Lukasiewicz']]]
+  ['l2_1',['L2',['../namespacepulsatrix.html#a30b4a864b38933f1cac09c7020463e2ea7e6aa2d53f6ee2b1a34b017fa403cb76',1,'pulsatrix']]],
+  ['lac_2',['Lac',['../namespacepulsatrix.html#a4a0fc3bfcfed0352e33ddc9f7699b8d9a736b6039f07dc28432644d2a9997abe7',1,'pulsatrix']]],
+  ['last_3',['Last',['../namespacepulsatrix.html#afac97d73c04740a34d6f4ce4298789d8ad55b30607c2a9a2616347d6edb789f6b',1,'pulsatrix']]],
+  ['layernorm_4',['LayerNorm',['../namespacepulsatrix.html#aa9b603c42e9e2a6f3680d4709c4745cdac363ac7ca063bb8a75fb8a11883bcb2c',1,'pulsatrix']]],
+  ['leastsquares_5',['LeastSquares',['../namespacepulsatrix.html#ab997921e8dd2fcb16daefdcc05ce6550ad143c366b3274edc1e5496e302795a46',1,'pulsatrix']]],
+  ['length_6',['Length',['../namespacepulsatrix.html#ad77127af5416692cbd6eaeaba9ec0e0aaba2a9c6c8c77e03f83ef8bf543612275',1,'pulsatrix']]],
+  ['linear_7',['Linear',['../namespacepulsatrix.html#a94d9ac6240473b5362d1e8e5c11157bba32a843da6ea40ab3b17a3421ccdf671b',1,'pulsatrix']]],
+  ['linf_8',['Linf',['../namespacepulsatrix.html#a30b4a864b38933f1cac09c7020463e2ea498f648384dca53dd3e4eebaa56bc227',1,'pulsatrix']]],
+  ['local_9',['Local',['../namespacepulsatrix.html#a51afa06976af080a2b978c0815224a32a509820290d57f333403f490dde7316f4',1,'pulsatrix']]],
+  ['logisticregression_10',['LogisticRegression',['../namespacepulsatrix.html#ae6ebe8206389518eb092b7e2e120f3f8a6c9b5576a1fdfaccea4e06393e36e730',1,'pulsatrix']]],
+  ['loguniform_11',['LogUniform',['../namespacepulsatrix.html#abb575cb311c04812afe7f12350d86eeca47b37c2621e5c41ed665857cebbed045',1,'pulsatrix']]],
+  ['lstmbackward_12',['LstmBackward',['../namespacepulsatrix.html#ac55b0127cfe9bf4ce7793fef9db97400aafa50372cfb2e47402477809626c0887',1,'pulsatrix']]],
+  ['lstmforward_13',['LstmForward',['../namespacepulsatrix.html#ac55b0127cfe9bf4ce7793fef9db97400ab17570322128d1651d18c17847ead959',1,'pulsatrix']]],
+  ['lstmlrp_14',['LstmLrp',['../namespacepulsatrix.html#ac55b0127cfe9bf4ce7793fef9db97400a651b9b5b61c6f9c608a91c977f1d1731',1,'pulsatrix']]],
+  ['lukasiewicz_15',['lukasiewicz',['../classpulsatrix_1_1DisjunctionModule.html#aa262bae9403da4b2852f4d66c158da3ead0f758f4f092310da74b1523c78793bb',1,'pulsatrix::DisjunctionModule::Lukasiewicz'],['../classpulsatrix_1_1ConjunctionModule.html#ac337b697d16a8cdac0dda3744c73346fad0f758f4f092310da74b1523c78793bb',1,'pulsatrix::ConjunctionModule::Lukasiewicz']]]
 ];
