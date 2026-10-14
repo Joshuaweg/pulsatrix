@@ -395,6 +395,15 @@ Classes</h2></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Draws a filled bar whose fill length encodes confidence (position/length, never color alone &ndash; hc_information_visualization.md SS1/SS5: "confidence bar/meter...
        fastest to process"). The exact percentage is always rendered as text alongside the fill &ndash; never a color-only encoding (also satisfies WCAG: a colorblind user must be able to read the value without relying on hue).  <a href="classpulsatrix_1_1ConfidenceMeter.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpulsatrix_1_1ConformalClassifier.html">ConformalClassifier</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">A calibrated conformal classifier.  <a href="structpulsatrix_1_1ConformalClassifier.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpulsatrix_1_1ConformalOptions.html">ConformalOptions</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="namespacepulsatrix.html#a5a5e90e85164351cd1a47147481b02c8" title="Calibrates on held-out examples the model wasn&#39;t trained on.">CalibrateConformalClassifier()</a>'s settings.  <a href="structpulsatrix_1_1ConformalOptions.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpulsatrix_1_1ConformalRegressor.html">ConformalRegressor</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">A calibrated conformal regressor.  <a href="structpulsatrix_1_1ConformalRegressor.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1ConjunctionModule.html">ConjunctionModule</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight"><code>y = a T b</code> for a selected t-norm T, over two independent fuzzy-truth-valued operand tensors (values intended in [0,1]; out-of-range values are not rejected &ndash; see <a class="el" href="classpulsatrix_1_1ConjunctionModule.html#ac6eaa5103424a8647ecd5efc6e8d00ba" title="LRP relevance propagation for the selected t-norm – genuinely novel, no prior art (research_2026_neur...">propagate_relevance()</a>'s note and mission_0_tnorm_operators.md's adversarial section).  <a href="classpulsatrix_1_1ConjunctionModule.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -453,6 +462,9 @@ Classes</h2></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpulsatrix_1_1CounterfactualTarget.html">CounterfactualTarget</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">What the counterfactual must achieve.  <a href="structpulsatrix_1_1CounterfactualTarget.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpulsatrix_1_1CoverageReport.html">CoverageReport</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">How often the sets or intervals held the truth, and how large they were.  <a href="structpulsatrix_1_1CoverageReport.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1CPUBackend.html">CPUBackend</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">CPU-resident <a class="el" href="classpulsatrix_1_1DeviceBackend.html" title="Vendor-agnostic compute/memory backend. CPUBackend, CUDABackend (Phase 1.5), and HIPBackend (Phase 1....">DeviceBackend</a> implementation. Reference implementation every other backend (<a class="el" href="classpulsatrix_1_1CUDABackend.html" title="CUDA-resident DeviceBackend implementation.">CUDABackend</a>, <a class="el" href="classpulsatrix_1_1HIPBackend.html" title="HIP-resident DeviceBackend implementation, targeting AMD GPUs via ROCm.">HIPBackend</a>) is checked for numerical equivalence against.  <a href="classpulsatrix_1_1CPUBackend.html#details">More...</a><br /></td></tr>
@@ -676,6 +688,12 @@ Classes</h2></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpulsatrix_1_1GAEResult.html">GAEResult</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="namespacepulsatrix.html#a5e7eb5721b3a5ef9281c8ac3906d05b1" title="Generalized Advantage Estimation (Schulman et al. 2016, arXiv:1506.02438): the exponentially-weighted...">ComputeGAE()</a>'s two outputs: the advantage estimate per step and the critic's regression target per step.  <a href="structpulsatrix_1_1GAEResult.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpulsatrix_1_1GaussianMixturePrediction.html">GaussianMixturePrediction</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="namespacepulsatrix.html#a9a735f8061221f34f09d97b6a29544ef" title="Mixes M Gaussian predictions per input into one, as Lakshminarayanan et al. do: the mixture&#39;s mean is...">CombineGaussians()</a>' result: one value per input.  <a href="structpulsatrix_1_1GaussianMixturePrediction.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1GaussianNLLLoss.html">GaussianNLLLoss</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The Gaussian negative log likelihood, for regressors that predict their own noise (Nix and Weigend, 1994; Lakshminarayanan et al., 2017): the network outputs two values per input, a mean mu and s, and its variance is softplus(s) + min_variance, which keeps it positive.  <a href="classpulsatrix_1_1GaussianNLLLoss.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1GaussianProcessRegressor.html">GaussianProcessRegressor</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">A fitted (or queryable-before-fitting-throws) Gaussian Process regressor with a squared-exponential kernel: k(x, x') = sigma_f^2 * exp(-||x - x'||^2 / (2 * length_scale^2)), plus additive observation noise (a small noise_variance is also standard GP practice purely as numerical "jitter" to keep the kernel matrix well-conditioned, independent of whether the underlying objective is actually noisy).  <a href="classpulsatrix_1_1GaussianProcessRegressor.html#details">More...</a><br /></td></tr>
@@ -1139,6 +1157,9 @@ Classes</h2></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1PPOClippedLoss.html">PPOClippedLoss</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">loss = mean_b( -min( r_b * A_b, clamp(r_b, 1-eps, 1+eps) * A_b ) ), where <code>r_b = pi_new(a_b|s_b) / pi_old(a_b|s_b)</code> &ndash; the clipped surrogate objective of Schulman et al. 2017 (arXiv:1707.06347), negated so that minimizing it maximizes the objective the paper states.  <a href="classpulsatrix_1_1PPOClippedLoss.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpulsatrix_1_1PredictionInterval.html">PredictionInterval</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">One prediction interval.  <a href="structpulsatrix_1_1PredictionInterval.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1PrependNormalizer.html">PrependNormalizer</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Puts a string in front of non-empty text (Hugging Face's Prepend normalizer).  <a href="classpulsatrix_1_1PrependNormalizer.html#details">More...</a><br /></td></tr>
@@ -1619,6 +1640,9 @@ Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpulsatrix_1_1TwoNNResult.html">TwoNNResult</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="namespacepulsatrix.html#aa8f5a465cad9f1a4542aad834172f955" title="TwoNN intrinsic dimension (Facco, d&#39;Errico, Rodriguez and Laio, Scientific Reports 2017): from each p...">TwoNNDimension()</a>'s result.  <a href="structpulsatrix_1_1TwoNNResult.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpulsatrix_1_1UncertaintyDecomposition.html">UncertaintyDecomposition</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="namespacepulsatrix.html#ac624b0d302efff9b325bb4938ec0c7ab" title="Splits the uncertainty of a set of probability samples into its aleatoric and epistemic parts,...">DecomposeUncertainty()</a>'s result: one value per input, entropies in nats.  <a href="structpulsatrix_1_1UncertaintyDecomposition.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1UnicodeRegex.html">UnicodeRegex</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">A compiled pattern, matched leftmost-first with backtracking as Oniguruma (which Hugging Face <code>tokenizers</code> uses) and Perl do.  <a href="classpulsatrix_1_1UnicodeRegex.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -1776,6 +1800,11 @@ Enumerations</h2></td></tr>
  }</td></tr>
 <tr class="memdesc:a0048291a9ea7445b289cccee1075996d"><td class="mdescLeft">&#160;</td><td class="mdescRight">How ConceptReferenceSamples() ranks inputs.  <a href="namespacepulsatrix.html#a0048291a9ea7445b289cccee1075996d">More...</a><br /></td></tr>
 <tr class="separator:a0048291a9ea7445b289cccee1075996d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4a0fc3bfcfed0352e33ddc9f7699b8d9" id="r_a4a0fc3bfcfed0352e33ddc9f7699b8d9"><td class="memItemLeft" align="right" valign="top">enum class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#a4a0fc3bfcfed0352e33ddc9f7699b8d9">ConformalScore</a> { <a class="el" href="namespacepulsatrix.html#a4a0fc3bfcfed0352e33ddc9f7699b8d9a736b6039f07dc28432644d2a9997abe7">Lac</a>
+, <a class="el" href="namespacepulsatrix.html#a4a0fc3bfcfed0352e33ddc9f7699b8d9a56a09d4349ec3f88d7df9d6d9acc425c">Aps</a>
+ }</td></tr>
+<tr class="memdesc:a4a0fc3bfcfed0352e33ddc9f7699b8d9"><td class="mdescLeft">&#160;</td><td class="mdescRight">How a conformal classifier scores an example.  <a href="namespacepulsatrix.html#a4a0fc3bfcfed0352e33ddc9f7699b8d9">More...</a><br /></td></tr>
+<tr class="separator:a4a0fc3bfcfed0352e33ddc9f7699b8d9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2bdea6033ff2f2ff94e5f71059a33843" id="r_a2bdea6033ff2f2ff94e5f71059a33843"><td class="memItemLeft" align="right" valign="top">enum class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#a2bdea6033ff2f2ff94e5f71059a33843">CrosscoderSparsity</a> { <a class="el" href="namespacepulsatrix.html#a2bdea6033ff2f2ff94e5f71059a33843a9ec4c0afd450ceac7adb81c3bcfc9732">L1</a>
 , <a class="el" href="namespacepulsatrix.html#a2bdea6033ff2f2ff94e5f71059a33843a0c321645fe3e9519e78096c360674da9">BatchTopK</a>
  }</td></tr>
@@ -2301,6 +2330,31 @@ Functions</h2></td></tr>
 <tr class="memitem:a4d6c37e42b136dac4cb98ee7084b0b2b" id="r_a4d6c37e42b136dac4cb98ee7084b0b2b"><td class="memItemLeft" align="right" valign="top">std::vector&lt; int64_t &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#a4d6c37e42b136dac4cb98ee7084b0b2b">ConceptReferenceSamples</a> (const <a class="el" href="classpulsatrix_1_1LRP.html">LRP</a> &amp;lrp, <a class="el" href="classpulsatrix_1_1ExplainerContext.html">ExplainerContext</a> &amp;ctx, const <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp;candidates, int64_t target, <a class="el" href="namespacepulsatrix.html#a2b8dc3d7d2cef35f192d191f09156e67">NodeId</a> layer, int64_t channel, int64_t k, <a class="el" href="namespacepulsatrix.html#a0048291a9ea7445b289cccee1075996d">ReferenceMode</a> mode, <a class="el" href="classpulsatrix_1_1DeviceBackend.html">DeviceBackend</a> *backend)</td></tr>
 <tr class="memdesc:a4d6c37e42b136dac4cb98ee7084b0b2b"><td class="mdescLeft">&#160;</td><td class="mdescRight">The <code>k</code> inputs of <code>candidates</code> that show a channel best, best first: the reference samples by which CRP shows what a concept is.  <br /></td></tr>
 <tr class="separator:a4d6c37e42b136dac4cb98ee7084b0b2b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5a5e90e85164351cd1a47147481b02c8" id="r_a5a5e90e85164351cd1a47147481b02c8"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structpulsatrix_1_1ConformalClassifier.html">ConformalClassifier</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#a5a5e90e85164351cd1a47147481b02c8">CalibrateConformalClassifier</a> (const <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp;probabilities, const std::vector&lt; int64_t &gt; &amp;labels, const <a class="el" href="structpulsatrix_1_1ConformalOptions.html">ConformalOptions</a> &amp;options={})</td></tr>
+<tr class="memdesc:a5a5e90e85164351cd1a47147481b02c8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Calibrates on held-out examples the model wasn't trained on.  <br /></td></tr>
+<tr class="separator:a5a5e90e85164351cd1a47147481b02c8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa9a7d18bc1910879269f47ecde43cc5b" id="r_aa9a7d18bc1910879269f47ecde43cc5b"><td class="memItemLeft" align="right" valign="top">std::vector&lt; std::vector&lt; int64_t &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#aa9a7d18bc1910879269f47ecde43cc5b">PredictionSets</a> (const <a class="el" href="structpulsatrix_1_1ConformalClassifier.html">ConformalClassifier</a> &amp;classifier, const <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp;probabilities)</td></tr>
+<tr class="memdesc:aa9a7d18bc1910879269f47ecde43cc5b"><td class="mdescLeft">&#160;</td><td class="mdescRight">The prediction set of each input: the classes, most probable first.  <br /></td></tr>
+<tr class="separator:aa9a7d18bc1910879269f47ecde43cc5b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a84c3c0c011dbcee0346e71b2aa1ce2b9" id="r_a84c3c0c011dbcee0346e71b2aa1ce2b9"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structpulsatrix_1_1ConformalRegressor.html">ConformalRegressor</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#a84c3c0c011dbcee0346e71b2aa1ce2b9">CalibrateConformalRegressor</a> (const std::vector&lt; double &gt; &amp;predictions, const std::vector&lt; double &gt; &amp;targets, double alpha=0.1)</td></tr>
+<tr class="memdesc:a84c3c0c011dbcee0346e71b2aa1ce2b9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Calibrates intervals ŷ ± q̂ from a point regressor's predictions on held-out examples.  <br /></td></tr>
+<tr class="separator:a84c3c0c011dbcee0346e71b2aa1ce2b9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:acaa2ee0844923f5f5a3f17f214aedcd9" id="r_acaa2ee0844923f5f5a3f17f214aedcd9"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structpulsatrix_1_1ConformalRegressor.html">ConformalRegressor</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#acaa2ee0844923f5f5a3f17f214aedcd9">CalibrateConformalQuantileRegressor</a> (const std::vector&lt; double &gt; &amp;lower, const std::vector&lt; double &gt; &amp;upper, const std::vector&lt; double &gt; &amp;targets, double alpha=0.1)</td></tr>
+<tr class="memdesc:acaa2ee0844923f5f5a3f17f214aedcd9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Calibrates CQR intervals [lo − q̂, hi + q̂] from a quantile regressor's lower and upper predictions, such as its alpha/2 and 1 − alpha/2 quantiles, on held-out examples.  <br /></td></tr>
+<tr class="separator:acaa2ee0844923f5f5a3f17f214aedcd9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a15448d7709142fa9d5cb8c21546bdb26" id="r_a15448d7709142fa9d5cb8c21546bdb26"><td class="memItemLeft" align="right" valign="top">std::vector&lt; <a class="el" href="structpulsatrix_1_1PredictionInterval.html">PredictionInterval</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#a15448d7709142fa9d5cb8c21546bdb26">PredictionIntervals</a> (const <a class="el" href="structpulsatrix_1_1ConformalRegressor.html">ConformalRegressor</a> &amp;regressor, const std::vector&lt; double &gt; &amp;predictions)</td></tr>
+<tr class="memdesc:a15448d7709142fa9d5cb8c21546bdb26"><td class="mdescLeft">&#160;</td><td class="mdescRight">The intervals for a point regressor's predictions (absolute_residual).  <br /></td></tr>
+<tr class="separator:a15448d7709142fa9d5cb8c21546bdb26"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af2639fb3aae9b6a685d3ca9a678ac2bd" id="r_af2639fb3aae9b6a685d3ca9a678ac2bd"><td class="memItemLeft" align="right" valign="top">std::vector&lt; <a class="el" href="structpulsatrix_1_1PredictionInterval.html">PredictionInterval</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#af2639fb3aae9b6a685d3ca9a678ac2bd">PredictionIntervals</a> (const <a class="el" href="structpulsatrix_1_1ConformalRegressor.html">ConformalRegressor</a> &amp;regressor, const std::vector&lt; double &gt; &amp;lower, const std::vector&lt; double &gt; &amp;upper)</td></tr>
+<tr class="memdesc:af2639fb3aae9b6a685d3ca9a678ac2bd"><td class="mdescLeft">&#160;</td><td class="mdescRight">The intervals for a quantile regressor's predictions (cqr).  <br /></td></tr>
+<tr class="separator:af2639fb3aae9b6a685d3ca9a678ac2bd"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a98df73968a09ac94da1c097ac194d8fa" id="r_a98df73968a09ac94da1c097ac194d8fa"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structpulsatrix_1_1CoverageReport.html">CoverageReport</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#a98df73968a09ac94da1c097ac194d8fa">EvaluateCoverage</a> (const std::vector&lt; std::vector&lt; int64_t &gt; &gt; &amp;sets, const std::vector&lt; int64_t &gt; &amp;labels)</td></tr>
+<tr class="separator:a98df73968a09ac94da1c097ac194d8fa"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6163cfc8e62cc486a4e116a399dc90f1" id="r_a6163cfc8e62cc486a4e116a399dc90f1"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structpulsatrix_1_1CoverageReport.html">CoverageReport</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#a6163cfc8e62cc486a4e116a399dc90f1">EvaluateCoverage</a> (const std::vector&lt; <a class="el" href="structpulsatrix_1_1PredictionInterval.html">PredictionInterval</a> &gt; &amp;intervals, const std::vector&lt; double &gt; &amp;targets)</td></tr>
+<tr class="separator:a6163cfc8e62cc486a4e116a399dc90f1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0109a115f3e5f1bd13e52909e28a66f8" id="r_a0109a115f3e5f1bd13e52909e28a66f8"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classpulsatrix_1_1JsonValue.html">JsonValue</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#a0109a115f3e5f1bd13e52909e28a66f8">ToJson</a> (const <a class="el" href="structpulsatrix_1_1CoverageReport.html">CoverageReport</a> &amp;report)</td></tr>
+<tr class="memdesc:a0109a115f3e5f1bd13e52909e28a66f8"><td class="mdescLeft">&#160;</td><td class="mdescRight">The report as a <code>pulsatrix.coverage.v1</code> document, without the per-input misses.  <br /></td></tr>
+<tr class="separator:a0109a115f3e5f1bd13e52909e28a66f8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae523e5a9a9b43d80a0aa56095246c0fc" id="r_ae523e5a9a9b43d80a0aa56095246c0fc"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structpulsatrix_1_1ContrastiveResult.html">ContrastiveResult</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#ae523e5a9a9b43d80a0aa56095246c0fc">FindPertinentNegative</a> (<a class="el" href="classpulsatrix_1_1ExplainerContext.html">ExplainerContext</a> &amp;ctx, const <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp;input, const <a class="el" href="structpulsatrix_1_1ContrastiveOptions.html">ContrastiveOptions</a> &amp;options={})</td></tr>
 <tr class="memdesc:ae523e5a9a9b43d80a0aa56095246c0fc"><td class="mdescLeft">&#160;</td><td class="mdescRight">The pertinent negative of <code>input:</code> what would have to be added, where the input has nothing, to change its class.  <br /></td></tr>
 <tr class="separator:ae523e5a9a9b43d80a0aa56095246c0fc"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -3462,6 +3516,21 @@ Functions</h2></td></tr>
 <tr class="memitem:a2d278aa15e82c07f12370078484d3e92"><td class="memTemplItemLeft" align="right" valign="top">std::vector&lt; <a class="el" href="classpulsatrix_1_1Trial.html">Trial</a> &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#a2d278aa15e82c07f12370078484d3e92">RunTPELoop</a> (const <a class="el" href="classpulsatrix_1_1SearchSpace.html">SearchSpace</a> &amp;space, ObjectiveFn objective_fn, size_t num_initial_random, size_t num_iterations, double gamma, size_t num_candidates, RNG &amp;rng)</td></tr>
 <tr class="memdesc:a2d278aa15e82c07f12370078484d3e92"><td class="mdescLeft">&#160;</td><td class="mdescRight">Runs TPE: num_initial_random uniformly-random trials (RandomSample), then num_iterations trials each chosen by splitting all trials so far into good/bad by the gamma quantile (maximization convention: good = highest objective values) and picking, among num_candidates uniformly-random candidates, the one maximizing LogDensityRatio.  <br /></td></tr>
 <tr class="separator:a2d278aa15e82c07f12370078484d3e92"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2ba01f66a6a0662a57eacb1c10a0741e" id="r_a2ba01f66a6a0662a57eacb1c10a0741e"><td class="memItemLeft" align="right" valign="top">std::vector&lt; <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#a2ba01f66a6a0662a57eacb1c10a0741e">McDropoutSamples</a> (<a class="el" href="classpulsatrix_1_1Module.html">Module</a> &amp;model, const std::function&lt; <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a>(const <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp;)&gt; &amp;predict, const <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp;input, int64_t samples)</td></tr>
+<tr class="memdesc:a2ba01f66a6a0662a57eacb1c10a0741e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Monte Carlo dropout: runs <code>predict</code> on <code>input</code> <code>samples</code> times with every dropout layer under <code>model</code> in training mode and everything else in eval mode, so BatchNorm uses its running statistics and only the dropout masks change between passes.  <br /></td></tr>
+<tr class="separator:a2ba01f66a6a0662a57eacb1c10a0741e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af277ccc6c1e1c23e92698ce181668201" id="r_af277ccc6c1e1c23e92698ce181668201"><td class="memItemLeft" align="right" valign="top">std::vector&lt; <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#af277ccc6c1e1c23e92698ce181668201">EnsembleSamples</a> (const std::vector&lt; std::function&lt; <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a>(const <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp;)&gt; &gt; &amp;members, const <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp;input)</td></tr>
+<tr class="memdesc:af277ccc6c1e1c23e92698ce181668201"><td class="mdescLeft">&#160;</td><td class="mdescRight">A deep ensemble's samples: each member's output for <code>input</code>.  <br /></td></tr>
+<tr class="separator:af277ccc6c1e1c23e92698ce181668201"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac624b0d302efff9b325bb4938ec0c7ab" id="r_ac624b0d302efff9b325bb4938ec0c7ab"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structpulsatrix_1_1UncertaintyDecomposition.html">UncertaintyDecomposition</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#ac624b0d302efff9b325bb4938ec0c7ab">DecomposeUncertainty</a> (const std::vector&lt; <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &gt; &amp;samples)</td></tr>
+<tr class="memdesc:ac624b0d302efff9b325bb4938ec0c7ab"><td class="mdescLeft">&#160;</td><td class="mdescRight">Splits the uncertainty of a set of probability samples into its aleatoric and epistemic parts, input by input.  <br /></td></tr>
+<tr class="separator:ac624b0d302efff9b325bb4938ec0c7ab"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9a735f8061221f34f09d97b6a29544ef" id="r_a9a735f8061221f34f09d97b6a29544ef"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structpulsatrix_1_1GaussianMixturePrediction.html">GaussianMixturePrediction</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#a9a735f8061221f34f09d97b6a29544ef">CombineGaussians</a> (const std::vector&lt; std::vector&lt; double &gt; &gt; &amp;means, const std::vector&lt; std::vector&lt; double &gt; &gt; &amp;variances={})</td></tr>
+<tr class="memdesc:a9a735f8061221f34f09d97b6a29544ef"><td class="mdescLeft">&#160;</td><td class="mdescRight">Mixes M Gaussian predictions per input into one, as Lakshminarayanan et al. do: the mixture's mean is the mean of the means, and its variance the mean of (variance + mean^2) minus the mixture mean squared.  <br /></td></tr>
+<tr class="separator:a9a735f8061221f34f09d97b6a29544ef"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aef12800a7434ccd11b520819cc72e741" id="r_aef12800a7434ccd11b520819cc72e741"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classpulsatrix_1_1JsonValue.html">JsonValue</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#aef12800a7434ccd11b520819cc72e741">ToJson</a> (const <a class="el" href="structpulsatrix_1_1UncertaintyDecomposition.html">UncertaintyDecomposition</a> &amp;decomposition)</td></tr>
+<tr class="memdesc:aef12800a7434ccd11b520819cc72e741"><td class="mdescLeft">&#160;</td><td class="mdescRight">The decomposition as a <code>pulsatrix.uncertainty.v1</code> document, without the mean probabilities.  <br /></td></tr>
+<tr class="separator:aef12800a7434ccd11b520819cc72e741"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2e24a41c7c62ed9e135f3b2527e91d95" id="r_a2e24a41c7c62ed9e135f3b2527e91d95"><td class="memItemLeft" align="right" valign="top">std::vector&lt; <a class="el" href="structpulsatrix_1_1Mutation.html">Mutation</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#a2e24a41c7c62ed9e135f3b2527e91d95">ParseMutations</a> (std::string_view text)</td></tr>
 <tr class="memdesc:a2e24a41c7c62ed9e135f3b2527e91d95"><td class="mdescLeft">&#160;</td><td class="mdescRight">Parses a variant, <code>A23G</code>, or several joined by <code>:</code>, <code>A23G:L45P</code> (ProteinGym's format).  <br /></td></tr>
 <tr class="separator:a2e24a41c7c62ed9e135f3b2527e91d95"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -4520,6 +4589,36 @@ Applied to the <a class="el" href="classpulsatrix_1_1ExplainerContext.html" titl
 <tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="ac793506d330b9f7e81f562eed3ab8539a3b04dd98f4b6bfb00045042467cc909b" name="ac793506d330b9f7e81f562eed3ab8539a3b04dd98f4b6bfb00045042467cc909b"></a>Debiased&#160;</td><td class="fielddoc"><p>Unbiased HSIC in place of HSIC: near 0 for unrelated representations at any number of inputs. Needs at least 4 inputs, and can be slightly negative. </p>
 </td></tr>
 <tr><td class="fieldname"><a id="ac793506d330b9f7e81f562eed3ab8539a218fddd7a527a321c8a7ef68d25f1260" name="ac793506d330b9f7e81f562eed3ab8539a218fddd7a527a321c8a7ef68d25f1260"></a>Biased&#160;</td><td class="fielddoc"><p>Kornblith et al.'s original estimator. Between 0 and 1, but biased upwards when the inputs are few compared with the width. </p>
+</td></tr>
+</table>
+
+</div>
+</div>
+<a id="a4a0fc3bfcfed0352e33ddc9f7699b8d9" name="a4a0fc3bfcfed0352e33ddc9f7699b8d9"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4a0fc3bfcfed0352e33ddc9f7699b8d9">&#9670;&#160;</a></span>ConformalScore</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">enum class <a class="el" href="namespacepulsatrix.html#a4a0fc3bfcfed0352e33ddc9f7699b8d9">pulsatrix::ConformalScore</a></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">strong</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>How a conformal classifier scores an example. </p>
+<table class="fieldtable">
+<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="a4a0fc3bfcfed0352e33ddc9f7699b8d9a736b6039f07dc28432644d2a9997abe7" name="a4a0fc3bfcfed0352e33ddc9f7699b8d9a736b6039f07dc28432644d2a9997abe7"></a>Lac&#160;</td><td class="fielddoc"><p>1 − p(true class): Least Ambiguous set-valued Classifier. </p>
+</td></tr>
+<tr><td class="fieldname"><a id="a4a0fc3bfcfed0352e33ddc9f7699b8d9a56a09d4349ec3f88d7df9d6d9acc425c" name="a4a0fc3bfcfed0352e33ddc9f7699b8d9a56a09d4349ec3f88d7df9d6d9acc425c"></a>Aps&#160;</td><td class="fielddoc"><p>The mass of the classes ranked at or above the true one: Adaptive Prediction Sets. </p>
 </td></tr>
 </table>
 
@@ -7624,6 +7723,145 @@ template&lt;typename RNG &gt; </div>
 
 </div>
 </div>
+<a id="a5a5e90e85164351cd1a47147481b02c8" name="a5a5e90e85164351cd1a47147481b02c8"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5a5e90e85164351cd1a47147481b02c8">&#9670;&#160;</a></span>CalibrateConformalClassifier()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="structpulsatrix_1_1ConformalClassifier.html">ConformalClassifier</a> pulsatrix::CalibrateConformalClassifier </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp;&#160;</td>
+          <td class="paramname"><em>probabilities</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const std::vector&lt; int64_t &gt; &amp;&#160;</td>
+          <td class="paramname"><em>labels</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="structpulsatrix_1_1ConformalOptions.html">ConformalOptions</a> &amp;&#160;</td>
+          <td class="paramname"><em>options</em> = <code>{}</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Calibrates on held-out examples the model wasn't trained on. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">probabilities</td><td>(n, K), each row the model's probabilities for one calibration example. </td></tr>
+    <tr><td class="paramname">labels</td><td>The true class of each. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname">std::invalid_argument</td><td>if probabilities isn't (n, K) with n &gt;= 1 and K &gt;= 2, labels has another length or a class outside [0, K), a probability is negative or not finite, alpha isn't in (0, 1), or options.randomized is set for LAC. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="acaa2ee0844923f5f5a3f17f214aedcd9" name="acaa2ee0844923f5f5a3f17f214aedcd9"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#acaa2ee0844923f5f5a3f17f214aedcd9">&#9670;&#160;</a></span>CalibrateConformalQuantileRegressor()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="structpulsatrix_1_1ConformalRegressor.html">ConformalRegressor</a> pulsatrix::CalibrateConformalQuantileRegressor </td>
+          <td>(</td>
+          <td class="paramtype">const std::vector&lt; double &gt; &amp;&#160;</td>
+          <td class="paramname"><em>lower</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const std::vector&lt; double &gt; &amp;&#160;</td>
+          <td class="paramname"><em>upper</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const std::vector&lt; double &gt; &amp;&#160;</td>
+          <td class="paramname"><em>targets</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">double&#160;</td>
+          <td class="paramname"><em>alpha</em> = <code>0.1</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Calibrates CQR intervals [lo − q̂, hi + q̂] from a quantile regressor's lower and upper predictions, such as its alpha/2 and 1 − alpha/2 quantiles, on held-out examples. </p>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname">std::invalid_argument</td><td>as <a class="el" href="namespacepulsatrix.html#a84c3c0c011dbcee0346e71b2aa1ce2b9" title="Calibrates intervals ŷ ± q̂ from a point regressor&#39;s predictions on held-out examples.">CalibrateConformalRegressor()</a> does, for all three. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="a84c3c0c011dbcee0346e71b2aa1ce2b9" name="a84c3c0c011dbcee0346e71b2aa1ce2b9"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a84c3c0c011dbcee0346e71b2aa1ce2b9">&#9670;&#160;</a></span>CalibrateConformalRegressor()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="structpulsatrix_1_1ConformalRegressor.html">ConformalRegressor</a> pulsatrix::CalibrateConformalRegressor </td>
+          <td>(</td>
+          <td class="paramtype">const std::vector&lt; double &gt; &amp;&#160;</td>
+          <td class="paramname"><em>predictions</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const std::vector&lt; double &gt; &amp;&#160;</td>
+          <td class="paramname"><em>targets</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">double&#160;</td>
+          <td class="paramname"><em>alpha</em> = <code>0.1</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Calibrates intervals ŷ ± q̂ from a point regressor's predictions on held-out examples. </p>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname">std::invalid_argument</td><td>if the two are empty, have different lengths or hold a value that isn't finite, or alpha isn't in (0, 1). </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
 <a id="ab4da5eb639a8f32b873f59c06b527731" name="ab4da5eb639a8f32b873f59c06b527731"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ab4da5eb639a8f32b873f59c06b527731">&#9670;&#160;</a></span>CanonicalCorrelations()</h2>
 
@@ -7944,6 +8182,49 @@ One difference from PyTorch: a NaN or infinite norm leaves the gradients unchang
 </div><div class="memdoc">
 
 <p>Combined E-GAN fitness: Fq + gamma*Fd (Wang et al. 2019's own weighted combination). gamma's default (0.05) is this mission's own reasonable working value, not a literal reproduction of the paper's own tuned constant (never stated precisely enough there to reproduce exactly) &ndash; a deliberate, documented choice, not an assumed one. </p>
+
+</div>
+</div>
+<a id="a9a735f8061221f34f09d97b6a29544ef" name="a9a735f8061221f34f09d97b6a29544ef"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9a735f8061221f34f09d97b6a29544ef">&#9670;&#160;</a></span>CombineGaussians()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="structpulsatrix_1_1GaussianMixturePrediction.html">GaussianMixturePrediction</a> pulsatrix::CombineGaussians </td>
+          <td>(</td>
+          <td class="paramtype">const std::vector&lt; std::vector&lt; double &gt; &gt; &amp;&#160;</td>
+          <td class="paramname"><em>means</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const std::vector&lt; std::vector&lt; double &gt; &gt; &amp;&#160;</td>
+          <td class="paramname"><em>variances</em> = <code>{}</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Mixes M Gaussian predictions per input into one, as Lakshminarayanan et al. do: the mixture's mean is the mean of the means, and its variance the mean of (variance + mean^2) minus the mixture mean squared. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">means</td><td>means[m][i]: member m's mean for input i. </td></tr>
+    <tr><td class="paramname">variances</td><td>The same shape, or empty for members that predict only a mean (Monte Carlo dropout of a plain regressor); the aleatoric part is then 0. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname">std::invalid_argument</td><td>if there are fewer than 2 members, the members have different lengths or none, a value isn't finite, or a variance is negative. </td></tr>
+  </table>
+  </dd>
+</dl>
 
 </div>
 </div>
@@ -10077,6 +10358,38 @@ If a front is uniform in some objective (max == min across the whole front), tha
 
 </div>
 </div>
+<a id="ac624b0d302efff9b325bb4938ec0c7ab" name="ac624b0d302efff9b325bb4938ec0c7ab"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac624b0d302efff9b325bb4938ec0c7ab">&#9670;&#160;</a></span>DecomposeUncertainty()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="structpulsatrix_1_1UncertaintyDecomposition.html">UncertaintyDecomposition</a> pulsatrix::DecomposeUncertainty </td>
+          <td>(</td>
+          <td class="paramtype">const std::vector&lt; <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &gt; &amp;&#160;</td>
+          <td class="paramname"><em>samples</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Splits the uncertainty of a set of probability samples into its aleatoric and epistemic parts, input by input. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">samples</td><td>Two or more (N, K) probability tensors of the same shape, such as <a class="el" href="namespacepulsatrix.html#a2ba01f66a6a0662a57eacb1c10a0741e" title="Monte Carlo dropout: runs predict on input samples times with every dropout layer under model in trai...">McDropoutSamples()</a> or <a class="el" href="namespacepulsatrix.html#af277ccc6c1e1c23e92698ce181668201" title="A deep ensemble&#39;s samples: each member&#39;s output for input.">EnsembleSamples()</a> returns. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname">std::invalid_argument</td><td>if there are fewer than 2 samples, they aren't all (N, K) of the same shape with K &gt;= 2, or a probability is negative or not finite. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
 <a id="a0034be345e6f18cfc824460160d5cdf5" name="a0034be345e6f18cfc824460160d5cdf5"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a0034be345e6f18cfc824460160d5cdf5">&#9670;&#160;</a></span>DefaultCollate()</h2>
 
@@ -10877,6 +11190,48 @@ If a front is uniform in some objective (max == min across the whole front), tha
 
 </div>
 </div>
+<a id="af277ccc6c1e1c23e92698ce181668201" name="af277ccc6c1e1c23e92698ce181668201"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af277ccc6c1e1c23e92698ce181668201">&#9670;&#160;</a></span>EnsembleSamples()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::vector&lt; <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &gt; pulsatrix::EnsembleSamples </td>
+          <td>(</td>
+          <td class="paramtype">const std::vector&lt; std::function&lt; <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a>(const <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp;)&gt; &gt; &amp;&#160;</td>
+          <td class="paramname"><em>members</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp;&#160;</td>
+          <td class="paramname"><em>input</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>A deep ensemble's samples: each member's output for <code>input</code>. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">members</td><td>Each runs one network, in eval mode, and returns probabilities. Train them from different seeds on the same data; Lakshminarayanan et al. used 5. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname">std::invalid_argument</td><td>if there are fewer than 2 members. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
 <a id="aa782e67904114c948b19f7ef6ec98514" name="aa782e67904114c948b19f7ef6ec98514"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#aa782e67904114c948b19f7ef6ec98514">&#9670;&#160;</a></span>EsmIgnoredTensors()</h2>
 
@@ -11163,6 +11518,74 @@ template&lt;typename FitnessFn , typename RNG &gt; </div>
         </tr>
       </table>
 </div><div class="memdoc">
+
+</div>
+</div>
+<a id="a6163cfc8e62cc486a4e116a399dc90f1" name="a6163cfc8e62cc486a4e116a399dc90f1"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6163cfc8e62cc486a4e116a399dc90f1">&#9670;&#160;</a></span>EvaluateCoverage() <span class="overload">[1/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="structpulsatrix_1_1CoverageReport.html">CoverageReport</a> pulsatrix::EvaluateCoverage </td>
+          <td>(</td>
+          <td class="paramtype">const std::vector&lt; <a class="el" href="structpulsatrix_1_1PredictionInterval.html">PredictionInterval</a> &gt; &amp;&#160;</td>
+          <td class="paramname"><em>intervals</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const std::vector&lt; double &gt; &amp;&#160;</td>
+          <td class="paramname"><em>targets</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname">std::invalid_argument</td><td>if there are no intervals or targets has another length. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="a98df73968a09ac94da1c097ac194d8fa" name="a98df73968a09ac94da1c097ac194d8fa"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a98df73968a09ac94da1c097ac194d8fa">&#9670;&#160;</a></span>EvaluateCoverage() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="structpulsatrix_1_1CoverageReport.html">CoverageReport</a> pulsatrix::EvaluateCoverage </td>
+          <td>(</td>
+          <td class="paramtype">const std::vector&lt; std::vector&lt; int64_t &gt; &gt; &amp;&#160;</td>
+          <td class="paramname"><em>sets</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const std::vector&lt; int64_t &gt; &amp;&#160;</td>
+          <td class="paramname"><em>labels</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname">std::invalid_argument</td><td>if there are no sets or labels has another length. </td></tr>
+  </table>
+  </dd>
+</dl>
 
 </div>
 </div>
@@ -15637,6 +16060,62 @@ template&lt;typename Genotype , typename FitnessT &gt; </div>
 
 </div>
 </div>
+<a id="a2ba01f66a6a0662a57eacb1c10a0741e" name="a2ba01f66a6a0662a57eacb1c10a0741e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2ba01f66a6a0662a57eacb1c10a0741e">&#9670;&#160;</a></span>McDropoutSamples()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::vector&lt; <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &gt; pulsatrix::McDropoutSamples </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classpulsatrix_1_1Module.html">Module</a> &amp;&#160;</td>
+          <td class="paramname"><em>model</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const std::function&lt; <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a>(const <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp;)&gt; &amp;&#160;</td>
+          <td class="paramname"><em>predict</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp;&#160;</td>
+          <td class="paramname"><em>input</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int64_t&#160;</td>
+          <td class="paramname"><em>samples</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Monte Carlo dropout: runs <code>predict</code> on <code>input</code> <code>samples</code> times with every dropout layer under <code>model</code> in training mode and everything else in eval mode, so BatchNorm uses its running statistics and only the dropout masks change between passes. </p>
+<p>Dropout layers are the <a class="el" href="classpulsatrix_1_1DropoutModule.html" title="y = (mask_i ? x_i / (1 - p) : 0) at training time (inverted dropout – scaling happens at training tim...">DropoutModule</a> instances in the model's tree (<a class="el" href="namespacepulsatrix.html#aed40084881fde6ed5e4249b725383a77" title="Every module under root, depth first with each parent before its children, named by their full dotted...">NamedModules()</a>) and the <a class="el" href="classpulsatrix_1_1LinearModule.html" title="y = x @ W + b, batched (x is (N, in_features), y is (N, out_features)) – migrated from the original u...">LinearModule</a> layers whose LoRA adapter has dropout (<a class="el" href="classpulsatrix_1_1LoRAAdapter.html#a6de44231e96574860f7195885d4a3d25">LoRAAdapter::dropout()</a> &gt; 0). Each module's training mode is restored afterwards, also when predict throws. The masks come from each layer's seeded stream, so a run is reproducible. </p><dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">model</td><td>The network <code>predict</code> runs. </td></tr>
+    <tr><td class="paramname">predict</td><td>Runs the network on its argument and returns probabilities, such as a softmax of the logits. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>One output per pass. </dd></dl>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname">std::invalid_argument</td><td>if samples &lt; 2 or the model has no dropout layer with p &gt; 0, whose samples would all be the same. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
 <a id="a97609000f48b7f7d190d002af3d09896" name="a97609000f48b7f7d190d002af3d09896"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a97609000f48b7f7d190d002af3d09896">&#9670;&#160;</a></span>MeanL0() <span class="overload">[1/2]</span></h2>
 
@@ -19176,6 +19655,126 @@ template&lt;typename RNG &gt; </div>
         </tr>
       </table>
 </div><div class="memdoc">
+
+</div>
+</div>
+<a id="af2639fb3aae9b6a685d3ca9a678ac2bd" name="af2639fb3aae9b6a685d3ca9a678ac2bd"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af2639fb3aae9b6a685d3ca9a678ac2bd">&#9670;&#160;</a></span>PredictionIntervals() <span class="overload">[1/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::vector&lt; <a class="el" href="structpulsatrix_1_1PredictionInterval.html">PredictionInterval</a> &gt; pulsatrix::PredictionIntervals </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="structpulsatrix_1_1ConformalRegressor.html">ConformalRegressor</a> &amp;&#160;</td>
+          <td class="paramname"><em>regressor</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const std::vector&lt; double &gt; &amp;&#160;</td>
+          <td class="paramname"><em>lower</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const std::vector&lt; double &gt; &amp;&#160;</td>
+          <td class="paramname"><em>upper</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>The intervals for a quantile regressor's predictions (cqr). </p>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname">std::invalid_argument</td><td>if the regressor isn't CQR's, the two have different lengths, or a value isn't finite. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="a15448d7709142fa9d5cb8c21546bdb26" name="a15448d7709142fa9d5cb8c21546bdb26"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a15448d7709142fa9d5cb8c21546bdb26">&#9670;&#160;</a></span>PredictionIntervals() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::vector&lt; <a class="el" href="structpulsatrix_1_1PredictionInterval.html">PredictionInterval</a> &gt; pulsatrix::PredictionIntervals </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="structpulsatrix_1_1ConformalRegressor.html">ConformalRegressor</a> &amp;&#160;</td>
+          <td class="paramname"><em>regressor</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const std::vector&lt; double &gt; &amp;&#160;</td>
+          <td class="paramname"><em>predictions</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>The intervals for a point regressor's predictions (absolute_residual). </p>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname">std::invalid_argument</td><td>if the regressor is CQR's, or a prediction isn't finite. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="aa9a7d18bc1910879269f47ecde43cc5b" name="aa9a7d18bc1910879269f47ecde43cc5b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa9a7d18bc1910879269f47ecde43cc5b">&#9670;&#160;</a></span>PredictionSets()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::vector&lt; std::vector&lt; int64_t &gt; &gt; pulsatrix::PredictionSets </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="structpulsatrix_1_1ConformalClassifier.html">ConformalClassifier</a> &amp;&#160;</td>
+          <td class="paramname"><em>classifier</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp;&#160;</td>
+          <td class="paramname"><em>probabilities</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>The prediction set of each input: the classes, most probable first. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">probabilities</td><td>(N, K), with the K of the calibration. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname">std::invalid_argument</td><td>as <a class="el" href="namespacepulsatrix.html#a5a5e90e85164351cd1a47147481b02c8" title="Calibrates on held-out examples the model wasn&#39;t trained on.">CalibrateConformalClassifier()</a> does for probabilities. </td></tr>
+  </table>
+  </dd>
+</dl>
 
 </div>
 </div>
@@ -26067,7 +26666,7 @@ template&lt;class Json &gt; </div>
 </div>
 </div>
 <a id="af0e72413bc90f49e775d7d5f87807c81" name="af0e72413bc90f49e775d7d5f87807c81"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#af0e72413bc90f49e775d7d5f87807c81">&#9670;&#160;</a></span>ToJson() <span class="overload">[1/28]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#af0e72413bc90f49e775d7d5f87807c81">&#9670;&#160;</a></span>ToJson() <span class="overload">[1/30]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -26097,7 +26696,7 @@ template&lt;class Json &gt; </div>
 </div>
 </div>
 <a id="aa0b432bea4ddfc0135ebfd55d5b78818" name="aa0b432bea4ddfc0135ebfd55d5b78818"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aa0b432bea4ddfc0135ebfd55d5b78818">&#9670;&#160;</a></span>ToJson() <span class="overload">[2/28]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#aa0b432bea4ddfc0135ebfd55d5b78818">&#9670;&#160;</a></span>ToJson() <span class="overload">[2/30]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -26121,7 +26720,7 @@ template&lt;class Json &gt; </div>
 </div>
 </div>
 <a id="a013e5eb67a4e009e0c77adfe60ca3799" name="a013e5eb67a4e009e0c77adfe60ca3799"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a013e5eb67a4e009e0c77adfe60ca3799">&#9670;&#160;</a></span>ToJson() <span class="overload">[3/28]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a013e5eb67a4e009e0c77adfe60ca3799">&#9670;&#160;</a></span>ToJson() <span class="overload">[3/30]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -26145,7 +26744,7 @@ template&lt;class Json &gt; </div>
 </div>
 </div>
 <a id="a78fac3d6c2d0c19d16dae11ee8cf561a" name="a78fac3d6c2d0c19d16dae11ee8cf561a"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a78fac3d6c2d0c19d16dae11ee8cf561a">&#9670;&#160;</a></span>ToJson() <span class="overload">[4/28]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a78fac3d6c2d0c19d16dae11ee8cf561a">&#9670;&#160;</a></span>ToJson() <span class="overload">[4/30]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -26169,7 +26768,7 @@ template&lt;class Json &gt; </div>
 </div>
 </div>
 <a id="acfcb68ea528ee9736dca6742b417d3c7" name="acfcb68ea528ee9736dca6742b417d3c7"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#acfcb68ea528ee9736dca6742b417d3c7">&#9670;&#160;</a></span>ToJson() <span class="overload">[5/28]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#acfcb68ea528ee9736dca6742b417d3c7">&#9670;&#160;</a></span>ToJson() <span class="overload">[5/30]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -26189,7 +26788,7 @@ template&lt;class Json &gt; </div>
 </div>
 </div>
 <a id="a81177bae8565dd9b82c6d1829b79b27c" name="a81177bae8565dd9b82c6d1829b79b27c"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a81177bae8565dd9b82c6d1829b79b27c">&#9670;&#160;</a></span>ToJson() <span class="overload">[6/28]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a81177bae8565dd9b82c6d1829b79b27c">&#9670;&#160;</a></span>ToJson() <span class="overload">[6/30]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -26213,7 +26812,7 @@ template&lt;class Json &gt; </div>
 </div>
 </div>
 <a id="a2ac9f728dfffa04b28687357b3345084" name="a2ac9f728dfffa04b28687357b3345084"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a2ac9f728dfffa04b28687357b3345084">&#9670;&#160;</a></span>ToJson() <span class="overload">[7/28]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a2ac9f728dfffa04b28687357b3345084">&#9670;&#160;</a></span>ToJson() <span class="overload">[7/30]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -26243,7 +26842,7 @@ template&lt;class Json &gt; </div>
 </div>
 </div>
 <a id="ae1bd894b2f804084cd61b94d4e4bd520" name="ae1bd894b2f804084cd61b94d4e4bd520"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ae1bd894b2f804084cd61b94d4e4bd520">&#9670;&#160;</a></span>ToJson() <span class="overload">[8/28]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#ae1bd894b2f804084cd61b94d4e4bd520">&#9670;&#160;</a></span>ToJson() <span class="overload">[8/30]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -26266,8 +26865,28 @@ template&lt;class Json &gt; </div>
 
 </div>
 </div>
+<a id="a0109a115f3e5f1bd13e52909e28a66f8" name="a0109a115f3e5f1bd13e52909e28a66f8"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0109a115f3e5f1bd13e52909e28a66f8">&#9670;&#160;</a></span>ToJson() <span class="overload">[9/30]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classpulsatrix_1_1JsonValue.html">JsonValue</a> pulsatrix::ToJson </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="structpulsatrix_1_1CoverageReport.html">CoverageReport</a> &amp;&#160;</td>
+          <td class="paramname"><em>report</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>The report as a <code>pulsatrix.coverage.v1</code> document, without the per-input misses. </p>
+
+</div>
+</div>
 <a id="aa4e8b5fb8a54c061c9a57a7449d9ecc2" name="aa4e8b5fb8a54c061c9a57a7449d9ecc2"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aa4e8b5fb8a54c061c9a57a7449d9ecc2">&#9670;&#160;</a></span>ToJson() <span class="overload">[9/28]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#aa4e8b5fb8a54c061c9a57a7449d9ecc2">&#9670;&#160;</a></span>ToJson() <span class="overload">[10/30]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -26287,7 +26906,7 @@ template&lt;class Json &gt; </div>
 </div>
 </div>
 <a id="adbde0045ad05d75702844315abc386e2" name="adbde0045ad05d75702844315abc386e2"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#adbde0045ad05d75702844315abc386e2">&#9670;&#160;</a></span>ToJson() <span class="overload">[10/28]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#adbde0045ad05d75702844315abc386e2">&#9670;&#160;</a></span>ToJson() <span class="overload">[11/30]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -26307,7 +26926,7 @@ template&lt;class Json &gt; </div>
 </div>
 </div>
 <a id="aa02d539ab2f09dbd63a0d3c0669f02a9" name="aa02d539ab2f09dbd63a0d3c0669f02a9"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aa02d539ab2f09dbd63a0d3c0669f02a9">&#9670;&#160;</a></span>ToJson() <span class="overload">[11/28]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#aa02d539ab2f09dbd63a0d3c0669f02a9">&#9670;&#160;</a></span>ToJson() <span class="overload">[12/30]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -26327,7 +26946,7 @@ template&lt;class Json &gt; </div>
 </div>
 </div>
 <a id="ac0c52d3b599e7bf169118db77357e61c" name="ac0c52d3b599e7bf169118db77357e61c"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ac0c52d3b599e7bf169118db77357e61c">&#9670;&#160;</a></span>ToJson() <span class="overload">[12/28]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#ac0c52d3b599e7bf169118db77357e61c">&#9670;&#160;</a></span>ToJson() <span class="overload">[13/30]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -26351,7 +26970,7 @@ template&lt;class Json &gt; </div>
 </div>
 </div>
 <a id="ab956a7775fa51f615c268b6635ca4a58" name="ab956a7775fa51f615c268b6635ca4a58"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ab956a7775fa51f615c268b6635ca4a58">&#9670;&#160;</a></span>ToJson() <span class="overload">[13/28]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#ab956a7775fa51f615c268b6635ca4a58">&#9670;&#160;</a></span>ToJson() <span class="overload">[14/30]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -26375,7 +26994,7 @@ template&lt;class Json &gt; </div>
 </div>
 </div>
 <a id="a3723b86c310dfa94b0a9346dcaba88ef" name="a3723b86c310dfa94b0a9346dcaba88ef"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a3723b86c310dfa94b0a9346dcaba88ef">&#9670;&#160;</a></span>ToJson() <span class="overload">[14/28]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a3723b86c310dfa94b0a9346dcaba88ef">&#9670;&#160;</a></span>ToJson() <span class="overload">[15/30]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -26393,7 +27012,7 @@ template&lt;class Json &gt; </div>
 </div>
 </div>
 <a id="a48f09b49a4bfd7fcb0c6a187ad8e707e" name="a48f09b49a4bfd7fcb0c6a187ad8e707e"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a48f09b49a4bfd7fcb0c6a187ad8e707e">&#9670;&#160;</a></span>ToJson() <span class="overload">[15/28]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a48f09b49a4bfd7fcb0c6a187ad8e707e">&#9670;&#160;</a></span>ToJson() <span class="overload">[16/30]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -26417,7 +27036,7 @@ template&lt;class Json &gt; </div>
 </div>
 </div>
 <a id="a08917aaabe7b0581e886617112b4b22f" name="a08917aaabe7b0581e886617112b4b22f"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a08917aaabe7b0581e886617112b4b22f">&#9670;&#160;</a></span>ToJson() <span class="overload">[16/28]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a08917aaabe7b0581e886617112b4b22f">&#9670;&#160;</a></span>ToJson() <span class="overload">[17/30]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -26441,7 +27060,7 @@ template&lt;class Json &gt; </div>
 </div>
 </div>
 <a id="ad5af73b59a7c24eae3c7b17218833dc8" name="ad5af73b59a7c24eae3c7b17218833dc8"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ad5af73b59a7c24eae3c7b17218833dc8">&#9670;&#160;</a></span>ToJson() <span class="overload">[17/28]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#ad5af73b59a7c24eae3c7b17218833dc8">&#9670;&#160;</a></span>ToJson() <span class="overload">[18/30]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -26467,7 +27086,7 @@ template&lt;class Json &gt; </div>
 </div>
 </div>
 <a id="a511eca3c55a2af484ab7b0848552baab" name="a511eca3c55a2af484ab7b0848552baab"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a511eca3c55a2af484ab7b0848552baab">&#9670;&#160;</a></span>ToJson() <span class="overload">[18/28]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a511eca3c55a2af484ab7b0848552baab">&#9670;&#160;</a></span>ToJson() <span class="overload">[19/30]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -26491,7 +27110,7 @@ template&lt;class Json &gt; </div>
 </div>
 </div>
 <a id="ab64a3e193ebbd5172a8a84cc1fa7ab77" name="ab64a3e193ebbd5172a8a84cc1fa7ab77"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ab64a3e193ebbd5172a8a84cc1fa7ab77">&#9670;&#160;</a></span>ToJson() <span class="overload">[19/28]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#ab64a3e193ebbd5172a8a84cc1fa7ab77">&#9670;&#160;</a></span>ToJson() <span class="overload">[20/30]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -26511,7 +27130,7 @@ template&lt;class Json &gt; </div>
 </div>
 </div>
 <a id="ad1543781766158e953e73420b3e7837d" name="ad1543781766158e953e73420b3e7837d"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ad1543781766158e953e73420b3e7837d">&#9670;&#160;</a></span>ToJson() <span class="overload">[20/28]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#ad1543781766158e953e73420b3e7837d">&#9670;&#160;</a></span>ToJson() <span class="overload">[21/30]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -26531,7 +27150,7 @@ template&lt;class Json &gt; </div>
 </div>
 </div>
 <a id="a1cac87fb441609597ed45ef44a31fdf0" name="a1cac87fb441609597ed45ef44a31fdf0"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a1cac87fb441609597ed45ef44a31fdf0">&#9670;&#160;</a></span>ToJson() <span class="overload">[21/28]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a1cac87fb441609597ed45ef44a31fdf0">&#9670;&#160;</a></span>ToJson() <span class="overload">[22/30]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -26555,7 +27174,7 @@ template&lt;class Json &gt; </div>
 </div>
 </div>
 <a id="a619059d9817446489ce8017256877dd3" name="a619059d9817446489ce8017256877dd3"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a619059d9817446489ce8017256877dd3">&#9670;&#160;</a></span>ToJson() <span class="overload">[22/28]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a619059d9817446489ce8017256877dd3">&#9670;&#160;</a></span>ToJson() <span class="overload">[23/30]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -26573,7 +27192,7 @@ template&lt;class Json &gt; </div>
 </div>
 </div>
 <a id="a9876fb802002c15f93971e013d8d4061" name="a9876fb802002c15f93971e013d8d4061"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a9876fb802002c15f93971e013d8d4061">&#9670;&#160;</a></span>ToJson() <span class="overload">[23/28]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a9876fb802002c15f93971e013d8d4061">&#9670;&#160;</a></span>ToJson() <span class="overload">[24/30]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -26597,7 +27216,7 @@ template&lt;class Json &gt; </div>
 </div>
 </div>
 <a id="aa32f8bf96528f433531e134108cee908" name="aa32f8bf96528f433531e134108cee908"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aa32f8bf96528f433531e134108cee908">&#9670;&#160;</a></span>ToJson() <span class="overload">[24/28]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#aa32f8bf96528f433531e134108cee908">&#9670;&#160;</a></span>ToJson() <span class="overload">[25/30]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -26617,7 +27236,7 @@ template&lt;class Json &gt; </div>
 </div>
 </div>
 <a id="af8ed5eb7aa5da0fbf8687ee45f639029" name="af8ed5eb7aa5da0fbf8687ee45f639029"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#af8ed5eb7aa5da0fbf8687ee45f639029">&#9670;&#160;</a></span>ToJson() <span class="overload">[25/28]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#af8ed5eb7aa5da0fbf8687ee45f639029">&#9670;&#160;</a></span>ToJson() <span class="overload">[26/30]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -26635,7 +27254,7 @@ template&lt;class Json &gt; </div>
 </div>
 </div>
 <a id="aac377b6bda0d2235c35aa5ee0616f96d" name="aac377b6bda0d2235c35aa5ee0616f96d"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aac377b6bda0d2235c35aa5ee0616f96d">&#9670;&#160;</a></span>ToJson() <span class="overload">[26/28]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#aac377b6bda0d2235c35aa5ee0616f96d">&#9670;&#160;</a></span>ToJson() <span class="overload">[27/30]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -26665,7 +27284,7 @@ template&lt;class Json &gt; </div>
 </div>
 </div>
 <a id="ad3cdd9d157bcc91df671e6c976c56a21" name="ad3cdd9d157bcc91df671e6c976c56a21"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ad3cdd9d157bcc91df671e6c976c56a21">&#9670;&#160;</a></span>ToJson() <span class="overload">[27/28]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#ad3cdd9d157bcc91df671e6c976c56a21">&#9670;&#160;</a></span>ToJson() <span class="overload">[28/30]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -26689,7 +27308,7 @@ template&lt;class Json &gt; </div>
 </div>
 </div>
 <a id="a5c45799fc127623333c36aade7d18eb3" name="a5c45799fc127623333c36aade7d18eb3"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a5c45799fc127623333c36aade7d18eb3">&#9670;&#160;</a></span>ToJson() <span class="overload">[28/28]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a5c45799fc127623333c36aade7d18eb3">&#9670;&#160;</a></span>ToJson() <span class="overload">[29/30]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -26709,6 +27328,26 @@ template&lt;class Json &gt; </div>
   </table>
   </dd>
 </dl>
+
+</div>
+</div>
+<a id="aef12800a7434ccd11b520819cc72e741" name="aef12800a7434ccd11b520819cc72e741"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aef12800a7434ccd11b520819cc72e741">&#9670;&#160;</a></span>ToJson() <span class="overload">[30/30]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classpulsatrix_1_1JsonValue.html">JsonValue</a> pulsatrix::ToJson </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="structpulsatrix_1_1UncertaintyDecomposition.html">UncertaintyDecomposition</a> &amp;&#160;</td>
+          <td class="paramname"><em>decomposition</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>The decomposition as a <code>pulsatrix.uncertainty.v1</code> document, without the mean probabilities. </p>
 
 </div>
 </div>

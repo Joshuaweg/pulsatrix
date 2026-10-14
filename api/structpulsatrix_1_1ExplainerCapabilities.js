@@ -10,6 +10,7 @@ var structpulsatrix_1_1ExplainerCapabilities =
     [ "max_features", "structpulsatrix_1_1ExplainerCapabilities.html#ac3191360482a80f705ac2ea84551a051", null ],
     [ "name", "structpulsatrix_1_1ExplainerCapabilities.html#a805b54c721601a4753b52f9ddb83fb6c", null ],
     [ "needs_base_model", "structpulsatrix_1_1ExplainerCapabilities.html#ae6b4e603af03b996fdfd8e7b2fc5ea28", null ],
+    [ "needs_labels", "structpulsatrix_1_1ExplainerCapabilities.html#ab03ce298232af6804f632ed508216b61", null ],
     [ "questions", "structpulsatrix_1_1ExplainerCapabilities.html#a827e01c976a926ae79bf30b7041452a0", null ],
     [ "scope", "structpulsatrix_1_1ExplainerCapabilities.html#a7b052eb27b66bb662174ef4904c127af", null ],
     [ "summary", "structpulsatrix_1_1ExplainerCapabilities.html#abeef9556cb187115991c8a99bc0ef046", null ]

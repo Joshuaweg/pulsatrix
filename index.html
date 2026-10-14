@@ -2624,8 +2624,9 @@ structures, and explain their predictions.</p>
   and the reason, and pulsatrix picks the explainers, runs the checks the reason requires, and
   reports what the explanation does and doesn't support.</li>
 <li><a href="interpretability/performance/">Performance</a>: accuracy, log loss, the Brier score,
-  calibration with a reliability diagram, and the error on each slice of the data, tested against
-  the rest.</li>
+  calibration with a reliability diagram, the error on each slice of the data, tested against
+  the rest, uncertainty from Monte Carlo dropout and deep ensembles, and conformal prediction
+  sets and intervals with a coverage guarantee.</li>
 </ul>
 <p><strong><a href="reinforcement-learning/">Reinforcement Learning</a></strong>: CartPole environments, replay and
 rollout buffers, and DQN, REINFORCE, A2C, PPO and SAC. Each algorithm's tests train it to a
@@ -2676,7 +2677,7 @@ LRP conservation, with an A/B comparison between two builds.</p>
 <p><strong>Python bindings</strong>: <code>Tensor</code>, the core layers, LRP and the other explainers, and seeding from
 Python. See <a href="getting-started/#python-bindings">Getting Started</a>.</p>
 <p>Everything is implemented in C++ with no Python dependency at runtime, and covered by about
-2,900 CPU tests (3,000 with the HIP backend) that run in CI on Windows and Linux.</p>
+3,050 CPU tests (3,150 with the HIP backend) that run in CI on Windows and Linux.</p>
 <h2 id="more-resources">More resources<a class="headerlink" href="#more-resources" title="Permanent link">&para;</a></h2>
 <ul>
 <li><strong><a href="getting-started/#using-pulsatrix-in-your-own-project">Using pulsatrix in your project</a></strong>:

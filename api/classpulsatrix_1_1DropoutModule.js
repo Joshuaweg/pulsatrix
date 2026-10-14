@@ -6,6 +6,7 @@ var classpulsatrix_1_1DropoutModule =
     [ "compute_device", "classpulsatrix_1_1DropoutModule.html#ad9074087e6dc1c1cfe40101b84e77f1d", null ],
     [ "forward_impl", "classpulsatrix_1_1DropoutModule.html#a395896eaa4c812878dabc4fa5042a1a9", null ],
     [ "op_type", "classpulsatrix_1_1DropoutModule.html#afc1cb84e224a3e22feaa0d766ba2cb7f", null ],
+    [ "p", "classpulsatrix_1_1DropoutModule.html#a35f9a841c47d027ac876dcc4a251b182", null ],
     [ "propagate_relevance", "classpulsatrix_1_1DropoutModule.html#abdaf96db84dc08abcd9f4745d46cad66", null ],
     [ "supports_lrp_rule", "classpulsatrix_1_1DropoutModule.html#a78a8b39c25c5e743f86420a564bb9430", null ]
 ];

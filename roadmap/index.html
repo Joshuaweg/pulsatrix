@@ -4122,8 +4122,8 @@ in <a href="#int-embedding-and-representation-analysis">INT</a> is done.
 <a href="#tda-topological-data-analysis">TDA</a> are done. TDA-9 is done too; TDA-10 and TDA-12 are scheduled for v1.4.
 <strong>The XAI epic, question-driven explainability, is complete</strong> (2026-10-13): every item in
 <a href="#xai-question-driven-explainability-framework">XAI</a> is done. Every one of the nine questions has
-an explainer except Output (a template). KS-3 answers Performance: metrics, calibration and
-per-slice error so far, with uncertainty and conformal prediction to come.</p>
+an explainer except Output (a template); KS-3 answered Performance with metrics, calibration,
+per-slice error, uncertainty and conformal prediction.</p>
 <ul>
 <li><strong>Strong.</strong> LRP covers every layer and is checked against Zennit and LXT. Saliency, Integrated
   Gradients and Grad-CAM are checked against Captum. LIME, KernelSHAP, PDP, logit lens,
@@ -4347,9 +4347,9 @@ machine, and explain it with the tools pulsatrix already has. Items on that path
   neighbors, probe controls, layer geometry, PCA, TCAV and CRP, and export for UMAP and t-SNE</li>
 <li>TDA-1 to TDA-8, TDA-11 (<strong>done</strong>, <a href="https://github.com/Joshuaweg/pulsatrix/pull/141">#141</a> to
   <a href="https://github.com/Joshuaweg/pulsatrix/pull/149">#149</a>): persistent homology with certified error bars, significance tests, and RTD</li>
-<li>KS-3 (in progress): metrics, calibration and per-slice error
-  (<a href="https://github.com/Joshuaweg/pulsatrix/pull/168">#168</a>); Monte Carlo dropout, deep ensembles
-  and split conformal prediction next</li>
+<li>KS-3 (<strong>done</strong>, <a href="https://github.com/Joshuaweg/pulsatrix/pull/168">#168</a> to
+  <a href="https://github.com/Joshuaweg/pulsatrix/pull/170">#170</a>): metrics, calibration and per-slice
+  error; Monte Carlo dropout and deep ensembles; split conformal prediction</li>
 <li>KS-4: adversarial robustness</li>
 <li>Llama-3.2-1B and Qwen2.5-0.5B pass the golden-logit test</li>
 </ul>
@@ -5507,7 +5507,7 @@ doesn't support.</p>
 <tr>
 <td>Performance</td>
 <td>Metrics, calibration, per-slice error, uncertainty</td>
-<td>Have metrics, calibration and per-slice error; uncertainty in KS-3</td>
+<td>Have (KS-3): metrics, calibration, per-slice error, uncertainty, conformal prediction</td>
 </tr>
 <tr>
 <td>Input (data)</td>
@@ -7825,7 +7825,7 @@ that only offers tools is small. The genuinely hard parts are narrow:</p>
 <td>—</td>
 <td>P1</td>
 <td>S</td>
-<td>Partly done: metrics, calibration and per-slice error, <a href="https://github.com/Joshuaweg/pulsatrix/pull/168">#168</a></td>
+<td>Done: metrics, calibration and per-slice error, <a href="https://github.com/Joshuaweg/pulsatrix/pull/168">#168</a>; Monte Carlo dropout and deep ensembles, <a href="https://github.com/Joshuaweg/pulsatrix/pull/169">#169</a>; split conformal prediction, <a href="https://github.com/Joshuaweg/pulsatrix/pull/170">#170</a> (see below)</td>
 </tr>
 <tr>
 <td>KS-4</td>
@@ -7976,6 +7976,30 @@ that only offers tools is small. The genuinely hard parts are narrow:</p>
   from <code>ExplanationRequest::labels</code> and <code>::slices</code>, so a Control plan can be complete. A
   re-initialized model is no baseline for a metric, so the planner asks for no null model for
   the Performance explainers.</p>
+<p>The second part (<a href="https://github.com/Joshuaweg/pulsatrix/pull/169">#169</a>) adds
+  <code>uncertainty.hpp</code>. <code>McDropoutSamples</code> turns on only the dropout layers, LoRA adapters with
+  dropout included, and restores every module's mode, also when the prediction throws.
+  <code>DecomposeUncertainty</code> splits the entropy into aleatoric and epistemic parts (BALD), and
+  <code>CombineGaussians</code> does the same for regressors trained with the new <code>GaussianNLLLoss</code>. Deep
+  ensembles needed nothing beyond running each member: training them is the caller's loop. There
+  is no access level for "a pulsatrix Module", so Monte Carlo dropout declares Gradients, the
+  first level that implies one.</p>
+<p>The third part (<a href="https://github.com/Joshuaweg/pulsatrix/pull/170">#170</a>) adds <code>conformal.hpp</code>:
+  split conformal sets with the LAC and APS scores (APS optionally randomized), absolute-residual
+  and CQR intervals, and coverage reports whose per-input misses go straight into
+  <code>PerSliceError</code>, so a group that is undercovered is tested like any other slice. Choices the
+  item didn't settle:
+  - <strong>The quantile</strong> is the ⌈(n + 1)(1 − α)⌉-th smallest score, as Angelopoulos and Bates state
+    it. MAPIE takes numpy's "higher" quantile at (n + 1)(1 − α)/n, which can land one rank
+    higher; the reference script checks that the two agree at the levels tested.
+  - <strong>Sets hold every class scoring at most q̂</strong>, so LAC sets can be empty, as the guarantee
+    allows, rather than MAPIE's 10⁻⁸ tolerance.
+  - <strong>The reference:</strong> LAC sets and absolute-residual intervals match MAPIE 1.1.0 on all 300 test
+    inputs. MAPIE 1.1.0 fails with scikit-learn 1.9.1, so its values come from scikit-learn 1.7.2.
+    MAPIE always randomizes APS calibration scores, so APS is checked against Angelopoulos and
+    Bates' reference code instead.
+  - <strong><code>ExplainerCapabilities::needs_labels</code>:</strong> the metrics and conformal calibration need true
+    labels, so the planner now excludes them unless <code>ModelTraits::has_labels</code> is set.</p>
 <h3 id="follow-ups-the-ks-work-surfaced">Follow-ups the KS work surfaced<a class="headerlink" href="#follow-ups-the-ks-work-surfaced" title="Permanent link">&para;</a></h3>
 <table>
 <thead>
@@ -8030,6 +8054,26 @@ that only offers tools is small. The genuinely hard parts are narrow:</p>
 <td>Python bindings for <code>TorchvisionResNet</code> and <code>TorchvisionVGG</code></td>
 <td>KS-9</td>
 <td>NB-3</td>
+</tr>
+<tr>
+<td>Views for the reliability diagram, per-slice error and conformal coverage</td>
+<td>KS-3</td>
+<td>VIZ</td>
+</tr>
+<tr>
+<td>A recipe on a real model: calibration, uncertainty on familiar and unfamiliar inputs, and conformal coverage by slice</td>
+<td>KS-3</td>
+<td>a recipe</td>
+</tr>
+<tr>
+<td>Uncertainty in the Justify report: the planner says the report should carry it, and <code>Explanation</code> has no field for it yet</td>
+<td>KS-3</td>
+<td>XAI-3 revision</td>
+</tr>
+<tr>
+<td>RAPS (Angelopoulos et al., ICLR 2021) and conformal risk control</td>
+<td>KS-3</td>
+<td>when a user needs smaller sets</td>
 </tr>
 </tbody>
 </table>

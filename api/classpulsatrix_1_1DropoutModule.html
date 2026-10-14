@@ -128,12 +128,15 @@ Collaboration diagram for pulsatrix::DropoutModule:</div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a6dbb49a0814ba61ad60303bcef1fac06" id="r_a6dbb49a0814ba61ad60303bcef1fac06"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1DropoutModule.html#a6dbb49a0814ba61ad60303bcef1fac06">DropoutModule</a> (float p, <a class="el" href="classpulsatrix_1_1DeviceBackend.html">DeviceBackend</a> *backend, uint64_t seed)</td></tr>
+<tr class="memitem:a6dbb49a0814ba61ad60303bcef1fac06" id="r_a6dbb49a0814ba61ad60303bcef1fac06"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1DropoutModule.html#a6dbb49a0814ba61ad60303bcef1fac06">DropoutModule</a> (float <a class="el" href="classpulsatrix_1_1DropoutModule.html#a35f9a841c47d027ac876dcc4a251b182">p</a>, <a class="el" href="classpulsatrix_1_1DeviceBackend.html">DeviceBackend</a> *backend, uint64_t seed)</td></tr>
 <tr class="memdesc:a6dbb49a0814ba61ad60303bcef1fac06"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructs a dropout layer.  <br /></td></tr>
 <tr class="separator:a6dbb49a0814ba61ad60303bcef1fac06"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a857d3637f09cba0c4819ec555867dc0a" id="r_a857d3637f09cba0c4819ec555867dc0a"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1DropoutModule.html#a857d3637f09cba0c4819ec555867dc0a">DropoutModule</a> (float p, <a class="el" href="classpulsatrix_1_1DeviceBackend.html">DeviceBackend</a> *backend)</td></tr>
+<tr class="memitem:a857d3637f09cba0c4819ec555867dc0a" id="r_a857d3637f09cba0c4819ec555867dc0a"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1DropoutModule.html#a857d3637f09cba0c4819ec555867dc0a">DropoutModule</a> (float <a class="el" href="classpulsatrix_1_1DropoutModule.html#a35f9a841c47d027ac876dcc4a251b182">p</a>, <a class="el" href="classpulsatrix_1_1DeviceBackend.html">DeviceBackend</a> *backend)</td></tr>
 <tr class="memdesc:a857d3637f09cba0c4819ec555867dc0a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Seeded from the global seed stream (<a class="el" href="namespacepulsatrix.html#a197aabe57442bbda9ca90932d761964b" title="The next seed in the global stream: a distinct, well-mixed 64-bit value per call, reproducible for a ...">next_seed()</a>, FND-7), so every layer built this way draws its own masks &ndash; reproducibly for a given <a class="el" href="namespacepulsatrix.html#aa8b6d579f43a06291616012e22b33c46" title="Sets the global seed and restarts the seed stream next_seed() draws from.">set_seed()</a>.  <br /></td></tr>
 <tr class="separator:a857d3637f09cba0c4819ec555867dc0a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a35f9a841c47d027ac876dcc4a251b182" id="r_a35f9a841c47d027ac876dcc4a251b182"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1DropoutModule.html#a35f9a841c47d027ac876dcc4a251b182">p</a> () const</td></tr>
+<tr class="memdesc:a35f9a841c47d027ac876dcc4a251b182"><td class="mdescLeft">&#160;</td><td class="mdescRight">The drop probability.  <br /></td></tr>
+<tr class="separator:a35f9a841c47d027ac876dcc4a251b182"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a531c3d0c47c9c3e916507b75ed7a3a69" id="r_a531c3d0c47c9c3e916507b75ed7a3a69"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1DropoutModule.html#a531c3d0c47c9c3e916507b75ed7a3a69">backward</a> (const <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp;grad_output) override</td></tr>
 <tr class="memdesc:a531c3d0c47c9c3e916507b75ed7a3a69"><td class="mdescLeft">&#160;</td><td class="mdescRight">Computes the gradient w.r.t. this module's input: grad_output * mask * scale, the true gradient of the actual (masked/scaled) forward computation. If the most recent <a class="el" href="classpulsatrix_1_1Module.html#a5cb3b4aac3d2364c973009413fde6a21" title="Runs this module&#39;s forward computation.">forward()</a> ran in eval mode, mask is all-ones and scale == 1, so this correctly reduces to identity with no special-casing needed here.  <br /></td></tr>
 <tr class="separator:a531c3d0c47c9c3e916507b75ed7a3a69"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -406,6 +409,33 @@ Protected Member Functions</h2></td></tr>
 <p>Elementwise per charter's closed OpType set &ndash; a per-element scale-or-zero operation, an honest fit for the existing category (no new OpType needed). </p>
 
 <p>Implements <a class="el" href="classpulsatrix_1_1Module.html#a3a4406bdbcd5f3886c71a24b8ddbf90e">pulsatrix::Module</a>.</p>
+
+</div>
+</div>
+<a id="a35f9a841c47d027ac876dcc4a251b182" name="a35f9a841c47d027ac876dcc4a251b182"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a35f9a841c47d027ac876dcc4a251b182">&#9670;&#160;</a></span>p()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">float pulsatrix::DropoutModule::p </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>The drop probability. </p>
 
 </div>
 </div>

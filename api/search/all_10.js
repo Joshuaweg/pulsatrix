@@ -10,9 +10,10 @@ var searchData=
   ['qr_7',['QR',['../namespacepulsatrix.html#a281ea330d1061f3fdd9fd8578e3b2c2f',1,'pulsatrix']]],
   ['qrresult_8',['QRResult',['../structpulsatrix_1_1QRResult.html',1,'pulsatrix']]],
   ['qualityfitness_9',['QualityFitness',['../namespacepulsatrix.html#a956c06f49f783152ffc13683bb232b75',1,'pulsatrix']]],
-  ['query_5fpre_5fattn_5fscalar_10',['query_pre_attn_scalar',['../structpulsatrix_1_1HfModelConfig.html#af2c9b0f60a30a87cd75dd7251e746a75',1,'pulsatrix::HfModelConfig']]],
-  ['query_5fweight_11',['query_weight',['../structpulsatrix_1_1datalog_1_1NeuralPredicateQueryResult.html#a1f88a8558770a28d059ea75ff32716c8',1,'pulsatrix::datalog::NeuralPredicateQueryResult']]],
-  ['question_12',['question',['../structpulsatrix_1_1Explanation.html#ab574b32bd20c81ed9ed578cd9cc95fe3',1,'pulsatrix::Explanation::question'],['../structpulsatrix_1_1ExplanationRequest.html#aec178e256457e72903df4d10dfc9236e',1,'pulsatrix::ExplanationRequest::question'],['../structpulsatrix_1_1ExplanationPlan.html#a6fcff45a5885d09908011d160409664d',1,'pulsatrix::ExplanationPlan::question']]],
-  ['questions_13',['questions',['../structpulsatrix_1_1ExplainerCapabilities.html#a827e01c976a926ae79bf30b7041452a0',1,'pulsatrix::ExplainerCapabilities']]],
-  ['questiontext_14',['QuestionText',['../namespacepulsatrix.html#a6e667a2af09d5c42a810f93386dd528e',1,'pulsatrix']]]
+  ['quantile_10',['quantile',['../structpulsatrix_1_1ConformalRegressor.html#a89bbcddac4859dfcd5a5892d3a1c8c73',1,'pulsatrix::ConformalRegressor::quantile'],['../structpulsatrix_1_1ConformalClassifier.html#a1ff573b7cf4b93af90cbbe4223fca802',1,'pulsatrix::ConformalClassifier::quantile']]],
+  ['query_5fpre_5fattn_5fscalar_11',['query_pre_attn_scalar',['../structpulsatrix_1_1HfModelConfig.html#af2c9b0f60a30a87cd75dd7251e746a75',1,'pulsatrix::HfModelConfig']]],
+  ['query_5fweight_12',['query_weight',['../structpulsatrix_1_1datalog_1_1NeuralPredicateQueryResult.html#a1f88a8558770a28d059ea75ff32716c8',1,'pulsatrix::datalog::NeuralPredicateQueryResult']]],
+  ['question_13',['question',['../structpulsatrix_1_1ExplanationPlan.html#a6fcff45a5885d09908011d160409664d',1,'pulsatrix::ExplanationPlan::question'],['../structpulsatrix_1_1Explanation.html#ab574b32bd20c81ed9ed578cd9cc95fe3',1,'pulsatrix::Explanation::question'],['../structpulsatrix_1_1ExplanationRequest.html#aec178e256457e72903df4d10dfc9236e',1,'pulsatrix::ExplanationRequest::question']]],
+  ['questions_14',['questions',['../structpulsatrix_1_1ExplainerCapabilities.html#a827e01c976a926ae79bf30b7041452a0',1,'pulsatrix::ExplainerCapabilities']]],
+  ['questiontext_15',['QuestionText',['../namespacepulsatrix.html#a6e667a2af09d5c42a810f93386dd528e',1,'pulsatrix']]]
 ];
