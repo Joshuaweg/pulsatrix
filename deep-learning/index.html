@@ -578,6 +578,28 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#a-smaller-language-model-distilberts-way" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        A smaller language model, DistilBERT's way
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#born-again-networks" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Born-again networks
+      
+    </span>
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -2917,6 +2939,28 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#a-smaller-language-model-distilberts-way" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        A smaller language model, DistilBERT's way
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#born-again-networks" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Born-again networks
+      
+    </span>
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -3073,8 +3117,8 @@ whole network, see <a href="../interpretability/lrp/">Layer-wise Relevance Propa
   4-block, 128-wide model take 47 ms instead of 3.3 s.</li>
 <li><strong>Optimizers &amp; losses</strong>: <code>SGDOptimizer</code> (momentum, Nesterov), <code>AdamOptimizer</code>,
   <code>AdamWOptimizer</code>, all with parameter groups; <code>MSELoss</code>, <code>CrossEntropyLoss</code>,
-  <code>TokenCrossEntropyLoss</code>, <code>DistillationLoss</code>, <code>BCEWithLogitsLoss</code>, <code>KLDivergenceLoss</code>,
-  <code>CalibrationLoss</code></li>
+  <code>TokenCrossEntropyLoss</code>, <code>DistillationLoss</code>, <code>HiddenStateCosineLoss</code>, <code>BCEWithLogitsLoss</code>,
+  <code>KLDivergenceLoss</code>, <code>CalibrationLoss</code></li>
 <li><strong>Generative building blocks</strong>: <code>Reparameterize</code> (VAE), <code>NoiseSchedule</code> and
   <code>SinusoidalTimestepEmbedding()</code> (diffusion)</li>
 <li><strong>Training utilities</strong>: <code>ClipGradNorm</code>, <code>LRSchedule</code>/<code>LRScheduler</code>, parameter groups
@@ -3480,6 +3524,67 @@ through <code>MultiHeadAttentionModule</code>'s attention probabilities, which t
 <li><strong>Checked against:</strong> a numpy implementation, with gradients by finite differences
   (<code>tools/generate_soft_decision_tree_reference_values.py</code>).</li>
 </ul>
+<h4 id="a-smaller-language-model-distilberts-way">A smaller language model, DistilBERT's way<a class="headerlink" href="#a-smaller-language-model-distilberts-way" title="Permanent link">&para;</a></h4>
+<p>DistilBERT (Sanh et al., 2019) keeps its teacher's width, halves its depth, and starts the student
+from the teacher's own weights, one layer out of two. <code>MakeStudentFromLayers</code> builds that student
+from any <code>CausalLM</code>: block j of the student is a copy of the teacher's block <code>layers[j]</code>, and the
+embedding, final norm and head are copied too. A student given every layer computes exactly the
+teacher's logits.</p>
+<p>The student trains on three losses, which DistilBERT weights 5 : 2 : 1:</p>
+<ul>
+<li><code>DistillationLoss</code> on the teacher's logits;</li>
+<li>the language-modeling loss on the data;</li>
+<li><code>HiddenStateCosineLoss</code>: 1 − cos(h_s, h_t) between the two models' last hidden states, averaged
+  over the tokens the mask keeps (PyTorch's <code>CosineEmbeddingLoss</code> with target 1).</li>
+</ul>
+<p><code>CausalLM::backward()</code> starts at the logits, so the cosine loss's gradient goes in through a
+<code>HiddenStateTap</code>, an identity intervention that keeps the states it sees and adds a gradient to
+the one flowing back:</p>
+<div class="highlight"><pre><span></span><code><span class="cp">#include</span><span class="w"> </span><span class="cpf">"pulsatrix/layer_student.hpp"</span>
+
+<span class="n">std</span><span class="o">::</span><span class="n">unique_ptr</span><span class="o">&lt;</span><span class="n">CausalLM</span><span class="o">&gt;</span><span class="w"> </span><span class="n">student</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">MakeStudentFromLayers</span><span class="p">(</span><span class="o">*</span><span class="n">teacher</span><span class="p">,</span><span class="w"> </span><span class="n">EveryOtherLayer</span><span class="p">(</span><span class="n">teacher</span><span class="o">-&gt;</span><span class="n">num_layers</span><span class="p">()),</span><span class="w"> </span><span class="o">&amp;</span><span class="n">backend</span><span class="p">);</span>
+<span class="k">const</span><span class="w"> </span><span class="kt">int64_t</span><span class="w"> </span><span class="n">last</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">student</span><span class="o">-&gt;</span><span class="n">num_layers</span><span class="p">()</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span>
+<span class="n">student</span><span class="o">-&gt;</span><span class="n">set_intervention</span><span class="p">(</span><span class="n">last</span><span class="p">,</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">make_unique</span><span class="o">&lt;</span><span class="n">HiddenStateTap</span><span class="o">&gt;</span><span class="p">(</span><span class="o">&amp;</span><span class="n">backend</span><span class="p">));</span>
+<span class="n">teacher</span><span class="o">-&gt;</span><span class="n">set_intervention</span><span class="p">(</span><span class="n">teacher</span><span class="o">-&gt;</span><span class="n">num_layers</span><span class="p">()</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">make_unique</span><span class="o">&lt;</span><span class="n">HiddenStateTap</span><span class="o">&gt;</span><span class="p">(</span><span class="o">&amp;</span><span class="n">backend</span><span class="p">));</span>
+<span class="k">auto</span><span class="o">*</span><span class="w"> </span><span class="n">tap</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">static_cast</span><span class="o">&lt;</span><span class="n">HiddenStateTap</span><span class="o">*&gt;</span><span class="p">(</span><span class="n">student</span><span class="o">-&gt;</span><span class="n">intervention</span><span class="p">(</span><span class="n">last</span><span class="p">));</span>
+<span class="k">auto</span><span class="o">*</span><span class="w"> </span><span class="n">teacher_tap</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">static_cast</span><span class="o">&lt;</span><span class="n">HiddenStateTap</span><span class="o">*&gt;</span><span class="p">(</span><span class="n">teacher</span><span class="o">-&gt;</span><span class="n">intervention</span><span class="p">(</span><span class="n">teacher</span><span class="o">-&gt;</span><span class="n">num_layers</span><span class="p">()</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="mi">1</span><span class="p">));</span>
+
+<span class="k">const</span><span class="w"> </span><span class="n">Tensor</span><span class="w"> </span><span class="n">teacher_logits</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">teacher</span><span class="o">-&gt;</span><span class="n">forward</span><span class="p">(</span><span class="n">ids</span><span class="p">);</span>
+<span class="k">const</span><span class="w"> </span><span class="n">Tensor</span><span class="w"> </span><span class="n">logits</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">student</span><span class="o">-&gt;</span><span class="n">forward</span><span class="p">(</span><span class="n">ids</span><span class="p">);</span>
+<span class="kt">float</span><span class="w"> </span><span class="n">kd</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">distill</span><span class="p">.</span><span class="n">forward</span><span class="p">(</span><span class="n">logits</span><span class="p">,</span><span class="w"> </span><span class="n">teacher_logits</span><span class="p">);</span><span class="w">      </span><span class="c1">// DistillationLoss, alpha = 1</span>
+<span class="kt">float</span><span class="w"> </span><span class="n">lm</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">token_loss</span><span class="p">.</span><span class="n">forward</span><span class="p">(</span><span class="n">logits</span><span class="p">,</span><span class="w"> </span><span class="n">targets</span><span class="p">);</span><span class="w">          </span><span class="c1">// TokenCrossEntropyLoss</span>
+<span class="kt">float</span><span class="w"> </span><span class="n">cos</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">cosine</span><span class="p">.</span><span class="n">forward</span><span class="p">(</span><span class="n">tap</span><span class="o">-&gt;</span><span class="n">hidden</span><span class="p">(),</span><span class="w"> </span><span class="n">teacher_tap</span><span class="o">-&gt;</span><span class="n">hidden</span><span class="p">(),</span><span class="w"> </span><span class="n">mask</span><span class="p">);</span>
+<span class="n">tap</span><span class="o">-&gt;</span><span class="n">add_gradient</span><span class="p">(</span><span class="n">cosine</span><span class="p">.</span><span class="n">backward</span><span class="p">());</span><span class="w">                    </span><span class="c1">// weight 1</span>
+<span class="n">Tensor</span><span class="w"> </span><span class="n">g</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">distill</span><span class="p">.</span><span class="n">backward</span><span class="p">();</span><span class="w">                           </span><span class="c1">// then 5 · g + 2 · the token loss's gradient</span>
+<span class="n">backend</span><span class="p">.</span><span class="n">axpby</span><span class="p">(</span><span class="mf">2.0f</span><span class="p">,</span><span class="w"> </span><span class="n">token_loss</span><span class="p">.</span><span class="n">backward</span><span class="p">().</span><span class="n">data</span><span class="p">(),</span><span class="w"> </span><span class="mf">5.0f</span><span class="p">,</span><span class="w"> </span><span class="n">g</span><span class="p">.</span><span class="n">data</span><span class="p">(),</span><span class="w"> </span><span class="n">g</span><span class="p">.</span><span class="n">data</span><span class="p">(),</span><span class="w"> </span><span class="k">static_cast</span><span class="o">&lt;</span><span class="kt">size_t</span><span class="o">&gt;</span><span class="p">(</span><span class="n">g</span><span class="p">.</span><span class="n">numel</span><span class="p">()));</span>
+<span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="n">student</span><span class="o">-&gt;</span><span class="n">backward</span><span class="p">(</span><span class="n">g</span><span class="p">);</span>
+</code></pre></div>
+<ul>
+<li><strong>Pre-norm models:</strong> in Llama and its relatives the last layer's output is the residual stream
+  before the final RMSNorm, not the normalized states BERT returns. The cosine ignores the vectors'
+  lengths, but the stream's few large dimensions weigh on their direction.</li>
+<li><strong>Checked against:</strong> numpy for the cosine loss, with gradients by finite differences
+  (<code>tools/generate_layer_student_reference_values.py</code>), and finite differences through a whole
+  model for the tap. The HIP backend gives the CPU's values, and a student built on the GPU from a
+  CPU teacher computes its logits.</li>
+</ul>
+<h4 id="born-again-networks">Born-again networks<a class="headerlink" href="#born-again-networks" title="Permanent link">&para;</a></h4>
+<p>A born-again network (Furlanello et al., ICML 2018) is a student the same size as its teacher,
+trained on the teacher's softened outputs, which then teaches the next generation. Furlanello et
+al. found students that beat their teachers and an ensemble of the generations that did better
+still; later work found the gains small and not always there, so compare over several seeds. The
+loop is ordinary training with <code>DistillationLoss</code>. <code>born_again.hpp</code> adds two pieces:</p>
+<ul>
+<li><strong><code>EnsembleLogProbabilities(logits, backend)</code>:</strong> log of the generations' mean distribution. It
+  is the ensemble's prediction, and, given to <code>DistillationLoss</code> as the teacher's logits, a
+  teacher made of several generations.</li>
+<li><strong><code>PermuteDarkKnowledge(teacher_logits, seed, backend)</code>:</strong> Furlanello et al.'s control. Each row
+  keeps its largest logit in place and shuffles the rest among the other classes, so the teacher's
+  top class and confidence stay and what it says about the other classes is scrambled. If a
+  student taught this way does as well, the gain didn't come from that dark knowledge.</li>
+</ul>
+<p>Their other control, which weights each example's label loss by the teacher's confidence, isn't
+available: it needs per-example weights in the cross-entropy loss.</p>
 <h3 id="gradient-clipping">Gradient clipping<a class="headerlink" href="#gradient-clipping" title="Permanent link">&para;</a></h3>
 <p><code>ClipGradNorm(model, max_norm)</code> scales all trainable gradients by one factor so their global L2
 norm is at most <code>max_norm</code>, as <code>torch.nn.utils.clip_grad_norm_</code> does. It returns the norm before

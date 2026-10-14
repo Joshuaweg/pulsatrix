@@ -280,6 +280,8 @@ var annotated_dup =
       [ "HfCheckpoint", "classpulsatrix_1_1HfCheckpoint.html", "classpulsatrix_1_1HfCheckpoint" ],
       [ "HfModelConfig", "structpulsatrix_1_1HfModelConfig.html", "structpulsatrix_1_1HfModelConfig" ],
       [ "HfRopeScaling", "structpulsatrix_1_1HfRopeScaling.html", "structpulsatrix_1_1HfRopeScaling" ],
+      [ "HiddenStateCosineLoss", "classpulsatrix_1_1HiddenStateCosineLoss.html", "classpulsatrix_1_1HiddenStateCosineLoss" ],
+      [ "HiddenStateTap", "classpulsatrix_1_1HiddenStateTap.html", "classpulsatrix_1_1HiddenStateTap" ],
       [ "HintLoss", "classpulsatrix_1_1HintLoss.html", "classpulsatrix_1_1HintLoss" ],
       [ "HIPBackend", "classpulsatrix_1_1HIPBackend.html", "classpulsatrix_1_1HIPBackend" ],
       [ "HistogramBins", "structpulsatrix_1_1HistogramBins.html", "structpulsatrix_1_1HistogramBins" ],

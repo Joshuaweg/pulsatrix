@@ -110,11 +110,13 @@ Inheritance diagram for pulsatrix::ResidualIntervention:</div>
 <div class="dyncontent">
 <div class="center"><img src="classpulsatrix_1_1ResidualIntervention__inherit__graph.png" border="0" usemap="#apulsatrix_1_1ResidualIntervention_inherit__map" alt="Inheritance graph"/></div>
 <map name="apulsatrix_1_1ResidualIntervention_inherit__map" id="apulsatrix_1_1ResidualIntervention_inherit__map">
-<area shape="rect" title="A trainable edit of the residual stream after a transformer block (TRN&#45;9: LoReFT),..." alt="" coords="5,79,228,104"/>
-<area shape="rect" href="classpulsatrix_1_1LoReFTIntervention.html" title="One block&#39;s LoReFT edit. Parameters, named as pyreft&#39;s state dict:" alt="" coords="10,152,223,177"/>
-<area shape="poly" title=" " alt="" coords="119,118,119,152,114,152,114,118"/>
-<area shape="rect" href="classpulsatrix_1_1Module.html" title="Base class for every layer type (LinearModule, Conv2DModule, activations, ...)." alt="" coords="49,5,184,31"/>
-<area shape="poly" title=" " alt="" coords="119,44,119,79,114,79,114,44"/>
+<area shape="rect" title="A trainable edit of the residual stream after a transformer block (TRN&#45;9: LoReFT),..." alt="" coords="101,79,323,104"/>
+<area shape="rect" href="classpulsatrix_1_1HiddenStateTap.html" title="An identity intervention that keeps the hidden states it sees and adds a gradient to the one flowing ..." alt="" coords="5,152,195,177"/>
+<area shape="poly" title=" " alt="" coords="184,114,120,154,117,150,181,109"/>
+<area shape="rect" href="classpulsatrix_1_1LoReFTIntervention.html" title="One block&#39;s LoReFT edit. Parameters, named as pyreft&#39;s state dict:" alt="" coords="219,152,432,177"/>
+<area shape="poly" title=" " alt="" coords="244,109,308,150,305,154,241,114"/>
+<area shape="rect" href="classpulsatrix_1_1Module.html" title="Base class for every layer type (LinearModule, Conv2DModule, activations, ...)." alt="" coords="145,5,279,31"/>
+<area shape="poly" title=" " alt="" coords="215,44,215,79,209,79,209,44"/>
 </map>
 <center><span class="legend">[<a target="top" href="graph_legend.html">legend</a>]</span></center></div>
 <div class="dynheader">
@@ -233,7 +235,7 @@ Protected Member Functions</h2></td></tr>
 
 <p>The edit for hidden states covering positions [start, start + L) of a sequence whose prompt is <code>prompt_length</code> positions long. forward(x) is forward_at(x, 0, L). Cached generation calls it once on the prompt and then once per new token, each a later start. </p>
 
-<p>Implemented in <a class="el" href="classpulsatrix_1_1LoReFTIntervention.html#ac3057bf31a28b186e37b60f2f9c847fd">pulsatrix::LoReFTIntervention</a>.</p>
+<p>Implemented in <a class="el" href="classpulsatrix_1_1HiddenStateTap.html#a98039f00c123e9fa38d18f40585d0b89">pulsatrix::HiddenStateTap</a>, and <a class="el" href="classpulsatrix_1_1LoReFTIntervention.html#ac3057bf31a28b186e37b60f2f9c847fd">pulsatrix::LoReFTIntervention</a>.</p>
 
 </div>
 </div>

@@ -242,6 +242,7 @@ var hierarchy =
     [ "pulsatrix::HfCheckpoint", "classpulsatrix_1_1HfCheckpoint.html", null ],
     [ "pulsatrix::HfModelConfig", "structpulsatrix_1_1HfModelConfig.html", null ],
     [ "pulsatrix::HfRopeScaling", "structpulsatrix_1_1HfRopeScaling.html", null ],
+    [ "pulsatrix::HiddenStateCosineLoss", "classpulsatrix_1_1HiddenStateCosineLoss.html", null ],
     [ "pulsatrix::HintLoss", "classpulsatrix_1_1HintLoss.html", null ],
     [ "pulsatrix::TrainingLogDocument::Histogram", "structpulsatrix_1_1TrainingLogDocument_1_1Histogram.html", null ],
     [ "pulsatrix::HistogramBins", "structpulsatrix_1_1HistogramBins.html", null ],
@@ -349,6 +350,7 @@ var hierarchy =
       [ "pulsatrix::RWKVModule", "classpulsatrix_1_1RWKVModule.html", null ],
       [ "pulsatrix::ReluModule", "classpulsatrix_1_1ReluModule.html", null ],
       [ "pulsatrix::ResidualIntervention", "classpulsatrix_1_1ResidualIntervention.html", [
+        [ "pulsatrix::HiddenStateTap", "classpulsatrix_1_1HiddenStateTap.html", null ],
         [ "pulsatrix::LoReFTIntervention", "classpulsatrix_1_1LoReFTIntervention.html", null ]
       ] ],
       [ "pulsatrix::ResidualModule", "classpulsatrix_1_1ResidualModule.html", null ],
