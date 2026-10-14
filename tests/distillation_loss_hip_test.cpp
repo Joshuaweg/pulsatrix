@@ -1,14 +1,18 @@
 // KD-1 on the GPU: DistillationLoss on the HIP backend gives the CPU's loss and gradient, with and
-// without dropped rows.
+// without dropped rows. KD-3's and KD-4's pieces follow.
 #include <gtest/gtest.h>
 
 #include <cmath>
+#include <memory>
+#include <string>
 #include <vector>
 
+#include "pulsatrix/born_again.hpp"
 #include "pulsatrix/cpu_backend.hpp"
 #include "pulsatrix/distillation_loss.hpp"
 #include "pulsatrix/feature_distillation.hpp"
 #include "pulsatrix/hip_backend.hpp"
+#include "pulsatrix/layer_student.hpp"
 #include "pulsatrix/soft_decision_tree.hpp"
 
 namespace pulsatrix {
@@ -105,6 +109,57 @@ TEST(SoftDecisionTreeHip, TheGpuGivesTheCpusOutputAndGradients) {
     for (size_t part = 0; part < g.size(); ++part) {
         ASSERT_EQ(g[part].size(), c[part].size());
         for (size_t k = 0; k < g[part].size(); ++k) EXPECT_NEAR(g[part][k], c[part][k], 1e-5 * std::abs(c[part][k]) + 1e-6) << part << " " << k;
+    }
+}
+
+// KD-4: a student built on the GPU from a GPU or a CPU teacher computes the teacher's logits; the
+// tap and the cosine loss train it there; the ensemble and the permutation give the CPU's values.
+TEST(LayerStudentHip, StudentsBuiltOnTheGpuComputeTheTeachersLogits) {
+    HIPBackend hip;
+    CPUBackend cpu;
+    const std::string dir = std::string(PULSATRIX_TEST_FIXTURES_DIR) + "/hf_tiny/llama";
+    std::unique_ptr<CausalLM> cpu_teacher = LoadCausalLM(dir, &cpu), hip_teacher = LoadCausalLM(dir, &hip);
+    std::vector<float> ids(12);
+    for (size_t k = 0; k < ids.size(); ++k) ids[k] = static_cast<float>((5 * k + 1) % 64);
+    const Tensor cpu_ids(Shape({2, 6}), &cpu, ids), hip_ids(Shape({2, 6}), &hip, ids, DeviceType::Hip);
+    const std::vector<float> expected = cpu_teacher->forward(cpu_ids).to_host_vector();
+    for (CausalLM* teacher : {cpu_teacher.get(), hip_teacher.get()}) {
+        std::unique_ptr<CausalLM> student = MakeStudentFromLayers(*teacher, {0, 1}, &hip);
+        for (const NamedParamRef& p : student->named_parameters()) EXPECT_EQ(p.ref.value->device(), DeviceType::Hip) << p.name;
+        const std::vector<float> got = student->forward(hip_ids).to_host_vector();
+        ASSERT_EQ(got.size(), expected.size());
+        for (size_t k = 0; k < got.size(); ++k) EXPECT_NEAR(got[k], expected[k], 1e-4) << k;
+    }
+}
+
+std::vector<std::vector<float>> CosineAndTap(DeviceBackend* backend) {
+    const DeviceType d = backend->device();
+    HiddenStateCosineLoss loss(backend);
+    const float value = loss.forward(Tensor(Shape({2, 3, 5}), backend, Wave(30, 0.7, 0.3), d), Tensor(Shape({2, 3, 5}), backend, Wave(30, 0.45, 0.1), d),
+                                     {1, 1, 1, 1, 0, 1});
+    const Tensor grad = loss.backward();
+    EXPECT_EQ(grad.device(), d);
+    HiddenStateTap tap(backend);
+    (void)tap.forward(Tensor(Shape({2, 3, 5}), backend, Wave(30, 0.2, 0.0), d));
+    tap.add_gradient(grad);
+    const Tensor through = tap.backward(Tensor(Shape({2, 3, 5}), backend, Wave(30, 0.3, 0.6), d));
+    EXPECT_EQ(through.device(), d);
+    const Shape shape({2, 2, 4});
+    const Tensor ensemble = EnsembleLogProbabilities({Tensor(shape, backend, Wave(16, 0.8, 0.1), d), Tensor(shape, backend, Wave(16, 0.3, 0.9), d)}, backend);
+    const Tensor permuted = PermuteDarkKnowledge(Tensor(Shape({3, 5}), backend, Wave(15, 0.9, 0.2), d), 11, backend);
+    EXPECT_EQ(ensemble.device(), d);
+    EXPECT_EQ(permuted.device(), d);
+    return {{value}, grad.to_host_vector(), through.to_host_vector(), ensemble.to_host_vector(), permuted.to_host_vector()};
+}
+
+TEST(LayerStudentHip, TheGpuGivesTheCpusCosineLossTapEnsembleAndPermutation) {
+    HIPBackend hip;
+    CPUBackend cpu;
+    const auto g = CosineAndTap(&hip), c = CosineAndTap(&cpu);
+    ASSERT_EQ(g.size(), c.size());
+    for (size_t i = 0; i < g.size(); ++i) {
+        ASSERT_EQ(g[i].size(), c[i].size()) << i;
+        for (size_t k = 0; k < g[i].size(); ++k) EXPECT_NEAR(g[i][k], c[i][k], 1e-6) << i << " " << k;
     }
 }
 
