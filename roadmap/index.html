@@ -6522,7 +6522,7 @@ weight variance.</p>
 <td>KD-1</td>
 <td>P2</td>
 <td>—</td>
-<td></td>
+<td>In progress: feature distillation, <a href="https://github.com/Joshuaweg/pulsatrix/pull/182">#182</a>; a soft decision tree, <a href="https://github.com/Joshuaweg/pulsatrix/pull/183">#183</a> (see below)</td>
 </tr>
 <tr>
 <td>KD-4</td>
@@ -6548,6 +6548,15 @@ weight variance.</p>
   shape for every input (a centered blob, the last token) look like agreement. It isn't tied to
   distillation: any two models with the same input work, such as a fine-tune and its base.
   Follow-ups: a recipe that distills a real model and compares the two, and a view.</li>
+<li><strong>KD-3</strong> comes in three parts. The first, feature distillation (<code>feature_distillation.hpp</code>), is
+  FitNets' <code>HintLoss</code> with a learned regressor and Zagoruyko and Komodakis's
+  <code>AttentionTransferLoss</code>. Attention transfer matches the authors' code. MiniLM's
+  attention-distribution distillation is left out, because <code>MultiHeadAttentionModule</code> takes no
+  gradient through its attention probabilities. The second part is <code>SoftDecisionTree</code>
+  (<code>soft_decision_tree.hpp</code>), Frosst and Hinton's. Its output is the log of the leaf mixture, so
+  <code>DistillationLoss</code> trains it. Its balance penalty uses the current batch's α, not the paper's
+  moving average, and β is fixed, not learned. The third part is rule extraction into the
+  Datalog engine.</li>
 </ul>
 <h2 id="feat-featurizers-sparse-autoencoders-and-goodfire-bsf">FEAT: Featurizers, sparse autoencoders and Goodfire BSF<a class="headerlink" href="#feat-featurizers-sparse-autoencoders-and-goodfire-bsf" title="Permanent link">&para;</a></h2>
 <p><strong>Complete</strong> (2026-10-09, PRs <a href="https://github.com/Joshuaweg/pulsatrix/pull/102">#102</a> and

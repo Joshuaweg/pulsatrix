@@ -28,7 +28,7 @@ var searchData=
   ['deltabounds_25',['DeltaBounds',['../namespacepulsatrix.html#abdd324a4cbc0618759d3b7ca9e489475',1,'pulsatrix']]],
   ['denoise_5fstep_26',['denoise_step',['../classpulsatrix_1_1NoiseSchedule.html#a62eeb0e2312ef57ee8418fe40980b0ce',1,'pulsatrix::NoiseSchedule']]],
   ['dense_27',['dense',['../classpulsatrix_1_1FeatureActivityTracker.html#ae6e7cab3e1816717cff497927d591d4e',1,'pulsatrix::FeatureActivityTracker']]],
-  ['depth_28',['depth',['../structpulsatrix_1_1SurrogateTree.html#a0f239324616e890cec7e590a17d1238e',1,'pulsatrix::SurrogateTree']]],
+  ['depth_28',['depth',['../structpulsatrix_1_1SurrogateTree.html#a0f239324616e890cec7e590a17d1238e',1,'pulsatrix::SurrogateTree::depth()'],['../classpulsatrix_1_1SoftDecisionTree.html#ad495298e68bc0d855f4657522bd853b8',1,'pulsatrix::SoftDecisionTree::depth()']]],
   ['derivative_29',['derivative',['../structpulsatrix_1_1IceResult.html#a26d3de13d327fd23c9c94438fb7ee104',1,'pulsatrix::IceResult']]],
   ['derivecaveats_30',['DeriveCaveats',['../namespacepulsatrix.html#a969702d713ebe3cbd9199d3f62fa683e',1,'pulsatrix']]],
   ['describe_31',['describe',['../structpulsatrix_1_1EncoderTarget.html#a27ae9c2d27b764f10cf3d91a4a860f16',1,'pulsatrix::EncoderTarget::describe()'],['../structpulsatrix_1_1orch_1_1HttpRequest.html#a067af8b487d5157dc8acb33d8c439906',1,'pulsatrix::orch::HttpRequest::describe()']]],
