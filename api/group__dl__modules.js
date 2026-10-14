@@ -23,6 +23,7 @@ var group__dl__modules =
     [ "cuda_check.hpp", "cuda__check_8hpp.html", null ],
     [ "determinism.hpp", "determinism_8hpp.html", null ],
     [ "device_backend.hpp", "device__backend_8hpp.html", null ],
+    [ "distillation_loss.hpp", "distillation__loss_8hpp.html", null ],
     [ "dropout_module.hpp", "dropout__module_8hpp.html", null ],
     [ "embedding_module.hpp", "embedding__module_8hpp.html", null ],
     [ "encoder_block.hpp", "encoder__block_8hpp.html", null ],

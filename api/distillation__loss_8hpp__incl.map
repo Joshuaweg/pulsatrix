@@ -1,0 +1,46 @@
+<map id="include/pulsatrix/distillation_loss.hpp" name="include/pulsatrix/distillation_loss.hpp">
+<area shape="rect" id="Node000001" title="Knowledge distillation (roadmap KD&#45;1): a student learns from a teacher&#39;s softened outputs (Hinton,..." alt="" coords="64,5,267,45"/>
+<area shape="rect" id="Node000002" title=" " alt="" coords="215,401,281,427"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="128,48,89,72,50,105,33,124,20,145,11,168,8,193,8,268,13,299,28,325,50,346,78,364,141,390,202,404,200,409,140,395,75,369,47,351,24,328,8,301,3,269,3,192,6,167,15,143,29,121,46,101,86,67,125,43"/>
+<area shape="rect" id="Node000003" href="$tensor_8hpp.html" title="N&#45;dimensional tensor – owns a buffer via DeviceBackend*, RAII (Rule of Five)." alt="" coords="307,181,458,207"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="193,43,259,91,360,171,356,175,256,95,190,47"/>
+<area shape="rect" id="Node000017" href="$token__cross__entropy__loss_8hpp.html" title="Cross&#45;entropy over a batch of tokens, with padding ignored and a caller&#45;chosen normalizer for exact g..." alt="" coords="85,93,245,133"/>
+<area shape="poly" id="edge25_Node000001_Node000017" title=" " alt="" coords="168,46,168,79,163,79,163,46"/>
+<area shape="rect" id="Node000004" title=" " alt="" coords="591,255,649,280"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="422,204,578,251,577,256,420,209"/>
+<area shape="rect" id="Node000005" title=" " alt="" coords="94,328,181,353"/>
+<area shape="poly" id="edge4_Node000003_Node000005" title=" " alt="" coords="364,209,170,323,167,319,362,205"/>
+<area shape="rect" id="Node000006" title=" " alt="" coords="205,328,315,353"/>
+<area shape="poly" id="edge5_Node000003_Node000006" title=" " alt="" coords="375,209,281,319,277,316,371,205"/>
+<area shape="rect" id="Node000007" title=" " alt="" coords="339,328,402,353"/>
+<area shape="poly" id="edge6_Node000003_Node000007" title=" " alt="" coords="377,208,365,230,356,255,355,286,363,315,358,316,350,286,351,254,361,227,373,206"/>
+<area shape="rect" id="Node000008" href="$assert_8hpp.html" title="PULSATRIX_ASSERT – debug&#45;only invariant check for programmer errors, distinct from throw (used for ca..." alt="" coords="950,328,1101,353"/>
+<area shape="poly" id="edge7_Node000003_Node000008" title=" " alt="" coords="459,197,697,216,818,232,866,241,904,252,933,266,960,282,1004,317,1001,321,957,287,930,270,902,257,865,247,817,237,697,221,458,202"/>
+<area shape="rect" id="Node000011" href="$device__backend_8hpp.html" title="Abstract interface isolating vendor&#45;specific memory/compute operations from Tensor/ComputationGraph." alt="" coords="659,328,874,353"/>
+<area shape="poly" id="edge10_Node000003_Node000011" title=" " alt="" coords="413,204,529,252,580,278,648,302,711,322,710,327,646,307,578,282,527,257,411,209"/>
+<area shape="rect" id="Node000013" href="$host__guard_8hpp.html" title="PULSATRIX_REQUIRE_HOST – always&#45;on guard for code paths that dereference Tensor::data() on the host." alt="" coords="707,255,890,280"/>
+<area shape="poly" id="edge13_Node000003_Node000013" title=" " alt="" coords="450,204,719,250,718,255,449,209"/>
+<area shape="rect" id="Node000014" href="$shape_8hpp.html" title="Tensor dimension arithmetic – rank, element count, per&#45;dimension access." alt="" coords="365,255,515,280"/>
+<area shape="poly" id="edge17_Node000003_Node000014" title=" " alt="" coords="394,205,424,242,420,246,390,209"/>
+<area shape="rect" id="Node000009" title=" " alt="" coords="1051,401,1112,427"/>
+<area shape="poly" id="edge8_Node000008_Node000009" title=" " alt="" coords="1037,352,1066,389,1062,392,1032,355"/>
+<area shape="rect" id="Node000010" title=" " alt="" coords="919,401,985,427"/>
+<area shape="poly" id="edge9_Node000008_Node000010" title=" " alt="" coords="1015,356,976,394,972,390,1011,352"/>
+<area shape="poly" id="edge12_Node000011_Node000002" title=" " alt="" coords="684,356,296,409,295,404,683,351"/>
+<area shape="rect" id="Node000012" title=" " alt="" coords="731,401,802,427"/>
+<area shape="poly" id="edge11_Node000011_Node000012" title=" " alt="" coords="769,354,769,388,764,388,764,354"/>
+<area shape="poly" id="edge14_Node000013_Node000009" title=" " alt="" coords="890,271,956,277,1023,288,1079,304,1101,314,1115,326,1122,342,1121,360,1104,391,1099,389,1115,358,1117,343,1111,330,1098,318,1077,309,1022,293,956,282,890,276"/>
+<area shape="poly" id="edge15_Node000013_Node000010" title=" " alt="" coords="821,278,854,299,888,326,917,358,940,389,935,392,913,361,885,330,851,303,818,282"/>
+<area shape="poly" id="edge16_Node000013_Node000011" title=" " alt="" coords="796,281,780,317,775,315,791,279"/>
+<area shape="poly" id="edge18_Node000014_Node000002" title=" " alt="" coords="442,281,437,316,429,337,417,355,389,377,358,393,296,410,294,405,356,388,387,373,413,352,424,335,432,315,437,280"/>
+<area shape="poly" id="edge22_Node000014_Node000005" title=" " alt="" coords="392,283,195,329,193,324,391,277"/>
+<area shape="poly" id="edge19_Node000014_Node000006" title=" " alt="" coords="412,283,303,325,301,320,410,278"/>
+<area shape="poly" id="edge23_Node000014_Node000007" title=" " alt="" coords="430,282,393,320,389,316,427,278"/>
+<area shape="poly" id="edge24_Node000014_Node000008" title=" " alt="" coords="516,275,936,326,936,331,516,280"/>
+<area shape="rect" id="Node000015" title=" " alt="" coords="477,328,536,353"/>
+<area shape="poly" id="edge20_Node000014_Node000015" title=" " alt="" coords="453,279,488,316,485,320,449,282"/>
+<area shape="rect" id="Node000016" title=" " alt="" coords="560,328,635,353"/>
+<area shape="poly" id="edge21_Node000014_Node000016" title=" " alt="" coords="466,278,560,320,558,325,464,282"/>
+<area shape="poly" id="edge26_Node000017_Node000002" title=" " alt="" coords="150,135,117,177,84,234,73,264,68,295,71,324,84,352,107,375,137,392,170,402,201,407,200,413,169,407,135,397,104,380,79,355,66,326,62,295,68,263,79,231,112,174,146,132"/>
+<area shape="poly" id="edge27_Node000017_Node000003" title=" " alt="" coords="218,131,339,174,337,179,216,136"/>
+</map>

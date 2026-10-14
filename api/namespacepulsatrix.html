@@ -558,6 +558,12 @@ Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpulsatrix_1_1DistanceOptions.html">DistanceOptions</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="namespacepulsatrix.html#a38e9b82e739fc4c0df68b10cb6e3a642" title="Euclidean distances between every pair of rows.">PairwiseDistances()</a>'s settings.  <a href="structpulsatrix_1_1DistanceOptions.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1DistillationLoss.html">DistillationLoss</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Distillation loss between a student's and a teacher's logits, (..., classes): every row along the last dimension is one distribution.  <a href="classpulsatrix_1_1DistillationLoss.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpulsatrix_1_1DistillationOptions.html">DistillationOptions</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="classpulsatrix_1_1DistillationLoss.html" title="Distillation loss between a student&#39;s and a teacher&#39;s logits, (..., classes): every row along the las...">DistillationLoss</a>'s settings.  <a href="structpulsatrix_1_1DistillationOptions.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpulsatrix_1_1DiverseCounterfactualOptions.html">DiverseCounterfactualOptions</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Settings for FindDiverseCounterfactuals.  <a href="structpulsatrix_1_1DiverseCounterfactualOptions.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -1948,6 +1954,11 @@ Enumerations</h2></td></tr>
  }</td></tr>
 <tr class="memdesc:af72bbbb89c154b30ca26561ab2f87930"><td class="mdescLeft">&#160;</td><td class="mdescRight">Fused per-row reinforcement-learning passes, for DeviceBackend::rl_rows. One lane per batch row (per element for PolyakBlend); rows x cols from RlRowArgs. Index slots hold validated whole-number action indices as floats. Slots (in[] -&gt; out[]):  <a href="namespacepulsatrix.html#af72bbbb89c154b30ca26561ab2f87930">More...</a><br /></td></tr>
 <tr class="separator:af72bbbb89c154b30ca26561ab2f87930"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac3da2e922bee53159b132d1220b12633" id="r_ac3da2e922bee53159b132d1220b12633"><td class="memItemLeft" align="right" valign="top">enum class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#ac3da2e922bee53159b132d1220b12633">DistillationDivergence</a> { <a class="el" href="namespacepulsatrix.html#ac3da2e922bee53159b132d1220b12633a67d2f6740a8eaebf4d5c6f79be8da481">Forward</a>
+, <a class="el" href="namespacepulsatrix.html#ac3da2e922bee53159b132d1220b12633a67f115c1fddc4ce1aeb1c754001585bc">Reverse</a>
+ }</td></tr>
+<tr class="memdesc:ac3da2e922bee53159b132d1220b12633"><td class="mdescLeft">&#160;</td><td class="mdescRight">Which way round the soft term's KL divergence goes.  <a href="namespacepulsatrix.html#ac3da2e922bee53159b132d1220b12633">More...</a><br /></td></tr>
+<tr class="separator:ac3da2e922bee53159b132d1220b12633"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab997921e8dd2fcb16daefdcc05ce6550" id="r_ab997921e8dd2fcb16daefdcc05ce6550"><td class="memItemLeft" align="right" valign="top">enum class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#ab997921e8dd2fcb16daefdcc05ce6550">MutationObjective</a> { <a class="el" href="namespacepulsatrix.html#ab997921e8dd2fcb16daefdcc05ce6550a380c18e239f03cf9c0a846c7defd029b">Minimax</a>
 , <a class="el" href="namespacepulsatrix.html#ab997921e8dd2fcb16daefdcc05ce6550a271aa2fdaeb524af30faf88584424763">Heuristic</a>
 , <a class="el" href="namespacepulsatrix.html#ab997921e8dd2fcb16daefdcc05ce6550ad143c366b3274edc1e5496e302795a46">LeastSquares</a>
@@ -4903,6 +4914,36 @@ Applied to the <a class="el" href="classpulsatrix_1_1ExplainerContext.html" titl
 <tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="a6aec8b41f4e464852c7d0b56cfee6843a67d92e041230138abff74328d18b03a1" name="a6aec8b41f4e464852c7d0b56cfee6843a67d92e041230138abff74328d18b03a1"></a>Gemm&#160;</td><td class="fielddoc"><p>|x|^2 + |y|^2 - 2 x.y, with the dot products from the backend's float32 GEMM and the rest in double on the host. O(n^2 d) on the device. </p>
 </td></tr>
 <tr><td class="fieldname"><a id="a6aec8b41f4e464852c7d0b56cfee6843a1649aed298f99d587e2eb30c1db5946b" name="a6aec8b41f4e464852c7d0b56cfee6843a1649aed298f99d587e2eb30c1db5946b"></a>Exact&#160;</td><td class="fielddoc"><p>The sum of squared differences, in double on the host. Slower, with an error bound near double precision: a reference, or for clouds whose points nearly coincide. </p>
+</td></tr>
+</table>
+
+</div>
+</div>
+<a id="ac3da2e922bee53159b132d1220b12633" name="ac3da2e922bee53159b132d1220b12633"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac3da2e922bee53159b132d1220b12633">&#9670;&#160;</a></span>DistillationDivergence</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">enum class <a class="el" href="namespacepulsatrix.html#ac3da2e922bee53159b132d1220b12633">pulsatrix::DistillationDivergence</a></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">strong</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Which way round the soft term's KL divergence goes. </p>
+<table class="fieldtable">
+<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="ac3da2e922bee53159b132d1220b12633a67d2f6740a8eaebf4d5c6f79be8da481" name="ac3da2e922bee53159b132d1220b12633a67d2f6740a8eaebf4d5c6f79be8da481"></a>Forward&#160;</td><td class="fielddoc"><p>KL(teacher ‖ student): the student covers every mode the teacher puts mass on. </p>
+</td></tr>
+<tr><td class="fieldname"><a id="ac3da2e922bee53159b132d1220b12633a67f115c1fddc4ce1aeb1c754001585bc" name="ac3da2e922bee53159b132d1220b12633a67f115c1fddc4ce1aeb1c754001585bc"></a>Reverse&#160;</td><td class="fielddoc"><p>KL(student ‖ teacher): the student concentrates on the teacher's main modes. </p>
 </td></tr>
 </table>
 

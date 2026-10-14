@@ -203,6 +203,8 @@ var annotated_dup =
       [ "DisjunctionModule", "classpulsatrix_1_1DisjunctionModule.html", "classpulsatrix_1_1DisjunctionModule" ],
       [ "DistanceMatrix", "structpulsatrix_1_1DistanceMatrix.html", "structpulsatrix_1_1DistanceMatrix" ],
       [ "DistanceOptions", "structpulsatrix_1_1DistanceOptions.html", "structpulsatrix_1_1DistanceOptions" ],
+      [ "DistillationLoss", "classpulsatrix_1_1DistillationLoss.html", "classpulsatrix_1_1DistillationLoss" ],
+      [ "DistillationOptions", "structpulsatrix_1_1DistillationOptions.html", "structpulsatrix_1_1DistillationOptions" ],
       [ "DiverseCounterfactualOptions", "structpulsatrix_1_1DiverseCounterfactualOptions.html", "structpulsatrix_1_1DiverseCounterfactualOptions" ],
       [ "DiverseCounterfactualResult", "structpulsatrix_1_1DiverseCounterfactualResult.html", "structpulsatrix_1_1DiverseCounterfactualResult" ],
       [ "DmsVariants", "structpulsatrix_1_1DmsVariants.html", "structpulsatrix_1_1DmsVariants" ],

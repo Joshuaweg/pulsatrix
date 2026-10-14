@@ -4365,7 +4365,8 @@ machine, and explain it with the tools pulsatrix already has. Items on that path
 <ul>
 <li>TRN-7 to TRN-11 (<strong>done</strong>, <a href="https://github.com/Joshuaweg/pulsatrix/pull/151">#151</a> to
   <a href="https://github.com/Joshuaweg/pulsatrix/pull/155">#155</a>): LoRA, LRP through LoRA, LoReFT, IA³, model diffing</li>
-<li>KD-1, KD-2: distillation and teacher–student explanation agreement</li>
+<li>KD-1 (<strong>done</strong>, <a href="https://github.com/Joshuaweg/pulsatrix/pull/178">#178</a>): a distillation loss</li>
+<li>KD-2: teacher–student explanation agreement</li>
 <li>XAI-1 (<strong>done</strong>, <a href="https://github.com/Joshuaweg/pulsatrix/pull/156">#156</a>): which questions each explainer answers</li>
 <li>XAI-2 (<strong>done</strong>, <a href="https://github.com/Joshuaweg/pulsatrix/pull/160">#160</a>): the question-driven planner</li>
 <li>XAI-3 (<strong>done</strong>, <a href="https://github.com/Joshuaweg/pulsatrix/pull/161">#161</a>): explanation reports that run the checks and carry caveats</li>
@@ -6492,16 +6493,18 @@ weight variance.</p>
 <th>Depends on</th>
 <th>P</th>
 <th>Effort</th>
+<th>Status</th>
 </tr>
 </thead>
 <tbody>
 <tr>
 <td>KD-1</td>
 <td>A knowledge-distillation loss (softened teacher outputs, with the T² scaling)</td>
-<td>A wrapper around the existing <code>KLDivergenceLoss</code></td>
+<td>A student trained on what the teacher believes, not only on the labels</td>
 <td>—</td>
 <td>P1</td>
 <td>S</td>
+<td>Done, <a href="https://github.com/Joshuaweg/pulsatrix/pull/178">#178</a> (see below)</td>
 </tr>
 <tr>
 <td>KD-2</td>
@@ -6510,6 +6513,7 @@ weight variance.</p>
 <td>KD-1, INT-2</td>
 <td>P1</td>
 <td>S</td>
+<td></td>
 </tr>
 <tr>
 <td>KD-3</td>
@@ -6518,6 +6522,7 @@ weight variance.</p>
 <td>KD-1</td>
 <td>P2</td>
 <td>—</td>
+<td></td>
 </tr>
 <tr>
 <td>KD-4</td>
@@ -6526,9 +6531,18 @@ weight variance.</p>
 <td>KD-1, IO-2</td>
 <td>P3</td>
 <td>—</td>
+<td></td>
 </tr>
 </tbody>
 </table>
+<ul>
+<li><strong>KD-1</strong> is <code>DistillationLoss</code> (<code>distillation_loss.hpp</code>), not a wrapper around
+  <code>KLDivergenceLoss</code> as planned: that loss is the KL between a VAE's Gaussian posterior and its
+  prior, not between two class distributions. It takes forward KL (Hinton's) or reverse KL
+  (MiniLLM's), mixes in the hard labels by <code>alpha</code>, and leaves out rows whose target is <code>-100</code>.
+  The mean is over rows, so over tokens for a language model. Values and gradients match a numpy
+  reference with finite-difference gradients, and the HIP backend matches the CPU.</li>
+</ul>
 <h2 id="feat-featurizers-sparse-autoencoders-and-goodfire-bsf">FEAT: Featurizers, sparse autoencoders and Goodfire BSF<a class="headerlink" href="#feat-featurizers-sparse-autoencoders-and-goodfire-bsf" title="Permanent link">&para;</a></h2>
 <p><strong>Complete</strong> (2026-10-09, PRs <a href="https://github.com/Joshuaweg/pulsatrix/pull/102">#102</a> and
 <a href="https://github.com/Joshuaweg/pulsatrix/pull/105">#105</a> to
