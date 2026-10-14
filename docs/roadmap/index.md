@@ -1238,7 +1238,7 @@ weight variance.
 |---|---|---|---|---|---|---|
 | KD-1 | A knowledge-distillation loss (softened teacher outputs, with the T² scaling) | A student trained on what the teacher believes, not only on the labels | — | P1 | S | Done, [#178](https://github.com/Joshuaweg/pulsatrix/pull/178) (see below) |
 | KD-2 | A teacher–student explanation-agreement test: compare LRP or IG maps with CKA or rank correlation | Turns distillation into a test of whether the student uses the same evidence | KD-1, INT-2 | P1 | S | Done, [#180](https://github.com/Joshuaweg/pulsatrix/pull/180) (see below) |
-| KD-3 | Feature and attention distillation, soft decision trees, and rule extraction that feeds the Datalog engine | Interpretable students; rules connect to pulsatrix's neuro-symbolic side | KD-1 | P2 | — | In progress: feature distillation, [#182](https://github.com/Joshuaweg/pulsatrix/pull/182) (see below) |
+| KD-3 | Feature and attention distillation, soft decision trees, and rule extraction that feeds the Datalog engine | Interpretable students; rules connect to pulsatrix's neuro-symbolic side | KD-1 | P2 | — | In progress: feature distillation, [#182](https://github.com/Joshuaweg/pulsatrix/pull/182); a soft decision tree, [#183](https://github.com/Joshuaweg/pulsatrix/pull/183) (see below) |
 | KD-4 | Born-again networks and a DistilBERT-style recipe | Small and inconsistent gains | KD-1, IO-2 | P3 | — | |
 
 - **KD-1** is `DistillationLoss` (`distillation_loss.hpp`), not a wrapper around
@@ -1257,8 +1257,11 @@ weight variance.
   FitNets' `HintLoss` with a learned regressor and Zagoruyko and Komodakis's
   `AttentionTransferLoss`. Attention transfer matches the authors' code. MiniLM's
   attention-distribution distillation is left out, because `MultiHeadAttentionModule` takes no
-  gradient through its attention probabilities. The other two parts are a soft decision tree and
-  rule extraction into the Datalog engine.
+  gradient through its attention probabilities. The second part is `SoftDecisionTree`
+  (`soft_decision_tree.hpp`), Frosst and Hinton's. Its output is the log of the leaf mixture, so
+  `DistillationLoss` trains it. Its balance penalty uses the current batch's α, not the paper's
+  moving average, and β is fixed, not learned. The third part is rule extraction into the
+  Datalog engine.
 
 ## FEAT: Featurizers, sparse autoencoders and Goodfire BSF
 

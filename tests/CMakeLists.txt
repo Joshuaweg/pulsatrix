@@ -150,6 +150,7 @@ add_executable(pulsatrix_tests
     token_cross_entropy_test.cpp
     distillation_loss_test.cpp
     feature_distillation_test.cpp
+    soft_decision_tree_test.cpp
     tagger_finetune_test.cpp
     explanation_metrics_test.cpp
     null_model_baseline_test.cpp
