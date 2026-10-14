@@ -409,6 +409,10 @@ if(PULSATRIX_BUILD_EXAMPLES)
             "${CMAKE_CURRENT_BINARY_DIR}/recipe_how_sure_is_the_model" --smoke)
     add_test(NAME Recipe.BornAgainNetworksSmoke
         COMMAND born_again_networks_recipe - "${CMAKE_CURRENT_BINARY_DIR}/recipe_born_again_networks" --smoke)
+    add_test(NAME Recipe.HalfTheLayersSmoke
+        COMMAND half_the_layers_recipe "${CMAKE_CURRENT_SOURCE_DIR}/fixtures/hf_tiny/llama"
+            "${CMAKE_CURRENT_BINARY_DIR}/recipe_half_the_layers" --smoke
+            --tokenizer "${CMAKE_CURRENT_SOURCE_DIR}/fixtures/tokenizers/smollm2/tokenizer.json")
 endif()
 
 # XAI-2: the pulsatrix_plan command-line tool. It exits 1 when the plan has a warning.

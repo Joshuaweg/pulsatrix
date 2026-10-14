@@ -31,6 +31,7 @@ Recipes link to the related full demo where one exists.
 - [Full fine-tuning: pretrain, save, reload, fine-tune](deep-learning/tagger_finetune.md)
 - [What did the fine-tune change? LoRA and full fine-tuning of SmolLM2, explained](deep-learning/what_did_the_finetune_change.md)
 - [Is the student born better? Born-again networks on MNIST, over five seeds](deep-learning/born_again_networks.md)
+- [Half the layers: distilling SmolLM2 the way DistilBERT was made](deep-learning/half_the_layers.md)
 
 ## Data Loading, Transformation & Validation
 
