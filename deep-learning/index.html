@@ -2088,6 +2088,62 @@
   
   
     <li class="md-nav__item">
+      <a href="../recipes/deep-learning/born_again_networks/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Is the Student Born Better?
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../recipes/deep-learning/half_the_layers/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Half the Layers
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../recipes/data-pipeline/csv_dataloader_training/" class="md-nav__link">
         
   
@@ -3568,6 +3624,9 @@ the one flowing back:</p>
   model for the tap. The HIP backend gives the CPU's values, and a student built on the GPU from a
   CPU teacher computes its logits.</li>
 </ul>
+<p>The recipe <a href="../recipes/deep-learning/half_the_layers/">Half the layers</a> distills
+SmolLM2-135M-Instruct into 15 of its 30 blocks this way, against students trained without the
+teacher, without the cosine loss and from random blocks.</p>
 <h4 id="born-again-networks">Born-again networks<a class="headerlink" href="#born-again-networks" title="Permanent link">&para;</a></h4>
 <p>A born-again network (Furlanello et al., ICML 2018) is a student the same size as its teacher,
 trained on the teacher's softened outputs, which then teaches the next generation. Furlanello et
@@ -3585,6 +3644,8 @@ loop is ordinary training with <code>DistillationLoss</code>. <code>born_again.h
 </ul>
 <p>Their other control, which weights each example's label loss by the teacher's confidence, isn't
 available: it needs per-example weights in the cross-entropy loss.</p>
+<p>The recipe <a href="../recipes/deep-learning/born_again_networks/">Is the student born better?</a> runs
+both on MNIST over five seeds, with the explanation test from KD-2.</p>
 <h3 id="gradient-clipping">Gradient clipping<a class="headerlink" href="#gradient-clipping" title="Permanent link">&para;</a></h3>
 <p><code>ClipGradNorm(model, max_norm)</code> scales all trainable gradients by one factor so their global L2
 norm is at most <code>max_norm</code>, as <code>torch.nn.utils.clip_grad_norm_</code> does. It returns the norm before
