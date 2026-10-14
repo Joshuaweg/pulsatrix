@@ -22,6 +22,7 @@
 
 #include "pulsatrix/json.hpp"
 #include "pulsatrix/viz/document.hpp"
+#include "pulsatrix/viz/performance_views.hpp"
 #include "pulsatrix/viz/protein_views.hpp"
 #include "pulsatrix/viz/svg.hpp"
 #include "pulsatrix/viz/topology_views.hpp"
@@ -41,6 +42,21 @@ void ReadAndRewrite(std::string_view text, Parse parse) {
         }
     } catch (const std::invalid_argument&) {
         // Rejected: the expected outcome for malformed input.
+    }
+}
+
+// The same for the KS-3 reports, whose ToJson returns a JsonValue.
+template <typename Parse>
+void ReadAndRewriteReport(std::string_view text, Parse parse) {
+    try {
+        auto report = parse(text);
+        std::string once = pulsatrix::WriteJson(pulsatrix::ToJson(report));
+        std::string twice = pulsatrix::WriteJson(pulsatrix::ToJson(parse(once)));
+        if (once != twice) {
+            std::fprintf(stderr, "rewrite is not stable:\n%s\n---\n%s\n", once.c_str(), twice.c_str());
+            std::abort();
+        }
+    } catch (const std::invalid_argument&) {
     }
 }
 
@@ -73,6 +89,8 @@ extern "C" int LLVMFuzzerTestOneInput(const uint8_t* data, size_t size) {
     ReadAndRewrite(text, pulsatrix::ParseResidueTracksDocument);
     ReadAndRewrite(text, pulsatrix::ParseProjectionDocument);
     ReadAndRewrite(text, pulsatrix::ParsePersistenceDiagramDocument);
+    ReadAndRewriteReport(text, pulsatrix::ParseClassificationReport);
+    ReadAndRewriteReport(text, pulsatrix::ParseSliceErrorReport);
     // Whatever reads must also render, or be refused with std::invalid_argument (VIZ-2).
     try {
         pulsatrix::AttributionDocument a = pulsatrix::ParseAttributionDocument(text);
@@ -114,6 +132,14 @@ extern "C" int LLVMFuzzerTestOneInput(const uint8_t* data, size_t size) {
         try { (void)pulsatrix::RenderPersistenceDiagramSvg(ph); } catch (const std::invalid_argument&) {}
         try { (void)pulsatrix::RenderBarcodeSvg(ph); } catch (const std::invalid_argument&) {}
         try { (void)pulsatrix::RenderBettiCurveSvg(ph); } catch (const std::invalid_argument&) {}
+    } catch (const std::invalid_argument&) {
+    }
+    try {
+        (void)pulsatrix::RenderReliabilityDiagramSvg(pulsatrix::ParseClassificationReport(text));
+    } catch (const std::invalid_argument&) {
+    }
+    try {
+        (void)pulsatrix::RenderSliceErrorSvg(pulsatrix::ParseSliceErrorReport(text));
     } catch (const std::invalid_argument&) {
     }
     return 0;
@@ -174,7 +200,23 @@ std::vector<std::string> seeds() {
     h1.p_values = {0.001, std::numeric_limits<double>::quiet_NaN()};
     h1.significance_threshold = 0.05;
     ph.diagrams = {h1};
-    return {ToJson(a), ToJson(h), ToJson(t), ToJson(c), ToJson(l), ToJson(f), ToJson(mm), ToJson(lg), ToJson(cm), ToJson(rt), ToJson(pr), ToJson(ph)};
+    ClassificationReport cr;
+    cr.n = 4;
+    cr.classes = 2;
+    cr.accuracy = 0.75;
+    cr.bins = {{0.5, 0.75, 1, 0.6, 1.0}, {0.75, 1.0, 3, 0.9, 0.667}};
+    cr.confusion = {{2, 1}, {0, 1}};
+    cr.precision = {1.0, 0.5};
+    cr.recall = {0.667, 1.0};
+    cr.f1 = {0.8, 0.667};
+    cr.support = {3, 1};
+    SliceErrorReport se;
+    se.n = 3;
+    se.error = 0.5;
+    se.test = "permutation";
+    se.slices = {{"a", 2, 1.0, 0.5, 1.5, 0.0, 0.25, true}, {"b", 1, 0.0, 0.0, 0.0, 1.0, 1.0, false}};
+    return {ToJson(a), ToJson(h), ToJson(t), ToJson(c), ToJson(l), ToJson(f), ToJson(mm), ToJson(lg), ToJson(cm), ToJson(rt), ToJson(pr), ToJson(ph),
+            WriteJson(ToJson(cr)), WriteJson(ToJson(se))};
 }
 
 }  // namespace

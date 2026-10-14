@@ -18,6 +18,7 @@
 #include "pulsatrix/viz/plot_data.hpp"
 #include "pulsatrix/viz/protein_views.hpp"
 #include "pulsatrix/viz/svg.hpp"
+#include "pulsatrix/viz/performance_views.hpp"
 #include "pulsatrix/viz/topology_views.hpp"
 
 #define STB_IMAGE_WRITE_STATIC
@@ -498,6 +499,14 @@ MimeBundle mime_bundle_repr(const ResidueTracksDocument& doc) {
 
 MimeBundle mime_bundle_repr(const PersistenceDiagramDocument& doc) {
     return Chart(doc.title.empty() ? "Persistence diagram" : doc.title, RenderPersistenceDiagramSvg(doc));
+}
+
+MimeBundle mime_bundle_repr(const ClassificationReport& report) {
+    return Chart("Reliability diagram", RenderReliabilityDiagramSvg(report));
+}
+
+MimeBundle mime_bundle_repr(const SliceErrorReport& report) {
+    return Chart("Error by slice", RenderSliceErrorSvg(report));
 }
 
 }  // namespace pulsatrix
