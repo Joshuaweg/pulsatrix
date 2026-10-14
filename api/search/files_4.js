@@ -15,5 +15,6 @@ var searchData=
   ['explanation_5fmetrics_2ehpp_12',['explanation_metrics.hpp',['../explanation__metrics_8hpp.html',1,'']]],
   ['explanation_5fplanner_2ehpp_13',['explanation_planner.hpp',['../explanation__planner_8hpp.html',1,'']]],
   ['explanation_5freport_2ehpp_14',['explanation_report.hpp',['../explanation__report_8hpp.html',1,'']]],
-  ['explanation_5fscore_5fcard_2ehpp_15',['explanation_score_card.hpp',['../explanation__score__card_8hpp.html',1,'']]]
+  ['explanation_5frobustness_2ehpp_15',['explanation_robustness.hpp',['../explanation__robustness_8hpp.html',1,'']]],
+  ['explanation_5fscore_5fcard_2ehpp_16',['explanation_score_card.hpp',['../explanation__score__card_8hpp.html',1,'']]]
 ];

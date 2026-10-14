@@ -781,6 +781,28 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#adversarial-robustness" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Adversarial robustness
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#explanation-robustness" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Explanation robustness
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#in-a-report" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -2662,6 +2684,28 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#adversarial-robustness" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Adversarial robustness
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#explanation-robustness" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Explanation robustness
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#in-a-report" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -2952,6 +2996,68 @@ every set holds every class: at α = 0.1 that takes fewer than 9 examples.</p>
 </div>
 <p>LAC sets and absolute-residual intervals match MAPIE 1.1.0's, and APS sets Angelopoulos and
 Bates' reference code (<code>tools/generate_conformal_reference_values.py</code>).</p>
+<h2 id="adversarial-robustness">Adversarial robustness<a class="headerlink" href="#adversarial-robustness" title="Permanent link">&para;</a></h2>
+<p>How small a change to the input makes the model change its answer? <code>pulsatrix/adversarial.hpp</code>
+searches for one by following the gradient of the loss with respect to the input:</p>
+<ul>
+<li><strong>FGSM</strong> (Goodfellow, Shlens and Szegedy, ICLR 2015) takes one step of size ε: the sign of the
+  gradient under the L∞ norm, its direction under L2.</li>
+<li><strong>PGD</strong> (Madry et al., ICLR 2018) starts at a random point within ε of the input, takes <code>steps</code>
+  smaller steps, and after each one projects back within ε and into the input's valid range.</li>
+<li><strong>Targeted</strong> attacks push the input toward a chosen class instead of away from its own.</li>
+</ul>
+<div class="highlight"><pre><span></span><code><span class="cp">#include</span><span class="w"> </span><span class="cpf">"pulsatrix/adversarial.hpp"</span>
+
+<span class="n">AttackOptions</span><span class="w"> </span><span class="n">options</span><span class="p">;</span>
+<span class="n">options</span><span class="p">.</span><span class="n">epsilon</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">8.0</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="mi">255</span><span class="p">;</span><span class="w">          </span><span class="c1">// L∞ budget, for pixels in [0, 1]</span>
+<span class="n">options</span><span class="p">.</span><span class="n">clip_min</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+<span class="n">options</span><span class="p">.</span><span class="n">clip_max</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span>
+<span class="n">AttackResult</span><span class="w"> </span><span class="n">r</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Pgd</span><span class="p">(</span><span class="n">ClassifierFrom</span><span class="p">(</span><span class="n">model</span><span class="p">),</span><span class="w"> </span><span class="n">images</span><span class="p">,</span><span class="w"> </span><span class="n">labels</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">backend</span><span class="p">,</span><span class="w"> </span><span class="n">options</span><span class="p">);</span>
+<span class="c1">// r.adversarial, r.success, r.robust_accuracy, r.perturbation</span>
+
+<span class="n">RobustnessCurve</span><span class="w"> </span><span class="n">curve</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">RobustAccuracyCurve</span><span class="p">(</span><span class="n">ClassifierFrom</span><span class="p">(</span><span class="n">model</span><span class="p">),</span><span class="w"> </span><span class="n">images</span><span class="p">,</span><span class="w"> </span><span class="n">labels</span><span class="p">,</span><span class="w"> </span><span class="p">{</span><span class="mf">1.0</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="mi">255</span><span class="p">,</span><span class="w"> </span><span class="mf">2.0</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="mi">255</span><span class="p">,</span><span class="w"> </span><span class="mf">4.0</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="mi">255</span><span class="p">,</span><span class="w"> </span><span class="mf">8.0</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="mi">255</span><span class="p">},</span>
+<span class="w">                                            </span><span class="o">&amp;</span><span class="n">backend</span><span class="p">,</span><span class="w"> </span><span class="n">options</span><span class="p">);</span>
+</code></pre></div>
+<p><code>ClassifierFrom</code> takes a <code>Module</code> or an <code>ExplainerContext</code>. For any other model, fill a
+<code>DifferentiableClassifier</code> with its forward pass to logits and its backward pass to the input.</p>
+<p><code>RobustAccuracyCurve</code> gives the accuracy that survives untargeted PGD at each ε. It also gives the
+fraction of correctly classified inputs each attack flipped, and the mean size of the successful
+perturbations. The results are <code>pulsatrix.attack.v1</code> and <code>pulsatrix.robustness_curve.v1</code>
+documents.</p>
+<p>The steps, projection, clipping and random start follow torchattacks' FGSM, PGD and PGDL2.
+<code>tools/generate_adversarial_reference_values.py</code> reimplements them in numpy, and the tests match
+it. On a linear model, where the best attack is known in closed form, PGD finds it.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>PGD finds adversarial examples; it doesn't prove there are none. A model that resists it may
+fall to a stronger attack, so the robust accuracy it reports is an upper bound. Gradient
+masking, where a model's gradients are uninformative rather than its decisions robust, makes
+gradient attacks look weaker than they are (Athalye, Carlini and Wagner, ICML 2018).</p>
+</div>
+<h2 id="explanation-robustness">Explanation robustness<a class="headerlink" href="#explanation-robustness" title="Permanent link">&para;</a></h2>
+<p>An explanation that changes a lot when the input barely does says more about the explainer than
+the model. Ghorbani, Abid and Zou (AAAI 2019) changed saliency maps beyond recognition with
+imperceptible perturbations. <code>ExplanationSensitivity</code> (in <code>pulsatrix/explanation_robustness.hpp</code>)
+measures it the way Quantus does:</p>
+<ul>
+<li><strong>max- and average-sensitivity</strong> (Yeh et al., NeurIPS 2019): ‖E(x′) − E(x)‖₂ / ‖E(x)‖₂ over
+  samples x′ drawn uniformly within <code>radius</code> times the input's spread, the largest and the mean;</li>
+<li><strong>the local Lipschitz estimate</strong> (Alvarez-Melis and Jaakkola, 2018): the largest
+  ‖E(x′) − E(x)‖₂ / ‖x′ − x‖₂;</li>
+<li><strong>adversarial sensitivity:</strong> the same ratio at FGSM's point, the perturbation an attacker would
+  try first. The step is halved until the prediction stays.</li>
+</ul>
+<p>Only samples that keep the predicted class count: an explanation should change when the
+prediction does.</p>
+<div class="highlight"><pre><span></span><code><span class="cp">#include</span><span class="w"> </span><span class="cpf">"pulsatrix/explanation_robustness.hpp"</span>
+
+<span class="n">DifferentiableClassifier</span><span class="w"> </span><span class="n">classifier</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">ClassifierFrom</span><span class="p">(</span><span class="n">model</span><span class="p">);</span>
+<span class="n">SensitivityReport</span><span class="w"> </span><span class="n">s</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">ExplanationSensitivity</span><span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="w"> </span><span class="n">explain</span><span class="p">,</span><span class="w"> </span><span class="n">predict</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">classifier</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">backend</span><span class="p">);</span>
+<span class="c1">// s.max_sensitivity, s.avg_sensitivity, s.local_lipschitz, s.adversarial_sensitivity, s.kept</span>
+</code></pre></div>
+<p><code>tools/generate_explanation_robustness_reference_values.py</code> computes the same metrics in numpy, on
+the same samples, and the tests match it. Under the Control reason, the planner requires it as the
+<code>robustness</code> check, and <code>BuildExplanation</code> runs it (<a href="../#reporting-an-explanation">Reporting an explanation</a>).</p>
 <h2 id="in-a-report">In a report<a class="headerlink" href="#in-a-report" title="Permanent link">&para;</a></h2>
 <p>The Control reason requires per-slice error. The planner marks it available when the caller has
 the dataset's labels and slices (<code>ModelTraits::has_labels</code>, or <code>pulsatrix_plan --labels</code>).
@@ -2968,8 +3074,9 @@ check fails, and blocks the report, when a slice is worse than the rest:</p>
 <p>For a regressor, or any model whose error isn't the wrong class, run <code>PerSliceError</code> on its losses
 and pass <code>SliceErrorCheck(report)</code> to <code>ReportExplanation</code>.</p>
 <p>The Performance question itself plans <code>ClassifierMetrics</code>, <code>RegressorMetrics</code>,
-<code>PerSliceError</code>, <code>MonteCarloDropout</code>, <code>DeepEnsemble</code> and <code>SplitConformal</code>. Those that score
-against true labels (the metrics and conformal calibration) need <code>ModelTraits::has_labels</code>. They describe how the model behaves, not what it learned, so the planner doesn't
+<code>PerSliceError</code>, <code>MonteCarloDropout</code>, <code>DeepEnsemble</code>, <code>SplitConformal</code> and
+<code>AdversarialAttack</code>. Those that score against true labels (the metrics, conformal calibration and
+the attacks) need <code>ModelTraits::has_labels</code>. They describe how the model behaves, not what it learned, so the planner doesn't
 ask for a null-model baseline for them.</p>
 <p>Each report has a JSON document: <code>pulsatrix.classification_report.v1</code>,
 <code>pulsatrix.regression_report.v1</code>, <code>pulsatrix.slice_error.v1</code>, <code>pulsatrix.uncertainty.v1</code> and

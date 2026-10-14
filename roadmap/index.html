@@ -4381,7 +4381,9 @@ machine, and explain it with the tools pulsatrix already has. Items on that path
   (<a href="https://github.com/Joshuaweg/pulsatrix/pull/172">#172</a>) and a recipe on ESM-2,
   <a href="../recipes/interpretability/how_sure_is_the_model/">How sure is the model?</a>
   (<a href="https://github.com/Joshuaweg/pulsatrix/pull/173">#173</a>), followed</li>
-<li>KS-4: adversarial robustness</li>
+<li>KS-4 (<strong>done</strong>, <a href="https://github.com/Joshuaweg/pulsatrix/pull/175">#175</a> and
+  <a href="https://github.com/Joshuaweg/pulsatrix/pull/176">#176</a>): FGSM and PGD attacks, robust accuracy,
+  and explanation sensitivity as a required check under Control</li>
 <li>Llama-3.2-1B and Qwen2.5-0.5B pass the golden-logit test</li>
 </ul>
 <h3 id="v14-features-and-agents">v1.4 "Features and agents"<a class="headerlink" href="#v14-features-and-agents" title="Permanent link">&para;</a></h3>
@@ -7865,7 +7867,7 @@ that only offers tools is small. The genuinely hard parts are narrow:</p>
 <td>—</td>
 <td>P1</td>
 <td>S</td>
-<td></td>
+<td>Done: FGSM, PGD and robust accuracy, <a href="https://github.com/Joshuaweg/pulsatrix/pull/175">#175</a>; explanation sensitivity and the <code>robustness</code> check, <a href="https://github.com/Joshuaweg/pulsatrix/pull/176">#176</a> (see below)</td>
 </tr>
 <tr>
 <td>KS-5</td>
@@ -8031,6 +8033,38 @@ that only offers tools is small. The genuinely hard parts are narrow:</p>
     Bates' reference code instead.
   - <strong><code>ExplainerCapabilities::needs_labels</code>:</strong> the metrics and conformal calibration need true
     labels, so the planner now excludes them unless <code>ModelTraits::has_labels</code> is set.</p>
+<ul>
+<li><strong>KS-4</strong> came in two parts.</li>
+<li><strong>The attacks</strong> (<a href="https://github.com/Joshuaweg/pulsatrix/pull/175">#175</a>):<ul>
+<li><code>adversarial.hpp</code> has FGSM, PGD and <code>RobustAccuracyCurve</code>, under L∞ or L2, untargeted or
+  targeted, on any <code>DifferentiableClassifier</code> (a <code>Module</code>, an <code>ExplainerContext</code>, or a
+  forward and backward pair).</li>
+<li>The updates follow torchattacks', and a numpy reimplementation is the reference: there is no
+  torch here.</li>
+<li>On a linear model PGD finds the closed-form optimum.</li>
+</ul>
+</li>
+<li><strong>"A robustness test for explanations"</strong> (<a href="https://github.com/Joshuaweg/pulsatrix/pull/176">#176</a>):<ul>
+<li><code>ExplanationSensitivity</code> gives Quantus's max- and average-sensitivity and the local
+  Lipschitz estimate over sampled perturbations, and the sensitivity at FGSM's point, which
+  is how the attacks test explanations.</li>
+<li><strong>Departure:</strong> only perturbations that keep the predicted class count, as Agarwal et al.'s
+  relative stability does but Yeh et al.'s sensitivity doesn't. An explanation should change
+  when the prediction does.</li>
+</ul>
+</li>
+<li><strong>The planner's <code>robustness</code> check:</strong> required under Control for attribution explainers, and
+    <code>BuildExplanation</code> runs it.<ul>
+<li><strong>The threshold is my default:</strong> max-sensitivity and the FGSM point at most 0.5, at a radius
+  of 5% of the input's spread.</li>
+<li><strong>For token, protein and symbolic input</strong> it is recommended and unavailable, so it can't
+  block a language model's Control plan.</li>
+</ul>
+</li>
+<li><strong>Parameter gradients:</strong> FGSM's point goes through <code>Module::backward</code>, so <code>BuildExplanation</code>
+    restores the parameters' gradients afterwards. The gradient explainers, run through an
+    <code>ExplainerContext</code>, accumulate into them anyway.</li>
+</ul>
 <h3 id="follow-ups-the-ks-work-surfaced">Follow-ups the KS work surfaced<a class="headerlink" href="#follow-ups-the-ks-work-surfaced" title="Permanent link">&para;</a></h3>
 <table>
 <thead>
@@ -8110,6 +8144,26 @@ that only offers tools is small. The genuinely hard parts are narrow:</p>
 <td>RAPS (Angelopoulos et al., ICLR 2021) and conformal risk control</td>
 <td>KS-3</td>
 <td>when a user needs smaller sets</td>
+</tr>
+<tr>
+<td>Relative input, representation and output stability (Agarwal et al., NeurIPS 2022), Quantus's remaining robustness metrics</td>
+<td>KS-4</td>
+<td>when a user needs them</td>
+</tr>
+<tr>
+<td>Explanation-targeted attacks (Ghorbani et al., AAAI 2019; Dombrowski et al., NeurIPS 2019): perturbations that keep the prediction and change the explanation as much as they can. They need the gradient of the explanation, a second-order pass pulsatrix doesn't have</td>
+<td>KS-4</td>
+<td>after second-order autograd</td>
+</tr>
+<tr>
+<td>A view of the robustness curve, and a recipe that attacks a real model (ResNet18 on ImageNet images)</td>
+<td>KS-4</td>
+<td>VIZ, a recipe</td>
+</tr>
+<tr>
+<td><code>ExplainerContext::backward_pass</code> accumulates into the parameters' gradients, so a gradient explainer changes them; explainers could snapshot and restore them, as <code>BuildExplanation</code>'s robustness check does</td>
+<td>KS-4</td>
+<td>FND</td>
 </tr>
 </tbody>
 </table>

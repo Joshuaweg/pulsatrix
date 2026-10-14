@@ -147,6 +147,14 @@ Public Attributes</h2></td></tr>
 <tr class="memitem:a4523c07ab8ea43652a6024efd7eb0574" id="r_a4523c07ab8ea43652a6024efd7eb0574"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpulsatrix_1_1ExplanationCheckOptions.html#a4523c07ab8ea43652a6024efd7eb0574">min_stability</a> = 0.8</td></tr>
 <tr class="memdesc:a4523c07ab8ea43652a6024efd7eb0574"><td class="mdescLeft">&#160;</td><td class="mdescRight">Stability: the least Spearman correlation of attribution magnitudes that passes, both between repeated runs and under input noise.  <br /></td></tr>
 <tr class="separator:a4523c07ab8ea43652a6024efd7eb0574"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a538ee8aba56f2e99c8726f08acad6967" id="r_a538ee8aba56f2e99c8726f08acad6967"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpulsatrix_1_1ExplanationCheckOptions.html#a538ee8aba56f2e99c8726f08acad6967">robustness_radius</a> = 0.05</td></tr>
+<tr class="memdesc:a538ee8aba56f2e99c8726f08acad6967"><td class="mdescLeft">&#160;</td><td class="mdescRight">Robustness: perturbations sampled uniformly within this fraction of the input's spread (L∞), kept when they keep the predicted class.  <br /></td></tr>
+<tr class="separator:a538ee8aba56f2e99c8726f08acad6967"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a66508f0ab144ed05f4e1c59b4d9c20c9" id="r_a66508f0ab144ed05f4e1c59b4d9c20c9"><td class="memItemLeft" align="right" valign="top">int64_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpulsatrix_1_1ExplanationCheckOptions.html#a66508f0ab144ed05f4e1c59b4d9c20c9">robustness_samples</a> = 10</td></tr>
+<tr class="separator:a66508f0ab144ed05f4e1c59b4d9c20c9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae2821990752da7d904aa930e6c29344e" id="r_ae2821990752da7d904aa930e6c29344e"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpulsatrix_1_1ExplanationCheckOptions.html#ae2821990752da7d904aa930e6c29344e">max_sensitivity</a> = 0.5</td></tr>
+<tr class="memdesc:ae2821990752da7d904aa930e6c29344e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Robustness: the largest relative change of the explanation that passes, both the largest over the samples (max-sensitivity) and at FGSM's point.  <br /></td></tr>
+<tr class="separator:ae2821990752da7d904aa930e6c29344e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa41252ff847faf8bc995be825b358e38" id="r_aa41252ff847faf8bc995be825b358e38"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpulsatrix_1_1ExplanationCheckOptions.html#aa41252ff847faf8bc995be825b358e38">conservation_tolerance</a> = 0.05</td></tr>
 <tr class="memdesc:aa41252ff847faf8bc995be825b358e38"><td class="mdescLeft">&#160;</td><td class="mdescRight">Conservation: the largest gap between the attributions' sum and the output they explain, as a fraction of that output.  <br /></td></tr>
 <tr class="separator:aa41252ff847faf8bc995be825b358e38"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -237,6 +245,22 @@ Public Attributes</h2></td></tr>
 
 </div>
 </div>
+<a id="ae2821990752da7d904aa930e6c29344e" name="ae2821990752da7d904aa930e6c29344e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae2821990752da7d904aa930e6c29344e">&#9670;&#160;</a></span>max_sensitivity</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">double pulsatrix::ExplanationCheckOptions::max_sensitivity = 0.5</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Robustness: the largest relative change of the explanation that passes, both the largest over the samples (max-sensitivity) and at FGSM's point. </p>
+
+</div>
+</div>
 <a id="a4523c07ab8ea43652a6024efd7eb0574" name="a4523c07ab8ea43652a6024efd7eb0574"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a4523c07ab8ea43652a6024efd7eb0574">&#9670;&#160;</a></span>min_stability</h2>
 
@@ -314,6 +338,36 @@ Public Attributes</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Run only the checks the reason requires, and mark the rest NotRun. </p>
+
+</div>
+</div>
+<a id="a538ee8aba56f2e99c8726f08acad6967" name="a538ee8aba56f2e99c8726f08acad6967"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a538ee8aba56f2e99c8726f08acad6967">&#9670;&#160;</a></span>robustness_radius</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">double pulsatrix::ExplanationCheckOptions::robustness_radius = 0.05</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Robustness: perturbations sampled uniformly within this fraction of the input's spread (L∞), kept when they keep the predicted class. </p>
+
+</div>
+</div>
+<a id="a66508f0ab144ed05f4e1c59b4d9c20c9" name="a66508f0ab144ed05f4e1c59b4d9c20c9"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a66508f0ab144ed05f4e1c59b4d9c20c9">&#9670;&#160;</a></span>robustness_samples</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int64_t pulsatrix::ExplanationCheckOptions::robustness_samples = 10</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
 
 </div>
 </div>
