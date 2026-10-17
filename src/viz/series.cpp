@@ -332,9 +332,11 @@ std::string RenderSeriesSvg(const SeriesDocument& doc, const SeriesViewOptions& 
                    " font-size=\"" + Num(fs * 0.85) + "\"");
         }
         if (!doc.y_label.empty()) {
+            // Rotated, the label runs along the panel: cut it to the panel's height.
+            const auto fit = static_cast<size_t>(std::max(4.0, plot_h / (kCharWidthEm * fs)));
             const double cx = x0 - label_w - fs * 1.2;
             const double cy = (y_top + y_bottom) / 2;
-            f.text("axis-label", cx, cy, doc.y_label, "middle", kMutedColor,
+            f.text("axis-label", cx, cy, Truncate(doc.y_label, fit), "middle", kMutedColor,
                    " transform=\"rotate(-90 " + Num(cx) + " " + Num(cy) + ")\"");
         }
 
