@@ -18,6 +18,7 @@
 //   pulsatrix_svg tracks.json -o tracks.svg                    # residue_tracks (PLM-5)
 //   pulsatrix_svg pca.json --axes 1,3 -o pca13.svg             # projection: PC1 against PC3 (INT-5)
 //   pulsatrix_svg ph.json -o diagram.svg                       # persistence_diagram (TDA-9)
+//   pulsatrix_svg sweep.json -o sweep.svg                      # series: lines with intervals (VIZ-9)
 //   pulsatrix_svg ph.json --view barcode --dims 1 -o bars.svg  # the same, as a barcode of H1
 //   pulsatrix_svg ph.json --view betti -o betti.svg            # the same, as Betti curves
 //   pulsatrix_svg metrics.json -o reliability.svg              # classification_report: reliability diagram (KS-3)
@@ -50,6 +51,7 @@
 #include "pulsatrix/viz/performance_views.hpp"
 #include "pulsatrix/viz/protein_views.hpp"
 #include "pulsatrix/viz/svg.hpp"
+#include "pulsatrix/viz/series.hpp"
 #include "pulsatrix/viz/topology_views.hpp"
 
 namespace {
@@ -138,6 +140,7 @@ std::string RenderHtml(const std::vector<std::string>& inputs, int top_k, bool w
     if (kind == "contact_map") return RenderContactMapHtml(ParseContactMapDocument(json), {}, options);
     if (kind == "residue_tracks") return RenderResidueTracksHtml(ParseResidueTracksDocument(json), options);
     if (kind == "projection") return RenderProjectionHtml(ParseProjectionDocument(json), options);
+    if (kind == "series") return RenderSeriesHtml(ParseSeriesDocument(json), {}, options);
     throw std::invalid_argument("there is no HTML view for " + kind + " documents yet");
 }
 
@@ -334,6 +337,8 @@ int main(int argc, char** argv) {
                 svg = RenderResidueTracksSvg(ParseResidueTracksDocument(json), options);
             } else if (kind == "projection") {
                 svg = RenderProjectionSvg(ParseProjectionDocument(json), x_axis, y_axis, options);
+            } else if (kind == "series") {
+                svg = RenderSeriesSvg(ParseSeriesDocument(json), {}, options);
             } else if (kind == "persistence_diagram") {
                 const PersistenceDiagramDocument doc = ParsePersistenceDiagramDocument(json);
                 svg = persistence_view == "barcode" ? RenderBarcodeSvg(doc, persistence_options, options)

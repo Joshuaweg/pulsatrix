@@ -497,6 +497,10 @@ MimeBundle mime_bundle_repr(const ResidueTracksDocument& doc) {
     return Chart("Residue tracks: " + doc.title, RenderResidueTracksSvg(doc));
 }
 
+MimeBundle mime_bundle_repr(const SeriesDocument& doc) {
+    return Chart(doc.title.empty() ? "Series" : doc.title, RenderSeriesSvg(doc), ToVegaLiteSeries(doc));
+}
+
 MimeBundle mime_bundle_repr(const PersistenceDiagramDocument& doc) {
     return Chart(doc.title.empty() ? "Persistence diagram" : doc.title, RenderPersistenceDiagramSvg(doc));
 }
