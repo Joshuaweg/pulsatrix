@@ -181,6 +181,18 @@ TEST(SeriesViewTest, LogAxes) {
     EXPECT_THROW((void)RenderSeriesSvg(LogExample(), {}, narrow), std::invalid_argument);
 }
 
+TEST(SeriesViewTest, LongYLabelsFitTheirPanel) {
+    SeriesDocument doc = Example();
+    doc.y_label = std::string(200, 'y');
+    const std::string svg = RenderSeriesSvg(doc);
+    const size_t label = svg.find("rotate(-90");
+    ASSERT_NE(label, std::string::npos);
+    const std::string text = svg.substr(svg.find('>', label) + 1, svg.find("</text>", label) - svg.find('>', label) - 1);
+    EXPECT_LT(text.size(), 200u);
+    EXPECT_EQ(text.substr(text.size() - 3), "\xE2\x80\xA6");  // cut, with an ellipsis
+    EXPECT_NE(svg.find(std::string(200, 'y')), std::string::npos);  // tooltips keep the full label
+}
+
 TEST(SeriesViewTest, SharedYGivesEveryPanelTheSameTicks) {
     SeriesViewOptions shared;
     shared.shared_y = true;
