@@ -26,7 +26,7 @@ if (VizDocumentKind(text.str()) == "attribution") {
 }
 ```
 
-There are sixteen kinds. Each has a struct, a writer (`ToJson`) and a reader (`Parse<Kind>Document`):
+There are twenty kinds. Each has a struct, a writer (`ToJson`) and a reader (`Parse<Kind>Document`):
 
 | Schema | Struct | Holds | Converts from and to |
 |---|---|---|---|
@@ -49,6 +49,7 @@ There are sixteen kinds. Each has a struct, a writer (`ToJson`) and a reader (`P
 | `pulsatrix.classification_report.v1` | `ClassificationReport` (`performance.hpp`; read by `ParseClassificationReport` in `viz/performance_views.hpp`) | `n`, `classes`, `accuracy`, `log_loss`, `brier`, `ece`, `mce`, `macro_f1`, `reliability` (per bin `lower`, `upper`, `count`, `confidence`, `accuracy`), `confusion` (classes × classes) and `per_class` (`precision`, `recall`, `f1`, `support`) | `EvaluateClassifier` |
 | `pulsatrix.slice_error.v1` | `SliceErrorReport` (`performance.hpp`; read by `ParseSliceErrorReport`) | `n`, `error`, `test`, `alpha`, and per slice its `name`, `count`, `error`, `lower`, `upper`, `rest_error`, `p_value` and `worse` | `PerSliceError`, also of `CoverageReport::misses` |
 | `pulsatrix.residue_tracks.v1` | `ResidueTracksDocument` | `title`, `sequence`, `first_position`, `tracks` (`name`, one value per residue, `signed`), `features` (`name`, `start`, `end`, `category`) and `residue_ids` | — |
+| `pulsatrix.series.v1` | `SeriesDocument` (`viz/series.hpp`) | `title`, `x_label`, `y_label`, `x_scale` and `y_scale` (`"linear"` or `"log"`), `interval` (what the intervals are), and `panels`, each a `title` and `series`: a `name`, `x`, `y` and optional `lo` and `hi`, one per point | — (sweeps, trade-off curves, results over seeds) |
 
 ### Token relevance for text
 

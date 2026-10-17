@@ -12,6 +12,7 @@
 
 #include "pulsatrix/json.hpp"
 #include "pulsatrix/viz/document.hpp"
+#include "pulsatrix/viz/series.hpp"
 #include "pulsatrix/viz/svg.hpp"  // IceStyle, PartialDependenceSvgOptions
 
 namespace pulsatrix {
@@ -91,6 +92,11 @@ struct HtmlOptions {
 /** @brief A feature's activation histogram (the dashboard's chart; RenderFeatureDashboardHtml adds
  *         the top examples). */
 [[nodiscard]] JsonValue ToVegaLiteFeatureHistogram(const FeatureDashboardDocument& doc, const HtmlOptions& options = {});
+/** @brief A series document (VIZ-9): one zoomable chart per panel, stacked, each a line per
+ *         series with points and interval rules, colored as RenderSeriesSvg colors them.
+ *  @throws std::invalid_argument for what RenderSeriesSvg() rejects. */
+[[nodiscard]] JsonValue ToVegaLiteSeries(const SeriesDocument& doc, const SeriesViewOptions& view = {},
+                                         const HtmlOptions& options = {});
 
 // ---- Pages ------------------------------------------------------------------------------------
 
@@ -117,6 +123,8 @@ struct HtmlOptions {
 [[nodiscard]] std::string RenderMorrisHtml(const MorrisDocument& doc, const HtmlOptions& options = {});
 [[nodiscard]] std::string RenderSobolHtml(const SobolDocument& doc, int top_k = 10, const HtmlOptions& options = {});
 [[nodiscard]] std::string RenderProjectionHtml(const ProjectionDocument& doc, const HtmlOptions& options = {});
+[[nodiscard]] std::string RenderSeriesHtml(const SeriesDocument& doc, const SeriesViewOptions& view = {},
+                                           const HtmlOptions& options = {});
 [[nodiscard]] std::string RenderTrainingLogHtml(const TrainingLogDocument& doc, const HtmlOptions& options = {});
 /** @brief The feature's statistics, its activation histogram, and its top examples with each
  *         token shaded by its activation. @p extra_html is appended as is, such as a structure
