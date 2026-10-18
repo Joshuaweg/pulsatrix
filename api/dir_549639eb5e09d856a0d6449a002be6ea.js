@@ -30,6 +30,7 @@ var dir_549639eb5e09d856a0d6449a002be6ea =
     [ "bounded_queue.hpp", "bounded__queue_8hpp.html", "bounded__queue_8hpp" ],
     [ "byte_level_bpe.hpp", "byte__level__bpe_8hpp.html", "byte__level__bpe_8hpp" ],
     [ "caching_allocator.hpp", "caching__allocator_8hpp.html", "caching__allocator_8hpp" ],
+    [ "calibration.hpp", "calibration_8hpp.html", "calibration_8hpp" ],
     [ "calibration_loss.hpp", "calibration__loss_8hpp.html", "calibration__loss_8hpp" ],
     [ "cartpole_env.hpp", "cartpole__env_8hpp.html", "cartpole__env_8hpp" ],
     [ "categorical_policy_agent.hpp", "categorical__policy__agent_8hpp.html", "categorical__policy__agent_8hpp" ],

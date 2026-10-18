@@ -34,7 +34,7 @@ var searchData=
   ['classifylatent_31',['ClassifyLatent',['../namespacepulsatrix.html#a2e875d0cc73f959cf7eb96b1c4ed0572',1,'pulsatrix']]],
   ['classifywithrules_32',['ClassifyWithRules',['../namespacepulsatrix.html#a757d31151eab6abc72054119b16d08ec',1,'pulsatrix']]],
   ['classprobabilitiesfromrules_33',['ClassProbabilitiesFromRules',['../namespacepulsatrix.html#aed9c48d5968d6aae7e93af0c603aae45',1,'pulsatrix']]],
-  ['clear_34',['clear',['../classpulsatrix_1_1TextureCache.html#ae0796cf3fe6f089ba63b472f7bd8d4d8',1,'pulsatrix::TextureCache::Clear()'],['../classpulsatrix_1_1RolloutBuffer.html#a4ea617cbcf9cb4c07f8ada4c4bee2208',1,'pulsatrix::RolloutBuffer::clear()']]],
+  ['clear_34',['clear',['../classpulsatrix_1_1RolloutBuffer.html#a4ea617cbcf9cb4c07f8ada4c4bee2208',1,'pulsatrix::RolloutBuffer::clear()'],['../classpulsatrix_1_1TextureCache.html#ae0796cf3fe6f089ba63b472f7bd8d4d8',1,'pulsatrix::TextureCache::Clear()']]],
   ['clear_5fkey_5fpadding_5fmask_35',['clear_key_padding_mask',['../classpulsatrix_1_1MultiHeadAttentionModule.html#ab5958a2006d36f76933182b3bdeb9693',1,'pulsatrix::MultiHeadAttentionModule']]],
   ['clear_5fpadding_5fmask_36',['clear_padding_mask',['../classpulsatrix_1_1EncoderLM.html#acd008e79de3b150be0ea4401eb12b30f',1,'pulsatrix::EncoderLM']]],
   ['clipgradnorm_37',['ClipGradNorm',['../namespacepulsatrix.html#a46dfb5346e61792a6c94f75b5b4d8105',1,'pulsatrix']]],
