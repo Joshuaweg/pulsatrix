@@ -781,6 +781,89 @@ JsonValue ToVegaLiteFeatureHistogram(const FeatureDashboardDocument& doc, const 
     return spec;
 }
 
+JsonValue ToVegaLiteSeries(const SeriesDocument& doc, const SeriesViewOptions& view, const HtmlOptions& options) {
+    // The SVG view checks every value and scale rule; the two views draw the same documents.
+    (void)RenderSeriesSvg(doc, view, SvgOptions{});
+    if (options.width < 120) throw std::invalid_argument("HTML views: width must be at least 120 pixels");
+    static const char* const kColors[] = {"#4e79a7", "#f28e2b", "#59a14f", "#e15759", "#76b7b2",
+                                          "#edc948", "#b07aa1", "#ff9da7", "#9c755f", "#bab0ac"};
+    Arr names;
+    Arr colors;
+    std::vector<std::string> seen;
+    double y_min = std::numeric_limits<double>::infinity(), y_max = -y_min;
+    for (const SeriesPanel& panel : doc.panels) {
+        for (const Series& s : panel.series) {
+            if (std::find(seen.begin(), seen.end(), s.name) == seen.end()) {
+                seen.push_back(s.name);
+                names.push_back(s.name);
+                colors.push_back(kColors[(seen.size() - 1) % 10]);
+            }
+            for (size_t i = 0; i < s.size(); ++i) {
+                y_min = std::min(y_min, s.y[i]);
+                y_max = std::max(y_max, s.has_intervals() ? std::max(s.y[i], s.hi[i]) : s.y[i]);
+                if (s.has_intervals() && (doc.y_scale == AxisScale::Linear || s.lo[i] > 0)) y_min = std::min(y_min, s.lo[i]);
+            }
+        }
+    }
+    const JsonValue color = Field("series", "nominal", Obj{{"scale", Obj{{"domain", names}, {"range", colors}}},
+                                                           {"legend", Obj{{"title", nullptr}, {"orient", "top"}}}});
+    Obj x_extra{{"title", doc.x_label}, {"scale", Obj{{"type", AxisScaleName(doc.x_scale)}}}};
+    Obj y_scale{{"type", AxisScaleName(doc.y_scale)}, {"zero", doc.y_scale == AxisScale::Linear && y_min >= 0}};
+    if (view.shared_y) y_scale.emplace_back("domain", Arr{y_min, y_max});
+    const bool any_intervals = std::any_of(doc.panels.begin(), doc.panels.end(), [](const SeriesPanel& p) {
+        return std::any_of(p.series.begin(), p.series.end(), [](const Series& s) { return s.has_intervals(); });
+    });
+    const double width = static_cast<double>(options.width);
+
+    Arr charts;
+    for (const SeriesPanel& panel : doc.panels) {
+        Arr values;
+        for (const Series& s : panel.series) {
+            for (size_t i = 0; i < s.size(); ++i) {
+                Obj row{{"series", s.name}, {"x", s.x[i]}, {"y", s.y[i]}};
+                if (s.has_intervals()) {
+                    // A lower bound a log axis can't show is dropped; the rule then starts at y.
+                    const bool shown = doc.y_scale == AxisScale::Linear || s.lo[i] > 0;
+                    row.emplace_back("lo", shown ? JsonValue(s.lo[i]) : JsonValue(s.y[i]));
+                    row.emplace_back("hi", s.hi[i]);
+                }
+                values.push_back(std::move(row));
+            }
+        }
+        const JsonValue x = Field("x", "quantitative", x_extra);
+        const JsonValue y = Field("y", "quantitative", Obj{{"title", doc.y_label}, {"scale", y_scale}});
+        Arr tooltip{Obj{{"field", "series"}, {"type", "nominal"}}, Obj{{"field", "x"}, {"type", "quantitative"}, {"title", doc.x_label}},
+                    Obj{{"field", "y"}, {"type", "quantitative"}, {"title", doc.y_label}}};
+        if (any_intervals) {
+            tooltip.push_back(Obj{{"field", "lo"}, {"type", "quantitative"}});
+            tooltip.push_back(Obj{{"field", "hi"}, {"type", "quantitative"}});
+        }
+        Arr layers;
+        if (any_intervals) {
+            layers.push_back(Obj{{"mark", Obj{{"type", "rule"}, {"strokeWidth", 1.25}}},
+                                 {"encoding", Obj{{"x", x}, {"y", Field("lo", "quantitative", Obj{{"scale", y_scale}})},
+                                                  {"y2", Obj{{"field", "hi"}}}, {"color", color}}}});
+        }
+        layers.push_back(Obj{{"mark", Obj{{"type", "line"}, {"strokeWidth", 2}}},
+                             {"encoding", Obj{{"x", x}, {"y", y}, {"color", color}}}});
+        layers.push_back(Obj{{"mark", Obj{{"type", "point"}, {"filled", true}, {"size", 50}, {"tooltip", true}}},
+                             {"encoding", Obj{{"x", x}, {"y", y}, {"color", color}, {"tooltip", tooltip}}},
+                             {"params", Arr{Obj{{"name", "zoom"}, {"select", "interval"}, {"bind", "scales"}}}}});
+        Obj chart{{"width", width}, {"height", 220}, {"data", Obj{{"values", std::move(values)}}}, {"layer", std::move(layers)}};
+        if (!panel.title.empty()) {
+            chart.insert(chart.begin(), {"title", Obj{{"text", panel.title}, {"anchor", "start"}, {"fontSize", 13}}});
+        }
+        charts.push_back(std::move(chart));
+    }
+    Obj spec{{"$schema", kSchema},
+             {"title", Title(options.title.empty() ? (doc.title.empty() ? "Series" : doc.title) : options.title,
+                             doc.interval.empty() ? "" : "Rules: " + doc.interval)},
+             {"vconcat", std::move(charts)},
+             {"config", Obj{{"view", Obj{{"stroke", nullptr}}}}}};
+    if (!view.shared_y) spec.emplace_back("resolve", Obj{{"scale", Obj{{"y", "independent"}}}});
+    return spec;
+}
+
 // ---- Pages ---------------------------------------------------------------------------------
 
 namespace {
@@ -838,6 +921,9 @@ std::string RenderMorrisHtml(const MorrisDocument& doc, const HtmlOptions& optio
 }
 std::string RenderProjectionHtml(const ProjectionDocument& doc, const HtmlOptions& options) {
     return VegaLitePage(ToVegaLiteProjection(doc, options), Heading(options, doc.title.empty() ? "Projection" : doc.title), options);
+}
+std::string RenderSeriesHtml(const SeriesDocument& doc, const SeriesViewOptions& view, const HtmlOptions& options) {
+    return VegaLitePage(ToVegaLiteSeries(doc, view, options), Heading(options, doc.title.empty() ? "Series" : doc.title), options);
 }
 std::string RenderSobolHtml(const SobolDocument& doc, int top_k, const HtmlOptions& options) {
     return VegaLitePage(ToVegaLiteSobol(doc, top_k, options), Heading(options, "Sobol indices"), options);
