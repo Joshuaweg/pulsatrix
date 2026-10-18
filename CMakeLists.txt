@@ -246,6 +246,7 @@ add_library(pulsatrix_core
     src/vocabulary.cpp
     src/text_dataset.cpp
     src/text_collate.cpp
+    src/lm_scoring.cpp
     src/wav_reader.cpp
     src/audio_folder_dataset.cpp
     src/audio_transforms.cpp

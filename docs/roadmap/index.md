@@ -500,6 +500,7 @@ autoencoders and transcoders for every layer, so it pays off for the FEAT epic.
 | LLM-7 | AttnLRP parity with LXT on SmolLM2 (per-token relevance correlation above 0.99), including the relevance split across shared key and value heads | The headline result: pulsatrix explains a real LLM and matches the reference | LLM-1, LLM-2, TOK-2, LLM-6 | P1 | M || Done, [#83](https://github.com/Joshuaweg/pulsatrix/pull/83) (see below) |
 | LLM-8 | Tuned lens and AtP* (corrected attribution patching) | Better versions of the logit lens and patching that already exist | LLM-1 | P2 | S–M | |
 | LLM-9 | Gemma 3 support: sliding-window attention, `(1 + w)` RMSNorm, embedding scaling | Unlocks Gemma Scope 2 dictionaries | LLM-1 | P3 | M || Done, [#91](https://github.com/Joshuaweg/pulsatrix/pull/91) (see below) |
+| LLM-10 | Prompt/completion data and scoring: JSONL, batches with the prompt masked out of the loss, log P(completion \| prompt), and the probabilities of single-token choices ("P(True)") | Fine-tuning a model to answer questions, and reading its answers as probabilities | LLM-1 | P1 | S | |
 
 
 ### How the LLM work departed from the plan

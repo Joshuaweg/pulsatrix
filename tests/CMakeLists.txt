@@ -101,6 +101,7 @@ add_executable(pulsatrix_tests
     kv_cache_test.cpp
     hf_model_test.cpp
     causal_lm_test.cpp
+    lm_scoring_test.cpp
     golden_logits_test.cpp
     attnlrp_parity_test.cpp
     swiglu_module_test.cpp
@@ -326,7 +327,7 @@ if(PULSATRIX_ENABLE_HIP)
                                        fused_ops_hip_test.cpp
                                        safetensors_hip_test.cpp distance_matrix_hip_test.cpp
                                        lora_hip_test.cpp adversarial_hip_test.cpp
-                                       distillation_loss_hip_test.cpp)
+                                       distillation_loss_hip_test.cpp lm_scoring_hip_test.cpp)
 endif()
 
 if(PULSATRIX_ENABLE_ORCHESTRATOR)
