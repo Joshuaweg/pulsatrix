@@ -2,7 +2,7 @@ var searchData=
 [
   ['objective_0',['objective',['../structpulsatrix_1_1ProtoDashResult.html#a6cc829f735ed13f4f929439fe979bff6',1,'pulsatrix::ProtoDashResult']]],
   ['observation_1',['observation',['../structpulsatrix_1_1StepResult.html#a41e626eab2e51bc45921159be8ef2efc',1,'pulsatrix::StepResult']]],
-  ['observations_2',['observations',['../structpulsatrix_1_1RolloutBatch.html#ad1b242e2ea28b8026216fe6937c2fe4b',1,'pulsatrix::RolloutBatch::observations'],['../structpulsatrix_1_1ReplayBatch.html#a66fa4069758c82ab997441cea528b014',1,'pulsatrix::ReplayBatch::observations']]],
+  ['observations_2',['observations',['../structpulsatrix_1_1ReplayBatch.html#a66fa4069758c82ab997441cea528b014',1,'pulsatrix::ReplayBatch::observations'],['../structpulsatrix_1_1RolloutBatch.html#ad1b242e2ea28b8026216fe6937c2fe4b',1,'pulsatrix::RolloutBatch::observations']]],
   ['occurrences_3',['occurrences',['../structpulsatrix_1_1Hubness.html#a2fc03a6b6c5483b57d669489b16187e6',1,'pulsatrix::Hubness']]],
   ['offset_4',['offset',['../structpulsatrix_1_1ProteinGymAssay.html#acaf2fda0bfcf4e61d1f2fd62108c1e38',1,'pulsatrix::ProteinGymAssay']]],
   ['offset_5fmismatches_5',['offset_mismatches',['../structpulsatrix_1_1TokenizerParityReport.html#ada35936b998d215f8d4d4d628c5bb53b',1,'pulsatrix::TokenizerParityReport']]],
@@ -16,7 +16,7 @@ var searchData=
   ['original_13',['original',['../structpulsatrix_1_1CounterfactualDocument_1_1Feature.html#a2246a637338f06879c43d90a636bcf01',1,'pulsatrix::CounterfactualDocument::Feature']]],
   ['original_5fclass_14',['original_class',['../structpulsatrix_1_1ContrastiveResult.html#a4533dbc03ca220448ae21e5dd794f7fc',1,'pulsatrix::ContrastiveResult']]],
   ['original_5fmax_5fposition_5fembeddings_15',['original_max_position_embeddings',['../structpulsatrix_1_1HfRopeScaling.html#aa8d35da8127c132f48907c9f6d73fdd2',1,'pulsatrix::HfRopeScaling']]],
-  ['out_16',['out',['../structpulsatrix_1_1SsmPassArgs.html#aff864a582af2bdeaa79469f47f9d5d1f',1,'pulsatrix::SsmPassArgs::out'],['../structpulsatrix_1_1RlRowArgs.html#a469e0d0db18827d03cce43935b0a85e5',1,'pulsatrix::RlRowArgs::out'],['../structpulsatrix_1_1RecurrentCellArgs.html#a5035dd2c114ae7655aef03c346eb076d',1,'pulsatrix::RecurrentCellArgs::out']]],
+  ['out_16',['out',['../structpulsatrix_1_1RecurrentCellArgs.html#a5035dd2c114ae7655aef03c346eb076d',1,'pulsatrix::RecurrentCellArgs::out'],['../structpulsatrix_1_1RlRowArgs.html#a469e0d0db18827d03cce43935b0a85e5',1,'pulsatrix::RlRowArgs::out'],['../structpulsatrix_1_1SsmPassArgs.html#aff864a582af2bdeaa79469f47f9d5d1f',1,'pulsatrix::SsmPassArgs::out']]],
   ['out_5fbias_17',['out_bias',['../structpulsatrix_1_1HfModelConfig.html#aa7ec116684b345d1f52a8654ebebd9af',1,'pulsatrix::HfModelConfig::out_bias'],['../structpulsatrix_1_1AttentionConfig.html#aa9d289d8aaa70c63ec24eb58d6d9460c',1,'pulsatrix::AttentionConfig::out_bias']]],
   ['out_5fnode_18',['out_node',['../structpulsatrix_1_1ConnectionGene.html#a39c102f2cec9fb3c9c4cea8b4cd58758',1,'pulsatrix::ConnectionGene']]],
   ['outcome_19',['outcome',['../structpulsatrix_1_1CheckResult.html#a99fa4ff0f7cfff97c5f738bfba4e2286',1,'pulsatrix::CheckResult']]],
@@ -26,5 +26,6 @@ var searchData=
   ['output_5fhigh_23',['output_high',['../structpulsatrix_1_1FeatureSensitivity.html#a9b3c67a22b120e48166863dd326c428a',1,'pulsatrix::FeatureSensitivity::output_high'],['../structpulsatrix_1_1SensitivityDocument_1_1Feature.html#a3c349f03abe021f03398f9077315a6c6',1,'pulsatrix::SensitivityDocument::Feature::output_high']]],
   ['output_5flow_24',['output_low',['../structpulsatrix_1_1FeatureSensitivity.html#a1fd8b6be56cb3cd841d0b0c4cf7bba1d',1,'pulsatrix::FeatureSensitivity::output_low'],['../structpulsatrix_1_1SensitivityDocument_1_1Feature.html#ad68b122417aa6c258a60285586c53e76',1,'pulsatrix::SensitivityDocument::Feature::output_low']]],
   ['output_5ftokens_25',['output_tokens',['../structpulsatrix_1_1orch_1_1Usage.html#a7f764dc28c3d5719027ede2c4732a5c8',1,'pulsatrix::orch::Usage']]],
-  ['over_5frandom_26',['over_random',['../structpulsatrix_1_1SteeringReport.html#a89e470a49d3c4e237301400e4dd9ae5f',1,'pulsatrix::SteeringReport']]]
+  ['over_5frandom_26',['over_random',['../structpulsatrix_1_1SteeringReport.html#a89e470a49d3c4e237301400e4dd9ae5f',1,'pulsatrix::SteeringReport']]],
+  ['overall_27',['overall',['../structpulsatrix_1_1LogOddsErrorReport.html#ae3192240a86f872278eb0cf7f7eac858',1,'pulsatrix::LogOddsErrorReport']]]
 ];

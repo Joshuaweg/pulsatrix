@@ -745,6 +745,34 @@
     </span>
   </a>
   
+    <nav class="md-nav" aria-label="Calibration">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#temperature-scaling" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Temperature scaling
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#calibration-of-rare-events" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Calibration of rare events
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
 </li>
       
         <li class="md-nav__item">
@@ -2704,6 +2732,34 @@
     </span>
   </a>
   
+    <nav class="md-nav" aria-label="Calibration">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#temperature-scaling" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Temperature scaling
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#calibration-of-rare-events" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Calibration of rare events
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
 </li>
       
         <li class="md-nav__item">
@@ -2805,7 +2861,9 @@ prediction, not whether the prediction is right. Pulsatrix answers it with the m
 <li><strong><code>McDropoutSamples</code></strong> and <strong><code>EnsembleSamples</code></strong>, in <code>pulsatrix/uncertainty.hpp</code>: how sure the
   model is of each prediction, and whether more data would make it surer;</li>
 <li><strong>split conformal prediction</strong>, in <code>pulsatrix/conformal.hpp</code>: prediction sets and intervals that
-  hold the truth with a chosen probability, for any model.</li>
+  hold the truth with a chosen probability, for any model;</li>
+<li><strong><code>FitTemperature</code></strong> and <strong><code>LogOddsError</code></strong>, in <code>pulsatrix/calibration.hpp</code> (KS-13): temperature
+  scaling fitted on held-out data, and the error of rare-event probabilities in log-odds.</li>
 </ul>
 <p>Every number matches scikit-learn's on the same data, and the slice test matches SciPy's
 <code>fisher_exact</code>. <code>tests/performance_test.cpp</code> checks them against values from
@@ -2898,6 +2956,39 @@ the diagonal by chance.</p>
 <p>The ECE depends on the number of bins, and with few predictions per bin it is biased upward.
 Compare models with the same bins, and read the reliability diagram, not just the number.</p>
 </div>
+<h3 id="temperature-scaling">Temperature scaling<a class="headerlink" href="#temperature-scaling" title="Permanent link">&para;</a></h3>
+<p>Temperature scaling divides a model's logits by one number T, fitted to minimize the log loss on
+held-out labeled data (Guo et al.). T &gt; 1 makes an overconfident model less sure. It never changes
+which class ranks first, so accuracy is unchanged.</p>
+<div class="highlight"><pre><span></span><code><span class="cp">#include</span><span class="w"> </span><span class="cpf">"pulsatrix/calibration.hpp"</span>
+
+<span class="c1">// Held-out data the model wasn't trained on: logits, labels, and optional per-example weights.</span>
+<span class="k">const</span><span class="w"> </span><span class="n">TemperatureFit</span><span class="w"> </span><span class="n">fit</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">FitTemperature</span><span class="p">(</span><span class="n">held_out_logits</span><span class="p">,</span><span class="w"> </span><span class="n">held_out_labels</span><span class="p">);</span><span class="w">       </span><span class="c1">// (N, K) rows</span>
+<span class="k">const</span><span class="w"> </span><span class="n">TemperatureFit</span><span class="w"> </span><span class="n">binary</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">FitBinaryTemperature</span><span class="p">(</span><span class="n">held_out_log_odds</span><span class="p">,</span><span class="w"> </span><span class="n">held_out_labels</span><span class="p">);</span>
+<span class="c1">// Then use logits / fit.temperature everywhere else.</span>
+</code></pre></div>
+<p>The log loss is convex in 1/T, so the fit is exact up to rounding (about ten Newton steps). Two
+cases have no finite answer, and <code>fit.converged</code> is false for them:
+- <strong>The labels are separated:</strong> every label already has the largest logit. A smaller T is always
+  better, and the fit stops at T = 10⁻⁶.
+- <strong>The logits are no better than chance, or point the wrong way.</strong> The fit stops at T = 10⁶.</p>
+<h3 id="calibration-of-rare-events">Calibration of rare events<a class="headerlink" href="#calibration-of-rare-events" title="Permanent link">&para;</a></h3>
+<p>The ECE is useless for rare events. It averages over bins, so the common cases dominate it. A
+model that says 10⁻² where the truth is 10⁻⁴ is wrong by a factor of 100, but that barely moves the
+ECE. When reference probabilities are available (an exact model, a simulator, a larger model),
+<code>LogOddsError</code> measures |logit(p) − logit(q)| instead, separately in bands of the reference
+probability:</p>
+<div class="highlight"><pre><span></span><code><span class="k">const</span><span class="w"> </span><span class="n">LogOddsErrorReport</span><span class="w"> </span><span class="n">r</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">LogOddsError</span><span class="p">(</span><span class="n">predicted</span><span class="p">,</span><span class="w"> </span><span class="n">reference</span><span class="p">,</span><span class="w"> </span><span class="cm">/*weights=*/</span><span class="p">{},</span><span class="w"> </span><span class="cm">/*band_edges=*/</span><span class="p">{</span><span class="mf">1e-3</span><span class="p">});</span>
+<span class="c1">// r.bands[0] holds references below 1e-3, r.bands[1] the rest; r.overall all of them.</span>
+<span class="c1">// Each band: count, weight, mean_abs, bias (&gt; 0: predictions too high), rms, median_abs, p90_abs, max_abs.</span>
+</code></pre></div>
+<ul>
+<li><strong>Clipping:</strong> both probabilities are clipped to [10⁻⁶, 1 − 10⁻⁶] first (<code>clip</code>), so a reference of
+  exactly 0 gives a finite error.</li>
+<li><strong>Weights:</strong> importance weights, for test sets that oversample rare cases. A weight counts as
+  that many copies of the example, in the means and in the quantiles.</li>
+<li><strong>Report:</strong> <code>ToJson(report)</code> gives the report as JSON.</li>
+</ul>
 <h2 id="error-by-slice">Error by slice<a class="headerlink" href="#error-by-slice" title="Permanent link">&para;</a></h2>
 <p>A model can do well on average and fail one group. <code>PerSliceError</code> reports the error on each
 slice, such as a demographic group, a data source or a class of input. It tests each slice against
