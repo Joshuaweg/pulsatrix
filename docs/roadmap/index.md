@@ -1558,6 +1558,7 @@ format, with static and web renderers next to it.
 | VIZ-6 | New views: (a) token relevance for text, (b) feature dashboards, (c) an embedding projector, (d) an attention head grid, (e) SHAP force, decision and dependence plots | Fill the gaps between the current widgets and the reference tools | VIZ-1 | P2 | M each | (a) Done, [#87](https://github.com/Joshuaweg/pulsatrix/pull/87) (see below) |
 | VIZ-7 | A node editor for circuit graphs | Only if graphs outgrow the current view; VIZ-4 covers large ones | — | P3 | M | |
 | VIZ-8 | Shaped text in the ImGui widgets. Each piece is shaped with HarfBuzz (through FreeType) and right-to-left runs are reordered (FriBidi, or UAX #9 for single-direction pieces); the shaped glyphs are rasterized with FreeType into a glyph atlas and drawn as textured quads in `TokenRelevanceView`. It passes when Arabic (joined, right to left), Hebrew, Devanagari, Bengali and Tamil (vowel signs and conjuncts) and Thai render the way HarfBuzz's own `hb-view` does, checked against reference images, and emoji ligatures (skin tones, ZWJ families, flags) show as one glyph | Every character already shows (ImGui 1.92 plus system fonts), but ImGui places characters one after another, so complex scripts aren't readable in the native windows; today only the SVG shows them correctly | — | P3 | M | |
+| VIZ-9 | A series chart: lines of measured points with intervals, on linear or log axes, as small multiples (`pulsatrix.series.v1`, SVG and Vega-Lite) | Sweeps over a parameter, trade-off curves and results over seeds had no view; the closest, Sobol's whiskers and the training log, are a bar chart and a linear step axis | VIZ-1 | P2 | S | Done, [#190](https://github.com/Joshuaweg/pulsatrix/pull/190) (see below) |
 
 (VIZ-5, the notebook path, moved to the NB epic.)
 
@@ -1624,6 +1625,14 @@ format, with static and web renderers next to it.
     French and emoji line.
   - ImGui's default font is Latin-1 only, so the widget needs a loaded font for other scripts;
     the SVG has no such limit.
+- **VIZ-9** was asked for by a downstream study (a guardrail for escalation, sweeping a penalty
+  over four decades with results over seeds), which needed catastrophe rate against the penalty
+  on a log axis, a line per training condition and a panel per world.
+  - A series keeps its color across panels, so small multiples compare at a glance.
+  - On a log axis a lower bound at or below zero (a 95% interval around a rate of zero) runs the
+    whisker to the axis floor instead of failing, and has no lower cap.
+  - The golden SVG uses linear axes only: log positions come from `log10`, which isn't
+    guaranteed to round the same way on every platform.
 - **Fonts.** Dear ImGui went from v1.90.9 to v1.92.5 and ImPlot from v0.16 to v0.17. ImGui 1.92
   draws glyphs on first use, so no glyph ranges need building. `VizWindow` now merges a system
   font for every script behind the default font (`viz/fonts.hpp`): one font per script through

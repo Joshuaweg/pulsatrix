@@ -1,0 +1,40 @@
+{
+  "schema": "pulsatrix.series.v1",
+  "title": "Catastrophe rate by penalty",
+  "x_label": "penalty",
+  "y_label": "catastrophe rate",
+  "x_scale": "linear",
+  "y_scale": "linear",
+  "interval": "95% interval over 5 seeds",
+  "panels": [
+    {
+      "title": "world A",
+      "series": [
+        {
+          "name": "standard starts",
+          "x": [1, 2, 4, 8],
+          "y": [0.12, 0.1, 0.05, 0.02],
+          "lo": [0.1, 0.08, 0.04, 0.01],
+          "hi": [0.14, 0.12, 0.06, 0.03]
+        },
+        {
+          "name": "exploring starts",
+          "x": [1, 2, 4, 8],
+          "y": [0.16, 0.11, 0.06, 0.02]
+        }
+      ]
+    },
+    {
+      "title": "world B",
+      "series": [
+        {
+          "name": "standard starts",
+          "x": [1, 2, 4, 8],
+          "y": [0.01, 0.01, 0.005, 0.0025],
+          "lo": [0, 0.005, 0, 0],
+          "hi": [0.02, 0.015, 0.01, 0.005]
+        }
+      ]
+    }
+  ]
+}

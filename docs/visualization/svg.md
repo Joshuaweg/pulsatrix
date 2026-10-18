@@ -28,6 +28,7 @@ magnitudes.
 | `RenderReliabilityDiagramSvg(series)` | Each confidence bin's accuracy against its mean confidence, one line per classifier, with the diagonal of perfect calibration, each classifier's ECE, and the share of inputs in each bin below | `ClassificationReport`s (performance views, `viz/performance_views.hpp`) |
 | `RenderSliceErrorSvg(report, view)` | Each slice's error with its interval, worst first, the whole dataset's error as a dashed line, an optional reference such as a target miss rate, and each slice's p-value; slices worse than the rest in red | `SliceErrorReport` |
 | `RenderProjectionSvg(doc, x_axis, y_axis)` | Two axes of a projection, such as PC1 and PC2, on one scale: points colored by group (with a legend) or by value (with a color bar), each with its label on hover. UMAP and t-SNE plots get a note that their distances, cluster sizes and densities aren't meaningful | `ProjectionDocument` |
+| `RenderSeriesSvg(doc, view)` | Lines of measured points, each with an interval whisker, on linear or log axes; panels stacked as small multiples with one legend, a series keeping its color in every panel, and each point's values on hover. `view.shared_y` gives every panel the same y range | `SeriesDocument` (`viz/series.hpp`) |
 
 ```cpp
 #include <fstream>
@@ -64,6 +65,7 @@ pulsatrix_svg morris.json -o morris.svg                    # Morris screening sc
 pulsatrix_svg sobol.json -o sobol.svg                      # Sobol index bars
 pulsatrix_svg pca.json --axes 1,3 -o pca13.svg             # projection: PC1 against PC3
 pulsatrix_svg ph.json --view barcode --dims 1 -o h1.svg    # persistence: H1 as a barcode
+pulsatrix_svg sweep.json -o sweep.svg                      # series: lines with intervals
 pulsatrix_svg one.json five.json -o reliability.svg        # classification reports: one reliability diagram
 pulsatrix_svg slices.json -o slices.svg                    # slice error: error by slice
 ```

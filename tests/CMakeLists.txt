@@ -255,6 +255,7 @@ add_executable(pulsatrix_tests
     pca_test.cpp
     projection_view_test.cpp
     topology_views_test.cpp
+    series_view_test.cpp
     performance_views_test.cpp
     adversarial_test.cpp
     explanation_robustness_test.cpp
