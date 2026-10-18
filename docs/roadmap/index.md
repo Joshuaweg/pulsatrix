@@ -1933,6 +1933,7 @@ AGT-5 has to follow these security rules:
 | KS-10 | Strided views and broadcasting | Removes copies everywhere; touches every kernel | — | P2 | L | |
 | KS-11 | Python wheels and a vcpkg port | Easier installation | KS-1 | P2 | — | |
 | KS-12 | EK-FAC influence functions, quantization, op-level autograd, distributed training | Large or low priority for an explainability library | — | P3 / v2 | — | |
+| KS-13 | Temperature scaling fitted on held-out data, and a tail-calibration metric: the error in log-odds against reference probabilities, by probability band, with importance weights | The ECE can't see a probability of 1e-2 where the truth is 1e-4; rare-event predictors need both | KS-3 | P1 | S | |
 
 ### How the KS work departed from the plan
 
