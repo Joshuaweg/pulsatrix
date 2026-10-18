@@ -22,6 +22,7 @@ var group__visualization =
     [ "protein_views.hpp", "protein__views_8hpp.html", null ],
     [ "report.hpp", "report_8hpp.html", null ],
     [ "saliency_heatmap_view.hpp", "saliency__heatmap__view_8hpp.html", null ],
+    [ "series.hpp", "series_8hpp.html", null ],
     [ "svg.hpp", "svg_8hpp.html", null ],
     [ "text_relevance.hpp", "text__relevance_8hpp.html", null ],
     [ "texture_cache.hpp", "texture__cache_8hpp.html", null ],
