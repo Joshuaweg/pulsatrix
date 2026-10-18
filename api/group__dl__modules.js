@@ -48,6 +48,7 @@ var group__dl__modules =
     [ "layer_norm_module.hpp", "layer__norm__module_8hpp.html", null ],
     [ "layer_student.hpp", "layer__student_8hpp.html", null ],
     [ "linear_module.hpp", "linear__module_8hpp.html", null ],
+    [ "lm_scoring.hpp", "lm__scoring_8hpp.html", null ],
     [ "lora.hpp", "lora_8hpp.html", null ],
     [ "loreft.hpp", "loreft_8hpp.html", null ],
     [ "lr_scheduler.hpp", "lr__scheduler_8hpp.html", null ],
