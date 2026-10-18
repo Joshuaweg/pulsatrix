@@ -7187,6 +7187,15 @@ format, with static and web renderers next to it.</p>
 <td>M</td>
 <td></td>
 </tr>
+<tr>
+<td>VIZ-9</td>
+<td>A series chart: lines of measured points with intervals, on linear or log axes, as small multiples (<code>pulsatrix.series.v1</code>, SVG and Vega-Lite)</td>
+<td>Sweeps over a parameter, trade-off curves and results over seeds had no view; the closest, Sobol's whiskers and the training log, are a bar chart and a linear step axis</td>
+<td>VIZ-1</td>
+<td>P2</td>
+<td>S</td>
+<td>Done, <a href="https://github.com/Joshuaweg/pulsatrix/pull/190">#190</a> (see below)</td>
+</tr>
 </tbody>
 </table>
 <p>(VIZ-5, the notebook path, moved to the NB epic.)</p>
@@ -7255,6 +7264,14 @@ format, with static and web renderers next to it.</p>
     French and emoji line.</li>
 <li>ImGui's default font is Latin-1 only, so the widget needs a loaded font for other scripts;
     the SVG has no such limit.</li>
+<li><strong>VIZ-9</strong> was asked for by a downstream study (a guardrail for escalation, sweeping a penalty
+  over four decades with results over seeds), which needed catastrophe rate against the penalty
+  on a log axis, a line per training condition and a panel per world.</li>
+<li>A series keeps its color across panels, so small multiples compare at a glance.</li>
+<li>On a log axis a lower bound at or below zero (a 95% interval around a rate of zero) runs the
+    whisker to the axis floor instead of failing, and has no lower cap.</li>
+<li>The golden SVG uses linear axes only: log positions come from <code>log10</code>, which isn't
+    guaranteed to round the same way on every platform.</li>
 <li><strong>Fonts.</strong> Dear ImGui went from v1.90.9 to v1.92.5 and ImPlot from v0.16 to v0.17. ImGui 1.92
   draws glyphs on first use, so no glyph ranges need building. <code>VizWindow</code> now merges a system
   font for every script behind the default font (<code>viz/fonts.hpp</code>): one font per script through

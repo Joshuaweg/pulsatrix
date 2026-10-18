@@ -21,6 +21,7 @@ var dir_1df8ff9027259fc5f483c2d1b9c2e5ad =
     [ "protein_views.hpp", "protein__views_8hpp.html", "protein__views_8hpp" ],
     [ "report.hpp", "report_8hpp.html", "report_8hpp" ],
     [ "saliency_heatmap_view.hpp", "saliency__heatmap__view_8hpp.html", "saliency__heatmap__view_8hpp" ],
+    [ "series.hpp", "series_8hpp.html", "series_8hpp" ],
     [ "svg.hpp", "svg_8hpp.html", "svg_8hpp" ],
     [ "text_relevance.hpp", "text__relevance_8hpp.html", "text__relevance_8hpp" ],
     [ "texture_cache.hpp", "texture__cache_8hpp.html", "texture__cache_8hpp" ],

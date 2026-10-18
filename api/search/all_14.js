@@ -1,6 +1,6 @@
 var searchData=
 [
-  ['u_0',['u',['../classpulsatrix_1_1ComponentLinear.html#a35859f815ac1760eff55d9e9e5686379',1,'pulsatrix::ComponentLinear::U()'],['../structpulsatrix_1_1SVDResult.html#a83f441fd65542940c39bfa22ef015305',1,'pulsatrix::SVDResult::u'],['../classpulsatrix_1_1RWKVModule.html#ab7510e7540343bffe75454aef2f8180d',1,'pulsatrix::RWKVModule::u()']]],
+  ['u_0',['u',['../structpulsatrix_1_1SVDResult.html#a83f441fd65542940c39bfa22ef015305',1,'pulsatrix::SVDResult::u'],['../classpulsatrix_1_1RWKVModule.html#ab7510e7540343bffe75454aef2f8180d',1,'pulsatrix::RWKVModule::u()'],['../classpulsatrix_1_1ComponentLinear.html#a35859f815ac1760eff55d9e9e5686379',1,'pulsatrix::ComponentLinear::U()']]],
   ['u16_1',['U16',['../namespacepulsatrix.html#a4635e5585e80a55ee96adcfd4f80b57baef9ef3ebca4d2b64b6ec83808bafa5f2',1,'pulsatrix']]],
   ['u32_2',['U32',['../namespacepulsatrix.html#a4635e5585e80a55ee96adcfd4f80b57bac8bd5bedff8ef192d39a962afc0e19ee',1,'pulsatrix']]],
   ['u64_3',['U64',['../namespacepulsatrix.html#a4635e5585e80a55ee96adcfd4f80b57ba31d65cccd6593e4101db93fb878abcaa',1,'pulsatrix']]],

@@ -2690,6 +2690,11 @@ magnitudes.</p>
 <td>Two axes of a projection, such as PC1 and PC2, on one scale: points colored by group (with a legend) or by value (with a color bar), each with its label on hover. UMAP and t-SNE plots get a note that their distances, cluster sizes and densities aren't meaningful</td>
 <td><code>ProjectionDocument</code></td>
 </tr>
+<tr>
+<td><code>RenderSeriesSvg(doc, view)</code></td>
+<td>Lines of measured points, each with an interval whisker, on linear or log axes; panels stacked as small multiples with one legend, a series keeping its color in every panel, and each point's values on hover. <code>view.shared_y</code> gives every panel the same y range</td>
+<td><code>SeriesDocument</code> (<code>viz/series.hpp</code>)</td>
+</tr>
 </tbody>
 </table>
 <div class="highlight"><pre><span></span><code><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;fstream&gt;</span>
@@ -2720,6 +2725,7 @@ pulsatrix_svg<span class="w"> </span>morris.json<span class="w"> </span>-o<span 
 pulsatrix_svg<span class="w"> </span>sobol.json<span class="w"> </span>-o<span class="w"> </span>sobol.svg<span class="w">                      </span><span class="c1"># Sobol index bars</span>
 pulsatrix_svg<span class="w"> </span>pca.json<span class="w"> </span>--axes<span class="w"> </span><span class="m">1</span>,3<span class="w"> </span>-o<span class="w"> </span>pca13.svg<span class="w">             </span><span class="c1"># projection: PC1 against PC3</span>
 pulsatrix_svg<span class="w"> </span>ph.json<span class="w"> </span>--view<span class="w"> </span>barcode<span class="w"> </span>--dims<span class="w"> </span><span class="m">1</span><span class="w"> </span>-o<span class="w"> </span>h1.svg<span class="w">    </span><span class="c1"># persistence: H1 as a barcode</span>
+pulsatrix_svg<span class="w"> </span>sweep.json<span class="w"> </span>-o<span class="w"> </span>sweep.svg<span class="w">                      </span><span class="c1"># series: lines with intervals</span>
 pulsatrix_svg<span class="w"> </span>one.json<span class="w"> </span>five.json<span class="w"> </span>-o<span class="w"> </span>reliability.svg<span class="w">        </span><span class="c1"># classification reports: one reliability diagram</span>
 pulsatrix_svg<span class="w"> </span>slices.json<span class="w"> </span>-o<span class="w"> </span>slices.svg<span class="w">                    </span><span class="c1"># slice error: error by slice</span>
 </code></pre></div>
