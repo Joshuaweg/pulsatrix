@@ -23,6 +23,9 @@ This page walks through the whole path. The examples run as written on SmolLM2-1
   predictions (see [Look inside the model](#4-look-inside-the-model)).
 - **Train or fine-tune**: `CausalLM` is an ordinary `Module`, so `backward()`, optimizers and
   checkpoints work on it.
+- **Score answers and train on them**: read prompt/completion pairs from JSONL, batch them with
+  the prompt masked out of the loss, and score log P(completion | prompt) or the probability of
+  " Yes" against " No" (see [Score and fine-tune on answers](#5-score-and-fine-tune-on-answers)).
 - **Check your setup** against Hugging Face with three command-line tools (see
   [Checking against Hugging Face](#checking-against-hugging-face)).
 
@@ -200,6 +203,44 @@ builds on them:
 | See what chat tuning changed | `pulsatrix_diff_lm` (a crosscoder between the two models) | [Model diffing](../mechanistic-interpretability/model-diffing.md) |
 | Push the model's behavior along a direction | `SteeringHook`, `MeasureSteering` | [Steering](../mechanistic-interpretability/steering.md) |
 | Trace which features carry a prediction | `pulsatrix_explain_text --graph --transcoders` | [Attribution graphs](../mechanistic-interpretability/attribution-graphs.md) |
+
+## 5. Score and fine-tune on answers
+
+`pulsatrix/lm_scoring.hpp` handles data in the shape of a question and its answer:
+
+```cpp
+#include "pulsatrix/lm_scoring.hpp"
+#include "pulsatrix/token_cross_entropy_loss.hpp"
+
+// Each line: {"prompt": "... Is a launch in flight? A:", "completion": " No"}
+const auto rows = ReadJsonl("train.jsonl");
+const auto examples = TokenizePromptCompletions(rows, tokenizer);
+
+// Training: only the completion's tokens count in the loss.
+const CausalLmBatch batch = CollatePromptCompletions(examples, &backend);
+TokenCrossEntropyLoss loss(&backend);
+const float value = loss.forward(model->forward(batch.ids), batch.targets);
+(void)model->backward(loss.backward());
+
+// Scoring: log P(completion | prompt), or the choices' probabilities after each prompt.
+const std::vector<double> log_p = CompletionLogProbs(*model, examples, &backend);
+const int64_t yes = SingleTokenId(tokenizer, " Yes"), no = SingleTokenId(tokenizer, " No");
+const ChoiceScores s = ScoreChoices(*model, prompts, {yes, no}, &backend);
+const double log_odds = s.choice_log_probs[0][0] - s.choice_log_probs[0][1];
+```
+
+- **Masking:** position i of a batch predicts token i + 1. Every target outside the completion is
+  `kIgnoreIndex`, so the loss is the completion's mean log loss per token.
+- **Padding:** batches are right-padded. Causal attention keeps the padding from reaching any real
+  position, so a padded batch scores exactly as each example does alone.
+- **Choices:** `ScoreChoices` gives each choice's log probability over the whole vocabulary,
+  renormalized over the choices, and the probability the choices take together. A model trained
+  to answer " Yes" or " No" puts nearly all its mass on the two.
+- **Memory:** the scorers gather only the logit rows they need on the device before copying them
+  back. A batch's full logits are (N, L, vocab), about 400 MB for SmolLM2 at N = 8 and L = 256.
+- **Speed:** a full fine-tuning step of SmolLM2-135M on a Radeon 8060S takes about 1.5 s for 8
+  sequences of 256 tokens and 7.8 s for 8 of 512. Attention's cost grows with the square of the
+  length, so keep prompts short.
 
 ## Checking against Hugging Face
 
