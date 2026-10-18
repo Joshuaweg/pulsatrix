@@ -87,6 +87,7 @@ add_executable(pulsatrix_tests
     anchors_test.cpp
     prototypes_test.cpp
     performance_test.cpp
+    calibration_test.cpp
     uncertainty_test.cpp
     conformal_test.cpp
     contrastive_test.cpp
