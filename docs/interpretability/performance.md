@@ -12,7 +12,9 @@ prediction, not whether the prediction is right. Pulsatrix answers it with the m
 - **`McDropoutSamples`** and **`EnsembleSamples`**, in `pulsatrix/uncertainty.hpp`: how sure the
   model is of each prediction, and whether more data would make it surer;
 - **split conformal prediction**, in `pulsatrix/conformal.hpp`: prediction sets and intervals that
-  hold the truth with a chosen probability, for any model.
+  hold the truth with a chosen probability, for any model;
+- **`FitTemperature`** and **`LogOddsError`**, in `pulsatrix/calibration.hpp` (KS-13): temperature
+  scaling fitted on held-out data, and the error of rare-event probabilities in log-odds.
 
 Every number matches scikit-learn's on the same data, and the slice test matches SciPy's
 `fisher_exact`. `tests/performance_test.cpp` checks them against values from
@@ -93,6 +95,47 @@ std::ofstream("reliability.svg") << RenderReliabilityDiagramSvg({{"one network",
 !!! note
     The ECE depends on the number of bins, and with few predictions per bin it is biased upward.
     Compare models with the same bins, and read the reliability diagram, not just the number.
+
+### Temperature scaling
+
+Temperature scaling divides a model's logits by one number T, fitted to minimize the log loss on
+held-out labeled data (Guo et al.). T > 1 makes an overconfident model less sure. It never changes
+which class ranks first, so accuracy is unchanged.
+
+```cpp
+#include "pulsatrix/calibration.hpp"
+
+// Held-out data the model wasn't trained on: logits, labels, and optional per-example weights.
+const TemperatureFit fit = FitTemperature(held_out_logits, held_out_labels);       // (N, K) rows
+const TemperatureFit binary = FitBinaryTemperature(held_out_log_odds, held_out_labels);
+// Then use logits / fit.temperature everywhere else.
+```
+
+The log loss is convex in 1/T, so the fit is exact up to rounding (about ten Newton steps). Two
+cases have no finite answer, and `fit.converged` is false for them:
+- **The labels are separated:** every label already has the largest logit. A smaller T is always
+  better, and the fit stops at T = 10⁻⁶.
+- **The logits are no better than chance, or point the wrong way.** The fit stops at T = 10⁶.
+
+### Calibration of rare events
+
+The ECE is useless for rare events. It averages over bins, so the common cases dominate it. A
+model that says 10⁻² where the truth is 10⁻⁴ is wrong by a factor of 100, but that barely moves the
+ECE. When reference probabilities are available (an exact model, a simulator, a larger model),
+`LogOddsError` measures |logit(p) − logit(q)| instead, separately in bands of the reference
+probability:
+
+```cpp
+const LogOddsErrorReport r = LogOddsError(predicted, reference, /*weights=*/{}, /*band_edges=*/{1e-3});
+// r.bands[0] holds references below 1e-3, r.bands[1] the rest; r.overall all of them.
+// Each band: count, weight, mean_abs, bias (> 0: predictions too high), rms, median_abs, p90_abs, max_abs.
+```
+
+- **Clipping:** both probabilities are clipped to [10⁻⁶, 1 − 10⁻⁶] first (`clip`), so a reference of
+  exactly 0 gives a finite error.
+- **Weights:** importance weights, for test sets that oversample rare cases. A weight counts as
+  that many copies of the example, in the means and in the quantiles.
+- **Report:** `ToJson(report)` gives the report as JSON.
 
 ## Error by slice
 
