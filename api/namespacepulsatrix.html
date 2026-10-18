@@ -318,6 +318,9 @@ Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1CausalLM.html">CausalLM</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Token embedding, <code>num_hidden_layers</code> pre-norm transformer blocks, a final RMSNorm and a language-model head (tied to the embedding or its own bias-free Linear): the architecture of Llama, SmolLM2, Qwen2/2.5 and Qwen3. Maps <code>(N, L)</code> token ids to <code>(N, L, vocab)</code> logits.  <a href="classpulsatrix_1_1CausalLM.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpulsatrix_1_1CausalLmBatch.html">CausalLmBatch</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">A right-padded training batch.  <a href="structpulsatrix_1_1CausalLmBatch.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpulsatrix_1_1Cav.html">Cav</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">A concept activation vector.  <a href="structpulsatrix_1_1Cav.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -340,6 +343,9 @@ Classes</h2></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpulsatrix_1_1CheckResult.html">CheckResult</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">One check's result.  <a href="structpulsatrix_1_1CheckResult.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpulsatrix_1_1ChoiceScores.html">ChoiceScores</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Scores of single-token choices after each prompt. Indexed [example][choice].  <a href="structpulsatrix_1_1ChoiceScores.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpulsatrix_1_1CircuitEdge.html">CircuitEdge</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">One directed edge of a <a class="el" href="classpulsatrix_1_1CircuitGraph.html" title="A copyable, self-contained circuit graph: every node of one forward pass with an ablation importance ...">CircuitGraph</a>, carrying a scalar weight.  <a href="structpulsatrix_1_1CircuitEdge.html#details">More...</a><br /></td></tr>
@@ -1219,6 +1225,9 @@ Classes</h2></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpulsatrix_1_1ProjectionDocument.html">ProjectionDocument</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight"><code>pulsatrix.projection.v1</code>: inputs placed in a few dimensions (INT-5), such as their first principal components, for a scatter plot. Each point can carry a label (shown on hover), a group (drawn as a color) and a value (drawn on a color scale when there are no groups).  <a href="structpulsatrix_1_1ProjectionDocument.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpulsatrix_1_1PromptCompletion.html">PromptCompletion</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">One example: the prompt's token ids, then the completion's.  <a href="structpulsatrix_1_1PromptCompletion.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpulsatrix_1_1ProteinFeature.html">ProteinFeature</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">One annotated stretch, numbered from 1, inclusive, as UniProt numbers it.  <a href="structpulsatrix_1_1ProteinFeature.html#details">More...</a><br /></td></tr>
@@ -3001,6 +3010,24 @@ Functions</h2></td></tr>
 <tr class="memitem:abc312204e032ea8f6f81f09aeae4d9e2" id="r_abc312204e032ea8f6f81f09aeae4d9e2"><td class="memItemLeft" align="right" valign="top">std::vector&lt; float &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#abc312204e032ea8f6f81f09aeae4d9e2">SolveLinearSystem</a> (std::vector&lt; std::vector&lt; float &gt; &gt; a, std::vector&lt; float &gt; b)</td></tr>
 <tr class="memdesc:abc312204e032ea8f6f81f09aeae4d9e2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Solves A*x = b via Gaussian elimination with partial pivoting.  <br /></td></tr>
 <tr class="separator:abc312204e032ea8f6f81f09aeae4d9e2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a78311735215066cbb4ab2373ef9967a1" id="r_a78311735215066cbb4ab2373ef9967a1"><td class="memItemLeft" align="right" valign="top">std::vector&lt; <a class="el" href="classpulsatrix_1_1JsonValue.html">JsonValue</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#a78311735215066cbb4ab2373ef9967a1">ReadJsonl</a> (const std::string &amp;path)</td></tr>
+<tr class="memdesc:a78311735215066cbb4ab2373ef9967a1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Reads a JSONL file: one JSON value a line. Blank lines are skipped.  <br /></td></tr>
+<tr class="separator:a78311735215066cbb4ab2373ef9967a1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae07bdd538e1583918596a913cb23862a" id="r_ae07bdd538e1583918596a913cb23862a"><td class="memItemLeft" align="right" valign="top">std::vector&lt; <a class="el" href="structpulsatrix_1_1PromptCompletion.html">PromptCompletion</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#ae07bdd538e1583918596a913cb23862a">TokenizePromptCompletions</a> (const std::vector&lt; <a class="el" href="classpulsatrix_1_1JsonValue.html">JsonValue</a> &gt; &amp;rows, const <a class="el" href="classpulsatrix_1_1TextTokenizer.html">TextTokenizer</a> &amp;tokenizer, const std::string &amp;prompt_key=&quot;prompt&quot;, const std::string &amp;completion_key=&quot;completion&quot;, bool add_special_tokens=false)</td></tr>
+<tr class="memdesc:ae07bdd538e1583918596a913cb23862a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Tokenizes each row's prompt and completion strings (objects with those keys). The two are tokenized separately, so a completion like " Yes" keeps its own tokens whatever the prompt ends with.  <br /></td></tr>
+<tr class="separator:ae07bdd538e1583918596a913cb23862a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af4945e53c8a2de4d72f0f5bdf91d4bab" id="r_af4945e53c8a2de4d72f0f5bdf91d4bab"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structpulsatrix_1_1CausalLmBatch.html">CausalLmBatch</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#af4945e53c8a2de4d72f0f5bdf91d4bab">CollatePromptCompletions</a> (const std::vector&lt; <a class="el" href="structpulsatrix_1_1PromptCompletion.html">PromptCompletion</a> &gt; &amp;examples, <a class="el" href="classpulsatrix_1_1DeviceBackend.html">DeviceBackend</a> *backend, int64_t pad_id=0)</td></tr>
+<tr class="memdesc:af4945e53c8a2de4d72f0f5bdf91d4bab"><td class="mdescLeft">&#160;</td><td class="mdescRight">Builds a batch for <a class="el" href="classpulsatrix_1_1TokenCrossEntropyLoss.html" title="sum over tokens of -log softmax(logits)[target], divided by a normalizer; tokens whose target is the ...">TokenCrossEntropyLoss</a>: position i predicts token i + 1, and only the completion's tokens count. The completion's last token is never an input (nothing follows it), so each row is one token shorter than prompt + completion.  <br /></td></tr>
+<tr class="separator:af4945e53c8a2de4d72f0f5bdf91d4bab"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa5de3b58d7d7cb59014c7e0d31fe56b3" id="r_aa5de3b58d7d7cb59014c7e0d31fe56b3"><td class="memItemLeft" align="right" valign="top">std::vector&lt; double &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#aa5de3b58d7d7cb59014c7e0d31fe56b3">CompletionLogProbs</a> (<a class="el" href="classpulsatrix_1_1CausalLM.html">CausalLM</a> &amp;model, const std::vector&lt; <a class="el" href="structpulsatrix_1_1PromptCompletion.html">PromptCompletion</a> &gt; &amp;examples, <a class="el" href="classpulsatrix_1_1DeviceBackend.html">DeviceBackend</a> *backend, int64_t batch_size=8)</td></tr>
+<tr class="memdesc:aa5de3b58d7d7cb59014c7e0d31fe56b3"><td class="mdescLeft">&#160;</td><td class="mdescRight">log P(completion | prompt) under the model, summed over the completion's tokens, in double. Runs forward passes only, batch_size examples at a time, grouped by length.  <br /></td></tr>
+<tr class="separator:aa5de3b58d7d7cb59014c7e0d31fe56b3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a52be35ee265542c04b098e26173facae" id="r_a52be35ee265542c04b098e26173facae"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structpulsatrix_1_1ChoiceScores.html">ChoiceScores</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#a52be35ee265542c04b098e26173facae">ScoreChoices</a> (<a class="el" href="classpulsatrix_1_1CausalLM.html">CausalLM</a> &amp;model, const std::vector&lt; std::vector&lt; int64_t &gt; &gt; &amp;prompts, const std::vector&lt; int64_t &gt; &amp;choice_tokens, <a class="el" href="classpulsatrix_1_1DeviceBackend.html">DeviceBackend</a> *backend, int64_t batch_size=8)</td></tr>
+<tr class="memdesc:a52be35ee265542c04b098e26173facae"><td class="mdescLeft">&#160;</td><td class="mdescRight">Scores the next token after each prompt against a fixed set of single-token choices, such as " Yes" and " No". For two choices, choice_log_probs[n][0] - choice_log_probs[n][1] is the log-odds of the first.  <br /></td></tr>
+<tr class="separator:a52be35ee265542c04b098e26173facae"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7001b478dd13fe9b8260b07ede8be9f5" id="r_a7001b478dd13fe9b8260b07ede8be9f5"><td class="memItemLeft" align="right" valign="top">int64_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#a7001b478dd13fe9b8260b07ede8be9f5">SingleTokenId</a> (const <a class="el" href="classpulsatrix_1_1TextTokenizer.html">TextTokenizer</a> &amp;tokenizer, const std::string &amp;text)</td></tr>
+<tr class="memdesc:a7001b478dd13fe9b8260b07ede8be9f5"><td class="mdescLeft">&#160;</td><td class="mdescRight">The id of a string that must tokenize to exactly one token, such as " Yes".  <br /></td></tr>
+<tr class="separator:a7001b478dd13fe9b8260b07ede8be9f5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae40b041766846ad8286558e270c8f261" id="r_ae40b041766846ad8286558e270c8f261"><td class="memItemLeft" align="right" valign="top">std::vector&lt; std::string &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#ae40b041766846ad8286558e270c8f261">ApplyLora</a> (<a class="el" href="classpulsatrix_1_1Module.html">Module</a> &amp;model, const <a class="el" href="structpulsatrix_1_1LoRAConfig.html">LoRAConfig</a> &amp;config={})</td></tr>
 <tr class="memdesc:ae40b041766846ad8286558e270c8f261"><td class="mdescLeft">&#160;</td><td class="mdescRight">Attaches a LoRA adapter to each <a class="el" href="classpulsatrix_1_1LinearModule.html" title="y = x @ W + b, batched (x is (N, in_features), y is (N, out_features)) – migrated from the original u...">LinearModule</a> that config.target_modules selects, then freezes everything else: only the adapters train, as with PEFT's get_peft_model().  <br /></td></tr>
 <tr class="separator:ae40b041766846ad8286558e270c8f261"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -8596,6 +8623,54 @@ One difference from PyTorch: a NaN or infinite norm leaves the gradients unchang
 
 </div>
 </div>
+<a id="af4945e53c8a2de4d72f0f5bdf91d4bab" name="af4945e53c8a2de4d72f0f5bdf91d4bab"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af4945e53c8a2de4d72f0f5bdf91d4bab">&#9670;&#160;</a></span>CollatePromptCompletions()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="structpulsatrix_1_1CausalLmBatch.html">CausalLmBatch</a> pulsatrix::CollatePromptCompletions </td>
+          <td>(</td>
+          <td class="paramtype">const std::vector&lt; <a class="el" href="structpulsatrix_1_1PromptCompletion.html">PromptCompletion</a> &gt; &amp;&#160;</td>
+          <td class="paramname"><em>examples</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="classpulsatrix_1_1DeviceBackend.html">DeviceBackend</a> *&#160;</td>
+          <td class="paramname"><em>backend</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int64_t&#160;</td>
+          <td class="paramname"><em>pad_id</em> = <code>0</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Builds a batch for <a class="el" href="classpulsatrix_1_1TokenCrossEntropyLoss.html" title="sum over tokens of -log softmax(logits)[target], divided by a normalizer; tokens whose target is the ...">TokenCrossEntropyLoss</a>: position i predicts token i + 1, and only the completion's tokens count. The completion's last token is never an input (nothing follows it), so each row is one token shorter than prompt + completion. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">pad_id</td><td>The id written into padding; its value doesn't matter (see the file comment). </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname">std::invalid_argument</td><td>if examples is empty or an example has an empty prompt or completion. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
 <a id="ad9528e51695652a2d616c9044deae579" name="ad9528e51695652a2d616c9044deae579"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ad9528e51695652a2d616c9044deae579">&#9670;&#160;</a></span>CombinedFitness()</h2>
 
@@ -9234,6 +9309,54 @@ One difference from PyTorch: a NaN or infinite norm leaves the gradients unchang
 <dl class="exception"><dt>Exceptions</dt><dd>
   <table class="exception">
     <tr><td class="paramname">std::invalid_argument</td><td>if either genome has zero connection genes. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="aa5de3b58d7d7cb59014c7e0d31fe56b3" name="aa5de3b58d7d7cb59014c7e0d31fe56b3"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa5de3b58d7d7cb59014c7e0d31fe56b3">&#9670;&#160;</a></span>CompletionLogProbs()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::vector&lt; double &gt; pulsatrix::CompletionLogProbs </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classpulsatrix_1_1CausalLM.html">CausalLM</a> &amp;&#160;</td>
+          <td class="paramname"><em>model</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const std::vector&lt; <a class="el" href="structpulsatrix_1_1PromptCompletion.html">PromptCompletion</a> &gt; &amp;&#160;</td>
+          <td class="paramname"><em>examples</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="classpulsatrix_1_1DeviceBackend.html">DeviceBackend</a> *&#160;</td>
+          <td class="paramname"><em>backend</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int64_t&#160;</td>
+          <td class="paramname"><em>batch_size</em> = <code>8</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>log P(completion | prompt) under the model, summed over the completion's tokens, in double. Runs forward passes only, batch_size examples at a time, grouped by length. </p>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname">std::invalid_argument</td><td>as <a class="el" href="namespacepulsatrix.html#af4945e53c8a2de4d72f0f5bdf91d4bab" title="Builds a batch for TokenCrossEntropyLoss: position i predicts token i + 1, and only the completion&#39;s ...">CollatePromptCompletions()</a>, or if batch_size &lt; 1. </td></tr>
   </table>
   </dd>
 </dl>
@@ -21589,6 +21712,32 @@ template&lt;typename Genotype , typename FitnessT &gt; </div>
 
 </div>
 </div>
+<a id="a78311735215066cbb4ab2373ef9967a1" name="a78311735215066cbb4ab2373ef9967a1"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a78311735215066cbb4ab2373ef9967a1">&#9670;&#160;</a></span>ReadJsonl()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::vector&lt; <a class="el" href="classpulsatrix_1_1JsonValue.html">JsonValue</a> &gt; pulsatrix::ReadJsonl </td>
+          <td>(</td>
+          <td class="paramtype">const std::string &amp;&#160;</td>
+          <td class="paramname"><em>path</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Reads a JSONL file: one JSON value a line. Blank lines are skipped. </p>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname">std::runtime_error</td><td>if the file can't be read, naming the line that doesn't parse. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
 <a id="ae564154db51b2593d10f5f1e075165e0" name="ae564154db51b2593d10f5f1e075165e0"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ae564154db51b2593d10f5f1e075165e0">&#9670;&#160;</a></span>ReadNpy()</h2>
 
@@ -25726,6 +25875,60 @@ template&lt;typename ObjectiveFn , typename RNG &gt; </div>
 
 </div>
 </div>
+<a id="a52be35ee265542c04b098e26173facae" name="a52be35ee265542c04b098e26173facae"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a52be35ee265542c04b098e26173facae">&#9670;&#160;</a></span>ScoreChoices()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="structpulsatrix_1_1ChoiceScores.html">ChoiceScores</a> pulsatrix::ScoreChoices </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classpulsatrix_1_1CausalLM.html">CausalLM</a> &amp;&#160;</td>
+          <td class="paramname"><em>model</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const std::vector&lt; std::vector&lt; int64_t &gt; &gt; &amp;&#160;</td>
+          <td class="paramname"><em>prompts</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const std::vector&lt; int64_t &gt; &amp;&#160;</td>
+          <td class="paramname"><em>choice_tokens</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="classpulsatrix_1_1DeviceBackend.html">DeviceBackend</a> *&#160;</td>
+          <td class="paramname"><em>backend</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int64_t&#160;</td>
+          <td class="paramname"><em>batch_size</em> = <code>8</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Scores the next token after each prompt against a fixed set of single-token choices, such as " Yes" and " No". For two choices, choice_log_probs[n][0] - choice_log_probs[n][1] is the log-odds of the first. </p>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname">std::invalid_argument</td><td>if prompts or choice_tokens is empty, a prompt is empty, a choice is outside the vocabulary, or batch_size &lt; 1. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
 <a id="a63fa0005a2016a25956cf15bc50a1e2b" name="a63fa0005a2016a25956cf15bc50a1e2b"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a63fa0005a2016a25956cf15bc50a1e2b">&#9670;&#160;</a></span>ScoreCircuit()</h2>
 
@@ -26155,6 +26358,42 @@ child1_i + child2_i == parent1_i + parent2_i for any beta_q (and therefore any e
 <dl class="exception"><dt>Exceptions</dt><dd>
   <table class="exception">
     <tr><td class="paramname">std::invalid_argument</td><td>if an edge has an endpoint outside [0, points). </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="a7001b478dd13fe9b8260b07ede8be9f5" name="a7001b478dd13fe9b8260b07ede8be9f5"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7001b478dd13fe9b8260b07ede8be9f5">&#9670;&#160;</a></span>SingleTokenId()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int64_t pulsatrix::SingleTokenId </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classpulsatrix_1_1TextTokenizer.html">TextTokenizer</a> &amp;&#160;</td>
+          <td class="paramname"><em>tokenizer</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const std::string &amp;&#160;</td>
+          <td class="paramname"><em>text</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>The id of a string that must tokenize to exactly one token, such as " Yes". </p>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname">std::invalid_argument</td><td>if it tokenizes to anything else. </td></tr>
   </table>
   </dd>
 </dl>
@@ -28841,6 +29080,66 @@ template&lt;class Json &gt; </div>
 </div><div class="memdoc">
 
 <p>The decomposition as a <code>pulsatrix.uncertainty.v1</code> document, without the mean probabilities. </p>
+
+</div>
+</div>
+<a id="ae07bdd538e1583918596a913cb23862a" name="ae07bdd538e1583918596a913cb23862a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae07bdd538e1583918596a913cb23862a">&#9670;&#160;</a></span>TokenizePromptCompletions()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::vector&lt; <a class="el" href="structpulsatrix_1_1PromptCompletion.html">PromptCompletion</a> &gt; pulsatrix::TokenizePromptCompletions </td>
+          <td>(</td>
+          <td class="paramtype">const std::vector&lt; <a class="el" href="classpulsatrix_1_1JsonValue.html">JsonValue</a> &gt; &amp;&#160;</td>
+          <td class="paramname"><em>rows</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="classpulsatrix_1_1TextTokenizer.html">TextTokenizer</a> &amp;&#160;</td>
+          <td class="paramname"><em>tokenizer</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const std::string &amp;&#160;</td>
+          <td class="paramname"><em>prompt_key</em> = <code>&quot;prompt&quot;</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const std::string &amp;&#160;</td>
+          <td class="paramname"><em>completion_key</em> = <code>&quot;completion&quot;</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>add_special_tokens</em> = <code>false</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Tokenizes each row's prompt and completion strings (objects with those keys). The two are tokenized separately, so a completion like " Yes" keeps its own tokens whatever the prompt ends with. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">add_special_tokens</td><td>Passed to <a class="el" href="classpulsatrix_1_1TextTokenizer.html#a16193653d70e31142d4fa33b335b4569">TextTokenizer::encode()</a> for the prompt (a BOS token, for tokenizers that add one); never for the completion. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname">std::invalid_argument</td><td>if a row isn't an object with both strings, or a prompt or completion tokenizes to nothing. </td></tr>
+  </table>
+  </dd>
+</dl>
 
 </div>
 </div>

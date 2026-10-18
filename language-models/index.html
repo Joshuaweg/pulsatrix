@@ -577,6 +577,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#5-score-and-fine-tune-on-answers" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5. Score and fine-tune on answers
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#checking-against-hugging-face" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -2771,6 +2782,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#5-score-and-fine-tune-on-answers" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5. Score and fine-tune on answers
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#checking-against-hugging-face" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -2856,6 +2878,9 @@ explanations.</p>
   predictions (see <a href="#4-look-inside-the-model">Look inside the model</a>).</li>
 <li><strong>Train or fine-tune</strong>: <code>CausalLM</code> is an ordinary <code>Module</code>, so <code>backward()</code>, optimizers and
   checkpoints work on it.</li>
+<li><strong>Score answers and train on them</strong>: read prompt/completion pairs from JSONL, batch them with
+  the prompt masked out of the loss, and score log P(completion | prompt) or the probability of
+  " Yes" against " No" (see <a href="#5-score-and-fine-tune-on-answers">Score and fine-tune on answers</a>).</li>
 <li><strong>Check your setup</strong> against Hugging Face with three command-line tools (see
   <a href="#checking-against-hugging-face">Checking against Hugging Face</a>).</li>
 </ul>
@@ -3099,6 +3124,41 @@ builds on them:</p>
 </tr>
 </tbody>
 </table>
+<h2 id="5-score-and-fine-tune-on-answers">5. Score and fine-tune on answers<a class="headerlink" href="#5-score-and-fine-tune-on-answers" title="Permanent link">&para;</a></h2>
+<p><code>pulsatrix/lm_scoring.hpp</code> handles data in the shape of a question and its answer:</p>
+<div class="highlight"><pre><span></span><code><span class="cp">#include</span><span class="w"> </span><span class="cpf">"pulsatrix/lm_scoring.hpp"</span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">"pulsatrix/token_cross_entropy_loss.hpp"</span>
+
+<span class="c1">// Each line: {"prompt": "... Is a launch in flight? A:", "completion": " No"}</span>
+<span class="k">const</span><span class="w"> </span><span class="k">auto</span><span class="w"> </span><span class="n">rows</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">ReadJsonl</span><span class="p">(</span><span class="s">"train.jsonl"</span><span class="p">);</span>
+<span class="k">const</span><span class="w"> </span><span class="k">auto</span><span class="w"> </span><span class="n">examples</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">TokenizePromptCompletions</span><span class="p">(</span><span class="n">rows</span><span class="p">,</span><span class="w"> </span><span class="n">tokenizer</span><span class="p">);</span>
+
+<span class="c1">// Training: only the completion's tokens count in the loss.</span>
+<span class="k">const</span><span class="w"> </span><span class="n">CausalLmBatch</span><span class="w"> </span><span class="n">batch</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">CollatePromptCompletions</span><span class="p">(</span><span class="n">examples</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">backend</span><span class="p">);</span>
+<span class="n">TokenCrossEntropyLoss</span><span class="w"> </span><span class="nf">loss</span><span class="p">(</span><span class="o">&amp;</span><span class="n">backend</span><span class="p">);</span>
+<span class="k">const</span><span class="w"> </span><span class="kt">float</span><span class="w"> </span><span class="n">value</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">loss</span><span class="p">.</span><span class="n">forward</span><span class="p">(</span><span class="n">model</span><span class="o">-&gt;</span><span class="n">forward</span><span class="p">(</span><span class="n">batch</span><span class="p">.</span><span class="n">ids</span><span class="p">),</span><span class="w"> </span><span class="n">batch</span><span class="p">.</span><span class="n">targets</span><span class="p">);</span>
+<span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="n">model</span><span class="o">-&gt;</span><span class="n">backward</span><span class="p">(</span><span class="n">loss</span><span class="p">.</span><span class="n">backward</span><span class="p">());</span>
+
+<span class="c1">// Scoring: log P(completion | prompt), or the choices' probabilities after each prompt.</span>
+<span class="k">const</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">double</span><span class="o">&gt;</span><span class="w"> </span><span class="n">log_p</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">CompletionLogProbs</span><span class="p">(</span><span class="o">*</span><span class="n">model</span><span class="p">,</span><span class="w"> </span><span class="n">examples</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">backend</span><span class="p">);</span>
+<span class="k">const</span><span class="w"> </span><span class="kt">int64_t</span><span class="w"> </span><span class="n">yes</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">SingleTokenId</span><span class="p">(</span><span class="n">tokenizer</span><span class="p">,</span><span class="w"> </span><span class="s">" Yes"</span><span class="p">),</span><span class="w"> </span><span class="n">no</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">SingleTokenId</span><span class="p">(</span><span class="n">tokenizer</span><span class="p">,</span><span class="w"> </span><span class="s">" No"</span><span class="p">);</span>
+<span class="k">const</span><span class="w"> </span><span class="n">ChoiceScores</span><span class="w"> </span><span class="n">s</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">ScoreChoices</span><span class="p">(</span><span class="o">*</span><span class="n">model</span><span class="p">,</span><span class="w"> </span><span class="n">prompts</span><span class="p">,</span><span class="w"> </span><span class="p">{</span><span class="n">yes</span><span class="p">,</span><span class="w"> </span><span class="n">no</span><span class="p">},</span><span class="w"> </span><span class="o">&amp;</span><span class="n">backend</span><span class="p">);</span>
+<span class="k">const</span><span class="w"> </span><span class="kt">double</span><span class="w"> </span><span class="n">log_odds</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">s</span><span class="p">.</span><span class="n">choice_log_probs</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">s</span><span class="p">.</span><span class="n">choice_log_probs</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">1</span><span class="p">];</span>
+</code></pre></div>
+<ul>
+<li><strong>Masking:</strong> position i of a batch predicts token i + 1. Every target outside the completion is
+  <code>kIgnoreIndex</code>, so the loss is the completion's mean log loss per token.</li>
+<li><strong>Padding:</strong> batches are right-padded. Causal attention keeps the padding from reaching any real
+  position, so a padded batch scores exactly as each example does alone.</li>
+<li><strong>Choices:</strong> <code>ScoreChoices</code> gives each choice's log probability over the whole vocabulary,
+  renormalized over the choices, and the probability the choices take together. A model trained
+  to answer " Yes" or " No" puts nearly all its mass on the two.</li>
+<li><strong>Memory:</strong> the scorers gather only the logit rows they need on the device before copying them
+  back. A batch's full logits are (N, L, vocab), about 400 MB for SmolLM2 at N = 8 and L = 256.</li>
+<li><strong>Speed:</strong> a full fine-tuning step of SmolLM2-135M on a Radeon 8060S takes about 1.5 s for 8
+  sequences of 256 tokens and 7.8 s for 8 of 512. Attention's cost grows with the square of the
+  length, so keep prompts short.</li>
+</ul>
 <h2 id="checking-against-hugging-face">Checking against Hugging Face<a class="headerlink" href="#checking-against-hugging-face" title="Permanent link">&para;</a></h2>
 <p>Three tools compare pulsatrix with the reference libraries on your own machine. They need
 reference files that small Python scripts write once, with <code>torch</code>, <code>transformers</code>, <code>tokenizers</code>
