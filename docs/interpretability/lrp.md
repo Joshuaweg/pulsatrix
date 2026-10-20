@@ -174,7 +174,9 @@ softmax and attention don't conserve exactly; their tests measure and report the
 
 The VAE, GAN and diffusion building blocks (`Reparameterize`, `KLDivergenceLoss`,
 `BCEWithLogitsLoss`, `NoiseSchedule`, `SinusoidalTimestepEmbedding`) are losses and sampling
-steps, not `Module`s, so they have no LRP rule.
+steps, not `Module`s, so they have no LRP rule. Explaining a diffusion model means following
+relevance through the whole sampler instead; the rules for that are designed, not yet built, in
+[LRP for diffusion models](diffusion-lrp.md).
 
 ## Validation against Zennit and LXT
 
