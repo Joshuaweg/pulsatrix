@@ -8,10 +8,12 @@
 # The final --force-reinstall --no-deps puts the CPU torchvision back: lxt's dependency resolution
 # otherwise replaces it with a build that does not match the CPU torch wheel. transformers is
 # pinned because lxt 2.1 depends on it (the generator itself only uses lxt.explicit). peft (with
-# accelerate, which it needs) is for tools/golden/make_lora_golden.py.
+# accelerate, which it needs) is for tools/golden/make_lora_golden.py, and einops for the MDLM
+# modeling code tools/golden/make_mdlm_golden.py runs.
 FROM python:3.12-slim
 RUN pip install --no-cache-dir torch==2.14.1 torchvision==0.29.1 --index-url https://download.pytorch.org/whl/cpu \
     && pip install --no-cache-dir zennit==1.0.0 lxt==2.1 numpy==2.5.2 transformers==5.18.0 \
     && pip install --no-cache-dir --force-reinstall --no-deps torchvision==0.29.1 \
         --index-url https://download.pytorch.org/whl/cpu \
     && pip install --no-cache-dir peft==0.21.0 accelerate==1.15.0
+RUN pip install --no-cache-dir einops==0.8.1

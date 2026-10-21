@@ -2328,6 +2328,20 @@ planted tasks, causal patching and faithfulness. The rules are on the
 | DIFF-11 | Attention maps per step: DAAM-style sums for image models, attention to unmasked context for diffusion LMs | The cheapest baseline | DIFF-2 | P2 | S | |
 | DIFF-12 | SAEs on diffusion-LM residual streams, separate for masked and unmasked positions (DLM-Scope), with concept-level aggregation of D2 relevance | Concept-level explanations; costly, and DLM-Scope's own models are out of reach here | DIFF-3, FEAT-1 | P3 | M | |
 
+### How the DIFF work departed from the plan
+
+- **DIFF-2** loads MDLM as an `EncoderLM` rather than a new model class. MDLM is a bidirectional
+  encoder with a different head. Once its constant adaLN modulation is folded into the weights at
+  load time, it is an ordinary encoder: one linear output layer, bias-free attention and a
+  tanh-GELU MLP. `LoadEncoderLM` picks ESM-2 or MDLM from the config's `model_type`. The folding
+  is exact. Against the authors' modeling code on the CPU, mdlm-owt matches within 3.8e-6
+  (logits) and 7.1e-6 (hidden states). A tiny model with random modulation weights matches
+  within 1e-5. The authors' code imports `flash_attn`, which needs CUDA, so the reference script
+  registers CPU stand-ins for the two functions it uses.
+- **DIFF-2's sampler doesn't re-mask.** The remasking sampler moves to DIFF-4, with DPLM, the only
+  target that needs it. DIFF-2 has LLaDA's confidence schedule and MDLM's ancestral one, and
+  neither revises a filled position.
+
 ## Open questions
 
 These came up in the research and aren't settled yet.
