@@ -1,7 +1,7 @@
 # LRP for Diffusion Models (Design)
 
-**Status: design only.** No code implements this page yet. The work is tracked as the
-[DIFF epic](../roadmap/index.md#diff-diffusion-models-and-their-explanations), and the evidence
+**Status:** D2 is implemented ([below](#d2-in-pulsatrix)); D1 and D3 are designs only. The work
+is tracked as the [DIFF epic](../roadmap/index.md#diff-diffusion-models-and-their-explanations), and the evidence
 is in the [research notes](../roadmap/research-notes.md#diff-diffusion-models).
 
 A diffusion model doesn't produce its output in one forward pass. It starts from noise (or from a
@@ -140,8 +140,11 @@ no pass. What reaches the prompt is the explanation. Relevance on `[MASK]` token
 step to go to, so it is the mask sink of that step.
 
 Tokens committed in the same step can't attribute to each other, so the graph is a DAG layered by
-step. The top seed is the summed log-probability of the tokens being explained, as in DLIG and
-the attribution-contract paper. DLIG found that a fixed reference string correlated with infill
+step. The top seed is the logits of the tokens being explained, each at the step that wrote it,
+summed, and each seeded with its own value, as LXT seeds a logit. DLIG and the
+attribution-contract paper explain the summed log-probability instead; its log-softmax isn't
+linear in the logits, so it can't be seeded on them the same way, and the logit is what the rest
+of pulsatrix's AttnLRP explains. DLIG found that a fixed reference string correlated with infill
 quality far better than the model's own tokens (r = 0.197 against 0.013), so a fixed-target
 seed is offered as a check.
 
@@ -186,6 +189,64 @@ again.
   deleting random ones.
 - Patching the highest-relevance tokens moves later commits no more than patching low-relevance
   ones. This is a causal check in the style of TimeROME-DLM.
+
+### D2 in pulsatrix
+
+`include/pulsatrix/masked_diffusion_lrp.hpp` (DIFF-3) implements D2 on the trajectories
+`SampleMaskedDiffusion` records:
+
+```cpp
+#include "pulsatrix/masked_diffusion_lrp.hpp"
+
+MaskedDiffusionResult t = SampleMaskedDiffusion(MakeDenoiser(*model, &cpu), input, config);
+EncoderLMStepModel step(*model, &cpu);             // AttnLRP with LXT's rules
+std::vector<CommitmentTarget> span;                // the generated tokens to explain
+for (int64_t p = 512; p < 544; ++p) span.push_back({p, std::nullopt});
+CommitmentRelevance r = ExplainCommitments(step, t, model->config().mask_token_id, span);
+// r.prompt: relevance per prompt token. r.mask: the mask sink per position. r.relayed: what
+// passed through each generated token. r.hops: one ledger line per step, leak included.
+```
+
+- **Two modes.** `CommitmentMode::Graph` re-seeds relevance at the step that wrote each
+  committed token. `CommitmentMode::StepLocal` stops it there, which is what every published
+  method does and what the graph is compared with.
+- **The ledger balances exactly.** `value = prompt + mask + leak`, plus what stopped on
+  committed tokens in StepLocal. Each hop reports its own leak, so a pass that loses most of its
+  relevance is visible.
+- **One pass per step.** Every target and every relayed token of a step is seeded together;
+  steps upstream of nothing are skipped. A test on the tiny MDLM checks that explaining three
+  targets at once equals the sum of explaining each alone, so the linearity this relies on holds
+  for the real rules, not only on paper.
+- **Fixed targets.** `CommitmentTarget::token` explains a reference token's logit instead of the
+  one the sampler wrote (DLIG's check).
+- **Any model.** `StepRelevanceModel` is the interface: a forward pass and a relevance pass.
+  `EncoderLMStepModel` wraps an `EncoderLM` (MDLM, ESM-2).
+
+The checks replay the trajectory with its write order frozen: each step writes the same
+positions, each taking the model's most likely token for the changed sequence
+(`ReplayMaskedDiffusion`, `ReplayCommitmentValue`).
+
+- `CommitmentDeletionCheck` deletes prompt tokens (replaces them with the mask token) most
+  relevant first, against random orders.
+- `CommitmentPatchCheck` leaves each committed intermediate token masked in turn and compares
+  the change in the value with the relevance the graph relayed through it.
+- `tools/explain/pulsatrix_diffusion_lrp` runs all of it on an infill: mask a span of a text,
+  refill it by confidence, explain the span, and print the ledger, the top prompt tokens and
+  both checks.
+
+**What the tests show.**
+- On a hand-built linear model, whose relevance is exact, every number of a three-step chain
+  matches the hand computation, leak zero.
+- On a two-layer model trained on a planted copy task (`x0 x1 x2 x3 → y0 = x1, y1 = x1 + 1`),
+  the graph puts the relevance of both outputs on `x1`, more than twice any other prompt token's,
+  for every prompt tried. The output committed first, `y1`, takes up to 2.3 of `y0`'s relevance
+  in the step-local explanation; the graph carries it on to `x1`. Deleting prompt tokens by
+  relevance destroys the value far faster than random deletion. About half of each pass's
+  relevance leaks into the head's and LayerNorms' biases, which the ledger reports.
+
+**Not yet.** The comparison with Integrated Gradients under the same frozen commit order needs
+gradients at every step's input embeddings, chained through a soft relaxation of the committed
+tokens, and moves to DIFF-7 with DLIG.
 
 ## D3: adaLN and adaLN-Zero
 
