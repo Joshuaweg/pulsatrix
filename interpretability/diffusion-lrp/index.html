@@ -1,0 +1,3437 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="ExAI-first C++ deep learning library">
+      
+      
+      
+        <link rel="canonical" href="https://joshuaweg.github.io/pulsatrix/interpretability/diffusion-lrp/">
+      
+      
+        <link rel="prev" href="../lrp/">
+      
+      
+        <link rel="next" href="../model-agnostic/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../../assets/pulsatrix_icon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.7">
+    
+    
+      
+        <title>LRP for Diffusion Models (Design) - Pulsatrix</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.ec1eaa64.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../stylesheets/extra.css">
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="green" data-md-color-accent="teal">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#lrp-for-diffusion-models-design" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../.." title="Pulsatrix" class="md-header__button md-logo" aria-label="Pulsatrix" data-md-component="logo">
+      
+  <img src="../../assets/pulsatrix_icon.png" alt="logo">
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Pulsatrix
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              LRP for Diffusion Models (Design)
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="green" data-md-color-accent="teal"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a4 4 0 0 0-4 4 4 4 0 0 0 4 4 4 4 0 0 0 4-4 4 4 0 0 0-4-4m0 10a6 6 0 0 1-6-6 6 6 0 0 1 6-6 6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="green" data-md-color-accent="teal"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 18c-.89 0-1.74-.2-2.5-.55C11.56 16.5 13 14.42 13 12s-1.44-4.5-3.5-5.45C10.26 6.2 11.11 6 12 6a6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/Joshuaweg/pulsatrix" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    Joshuaweg/pulsatrix
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="Pulsatrix" class="md-nav__button md-logo" aria-label="Pulsatrix" data-md-component="logo">
+      
+  <img src="../../assets/pulsatrix_icon.png" alt="logo">
+
+    </a>
+    Pulsatrix
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/Joshuaweg/pulsatrix" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    Joshuaweg/pulsatrix
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Home
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../getting-started/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Getting Started
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Deep Learning Modules and Layers
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Deep Learning Modules and Layers
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../deep-learning/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Overview
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../deep-learning/fine-tuning/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Parameter-Efficient Fine-Tuning
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../data-pipeline/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Data Loading, Transformation & Validation
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../language-models/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Language Models
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../protein-models/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Protein Language Models
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_7" id="__nav_7_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Interpretability
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_7_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_7">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Interpretability
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Overview
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../lrp/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Layer-wise Relevance Propagation
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    LRP for Diffusion Models (Design)
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    LRP for Diffusion Models (Design)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#the-common-idea-seed-once-unroll-the-sampler" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The common idea: seed once, unroll the sampler
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#d1-trajectory-lrp-for-continuous-samplers" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        D1: trajectory LRP for continuous samplers
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="D1: trajectory LRP for continuous samplers">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#the-split-absolute-value-ratio-not-epsilon" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The split: absolute-value ratio, not epsilon
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#the-seed-a-scalar-of-x_0" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The seed: a scalar of x_0
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#the-budget" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The budget
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#memory" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Memory
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#what-would-show-d1-is-wrong" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        What would show D1 is wrong
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#d2-commitment-graph-lrp-for-masked-diffusion-lms" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        D2: commitment-graph LRP for masked diffusion LMs
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="D2: commitment-graph LRP for masked diffusion LMs">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#within-a-step" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Within a step
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#across-steps" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Across steps
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#the-commit-is-the-last-write" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The commit is "the last write"
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#limits" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Limits
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#what-would-show-d2-is-wrong" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        What would show D2 is wrong
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#d3-adaln-and-adaln-zero" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        D3: adaLN and adaLN-Zero
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="D3: adaLN and adaLN-Zero">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#what-would-show-d3-is-wrong" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        What would show D3 is wrong
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#checks-that-need-no-reference" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Checks that need no reference
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#models" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Models
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../model-agnostic/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Model-Agnostic Explainers
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../deep-learning-approaches/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Gradient-Based Explainers
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../performance/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Performance
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../reinforcement-learning/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Reinforcement Learning
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_9" >
+        
+          
+          <label class="md-nav__link" for="__nav_9" id="__nav_9_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Mechanistic Interpretability
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_9_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_9">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Mechanistic Interpretability
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../mechanistic-interpretability/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Overview
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../mechanistic-interpretability/probes-and-concepts/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Probes and Concepts
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../mechanistic-interpretability/representations/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Analyzing Representations
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../mechanistic-interpretability/topology/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Topology of Representations
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../mechanistic-interpretability/featurizers/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Finding Features
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../mechanistic-interpretability/evaluating-features/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Evaluating Features
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../mechanistic-interpretability/steering/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Steering
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../mechanistic-interpretability/model-diffing/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Model Diffing
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../mechanistic-interpretability/parameter-decomposition/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Parameter Decomposition
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../mechanistic-interpretability/attribution-graphs/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Attribution Graphs
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../mechanistic-interpretability/gflownets/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    GFlowNets
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../neuro-symbolic/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Neuro-Symbolic Reasoning
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../evolutionary-computation/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Evolutionary Computation
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../hyperparameter-optimization/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Hyperparameter Optimization
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../agents/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    LLM Agents
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_14" >
+        
+          
+          <label class="md-nav__link" for="__nav_14" id="__nav_14_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Visualization
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_14_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_14">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Visualization
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../visualization/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Overview
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../visualization/notebooks/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Notebooks and Reports
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../visualization/svg/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    SVG Figures
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../visualization/html/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Interactive HTML
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../visualization/documents/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    JSON Documents
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../visualization/attribution-graphs/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Attribution Graph Viewers
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../visualization/desktop/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Desktop Windows (ImGui)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../system-monitoring/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    System Monitoring
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../gpu-profiling/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    GPU Profiling (HIP)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../gpu-ci/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    GPU CI
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../benchmarks/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Benchmarks
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../customization/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Customization
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_20" >
+        
+          
+          <label class="md-nav__link" for="__nav_20" id="__nav_20_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Recipes
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_20_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_20">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Recipes
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../recipes/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Overview
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../recipes/deep-learning/xor_training/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    XOR Training
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../recipes/deep-learning/sequence_models_rnn_lstm_gru/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    RNN vs. LSTM vs. GRU
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../recipes/deep-learning/residual_and_norm_layers/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Residual and Normalization Layers
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../recipes/deep-learning/tagger_finetune/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Full Fine-Tuning
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../recipes/deep-learning/what_did_the_finetune_change/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    What Did the Fine-Tune Change?
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../recipes/deep-learning/born_again_networks/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Is the Student Born Better?
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../recipes/deep-learning/half_the_layers/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Half the Layers
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../recipes/data-pipeline/csv_dataloader_training/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    CSV + DataLoader Training
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../recipes/interpretability/mnist_lrp/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    LRP on MNIST
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../recipes/interpretability/imagenet_lrp/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    LRP on ImageNet Models
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../recipes/interpretability/saliency_and_integrated_gradients/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Saliency and Integrated Gradients
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../recipes/interpretability/grad_cam_walkthrough/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Grad-CAM
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../recipes/interpretability/kernel_shap_basics/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    KernelSHAP
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../recipes/interpretability/lime_basics/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    LIME
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../recipes/interpretability/can_i_trust_this_explanation/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Can I Trust This Explanation?
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../recipes/interpretability/how_sure_is_the_model/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    How Sure Is the Model?
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../recipes/rl/dqn_cartpole/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    DQN on CartPole
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../recipes/rl/gae_and_ppo_clipped/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    GAE and PPO Clipping
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../recipes/mechanistic-interpretability/sparse_autoencoder_probe/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Sparse Autoencoder + Probe
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../recipes/mechanistic-interpretability/gflownet_hypergrid/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    GFlowNet on HyperGrid
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../recipes/mechanistic-interpretability/is_the_shape_real/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Is the Shape Real?
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../recipes/neuro-symbolic/datalog_lrp_bridge/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Datalog LRP Bridge
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../recipes/protein-models/protein_tem1/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    TEM-1 End to End
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../recipes/visualization/notebook_report/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Notebook Report
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../recipes/visualization/training_dashboard/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Training Dashboard
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_21" >
+        
+          
+          <label class="md-nav__link" for="__nav_21" id="__nav_21_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Roadmap
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_21_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_21">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Roadmap
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../roadmap/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Overview
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../roadmap/research-notes/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Research Notes
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../roadmap/protein-language-models/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Protein Language Models
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../api/index.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    API Reference
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#the-common-idea-seed-once-unroll-the-sampler" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The common idea: seed once, unroll the sampler
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#d1-trajectory-lrp-for-continuous-samplers" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        D1: trajectory LRP for continuous samplers
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="D1: trajectory LRP for continuous samplers">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#the-split-absolute-value-ratio-not-epsilon" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The split: absolute-value ratio, not epsilon
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#the-seed-a-scalar-of-x_0" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The seed: a scalar of x_0
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#the-budget" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The budget
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#memory" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Memory
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#what-would-show-d1-is-wrong" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        What would show D1 is wrong
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#d2-commitment-graph-lrp-for-masked-diffusion-lms" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        D2: commitment-graph LRP for masked diffusion LMs
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="D2: commitment-graph LRP for masked diffusion LMs">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#within-a-step" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Within a step
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#across-steps" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Across steps
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#the-commit-is-the-last-write" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The commit is "the last write"
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#limits" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Limits
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#what-would-show-d2-is-wrong" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        What would show D2 is wrong
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#d3-adaln-and-adaln-zero" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        D3: adaLN and adaLN-Zero
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="D3: adaLN and adaLN-Zero">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#what-would-show-d3-is-wrong" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        What would show D3 is wrong
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#checks-that-need-no-reference" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Checks that need no reference
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#models" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Models
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+  
+  
+
+
+<h1 id="lrp-for-diffusion-models-design">LRP for Diffusion Models (Design)<a class="headerlink" href="#lrp-for-diffusion-models-design" title="Permanent link">&para;</a></h1>
+<p><strong>Status: design only.</strong> No code implements this page yet. The work is tracked as the
+<a href="../../roadmap/#diff-diffusion-models-and-their-explanations">DIFF epic</a>, and the evidence
+is in the <a href="../../roadmap/research-notes/#diff-diffusion-models">research notes</a>.</p>
+<p>A diffusion model doesn't produce its output in one forward pass. It starts from noise (or from a
+fully masked sequence) and runs the same network many times, each step refining the last. Every
+explanation method published up to 2026-10 explains <strong>one</strong> of those steps: DAAM sums attention
+maps, DifFRACT builds attribution graphs inside one Flux step, and DLIG runs Integrated Gradients
+at one partially unmasked state. None follows relevance from the final output back through the
+whole sampler. No LRP for diffusion has been published, and the AttnLRP author confirmed in
+2025-08 that he hadn't tried it (LXT issue #36).</p>
+<p>This page sets out three rules that do follow it:</p>
+<ul>
+<li><strong>D1</strong> for continuous samplers (DDPM, DDIM)</li>
+<li><strong>D2</strong> for masked diffusion language models (MDLM, LLaDA-style, DPLM)</li>
+<li><strong>D3</strong> for the adaLN conditioning that diffusion transformers use</li>
+</ul>
+<p>There are no reference numbers to match. Each rule therefore comes with the result that would
+show it's wrong, and with a set of checks that don't need a reference.</p>
+<h2 id="the-common-idea-seed-once-unroll-the-sampler">The common idea: seed once, unroll the sampler<a class="headerlink" href="#the-common-idea-seed-once-unroll-the-sampler" title="Permanent link">&para;</a></h2>
+<p>The earlier objection was that diffusion "has no single conserved relevance seed per timestep".
+That's true for one step taken alone. The way around it is to seed relevance <strong>once</strong>, on the
+final sample, and treat the whole sampler as one deep network. A denoising step reads the
+previous state and adds a correction, so it is a residual block. The rules already used for
+residual connections, attention and recurrences then apply step by step.</p>
+<p>What doesn't fit the network picture is collected into named <strong>sinks</strong> instead of being
+dropped: injected noise, the timestep embedding, mask tokens, biases and the epsilon
+stabilizer. The sinks and the input relevance together add up to the seed. The ledger of sinks
+is part of every explanation: it shows how much of the output the explanation could trace and
+where the rest went.</p>
+<h2 id="d1-trajectory-lrp-for-continuous-samplers">D1: trajectory LRP for continuous samplers<a class="headerlink" href="#d1-trajectory-lrp-for-continuous-samplers" title="Permanent link">&para;</a></h2>
+<p>A DDPM step computes</p>
+<div class="highlight"><pre><span></span><code>x_{t-1} = c1_t · x_t  −  c2_t · ε_θ(x_t, t, c)  +  σ_t · z_t
+          (skip)         (network)                 (injected noise)
+</code></pre></div>
+<p>DDIM is the same step with <code>σ_t = 0</code>. The relevance arriving at <code>x_{t-1}</code> is split across the
+three terms. The skip share goes straight to <code>x_t</code>. The network share runs through <code>ε_θ</code> with its
+ordinary layer rules and lands on <code>x_t</code>, on the conditioning <code>c</code> and on the timestep embedding
+(a constant, so a sink). The noise share is the <strong>injected-noise relevance</strong> of step <code>t</code>: how much
+of the explained output that step's randomness decided. It is exactly zero under DDIM.</p>
+<h3 id="the-split-absolute-value-ratio-not-epsilon">The split: absolute-value ratio, not epsilon<a class="headerlink" href="#the-split-absolute-value-ratio-not-epsilon" title="Permanent link">&para;</a></h3>
+<p>In early steps the skip and network terms are large and nearly cancel, and early steps are where
+class and layout get decided. When terms cancel, the epsilon rule's shares <code>R · h_k / Σh</code> grow
+without bound. The one published signed split of this kind (Arras et al. 2019, LSTMs) needed
+ε = 0.2 to be stable and then scored near random. Rewriting the step in terms of the predicted
+clean sample <code>x̂_0</code> doesn't help: the cancellation just moves inside <code>x̂_0</code>.</p>
+<p>D1 therefore uses the absolute-value ratio split from LRP for ResNets (Otsuki et al., ECCV 2024):</p>
+<div class="highlight"><pre><span></span><code>R_k = R · |h_k| / (Σ_j |h_j| + ε)        h_1 = c1·x_t,  h_2 = −c2·ε_θ,  h_3 = σ·z
+</code></pre></div>
+<p>It conserves relevance exactly, and every share is bounded however much the terms cancel. The
+small ε only handles 0/0. It loses sign, so the signed fractions <code>h_k / Σh</code> are logged next to
+it. The signed epsilon rule, with ε scaled to <code>Σ|h_k|</code>, stays available as an option, and it
+reports the relevance it absorbs at each step.</p>
+<p>The weakness is that the split follows magnitude, not contribution. Two large cancelling terms
+each get about half, so the network's share in an early step says how big the terms were, not
+what the network decided. The checks below are there to catch this.</p>
+<h3 id="the-seed-a-scalar-of-x_0">The seed: a scalar of x_0<a class="headerlink" href="#the-seed-a-scalar-of-x_0" title="Permanent link">&para;</a></h3>
+<p>Seed a scalar computed from the final sample, not the raw noise prediction. The one reported
+attempt at gradient × input on DDPM (LXT issue #36) seeded the noise prediction. Its relevance
+sign followed the sign of the predicted noise, and its maps changed from run to run. Three
+seeds are offered:</p>
+<ul>
+<li>a region of <code>x_0</code></li>
+<li>a reconstruction error <code>‖x_0 − x_ref‖²</code> rooted at a reference, as in LRP for autoencoders
+  (Kobayashi et al. 2023), which conserves exactly at the seed</li>
+<li>a downstream classifier's logit on <code>x_0</code>, whose own LRP supplies the relevance</li>
+</ul>
+<h3 id="the-budget">The budget<a class="headerlink" href="#the-budget" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code>R(seed) = R(x_T) + Σ_t [ R_noise,t + R_time,t + R_cond,t + R_bias,t + R_ε,t ] + R_readout-bias
+</code></pre></div>
+<p>Bias absorption and epsilon absorption are kept apart. AttnLRP warns that rules which push bias
+relevance back into the inputs to force conservation become unstable in ways that are hard to
+diagnose. Three more cases get explicit handling:</p>
+<ul>
+<li><strong>Classifier-free guidance</strong> <code>(1+w)·ε(c) − w·ε(∅)</code> is a linear layer over two forward passes.
+  Both passes are propagated.</li>
+<li><strong>Fixed positional embeddings</strong> get their own sink.</li>
+<li><strong>Latent diffusion</strong> adds the VAE decoder as a final block with its own rules.</li>
+</ul>
+<h3 id="memory">Memory<a class="headerlink" href="#memory" title="Permanent link">&para;</a></h3>
+<p>Only the trajectory is stored: each <code>x_t</code> and each <code>z_t</code> (or the exact RNG state). The backward
+sweep re-runs step <code>t</code>'s forward pass and then its relevance pass, so memory stays at one step.
+The forward pass must be deterministic for this to work. If it isn't, the recomputed pass won't
+match the one being explained.</p>
+<h3 id="what-would-show-d1-is-wrong">What would show D1 is wrong<a class="headerlink" href="#what-would-show-d1-is-wrong" title="Permanent link">&para;</a></h3>
+<ul>
+<li>Relevance on the conditioning doesn't concentrate in early steps. Theory ("critical windows",
+  Li &amp; Chen 2024) and DifFRACT's measurements (the text stream's share falls from 89.9% at the
+  first Flux step to 5.4% at the last) both predict that it should.</li>
+<li>Explanations vary across sampler seeds as much as DAAM's authors feared when they called
+  gradient attribution through the sampler intractable.</li>
+</ul>
+<h2 id="d2-commitment-graph-lrp-for-masked-diffusion-lms">D2: commitment-graph LRP for masked diffusion LMs<a class="headerlink" href="#d2-commitment-graph-lrp-for-masked-diffusion-lms" title="Permanent link">&para;</a></h2>
+<p>A masked diffusion LM starts from a fully masked sequence. At each step one bidirectional
+transformer pass predicts every masked position, and the sampler commits some of them. In the
+standard carry-over samplers (MDLM, LLaDA), committed tokens are never revised, and no hidden
+state passes between steps. <strong>The committed tokens are the only channel from one step to the
+next</strong>, so chaining relevance through them misses nothing.</p>
+<h3 id="within-a-step">Within a step<a class="headerlink" href="#within-a-step" title="Permanent link">&para;</a></h3>
+<p>Seed the logit of a token committed at step <code>k</code> and propagate with the AttnLRP rules. The
+bidirectional mask changes where relevance can flow, not the rules. Relevance lands on three
+kinds of input: prompt tokens, tokens committed at earlier steps, and <code>[MASK]</code> tokens.</p>
+<h3 id="across-steps">Across steps<a class="headerlink" href="#across-steps" title="Permanent link">&para;</a></h3>
+<p>Relevance that reaches a token committed at an earlier step <code>j</code> is not an endpoint. It is
+re-seeded at step <code>j</code>, onto the logit that produced that token. The steps are walked in reverse.
+Each step seeds every token committed there, with the relevance accumulated for it so far, in
+<strong>one</strong> relevance pass: with the forward activations fixed, every rule in use (epsilon,
+identity, uniform, softmax) is linear in the incoming relevance. Steps that commit nothing need
+no pass. What reaches the prompt is the explanation. Relevance on <code>[MASK]</code> tokens has no earlier
+step to go to, so it is the mask sink of that step.</p>
+<p>Tokens committed in the same step can't attribute to each other, so the graph is a DAG layered by
+step. The top seed is the summed log-probability of the tokens being explained, as in DLIG and
+the attribution-contract paper. DLIG found that a fixed reference string correlated with infill
+quality far better than the model's own tokens (r = 0.197 against 0.013), so a fixed-target
+seed is offered as a check.</p>
+<h3 id="the-commit-is-the-last-write">The commit is "the last write"<a class="headerlink" href="#the-commit-is-the-last-write" title="Permanent link">&para;</a></h3>
+<p>The core assumption is that relevance passes unchanged through the discrete commit (an argmax,
+or a sample). The attribution-contract paper supports it: for a masked diffusion model whose
+unmasking order is replayed rather than recomputed, Integrated Gradients' completeness residual
+falls from 97% at 1 step to 18% at 256 steps.</p>
+<p>Not every sampler commits for good. DPLM's default sampler re-masks the lowest-confidence
+positions at every step, including ones it has already decoded, and every other position takes
+the new prediction. ReMDM also re-masks. So the re-seed point is defined as <strong>the last step that
+wrote the token at that position</strong>. Under a carry-over sampler that's the commit step. Under a
+remasking sampler, a revoked position holds <code>[MASK]</code> and feeds the mask sink until it's written
+again.</p>
+<h3 id="limits">Limits<a class="headerlink" href="#limits" title="Permanent link">&para;</a></h3>
+<ul>
+<li><strong>Which token, not when.</strong> Which positions get committed at a step is decided by a top-k over
+  every masked position, so relevance from the committed logit explains which token was chosen,
+  not why it was committed then. The model often settles on an answer well before committing it.
+  Commit times therefore date decisions late.</li>
+<li><strong>Greedy decoding.</strong> Sampling can commit a low-probability token, so explanation runs use greedy
+  decoding.</li>
+<li><strong>Leakage compounds.</strong> Every hop leaks a little, so the absorbed relevance is reported per hop.</li>
+<li><strong>The mask sink is large and moves.</strong> Mask tokens make up a third of attention-sink tokens in
+  LLaDA and Dream, and sinks move between steps. Results are reported with and without sink
+  positions.</li>
+<li><strong>DPLM zeroes mask embeddings.</strong> ESM-style token dropout zeroes the <code>&lt;mask&gt;</code> embedding at
+  inference, so input-times-relevance rules give exactly zero relevance there. DPLM's mask sink
+  is measured at the first residual-stream input instead.</li>
+<li><strong>Model-specific bookkeeping.</strong> Dream predicts position <code>j</code> from hidden state <code>j−1</code>, so its
+  seed sits one position earlier. LLaDA's classifier-free guidance combines two passes linearly,
+  like D1's.</li>
+</ul>
+<h3 id="what-would-show-d2-is-wrong">What would show D2 is wrong<a class="headerlink" href="#what-would-show-d2-is-wrong" title="Permanent link">&para;</a></h3>
+<ul>
+<li>Its prompt relevance disagrees systematically with Integrated Gradients from prompt to output
+  under the same frozen commit order.</li>
+<li>Deleting the most relevant prompt tokens (with the trajectory replayed) does no better than
+  deleting random ones.</li>
+<li>Patching the highest-relevance tokens moves later commits no more than patching low-relevance
+  ones. This is a causal check in the style of TimeROME-DLM.</li>
+</ul>
+<h2 id="d3-adaln-and-adaln-zero">D3: adaLN and adaLN-Zero<a class="headerlink" href="#d3-adaln-and-adaln-zero" title="Permanent link">&para;</a></h2>
+<p>A diffusion transformer block with adaLN-Zero computes</p>
+<div class="highlight"><pre><span></span><code>y = LN(x) · (1 + γ(c)) + β(c)
+x_out = x + α(c) · Block(y)
+</code></pre></div>
+<p>The modulation vectors <code>γ</code>, <code>β</code> and <code>α</code> come from a small MLP on the conditioning (the timestep,
+the class or the prompt). In a DiT the conditioning enters <strong>only</strong> here. So whether these
+products give relevance to the conditioning decides whether the explanation can say anything
+about the conditioning at all.</p>
+<p>AttnLRP's uniform rule splits a product half to each factor. It assumes the product is zero when
+both factors are, and <code>LN(x)·(1+γ)</code> isn't such a product. D3 therefore writes the modulation as a
+three-term sum, <code>LN(x) + LN(x)·γ + β</code>, and routes it with the same absolute-ratio split as D1.
+A switch then picks how the product term is treated:</p>
+<table>
+<thead>
+<tr>
+<th>Component</th>
+<th>Split mode (explain the conditioning)</th>
+<th>Detach mode (explain the input only)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>LN(x)</code> term</td>
+<td>to <code>x</code> through the LayerNorm identity rule</td>
+<td>the same</td>
+</tr>
+<tr>
+<td><code>LN(x)·γ</code> term</td>
+<td>half to <code>LN(x)</code>, half to <code>γ</code> → MLP → conditioning</td>
+<td>all to <code>LN(x)</code></td>
+</tr>
+<tr>
+<td><code>β</code> term</td>
+<td>to <code>β</code> → MLP → conditioning</td>
+<td>bias sink</td>
+</tr>
+<tr>
+<td><code>x + α·Block</code></td>
+<td>ratio split at the residual; <code>α·Block</code> split half and half</td>
+<td>ratio split; <code>α</code> held constant</td>
+</tr>
+<tr>
+<td>Sinks reported</td>
+<td>timestep, class or prompt</td>
+<td>bias only</td>
+</tr>
+</tbody>
+</table>
+<p>The precedents disagree on which mode is better. MambaLRP found that splitting a gate beats
+detaching it (1.978 against 1.577 on SST-2). Arras et al. found that, for LSTM gates, giving
+the gate nothing beats any split, which scored near random. adaLN differs from both, because its
+modulating factor is side information rather than the input being explained. Both modes are
+therefore implemented, and a planted test decides the default.</p>
+<p>Only some targets need D3. MDLM-owt was trained with time conditioning switched off, so its
+modulation vectors are constants. They fold exactly into the LayerNorm and projection weights
+at load time, and the folded model needs no D3. SEDD-small (which really uses its noise level)
+and image DiTs do need it.</p>
+<h3 id="what-would-show-d3-is-wrong">What would show D3 is wrong<a class="headerlink" href="#what-would-show-d3-is-wrong" title="Permanent link">&para;</a></h3>
+<p>On a class-conditional DiT trained so that the class controls only one region of the image,
+split mode fails to send that region's relevance to the class embedding, or it scores near random
+on perturbation tests. Detach mode then becomes the default.</p>
+<h2 id="checks-that-need-no-reference">Checks that need no reference<a class="headerlink" href="#checks-that-need-no-reference" title="Permanent link">&para;</a></h2>
+<p>Each check is cheaper than the next. A rule must pass all of them before any result is reported.</p>
+<table>
+<thead>
+<tr>
+<th>Check</th>
+<th>Expected</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>DDIM (<code>σ = 0</code>)</td>
+<td>The noise sink is exactly zero</td>
+</tr>
+<tr>
+<td>One step (<code>T = 1</code>)</td>
+<td>Reduces to ordinary single-network LRP</td>
+</tr>
+<tr>
+<td>fp64, biases zeroed, every factor detached</td>
+<td>Equals autograd gradient × input</td>
+</tr>
+<tr>
+<td>Uniform rule in fp64 without biases</td>
+<td>Each factor gets half of gradient × input</td>
+</tr>
+<tr>
+<td>MDLM-owt, detach mode</td>
+<td>Matches LRP on the folded model exactly</td>
+</tr>
+<tr>
+<td>Budget</td>
+<td>Input relevance plus every sink equals the seed, to fp32 tolerance</td>
+</tr>
+<tr>
+<td>Randomize only the denoiser</td>
+<td>The network's share changes. The skip share alone can survive, so a map that survives is not a pass</td>
+</tr>
+<tr>
+<td>Integrated Gradients through the sampler</td>
+<td>Totals agree with the budget (IG is complete)</td>
+</tr>
+<tr>
+<td>Planted tasks</td>
+<td>A copy task for D2, a class-controls-one-region task for D1 and D3: relevance lands where the task put it</td>
+</tr>
+<tr>
+<td>Faithfulness</td>
+<td>Deletion and insertion beat random, gradient × input and attention baselines</td>
+</tr>
+</tbody>
+</table>
+<h2 id="models">Models<a class="headerlink" href="#models" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>Model</th>
+<th>Size</th>
+<th>Used for</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>kuleshov-group/mdlm-owt</code></td>
+<td>170M, Apache-2.0</td>
+<td>D2, first target</td>
+<td>Carry-over sampler, no time input, adaLN folds away</td>
+</tr>
+<tr>
+<td><code>dllm-hub/Qwen3-0.6B-diffusion-mdlm-v0.1</code></td>
+<td>0.75B, Apache-2.0</td>
+<td>D2</td>
+<td>Stock Qwen3 with bidirectional attention</td>
+</tr>
+<tr>
+<td><code>airkingbd/dplm_150m</code>, <code>dplm_650m</code></td>
+<td>149M, 652M</td>
+<td>D2 under remasking</td>
+<td>Same weight names as ESM-2; <code>.bin</code> files go through <code>tools/convert/pickle_to_safetensors.py</code>; no license tag on the cards</td>
+</tr>
+<tr>
+<td><code>louaaron/sedd-small</code></td>
+<td>170M</td>
+<td>D3</td>
+<td>Real noise-level conditioning</td>
+</tr>
+<tr>
+<td><code>diffusionfamily/diffugpt-m</code></td>
+<td>355M</td>
+<td>D2 against DLIG</td>
+<td>The only model with published DLIG numbers</td>
+</tr>
+<tr>
+<td>A small class-conditional DDPM or DiT trained here</td>
+<td>small</td>
+<td>D1, D3</td>
+<td>A planted task gives the ground truth no public checkpoint has</td>
+</tr>
+</tbody>
+</table>
+<p>LLaDA-8B and Dream-7B need over 30 GB for fp32 weights alone, so they're out of reach locally.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.instant", "navigation.tracking", "navigation.top", "content.code.copy"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.d7400e89.min.js"></script>
+      
+    
+  </body>
+</html>
