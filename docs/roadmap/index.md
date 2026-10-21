@@ -156,6 +156,7 @@ machine, and explain it with the tools pulsatrix already has. Items on that path
 | 8. Kitchen sink | [KS](#ks-kitchen-sink), [FND](#fnd-foundations) |
 | 9. HIP efficiency for training and tuning | [HIP](#hip-training-efficiency-on-amd-gpus) |
 | 10. Protein language models | [PLM](#plm-protein-language-models) |
+| 11. Diffusion models and diffusion language models, with their own LRP | [DIFF](#diff-diffusion-models-and-their-explanations) |
 
 ## Milestones
 
@@ -270,10 +271,24 @@ Its own epic, started 2026-10-07 after VIZ-4. **Complete** (2026-10-08, PRs
 - PLM-7 to PLM-9: masked-LM training and fine-tuning heads, probes and SAE features, and an
   end-to-end tutorial
 
+### DIFF "Diffusion"
+
+Its own epic, started 2026-10-20. The research and the rule designs are in DIFF-1; the
+[design page](../interpretability/diffusion-lrp.md) sets out the rules. The commitment-graph rule
+for diffusion language models goes first, because the evidence supports it best and MDLM-owt is
+a cheap, clean target.
+
+- DIFF-1: research, and the three rule designs
+- DIFF-2, DIFF-3: a masked-diffusion sampler and MDLM-owt, then commitment-graph LRP
+- DIFF-4: more diffusion LMs (Qwen3-0.6B diffusion, DPLM, DiffuGPT)
+- DIFF-5, DIFF-6: trajectory LRP for continuous samplers, then adaLN and diffusion transformers
+- DIFF-7 to DIFF-12: the explainers that check the LRP rules (lenses, DLIG, causal tracing,
+  critical windows, attention maps, SAEs)
+
 ### Backlog, not yet scheduled
 
 These P2 and P3 items wait until a milestone needs them or someone asks: TRN-12, TRN-13, IO-10,
-IO-11, TDA-13 to TDA-19, KD-3 and KD-4 (**done**), FEAT-8 (**done**), ARCH-4 to ARCH-10, VIZ-7, HIP-10,
+IO-11, TDA-13 to TDA-19, KD-3 and KD-4 (**done**), FEAT-8 (**done**), ARCH-4 to ARCH-8, ARCH-10, VIZ-7, HIP-10,
 AGT-6, AGT-7, AGT-9, NB-4, NB-5, KS-6 and KS-7.
 
 ### v2.0
@@ -1541,7 +1556,7 @@ These are ranked by how well they fit an explainability-first library.
 | ARCH-6 | Mamba-2 / SSD | Extends the existing Mamba and MambaLRP | — | P2 |
 | ARCH-7 | xLSTM | Extends the recurrent family | — | P2–P3 |
 | ARCH-8 | Kolmogorov–Arnold networks | Interpretable by construction, but they lose to MLPs outside symbolic tasks | — | P2 |
-| ARCH-9 | Diffusion transformers (adaLN) | The timestep embedding and noise schedules already exist | — | P2 |
+| ARCH-9 | Diffusion transformers (adaLN) | Moved to [DIFF-6](#diff-diffusion-models-and-their-explanations), with an LRP rule for adaLN | — | — |
 | ARCH-10 | Gated DeltaNet and Titans, Hopfield layers, JEPA, self-explaining neural networks, hypernetworks, neural ODEs and liquid networks | Lower fit or poor match with hand-written backward passes | — | P3 |
 
 ## VIZ: Visualization pack
@@ -2281,6 +2296,38 @@ sources are in [Protein language models: research and plan](protein-language-mod
 Later, if wanted: ESM C and AMPLIFY weight mappings, SaProt's structure tokens, autoregressive
 pLMs (ProGen2, through CausalLM), MSA-conditioned models and ESMFold.
 
+## DIFF: Diffusion models and their explanations
+
+A diffusion model builds its output over many steps, running the same network each time. Image
+models refine noise; diffusion language models (MDLM, LLaDA, Dream, DPLM) start from a fully
+masked sequence and commit tokens a few at a time, in any order. pulsatrix has had DDPM building
+blocks since Phase 6 but couldn't explain them: LRP was deferred because one step on its own
+has no conserved seed.
+
+The research for DIFF-1 (2026-10-20) found that no LRP for diffusion has been published. Every
+published explainer works inside one step. The epic therefore engineers its own: seed once on
+the final output and unroll the sampler, so that each step is a residual block and whatever the
+rules can't trace lands in named sinks (noise, timestep, mask, bias, epsilon). With no reference
+numbers to match, every rule ships with checks that don't need one: exactness limits, budgets,
+planted tasks, causal patching and faithfulness. The rules are on the
+[design page](../interpretability/diffusion-lrp.md); the evidence is in the
+[research notes](research-notes.md#diff-diffusion-models).
+
+| ID | Item | Why | Depends on | P | Effort | Status |
+|---|---|---|---|---|---|---|
+| DIFF-1 | Research on diffusion interpretability and diffusion LMs; the three rule designs (D1 trajectory, D2 commitment graph, D3 adaLN) with their budgets, falsifiers and checks | No published LRP for diffusion exists to adopt | — | P1 | S | Done, [#193](https://github.com/Joshuaweg/pulsatrix/pull/193) |
+| DIFF-2 | `MaskedDiffusionSampler`: carry-over and remasking samplers that record the whole trajectory (sequence and writes at each step), greedy for explanation. MDLM-owt loading, with its constant adaLN folded into the weights at load time, and golden parity with its remote code | The first real diffusion LM, and the trajectory D2 explains | — | P1 | M | |
+| DIFF-3 | Commitment-graph LRP (D2): AttnLRP inside each step, re-seeding at the last step that wrote each token, one relevance pass per step, the sink ledger. Checked against IG under a frozen commit order, prompt deletion, step-resolved patching and a planted copy task | The design the evidence supports best, and the ledger D1 reuses | DIFF-2 | P1 | M | |
+| DIFF-4 | More diffusion LMs: Qwen3-0.6B diffusion (the Qwen loader with a bidirectional mask), DPLM-150M/650M (the ESM-2 loader after `pickle_to_safetensors.py`, under DPLM's remasking sampler), DiffuGPT-M | D2 under remasking, at a larger scale, and against DLIG's published numbers | DIFF-3 | P2 | M | |
+| DIFF-5 | Trajectory LRP (D1): DDIM steps and a cosine schedule on `NoiseSchedule`, the absolute-ratio split with signed fractions logged, scalar seeds on x_0, the budget, recomputing each step from the stored trajectory. A planted class-conditional DDPM | Explains a continuous sampler end to end | DIFF-3 | P1 | M | |
+| DIFF-6 | `AdaLayerNormModule` with adaLN-Zero and a DiT block, with D3's split and detach modes, conservation tests and a hand-applied reference. A planted class-conditional DiT settles the default; SEDD-small runs on it | Conditioning enters a DiT only through adaLN. Replaces ARCH-9 | DIFF-5 | P2 | M | |
+| DIFF-7 | Lenses across steps: x̂_0 and logit lens at every step, and the commit-order trajectory, exported as versioned JSON for the VIZ pack | Shows when a decision is made, not just when it's committed | DIFF-2 | P1 | S | |
+| DIFF-8 | DLIG (Diffusion Layer Integrated Gradients) on top of `IntegratedGradients`, with its layer × step grid; replicated on DiffuGPT-M | The published dLLM attribution baseline | DIFF-2 | P1 | S | |
+| DIFF-9 | Step-resolved causal tracing (TimeROME-style temporal indirect effect) | The interventional ground truth D2 and D1 must predict | DIFF-2 | P2 | M | |
+| DIFF-10 | Critical-window analysis: renoise from step t and resample, and measure when class and layout become fixed | Predicts where D1's conditioning relevance must peak | DIFF-5 | P2 | S | |
+| DIFF-11 | Attention maps per step: DAAM-style sums for image models, attention to unmasked context for diffusion LMs | The cheapest baseline | DIFF-2 | P2 | S | |
+| DIFF-12 | SAEs on diffusion-LM residual streams, separate for masked and unmasked positions (DLM-Scope), with concept-level aggregation of D2 relevance | Concept-level explanations; costly, and DLM-Scope's own models are out of reach here | DIFF-3, FEAT-1 | P3 | M | |
+
 ## Open questions
 
 These came up in the research and aren't settled yet.
@@ -2300,6 +2347,10 @@ These came up in the research and aren't settled yet.
   not weights. The licenses of PHAT, Dionysus, Hera and Eirene weren't checked; none are needed
   for the plan.
 - **Mamba-2 and xLSTM.** No published LRP rules found.
+- **Diffusion LRP.** None is published, so DIFF's rules have no reference to match. Two
+  questions only experiments settle: whether an absolute-ratio split says anything useful about
+  early, cancelling sampler steps (D1), and whether splitting or detaching side-information
+  gates such as adaLN is more faithful, where MambaLRP and Arras et al. disagree (D3).
 - **MCP security statistics.** The figures cited come from secondary reports, not primary scans.
 - **xeus-cpp.** How version 0.10 loads prebuilt libraries, and whether prebuilt HIP kernels can
   be called from notebook cells, needs a hands-on test.
