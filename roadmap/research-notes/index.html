@@ -608,6 +608,34 @@
   
   
     <li class="md-nav__item">
+      <a href="../../interpretability/diffusion-lrp/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    LRP for Diffusion Models (Design)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../../interpretability/model-agnostic/" class="md-nav__link">
         
   
@@ -2708,6 +2736,17 @@
   
 </li>
       
+        <li class="md-nav__item">
+  <a href="#diff-diffusion-models" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        DIFF: Diffusion models
+      
+    </span>
+  </a>
+  
+</li>
+      
     </ul>
   
 </nav>
@@ -3008,6 +3047,17 @@
     <span class="md-ellipsis">
       
         PLM: Protein language models
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#diff-diffusion-models" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        DIFF: Diffusion models
       
     </span>
   </a>
@@ -3381,7 +3431,7 @@ below record the reasoning they were built on.</p>
 <li><strong>ARCH-6.</strong> Dao and Gu, arXiv 2405.21060. No SSD LRP reference implementation was found.</li>
 <li><strong>ARCH-7.</strong> Beck et al., NeurIPS 2024, arXiv 2405.04517.</li>
 <li><strong>ARCH-8.</strong> KAN: arXiv 2404.19756. In "KAN or MLP: A Fairer Comparison", arXiv 2407.16674, KANs lose outside symbolic formulas.</li>
-<li><strong>ARCH-9.</strong> Peebles and Xie, arXiv 2212.09748.</li>
+<li><strong>ARCH-9.</strong> Peebles and Xie, arXiv 2212.09748. Moved to DIFF-6; see <a href="#diff-diffusion-models">DIFF</a>.</li>
 <li><strong>ARCH-10.</strong></li>
 <li>Gated DeltaNet: arXiv 2412.06464.</li>
 <li>Titans: arXiv 2501.00663.</li>
@@ -3599,6 +3649,44 @@ below record the reasoning they were built on.</p>
 <li><strong>PLM-7.</strong> ESM-2 sampled UniRef50 clusters uniformly, with a random UniRef90 member per cluster; 15% of tokens are masked 80/10/10 [V] (NVIDIA BioNeMo docs). UniRef-only masked-LM training overfits, which metagenomic data mitigates (Cheng et al., ICML 2024 workshop) [V]. Yearly UniRef snapshots show no data saturation yet (arXiv 2507.22210) [V].</li>
 <li><strong>Result (PLM-7):</strong> a training step matches transformers. BioNeMo publishes no 8M curve, only 650M and 3B validation perplexity (7.00 and 6.00, on a 2024 UniRef50 sample) [V]. On our UniRef50 sample, the published checkpoints score 10.89 (8M) and 5.96 (650M) [V].</li>
 <li><strong>PLM-8.</strong> InterPLM (Simon and Zou, <em>Nature Methods</em> 2025): SAEs with 10,420 latents on ESM-2-8M (all 6 layers) and 650M, matched to Swiss-Prot concepts. Neurons are much less interpretable than SAE features [V].</li>
+</ul>
+<h2 id="diff-diffusion-models">DIFF: Diffusion models<a class="headerlink" href="#diff-diffusion-models" title="Permanent link">&para;</a></h2>
+<p>The rules these notes support are on the <a href="../../interpretability/diffusion-lrp/">design page</a>.
+Researched 2026-10-20.</p>
+<ul>
+<li><strong>DIFF-1, novelty.</strong> No published LRP, DTD, DeepLIFT or conservation-based attribution was found for DDPM/DDIM samplers, U-Nets, DiT, adaLN/FiLM, flow matching or diffusion LMs. The search covered about eight targeted web and arXiv queries and the zennit, zennit-crp and LXT issue trackers. The AttnLRP author, replying in LXT issue #36 (2025-08-13): "I haven't yet applied LRP to a diffusion model" [V]. Captum's issues, GitHub Discussions and workshop papers weren't searched, so treat novelty as likely, not certain [I].</li>
+<li><strong>Falsifier:</strong> a paper or LXT release with LRP through a sampler.</li>
+<li><strong>Fails when:</strong> issue #36's user seeded gradient × input on the noise prediction. Relevance sign followed the predicted noise's sign, and maps changed from run to run [V]. That's why D1 seeds a scalar of x_0.</li>
+<li><strong>Nearest neighbours, all one step at a time.</strong></li>
+<li>DAAM (Tang et al., arXiv 2210.04885, 2022-10): cross-attention summed over layers, heads and timesteps. Noun segmentation mIoU80 64.8 on SD 2.0 [V]. Its authors called gradient attribution through the sampler intractable, because small perturbations gave very different images [V].</li>
+<li>Kong et al. (arXiv 2310.07972, 2023-10): conditional mutual information heatmaps. They track image change under word swaps better than attention (Pearson 0.34 against 0.24) [V].</li>
+<li>DifFRACT (Mazur, Konovalova and Alanov, arXiv 2606.15796, 2026-06): attribution graphs inside one FLUX.1-schnell step, made exact by freezing LayerNorm denominators and attention probabilities and substituting timestep-conditioned transcoders. The text stream's share of attribution falls from 89.9% at the first step to 5.4% at the last [V]. It never chains steps.</li>
+<li>DLIG (Aswal and Hudelot, arXiv 2610.01177, 2026-10): Integrated Gradients on layer activations at one partially unmasked state, with committed tokens held fixed in the baseline. Tested only on DiffuGPT-M (355M). On WiC, commit timing separated Yes from No (AUC 0.342) where attribution depth didn't (0.503). On infilling, the model's own tokens as target correlate with quality at r = 0.013, a fixed reference at 0.197 [V].</li>
+<li>Attribution contract (arXiv 2605.23080, 2026-05): defines state-level attribution for diffusion LMs without chaining it. In autoregressive models 29% of IG mass lands on the model's own generated prefix [V].</li>
+<li>DLM-Scope (arXiv 2602.05859, 2026-02): Top-K SAEs on Dream-7B and LLaDA-8B, separate for masked and unmasked positions. Inserting them in early layers lowers cross-entropy [V].</li>
+<li>TimeROME-DLM (arXiv 2606.12841, 2026-06): causal tracing across steps on LLaDA-8B [V, abstract only].</li>
+<li><strong>Corrections:</strong> arXiv 2606.12273 is AGDO, an attention-guided unmasking order for post-training, not a study of attention across steps. arXiv 2610.18407 proposes a multi-stream residual architecture, not a mechanism study of existing models [V].</li>
+<li><strong>D1, the split.</strong> Otsuki et al., ECCV 2024, arXiv 2407.09115: relevance at a residual merge split by absolute value, <code>R_s = R·|h_s| / (|h_m| + |h_s|)</code>. Exactly conservative and bounded [V]. Arras et al., arXiv 1909.12114 (2019-09), LRP through time for LSTMs: the precedent for unrolling a recurrence. Their signed proportional split needed ε = 0.2 to be stable and scored near random [V].</li>
+<li><strong>Falsifier:</strong> conditioning relevance doesn't concentrate in early steps. Critical windows (Li and Chen, arXiv 2403.01633, 2024-03) and phase transitions (Sclocchi et al., arXiv 2402.16991, 2024-02) fix class and layout early [V, abstracts].</li>
+<li><strong>Fails when:</strong> the skip and network terms cancel, so the split reports magnitude, not contribution [I]. Randomizing the network can't change the skip share, so a randomization test that "passes" may only reflect the skip path [I].</li>
+<li><strong>D1, the seed.</strong> Kobayashi et al., arXiv 2303.11734 (2023-03), LRP for autoencoders: seed the scalar reconstruction error, rooted at the input. Per output unit <code>(1/m)(x̃_i − x̂_i)²</code> under L2, exactly conservative [V].</li>
+<li><strong>D2, commit as identity.</strong> LLaDA's <code>generate.py</code> gives already committed positions confidence −∞, so they're never revised. MDLM copies unmasked tokens forward [V]. Neither carries hidden state between steps, so commits are the only channel across steps [I]. The attribution-contract paper: with the unmasking order replayed, IG's completeness residual on a masked diffusion model falls from 97% at 1 step to 18% at 256 steps [V].</li>
+<li><strong>Falsifier:</strong> prompt relevance disagrees with IG under the same frozen commit order, or prompt deletion doesn't beat random.</li>
+<li><strong>Fails when:</strong> the sampler re-masks. DPLM's default <code>_reparam_decoding</code> re-masks the lowest-scoring positions, including decoded ones, every step [V], and so does ReMDM (arXiv 2503.00307) [V]. Hence "last write" instead of "commit". KV or feature caching (Fast-dLLM, dKV-cache) adds a channel the graph misses [I].</li>
+<li><strong>Mask sinks:</strong> mask tokens are 0.366 of attention-sink tokens in LLaDA and 0.321 in Dream. Masking the top sink moves LLaDA's GSM8K from 0.76 to 0.75. The paper claims sink removal costs under 1%, but its own Dream score falls from 0.82 to 0.75 (Rulli et al., arXiv 2510.15731, 2025-12) [V].</li>
+<li><strong>Sampler dependence:</strong> Dream scores 8% on GSM8K under random commit order against 56–59% under margin or entropy order (DLM-Scope) [V]. A graph is only valid for the sampler it recorded.</li>
+<li><strong>D3, split or detach.</strong> AttnLRP (arXiv 2402.05602): the uniform rule gives each factor of a product an equal share, assuming the product vanishes when the factors do [V]. MambaLRP (arXiv 2406.07592): splitting a gate half and half beats detaching one factor, 1.978 against 1.577 on SST-2 and 4.715 against 3.592 on ImageNet [V]. Arras et al.: for LSTM gates, giving the gate nothing ("signal-take-all") beats every split, which scored near random [V]. No LRP rule for FiLM or conditional normalization was found.</li>
+<li><strong>Falsifier:</strong> split mode fails a planted class-controls-one-region DiT.</li>
+<li><strong>Fails when:</strong> <code>1+γ</code> is near zero, so the <code>LN(x)</code> and <code>LN(x)·γ</code> terms cancel [I].</li>
+<li><strong>DIFF-2 to DIFF-4, checkpoints</strong> (read from configs and safetensors headers, 2026-10-20).</li>
+<li><code>kuleshov-group/mdlm-owt</code>: 169,627,250 parameters, fp32 safetensors, Apache-2.0. A 12-block DiT, hidden 768, 12 heads, RoPE (base 10000), GPT-2 BPE plus a mask token (vocab 50258). <code>time_conditioning: false</code> forces σ = 0, so the adaLN vectors are constants [V]. Its remote code hard-imports <code>flash_attn</code> [V]. Its rotary layout (interleaved or rotate-half) wasn't checked.</li>
+<li><code>airkingbd/dplm_150m</code> and <code>dplm_650m</code>: state-dict keys and shapes identical to <code>EsmForMaskedLM</code>, <code>pytorch_model.bin</code> only, <code>token_dropout: true</code>, no timestep input, no license tag on the cards [V]. ESM-2 initialization isn't confirmed [C].</li>
+<li><code>airkingbd/dplm2_*</code>: vocab 8229 with structure tokens, split RoPE over <code>[struct ; aa]</code>. The <code>&lt;mask_struct&gt;</code> id differs between <code>tokenizer_config.json</code> (8229) and <code>vocab.txt</code> (8228) [V].</li>
+<li><code>louaaron/sedd-small</code>: the same DiT keys as MDLM-owt, but with real σ conditioning, so adaLN can't be folded away [V].</li>
+<li><code>dllm-hub/Qwen3-0.6B-diffusion-mdlm-v0.1</code>: 0.75B, Apache-2.0, stock Qwen3 with a bidirectional mask [V]. Mask id not checked.</li>
+<li><code>diffusionfamily/diffugpt-m</code>: 355M, fp16, GPT-2 layout [V].</li>
+<li>LLaDA-8B (8,015,581,184 parameters, MIT) and Dream-7B (7,615,616,512, Apache-2.0) need 32.1 GB and 30.5 GB for fp32 weights alone [V], beyond this machine.</li>
+<li><strong>DIFF-7 to DIFF-12, the toolkit.</strong> Logit lens: a single pass recovers most masked words (Devoto blog, about 2025) [C]. Prophet (arXiv 2508.19982, 2025-08): answers converge internally well before commit, up to 97% of GSM8K correct at half the steps [C]. Surkov et al. (arXiv 2410.22366, 2024-10): SAEs on SDXL-Turbo transfer from 1 to many steps [V, abstract]. Data attribution (TRAK, D-TRAK, K-FAC influence, arXiv 2410.13850) answers "which training images" and is out of scope [V, abstract].</li>
 </ul>
 
 
