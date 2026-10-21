@@ -200,6 +200,7 @@ add_library(pulsatrix_core
     src/retnet_module.cpp
     src/reparameterize.cpp
     src/noise_schedule.cpp
+    src/masked_diffusion.cpp
     src/sinusoidal_timestep_embedding.cpp
     src/cartpole_env.cpp
     src/continuous_cartpole_env.cpp

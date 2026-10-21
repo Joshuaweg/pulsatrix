@@ -26,6 +26,9 @@ This page walks through the whole path. The examples run as written on SmolLM2-1
 - **Score answers and train on them**: read prompt/completion pairs from JSONL, batch them with
   the prompt masked out of the loss, and score log P(completion | prompt) or the probability of
   " Yes" against " No" (see [Score and fine-tune on answers](#5-score-and-fine-tune-on-answers)).
+- **Generate with a diffusion language model** (MDLM), which fills a masked sequence over a
+  number of steps, and keep the whole trajectory for explaining it (see
+  [Diffusion language models](#diffusion-language-models)).
 - **Check your setup** against Hugging Face with three command-line tools (see
   [Checking against Hugging Face](#checking-against-hugging-face)).
 
@@ -241,6 +244,81 @@ const double log_odds = s.choice_log_probs[0][0] - s.choice_log_probs[0][1];
 - **Speed:** a full fine-tuning step of SmolLM2-135M on a Radeon 8060S takes about 1.5 s for 8
   sequences of 256 tokens and 7.8 s for 8 of 512. Attention's cost grows with the square of the
   length, so keep prompts short.
+
+## Diffusion language models
+
+A masked diffusion language model doesn't write left to right. It starts from a sequence of mask
+tokens, with a prompt if you have one, and fills it in over a number of steps, any position in
+any order. At each step a bidirectional encoder predicts every masked position, and the sampler
+commits some of those predictions. Pulsatrix loads MDLM checkpoints, such as
+`kuleshov-group/mdlm-owt` (170M parameters, GPT-2's tokenizer), with the same `LoadEncoderLM`
+that loads ESM-2. `SampleMaskedDiffusion` generates from them and records every step, so a
+generation can be explained afterwards ([LRP for diffusion models](../interpretability/diffusion-lrp.md)).
+
+```cpp
+#include <algorithm>
+#include <cstdio>
+
+#include "pulsatrix/cpu_backend.hpp"
+#include "pulsatrix/encoder_lm.hpp"
+#include "pulsatrix/masked_diffusion.hpp"
+#include "pulsatrix/tokenizer_json.hpp"
+
+using namespace pulsatrix;
+
+int main() {
+    CPUBackend cpu;
+    auto model = LoadEncoderLM("mdlm-owt", &cpu);                   // config.json, model.safetensors
+    TextTokenizer tok = LoadTokenizerJson("gpt2/tokenizer.json");  // MDLM uses GPT-2's tokenizer
+    const int64_t mask = model->config().mask_token_id;
+
+    std::vector<int64_t> seq(1024, mask);  // MDLM-owt was trained on 1024-token sequences
+    const std::vector<int64_t> prompt = tok.encode("The city council voted", false).ids;
+    std::copy(prompt.begin(), prompt.end(), seq.begin());  // a fixed prefix to continue
+
+    MaskedDiffusionConfig config;
+    config.steps = 128;
+    config.mask_token_id = mask;
+    config.schedule = UnmaskingSchedule::Ancestral;  // MDLM's own sampler
+    config.do_sample = true;
+    config.seed = 1;
+    model->set_keep_activations(false);  // sampling needs only the outputs
+    MaskedDiffusionResult out = SampleMaskedDiffusion(MakeDenoiser(*model, &cpu), seq, config);
+    std::printf("%s\n", tok.decode(out.tokens).c_str());
+    // out.steps[i].input is what the model saw at step i, and out.steps[i].writes what it filled.
+}
+```
+
+There are two schedules for choosing which positions to fill:
+
+- **`Confidence`** (LLaDA's) fills a fixed share of the masked positions at every step, taking
+  the ones whose predicted token the model is surest of. Greedy, it is fully deterministic, which
+  makes it the one to explain.
+- **`Ancestral`** (MDLM's) fills each masked position independently at random, with the
+  probability the noise schedule gives. Steps that fill nothing don't run the model.
+
+Neither re-masks a filled position. Each step's record holds the exact input the model saw, so
+rerunning the model on it reproduces that step.
+
+**How MDLM loads.** MDLM's blocks are DiT blocks with adaLN-Zero conditioning on the noise level,
+but MDLM-owt was trained with that conditioning switched off, so every modulation vector is a
+constant. `LoadEncoderLM` computes them once and folds them into the LayerNorms and output
+projections, which is exact. The loaded model is an ordinary `EncoderLM`, so backward passes,
+LRP and hooks all work on it. Against the authors' own modeling code, run on the CPU in float32,
+logits match within 3.8e-6 and hidden states within 7.1e-6 (relative). A tiny model with random
+modulation weights, which tests the folding itself, matches within 1e-5
+(`tools/golden/make_mdlm_golden.py`, then `tests/mdlm_test.cpp`).
+
+**Length and speed.** MDLM-owt was only ever trained on full 1024-token sequences. Sampled at
+that length (128 ancestral steps), it writes fluent web text. Sampled at 64 tokens, it writes
+nonsense, so keep the sequence at its trained length and put your prompt inside it. Every step is
+a full forward pass over the whole sequence: about 8.6 s per step at 1024 tokens on the 16-core
+test machine's CPU, so 128 steps take about 18 minutes. Use a GPU backend for real sampling.
+
+**Not supported yet.**
+- Models whose conditioning varies (`time_conditioning`, such as SEDD) fail to load with a message
+  that says so. They need an adaLN layer, which is DIFF-6 on the roadmap.
+- There's no remasking sampler (DPLM's) and no block-by-block, semi-autoregressive decoding.
 
 ## Checking against Hugging Face
 
