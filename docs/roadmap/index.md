@@ -2316,7 +2316,7 @@ planted tasks, causal patching and faithfulness. The rules are on the
 | ID | Item | Why | Depends on | P | Effort | Status |
 |---|---|---|---|---|---|---|
 | DIFF-1 | Research on diffusion interpretability and diffusion LMs; the three rule designs (D1 trajectory, D2 commitment graph, D3 adaLN) with their budgets, falsifiers and checks | No published LRP for diffusion exists to adopt | — | P1 | S | Done, [#193](https://github.com/Joshuaweg/pulsatrix/pull/193) |
-| DIFF-2 | `MaskedDiffusionSampler`: carry-over and remasking samplers that record the whole trajectory (sequence and writes at each step), greedy for explanation. MDLM-owt loading, with its constant adaLN folded into the weights at load time, and golden parity with its remote code | The first real diffusion LM, and the trajectory D2 explains | — | P1 | M | |
+| DIFF-2 | `MaskedDiffusionSampler`: carry-over and remasking samplers that record the whole trajectory (sequence and writes at each step), greedy for explanation. MDLM-owt loading, with its constant adaLN folded into the weights at load time, and golden parity with its remote code | The first real diffusion LM, and the trajectory D2 explains | — | P1 | M |Done, [#194](https://github.com/Joshuaweg/pulsatrix/pull/194) (see below) |
 | DIFF-3 | Commitment-graph LRP (D2): AttnLRP inside each step, re-seeding at the last step that wrote each token, one relevance pass per step, the sink ledger. Checked against IG under a frozen commit order, prompt deletion, step-resolved patching and a planted copy task | The design the evidence supports best, and the ledger D1 reuses | DIFF-2 | P1 | M | |
 | DIFF-4 | More diffusion LMs: Qwen3-0.6B diffusion (the Qwen loader with a bidirectional mask), DPLM-150M/650M (the ESM-2 loader after `pickle_to_safetensors.py`, under DPLM's remasking sampler), DiffuGPT-M | D2 under remasking, at a larger scale, and against DLIG's published numbers | DIFF-3 | P2 | M | |
 | DIFF-5 | Trajectory LRP (D1): DDIM steps and a cosine schedule on `NoiseSchedule`, the absolute-ratio split with signed fractions logged, scalar seeds on x_0, the budget, recomputing each step from the stored trajectory. A planted class-conditional DDPM | Explains a continuous sampler end to end | DIFF-3 | P1 | M | |
@@ -2327,6 +2327,20 @@ planted tasks, causal patching and faithfulness. The rules are on the
 | DIFF-10 | Critical-window analysis: renoise from step t and resample, and measure when class and layout become fixed | Predicts where D1's conditioning relevance must peak | DIFF-5 | P2 | S | |
 | DIFF-11 | Attention maps per step: DAAM-style sums for image models, attention to unmasked context for diffusion LMs | The cheapest baseline | DIFF-2 | P2 | S | |
 | DIFF-12 | SAEs on diffusion-LM residual streams, separate for masked and unmasked positions (DLM-Scope), with concept-level aggregation of D2 relevance | Concept-level explanations; costly, and DLM-Scope's own models are out of reach here | DIFF-3, FEAT-1 | P3 | M | |
+
+### How the DIFF work departed from the plan
+
+- **DIFF-2** loads MDLM as an `EncoderLM` rather than a new model class. MDLM is a bidirectional
+  encoder with a different head. Once its constant adaLN modulation is folded into the weights at
+  load time, it is an ordinary encoder: one linear output layer, bias-free attention and a
+  tanh-GELU MLP. `LoadEncoderLM` picks ESM-2 or MDLM from the config's `model_type`. The folding
+  is exact. Against the authors' modeling code on the CPU, mdlm-owt matches within 3.8e-6
+  (logits) and 7.1e-6 (hidden states). A tiny model with random modulation weights matches
+  within 1e-5. The authors' code imports `flash_attn`, which needs CUDA, so the reference script
+  registers CPU stand-ins for the two functions it uses.
+- **DIFF-2's sampler doesn't re-mask.** The remasking sampler moves to DIFF-4, with DPLM, the only
+  target that needs it. DIFF-2 has LLaDA's confidence schedule and MDLM's ancestral one, and
+  neither revises a filled position.
 
 ## Open questions
 
