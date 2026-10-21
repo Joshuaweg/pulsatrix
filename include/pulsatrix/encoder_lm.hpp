@@ -1,6 +1,7 @@
 /** @file encoder_lm.hpp
- *  @brief Masked-language-model encoders, starting with ESM-2 protein language models (PLM-2):
- *         Hugging Face `EsmForMaskedLM` checkpoints loaded, run, trained and explained natively.
+ *  @brief Masked-language-model encoders: ESM-2 protein language models (PLM-2), Hugging Face
+ *         `EsmForMaskedLM` checkpoints loaded, run, trained and explained natively, and MDLM
+ *         masked diffusion language models (DIFF-2).
  *  @ingroup dl_modules
  */
 #pragma once
@@ -22,10 +23,18 @@
 
 namespace pulsatrix {
 
-/** @brief The settings of an ESM-family masked LM, from its Hugging Face `config.json`. */
+/** @brief An EncoderLM's output head. */
+enum class EncoderLMHead {
+    /** @brief ESM's: dense, GELU, LayerNorm, then the embedding table transposed plus a bias. */
+    Esm,
+    /** @brief One linear layer with a bias, not tied to the embeddings (MDLM). */
+    Linear,
+};
+
+/** @brief The settings of a masked LM, from its Hugging Face `config.json`. */
 struct EncoderLMConfig {
-    std::string architecture;  ///< `EsmForMaskedLM`
-    std::string model_type;    ///< `esm`
+    std::string architecture;  ///< `EsmForMaskedLM`, `MDLM`
+    std::string model_type;    ///< `esm`, `mdlm`
     int64_t vocab_size = 0;
     int64_t hidden_size = 0;
     int64_t intermediate_size = 0;
@@ -46,6 +55,11 @@ struct EncoderLMConfig {
      *        uses them, so recomputing them exactly shifts attention by about 2e-4.
      */
     std::vector<double> rope_inverse_frequencies;
+    EncoderLMHead head = EncoderLMHead::Esm;
+    /** @brief Biases on the attention's q, k, v and output projections (ESM's); MDLM has none. */
+    bool attention_bias = true;
+    /** @brief The MLP's activation: exact GELU for ESM, the tanh approximation for MDLM. */
+    ElementwiseOp activation = ElementwiseOp::Gelu;
 };
 
 /**
@@ -59,14 +73,27 @@ struct EncoderLMConfig {
 [[nodiscard]] EncoderLMConfig ReadEsmConfig(const std::string& path);
 
 /**
- * @brief An ESM-2 masked language model: token embeddings (with ESM's token-dropout scaling),
- *        pre-LayerNorm encoder layers with rotary attention (EncoderBlock), a final LayerNorm,
- *        and the LM head: dense, GELU, LayerNorm, then the embedding table transposed plus a bias.
- *        Shape: token ids `(N, L)` to logits `(N, L, vocab)`.
+ * @brief Reads an MDLM `config.json` (`kuleshov-group/mdlm-owt` and models trained with the same
+ *        code): a bidirectional transformer with rotate-half RoPE, LayerNorms without biases,
+ *        bias-free attention, a tanh-GELU MLP four times the width, and an untied linear output
+ *        layer. The mask token is the vocabulary's last id.
+ * @throws std::invalid_argument for malformed JSON, a missing size, or `time_conditioning`: a
+ *         model whose adaLN modulation depends on the noise level can't be folded into
+ *         constant weights, and needs DIFF-6's adaLN module.
+ */
+[[nodiscard]] EncoderLMConfig ParseMdlmConfig(std::string_view json);
+
+/**
+ * @brief A masked language model: token embeddings (with ESM's token-dropout scaling, when the
+ *        config has it), pre-LayerNorm encoder layers with rotary attention (EncoderBlock), a
+ *        final LayerNorm, and the LM head. Shape: token ids `(N, L)` to logits `(N, L, vocab)`.
  *
- * Parameters are named `embed_tokens.weight`, `layers.<i>.*` (EncoderBlock's names),
- * `norm.*`, and `lm_head.dense.*`, `lm_head.norm.*` and `lm_head.bias`. The head's decoder shares
- * the embedding table.
+ * ESM-2's head is dense, GELU, LayerNorm, then the embedding table transposed plus a bias; MDLM's
+ * is one linear layer (EncoderLMConfig::head).
+ *
+ * Parameters are named `embed_tokens.weight`, `layers.<i>.*` (EncoderBlock's names) and
+ * `norm.*`, then for ESM's head `lm_head.dense.*`, `lm_head.norm.*` and `lm_head.bias` (its
+ * decoder shares the embedding table), and for a linear head `lm_head.weight` and `lm_head.bias`.
  *
  * @note **Token dropout.** ESM-2 was trained with masked tokens' embeddings zeroed. To match at
  *       inference, every embedding is scaled by `(1 - 0.15 * 0.8) / (1 - masked fraction)`,
@@ -175,18 +202,23 @@ private:
     /** @brief Relevance at the final LayerNorm's output (last_hidden_state), from relevance at the
      *         logits. */
     [[nodiscard]] Tensor HeadRelevance(const Tensor& relevance_out, const LRPRuleConfig& config);
+    /** @brief The head's modules, whichever head this is. */
+    [[nodiscard]] std::vector<Module*> HeadModules();
 
     EncoderLMConfig config_;
     DeviceBackend* backend_;
     EmbeddingModule embed_;
     std::vector<std::unique_ptr<EncoderBlock>> layers_;
     LayerNormModule norm_;
-    LinearModule lm_dense_;
-    ActivationModule lm_gelu_;
-    LayerNormModule lm_norm_;
-    TiedLMHeadModule lm_decoder_;
+    // ESM's head; empty for a linear head.
+    std::unique_ptr<LinearModule> lm_dense_;
+    std::unique_ptr<ActivationModule> lm_gelu_;
+    std::unique_ptr<LayerNormModule> lm_norm_;
+    std::unique_ptr<TiedLMHeadModule> lm_decoder_;
     Tensor lm_bias_;
     Tensor lm_bias_grad_;
+    // A linear head; empty for ESM's.
+    std::unique_ptr<LinearModule> lm_linear_;
 
     std::vector<float> padding_keep_;  ///< (N * L); empty for no padding
     Shape padding_shape_ = Shape({0});
@@ -212,11 +244,28 @@ private:
 [[nodiscard]] std::vector<std::string> EsmIgnoredTensors(const EncoderLMConfig& config);
 
 /**
- * @brief Loads an ESM-2 model directory: `config.json` and safetensors weights (one file or
- *        sharded), such as `facebook/esm2_t6_8M_UR50D`. LayerNorm parameters may be named
- *        `weight`/`bias` or, as transformers 5 saves them, `gamma`/`beta`. RoPE frequencies come
- *        from the checkpoint's `inv_freq` buffer when it has one (see
- *        EncoderLMConfig::rope_inverse_frequencies).
+ * @brief The name mapping from an MDLM checkpoint to EncoderLM. The fused `attn_qkv` is split
+ *        into q, k and v; linear weights are transposed. The LayerNorm biases and the adaLN
+ *        modulation have no counterpart here: LoadEncoderLM folds them in (see there).
+ */
+[[nodiscard]] std::vector<WeightMapping> MdlmMapping(const EncoderLMConfig& config);
+
+/**
+ * @brief Loads a masked LM directory: `config.json` and safetensors weights (one file or
+ *        sharded). The config's `model_type` picks the model.
+ *
+ * - **ESM-2** (`esm`), such as `facebook/esm2_t6_8M_UR50D`. LayerNorm parameters may be named
+ *   `weight`/`bias` or, as transformers 5 saves them, `gamma`/`beta`. RoPE frequencies come from
+ *   the checkpoint's `inv_freq` buffer when it has one (see
+ *   EncoderLMConfig::rope_inverse_frequencies).
+ * - **MDLM** (`mdlm`), such as `kuleshov-group/mdlm-owt`. Its blocks are adaLN-Zero DiT blocks
+ *   conditioned on the noise level, but MDLM is trained with `time_conditioning` off, so the
+ *   conditioning is the same constant at every step: `c = silu(sigma_map(0))`. Every modulation
+ *   vector is then a constant, and folding them into the weights is exact:
+ *   `LN(x)·w·(1 + scale) + shift` is a LayerNorm with weight `w·(1 + scale)` and bias `shift`,
+ *   and a gated branch `gate · W·h (+ b)` scales the output projection's columns (and bias) by
+ *   `gate`. The loaded model is an ordinary EncoderLM, and LRP on it needs no adaLN rule.
+ *
  * @throws std::invalid_argument for an unsupported config or a weight that doesn't fit;
  *         std::runtime_error for a missing file.
  */

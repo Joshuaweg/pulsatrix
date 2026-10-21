@@ -167,6 +167,7 @@ add_executable(pulsatrix_tests
     relevance_graph_test.cpp
     encoder_block_test.cpp
     encoder_lm_test.cpp
+    mdlm_test.cpp
     variant_scoring_test.cpp
     protein_contacts_test.cpp
     protein_structure_test.cpp
@@ -234,6 +235,7 @@ add_executable(pulsatrix_tests
     vae_integration_test.cpp
     gan_integration_test.cpp
     diffusion_integration_test.cpp
+    masked_diffusion_test.cpp
     dqn_cartpole_integration_test.cpp
     reinforce_cartpole_integration_test.cpp
     a2c_cartpole_integration_test.cpp
