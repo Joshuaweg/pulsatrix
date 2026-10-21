@@ -299,6 +299,9 @@ There are two schedules for choosing which positions to fill:
 
 Neither re-masks a filled position. Each step's record holds the exact input the model saw, so
 rerunning the model on it reproduces that step.
+`ExplainCommitments` (`masked_diffusion_lrp.hpp`) uses that to explain generated tokens back to
+the prompt through every step that led to them; see
+[D2 in pulsatrix](../interpretability/diffusion-lrp.md#d2-in-pulsatrix).
 
 **How MDLM loads.** MDLM's blocks are DiT blocks with adaLN-Zero conditioning on the noise level,
 but MDLM-owt was trained with that conditioning switched off, so every modulation vector is a
