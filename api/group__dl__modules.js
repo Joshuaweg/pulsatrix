@@ -54,6 +54,7 @@ var group__dl__modules =
     [ "lr_scheduler.hpp", "lr__scheduler_8hpp.html", null ],
     [ "lstm_module.hpp", "lstm__module_8hpp.html", null ],
     [ "mamba_module.hpp", "mamba__module_8hpp.html", null ],
+    [ "masked_diffusion.hpp", "masked__diffusion_8hpp.html", null ],
     [ "max_pool2d_module.hpp", "max__pool2d__module_8hpp.html", null ],
     [ "metrics_sink.hpp", "metrics__sink_8hpp.html", null ],
     [ "mnist_classifier_example.hpp", "mnist__classifier__example_8hpp.html", null ],

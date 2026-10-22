@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['mlphook_0',['MlpHook',['../namespacepulsatrix.html#ab7ef3f7938dc5997394d2c33c190b2a8',1,'pulsatrix']]]
+  ['lrpcomposite_0',['LRPComposite',['../namespacepulsatrix.html#abc17b0f5a8717d9ef75f08182d273a4d',1,'pulsatrix']]]
 ];

@@ -156,6 +156,8 @@ var dir_549639eb5e09d856a0d6449a002be6ea =
     [ "lrp_rule_config.hpp", "lrp__rule__config_8hpp.html", "lrp__rule__config_8hpp" ],
     [ "lstm_module.hpp", "lstm__module_8hpp.html", "lstm__module_8hpp" ],
     [ "mamba_module.hpp", "mamba__module_8hpp.html", "mamba__module_8hpp" ],
+    [ "masked_diffusion.hpp", "masked__diffusion_8hpp.html", "masked__diffusion_8hpp" ],
+    [ "masked_diffusion_lrp.hpp", "masked__diffusion__lrp_8hpp.html", "masked__diffusion__lrp_8hpp" ],
     [ "matrix_decompositions.hpp", "matrix__decompositions_8hpp.html", "matrix__decompositions_8hpp" ],
     [ "max_pool2d_module.hpp", "max__pool2d__module_8hpp.html", "max__pool2d__module_8hpp" ],
     [ "metrics_sink.hpp", "metrics__sink_8hpp.html", "metrics__sink_8hpp" ],

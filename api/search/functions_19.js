@@ -26,11 +26,12 @@ var searchData=
   ['_7eresumabletrial_23',['~ResumableTrial',['../classpulsatrix_1_1ResumableTrial.html#af932576b9615280b8fc7d253c366e864',1,'pulsatrix::ResumableTrial']]],
   ['_7esampler_24',['~Sampler',['../classpulsatrix_1_1Sampler.html#ad66a2ce7685160289151eca01299eef7',1,'pulsatrix::Sampler']]],
   ['_7esecret_25',['~Secret',['../classpulsatrix_1_1orch_1_1Secret.html#ad7ababd4831115fe594949cd507651d2',1,'pulsatrix::orch::Secret']]],
-  ['_7esystemmonitor_26',['~SystemMonitor',['../classpulsatrix_1_1SystemMonitor.html#a3478b0acf4887f5425cdb842121bde97',1,'pulsatrix::SystemMonitor']]],
-  ['_7etensor_27',['~Tensor',['../classpulsatrix_1_1Tensor.html#ac2343e739ce1f79370db2101fe563367',1,'pulsatrix::Tensor']]],
-  ['_7etexturecache_28',['~TextureCache',['../classpulsatrix_1_1TextureCache.html#a631a6a08f474232801eba06be1cd4e9b',1,'pulsatrix::TextureCache']]],
-  ['_7etokenmodel_29',['~TokenModel',['../classpulsatrix_1_1TokenModel.html#a1646be3cfed5b62dd9f60b5b3ab3b157',1,'pulsatrix::TokenModel']]],
-  ['_7etransform_30',['~Transform',['../classpulsatrix_1_1Transform.html#a52f2f6911828171ce40be1f4444cd271',1,'pulsatrix::Transform']]],
-  ['_7eunicoderegex_31',['~UnicodeRegex',['../classpulsatrix_1_1UnicodeRegex.html#a8a12dfb2d10af7af0b9688f72f58d63d',1,'pulsatrix::UnicodeRegex']]],
-  ['_7evizwindow_32',['~VizWindow',['../classpulsatrix_1_1VizWindow.html#a639c868d13074d1914ab7e2a9dfa6410',1,'pulsatrix::VizWindow']]]
+  ['_7esteprelevancemodel_26',['~StepRelevanceModel',['../classpulsatrix_1_1StepRelevanceModel.html#a6274ec81770ab0c547841f2e03aecc4a',1,'pulsatrix::StepRelevanceModel']]],
+  ['_7esystemmonitor_27',['~SystemMonitor',['../classpulsatrix_1_1SystemMonitor.html#a3478b0acf4887f5425cdb842121bde97',1,'pulsatrix::SystemMonitor']]],
+  ['_7etensor_28',['~Tensor',['../classpulsatrix_1_1Tensor.html#ac2343e739ce1f79370db2101fe563367',1,'pulsatrix::Tensor']]],
+  ['_7etexturecache_29',['~TextureCache',['../classpulsatrix_1_1TextureCache.html#a631a6a08f474232801eba06be1cd4e9b',1,'pulsatrix::TextureCache']]],
+  ['_7etokenmodel_30',['~TokenModel',['../classpulsatrix_1_1TokenModel.html#a1646be3cfed5b62dd9f60b5b3ab3b157',1,'pulsatrix::TokenModel']]],
+  ['_7etransform_31',['~Transform',['../classpulsatrix_1_1Transform.html#a52f2f6911828171ce40be1f4444cd271',1,'pulsatrix::Transform']]],
+  ['_7eunicoderegex_32',['~UnicodeRegex',['../classpulsatrix_1_1UnicodeRegex.html#a8a12dfb2d10af7af0b9688f72f58d63d',1,'pulsatrix::UnicodeRegex']]],
+  ['_7evizwindow_33',['~VizWindow',['../classpulsatrix_1_1VizWindow.html#a639c868d13074d1914ab7e2a9dfa6410',1,'pulsatrix::VizWindow']]]
 ];

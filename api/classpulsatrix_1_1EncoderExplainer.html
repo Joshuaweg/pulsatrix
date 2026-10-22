@@ -101,7 +101,7 @@ $(document).ready(function(){initNavTree('classpulsatrix_1_1EncoderExplainer.htm
 </div><!--header-->
 <div class="contents">
 
-<p>AttnLRP for an ESM-2 <a class="el" href="classpulsatrix_1_1EncoderLM.html" title="An ESM-2 masked language model: token embeddings (with ESM&#39;s token-dropout scaling),...">EncoderLM</a>: explains a target (<a class="el" href="structpulsatrix_1_1EncoderTarget.html" title="What an explanation explains. Residues are numbered from 0 here.">EncoderTarget</a>) as relevance on the input residues, with LXT's rules by default (the identity rule on LayerNorm and GELU, the uniform rule at attention's matmuls, epsilon elsewhere), so it matches LXT's AttnLRP.  
+<p>AttnLRP for an ESM-2 <a class="el" href="classpulsatrix_1_1EncoderLM.html" title="A masked language model: token embeddings (with ESM&#39;s token-dropout scaling, when the config has it),...">EncoderLM</a>: explains a target (<a class="el" href="structpulsatrix_1_1EncoderTarget.html" title="What an explanation explains. Residues are numbered from 0 here.">EncoderTarget</a>) as relevance on the input residues, with LXT's rules by default (the identity rule on LayerNorm and GELU, the uniform rule at attention's matmuls, epsilon elsewhere), so it matches LXT's AttnLRP.  
  <a href="classpulsatrix_1_1EncoderExplainer.html#details">More...</a></p>
 
 <p><code>#include &lt;<a class="el" href="protein__explanations_8hpp_source.html">protein_explanations.hpp</a>&gt;</code></p>
@@ -134,7 +134,7 @@ Static Public Member Functions</h2></td></tr>
 <tr class="separator:a17204bb1b69620149aecc92fab336d2d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p>AttnLRP for an ESM-2 <a class="el" href="classpulsatrix_1_1EncoderLM.html" title="An ESM-2 masked language model: token embeddings (with ESM&#39;s token-dropout scaling),...">EncoderLM</a>: explains a target (<a class="el" href="structpulsatrix_1_1EncoderTarget.html" title="What an explanation explains. Residues are numbered from 0 here.">EncoderTarget</a>) as relevance on the input residues, with LXT's rules by default (the identity rule on LayerNorm and GELU, the uniform rule at attention's matmuls, epsilon elsewhere), so it matches LXT's AttnLRP. </p>
+<div class="textblock"><p>AttnLRP for an ESM-2 <a class="el" href="classpulsatrix_1_1EncoderLM.html" title="A masked language model: token embeddings (with ESM&#39;s token-dropout scaling, when the config has it),...">EncoderLM</a>: explains a target (<a class="el" href="structpulsatrix_1_1EncoderTarget.html" title="What an explanation explains. Residues are numbered from 0 here.">EncoderTarget</a>) as relevance on the input residues, with LXT's rules by default (the identity rule on LayerNorm and GELU, the uniform rule at attention's matmuls, epsilon elsewhere), so it matches LXT's AttnLRP. </p>
 <p>Relevance at the output is the explained value itself, as LXT seeds it (<code>value.backward()</code>): the residues' relevance, with <code>&lt;cls&gt;</code>'s and <code>&lt;eos&gt;</code>'s, adds up to roughly that value; <a class="el" href="classpulsatrix_1_1LRP.html" title="Whole-model LRP: runs the forward pass, seeds relevance at the chosen output(s), and propagates it to...">LRP</a> through biases and norms isn't exactly conservative. </p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="ac0aeb964540fb3a9a0b2a5f1cc8147a0" name="ac0aeb964540fb3a9a0b2a5f1cc8147a0"></a>

@@ -588,6 +588,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#diffusion-language-models" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Diffusion language models
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#checking-against-hugging-face" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -2821,6 +2832,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#diffusion-language-models" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Diffusion language models
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#checking-against-hugging-face" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -2909,6 +2931,9 @@ explanations.</p>
 <li><strong>Score answers and train on them</strong>: read prompt/completion pairs from JSONL, batch them with
   the prompt masked out of the loss, and score log P(completion | prompt) or the probability of
   " Yes" against " No" (see <a href="#5-score-and-fine-tune-on-answers">Score and fine-tune on answers</a>).</li>
+<li><strong>Generate with a diffusion language model</strong> (MDLM), which fills a masked sequence over a
+  number of steps, and keep the whole trajectory for explaining it (see
+  <a href="#diffusion-language-models">Diffusion language models</a>).</li>
 <li><strong>Check your setup</strong> against Hugging Face with three command-line tools (see
   <a href="#checking-against-hugging-face">Checking against Hugging Face</a>).</li>
 </ul>
@@ -3187,6 +3212,76 @@ builds on them:</p>
   sequences of 256 tokens and 7.8 s for 8 of 512. Attention's cost grows with the square of the
   length, so keep prompts short.</li>
 </ul>
+<h2 id="diffusion-language-models">Diffusion language models<a class="headerlink" href="#diffusion-language-models" title="Permanent link">&para;</a></h2>
+<p>A masked diffusion language model doesn't write left to right. It starts from a sequence of mask
+tokens, with a prompt if you have one, and fills it in over a number of steps, any position in
+any order. At each step a bidirectional encoder predicts every masked position, and the sampler
+commits some of those predictions. Pulsatrix loads MDLM checkpoints, such as
+<code>kuleshov-group/mdlm-owt</code> (170M parameters, GPT-2's tokenizer), with the same <code>LoadEncoderLM</code>
+that loads ESM-2. <code>SampleMaskedDiffusion</code> generates from them and records every step, so a
+generation can be explained afterwards (<a href="../interpretability/diffusion-lrp/">LRP for diffusion models</a>).</p>
+<div class="highlight"><pre><span></span><code><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;algorithm&gt;</span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;cstdio&gt;</span>
+
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">"pulsatrix/cpu_backend.hpp"</span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">"pulsatrix/encoder_lm.hpp"</span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">"pulsatrix/masked_diffusion.hpp"</span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">"pulsatrix/tokenizer_json.hpp"</span>
+
+<span class="k">using</span><span class="w"> </span><span class="k">namespace</span><span class="w"> </span><span class="nn">pulsatrix</span><span class="p">;</span>
+
+<span class="kt">int</span><span class="w"> </span><span class="nf">main</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">CPUBackend</span><span class="w"> </span><span class="n">cpu</span><span class="p">;</span>
+<span class="w">    </span><span class="k">auto</span><span class="w"> </span><span class="n">model</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">LoadEncoderLM</span><span class="p">(</span><span class="s">"mdlm-owt"</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">cpu</span><span class="p">);</span><span class="w">                   </span><span class="c1">// config.json, model.safetensors</span>
+<span class="w">    </span><span class="n">TextTokenizer</span><span class="w"> </span><span class="n">tok</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">LoadTokenizerJson</span><span class="p">(</span><span class="s">"gpt2/tokenizer.json"</span><span class="p">);</span><span class="w">  </span><span class="c1">// MDLM uses GPT-2's tokenizer</span>
+<span class="w">    </span><span class="k">const</span><span class="w"> </span><span class="kt">int64_t</span><span class="w"> </span><span class="n">mask</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">model</span><span class="o">-&gt;</span><span class="n">config</span><span class="p">().</span><span class="n">mask_token_id</span><span class="p">;</span>
+
+<span class="w">    </span><span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">int64_t</span><span class="o">&gt;</span><span class="w"> </span><span class="n">seq</span><span class="p">(</span><span class="mi">1024</span><span class="p">,</span><span class="w"> </span><span class="n">mask</span><span class="p">);</span><span class="w">  </span><span class="c1">// MDLM-owt was trained on 1024-token sequences</span>
+<span class="w">    </span><span class="k">const</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">int64_t</span><span class="o">&gt;</span><span class="w"> </span><span class="n">prompt</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">tok</span><span class="p">.</span><span class="n">encode</span><span class="p">(</span><span class="s">"The city council voted"</span><span class="p">,</span><span class="w"> </span><span class="nb">false</span><span class="p">).</span><span class="n">ids</span><span class="p">;</span>
+<span class="w">    </span><span class="n">std</span><span class="o">::</span><span class="n">copy</span><span class="p">(</span><span class="n">prompt</span><span class="p">.</span><span class="n">begin</span><span class="p">(),</span><span class="w"> </span><span class="n">prompt</span><span class="p">.</span><span class="n">end</span><span class="p">(),</span><span class="w"> </span><span class="n">seq</span><span class="p">.</span><span class="n">begin</span><span class="p">());</span><span class="w">  </span><span class="c1">// a fixed prefix to continue</span>
+
+<span class="w">    </span><span class="n">MaskedDiffusionConfig</span><span class="w"> </span><span class="n">config</span><span class="p">;</span>
+<span class="w">    </span><span class="n">config</span><span class="p">.</span><span class="n">steps</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">128</span><span class="p">;</span>
+<span class="w">    </span><span class="n">config</span><span class="p">.</span><span class="n">mask_token_id</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">mask</span><span class="p">;</span>
+<span class="w">    </span><span class="n">config</span><span class="p">.</span><span class="n">schedule</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">UnmaskingSchedule</span><span class="o">::</span><span class="n">Ancestral</span><span class="p">;</span><span class="w">  </span><span class="c1">// MDLM's own sampler</span>
+<span class="w">    </span><span class="n">config</span><span class="p">.</span><span class="n">do_sample</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">true</span><span class="p">;</span>
+<span class="w">    </span><span class="n">config</span><span class="p">.</span><span class="n">seed</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span>
+<span class="w">    </span><span class="n">model</span><span class="o">-&gt;</span><span class="n">set_keep_activations</span><span class="p">(</span><span class="nb">false</span><span class="p">);</span><span class="w">  </span><span class="c1">// sampling needs only the outputs</span>
+<span class="w">    </span><span class="n">MaskedDiffusionResult</span><span class="w"> </span><span class="n">out</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">SampleMaskedDiffusion</span><span class="p">(</span><span class="n">MakeDenoiser</span><span class="p">(</span><span class="o">*</span><span class="n">model</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">cpu</span><span class="p">),</span><span class="w"> </span><span class="n">seq</span><span class="p">,</span><span class="w"> </span><span class="n">config</span><span class="p">);</span>
+<span class="w">    </span><span class="n">std</span><span class="o">::</span><span class="n">printf</span><span class="p">(</span><span class="s">"%s</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span><span class="w"> </span><span class="n">tok</span><span class="p">.</span><span class="n">decode</span><span class="p">(</span><span class="n">out</span><span class="p">.</span><span class="n">tokens</span><span class="p">).</span><span class="n">c_str</span><span class="p">());</span>
+<span class="w">    </span><span class="c1">// out.steps[i].input is what the model saw at step i, and out.steps[i].writes what it filled.</span>
+<span class="p">}</span>
+</code></pre></div>
+<p>There are two schedules for choosing which positions to fill:</p>
+<ul>
+<li><strong><code>Confidence</code></strong> (LLaDA's) fills a fixed share of the masked positions at every step, taking
+  the ones whose predicted token the model is surest of. Greedy, it is fully deterministic, which
+  makes it the one to explain.</li>
+<li><strong><code>Ancestral</code></strong> (MDLM's) fills each masked position independently at random, with the
+  probability the noise schedule gives. Steps that fill nothing don't run the model.</li>
+</ul>
+<p>Neither re-masks a filled position. Each step's record holds the exact input the model saw, so
+rerunning the model on it reproduces that step.
+<code>ExplainCommitments</code> (<code>masked_diffusion_lrp.hpp</code>) uses that to explain generated tokens back to
+the prompt through every step that led to them; see
+<a href="../interpretability/diffusion-lrp/#d2-in-pulsatrix">D2 in pulsatrix</a>.</p>
+<p><strong>How MDLM loads.</strong> MDLM's blocks are DiT blocks with adaLN-Zero conditioning on the noise level,
+but MDLM-owt was trained with that conditioning switched off, so every modulation vector is a
+constant. <code>LoadEncoderLM</code> computes them once and folds them into the LayerNorms and output
+projections, which is exact. The loaded model is an ordinary <code>EncoderLM</code>, so backward passes,
+LRP and hooks all work on it. Against the authors' own modeling code, run on the CPU in float32,
+logits match within 3.8e-6 and hidden states within 7.1e-6 (relative). A tiny model with random
+modulation weights, which tests the folding itself, matches within 1e-5
+(<code>tools/golden/make_mdlm_golden.py</code>, then <code>tests/mdlm_test.cpp</code>).</p>
+<p><strong>Length and speed.</strong> MDLM-owt was only ever trained on full 1024-token sequences. Sampled at
+that length (128 ancestral steps), it writes fluent web text. Sampled at 64 tokens, it writes
+nonsense, so keep the sequence at its trained length and put your prompt inside it. Every step is
+a full forward pass over the whole sequence: about 8.6 s per step at 1024 tokens on the 16-core
+test machine's CPU, so 128 steps take about 18 minutes. Use a GPU backend for real sampling.</p>
+<p><strong>Not supported yet.</strong>
+- Models whose conditioning varies (<code>time_conditioning</code>, such as SEDD) fail to load with a message
+  that says so. They need an adaLN layer, which is DIFF-6 on the roadmap.
+- There's no remasking sampler (DPLM's) and no block-by-block, semi-autoregressive decoding.</p>
 <h2 id="checking-against-hugging-face">Checking against Hugging Face<a class="headerlink" href="#checking-against-hugging-face" title="Permanent link">&para;</a></h2>
 <p>Three tools compare pulsatrix with the reference libraries on your own machine. They need
 reference files that small Python scripts write once, with <code>torch</code>, <code>transformers</code>, <code>tokenizers</code>
