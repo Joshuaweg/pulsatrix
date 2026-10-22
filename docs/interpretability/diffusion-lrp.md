@@ -244,6 +244,23 @@ positions, each taking the model's most likely token for the changed sequence
   relevance destroys the value far faster than random deletion. About half of each pass's
   relevance leaks into the head's and LayerNorms' biases, which the ledger reports.
 
+**On mdlm-owt** (1024 tokens of *A Scandal in Bohemia*, span [512, 544) masked and refilled in
+32 steps on the GPU, 61 s to explain):
+- The infill is fluent (" had been very happy to see him again, and I was glad to see him
+  again…"). Every relevance is finite. The value 646.7 splits into prompt 559.7, mask 119.8 and
+  leak −32.9. The median leak per pass is 0.13 of its seed, far less than on the copy task.
+- Step-local stops 243.4 on committed span tokens. The graph carries it on, raising the prompt's
+  share from 332.0 to 559.7.
+- The most relevant prompt tokens are the span's neighbours (" glad", " he", " but") and the
+  earlier phrase " desire to see … again" (positions 381–385), which the infill echoes. 29.9% of
+  |relevance| lies within 16 tokens of the span, which holds 3.2% of the prompt.
+- Deletion beats random: deletion AUC 348.8 for the graph and 335.9 for step-local, against
+  439.9 for random orders. The graph does **not** beat step-local here; its extra relevance
+  moves onto tokens that matter about as much.
+- The patch check has nothing to test on an infill: every written token is a target, so no
+  intermediate is left to patch. It needs a target set smaller than the trajectory, such as the
+  last few tokens of a span.
+
 **Not yet.** The comparison with Integrated Gradients under the same frozen commit order needs
 gradients at every step's input embeddings, chained through a soft relaxation of the committed
 tokens, and moves to DIFF-7 with DLIG.
