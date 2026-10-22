@@ -201,6 +201,7 @@ add_library(pulsatrix_core
     src/reparameterize.cpp
     src/noise_schedule.cpp
     src/masked_diffusion.cpp
+    src/masked_diffusion_lrp.cpp
     src/sinusoidal_timestep_embedding.cpp
     src/cartpole_env.cpp
     src/continuous_cartpole_env.cpp
@@ -854,6 +855,11 @@ target_compile_definitions(pulsatrix_explain_text PRIVATE $<$<BOOL:${PULSATRIX_E
 add_executable(pulsatrix_diff_lm tools/explain/pulsatrix_diff_lm.cpp)
 target_link_libraries(pulsatrix_diff_lm PRIVATE pulsatrix_core)
 target_compile_definitions(pulsatrix_diff_lm PRIVATE $<$<BOOL:${PULSATRIX_ENABLE_HIP}>:PULSATRIX_GOLDEN_WITH_HIP>)
+
+# pulsatrix_diffusion_lrp: commitment-graph LRP on a masked diffusion LM's infill, with its checks (DIFF-3).
+add_executable(pulsatrix_diffusion_lrp tools/explain/pulsatrix_diffusion_lrp.cpp)
+target_link_libraries(pulsatrix_diffusion_lrp PRIVATE pulsatrix_core)
+target_compile_definitions(pulsatrix_diffusion_lrp PRIVATE $<$<BOOL:${PULSATRIX_ENABLE_HIP}>:PULSATRIX_GOLDEN_WITH_HIP>)
 
 # pulsatrix_spd_toy: parameter decomposition (SPD, VPD) of a toy model of superposition (FEAT-9).
 add_executable(pulsatrix_spd_toy tools/explain/pulsatrix_spd_toy.cpp)
