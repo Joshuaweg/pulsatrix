@@ -189,7 +189,7 @@ Files</h2></td></tr>
 <tr class="memdesc:encoder__block_8hpp"><td class="mdescLeft">&#160;</td><td class="mdescRight">A configurable transformer encoder layer (PLM-1): LayerNorm or RMSNorm, before or after each sublayer, and a plain or gated MLP. ESM-2's layer, BERT's layer and the Llama-style pre-norm layer are all settings of it. <br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:encoder__lm_8hpp" id="r_encoder__lm_8hpp"><td class="memItemLeft" align="right" valign="top">file &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="encoder__lm_8hpp.html">encoder_lm.hpp</a></td></tr>
-<tr class="memdesc:encoder__lm_8hpp"><td class="mdescLeft">&#160;</td><td class="mdescRight">Masked-language-model encoders, starting with ESM-2 protein language models (PLM-2): Hugging Face <code>EsmForMaskedLM</code> checkpoints loaded, run, trained and explained natively. <br /></td></tr>
+<tr class="memdesc:encoder__lm_8hpp"><td class="mdescLeft">&#160;</td><td class="mdescRight">Masked-language-model encoders: ESM-2 protein language models (PLM-2), Hugging Face <code>EsmForMaskedLM</code> checkpoints loaded, run, trained and explained natively, and MDLM masked diffusion language models (DIFF-2). <br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:feature__distillation_8hpp" id="r_feature__distillation_8hpp"><td class="memItemLeft" align="right" valign="top">file &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="feature__distillation_8hpp.html">feature_distillation.hpp</a></td></tr>
 <tr class="memdesc:feature__distillation_8hpp"><td class="mdescLeft">&#160;</td><td class="mdescRight">Distilling a teacher's intermediate features, not only its outputs (roadmap KD-3): FitNets' hint loss (Romero et al., ICLR 2015) and attention transfer (Zagoruyko and Komodakis, ICLR 2017). <br /></td></tr>
@@ -265,6 +265,9 @@ Files</h2></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:mamba__module_8hpp" id="r_mamba__module_8hpp"><td class="memItemLeft" align="right" valign="top">file &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="mamba__module_8hpp.html">mamba_module.hpp</a></td></tr>
 <tr class="memdesc:mamba__module_8hpp"><td class="mdescLeft">&#160;</td><td class="mdescRight">Mamba/S6 selective-state-space recurrence with the MambaLRP relevance rule. <br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:masked__diffusion_8hpp" id="r_masked__diffusion_8hpp"><td class="memItemLeft" align="right" valign="top">file &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="masked__diffusion_8hpp.html">masked_diffusion.hpp</a></td></tr>
+<tr class="memdesc:masked__diffusion_8hpp"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sampling from a masked diffusion language model (DIFF-2): start from a sequence with masked positions and fill them over a number of steps, recording the whole trajectory so it can be explained afterwards (DIFF-3). <br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:max__pool2d__module_8hpp" id="r_max__pool2d__module_8hpp"><td class="memItemLeft" align="right" valign="top">file &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="max__pool2d__module_8hpp.html">max_pool2d_module.hpp</a></td></tr>
 <tr class="memdesc:max__pool2d__module_8hpp"><td class="mdescLeft">&#160;</td><td class="mdescRight">2D max pooling with a stride and padding (non-overlapping windows by default). <br /></td></tr>

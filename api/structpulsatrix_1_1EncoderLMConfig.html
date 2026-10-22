@@ -100,7 +100,7 @@ $(document).ready(function(){initNavTree('structpulsatrix_1_1EncoderLMConfig.htm
 </div><!--header-->
 <div class="contents">
 
-<p>The settings of an ESM-family masked LM, from its Hugging Face <code>config.json</code>.  
+<p>The settings of a masked LM, from its Hugging Face <code>config.json</code>.  
  <a href="structpulsatrix_1_1EncoderLMConfig.html#details">More...</a></p>
 
 <p><code>#include &lt;<a class="el" href="encoder__lm_8hpp_source.html">encoder_lm.hpp</a>&gt;</code></p>
@@ -108,10 +108,10 @@ $(document).ready(function(){initNavTree('structpulsatrix_1_1EncoderLMConfig.htm
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-attribs" name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
 <tr class="memitem:aeb30ca0859861354fcf43e71f78a38af" id="r_aeb30ca0859861354fcf43e71f78a38af"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpulsatrix_1_1EncoderLMConfig.html#aeb30ca0859861354fcf43e71f78a38af">architecture</a></td></tr>
-<tr class="memdesc:aeb30ca0859861354fcf43e71f78a38af"><td class="mdescLeft">&#160;</td><td class="mdescRight"><code>EsmForMaskedLM</code>  <br /></td></tr>
+<tr class="memdesc:aeb30ca0859861354fcf43e71f78a38af"><td class="mdescLeft">&#160;</td><td class="mdescRight"><code>EsmForMaskedLM</code>, <code>MDLM</code>  <br /></td></tr>
 <tr class="separator:aeb30ca0859861354fcf43e71f78a38af"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af8f4b7a97bf36235cf888f32be78ba71" id="r_af8f4b7a97bf36235cf888f32be78ba71"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpulsatrix_1_1EncoderLMConfig.html#af8f4b7a97bf36235cf888f32be78ba71">model_type</a></td></tr>
-<tr class="memdesc:af8f4b7a97bf36235cf888f32be78ba71"><td class="mdescLeft">&#160;</td><td class="mdescRight"><code>esm</code>  <br /></td></tr>
+<tr class="memdesc:af8f4b7a97bf36235cf888f32be78ba71"><td class="mdescLeft">&#160;</td><td class="mdescRight"><code>esm</code>, <code>mdlm</code>  <br /></td></tr>
 <tr class="separator:af8f4b7a97bf36235cf888f32be78ba71"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6f80bb256f6fc8979554df557f978319" id="r_a6f80bb256f6fc8979554df557f978319"><td class="memItemLeft" align="right" valign="top">int64_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpulsatrix_1_1EncoderLMConfig.html#a6f80bb256f6fc8979554df557f978319">vocab_size</a> = 0</td></tr>
 <tr class="separator:a6f80bb256f6fc8979554df557f978319"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -141,10 +141,34 @@ Public Attributes</h2></td></tr>
 <tr class="memitem:a8fdb496c35bdb14bba4c9cb582f18b18" id="r_a8fdb496c35bdb14bba4c9cb582f18b18"><td class="memItemLeft" align="right" valign="top">std::vector&lt; double &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpulsatrix_1_1EncoderLMConfig.html#a8fdb496c35bdb14bba4c9cb582f18b18">rope_inverse_frequencies</a></td></tr>
 <tr class="memdesc:a8fdb496c35bdb14bba4c9cb582f18b18"><td class="mdescLeft">&#160;</td><td class="mdescRight">RoPE frequencies to use instead of <code>rope_theta</code>'s, one per pair. LoadEncoderLM fills them from the checkpoint's <code>inv_freq</code> buffer: ESM-2's are stored rounded to fp16 (0.316162 rather than 0.316228), the model was trained with those, and transformers uses them, so recomputing them exactly shifts attention by about 2e-4.  <br /></td></tr>
 <tr class="separator:a8fdb496c35bdb14bba4c9cb582f18b18"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae1e16826762ce677bcdf5f6a1d92cebf" id="r_ae1e16826762ce677bcdf5f6a1d92cebf"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespacepulsatrix.html#a7e31cda2a420af52e9927ff7cc718b6c">EncoderLMHead</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpulsatrix_1_1EncoderLMConfig.html#ae1e16826762ce677bcdf5f6a1d92cebf">head</a> = <a class="el" href="namespacepulsatrix.html#a7e31cda2a420af52e9927ff7cc718b6caf5eaf0c36399da1702d88120ebbb6156">EncoderLMHead::Esm</a></td></tr>
+<tr class="separator:ae1e16826762ce677bcdf5f6a1d92cebf"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ade1a6b2b1f8bdc0710c347529186613f" id="r_ade1a6b2b1f8bdc0710c347529186613f"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpulsatrix_1_1EncoderLMConfig.html#ade1a6b2b1f8bdc0710c347529186613f">attention_bias</a> = true</td></tr>
+<tr class="memdesc:ade1a6b2b1f8bdc0710c347529186613f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Biases on the attention's q, k, v and output projections (ESM's); MDLM has none.  <br /></td></tr>
+<tr class="separator:ade1a6b2b1f8bdc0710c347529186613f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7757e9fdb39ec93d402336ac95913067" id="r_a7757e9fdb39ec93d402336ac95913067"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespacepulsatrix.html#afec27fa326532e4ad62b32d54558b503">ElementwiseOp</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpulsatrix_1_1EncoderLMConfig.html#a7757e9fdb39ec93d402336ac95913067">activation</a> = <a class="el" href="namespacepulsatrix.html#afec27fa326532e4ad62b32d54558b503af48cca1c6deaa6a1c34e4ee46954cf0b">ElementwiseOp::Gelu</a></td></tr>
+<tr class="memdesc:a7757e9fdb39ec93d402336ac95913067"><td class="mdescLeft">&#160;</td><td class="mdescRight">The MLP's activation: exact GELU for ESM, the tanh approximation for MDLM.  <br /></td></tr>
+<tr class="separator:a7757e9fdb39ec93d402336ac95913067"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p>The settings of an ESM-family masked LM, from its Hugging Face <code>config.json</code>. </p>
+<div class="textblock"><p>The settings of a masked LM, from its Hugging Face <code>config.json</code>. </p>
 </div><h2 class="groupheader">Member Data Documentation</h2>
+<a id="a7757e9fdb39ec93d402336ac95913067" name="a7757e9fdb39ec93d402336ac95913067"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7757e9fdb39ec93d402336ac95913067">&#9670;&#160;</a></span>activation</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="namespacepulsatrix.html#afec27fa326532e4ad62b32d54558b503">ElementwiseOp</a> pulsatrix::EncoderLMConfig::activation = <a class="el" href="namespacepulsatrix.html#afec27fa326532e4ad62b32d54558b503af48cca1c6deaa6a1c34e4ee46954cf0b">ElementwiseOp::Gelu</a></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>The MLP's activation: exact GELU for ESM, the tanh approximation for MDLM. </p>
+
+</div>
+</div>
 <a id="aeb30ca0859861354fcf43e71f78a38af" name="aeb30ca0859861354fcf43e71f78a38af"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#aeb30ca0859861354fcf43e71f78a38af">&#9670;&#160;</a></span>architecture</h2>
 
@@ -157,7 +181,23 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p><code>EsmForMaskedLM</code> </p>
+<p><code>EsmForMaskedLM</code>, <code>MDLM</code> </p>
+
+</div>
+</div>
+<a id="ade1a6b2b1f8bdc0710c347529186613f" name="ade1a6b2b1f8bdc0710c347529186613f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ade1a6b2b1f8bdc0710c347529186613f">&#9670;&#160;</a></span>attention_bias</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool pulsatrix::EncoderLMConfig::attention_bias = true</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Biases on the attention's q, k, v and output projections (ESM's); MDLM has none. </p>
 
 </div>
 </div>
@@ -169,6 +209,20 @@ Public Attributes</h2></td></tr>
       <table class="memname">
         <tr>
           <td class="memname">std::string pulsatrix::EncoderLMConfig::dtype</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="ae1e16826762ce677bcdf5f6a1d92cebf" name="ae1e16826762ce677bcdf5f6a1d92cebf"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae1e16826762ce677bcdf5f6a1d92cebf">&#9670;&#160;</a></span>head</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="namespacepulsatrix.html#a7e31cda2a420af52e9927ff7cc718b6c">EncoderLMHead</a> pulsatrix::EncoderLMConfig::head = <a class="el" href="namespacepulsatrix.html#a7e31cda2a420af52e9927ff7cc718b6caf5eaf0c36399da1702d88120ebbb6156">EncoderLMHead::Esm</a></td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -257,7 +311,7 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p><code>esm</code> </p>
+<p><code>esm</code>, <code>mdlm</code> </p>
 
 </div>
 </div>

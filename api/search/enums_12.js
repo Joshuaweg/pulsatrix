@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['variantstrategy_0',['VariantStrategy',['../namespacepulsatrix.html#ad459b72b938b5edbe52c75cbc8ee743a',1,'pulsatrix']]]
+  ['unmaskingschedule_0',['UnmaskingSchedule',['../namespacepulsatrix.html#ab9e35a3c9e00fc59683d7334c8f2ab9a',1,'pulsatrix']]]
 ];

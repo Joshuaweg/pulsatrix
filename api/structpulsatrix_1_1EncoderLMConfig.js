@@ -1,7 +1,10 @@
 var structpulsatrix_1_1EncoderLMConfig =
 [
+    [ "activation", "structpulsatrix_1_1EncoderLMConfig.html#a7757e9fdb39ec93d402336ac95913067", null ],
     [ "architecture", "structpulsatrix_1_1EncoderLMConfig.html#aeb30ca0859861354fcf43e71f78a38af", null ],
+    [ "attention_bias", "structpulsatrix_1_1EncoderLMConfig.html#ade1a6b2b1f8bdc0710c347529186613f", null ],
     [ "dtype", "structpulsatrix_1_1EncoderLMConfig.html#add2bbdefc077186a93a598a0d303fae1", null ],
+    [ "head", "structpulsatrix_1_1EncoderLMConfig.html#ae1e16826762ce677bcdf5f6a1d92cebf", null ],
     [ "hidden_size", "structpulsatrix_1_1EncoderLMConfig.html#aaa3bcb9d42af40f59662382f1406c7a0", null ],
     [ "intermediate_size", "structpulsatrix_1_1EncoderLMConfig.html#a08aca485ad94f71cbd0e275f888ddea6", null ],
     [ "layer_norm_eps", "structpulsatrix_1_1EncoderLMConfig.html#a308dffdb351ca71baa06d7f74420d7f4", null ],

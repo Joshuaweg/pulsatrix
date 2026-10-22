@@ -7,7 +7,7 @@ var searchData=
   ['layernorm_4',['LayerNorm',['../namespacepulsatrix.html#aa9b603c42e9e2a6f3680d4709c4745cdac363ac7ca063bb8a75fb8a11883bcb2c',1,'pulsatrix']]],
   ['leastsquares_5',['LeastSquares',['../namespacepulsatrix.html#ab997921e8dd2fcb16daefdcc05ce6550ad143c366b3274edc1e5496e302795a46',1,'pulsatrix']]],
   ['length_6',['Length',['../namespacepulsatrix.html#ad77127af5416692cbd6eaeaba9ec0e0aaba2a9c6c8c77e03f83ef8bf543612275',1,'pulsatrix']]],
-  ['linear_7',['linear',['../namespacepulsatrix.html#a94d9ac6240473b5362d1e8e5c11157bba32a843da6ea40ab3b17a3421ccdf671b',1,'pulsatrix::Linear'],['../namespacepulsatrix.html#aca3e3a232c55ea7cf98d269cc1d55482a32a843da6ea40ab3b17a3421ccdf671b',1,'pulsatrix::Linear']]],
+  ['linear_7',['linear',['../namespacepulsatrix.html#a7e31cda2a420af52e9927ff7cc718b6ca32a843da6ea40ab3b17a3421ccdf671b',1,'pulsatrix::Linear'],['../namespacepulsatrix.html#a94d9ac6240473b5362d1e8e5c11157bba32a843da6ea40ab3b17a3421ccdf671b',1,'pulsatrix::Linear'],['../namespacepulsatrix.html#aca3e3a232c55ea7cf98d269cc1d55482a32a843da6ea40ab3b17a3421ccdf671b',1,'pulsatrix::Linear']]],
   ['linf_8',['Linf',['../namespacepulsatrix.html#a30b4a864b38933f1cac09c7020463e2ea498f648384dca53dd3e4eebaa56bc227',1,'pulsatrix']]],
   ['local_9',['Local',['../namespacepulsatrix.html#a51afa06976af080a2b978c0815224a32a509820290d57f333403f490dde7316f4',1,'pulsatrix']]],
   ['log_10',['Log',['../namespacepulsatrix.html#aca3e3a232c55ea7cf98d269cc1d55482ace0be71e33226e4c1db2bcea5959f16b',1,'pulsatrix']]],

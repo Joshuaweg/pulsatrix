@@ -117,7 +117,7 @@ Public Member Functions</h2></td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Turns sequences into masked-LM batches as ESM-2 was trained: <code>&lt;cls&gt;</code> + residues + <code>&lt;eos&gt;</code>, cropped to a random window when too long, then each residue picked with probability 0.15; of those, 80% become <code>&lt;mask&gt;</code>, 10% a random amino acid (uniform over the 20 standard ones) and 10% stay. <code>&lt;cls&gt;</code>, <code>&lt;eos&gt;</code> and padding are never picked. Draws come from a seeded portable generator, so a seed gives the same batches on every platform. </p>
-<dl class="section note"><dt>Note</dt><dd>Token dropout (ESM-2 zeroes <code>&lt;mask&gt;</code> embeddings and rescales the rest) is <a class="el" href="classpulsatrix_1_1EncoderLM.html" title="An ESM-2 masked language model: token embeddings (with ESM&#39;s token-dropout scaling),...">EncoderLM</a>'s forward(), in training as in inference. </dd></dl>
+<dl class="section note"><dt>Note</dt><dd>Token dropout (ESM-2 zeroes <code>&lt;mask&gt;</code> embeddings and rescales the rest) is <a class="el" href="classpulsatrix_1_1EncoderLM.html" title="A masked language model: token embeddings (with ESM&#39;s token-dropout scaling, when the config has it),...">EncoderLM</a>'s forward(), in training as in inference. </dd></dl>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="aa232edf5bf202dd4006feff0b6329564" name="aa232edf5bf202dd4006feff0b6329564"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#aa232edf5bf202dd4006feff0b6329564">&#9670;&#160;</a></span>MaskedLMCollator()</h2>

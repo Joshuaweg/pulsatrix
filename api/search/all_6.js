@@ -82,7 +82,7 @@ var searchData=
   ['gradient_20based_20explainers_79',['Gradient-Based Explainers',['../group__interpretability__dl.html',1,'']]],
   ['gradients_80',['Gradients',['../namespacepulsatrix.html#a6f8112c4b12ea9595f3374ad2022422bae99e133f4481158db879726b7335d967',1,'pulsatrix']]],
   ['granularity_81',['granularity',['../structpulsatrix_1_1TokenRelevanceDocument.html#a2e7e2a6d2f180dc0642ed0f513c18920',1,'pulsatrix::TokenRelevanceDocument']]],
-  ['graph_82',['graph',['../classpulsatrix_1_1ExplainerContext.html#a2b650e6b358c23b82b1033ba5f139088',1,'pulsatrix::ExplainerContext']]],
+  ['graph_82',['graph',['../namespacepulsatrix.html#aefdd519be37951efc7063e803c2d7ee7a4cdbd2bafa8193091ba09509cedf94fd',1,'pulsatrix::Graph'],['../classpulsatrix_1_1ExplainerContext.html#a2b650e6b358c23b82b1033ba5f139088',1,'pulsatrix::ExplainerContext::graph()']]],
   ['grassmannian_83',['Grassmannian',['../namespacepulsatrix.html#a056ad7d81b2ee20acdbf7f6f7a1e7a9ca7865867e192c85f94cb5cbf96923b41a',1,'pulsatrix']]],
   ['greater_84',['greater',['../structpulsatrix_1_1RuleCondition.html#a48fda1ec2be5e8c66e8c0971ee1db3ba',1,'pulsatrix::RuleCondition']]],
   ['grid_85',['grid',['../structpulsatrix_1_1IceResult.html#a420ebe5c715fadda56e6bee8219a5e03',1,'pulsatrix::IceResult::grid'],['../structpulsatrix_1_1PersistenceLandscape.html#af06f017a99fe3baa002cd8b846b565f2',1,'pulsatrix::PersistenceLandscape::grid'],['../structpulsatrix_1_1PartialDependenceDocument.html#af9bf2c480fab85541d22edc0095ff817',1,'pulsatrix::PartialDependenceDocument::grid']]],

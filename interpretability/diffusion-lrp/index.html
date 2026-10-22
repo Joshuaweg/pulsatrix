@@ -819,6 +819,17 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#d2-in-pulsatrix" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        D2 in pulsatrix
+      
+    </span>
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -2979,6 +2990,17 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#d2-in-pulsatrix" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        D2 in pulsatrix
+      
+    </span>
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -3055,8 +3077,8 @@
 
 
 <h1 id="lrp-for-diffusion-models-design">LRP for Diffusion Models (Design)<a class="headerlink" href="#lrp-for-diffusion-models-design" title="Permanent link">&para;</a></h1>
-<p><strong>Status: design only.</strong> No code implements this page yet. The work is tracked as the
-<a href="../../roadmap/#diff-diffusion-models-and-their-explanations">DIFF epic</a>, and the evidence
+<p><strong>Status:</strong> D2 is implemented (<a href="#d2-in-pulsatrix">below</a>); D1 and D3 are designs only. The work
+is tracked as the <a href="../../roadmap/#diff-diffusion-models-and-their-explanations">DIFF epic</a>, and the evidence
 is in the <a href="../../roadmap/research-notes/#diff-diffusion-models">research notes</a>.</p>
 <p>A diffusion model doesn't produce its output in one forward pass. It starts from noise (or from a
 fully masked sequence) and runs the same network many times, each step refining the last. Every
@@ -3165,8 +3187,11 @@ identity, uniform, softmax) is linear in the incoming relevance. Steps that comm
 no pass. What reaches the prompt is the explanation. Relevance on <code>[MASK]</code> tokens has no earlier
 step to go to, so it is the mask sink of that step.</p>
 <p>Tokens committed in the same step can't attribute to each other, so the graph is a DAG layered by
-step. The top seed is the summed log-probability of the tokens being explained, as in DLIG and
-the attribution-contract paper. DLIG found that a fixed reference string correlated with infill
+step. The top seed is the logits of the tokens being explained, each at the step that wrote it,
+summed, and each seeded with its own value, as LXT seeds a logit. DLIG and the
+attribution-contract paper explain the summed log-probability instead; its log-softmax isn't
+linear in the logits, so it can't be seeded on them the same way, and the logit is what the rest
+of pulsatrix's AttnLRP explains. DLIG found that a fixed reference string correlated with infill
 quality far better than the model's own tokens (r = 0.197 against 0.013), so a fixed-target
 seed is offered as a check.</p>
 <h3 id="the-commit-is-the-last-write">The commit is "the last write"<a class="headerlink" href="#the-commit-is-the-last-write" title="Permanent link">&para;</a></h3>
@@ -3208,6 +3233,75 @@ again.</p>
 <li>Patching the highest-relevance tokens moves later commits no more than patching low-relevance
   ones. This is a causal check in the style of TimeROME-DLM.</li>
 </ul>
+<h3 id="d2-in-pulsatrix">D2 in pulsatrix<a class="headerlink" href="#d2-in-pulsatrix" title="Permanent link">&para;</a></h3>
+<p><code>include/pulsatrix/masked_diffusion_lrp.hpp</code> (DIFF-3) implements D2 on the trajectories
+<code>SampleMaskedDiffusion</code> records:</p>
+<div class="highlight"><pre><span></span><code><span class="cp">#include</span><span class="w"> </span><span class="cpf">"pulsatrix/masked_diffusion_lrp.hpp"</span>
+
+<span class="n">MaskedDiffusionResult</span><span class="w"> </span><span class="n">t</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">SampleMaskedDiffusion</span><span class="p">(</span><span class="n">MakeDenoiser</span><span class="p">(</span><span class="o">*</span><span class="n">model</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">cpu</span><span class="p">),</span><span class="w"> </span><span class="n">input</span><span class="p">,</span><span class="w"> </span><span class="n">config</span><span class="p">);</span>
+<span class="n">EncoderLMStepModel</span><span class="w"> </span><span class="nf">step</span><span class="p">(</span><span class="o">*</span><span class="n">model</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">cpu</span><span class="p">);</span><span class="w">             </span><span class="c1">// AttnLRP with LXT's rules</span>
+<span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="n">CommitmentTarget</span><span class="o">&gt;</span><span class="w"> </span><span class="n">span</span><span class="p">;</span><span class="w">                </span><span class="c1">// the generated tokens to explain</span>
+<span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">int64_t</span><span class="w"> </span><span class="n">p</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">512</span><span class="p">;</span><span class="w"> </span><span class="n">p</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="mi">544</span><span class="p">;</span><span class="w"> </span><span class="o">++</span><span class="n">p</span><span class="p">)</span><span class="w"> </span><span class="n">span</span><span class="p">.</span><span class="n">push_back</span><span class="p">({</span><span class="n">p</span><span class="p">,</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">nullopt</span><span class="p">});</span>
+<span class="n">CommitmentRelevance</span><span class="w"> </span><span class="n">r</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">ExplainCommitments</span><span class="p">(</span><span class="n">step</span><span class="p">,</span><span class="w"> </span><span class="n">t</span><span class="p">,</span><span class="w"> </span><span class="n">model</span><span class="o">-&gt;</span><span class="n">config</span><span class="p">().</span><span class="n">mask_token_id</span><span class="p">,</span><span class="w"> </span><span class="n">span</span><span class="p">);</span>
+<span class="c1">// r.prompt: relevance per prompt token. r.mask: the mask sink per position. r.relayed: what</span>
+<span class="c1">// passed through each generated token. r.hops: one ledger line per step, leak included.</span>
+</code></pre></div>
+<ul>
+<li><strong>Two modes.</strong> <code>CommitmentMode::Graph</code> re-seeds relevance at the step that wrote each
+  committed token. <code>CommitmentMode::StepLocal</code> stops it there, which is what every published
+  method does and what the graph is compared with.</li>
+<li><strong>The ledger balances exactly.</strong> <code>value = prompt + mask + leak</code>, plus what stopped on
+  committed tokens in StepLocal. Each hop reports its own leak, so a pass that loses most of its
+  relevance is visible.</li>
+<li><strong>One pass per step.</strong> Every target and every relayed token of a step is seeded together;
+  steps upstream of nothing are skipped. A test on the tiny MDLM checks that explaining three
+  targets at once equals the sum of explaining each alone, so the linearity this relies on holds
+  for the real rules, not only on paper.</li>
+<li><strong>Fixed targets.</strong> <code>CommitmentTarget::token</code> explains a reference token's logit instead of the
+  one the sampler wrote (DLIG's check).</li>
+<li><strong>Any model.</strong> <code>StepRelevanceModel</code> is the interface: a forward pass and a relevance pass.
+  <code>EncoderLMStepModel</code> wraps an <code>EncoderLM</code> (MDLM, ESM-2).</li>
+</ul>
+<p>The checks replay the trajectory with its write order frozen: each step writes the same
+positions, each taking the model's most likely token for the changed sequence
+(<code>ReplayMaskedDiffusion</code>, <code>ReplayCommitmentValue</code>).</p>
+<ul>
+<li><code>CommitmentDeletionCheck</code> deletes prompt tokens (replaces them with the mask token) most
+  relevant first, against random orders.</li>
+<li><code>CommitmentPatchCheck</code> leaves each committed intermediate token masked in turn and compares
+  the change in the value with the relevance the graph relayed through it.</li>
+<li><code>tools/explain/pulsatrix_diffusion_lrp</code> runs all of it on an infill: mask a span of a text,
+  refill it by confidence, explain the span, and print the ledger, the top prompt tokens and
+  both checks.</li>
+</ul>
+<p><strong>What the tests show.</strong>
+- On a hand-built linear model, whose relevance is exact, every number of a three-step chain
+  matches the hand computation, leak zero.
+- On a two-layer model trained on a planted copy task (<code>x0 x1 x2 x3 → y0 = x1, y1 = x1 + 1</code>),
+  the graph puts the relevance of both outputs on <code>x1</code>, more than twice any other prompt token's,
+  for every prompt tried. The output committed first, <code>y1</code>, takes up to 2.3 of <code>y0</code>'s relevance
+  in the step-local explanation; the graph carries it on to <code>x1</code>. Deleting prompt tokens by
+  relevance destroys the value far faster than random deletion. About half of each pass's
+  relevance leaks into the head's and LayerNorms' biases, which the ledger reports.</p>
+<p><strong>On mdlm-owt</strong> (1024 tokens of <em>A Scandal in Bohemia</em>, span [512, 544) masked and refilled in
+32 steps on the GPU, 61 s to explain):
+- The infill is fluent (" had been very happy to see him again, and I was glad to see him
+  again…"). Every relevance is finite. The value 646.7 splits into prompt 559.7, mask 119.8 and
+  leak −32.9. The median leak per pass is 0.13 of its seed, far less than on the copy task.
+- Step-local stops 243.4 on committed span tokens. The graph carries it on, raising the prompt's
+  share from 332.0 to 559.7.
+- The most relevant prompt tokens are the span's neighbours (" glad", " he", " but") and the
+  earlier phrase " desire to see … again" (positions 381–385), which the infill echoes. 29.9% of
+  |relevance| lies within 16 tokens of the span, which holds 3.2% of the prompt.
+- Deletion beats random: deletion AUC 348.8 for the graph and 335.9 for step-local, against
+  439.9 for random orders. The graph does <strong>not</strong> beat step-local here; its extra relevance
+  moves onto tokens that matter about as much.
+- The patch check has nothing to test on an infill: every written token is a target, so no
+  intermediate is left to patch. It needs a target set smaller than the trajectory, such as the
+  last few tokens of a span.</p>
+<p><strong>Not yet.</strong> The comparison with Integrated Gradients under the same frozen commit order needs
+gradients at every step's input embeddings, chained through a soft relaxation of the committed
+tokens, and moves to DIFF-7 with DLIG.</p>
 <h2 id="d3-adaln-and-adaln-zero">D3: adaLN and adaLN-Zero<a class="headerlink" href="#d3-adaln-and-adaln-zero" title="Permanent link">&para;</a></h2>
 <p>A diffusion transformer block with adaLN-Zero computes</p>
 <div class="highlight"><pre><span></span><code>y = LN(x) · (1 + γ(c)) + β(c)

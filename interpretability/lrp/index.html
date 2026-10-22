@@ -3066,8 +3066,9 @@ softmax and attention don't conserve exactly; their tests measure and report the
 <p>The VAE, GAN and diffusion building blocks (<code>Reparameterize</code>, <code>KLDivergenceLoss</code>,
 <code>BCEWithLogitsLoss</code>, <code>NoiseSchedule</code>, <code>SinusoidalTimestepEmbedding</code>) are losses and sampling
 steps, not <code>Module</code>s, so they have no LRP rule. Explaining a diffusion model means following
-relevance through the whole sampler instead; the rules for that are designed, not yet built, in
-<a href="../diffusion-lrp/">LRP for diffusion models</a>.</p>
+relevance through the whole sampler instead. <a href="../diffusion-lrp/">LRP for diffusion models</a> sets
+out the rules; the one for masked diffusion language models is built (<code>ExplainCommitments</code>), and
+the ones for continuous samplers and adaLN are still designs.</p>
 <h2 id="validation-against-zennit-and-lxt">Validation against Zennit and LXT<a class="headerlink" href="#validation-against-zennit-and-lxt" title="Permanent link">&para;</a></h2>
 <p><code>tests/lrp_reference_test.cpp</code> checks <code>LRP::explain()</code> (one-hot seed) against values computed
 by the reference libraries. The values were generated offline by
