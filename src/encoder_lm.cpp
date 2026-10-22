@@ -82,8 +82,9 @@ EncoderLMConfig ParseEsmConfig(std::string_view json) {
     }
     c.model_type = String(o, "model_type");
     if (c.model_type != "esm") Bad("model_type is \"" + c.model_type + "\", not \"esm\"");
-    if (!c.architecture.empty() && c.architecture != "EsmForMaskedLM" && c.architecture != "EsmModel") {
-        Bad("architecture " + c.architecture + " isn't supported (EsmForMaskedLM is)");
+    // DPLM (DIFF-4) is EsmForMaskedLM with a diffusion objective: same weights, same forward.
+    if (!c.architecture.empty() && c.architecture != "EsmForMaskedLM" && c.architecture != "EsmModel" && c.architecture != "EsmForDPLM") {
+        Bad("architecture " + c.architecture + " isn't supported (EsmForMaskedLM and EsmForDPLM are)");
     }
     if (Bool(o, "is_folding_model", false)) Bad("ESMFold isn't supported");
     const std::string positions = String(o, "position_embedding_type", "absolute");

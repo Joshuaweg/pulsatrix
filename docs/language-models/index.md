@@ -296,9 +296,14 @@ There are two schedules for choosing which positions to fill:
   makes it the one to explain.
 - **`Ancestral`** (MDLM's) fills each masked position independently at random, with the
   probability the noise schedule gives. Steps that fill nothing don't run the model.
+- **`Remasking`** (DPLM's reparameterized decoding, its default) scores every position that
+  started masked at every step, filled or not, and masks the lowest-scoring share again; that
+  share falls linearly to zero. The rest of the masked positions are filled, and the filled ones
+  keep their tokens. Step for step, it matches DPLM's own `generate` (see below).
 
-Neither re-masks a filled position. Each step's record holds the exact input the model saw, so
-rerunning the model on it reproduces that step.
+The first two never revise a filled position; `Remasking` records the positions it takes back in
+`steps[i].remasked`. Each step's record holds the exact input the model saw, so rerunning the
+model on it reproduces that step.
 `ExplainCommitments` (`masked_diffusion_lrp.hpp`) uses that to explain generated tokens back to
 the prompt through every step that led to them; see
 [D2 in pulsatrix](../interpretability/diffusion-lrp.md#d2-in-pulsatrix).
@@ -312,6 +317,21 @@ logits match within 3.8e-6 and hidden states within 7.1e-6 (relative). A tiny mo
 modulation weights, which tests the folding itself, matches within 1e-5
 (`tools/golden/make_mdlm_golden.py`, then `tests/mdlm_test.cpp`).
 
+**DPLM and A2D models.** Two more families load as diffusion models:
+- **DPLM** (`airkingbd/dplm_150m`, `dplm_650m`) is ESM-2 trained as a masked diffusion model.
+  Convert its `pytorch_model.bin` with `tools/convert/pickle_to_safetensors.py` and
+  `LoadEncoderLM` loads it like ESM-2 (`EsmForDPLM` is accepted). Use the `Remasking` schedule,
+  DPLM's own. Greedy, it reproduces DPLM's `generate` step by step on both checkpoints, re-masks
+  included (`tools/golden/make_dplm_golden.py`, then `tests/dplm_test.cpp`).
+- **A2D** ("autoregressive to diffusion") checkpoints such as
+  `dllm-hub/Qwen3-0.6B-diffusion-mdlm-v0.1` are Qwen3 with bidirectional attention.
+  `LoadCausalLM` reads `model_type: a2d-qwen3`, sets `HfModelConfig::causal` to false, and
+  `MakeDenoiser(CausalLM&)` samples from it. The mask token is `<|mask|>` (151669), and position
+  i predicts token i. Logits match the authors' modeling code within 1e-4
+  (`tools/golden/make_a2d_golden.py`, then `tests/a2d_test.cpp`), and a 32-step greedy infill of
+  a 1024-token text is token-for-token the same. That infill is poor: decoded one position at a
+  time across a 32-token span, the model falls into repetition. Its card samples in blocks of 64.
+
 **Length and speed.** MDLM-owt was only ever trained on full 1024-token sequences. Sampled at
 that length (128 ancestral steps), it writes fluent web text. Sampled at 64 tokens, it writes
 nonsense, so keep the sequence at its trained length and put your prompt inside it. Every step is
@@ -321,7 +341,8 @@ test machine's CPU, so 128 steps take about 18 minutes. Use a GPU backend for re
 **Not supported yet.**
 - Models whose conditioning varies (`time_conditioning`, such as SEDD) fail to load with a message
   that says so. They need an adaLN layer, which is DIFF-6 on the roadmap.
-- There's no remasking sampler (DPLM's) and no block-by-block, semi-autoregressive decoding.
+- There's no block-by-block, semi-autoregressive decoding (LLaDA's, and the A2D models'
+  `block_size`).
 
 ## Checking against Hugging Face
 

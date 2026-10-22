@@ -155,7 +155,10 @@ HfModelConfig ParseHfConfig(std::string_view json) {
     c.tie_word_embeddings =
         OptionalBool(t, "tie_word_embeddings").value_or(OptionalBool(root, "tie_word_embeddings").value_or(true));
 
-    const std::string& type = c.model_type;
+    // dLLM's A2D checkpoints: the base architecture with bidirectional attention.
+    const bool a2d = c.model_type == "a2d-qwen3";
+    if (a2d) c.causal = false;
+    const std::string type = a2d ? c.model_type.substr(4) : c.model_type;
     const bool qwen2 = type == "qwen2" || type == "qwen2_moe";
     const std::optional<bool> attention_bias = OptionalBool(t, "attention_bias");
     c.qkv_bias = attention_bias.value_or(qwen2);
@@ -192,8 +195,9 @@ HfModelConfig ParseHfConfig(std::string_view json) {
 
     // What pulsatrix can't run yet, with the roadmap item that adds it.
     const std::string suffix = "ForCausalLM";
-    const bool causal_lm = c.architecture.size() >= suffix.size() &&
-                           c.architecture.compare(c.architecture.size() - suffix.size(), suffix.size(), suffix) == 0;
+    const bool causal_lm = (c.architecture.size() >= suffix.size() &&
+                            c.architecture.compare(c.architecture.size() - suffix.size(), suffix.size(), suffix) == 0) ||
+                           (a2d && c.architecture == "A2DQwen3LMHeadModel");
     if (!causal_lm) {
         c.unsupported.push_back("architecture \"" + c.architecture + "\" is not a decoder-only causal language model");
     }
@@ -289,7 +293,7 @@ AttentionConfig ToAttentionConfig(const HfModelConfig& config) {
     a.qk_norm_eps = config.rms_norm_eps;
     a.qkv_bias = config.qkv_bias;
     a.out_bias = config.out_bias;
-    a.causal = true;
+    a.causal = config.causal;
     if (config.query_pre_attn_scalar) {
         a.score_scale = static_cast<float>(1.0 / std::sqrt(static_cast<double>(*config.query_pre_attn_scalar)));
     }
