@@ -168,6 +168,8 @@ add_executable(pulsatrix_tests
     encoder_block_test.cpp
     encoder_lm_test.cpp
     mdlm_test.cpp
+    a2d_test.cpp
+    dplm_test.cpp
     variant_scoring_test.cpp
     protein_contacts_test.cpp
     protein_structure_test.cpp

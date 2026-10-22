@@ -55,6 +55,25 @@ private:
     int64_t length_ = 0;
 };
 
+/** @brief A CausalLM with bidirectional attention (an A2D diffusion model, DIFF-4) as a
+ *         StepRelevanceModel, with the same rules as EncoderLMStepModel. */
+class CausalLMStepModel final : public StepRelevanceModel {
+public:
+    /**
+     * @param backend Where the model runs. The model and backend must outlive this.
+     * @throws std::invalid_argument if the model is causal.
+     */
+    CausalLMStepModel(CausalLM& model, DeviceBackend* backend, LRPRuleConfig config = LxtAttnLrpConfig());
+    [[nodiscard]] std::vector<float> forward(const std::vector<int64_t>& tokens) override;
+    [[nodiscard]] std::vector<float> relevance(const std::vector<float>& relevance_logits) override;
+
+private:
+    CausalLM& model_;
+    DeviceBackend* backend_;
+    LRPRuleConfig config_;
+    int64_t length_ = 0;
+};
+
 /** @brief How far relevance travels. */
 enum class CommitmentMode {
     /** @brief Relevance on a committed token is re-seeded at the step that wrote it, until it

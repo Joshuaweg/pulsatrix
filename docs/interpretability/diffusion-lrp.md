@@ -155,12 +155,14 @@ or a sample). The attribution-contract paper supports it: for a masked diffusion
 unmasking order is replayed rather than recomputed, Integrated Gradients' completeness residual
 falls from 97% at 1 step to 18% at 256 steps.
 
-Not every sampler commits for good. DPLM's default sampler re-masks the lowest-confidence
-positions at every step, including ones it has already decoded, and every other position takes
-the new prediction. ReMDM also re-masks. So the re-seed point is defined as **the last step that
-wrote the token at that position**. Under a carry-over sampler that's the commit step. Under a
-remasking sampler, a revoked position holds `[MASK]` and feeds the mask sink until it's written
-again.
+Not every sampler commits for good. DPLM's default sampler scores every position at every step,
+filled or not, by the model's confidence in the token it would choose there now, and masks the
+lowest-scoring ones, including positions it has already decoded. The masked positions that
+survive the cut take the new prediction; the filled ones keep their tokens. ReMDM also re-masks.
+So relevance on a token is re-seeded at **the step that wrote the token the reading step saw**.
+Under a carry-over sampler that's the commit step. Under a remasking sampler a position can be
+written several times, so different steps may relay to different writes of the same position,
+and a revoked position holds `[MASK]` and feeds the mask sink until it's written again.
 
 ### Limits
 
@@ -260,6 +262,42 @@ positions, each taking the model's most likely token for the changed sequence
 - The patch check has nothing to test on an infill: every written token is a target, so no
   intermediate is left to patch. It needs a target set smaller than the trajectory, such as the
   last few tokens of a span.
+
+**On DPLM-650M** (proteins, DPLM's remasking sampler, `--targets last` so the patch check has
+intermediates to test, on the GPU):
+- Ubiquitin with residues [30, 46) masked, 16 steps: DPLM writes the span back exactly, with no
+  re-masks. Deletion beats random (AUC 5.75 for the graph and for step-local, 7.98 random); the
+  patch check doesn't (Spearman −0.25 over 15 tokens).
+- TEM-1 β-lactamase (1BTL, 263 residues) with [100, 148) masked, 16 steps: 30 of 48 residues as
+  in the original, still no re-masks. Deletion: graph 1.80, step-local 2.07, random 5.90. Patching
+  45 tokens: Spearman 0.18. With 48 steps (one position per step) the Spearman is −0.13.
+- The golden GFP case (its first 95 residues, middle third masked, 32 steps): **3 re-masks**,
+  the same ones DPLM's own `generate` makes. The infill is a different protein, 1 of 33 residues
+  as in the original, with a thioredoxin-like `W C G P C` motif. Every relevance is finite. The
+  value 1.97 splits into prompt 0.51 and leak 1.46; one pass leaks −0.64 of its seed, the only
+  negative leak in these runs. Deletion separates nothing here (graph −1.33, step-local −1.20,
+  random −1.14): the value collapses after the first 10% of the prompt whatever the order.
+  Patching 32 tokens: Spearman 0.21.
+- Re-masks are rare under greedy decoding. The scores of decoded positions seldom fall below
+  those of masked ones, so of the inputs tried only the golden case re-masks. The relay through a
+  re-masked write is checked exactly by the hand-built test; at this scale it rests on that
+  one case.
+- Leak is far higher than on mdlm-owt: a median of 0.46–0.77 of each pass's seed goes to the
+  biases and LayerNorms. Graph and step-local agree closely on every protein.
+
+**On A2D-Qwen3-0.6B** (dLLM's `Qwen3-0.6B-diffusion-mdlm-v0.1`, the same 1024 tokens and span as
+mdlm-owt, 32 confidence steps, `--targets last`, on the GPU; 89 s to sample, 305 s to explain,
+97 min for prompt deletion and 44 min for patching):
+- The infill degenerates: " to a man, man,, man, man,, man, …". This is the model, not
+  pulsatrix: the authors' modeling code, decoding the same window the same way (one position per
+  step, the most confident), writes the identical 32 tokens. Its card samples in blocks of 64,
+  which pulsatrix doesn't have yet.
+- Every relevance is finite. The value 17.0 splits into prompt 1.8, mask 0.3 and leak 14.9; the
+  median leak is 0.85 of each pass's seed.
+- The most relevant prompt tokens are the span's neighbours (" rang", " bell", " me"); 35.2% of
+  |relevance| lies within 16 tokens of the span, which holds 3.2% of the prompt.
+- Deletion: graph 5.39, step-local 5.80, random 8.48. Patching 31 tokens: Spearman 0.38, the
+  only clearly positive patch result so far.
 
 **Not yet.** The comparison with Integrated Gradients under the same frozen commit order needs
 gradients at every step's input embeddings, chained through a soft relaxation of the committed

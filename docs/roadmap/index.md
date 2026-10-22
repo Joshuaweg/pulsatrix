@@ -2349,6 +2349,22 @@ planted tasks, causal patching and faithfulness. The rules are on the
 - **DIFF-3 seeds logits, not log-probabilities.** DLIG explains the summed log-probability, but
   log-softmax isn't linear in the logits, so it can't be seeded on them the way LRP seeds a
   logit. The explained value is the written tokens' logits, as in the rest of pulsatrix's AttnLRP.
+- **DIFF-4 leaves DiffuGPT-M to DIFF-8.** It is GPT-2 (learned positions, GELU-tanh, fused
+  `c_attn`), an architecture pulsatrix has no loader for, and its only use here is replicating
+  DLIG's published numbers, which is DIFF-8's job.
+- **DPLM's sampler was misread at first.** The research notes said every unmasked position takes
+  the new prediction at each step. DPLM's `_reparam_decoding` starts from the previous step's
+  tokens, so a decoded position that isn't re-masked keeps its token. The golden test, which runs
+  DPLM's own `generate` and compares every step's input, caught it before any result depended
+  on it.
+- **DIFF-4's remasking evidence is thin.** Greedy DPLM seldom re-masks: on ubiquitin and TEM-1
+  it made none, even with three positions filled per step. Only the golden GFP case re-masks
+  (3 times), and the explainer handles it, but D2 under remasking at scale rests on that case
+  and the hand-built test. Sampling at temperature, or ReMDM, would exercise it properly.
+- **A2D-Qwen3's greedy infill degenerates into repetition.** The authors' code writes the same
+  tokens, so this is the model under one-position-per-step confidence decoding; its card uses
+  blocks of 64. Block decoding isn't in pulsatrix yet. The explanation still runs, and it gives
+  the best patch result so far (Spearman 0.38).
 
 ## Open questions
 
