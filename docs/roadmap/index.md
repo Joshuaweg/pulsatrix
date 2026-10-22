@@ -2341,9 +2341,9 @@ planted tasks, causal patching and faithfulness. The rules are on the
 - **DIFF-2's sampler doesn't re-mask.** The remasking sampler moves to DIFF-4, with DPLM, the only
   target that needs it. DIFF-2 has LLaDA's confidence schedule and MDLM's ancestral one, and
   neither revises a filled position.
-- **DIFF-3's IG comparison moves to DIFF-7.** Integrated Gradients across a whole trajectory needs
+- **DIFF-3's IG comparison moves to DIFF-8.** Integrated Gradients across a whole trajectory needs
   gradients at each step's input embeddings, chained through a soft relaxation of the committed
-  tokens. EncoderLM takes token ids and has no such path yet, and DLIG (DIFF-7) builds it.
+  tokens. EncoderLM takes token ids and has no such path yet, and DLIG (DIFF-8) builds it.
   DIFF-3 is checked instead by exact hand computation on a linear model, a planted copy task,
   prompt deletion with the trajectory replayed, and step-resolved patching.
 - **DIFF-3 seeds logits, not log-probabilities.** DLIG explains the summed log-probability, but

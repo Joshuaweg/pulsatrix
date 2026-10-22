@@ -263,7 +263,7 @@ positions, each taking the model's most likely token for the changed sequence
 
 **Not yet.** The comparison with Integrated Gradients under the same frozen commit order needs
 gradients at every step's input embeddings, chained through a soft relaxation of the committed
-tokens, and moves to DIFF-7 with DLIG.
+tokens, and moves to DIFF-8 with DLIG.
 
 ## D3: adaLN and adaLN-Zero
 
