@@ -2,6 +2,7 @@ var masked__diffusion__lrp_8hpp =
 [
     [ "pulsatrix::StepRelevanceModel", "classpulsatrix_1_1StepRelevanceModel.html", "classpulsatrix_1_1StepRelevanceModel" ],
     [ "pulsatrix::EncoderLMStepModel", "classpulsatrix_1_1EncoderLMStepModel.html", "classpulsatrix_1_1EncoderLMStepModel" ],
+    [ "pulsatrix::CausalLMStepModel", "classpulsatrix_1_1CausalLMStepModel.html", "classpulsatrix_1_1CausalLMStepModel" ],
     [ "pulsatrix::CommitmentTarget", "structpulsatrix_1_1CommitmentTarget.html", "structpulsatrix_1_1CommitmentTarget" ],
     [ "pulsatrix::CommitmentHop", "structpulsatrix_1_1CommitmentHop.html", "structpulsatrix_1_1CommitmentHop" ],
     [ "pulsatrix::CommitmentRelevance", "structpulsatrix_1_1CommitmentRelevance.html", "structpulsatrix_1_1CommitmentRelevance" ],

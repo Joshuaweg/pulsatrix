@@ -100,7 +100,7 @@ $(document).ready(function(){initNavTree('structpulsatrix_1_1MaskedDiffusionStep
 </div><!--header-->
 <div class="contents">
 
-<p>One step that filled at least one position.  
+<p>One step that filled at least one position (under Remasking, any step).  
  <a href="structpulsatrix_1_1MaskedDiffusionStep.html#details">More...</a></p>
 
 <p><code>#include &lt;<a class="el" href="masked__diffusion_8hpp_source.html">masked_diffusion.hpp</a>&gt;</code></p>
@@ -111,11 +111,14 @@ Public Attributes</h2></td></tr>
 <tr class="memdesc:a9d96a6539cde164c39059abd9d72a306"><td class="mdescLeft">&#160;</td><td class="mdescRight">The sequence the model saw at this step.  <br /></td></tr>
 <tr class="separator:a9d96a6539cde164c39059abd9d72a306"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a040655b18a4110f76d8ab05b4a639d00" id="r_a040655b18a4110f76d8ab05b4a639d00"><td class="memItemLeft" align="right" valign="top">std::vector&lt; <a class="el" href="structpulsatrix_1_1MaskedDiffusionWrite.html">MaskedDiffusionWrite</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpulsatrix_1_1MaskedDiffusionStep.html#a040655b18a4110f76d8ab05b4a639d00">writes</a></td></tr>
-<tr class="memdesc:a040655b18a4110f76d8ab05b4a639d00"><td class="mdescLeft">&#160;</td><td class="mdescRight">The positions filled from the model's output, in position order.  <br /></td></tr>
+<tr class="memdesc:a040655b18a4110f76d8ab05b4a639d00"><td class="mdescLeft">&#160;</td><td class="mdescRight">The positions filled from the model's output, in position order. A position is only ever written while it holds the mask token.  <br /></td></tr>
 <tr class="separator:a040655b18a4110f76d8ab05b4a639d00"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa1264102e6db20bad5b1bf2a0afbb578" id="r_aa1264102e6db20bad5b1bf2a0afbb578"><td class="memItemLeft" align="right" valign="top">std::vector&lt; int64_t &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpulsatrix_1_1MaskedDiffusionStep.html#aa1264102e6db20bad5b1bf2a0afbb578">remasked</a></td></tr>
+<tr class="memdesc:aa1264102e6db20bad5b1bf2a0afbb578"><td class="mdescLeft">&#160;</td><td class="mdescRight">The positions that held a token in <code>input</code> and are masked again after this step, in position order (Remasking only).  <br /></td></tr>
+<tr class="separator:aa1264102e6db20bad5b1bf2a0afbb578"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p>One step that filled at least one position. </p>
+<div class="textblock"><p>One step that filled at least one position (under Remasking, any step). </p>
 </div><h2 class="groupheader">Member Data Documentation</h2>
 <a id="a9d96a6539cde164c39059abd9d72a306" name="a9d96a6539cde164c39059abd9d72a306"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a9d96a6539cde164c39059abd9d72a306">&#9670;&#160;</a></span>input</h2>
@@ -133,6 +136,22 @@ Public Attributes</h2></td></tr>
 
 </div>
 </div>
+<a id="aa1264102e6db20bad5b1bf2a0afbb578" name="aa1264102e6db20bad5b1bf2a0afbb578"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa1264102e6db20bad5b1bf2a0afbb578">&#9670;&#160;</a></span>remasked</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::vector&lt;int64_t&gt; pulsatrix::MaskedDiffusionStep::remasked</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>The positions that held a token in <code>input</code> and are masked again after this step, in position order (Remasking only). </p>
+
+</div>
+</div>
 <a id="a040655b18a4110f76d8ab05b4a639d00" name="a040655b18a4110f76d8ab05b4a639d00"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a040655b18a4110f76d8ab05b4a639d00">&#9670;&#160;</a></span>writes</h2>
 
@@ -145,7 +164,7 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>The positions filled from the model's output, in position order. </p>
+<p>The positions filled from the model's output, in position order. A position is only ever written while it holds the mask token. </p>
 
 </div>
 </div>

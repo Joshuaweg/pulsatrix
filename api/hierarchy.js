@@ -581,6 +581,7 @@ var hierarchy =
     [ "pulsatrix::SteeringOptions", "structpulsatrix_1_1SteeringOptions.html", null ],
     [ "pulsatrix::SteeringReport", "structpulsatrix_1_1SteeringReport.html", null ],
     [ "pulsatrix::StepRelevanceModel", "classpulsatrix_1_1StepRelevanceModel.html", [
+      [ "pulsatrix::CausalLMStepModel", "classpulsatrix_1_1CausalLMStepModel.html", null ],
       [ "pulsatrix::EncoderLMStepModel", "classpulsatrix_1_1EncoderLMStepModel.html", null ]
     ] ],
     [ "pulsatrix::StepResult", "structpulsatrix_1_1StepResult.html", null ],

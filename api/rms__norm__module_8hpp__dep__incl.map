@@ -1,121 +1,122 @@
 <map id="include/pulsatrix/rms_norm_module.hpp" name="include/pulsatrix/rms_norm_module.hpp">
-<area shape="rect" id="Node000001" title="RMS normalization layer (Zhang &amp; Sennrich, 2019) – this codebase&#39;s first normalization Module,..." alt="" coords="1256,5,1415,45"/>
-<area shape="rect" id="Node000002" href="$causal__lm_8hpp.html" title="A Llama&#45;family decoder&#45;only language model built from a Hugging Face config, and loading its Hugging ..." alt="" coords="1034,357,1210,397"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="1301,56,1257,93,1208,144,1161,203,1142,236,1126,270,1120,293,1118,316,1121,357,1116,357,1113,316,1115,292,1121,268,1137,234,1157,200,1204,140,1254,90,1297,52"/>
-<area shape="rect" id="Node000027" href="$multihead__attention__module_8hpp.html" title="Multi&#45;head scaled dot&#45;product attention – this codebase&#39;s first Module composed out of other real Mod..." alt="" coords="1526,93,1726,133"/>
-<area shape="poly" id="edge32_Node000001_Node000027" title=" " alt="" coords="1413,47,1563,91,1562,96,1411,52"/>
-<area shape="rect" id="Node000052" href="$transformer__block_8hpp.html" title="Pre&#45;LN transformer block – Phase 3&#39;s literal exit&#45;gate deliverable, third and last composition missio..." alt="" coords="1230,181,1441,221"/>
-<area shape="poly" id="edge69_Node000001_Node000052" title=" " alt="" coords="1338,59,1338,181,1333,181,1333,59"/>
-<area shape="rect" id="Node000003" href="$attnlrp__parity_8hpp.html" title="AttnLRP parity with LXT on a real language model (LLM&#45;7): pulsatrix&#39;s relevance against LXT&#39;s own Att..." alt="" coords="964,533,1142,573"/>
-<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="1224,381,1358,389,1503,402,1625,420,1666,431,1689,443,1697,454,1699,465,1697,476,1689,487,1677,495,1657,502,1597,513,1431,525,1262,531,1161,536,1142,539,1141,533,1161,531,1262,526,1431,520,1596,507,1655,497,1675,491,1686,483,1692,474,1694,465,1692,456,1686,447,1664,436,1624,425,1502,407,1357,395,1224,386"/>
-<area shape="rect" id="Node000006" href="$relevance__graph_8hpp.html" title="A language model&#39;s attribution graph from AttnLRP (VIZ&#45;4): how relevance for one predicted token flow..." alt="" coords="894,621,1092,661"/>
-<area shape="poly" id="edge30_Node000002_Node000006" title=" " alt="" coords="1020,384,756,392,433,405,153,424,62,435,34,441,21,447,9,470,9,479,13,489,33,508,67,526,114,542,171,557,309,582,465,602,625,617,894,633,893,639,625,622,465,607,308,588,170,562,112,548,65,531,30,513,8,492,4,481,3,468,18,443,33,436,61,430,152,418,433,400,756,386,1020,378"/>
-<area shape="rect" id="Node000007" href="$circuit__tracing_8hpp.html" title="Attribution graphs with cross&#45;layer transcoders (FEAT&#45;10), after Ameisen, Lindsey et al...." alt="" coords="2042,621,2216,661"/>
-<area shape="poly" id="edge7_Node000002_Node000007" title=" " alt="" coords="1224,378,1367,384,1549,395,1749,414,1949,443,2001,449,2048,451,2131,452,2168,458,2204,471,2238,495,2272,532,2280,547,2280,561,2273,574,2262,587,2230,607,2192,624,2189,619,2227,603,2258,582,2269,571,2274,560,2275,548,2268,535,2235,499,2201,476,2167,463,2130,457,2048,456,2001,454,1949,448,1748,419,1548,400,1367,389,1224,383"/>
-<area shape="rect" id="Node000008" href="$encoder__lm_8hpp.html" title="Masked&#45;language&#45;model encoders: ESM&#45;2 protein language models (PLM&#45;2), Hugging Face EsmForMaskedLM ch..." alt="" coords="1750,445,1937,485"/>
-<area shape="poly" id="edge8_Node000002_Node000008" title=" " alt="" coords="1225,385,1457,409,1732,443,1750,445,1750,451,1731,448,1456,414,1224,391"/>
-<area shape="rect" id="Node000019" href="$featurizer__metrics_8hpp.html" title="How good a featurizer is (FEAT&#45;3), after SAEBench (Karvonen et al., arXiv 2503.09532): reconstruction..." alt="" coords="32,445,229,485"/>
-<area shape="poly" id="edge23_Node000002_Node000019" title=" " alt="" coords="1020,386,675,407,458,425,241,448,229,450,229,444,241,443,458,420,674,402,1020,381"/>
-<area shape="rect" id="Node000020" href="$golden__logits_8hpp.html" title="The golden&#45;logit harness: a loaded model&#39;s logits against Hugging Face&#39;s on real text (LLM&#45;6)." alt="" coords="253,445,432,485"/>
-<area shape="poly" id="edge24_Node000002_Node000020" title=" " alt="" coords="1021,389,759,411,444,448,432,450,431,444,443,443,759,406,1021,383"/>
-<area shape="rect" id="Node000021" href="$ia3_8hpp.html" title="IA³ (Liu et al., 2022): fine&#45;tune a frozen model by learning one rescaling vector per adapted Linear ..." alt="" coords="456,453,639,478"/>
-<area shape="poly" id="edge25_Node000002_Node000021" title=" " alt="" coords="1021,394,651,448,608,455,607,450,650,443,1020,389"/>
-<area shape="rect" id="Node000022" href="$layer__student_8hpp.html" title="DistilBERT&#39;s recipe for a smaller language model (Sanh et al., 2019; roadmap KD&#45;4): a student with so..." alt="" coords="663,445,830,485"/>
-<area shape="poly" id="edge26_Node000002_Node000022" title=" " alt="" coords="1027,403,829,448,828,443,1026,398"/>
-<area shape="rect" id="Node000023" href="$lm__scoring_8hpp.html" title="Prompt/completion data for a causal language model (LLM&#45;10): read it from JSONL, batch it with the pr..." alt="" coords="854,445,1004,485"/>
-<area shape="poly" id="edge27_Node000002_Node000023" title=" " alt="" coords="1068,405,972,448,970,443,1066,401"/>
-<area shape="rect" id="Node000024" href="$lora_8hpp.html" title="LoRA (Hu et al., 2021): fine&#45;tune a frozen model through a low&#45;rank update on each of its Linear laye..." alt="" coords="1029,453,1216,478"/>
-<area shape="poly" id="edge28_Node000002_Node000024" title=" " alt="" coords="1125,411,1125,452,1120,452,1120,411"/>
-<area shape="rect" id="Node000025" href="$loreft_8hpp.html" title="LoReFT (Wu et al., 2024): fine&#45;tune a frozen language model by editing its hidden states in a learned..." alt="" coords="1240,453,1436,478"/>
-<area shape="poly" id="edge29_Node000002_Node000025" title=" " alt="" coords="1183,400,1310,450,1308,455,1181,405"/>
-<area shape="rect" id="Node000026" href="$steering_8hpp.html" title="Steering a model by adding a direction to its residual stream (FEAT&#45;7), with difference&#45;of&#45;means as t..." alt="" coords="1460,453,1675,478"/>
-<area shape="poly" id="edge31_Node000002_Node000026" title=" " alt="" coords="1224,396,1509,450,1508,455,1223,401"/>
-<area shape="rect" id="Node000004" href="$masked__diffusion__lrp_8hpp.html" title="Explaining a masked diffusion LM&#39;s generation (DIFF&#45;3): commitment&#45;graph LRP, which explains tokens w..." alt="" coords="1626,621,1811,661"/>
-<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="1155,565,1626,625,1625,631,1154,570"/>
-<area shape="rect" id="Node000005" href="$protein__explanations_8hpp.html" title="Explaining a protein language model residue by residue (PLM&#45;6): AttnLRP from a masked residue&#39;s predi..." alt="" coords="1090,709,1270,749"/>
-<area shape="poly" id="edge4_Node000003_Node000005" title=" " alt="" coords="1078,583,1106,620,1168,707,1164,711,1101,623,1074,586"/>
-<area shape="poly" id="edge5_Node000003_Node000006" title=" " alt="" coords="1034,586,1008,623,1004,620,1030,583"/>
-<area shape="poly" id="edge6_Node000006_Node000005" title=" " alt="" coords="1047,665,1140,707,1138,712,1045,669"/>
-<area shape="poly" id="edge11_Node000008_Node000004" title=" " alt="" coords="1847,500,1841,537,1826,575,1798,603,1766,623,1763,619,1795,599,1821,572,1836,536,1841,499"/>
-<area shape="poly" id="edge14_Node000008_Node000005" title=" " alt="" coords="1737,485,1710,488,1452,500,1293,513,1237,523,1206,535,1192,554,1181,576,1172,624,1173,672,1178,709,1173,710,1167,672,1166,624,1176,574,1187,551,1203,531,1235,518,1293,508,1452,494,1710,483,1736,479"/>
-<area shape="rect" id="Node000009" href="$masked__diffusion_8hpp.html" title="Sampling from a masked diffusion language model (DIFF&#45;2): start from a sequence with masked positions..." alt="" coords="1626,533,1811,573"/>
-<area shape="poly" id="edge9_Node000008_Node000009" title=" " alt="" coords="1806,496,1747,535,1744,531,1803,491"/>
-<area shape="rect" id="Node000010" href="$protein__concepts_8hpp.html" title="What a protein language model&#39;s representations encode (PLM&#45;8): per&#45;residue concepts from Swiss&#45;Prot ..." alt="" coords="1887,533,2067,573"/>
-<area shape="poly" id="edge12_Node000008_Node000010" title=" " alt="" coords="1886,491,1949,531,1946,535,1883,495"/>
-<area shape="rect" id="Node000011" href="$protein__contacts_8hpp.html" title="Residue contacts from a protein language model&#39;s attention (PLM&#45;4): ESM&#39;s contact head,..." alt="" coords="1218,533,1398,573"/>
-<area shape="poly" id="edge13_Node000008_Node000011" title=" " alt="" coords="1737,487,1732,488,1409,536,1398,538,1397,533,1408,531,1731,483,1736,482"/>
-<area shape="rect" id="Node000012" href="$protein__training_8hpp.html" title="Training protein language models (PLM&#45;7): ESM&#45;2&#39;s masked&#45;LM data pipeline (masking,..." alt="" coords="1422,533,1602,573"/>
-<area shape="poly" id="edge15_Node000008_Node000012" title=" " alt="" coords="1758,491,1585,536,1584,531,1757,486"/>
-<area shape="rect" id="Node000013" href="$variant__scoring_8hpp.html" title="Zero&#45;shot variant effects from a protein language model (PLM&#45;3): how much the model prefers a mutant ..." alt="" coords="2334,533,2514,573"/>
-<area shape="poly" id="edge16_Node000008_Node000013" title=" " alt="" coords="1951,480,2334,536,2333,541,1950,485"/>
-<area shape="poly" id="edge10_Node000009_Node000004" title=" " alt="" coords="1721,587,1721,621,1716,621,1716,587"/>
-<area shape="poly" id="edge17_Node000013_Node000005" title=" " alt="" coords="2364,581,2281,624,2257,645,2246,655,2230,664,2172,676,2075,687,1805,706,1270,728,1269,723,1805,701,2075,682,2172,671,2228,659,2243,651,2253,641,2278,619,2362,577"/>
-<area shape="rect" id="Node000014" href="$proteingym_8hpp.html" title="Running ProteinGym&#39;s deep&#45;mutational&#45;scanning substitution benchmarks (PLM&#45;3): read an assay,..." alt="" coords="2292,629,2529,654"/>
-<area shape="poly" id="edge18_Node000013_Node000014" title=" " alt="" coords="2421,588,2415,629,2409,628,2416,587"/>
-<area shape="rect" id="Node000015" href="$protein__documents_8hpp.html" title="Viz documents for proteins (PLM&#45;5): the mutation map, the sequence logo, the contact map and residue ..." alt="" coords="2604,621,2782,661"/>
-<area shape="poly" id="edge20_Node000013_Node000015" title=" " alt="" coords="2496,575,2635,619,2633,624,2495,580"/>
-<area shape="poly" id="edge19_Node000014_Node000005" title=" " alt="" coords="2321,658,2273,664,1986,688,1702,707,1270,727,1270,722,1702,701,1986,683,2273,659,2320,653"/>
-<area shape="rect" id="Node000016" href="$mime__bundle_8hpp.html" title="Rich notebook display: mime_bundle_repr() for pulsatrix&#39;s types (roadmap NB&#45;1)." alt="" coords="2527,709,2680,749"/>
-<area shape="poly" id="edge21_Node000015_Node000016" title=" " alt="" coords="2665,673,2625,711,2621,707,2661,669"/>
-<area shape="rect" id="Node000018" href="$protein__views_8hpp.html" title="Figures and pages for proteins (PLM&#45;5): the mutation map, the sequence logo, the contact map,..." alt="" coords="2743,709,2896,749"/>
-<area shape="poly" id="edge22_Node000015_Node000018" title=" " alt="" coords="2734,667,2793,707,2790,711,2731,672"/>
-<area shape="rect" id="Node000028" href="$encoder__block_8hpp.html" title="A configurable transformer encoder layer (PLM&#45;1): LayerNorm or RMSNorm, before or after each sublayer..." alt="" coords="1724,181,1910,221"/>
-<area shape="poly" id="edge33_Node000027_Node000028" title=" " alt="" coords="1682,137,1776,179,1774,184,1679,141"/>
-<area shape="rect" id="Node000029" href="$explainer__context_8hpp.html" title="Stable interface every explainer gets, regardless of type (charter Part 2 SS2)." alt="" coords="2342,269,2537,309"/>
-<area shape="poly" id="edge35_Node000027_Node000029" title=" " alt="" coords="1728,134,2352,267,2351,272,1727,139"/>
-<area shape="rect" id="Node000051" href="$hf__model_8hpp.html" title="Hugging Face checkpoints: config.json and single or sharded safetensors (IO&#45;5)." alt="" coords="1553,181,1700,221"/>
-<area shape="poly" id="edge62_Node000027_Node000051" title=" " alt="" coords="1629,147,1629,181,1624,181,1624,147"/>
-<area shape="poly" id="edge64_Node000027_Node000052" title=" " alt="" coords="1550,140,1400,184,1398,179,1549,135"/>
-<area shape="poly" id="edge34_Node000028_Node000008" title=" " alt="" coords="1823,235,1844,445,1839,445,1817,235"/>
-<area shape="rect" id="Node000030" href="$concept__relevance_8hpp.html" title="Concept Relevance Propagation (INT&#45;6): which of a layer&#39;s channels an LRP explanation passes through,..." alt="" coords="2344,445,2530,485"/>
-<area shape="poly" id="edge36_Node000029_Node000030" title=" " alt="" coords="2328,299,2201,308,2065,321,1952,338,1914,348,1895,359,1889,368,1887,377,1889,386,1895,396,1908,407,1926,417,1973,430,2029,437,2092,440,2218,440,2314,443,2344,447,2343,452,2314,448,2218,445,2092,446,2029,443,1971,435,1924,422,1905,412,1891,399,1884,388,1881,377,1884,366,1891,355,1912,343,1951,333,2064,316,2200,303,2328,294"/>
-<area shape="rect" id="Node000031" href="$contrastive_8hpp.html" title="The contrastive explanation method (CEM; Dhurandhar et al., &quot;Explanations based on the &#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;Missin..." alt="" coords="1905,365,2140,390"/>
-<area shape="poly" id="edge37_Node000029_Node000031" title=" " alt="" coords="2335,315,2078,367,2077,362,2334,310"/>
-<area shape="rect" id="Node000032" href="$counterfactual_8hpp.html" title="Counterfactual explanations: gradient&#45;based (Wachter et al. 2017, CFS&#45;5) and model&#45;agnostic (growing ..." alt="" coords="3057,365,3313,390"/>
-<area shape="poly" id="edge38_Node000029_Node000032" title=" " alt="" coords="2551,299,3045,355,3102,362,3102,367,3045,360,2550,305"/>
-<area shape="rect" id="Node000046" href="$grad__cam_8hpp.html" title="Grad&#45;CAM – gradient&#45;weighted class activation mapping over the last conv layer (charter Part 1,..." alt="" coords="2164,357,2326,397"/>
-<area shape="poly" id="edge55_Node000029_Node000046" title=" " alt="" coords="2386,317,2289,360,2286,355,2383,312"/>
-<area shape="rect" id="Node000047" href="$integrated__gradients_8hpp.html" title="Integrated Gradients – baseline&#45;interpolated gradient integral (charter Part 1, Phase 2; theory: xai_..." alt="" coords="2690,445,2891,485"/>
-<area shape="poly" id="edge56_Node000029_Node000047" title=" " alt="" coords="2483,315,2542,355,2567,376,2593,395,2654,422,2715,443,2714,448,2652,427,2590,400,2564,381,2539,359,2480,319"/>
-<area shape="rect" id="Node000048" href="$lrp_8hpp.html" title="LRP – whole&#45;model Layer&#45;wise Relevance Propagation explainer." alt="" coords="2350,365,2529,390"/>
-<area shape="poly" id="edge57_Node000029_Node000048" title=" " alt="" coords="2442,323,2442,364,2437,364,2437,323"/>
-<area shape="rect" id="Node000049" href="$saliency_8hpp.html" title="Saliency maps – raw gradient of a target output w.r.t. the input (charter Part 1, Phase 2)." alt="" coords="2818,365,3032,390"/>
-<area shape="poly" id="edge59_Node000029_Node000049" title=" " alt="" coords="2551,308,2861,362,2860,367,2550,313"/>
-<area shape="rect" id="Node000050" href="$tcav_8hpp.html" title="Testing with Concept Activation Vectors (INT&#45;6): how much a concept, given only by examples,..." alt="" coords="2604,365,2793,390"/>
-<area shape="poly" id="edge61_Node000029_Node000050" title=" " alt="" coords="2510,311,2665,362,2663,367,2508,316"/>
-<area shape="rect" id="Node000033" href="$document_8hpp.html" title="Versioned JSON documents (pulsatrix.&lt;kind&gt;.v1) that every renderer reads." alt="" coords="3108,445,3262,485"/>
-<area shape="poly" id="edge39_Node000032_Node000033" title=" " alt="" coords="3188,404,3188,445,3182,445,3182,404"/>
-<area shape="poly" id="edge48_Node000033_Node000016" title=" " alt="" coords="3095,472,3016,478,2924,489,2827,508,2732,536,2686,551,2650,565,2621,586,2594,623,2587,644,2587,667,2598,708,2592,710,2582,667,2582,643,2589,620,2617,582,2648,560,2685,546,2731,531,2825,503,2923,484,3015,472,3094,466"/>
-<area shape="rect" id="Node000034" href="$attribution__bar__chart_8hpp.html" title="Horizontal feature&#45;importance bar chart for an Attribution." alt="" coords="2972,533,3163,573"/>
-<area shape="poly" id="edge40_Node000033_Node000034" title=" " alt="" coords="3149,496,3095,535,3092,531,3146,492"/>
-<area shape="rect" id="Node000035" href="$attribution__graph_8hpp.html" title="Attribution graphs in the JSON that Neuronpedia&#39;s graph viewer and circuit&#45;tracer&#39;s local viewer read..." alt="" coords="2091,533,2258,573"/>
-<area shape="poly" id="edge41_Node000033_Node000035" title=" " alt="" coords="3094,476,2693,505,2322,536,2258,543,2258,538,2322,531,2692,500,3094,470"/>
-<area shape="rect" id="Node000036" href="$attribution__waterfall_8hpp.html" title="Cascading waterfall chart from a baseline to a prediction, for local attribution." alt="" coords="3188,533,3374,573"/>
-<area shape="poly" id="edge44_Node000033_Node000036" title=" " alt="" coords="3218,493,3261,531,3258,535,3215,497"/>
-<area shape="rect" id="Node000037" href="$circuit__graph__view_8hpp.html" title="Node&#45;link diagram for a CircuitGraph (mechanistic&#45;interpretability visualization)." alt="" coords="3399,533,3574,573"/>
-<area shape="poly" id="edge45_Node000033_Node000037" title=" " alt="" coords="3265,487,3421,531,3419,536,3264,492"/>
-<area shape="rect" id="Node000038" href="$html_8hpp.html" title="Self&#45;contained HTML views of the viz documents (VIZ&#45;3): interactive Vega&#45;Lite charts with tooltips,..." alt="" coords="2858,621,3011,661"/>
-<area shape="poly" id="edge46_Node000033_Node000038" title=" " alt="" coords="3095,475,3060,483,3025,495,2991,512,2963,535,2949,555,2941,578,2936,621,2931,621,2936,577,2945,553,2959,532,2988,507,3022,490,3058,478,3094,470"/>
-<area shape="rect" id="Node000039" href="$saliency__heatmap__view_8hpp.html" title="Saliency/attribution heatmap using a perceptually uniform colormap." alt="" coords="3598,533,3809,573"/>
-<area shape="poly" id="edge49_Node000033_Node000039" title=" " alt="" coords="3276,479,3599,532,3598,537,3275,484"/>
-<area shape="rect" id="Node000040" href="$svg_8hpp.html" title="Dependency&#45;free SVG figures from viz documents: bar, waterfall, heatmap, token strip,..." alt="" coords="2743,533,2896,573"/>
-<area shape="poly" id="edge50_Node000033_Node000040" title=" " alt="" coords="3095,490,2897,537,2896,531,3094,485"/>
-<area shape="rect" id="Node000044" href="$text__relevance_8hpp.html" title="Token relevance documents from real explanations (VIZ&#45;6a): a tokenizer&#39;s Encoding or TOK&#45;4&#39;s word sco..." alt="" coords="3832,533,3986,573"/>
-<area shape="poly" id="edge53_Node000033_Node000044" title=" " alt="" coords="3275,470,3522,493,3672,510,3821,531,3833,533,3832,538,3820,536,3671,515,3521,498,3275,476"/>
-<area shape="rect" id="Node000045" href="$token__relevance__view_8hpp.html" title="The text of a pulsatrix.token_relevance.v1 document with each piece colored by its relevance,..." alt="" coords="4010,533,4208,573"/>
-<area shape="poly" id="edge54_Node000033_Node000045" title=" " alt="" coords="3276,469,3595,491,3796,508,3999,531,4010,532,4009,537,3998,536,3796,514,3595,496,3275,474"/>
-<area shape="poly" id="edge43_Node000035_Node000006" title=" " alt="" coords="2077,576,1794,605,1517,625,1274,636,1093,641,1092,636,1274,630,1517,619,1794,600,2077,571"/>
-<area shape="poly" id="edge42_Node000035_Node000007" title=" " alt="" coords="2160,587,2141,622,2137,620,2156,584"/>
-<area shape="poly" id="edge47_Node000038_Node000018" title=" " alt="" coords="2900,672,2846,711,2843,707,2896,668"/>
-<area shape="poly" id="edge52_Node000040_Node000018" title=" " alt="" coords="2822,587,2822,709,2817,709,2817,587"/>
-<area shape="poly" id="edge51_Node000040_Node000038" title=" " alt="" coords="2857,580,2910,619,2907,623,2854,584"/>
-<area shape="poly" id="edge58_Node000048_Node000030" title=" " alt="" coords="2441,404,2440,445,2435,445,2436,403"/>
-<area shape="poly" id="edge60_Node000049_Node000047" title=" " alt="" coords="2897,400,2821,447,2818,443,2894,395"/>
-<area shape="poly" id="edge63_Node000051_Node000002" title=" " alt="" coords="1631,235,1626,275,1618,295,1605,311,1577,329,1537,344,1488,355,1433,363,1316,374,1211,378,1210,373,1316,369,1432,358,1487,350,1535,339,1575,324,1602,307,1614,292,1621,273,1626,235"/>
-<area shape="poly" id="edge65_Node000052_Node000002" title=" " alt="" coords="1218,227,1181,245,1150,271,1137,291,1129,314,1124,357,1119,357,1124,313,1132,289,1146,268,1178,241,1216,222"/>
-<area shape="rect" id="Node000053" href="$generation_8hpp.html" title="Text generation from a language model: greedy decoding and seeded sampling with temperature,..." alt="" coords="1360,277,1592,302"/>
-<area shape="poly" id="edge66_Node000052_Node000053" title=" " alt="" coords="1379,226,1458,274,1456,279,1376,231"/>
-<area shape="rect" id="Node000054" href="$tagger__finetune__example_8hpp.html" title="A full fine&#45;tuning recipe (roadmap TRN&#45;6): pretrain a tiny transformer tagger on one rule,..." alt="" coords="1160,269,1336,309"/>
-<area shape="poly" id="edge68_Node000052_Node000054" title=" " alt="" coords="1308,233,1269,271,1265,267,1304,229"/>
-<area shape="poly" id="edge67_Node000053_Node000002" title=" " alt="" coords="1416,308,1200,360,1199,355,1414,303"/>
+<area shape="rect" id="Node000001" title="RMS normalization layer (Zhang &amp; Sennrich, 2019) – this codebase&#39;s first normalization Module,..." alt="" coords="1165,5,1324,45"/>
+<area shape="rect" id="Node000002" href="$causal__lm_8hpp.html" title="A Llama&#45;family decoder&#45;only language model built from a Hugging Face config, and loading its Hugging ..." alt="" coords="1069,357,1245,397"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="1185,53,1118,87,1043,134,1007,163,973,195,943,231,919,270,913,292,917,310,930,325,951,338,1006,357,1069,367,1068,373,1005,362,949,343,927,329,913,313,908,292,914,268,939,228,969,192,1003,159,1040,130,1115,82,1182,49"/>
+<area shape="rect" id="Node000027" href="$multihead__attention__module_8hpp.html" title="Multi&#45;head scaled dot&#45;product attention – this codebase&#39;s first Module composed out of other real Mod..." alt="" coords="1349,93,1549,133"/>
+<area shape="poly" id="edge33_Node000001_Node000027" title=" " alt="" coords="1303,48,1405,91,1403,96,1301,53"/>
+<area shape="rect" id="Node000052" href="$transformer__block_8hpp.html" title="Pre&#45;LN transformer block – Phase 3&#39;s literal exit&#45;gate deliverable, third and last composition missio..." alt="" coords="1139,181,1350,221"/>
+<area shape="poly" id="edge70_Node000001_Node000052" title=" " alt="" coords="1247,59,1247,181,1242,181,1242,59"/>
+<area shape="rect" id="Node000003" href="$attnlrp__parity_8hpp.html" title="AttnLRP parity with LXT on a real language model (LLM&#45;7): pulsatrix&#39;s relevance against LXT&#39;s own Att..." alt="" coords="1093,533,1271,573"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="1146,411,1138,447,1137,466,1141,485,1152,510,1167,532,1163,535,1148,513,1135,486,1132,466,1133,446,1141,410"/>
+<area shape="rect" id="Node000006" href="$relevance__graph_8hpp.html" title="A language model&#39;s attribution graph from AttnLRP (VIZ&#45;4): how relevance for one predicted token flow..." alt="" coords="1083,621,1281,661"/>
+<area shape="poly" id="edge31_Node000002_Node000006" title=" " alt="" coords="1132,410,1106,444,1084,486,1077,507,1074,530,1075,551,1083,572,1106,599,1136,619,1133,624,1103,603,1078,575,1070,552,1068,529,1072,506,1079,483,1102,441,1127,407"/>
+<area shape="rect" id="Node000007" href="$circuit__tracing_8hpp.html" title="Attribution graphs with cross&#45;layer transcoders (FEAT&#45;10), after Ameisen, Lindsey et al...." alt="" coords="2216,621,2391,661"/>
+<area shape="poly" id="edge7_Node000002_Node000007" title=" " alt="" coords="1259,381,1547,398,1909,428,2083,448,2232,472,2343,499,2379,515,2401,532,2408,545,2409,558,2396,583,2371,605,2343,623,2340,619,2368,601,2391,580,2404,557,2403,546,2397,535,2377,519,2341,504,2231,477,2082,453,1909,433,1547,403,1258,386"/>
+<area shape="rect" id="Node000008" href="$encoder__lm_8hpp.html" title="Masked&#45;language&#45;model encoders: ESM&#45;2 protein language models (PLM&#45;2), Hugging Face EsmForMaskedLM ch..." alt="" coords="1826,445,2013,485"/>
+<area shape="poly" id="edge8_Node000002_Node000008" title=" " alt="" coords="1259,384,1512,407,1814,443,1826,444,1825,450,1814,448,1511,412,1258,389"/>
+<area shape="rect" id="Node000009" href="$masked__diffusion_8hpp.html" title="Sampling from a masked diffusion language model (DIFF&#45;2): start from a sequence with masked positions..." alt="" coords="1295,533,1480,573"/>
+<area shape="poly" id="edge30_Node000002_Node000009" title=" " alt="" coords="1159,410,1165,449,1173,467,1184,483,1202,496,1231,509,1303,531,1302,536,1229,514,1200,501,1180,487,1168,470,1160,450,1154,411"/>
+<area shape="rect" id="Node000019" href="$featurizer__metrics_8hpp.html" title="How good a featurizer is (FEAT&#45;3), after SAEBench (Karvonen et al., arXiv 2503.09532): reconstruction..." alt="" coords="1194,445,1391,485"/>
+<area shape="poly" id="edge23_Node000002_Node000019" title=" " alt="" coords="1200,403,1264,443,1261,448,1197,407"/>
+<area shape="rect" id="Node000020" href="$golden__logits_8hpp.html" title="The golden&#45;logit harness: a loaded model&#39;s logits against Hugging Face&#39;s on real text (LLM&#45;6)." alt="" coords="1415,445,1594,485"/>
+<area shape="poly" id="edge24_Node000002_Node000020" title=" " alt="" coords="1247,398,1429,443,1428,448,1246,403"/>
+<area shape="rect" id="Node000021" href="$ia3_8hpp.html" title="IA³ (Liu et al., 2022): fine&#45;tune a frozen model by learning one rescaling vector per adapted Linear ..." alt="" coords="1619,453,1801,478"/>
+<area shape="poly" id="edge25_Node000002_Node000021" title=" " alt="" coords="1259,390,1606,443,1649,450,1648,455,1606,448,1258,396"/>
+<area shape="rect" id="Node000022" href="$layer__student_8hpp.html" title="DistilBERT&#39;s recipe for a smaller language model (Sanh et al., 2019; roadmap KD&#45;4): a student with so..." alt="" coords="5,445,172,485"/>
+<area shape="poly" id="edge26_Node000002_Node000022" title=" " alt="" coords="1055,384,671,402,428,421,184,448,173,450,172,444,183,443,428,416,671,397,1055,379"/>
+<area shape="rect" id="Node000023" href="$lm__scoring_8hpp.html" title="Prompt/completion data for a causal language model (LLM&#45;10): read it from JSONL, batch it with the pr..." alt="" coords="196,445,347,485"/>
+<area shape="poly" id="edge27_Node000002_Node000023" title=" " alt="" coords="1055,386,744,406,552,424,360,448,347,450,347,445,359,443,551,419,743,401,1055,380"/>
+<area shape="rect" id="Node000024" href="$lora_8hpp.html" title="LoRA (Hu et al., 2021): fine&#45;tune a frozen model through a low&#45;rank update on each of its Linear laye..." alt="" coords="371,453,558,478"/>
+<area shape="poly" id="edge28_Node000002_Node000024" title=" " alt="" coords="1055,391,832,415,570,448,526,455,525,450,570,443,832,409,1055,386"/>
+<area shape="rect" id="Node000025" href="$loreft_8hpp.html" title="LoReFT (Wu et al., 2024): fine&#45;tune a frozen language model by editing its hidden states in a learned..." alt="" coords="583,453,779,478"/>
+<area shape="poly" id="edge29_Node000002_Node000025" title=" " alt="" coords="1055,400,744,455,743,450,1054,394"/>
+<area shape="rect" id="Node000026" href="$steering_8hpp.html" title="Steering a model by adding a direction to its residual stream (FEAT&#45;7), with difference&#45;of&#45;means as t..." alt="" coords="803,453,1017,478"/>
+<area shape="poly" id="edge32_Node000002_Node000026" title=" " alt="" coords="1090,404,944,455,942,450,1089,399"/>
+<area shape="rect" id="Node000004" href="$masked__diffusion__lrp_8hpp.html" title="Explaining a masked diffusion LM&#39;s generation (DIFF&#45;3): commitment&#45;graph LRP, which explains tokens w..." alt="" coords="1356,621,1541,661"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="1254,575,1391,619,1389,624,1253,580"/>
+<area shape="rect" id="Node000005" href="$protein__explanations_8hpp.html" title="Explaining a protein language model residue by residue (PLM&#45;6): AttnLRP from a masked residue&#39;s predi..." alt="" coords="2088,709,2268,749"/>
+<area shape="poly" id="edge4_Node000003_Node000005" title=" " alt="" coords="1229,578,1296,619,1320,642,1330,651,1346,659,1408,676,1491,691,1696,710,1912,721,2088,725,2088,730,1912,726,1696,716,1490,696,1407,682,1344,664,1327,655,1316,645,1292,623,1226,582"/>
+<area shape="poly" id="edge5_Node000003_Node000006" title=" " alt="" coords="1185,587,1185,621,1179,621,1179,587"/>
+<area shape="poly" id="edge6_Node000006_Node000005" title=" " alt="" coords="1295,658,1300,659,1522,681,1742,699,2088,721,2088,726,1741,705,1521,687,1299,664,1295,663"/>
+<area shape="poly" id="edge11_Node000008_Node000004" title=" " alt="" coords="1813,488,1546,536,1519,555,1496,578,1462,623,1458,619,1492,574,1516,550,1544,531,1812,483"/>
+<area shape="poly" id="edge14_Node000008_Node000005" title=" " alt="" coords="2027,482,2106,503,2138,516,2159,531,2173,553,2182,576,2191,626,2190,673,2185,710,2179,709,2185,673,2186,626,2177,578,2168,555,2155,535,2135,521,2105,508,2026,487"/>
+<area shape="poly" id="edge9_Node000008_Node000009" title=" " alt="" coords="1813,488,1500,536,1481,539,1480,534,1499,531,1812,483"/>
+<area shape="rect" id="Node000010" href="$protein__concepts_8hpp.html" title="What a protein language model&#39;s representations encode (PLM&#45;8): per&#45;residue concepts from Swiss&#45;Prot ..." alt="" coords="1556,533,1736,573"/>
+<area shape="poly" id="edge12_Node000008_Node000010" title=" " alt="" coords="1847,492,1707,536,1705,531,1845,487"/>
+<area shape="rect" id="Node000011" href="$protein__contacts_8hpp.html" title="Residue contacts from a protein language model&#39;s attention (PLM&#45;4): ESM&#39;s contact head,..." alt="" coords="1760,533,1940,573"/>
+<area shape="poly" id="edge13_Node000008_Node000011" title=" " alt="" coords="1897,498,1867,535,1863,531,1893,495"/>
+<area shape="rect" id="Node000012" href="$protein__training_8hpp.html" title="Training protein language models (PLM&#45;7): ESM&#45;2&#39;s masked&#45;LM data pipeline (masking,..." alt="" coords="1964,533,2144,573"/>
+<area shape="poly" id="edge15_Node000008_Node000012" title=" " alt="" coords="1962,491,2026,531,2023,535,1959,495"/>
+<area shape="rect" id="Node000013" href="$variant__scoring_8hpp.html" title="Zero&#45;shot variant effects from a protein language model (PLM&#45;3): how much the model prefers a mutant ..." alt="" coords="2479,533,2659,573"/>
+<area shape="poly" id="edge16_Node000008_Node000013" title=" " alt="" coords="2027,478,2479,538,2478,543,2026,483"/>
+<area shape="poly" id="edge10_Node000009_Node000004" title=" " alt="" coords="1411,583,1437,620,1433,623,1407,586"/>
+<area shape="poly" id="edge17_Node000013_Node000005" title=" " alt="" coords="2523,582,2456,623,2431,645,2405,664,2337,692,2269,712,2267,707,2335,687,2402,659,2428,640,2452,619,2520,578"/>
+<area shape="rect" id="Node000014" href="$proteingym_8hpp.html" title="Running ProteinGym&#39;s deep&#45;mutational&#45;scanning substitution benchmarks (PLM&#45;3): read an assay,..." alt="" coords="2466,629,2703,654"/>
+<area shape="poly" id="edge18_Node000013_Node000014" title=" " alt="" coords="2577,586,2585,628,2580,629,2572,587"/>
+<area shape="rect" id="Node000015" href="$protein__documents_8hpp.html" title="Viz documents for proteins (PLM&#45;5): the mutation map, the sequence logo, the contact map and residue ..." alt="" coords="2778,621,2957,661"/>
+<area shape="poly" id="edge20_Node000013_Node000015" title=" " alt="" coords="2648,575,2803,619,2801,624,2647,580"/>
+<area shape="poly" id="edge19_Node000014_Node000005" title=" " alt="" coords="2518,659,2268,712,2267,707,2517,654"/>
+<area shape="rect" id="Node000016" href="$mime__bundle_8hpp.html" title="Rich notebook display: mime_bundle_repr() for pulsatrix&#39;s types (roadmap NB&#45;1)." alt="" coords="2727,709,2880,749"/>
+<area shape="poly" id="edge21_Node000015_Node000016" title=" " alt="" coords="2847,674,2820,711,2815,708,2843,671"/>
+<area shape="rect" id="Node000018" href="$protein__views_8hpp.html" title="Figures and pages for proteins (PLM&#45;5): the mutation map, the sequence logo, the contact map,..." alt="" coords="2981,709,3135,749"/>
+<area shape="poly" id="edge22_Node000015_Node000018" title=" " alt="" coords="2923,665,3017,707,3015,712,2921,669"/>
+<area shape="rect" id="Node000028" href="$encoder__block_8hpp.html" title="A configurable transformer encoder layer (PLM&#45;1): LayerNorm or RMSNorm, before or after each sublayer..." alt="" coords="1562,181,1749,221"/>
+<area shape="poly" id="edge34_Node000027_Node000028" title=" " alt="" coords="1508,136,1611,179,1609,184,1506,141"/>
+<area shape="rect" id="Node000029" href="$explainer__context_8hpp.html" title="Stable interface every explainer gets, regardless of type (charter Part 2 SS2)." alt="" coords="2474,269,2669,309"/>
+<area shape="poly" id="edge36_Node000027_Node000029" title=" " alt="" coords="1563,130,2474,270,2473,276,1562,135"/>
+<area shape="rect" id="Node000051" href="$hf__model_8hpp.html" title="Hugging Face checkpoints: config.json and single or sharded safetensors (IO&#45;5)." alt="" coords="1375,181,1522,221"/>
+<area shape="poly" id="edge63_Node000027_Node000051" title=" " alt="" coords="1451,147,1451,181,1446,181,1446,147"/>
+<area shape="poly" id="edge65_Node000027_Node000052" title=" " alt="" coords="1392,141,1290,184,1288,179,1390,136"/>
+<area shape="poly" id="edge35_Node000028_Node000008" title=" " alt="" coords="1671,233,1714,313,1745,356,1781,395,1821,423,1863,443,1861,448,1818,427,1778,399,1740,360,1709,315,1666,235"/>
+<area shape="rect" id="Node000030" href="$concept__relevance_8hpp.html" title="Concept Relevance Propagation (INT&#45;6): which of a layer&#39;s channels an LRP explanation passes through,..." alt="" coords="2847,445,3032,485"/>
+<area shape="poly" id="edge37_Node000029_Node000030" title=" " alt="" coords="2683,294,2756,302,2830,314,2893,331,2916,342,2933,356,2946,377,2950,401,2947,445,2941,445,2945,402,2941,379,2929,359,2914,347,2891,336,2829,319,2756,307,2682,299"/>
+<area shape="rect" id="Node000031" href="$contrastive_8hpp.html" title="The contrastive explanation method (CEM; Dhurandhar et al., &quot;Explanations based on the &#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;Missin..." alt="" coords="1791,365,2026,390"/>
+<area shape="poly" id="edge38_Node000029_Node000031" title=" " alt="" coords="2461,307,2038,360,1986,367,1985,362,2038,355,2460,301"/>
+<area shape="rect" id="Node000032" href="$counterfactual_8hpp.html" title="Counterfactual explanations: gradient&#45;based (Wachter et al. 2017, CFS&#45;5) and model&#45;agnostic (growing ..." alt="" coords="3069,365,3325,390"/>
+<area shape="poly" id="edge39_Node000029_Node000032" title=" " alt="" coords="2683,303,3114,362,3113,367,2682,308"/>
+<area shape="rect" id="Node000046" href="$grad__cam_8hpp.html" title="Grad&#45;CAM – gradient&#45;weighted class activation mapping over the last conv layer (charter Part 1,..." alt="" coords="2050,357,2213,397"/>
+<area shape="poly" id="edge56_Node000029_Node000046" title=" " alt="" coords="2461,315,2227,360,2213,363,2212,357,2225,355,2460,309"/>
+<area shape="rect" id="Node000047" href="$integrated__gradients_8hpp.html" title="Integrated Gradients – baseline&#45;interpolated gradient integral (charter Part 1, Phase 2; theory: xai_..." alt="" coords="2584,445,2785,485"/>
+<area shape="poly" id="edge57_Node000029_Node000047" title=" " alt="" coords="2635,314,2660,332,2680,356,2689,379,2693,403,2691,445,2686,445,2688,403,2684,380,2676,359,2656,336,2632,318"/>
+<area shape="rect" id="Node000048" href="$lrp_8hpp.html" title="LRP – whole&#45;model Layer&#45;wise Relevance Propagation explainer." alt="" coords="2741,365,2919,390"/>
+<area shape="poly" id="edge58_Node000029_Node000048" title=" " alt="" coords="2642,311,2796,362,2795,367,2640,316"/>
+<area shape="rect" id="Node000049" href="$saliency_8hpp.html" title="Saliency maps – raw gradient of a target output w.r.t. the input (charter Part 1, Phase 2)." alt="" coords="2237,365,2452,390"/>
+<area shape="poly" id="edge60_Node000029_Node000049" title=" " alt="" coords="2510,317,2376,367,2374,362,2508,312"/>
+<area shape="rect" id="Node000050" href="$tcav_8hpp.html" title="Testing with Concept Activation Vectors (INT&#45;6): how much a concept, given only by examples,..." alt="" coords="2477,365,2666,390"/>
+<area shape="poly" id="edge62_Node000029_Node000050" title=" " alt="" coords="2574,323,2574,364,2569,364,2569,323"/>
+<area shape="rect" id="Node000033" href="$document_8hpp.html" title="Versioned JSON documents (pulsatrix.&lt;kind&gt;.v1) that every renderer reads." alt="" coords="3140,445,3293,485"/>
+<area shape="poly" id="edge40_Node000032_Node000033" title=" " alt="" coords="3205,403,3215,444,3210,445,3200,404"/>
+<area shape="poly" id="edge49_Node000033_Node000016" title=" " alt="" coords="3127,482,3026,503,2920,536,2831,565,2798,585,2783,601,2768,622,2763,644,2767,667,2777,689,2789,707,2785,710,2772,691,2762,668,2757,644,2764,620,2779,598,2795,581,2829,560,2919,531,3025,498,3126,477"/>
+<area shape="rect" id="Node000034" href="$attribution__bar__chart_8hpp.html" title="Horizontal feature&#45;importance bar chart for an Attribution." alt="" coords="3121,533,3312,573"/>
+<area shape="poly" id="edge41_Node000033_Node000034" title=" " alt="" coords="3219,499,3219,533,3214,533,3214,499"/>
+<area shape="rect" id="Node000035" href="$attribution__graph_8hpp.html" title="Attribution graphs in the JSON that Neuronpedia&#39;s graph viewer and circuit&#45;tracer&#39;s local viewer read..." alt="" coords="2220,533,2387,573"/>
+<area shape="poly" id="edge42_Node000033_Node000035" title=" " alt="" coords="3126,480,3045,488,2756,512,2468,536,2387,545,2386,539,2467,531,2756,506,3044,483,3126,474"/>
+<area shape="rect" id="Node000036" href="$attribution__waterfall_8hpp.html" title="Cascading waterfall chart from a baseline to a prediction, for local attribution." alt="" coords="3337,533,3523,573"/>
+<area shape="poly" id="edge45_Node000033_Node000036" title=" " alt="" coords="3277,488,3384,531,3382,536,3275,493"/>
+<area shape="rect" id="Node000037" href="$circuit__graph__view_8hpp.html" title="Node&#45;link diagram for a CircuitGraph (mechanistic&#45;interpretability visualization)." alt="" coords="3548,533,3723,573"/>
+<area shape="poly" id="edge46_Node000033_Node000037" title=" " alt="" coords="3307,482,3548,532,3547,537,3306,488"/>
+<area shape="rect" id="Node000038" href="$html_8hpp.html" title="Self&#45;contained HTML views of the viz documents (VIZ&#45;3): interactive Vega&#45;Lite charts with tooltips,..." alt="" coords="2981,621,3135,661"/>
+<area shape="poly" id="edge47_Node000033_Node000038" title=" " alt="" coords="3127,478,3069,487,3012,499,2964,515,2946,525,2935,535,2928,547,2928,559,2934,570,2943,581,2972,602,3007,619,3005,624,2970,607,2940,585,2929,573,2923,560,2923,546,2931,532,2943,520,2962,510,3010,494,3068,482,3126,473"/>
+<area shape="rect" id="Node000039" href="$saliency__heatmap__view_8hpp.html" title="Saliency/attribution heatmap using a perceptually uniform colormap." alt="" coords="3747,533,3958,573"/>
+<area shape="poly" id="edge50_Node000033_Node000039" title=" " alt="" coords="3308,475,3736,531,3748,532,3747,538,3735,536,3307,480"/>
+<area shape="rect" id="Node000040" href="$svg_8hpp.html" title="Dependency&#45;free SVG figures from viz documents: bar, waterfall, heatmap, token strip,..." alt="" coords="2944,533,3097,573"/>
+<area shape="poly" id="edge51_Node000033_Node000040" title=" " alt="" coords="3162,493,3065,536,3063,531,3160,488"/>
+<area shape="rect" id="Node000044" href="$text__relevance_8hpp.html" title="Token relevance documents from real explanations (VIZ&#45;6a): a tokenizer&#39;s Encoding or TOK&#45;4&#39;s word sco..." alt="" coords="3981,533,4135,573"/>
+<area shape="poly" id="edge54_Node000033_Node000044" title=" " alt="" coords="3307,468,3603,489,3786,507,3970,531,3982,533,3981,538,3970,536,3786,512,3602,494,3307,474"/>
+<area shape="rect" id="Node000045" href="$token__relevance__view_8hpp.html" title="The text of a pulsatrix.token_relevance.v1 document with each piece colored by its relevance,..." alt="" coords="4159,533,4357,573"/>
+<area shape="poly" id="edge55_Node000033_Node000045" title=" " alt="" coords="3307,468,3675,488,3910,506,4148,531,4159,532,4158,537,4147,536,3910,512,3674,493,3307,473"/>
+<area shape="poly" id="edge44_Node000035_Node000006" title=" " alt="" coords="2206,571,2157,576,1929,593,1751,601,1573,608,1345,624,1282,630,1281,625,1344,619,1573,603,1751,596,1928,588,2156,571,2206,565"/>
+<area shape="poly" id="edge43_Node000035_Node000007" title=" " alt="" coords="2306,587,2306,621,2301,621,2301,587"/>
+<area shape="poly" id="edge48_Node000038_Node000018" title=" " alt="" coords="3061,675,3061,709,3055,709,3055,675"/>
+<area shape="poly" id="edge53_Node000040_Node000018" title=" " alt="" coords="3101,577,3128,595,3150,620,3156,641,3150,663,3128,691,3100,711,3096,707,3124,687,3145,660,3151,641,3145,623,3125,599,3098,582"/>
+<area shape="poly" id="edge52_Node000040_Node000038" title=" " alt="" coords="3037,585,3052,620,3047,622,3032,587"/>
+<area shape="poly" id="edge59_Node000048_Node000030" title=" " alt="" coords="2857,397,2917,443,2914,447,2854,401"/>
+<area shape="poly" id="edge61_Node000049_Node000047" title=" " alt="" coords="2404,391,2611,443,2610,448,2403,396"/>
+<area shape="poly" id="edge64_Node000051_Node000002" title=" " alt="" coords="1442,236,1425,275,1412,295,1396,311,1361,334,1323,351,1283,363,1245,371,1244,366,1282,358,1321,346,1358,330,1392,307,1408,291,1420,272,1438,233"/>
+<area shape="poly" id="edge66_Node000052_Node000002" title=" " alt="" coords="1325,225,1353,243,1375,268,1383,290,1375,311,1348,337,1316,356,1281,368,1246,375,1244,370,1280,363,1314,351,1345,333,1370,308,1377,290,1370,271,1349,247,1322,229"/>
+<area shape="rect" id="Node000053" href="$generation_8hpp.html" title="Text generation from a language model: greedy decoding and seeded sampling with temperature,..." alt="" coords="1129,277,1361,302"/>
+<area shape="poly" id="edge67_Node000052_Node000053" title=" " alt="" coords="1247,235,1247,276,1242,276,1242,235"/>
+<area shape="rect" id="Node000054" href="$tagger__finetune__example_8hpp.html" title="A full fine&#45;tuning recipe (roadmap TRN&#45;6): pretrain a tiny transformer tagger on one rule,..." alt="" coords="929,269,1105,309"/>
+<area shape="poly" id="edge69_Node000052_Node000054" title=" " alt="" coords="1183,229,1068,272,1066,267,1181,224"/>
+<area shape="poly" id="edge68_Node000053_Node000002" title=" " alt="" coords="1225,314,1178,359,1174,355,1221,310"/>
 </map>
