@@ -160,6 +160,10 @@ Public Attributes</h2></td></tr>
 <tr class="memitem:a7135de2685a578532b852bf262a0bbe1" id="r_a7135de2685a578532b852bf262a0bbe1"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpulsatrix_1_1HfModelConfig.html#a7135de2685a578532b852bf262a0bbe1">qk_norm</a> = false</td></tr>
 <tr class="memdesc:a7135de2685a578532b852bf262a0bbe1"><td class="mdescLeft">&#160;</td><td class="mdescRight">RMSNorm on each head's queries and keys (Qwen3, Gemma 3).  <br /></td></tr>
 <tr class="separator:a7135de2685a578532b852bf262a0bbe1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a10647121b8a7076975202024604d96a5" id="r_a10647121b8a7076975202024604d96a5"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpulsatrix_1_1HfModelConfig.html#a10647121b8a7076975202024604d96a5">causal</a> = true</td></tr>
+<tr class="memdesc:a10647121b8a7076975202024604d96a5"><td class="mdescLeft">&#160;</td><td class="mdescRight">false: every position attends to every other. dLLM's A2D ("autoregressive to
+       diffusion") checkpoints, <code>model_type</code> <code>a2d-qwen3</code>, are Qwen3 with this one change (DIFF-4). Such a model is a masked diffusion denoiser, not a next-token predictor.  <br /></td></tr>
+<tr class="separator:a10647121b8a7076975202024604d96a5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac802a1a7823830a4a2e088527942feb3" id="r_ac802a1a7823830a4a2e088527942feb3"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpulsatrix_1_1HfModelConfig.html#ac802a1a7823830a4a2e088527942feb3">hidden_act</a> = &quot;silu&quot;</td></tr>
 <tr class="memdesc:ac802a1a7823830a4a2e088527942feb3"><td class="mdescLeft">&#160;</td><td class="mdescRight"><code>hidden_act</code> (Gemma: <code>hidden_activation</code>), for example <code>"silu"</code>.  <br /></td></tr>
 <tr class="separator:ac802a1a7823830a4a2e088527942feb3"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -245,6 +249,23 @@ Public Attributes</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+
+</div>
+</div>
+<a id="a10647121b8a7076975202024604d96a5" name="a10647121b8a7076975202024604d96a5"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a10647121b8a7076975202024604d96a5">&#9670;&#160;</a></span>causal</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool pulsatrix::HfModelConfig::causal = true</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>false: every position attends to every other. dLLM's A2D ("autoregressive to
+       diffusion") checkpoints, <code>model_type</code> <code>a2d-qwen3</code>, are Qwen3 with this one change (DIFF-4). Such a model is a masked diffusion denoiser, not a next-token predictor. </p>
 
 </div>
 </div>

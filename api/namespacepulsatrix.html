@@ -321,6 +321,9 @@ Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpulsatrix_1_1CausalLmBatch.html">CausalLmBatch</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">A right-padded training batch.  <a href="structpulsatrix_1_1CausalLmBatch.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1CausalLMStepModel.html">CausalLMStepModel</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">A <a class="el" href="classpulsatrix_1_1CausalLM.html" title="Token embedding, num_hidden_layers pre-norm transformer blocks, a final RMSNorm and a language-model ...">CausalLM</a> with bidirectional attention (an A2D diffusion model, DIFF-4) as a <a class="el" href="classpulsatrix_1_1StepRelevanceModel.html" title="One denoising step&#39;s model as the explainer sees it: a forward pass that keeps what the relevance pas...">StepRelevanceModel</a>, with the same rules as <a class="el" href="classpulsatrix_1_1EncoderLMStepModel.html" title="An EncoderLM as a StepRelevanceModel: one sequence per pass, AttnLRP with config (LXT&#39;s rules by defa...">EncoderLMStepModel</a>.  <a href="classpulsatrix_1_1CausalLMStepModel.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpulsatrix_1_1Cav.html">Cav</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">A concept activation vector.  <a href="structpulsatrix_1_1Cav.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -996,7 +999,7 @@ Classes</h2></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">A sampled sequence and how it was produced.  <a href="structpulsatrix_1_1MaskedDiffusionResult.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpulsatrix_1_1MaskedDiffusionStep.html">MaskedDiffusionStep</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">One step that filled at least one position.  <a href="structpulsatrix_1_1MaskedDiffusionStep.html#details">More...</a><br /></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">One step that filled at least one position (under Remasking, any step).  <a href="structpulsatrix_1_1MaskedDiffusionStep.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpulsatrix_1_1MaskedDiffusionWrite.html">MaskedDiffusionWrite</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">One position filled at one step.  <a href="structpulsatrix_1_1MaskedDiffusionWrite.html#details">More...</a><br /></td></tr>
@@ -1875,7 +1878,7 @@ Typedefs</h2></td></tr>
 <tr class="memdesc:abc17b0f5a8717d9ef75f08182d273a4d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Per-layer <a class="el" href="classpulsatrix_1_1LRP.html" title="Whole-model LRP: runs the forward pass, seeds relevance at the chosen output(s), and propagates it to...">LRP</a> rule choice: maps (top-level module index in forward order, module) to the <a class="el" href="structpulsatrix_1_1LRPRuleConfig.html" title="Configuration for LRP relevance propagation: which rule a module applies and its hyperparameters....">LRPRuleConfig</a> that module applies.  <br /></td></tr>
 <tr class="separator:abc17b0f5a8717d9ef75f08182d273a4d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac0a29be05c3bc65c25d32d47246162a4" id="r_ac0a29be05c3bc65c25d32d47246162a4"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#ac0a29be05c3bc65c25d32d47246162a4">DenoiserFn</a> = std::function&lt; std::vector&lt; float &gt;(const std::vector&lt; int64_t &gt; &amp;tokens)&gt;</td></tr>
-<tr class="memdesc:ac0a29be05c3bc65c25d32d47246162a4"><td class="mdescLeft">&#160;</td><td class="mdescRight">The model as the sampler sees it: the current sequence (masked positions included) in, logits for every position out, <code>L * vocab</code> values, row-major. MakeDenoiser builds one for an <a class="el" href="classpulsatrix_1_1EncoderLM.html" title="A masked language model: token embeddings (with ESM&#39;s token-dropout scaling, when the config has it),...">EncoderLM</a>.  <br /></td></tr>
+<tr class="memdesc:ac0a29be05c3bc65c25d32d47246162a4"><td class="mdescLeft">&#160;</td><td class="mdescRight">The model as the sampler sees it: the current sequence (masked positions included) in, logits for every position out, <code>L * vocab</code> values, row-major. MakeDenoiser builds one for an <a class="el" href="classpulsatrix_1_1EncoderLM.html" title="A masked language model: token embeddings (with ESM&#39;s token-dropout scaling, when the config has it),...">EncoderLM</a> or a bidirectional <a class="el" href="classpulsatrix_1_1CausalLM.html" title="Token embedding, num_hidden_layers pre-norm transformer blocks, a final RMSNorm and a language-model ...">CausalLM</a>.  <br /></td></tr>
 <tr class="separator:ac0a29be05c3bc65c25d32d47246162a4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab7ef3f7938dc5997394d2c33c190b2a8" id="r_ab7ef3f7938dc5997394d2c33c190b2a8"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#ab7ef3f7938dc5997394d2c33c190b2a8">MlpHook</a> = std::function&lt; <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a>(const <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp;mlp_input, const <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp;mlp_output)&gt;</td></tr>
 <tr class="memdesc:ab7ef3f7938dc5997394d2c33c190b2a8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Called with an MLP's input (after the block's norm, where it has one) and its output (the branch added to the residual stream), both shaped like the block's input. What it returns, the same shape, is added to the residual stream instead of the output: return the output unchanged to only read it.  <br /></td></tr>
@@ -2188,6 +2191,7 @@ Enumerations</h2></td></tr>
 <tr class="separator:aa3ee8f8c714e3eed498aa7575f844f30"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab9e35a3c9e00fc59683d7334c8f2ab9a" id="r_ab9e35a3c9e00fc59683d7334c8f2ab9a"><td class="memItemLeft" align="right" valign="top">enum class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#ab9e35a3c9e00fc59683d7334c8f2ab9a">UnmaskingSchedule</a> { <a class="el" href="namespacepulsatrix.html#ab9e35a3c9e00fc59683d7334c8f2ab9aa880e4be2c2478164fa55ef152bb56522">Confidence</a>
 , <a class="el" href="namespacepulsatrix.html#ab9e35a3c9e00fc59683d7334c8f2ab9aad22eb37989f04249f604a802b0bd89b4">Ancestral</a>
+, <a class="el" href="namespacepulsatrix.html#ab9e35a3c9e00fc59683d7334c8f2ab9aa4fbbba073d6f16b9fdfe8b7bbd86229f">Remasking</a>
  }</td></tr>
 <tr class="memdesc:ab9e35a3c9e00fc59683d7334c8f2ab9a"><td class="mdescLeft">&#160;</td><td class="mdescRight">How the sampler chooses which masked positions to fill at each step.  <a href="namespacepulsatrix.html#ab9e35a3c9e00fc59683d7334c8f2ab9a">More...</a><br /></td></tr>
 <tr class="separator:ab9e35a3c9e00fc59683d7334c8f2ab9a"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -3011,7 +3015,7 @@ Functions</h2></td></tr>
 <tr class="memdesc:aaa9bdc6f7114dfcc96ef30a0df72f43c"><td class="mdescLeft">&#160;</td><td class="mdescRight">The RoPE frequency of each pair, <code>head_dim / 2</code> of them, as Hugging Face computes them: <code>rope_theta^(-2i / head_dim)</code>, then rescaled by <code>rope_scaling</code> when it is <code>"linear"</code> (all divided by the factor) or <code>"llama3"</code> (low frequencies divided by the factor, high ones kept, the band between interpolated; LLM-6).  <br /></td></tr>
 <tr class="separator:aaa9bdc6f7114dfcc96ef30a0df72f43c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0f72456585566c7d3dd290e3ac5f0af5" id="r_a0f72456585566c7d3dd290e3ac5f0af5"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structpulsatrix_1_1AttentionConfig.html">AttentionConfig</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#a0f72456585566c7d3dd290e3ac5f0af5">ToAttentionConfig</a> (const <a class="el" href="structpulsatrix_1_1HfModelConfig.html">HfModelConfig</a> &amp;config)</td></tr>
-<tr class="memdesc:a0f72456585566c7d3dd290e3ac5f0af5"><td class="mdescLeft">&#160;</td><td class="mdescRight">The attention layer the config describes: rotate-half RoPE (with its scaling), causal, its head counts, biases, QK-Norm and epsilon, and Gemma's score scale and QK-Norm offset. For a model whose layers differ, this is a full-attention layer.  <br /></td></tr>
+<tr class="memdesc:a0f72456585566c7d3dd290e3ac5f0af5"><td class="mdescLeft">&#160;</td><td class="mdescRight">The attention layer the config describes: rotate-half RoPE (with its scaling), causal unless the config says otherwise, its head counts, biases, QK-Norm and epsilon, and Gemma's score scale and QK-Norm offset. For a model whose layers differ, this is a full-attention layer.  <br /></td></tr>
 <tr class="separator:a0f72456585566c7d3dd290e3ac5f0af5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad64730dfcec06e9aeecdef5787e60c8a" id="r_ad64730dfcec06e9aeecdef5787e60c8a"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structpulsatrix_1_1AttentionConfig.html">AttentionConfig</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#ad64730dfcec06e9aeecdef5787e60c8a">ToAttentionConfig</a> (const <a class="el" href="structpulsatrix_1_1HfModelConfig.html">HfModelConfig</a> &amp;config, int64_t layer)</td></tr>
 <tr class="memdesc:ad64730dfcec06e9aeecdef5787e60c8a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Layer <code>layer's</code> attention (LLM-9): a sliding-window layer gets its window and its own RoPE base, unscaled; a full-attention layer is ToAttentionConfig(config).  <br /></td></tr>
@@ -3156,6 +3160,9 @@ Functions</h2></td></tr>
 <tr class="memitem:aec6d84019a0f0d83d3fa67d52eba62e1" id="r_aec6d84019a0f0d83d3fa67d52eba62e1"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespacepulsatrix.html#ac0a29be05c3bc65c25d32d47246162a4">DenoiserFn</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#aec6d84019a0f0d83d3fa67d52eba62e1">MakeDenoiser</a> (<a class="el" href="classpulsatrix_1_1EncoderLM.html">EncoderLM</a> &amp;model, <a class="el" href="classpulsatrix_1_1DeviceBackend.html">DeviceBackend</a> *backend)</td></tr>
 <tr class="memdesc:aec6d84019a0f0d83d3fa67d52eba62e1"><td class="mdescLeft">&#160;</td><td class="mdescRight">A DenoiserFn for an <a class="el" href="classpulsatrix_1_1EncoderLM.html" title="A masked language model: token embeddings (with ESM&#39;s token-dropout scaling, when the config has it),...">EncoderLM</a>: one forward pass over the sequence, <code>(1, L)</code> to logits <code>(1, L, vocab)</code>. The model isn't owned and must outlive the function.  <br /></td></tr>
 <tr class="separator:aec6d84019a0f0d83d3fa67d52eba62e1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa8bfc8413a8549b33a6656c8c5300b2f" id="r_aa8bfc8413a8549b33a6656c8c5300b2f"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespacepulsatrix.html#ac0a29be05c3bc65c25d32d47246162a4">DenoiserFn</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#aa8bfc8413a8549b33a6656c8c5300b2f">MakeDenoiser</a> (<a class="el" href="classpulsatrix_1_1CausalLM.html">CausalLM</a> &amp;model, <a class="el" href="classpulsatrix_1_1DeviceBackend.html">DeviceBackend</a> *backend)</td></tr>
+<tr class="memdesc:aa8bfc8413a8549b33a6656c8c5300b2f"><td class="mdescLeft">&#160;</td><td class="mdescRight">A DenoiserFn for a <a class="el" href="classpulsatrix_1_1CausalLM.html" title="Token embedding, num_hidden_layers pre-norm transformer blocks, a final RMSNorm and a language-model ...">CausalLM</a> loaded with bidirectional attention, such as an A2D diffusion model (<code><a class="el" href="structpulsatrix_1_1HfModelConfig.html#a10647121b8a7076975202024604d96a5" title="false: every position attends to every other. dLLM&#39;s A2D (&quot;autoregressive to        diffusion&quot;) check...">HfModelConfig::causal</a></code> false). The model must outlive the function.  <br /></td></tr>
+<tr class="separator:aa8bfc8413a8549b33a6656c8c5300b2f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6c5c02646baac82fcfebe6ced7d48105" id="r_a6c5c02646baac82fcfebe6ced7d48105"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structpulsatrix_1_1CommitmentRelevance.html">CommitmentRelevance</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#a6c5c02646baac82fcfebe6ced7d48105">ExplainCommitments</a> (<a class="el" href="classpulsatrix_1_1StepRelevanceModel.html">StepRelevanceModel</a> &amp;model, const <a class="el" href="structpulsatrix_1_1MaskedDiffusionResult.html">MaskedDiffusionResult</a> &amp;trajectory, int64_t mask_token_id, const std::vector&lt; <a class="el" href="structpulsatrix_1_1CommitmentTarget.html">CommitmentTarget</a> &gt; &amp;targets, <a class="el" href="namespacepulsatrix.html#aefdd519be37951efc7063e803c2d7ee7">CommitmentMode</a> mode=<a class="el" href="namespacepulsatrix.html#aefdd519be37951efc7063e803c2d7ee7a4cdbd2bafa8193091ba09509cedf94fd">CommitmentMode::Graph</a>)</td></tr>
 <tr class="memdesc:a6c5c02646baac82fcfebe6ced7d48105"><td class="mdescLeft">&#160;</td><td class="mdescRight">Explains <code>targets</code> on <code>trajectory</code>, which SampleMaskedDiffusion produced with <code>model's</code> logits. Each step's input is rerun, so the model must give the logits it gave then.  <br /></td></tr>
 <tr class="separator:a6c5c02646baac82fcfebe6ced7d48105"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -4493,7 +4500,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>The model as the sampler sees it: the current sequence (masked positions included) in, logits for every position out, <code>L * vocab</code> values, row-major. MakeDenoiser builds one for an <a class="el" href="classpulsatrix_1_1EncoderLM.html" title="A masked language model: token embeddings (with ESM&#39;s token-dropout scaling, when the config has it),...">EncoderLM</a>. </p>
+<p>The model as the sampler sees it: the current sequence (masked positions included) in, logits for every position out, <code>L * vocab</code> values, row-major. MakeDenoiser builds one for an <a class="el" href="classpulsatrix_1_1EncoderLM.html" title="A masked language model: token embeddings (with ESM&#39;s token-dropout scaling, when the config has it),...">EncoderLM</a> or a bidirectional <a class="el" href="classpulsatrix_1_1CausalLM.html" title="Token embedding, num_hidden_layers pre-norm transformer blocks, a final RMSNorm and a language-model ...">CausalLM</a>. </p>
 
 </div>
 </div>
@@ -6527,6 +6534,8 @@ Every op here computes the <em>forward</em> value only &ndash; no derivative var
 <tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="ab9e35a3c9e00fc59683d7334c8f2ab9aa880e4be2c2478164fa55ef152bb56522" name="ab9e35a3c9e00fc59683d7334c8f2ab9aa880e4be2c2478164fa55ef152bb56522"></a>Confidence&#160;</td><td class="fielddoc"><p>LLaDA's low-confidence remasking: every step fills a fixed share of the positions that started masked (spread as evenly as the step count allows, earlier steps taking the remainder), choosing the masked positions whose chosen token the model is most sure of. Ties go to the earlier position. Fully deterministic when greedy. </p>
 </td></tr>
 <tr><td class="fieldname"><a id="ab9e35a3c9e00fc59683d7334c8f2ab9aad22eb37989f04249f604a802b0bd89b4" name="ab9e35a3c9e00fc59683d7334c8f2ab9aad22eb37989f04249f604a802b0bd89b4"></a>Ancestral&#160;</td><td class="fielddoc"><p>MDLM's ancestral sampler (<code>ddpm_cache</code>): time runs linearly from 1 to 1e-5, and at each step every masked position is filled independently with probability <code>(t - s) / t</code>, where s is the next step's time. Positions still masked after the last step are filled with their most likely token, as MDLM's final noise-removal step does. Steps that fill nothing don't run the model (MDLM reuses its output the same way). </p>
+</td></tr>
+<tr><td class="fieldname"><a id="ab9e35a3c9e00fc59683d7334c8f2ab9aa4fbbba073d6f16b9fdfe8b7bbd86229f" name="ab9e35a3c9e00fc59683d7334c8f2ab9aa4fbbba073d6f16b9fdfe8b7bbd86229f"></a>Remasking&#160;</td><td class="fielddoc"><p>DPLM's reparameterized decoding (<code>reparam-uncond-deterministic-linear</code>, its default): at step t of T the model scores every position that started masked by the log-probability, over the allowed tokens, of the token it would choose there now, filled or not. Of those n positions, the <code>floor(n * (1 - t / T))</code> with the lowest score are masked, including positions filled at earlier steps; a position is masked when its score is strictly below the cutoff, as DPLM's <code>topk_masking</code> does. Every other masked position takes its chosen token, and every other filled position keeps the token it has. Every step runs the model and is recorded, even one that changes nothing, and the last masks nothing. </p>
 </td></tr>
 </table>
 
@@ -16897,8 +16906,44 @@ template&lt;typename Genotype , typename FitnessT &gt; </div>
 
 </div>
 </div>
+<a id="aa8bfc8413a8549b33a6656c8c5300b2f" name="aa8bfc8413a8549b33a6656c8c5300b2f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa8bfc8413a8549b33a6656c8c5300b2f">&#9670;&#160;</a></span>MakeDenoiser() <span class="overload">[1/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="namespacepulsatrix.html#ac0a29be05c3bc65c25d32d47246162a4">DenoiserFn</a> pulsatrix::MakeDenoiser </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classpulsatrix_1_1CausalLM.html">CausalLM</a> &amp;&#160;</td>
+          <td class="paramname"><em>model</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="classpulsatrix_1_1DeviceBackend.html">DeviceBackend</a> *&#160;</td>
+          <td class="paramname"><em>backend</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>A DenoiserFn for a <a class="el" href="classpulsatrix_1_1CausalLM.html" title="Token embedding, num_hidden_layers pre-norm transformer blocks, a final RMSNorm and a language-model ...">CausalLM</a> loaded with bidirectional attention, such as an A2D diffusion model (<code><a class="el" href="structpulsatrix_1_1HfModelConfig.html#a10647121b8a7076975202024604d96a5" title="false: every position attends to every other. dLLM&#39;s A2D (&quot;autoregressive to        diffusion&quot;) check...">HfModelConfig::causal</a></code> false). The model must outlive the function. </p>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname">std::invalid_argument</td><td>if the model is causal: each position would see only the masks before it. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
 <a id="aec6d84019a0f0d83d3fa67d52eba62e1" name="aec6d84019a0f0d83d3fa67d52eba62e1"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aec6d84019a0f0d83d3fa67d52eba62e1">&#9670;&#160;</a></span>MakeDenoiser()</h2>
+<h2 class="memtitle"><span class="permalink"><a href="#aec6d84019a0f0d83d3fa67d52eba62e1">&#9670;&#160;</a></span>MakeDenoiser() <span class="overload">[2/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -28597,7 +28642,7 @@ template&lt;class Json &gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p>The attention layer the config describes: rotate-half RoPE (with its scaling), causal, its head counts, biases, QK-Norm and epsilon, and Gemma's score scale and QK-Norm offset. For a model whose layers differ, this is a full-attention layer. </p>
+<p>The attention layer the config describes: rotate-half RoPE (with its scaling), causal unless the config says otherwise, its head counts, biases, QK-Norm and epsilon, and Gemma's score scale and QK-Norm offset. For a model whose layers differ, this is a full-attention layer. </p>
 
 </div>
 </div>

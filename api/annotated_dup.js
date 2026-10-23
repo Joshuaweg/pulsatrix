@@ -123,6 +123,7 @@ var annotated_dup =
       [ "CategoricalPolicyAgent", "classpulsatrix_1_1CategoricalPolicyAgent.html", "classpulsatrix_1_1CategoricalPolicyAgent" ],
       [ "CausalLM", "classpulsatrix_1_1CausalLM.html", "classpulsatrix_1_1CausalLM" ],
       [ "CausalLmBatch", "structpulsatrix_1_1CausalLmBatch.html", "structpulsatrix_1_1CausalLmBatch" ],
+      [ "CausalLMStepModel", "classpulsatrix_1_1CausalLMStepModel.html", "classpulsatrix_1_1CausalLMStepModel" ],
       [ "Cav", "structpulsatrix_1_1Cav.html", "structpulsatrix_1_1Cav" ],
       [ "Caveat", "structpulsatrix_1_1Caveat.html", "structpulsatrix_1_1Caveat" ],
       [ "CavOptions", "structpulsatrix_1_1CavOptions.html", "structpulsatrix_1_1CavOptions" ],

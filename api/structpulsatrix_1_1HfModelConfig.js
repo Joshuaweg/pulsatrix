@@ -3,6 +3,7 @@ var structpulsatrix_1_1HfModelConfig =
     [ "is_sliding_layer", "structpulsatrix_1_1HfModelConfig.html#a9beb0d38ad330514932883b341cb3101", null ],
     [ "architecture", "structpulsatrix_1_1HfModelConfig.html#ad80446f7689bb3619d06cc0a2b7ef0bc", null ],
     [ "bos_token_id", "structpulsatrix_1_1HfModelConfig.html#a0dcf48a72d20ad8a0568f554050d7102", null ],
+    [ "causal", "structpulsatrix_1_1HfModelConfig.html#a10647121b8a7076975202024604d96a5", null ],
     [ "dtype", "structpulsatrix_1_1HfModelConfig.html#a49e927554f73d9ce86001f594231f5f7", null ],
     [ "embed_scale", "structpulsatrix_1_1HfModelConfig.html#a01fe2a845efbb645784bf7528af86006", null ],
     [ "eos_token_ids", "structpulsatrix_1_1HfModelConfig.html#a7a4c57f6b21b91b98d6d850c94e74467", null ],

@@ -111,10 +111,10 @@ Public Attributes</h2></td></tr>
 <tr class="memdesc:a116d8416251a4e90979e5fd5c99605f2"><td class="mdescLeft">&#160;</td><td class="mdescRight">The final sequence: no masked position remains.  <br /></td></tr>
 <tr class="separator:a116d8416251a4e90979e5fd5c99605f2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3abbade3106e688ceab71db7a50b4f8d" id="r_a3abbade3106e688ceab71db7a50b4f8d"><td class="memItemLeft" align="right" valign="top">std::vector&lt; <a class="el" href="structpulsatrix_1_1MaskedDiffusionStep.html">MaskedDiffusionStep</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpulsatrix_1_1MaskedDiffusionResult.html#a3abbade3106e688ceab71db7a50b4f8d">steps</a></td></tr>
-<tr class="memdesc:a3abbade3106e688ceab71db7a50b4f8d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Every step that filled something, in order. Each step's input is the previous step's input with the previous writes applied.  <br /></td></tr>
+<tr class="memdesc:a3abbade3106e688ceab71db7a50b4f8d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Every step that filled something (under Remasking, every step), in order. Each step's input is the previous step's input with the previous writes and re-masks applied.  <br /></td></tr>
 <tr class="separator:a3abbade3106e688ceab71db7a50b4f8d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8ecb9c330994dfcb95d4ca87515a0b38" id="r_a8ecb9c330994dfcb95d4ca87515a0b38"><td class="memItemLeft" align="right" valign="top">std::vector&lt; int64_t &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpulsatrix_1_1MaskedDiffusionResult.html#a8ecb9c330994dfcb95d4ca87515a0b38">last_write_step</a></td></tr>
-<tr class="memdesc:a8ecb9c330994dfcb95d4ca87515a0b38"><td class="mdescLeft">&#160;</td><td class="mdescRight">For each position, the index into <code>steps</code> of the step that last wrote it, or -1 for a position that wasn't masked in the input (a prompt token). Neither schedule re-masks, so a position's last write is also its only one.  <br /></td></tr>
+<tr class="memdesc:a8ecb9c330994dfcb95d4ca87515a0b38"><td class="mdescLeft">&#160;</td><td class="mdescRight">For each position, the index into <code>steps</code> of the step that last wrote it, or -1 for a position that wasn't masked in the input (a prompt token). Under Confidence and Ancestral a position's last write is also its only one; under Remasking a position can be written, masked again and rewritten.  <br /></td></tr>
 <tr class="separator:a8ecb9c330994dfcb95d4ca87515a0b38"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
@@ -132,7 +132,7 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>For each position, the index into <code>steps</code> of the step that last wrote it, or -1 for a position that wasn't masked in the input (a prompt token). Neither schedule re-masks, so a position's last write is also its only one. </p>
+<p>For each position, the index into <code>steps</code> of the step that last wrote it, or -1 for a position that wasn't masked in the input (a prompt token). Under Confidence and Ancestral a position's last write is also its only one; under Remasking a position can be written, masked again and rewritten. </p>
 
 </div>
 </div>
@@ -148,7 +148,7 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Every step that filled something, in order. Each step's input is the previous step's input with the previous writes applied. </p>
+<p>Every step that filled something (under Remasking, every step), in order. Each step's input is the previous step's input with the previous writes and re-masks applied. </p>
 
 </div>
 </div>

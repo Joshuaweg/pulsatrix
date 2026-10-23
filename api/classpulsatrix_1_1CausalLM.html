@@ -643,6 +643,12 @@ Protected Member Functions</h2></td></tr>
 
 <p>A cached next-token function for Generate (LLM-5): one pass over the prompt, then one position per new token. </p>
 <dl class="section note"><dt>Note</dt><dd>Holds pointers into this model, which must outlive it. </dd></dl>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname">std::logic_error</td><td>for a model with bidirectional attention (<code><a class="el" href="classpulsatrix_1_1CausalLM.html#a91ca6afb6c75aac837ecf1c062057de4">config()</a>.causal</code> false). </td></tr>
+  </table>
+  </dd>
+</dl>
 
 </div>
 </div>

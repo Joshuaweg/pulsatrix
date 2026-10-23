@@ -3259,9 +3259,14 @@ generation can be explained afterwards (<a href="../interpretability/diffusion-l
   makes it the one to explain.</li>
 <li><strong><code>Ancestral</code></strong> (MDLM's) fills each masked position independently at random, with the
   probability the noise schedule gives. Steps that fill nothing don't run the model.</li>
+<li><strong><code>Remasking</code></strong> (DPLM's reparameterized decoding, its default) scores every position that
+  started masked at every step, filled or not, and masks the lowest-scoring share again; that
+  share falls linearly to zero. The rest of the masked positions are filled, and the filled ones
+  keep their tokens. Step for step, it matches DPLM's own <code>generate</code> (see below).</li>
 </ul>
-<p>Neither re-masks a filled position. Each step's record holds the exact input the model saw, so
-rerunning the model on it reproduces that step.
+<p>The first two never revise a filled position; <code>Remasking</code> records the positions it takes back in
+<code>steps[i].remasked</code>. Each step's record holds the exact input the model saw, so rerunning the
+model on it reproduces that step.
 <code>ExplainCommitments</code> (<code>masked_diffusion_lrp.hpp</code>) uses that to explain generated tokens back to
 the prompt through every step that led to them; see
 <a href="../interpretability/diffusion-lrp/#d2-in-pulsatrix">D2 in pulsatrix</a>.</p>
@@ -3273,6 +3278,20 @@ LRP and hooks all work on it. Against the authors' own modeling code, run on the
 logits match within 3.8e-6 and hidden states within 7.1e-6 (relative). A tiny model with random
 modulation weights, which tests the folding itself, matches within 1e-5
 (<code>tools/golden/make_mdlm_golden.py</code>, then <code>tests/mdlm_test.cpp</code>).</p>
+<p><strong>DPLM and A2D models.</strong> Two more families load as diffusion models:
+- <strong>DPLM</strong> (<code>airkingbd/dplm_150m</code>, <code>dplm_650m</code>) is ESM-2 trained as a masked diffusion model.
+  Convert its <code>pytorch_model.bin</code> with <code>tools/convert/pickle_to_safetensors.py</code> and
+  <code>LoadEncoderLM</code> loads it like ESM-2 (<code>EsmForDPLM</code> is accepted). Use the <code>Remasking</code> schedule,
+  DPLM's own. Greedy, it reproduces DPLM's <code>generate</code> step by step on both checkpoints, re-masks
+  included (<code>tools/golden/make_dplm_golden.py</code>, then <code>tests/dplm_test.cpp</code>).
+- <strong>A2D</strong> ("autoregressive to diffusion") checkpoints such as
+  <code>dllm-hub/Qwen3-0.6B-diffusion-mdlm-v0.1</code> are Qwen3 with bidirectional attention.
+  <code>LoadCausalLM</code> reads <code>model_type: a2d-qwen3</code>, sets <code>HfModelConfig::causal</code> to false, and
+  <code>MakeDenoiser(CausalLM&amp;)</code> samples from it. The mask token is <code>&lt;|mask|&gt;</code> (151669), and position
+  i predicts token i. Logits match the authors' modeling code within 1e-4
+  (<code>tools/golden/make_a2d_golden.py</code>, then <code>tests/a2d_test.cpp</code>), and a 32-step greedy infill of
+  a 1024-token text is token-for-token the same. That infill is poor: decoded one position at a
+  time across a 32-token span, the model falls into repetition. Its card samples in blocks of 64.</p>
 <p><strong>Length and speed.</strong> MDLM-owt was only ever trained on full 1024-token sequences. Sampled at
 that length (128 ancestral steps), it writes fluent web text. Sampled at 64 tokens, it writes
 nonsense, so keep the sequence at its trained length and put your prompt inside it. Every step is
@@ -3281,7 +3300,8 @@ test machine's CPU, so 128 steps take about 18 minutes. Use a GPU backend for re
 <p><strong>Not supported yet.</strong>
 - Models whose conditioning varies (<code>time_conditioning</code>, such as SEDD) fail to load with a message
   that says so. They need an adaLN layer, which is DIFF-6 on the roadmap.
-- There's no remasking sampler (DPLM's) and no block-by-block, semi-autoregressive decoding.</p>
+- There's no block-by-block, semi-autoregressive decoding (LLaDA's, and the A2D models'
+  <code>block_size</code>).</p>
 <h2 id="checking-against-hugging-face">Checking against Hugging Face<a class="headerlink" href="#checking-against-hugging-face" title="Permanent link">&para;</a></h2>
 <p>Three tools compare pulsatrix with the reference libraries on your own machine. They need
 reference files that small Python scripts write once, with <code>torch</code>, <code>transformers</code>, <code>tokenizers</code>

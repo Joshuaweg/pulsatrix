@@ -77,6 +77,7 @@ var namespacepulsatrix =
     [ "CategoricalPolicyAgent", "classpulsatrix_1_1CategoricalPolicyAgent.html", "classpulsatrix_1_1CategoricalPolicyAgent" ],
     [ "CausalLM", "classpulsatrix_1_1CausalLM.html", "classpulsatrix_1_1CausalLM" ],
     [ "CausalLmBatch", "structpulsatrix_1_1CausalLmBatch.html", "structpulsatrix_1_1CausalLmBatch" ],
+    [ "CausalLMStepModel", "classpulsatrix_1_1CausalLMStepModel.html", "classpulsatrix_1_1CausalLMStepModel" ],
     [ "Cav", "structpulsatrix_1_1Cav.html", "structpulsatrix_1_1Cav" ],
     [ "Caveat", "structpulsatrix_1_1Caveat.html", "structpulsatrix_1_1Caveat" ],
     [ "CavOptions", "structpulsatrix_1_1CavOptions.html", "structpulsatrix_1_1CavOptions" ],
@@ -933,7 +934,8 @@ var namespacepulsatrix =
     ] ],
     [ "UnmaskingSchedule", "namespacepulsatrix.html#ab9e35a3c9e00fc59683d7334c8f2ab9a", [
       [ "Confidence", "namespacepulsatrix.html#ab9e35a3c9e00fc59683d7334c8f2ab9aa880e4be2c2478164fa55ef152bb56522", null ],
-      [ "Ancestral", "namespacepulsatrix.html#ab9e35a3c9e00fc59683d7334c8f2ab9aad22eb37989f04249f604a802b0bd89b4", null ]
+      [ "Ancestral", "namespacepulsatrix.html#ab9e35a3c9e00fc59683d7334c8f2ab9aad22eb37989f04249f604a802b0bd89b4", null ],
+      [ "Remasking", "namespacepulsatrix.html#ab9e35a3c9e00fc59683d7334c8f2ab9aa4fbbba073d6f16b9fdfe8b7bbd86229f", null ]
     ] ],
     [ "VariantStrategy", "namespacepulsatrix.html#ad459b72b938b5edbe52c75cbc8ee743a", [
       [ "MaskedMarginals", "namespacepulsatrix.html#ad459b72b938b5edbe52c75cbc8ee743aa368b1156e5dca80ce71e8eaa4f9b0d06", null ],
@@ -1213,6 +1215,7 @@ var namespacepulsatrix =
     [ "MakeCachedNextTokenLogits", "namespacepulsatrix.html#a33603f171f9be34ef590dec1beb41980", null ],
     [ "MakeCharTokenizer", "namespacepulsatrix.html#a42a51b3f39ce4900e0f3bcb50d83e404", null ],
     [ "MakeContactMapDocument", "namespacepulsatrix.html#a2fa6760122e251b331f67f62eeb33a70", null ],
+    [ "MakeDenoiser", "namespacepulsatrix.html#aa8bfc8413a8549b33a6656c8c5300b2f", null ],
     [ "MakeDenoiser", "namespacepulsatrix.html#aec6d84019a0f0d83d3fa67d52eba62e1", null ],
     [ "MakeEsmTokenizer", "namespacepulsatrix.html#a73c55d10c6a32a7c7e755166a530a2e2", null ],
     [ "MakeMutationMapDocument", "namespacepulsatrix.html#a8c70e17a0a2f46ef425f7f5116cbaa1f", null ],

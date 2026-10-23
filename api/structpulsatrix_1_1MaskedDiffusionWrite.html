@@ -112,7 +112,7 @@ Public Attributes</h2></td></tr>
 <tr class="memitem:a206b0f7871667af7a733bdc5ad06e1ba" id="r_a206b0f7871667af7a733bdc5ad06e1ba"><td class="memItemLeft" align="right" valign="top">int64_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpulsatrix_1_1MaskedDiffusionWrite.html#a206b0f7871667af7a733bdc5ad06e1ba">token</a> = 0</td></tr>
 <tr class="separator:a206b0f7871667af7a733bdc5ad06e1ba"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a4301fc7b93c2fbdd79496b34ad3b9fd7" id="r_a4301fc7b93c2fbdd79496b34ad3b9fd7"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpulsatrix_1_1MaskedDiffusionWrite.html#a4301fc7b93c2fbdd79496b34ad3b9fd7">probability</a> = 0.0f</td></tr>
-<tr class="memdesc:a4301fc7b93c2fbdd79496b34ad3b9fd7"><td class="mdescLeft">&#160;</td><td class="mdescRight">The model's probability of the token (softmax of the raw logits, before any processing), the confidence the Confidence schedule ranks by.  <br /></td></tr>
+<tr class="memdesc:a4301fc7b93c2fbdd79496b34ad3b9fd7"><td class="mdescLeft">&#160;</td><td class="mdescRight">The model's probability of the token (softmax of the raw logits, before any processing), the confidence the Confidence schedule ranks by. Remasking ranks by the probability over the allowed tokens instead, as DPLM does.  <br /></td></tr>
 <tr class="separator:a4301fc7b93c2fbdd79496b34ad3b9fd7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
@@ -144,7 +144,7 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>The model's probability of the token (softmax of the raw logits, before any processing), the confidence the Confidence schedule ranks by. </p>
+<p>The model's probability of the token (softmax of the raw logits, before any processing), the confidence the Confidence schedule ranks by. Remasking ranks by the probability over the allowed tokens instead, as DPLM does. </p>
 
 </div>
 </div>
