@@ -1,5 +1,6 @@
 #include "pulsatrix/noise_schedule.hpp"
 
+#include <algorithm>
 #include <cmath>
 #include <stdexcept>
 #include <string>
@@ -41,6 +42,31 @@ NoiseSchedule::NoiseSchedule(int64_t num_timesteps, float beta_start, float beta
         alpha_.push_back(alpha);
         alpha_bar_.push_back(running_product);
     }
+}
+
+NoiseSchedule::NoiseSchedule(FromBetas, const std::vector<double>& betas)
+    : num_timesteps_(static_cast<int64_t>(betas.size())) {
+    double running_product = 1.0;
+    for (double beta : betas) {
+        running_product *= 1.0 - beta;
+        beta_.push_back(static_cast<float>(beta));
+        alpha_.push_back(static_cast<float>(1.0 - beta));
+        alpha_bar_.push_back(static_cast<float>(running_product));
+    }
+}
+
+NoiseSchedule NoiseSchedule::Cosine(int64_t num_timesteps, double offset, double max_beta) {
+    if (num_timesteps <= 0) throw std::invalid_argument("NoiseSchedule::Cosine: num_timesteps must be positive");
+    if (!(offset >= 0.0)) throw std::invalid_argument("NoiseSchedule::Cosine: offset must be non-negative");
+    if (!(max_beta > 0.0 && max_beta <= 1.0)) throw std::invalid_argument("NoiseSchedule::Cosine: max_beta must be in (0, 1]");
+    constexpr double kHalfPi = 1.57079632679489661923;
+    const auto f = [&](int64_t t) {
+        const double c = std::cos((static_cast<double>(t) / static_cast<double>(num_timesteps) + offset) / (1.0 + offset) * kHalfPi);
+        return c * c;
+    };
+    std::vector<double> betas;
+    for (int64_t t = 1; t <= num_timesteps; ++t) betas.push_back(std::min(1.0 - f(t) / f(t - 1), max_beta));
+    return NoiseSchedule(FromBetas{}, betas);
 }
 
 size_t NoiseSchedule::index_of(int64_t t, const char* context) const {
@@ -118,6 +144,45 @@ Tensor NoiseSchedule::denoise_step(const Tensor& x_t, const Tensor& predicted_ep
     Tensor x_prev(x_t.shape(), backend, x_t.device());
     backend->axpby(1.0f, x_t.data(), -eps_coefficient, predicted_epsilon.data(), x_prev.data(), n);
     backend->axpby(inv_sqrt_alpha, x_prev.data(), z_scale, z.data(), x_prev.data(), n);
+    return x_prev;
+}
+
+ReverseStepCoefficients NoiseSchedule::ddpm_coefficients(int64_t t) const {
+    const size_t idx = index_of(t, "NoiseSchedule::ddpm_coefficients");
+    const float sqrt_alpha = std::sqrt(alpha_[idx]);
+    return {1.0f / sqrt_alpha, beta_[idx] / (sqrt_alpha * std::sqrt(std::fmax(0.0f, 1.0f - alpha_bar_[idx]))), std::sqrt(beta_[idx])};
+}
+
+ReverseStepCoefficients NoiseSchedule::ddim_coefficients(int64_t t, int64_t s, float eta) const {
+    const size_t idx = index_of(t, "NoiseSchedule::ddim_coefficients");
+    if (s < 0 || s >= t) {
+        throw std::out_of_range("NoiseSchedule::ddim_coefficients: s must be in [0, t), got " + std::to_string(s));
+    }
+    if (!(eta >= 0.0f)) throw std::invalid_argument("NoiseSchedule::ddim_coefficients: eta must be non-negative");
+    const double a_t = alpha_bar_[idx];
+    const double a_s = s == 0 ? 1.0 : static_cast<double>(alpha_bar_[static_cast<size_t>(s - 1)]);
+    const double sigma = eta * std::sqrt(std::fmax(0.0, (1.0 - a_s) / (1.0 - a_t))) * std::sqrt(std::fmax(0.0, 1.0 - a_t / a_s));
+    // x_s = sqrt(a_s / a_t) x_t - (sqrt(a_s) sqrt(1 - a_t) / sqrt(a_t) - sqrt(1 - a_s - sigma^2)) eps + sigma z
+    const double skip = std::sqrt(a_s / a_t);
+    const double network = std::sqrt(a_s) * std::sqrt(std::fmax(0.0, 1.0 - a_t)) / std::sqrt(a_t) -
+                           std::sqrt(std::fmax(0.0, 1.0 - a_s - sigma * sigma));
+    return {static_cast<float>(skip), static_cast<float>(network), static_cast<float>(sigma)};
+}
+
+Tensor NoiseSchedule::ddim_step(const Tensor& x_t, const Tensor& predicted_epsilon, const Tensor& z, int64_t t, int64_t s,
+                                float eta) const {
+    if (!(x_t.shape() == predicted_epsilon.shape()) || !(x_t.shape() == z.shape())) {
+        throw std::invalid_argument("NoiseSchedule::ddim_step: x_t, predicted_epsilon and z must all have the same shape");
+    }
+    if (x_t.device() != predicted_epsilon.device() || x_t.device() != z.device()) {
+        throw std::invalid_argument("NoiseSchedule::ddim_step: x_t, predicted_epsilon and z must be on the same device");
+    }
+    const ReverseStepCoefficients c = ddim_coefficients(t, s, eta);
+    const auto n = static_cast<size_t>(x_t.numel());
+    DeviceBackend* backend = x_t.backend();
+    Tensor x_prev(x_t.shape(), backend, x_t.device());
+    backend->axpby(c.skip, x_t.data(), -c.network, predicted_epsilon.data(), x_prev.data(), n);
+    backend->axpby(1.0f, x_prev.data(), c.noise, z.data(), x_prev.data(), n);
     return x_prev;
 }
 

@@ -1,5 +1,6 @@
 /** @file noise_schedule_test.cpp
- *  @brief Unit tests for the DDPM linear noise schedule and its forward/reverse steps.
+ *  @brief Unit tests for the DDPM linear and cosine noise schedules and their forward, DDPM and
+ *         DDIM steps.
  *
  *  There is no finite-difference check anywhere in this file, by design: NoiseSchedule has no
  *  learned parameters and no backward pass of its own (mission_diffusion_module.md). Every
@@ -10,9 +11,11 @@
  */
 #include <gtest/gtest.h>
 
+#include <algorithm>
 #include <cmath>
 #include <cstdint>
 #include <stdexcept>
+#include <vector>
 
 #include "pulsatrix/cpu_backend.hpp"
 #include "pulsatrix/noise_schedule.hpp"
@@ -290,6 +293,70 @@ TEST_F(NoiseScheduleTest, AddNoiseThrowsOnMixedDevices) {
     Tensor x0(Shape({2}), &backend, {1.0f, 2.0f});
     Tensor epsilon(Shape({2}), &backend, {0.5f, 0.5f}, DeviceType::Hip);
     EXPECT_THROW((void)schedule.add_noise(x0, epsilon, 1), std::invalid_argument);
+}
+
+// ---------------------------------------------------------------------------------------
+// DIFF-5: the cosine schedule and DDIM steps. The references were computed in Python (double)
+// from Nichol & Dhariwal's and Song et al.'s formulas.
+// ---------------------------------------------------------------------------------------
+
+TEST_F(NoiseScheduleTest, CosineScheduleMatchesReferenceValues) {
+    const NoiseSchedule cosine = NoiseSchedule::Cosine(5);
+    const double beta[] = {0.101294079, 0.279543846, 0.473635353, 0.724052369, 0.999};
+    const double alpha_bar[] = {0.898705921, 0.647478211, 0.34080964, 0.0940456127, 9.40456127e-05};
+    for (int64_t t = 1; t <= 5; ++t) {
+        EXPECT_NEAR(cosine.beta(t), beta[t - 1], 1e-6) << t;
+        EXPECT_NEAR(cosine.alpha_bar(t), alpha_bar[t - 1], 1e-6 * std::max(1.0, alpha_bar[t - 1])) << t;
+    }
+    EXPECT_NEAR(cosine.alpha_bar(5), 9.40456127e-05, 1e-9);  // the last beta is clipped at 0.999
+    EXPECT_THROW((void)NoiseSchedule::Cosine(0), std::invalid_argument);
+    EXPECT_THROW((void)NoiseSchedule::Cosine(5, -0.1), std::invalid_argument);
+    EXPECT_THROW((void)NoiseSchedule::Cosine(5, 0.008, 1.5), std::invalid_argument);
+}
+
+TEST_F(NoiseScheduleTest, DdpmCoefficientsAreDenoiseStepsOwn) {
+    const ReverseStepCoefficients c = coarse.ddpm_coefficients(3);
+    EXPECT_NEAR(c.skip, 1.1952286093343936, 1e-6);
+    EXPECT_NEAR(c.network, 0.509133174976598, 1e-6);
+    EXPECT_NEAR(c.noise, 0.5477225575051662, 1e-6);
+    Tensor x_t(Shape({1, 2}), &backend, {0.4f, -1.2f});
+    Tensor eps(Shape({1, 2}), &backend, {0.3f, 0.7f});
+    Tensor z(Shape({1, 2}), &backend, {-0.5f, 0.25f});
+    const std::vector<float> stepped = coarse.denoise_step(x_t, eps, z, 3).to_host_vector();
+    EXPECT_NEAR(stepped[0], c.skip * 0.4f - c.network * 0.3f + c.noise * -0.5f, 1e-6);
+    EXPECT_NEAR(stepped[1], c.skip * -1.2f - c.network * 0.7f + c.noise * 0.25f, 1e-6);
+}
+
+TEST_F(NoiseScheduleTest, DdimWithEtaOneOnConsecutiveStepsHasDdpmsMeanAndPosteriorVariance) {
+    const ReverseStepCoefficients ddpm = coarse.ddpm_coefficients(3), ddim = coarse.ddim_coefficients(3, 2, 1.0f);
+    EXPECT_NEAR(ddim.skip, ddpm.skip, 1e-6);
+    EXPECT_NEAR(ddim.network, ddpm.network, 1e-6);
+    EXPECT_NEAR(ddim.noise, 0.41152744587655077, 1e-6);  // sqrt(beta_tilde_3)
+}
+
+TEST_F(NoiseScheduleTest, DeterministicDdimMovesANoisedSampleAlongItsOwnNoise) {
+    // With the true noise as the prediction, eta = 0 DDIM from t to s gives add_noise(x0, eps, s),
+    // and to s = 0 gives x0 itself.
+    Tensor x0(Shape({1, 3}), &backend, {0.9f, -0.3f, 0.5f});
+    Tensor eps(Shape({1, 3}), &backend, {0.2f, 1.1f, -0.7f});
+    Tensor zero(Shape({1, 3}), &backend, {0.0f, 0.0f, 0.0f});
+    const Tensor x_4 = coarse.add_noise(x0, eps, 4);
+    const std::vector<float> x_2 = coarse.ddim_step(x_4, eps, zero, 4, 2).to_host_vector();
+    const std::vector<float> want = coarse.add_noise(x0, eps, 2).to_host_vector();
+    const std::vector<float> back = coarse.ddim_step(x_4, eps, zero, 4, 0).to_host_vector();
+    const std::vector<float> clean = x0.to_host_vector();
+    for (size_t i = 0; i < 3; ++i) {
+        EXPECT_NEAR(x_2[i], want[i], 1e-5) << i;
+        EXPECT_NEAR(back[i], clean[i], 1e-5) << i;
+    }
+    EXPECT_EQ(coarse.ddim_coefficients(4, 0, 1.0f).noise, 0.0f);  // nothing is injected into x0
+}
+
+TEST_F(NoiseScheduleTest, DdimRejectsBadTimestepsAndEta) {
+    EXPECT_THROW((void)coarse.ddim_coefficients(3, 3), std::out_of_range);
+    EXPECT_THROW((void)coarse.ddim_coefficients(3, -1), std::out_of_range);
+    EXPECT_THROW((void)coarse.ddim_coefficients(6, 2), std::out_of_range);
+    EXPECT_THROW((void)coarse.ddim_coefficients(3, 2, -0.5f), std::invalid_argument);
 }
 
 }  // namespace

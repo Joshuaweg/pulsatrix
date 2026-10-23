@@ -176,8 +176,8 @@ The VAE, GAN and diffusion building blocks (`Reparameterize`, `KLDivergenceLoss`
 `BCEWithLogitsLoss`, `NoiseSchedule`, `SinusoidalTimestepEmbedding`) are losses and sampling
 steps, not `Module`s, so they have no LRP rule. Explaining a diffusion model means following
 relevance through the whole sampler instead. [LRP for diffusion models](diffusion-lrp.md) sets
-out the rules; the one for masked diffusion language models is built (`ExplainCommitments`), and
-the ones for continuous samplers and adaLN are still designs.
+out the rules; the ones for continuous samplers (`ExplainTrajectory`) and masked diffusion
+language models (`ExplainCommitments`) are built, and the one for adaLN is still a design.
 
 ## Validation against Zennit and LXT
 
