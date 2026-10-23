@@ -62,6 +62,10 @@ struct HfModelConfig {
     bool mlp_bias = false;
     /** @brief RMSNorm on each head's queries and keys (Qwen3, Gemma 3). */
     bool qk_norm = false;
+    /** @brief false: every position attends to every other. dLLM's A2D ("autoregressive to
+     *         diffusion") checkpoints, `model_type` `a2d-qwen3`, are Qwen3 with this one change
+     *         (DIFF-4). Such a model is a masked diffusion denoiser, not a next-token predictor. */
+    bool causal = true;
     /** @brief `hidden_act` (Gemma: `hidden_activation`), for example `"silu"`. */
     std::string hidden_act = "silu";
     int64_t max_position_embeddings = 0;
@@ -119,7 +123,7 @@ struct HfModelConfig {
 [[nodiscard]] std::vector<double> RopeInverseFrequencies(const HfModelConfig& config);
 
 /** @brief The attention layer the config describes: rotate-half RoPE (with its scaling),
- *         causal, its head counts, biases, QK-Norm and epsilon, and Gemma's score scale and QK-Norm
+ *         causal unless the config says otherwise, its head counts, biases, QK-Norm and epsilon, and Gemma's score scale and QK-Norm
  *         offset. For a model whose layers differ, this is a full-attention layer. */
 [[nodiscard]] AttentionConfig ToAttentionConfig(const HfModelConfig& config);
 

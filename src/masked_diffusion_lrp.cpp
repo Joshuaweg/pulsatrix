@@ -97,7 +97,7 @@ MaskedDiffusionResult Replay(const char* where, const DenoiserFn& model, const M
         for (const MaskedDiffusionWrite& w : trajectory.steps[s].writes) {
             if (!skip[static_cast<size_t>(w.position)]) positions.push_back(w.position);
         }
-        MaskedDiffusionStep record{result.tokens, {}};
+        MaskedDiffusionStep record{result.tokens, {}, {}};
         if (!positions.empty() || needs_logits(static_cast<int64_t>(s))) {
             if (logits.empty() || logits_input != result.tokens) {
                 logits = model(result.tokens);
@@ -131,6 +131,12 @@ MaskedDiffusionResult Replay(const char* where, const DenoiserFn& model, const M
             result.tokens[static_cast<size_t>(w.position)] = w.token;
             result.last_write_step[static_cast<size_t>(w.position)] = static_cast<int64_t>(s);
         }
+        for (int64_t p : trajectory.steps[s].remasked) {
+            if (p < 0 || p >= L) Bad(where, "a re-masked position is outside the sequence");
+            if (result.tokens[static_cast<size_t>(p)] == config.mask_token_id) continue;  // skipped, so never written
+            result.tokens[static_cast<size_t>(p)] = config.mask_token_id;
+            record.remasked.push_back(p);
+        }
         result.steps.push_back(std::move(record));
     }
     return result;
@@ -158,6 +164,27 @@ std::vector<float> EncoderLMStepModel::relevance(const std::vector<float>& relev
     const int64_t V = model_.config().vocab_size;
     if (static_cast<int64_t>(relevance_logits.size()) != length_ * V) {
         throw std::invalid_argument("EncoderLMStepModel::relevance: relevance must be L * vocab values for the last forward()");
+    }
+    return model_
+        .propagate_relevance(Tensor(Shape({1, length_, V}), backend_, relevance_logits, backend_->device()), config_)
+        .to_host_vector();
+}
+
+CausalLMStepModel::CausalLMStepModel(CausalLM& model, DeviceBackend* backend, LRPRuleConfig config)
+    : model_(model), backend_(backend), config_(config) {
+    if (model.config().causal) throw std::invalid_argument("CausalLMStepModel: the CausalLM is causal; a diffusion step needs bidirectional attention");
+}
+
+std::vector<float> CausalLMStepModel::forward(const std::vector<int64_t>& tokens) {
+    length_ = static_cast<int64_t>(tokens.size());
+    return model_.forward(Tensor(Shape({1, length_}), backend_, std::vector<float>(tokens.begin(), tokens.end()), backend_->device()))
+        .to_host_vector();
+}
+
+std::vector<float> CausalLMStepModel::relevance(const std::vector<float>& relevance_logits) {
+    const int64_t V = model_.config().vocab_size;
+    if (static_cast<int64_t>(relevance_logits.size()) != length_ * V) {
+        throw std::invalid_argument("CausalLMStepModel::relevance: relevance must be L * vocab values for the last forward()");
     }
     return model_
         .propagate_relevance(Tensor(Shape({1, length_, V}), backend_, relevance_logits, backend_->device()), config_)

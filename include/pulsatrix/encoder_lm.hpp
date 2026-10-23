@@ -33,7 +33,7 @@ enum class EncoderLMHead {
 
 /** @brief The settings of a masked LM, from its Hugging Face `config.json`. */
 struct EncoderLMConfig {
-    std::string architecture;  ///< `EsmForMaskedLM`, `MDLM`
+    std::string architecture;  ///< `EsmForMaskedLM`, `EsmForDPLM`, `MDLM`
     std::string model_type;    ///< `esm`, `mdlm`
     int64_t vocab_size = 0;
     int64_t hidden_size = 0;

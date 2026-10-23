@@ -1,7 +1,8 @@
 /** @file masked_diffusion.hpp
  *  @brief Sampling from a masked diffusion language model (DIFF-2): start from a sequence with
  *         masked positions and fill them over a number of steps, recording the whole trajectory
- *         so it can be explained afterwards (DIFF-3).
+ *         so it can be explained afterwards (DIFF-3). DPLM's remasking sampler (DIFF-4) also
+ *         takes positions back.
  *  @ingroup dl_modules
  */
 #pragma once
@@ -11,6 +12,7 @@
 #include <optional>
 #include <vector>
 
+#include "pulsatrix/causal_lm.hpp"
 #include "pulsatrix/encoder_lm.hpp"
 
 namespace pulsatrix {
@@ -18,7 +20,7 @@ namespace pulsatrix {
 /**
  * @brief The model as the sampler sees it: the current sequence (masked positions included) in,
  *        logits for every position out, `L * vocab` values, row-major. MakeDenoiser builds one for
- *        an EncoderLM.
+ *        an EncoderLM or a bidirectional CausalLM.
  */
 using DenoiserFn = std::function<std::vector<float>(const std::vector<int64_t>& tokens)>;
 
@@ -39,6 +41,18 @@ enum class UnmaskingSchedule {
      *        Steps that fill nothing don't run the model (MDLM reuses its output the same way).
      */
     Ancestral,
+    /**
+     * @brief DPLM's reparameterized decoding (`reparam-uncond-deterministic-linear`, its default):
+     *        at step t of T the model scores every position that started masked by the
+     *        log-probability, over the allowed tokens, of the token it would choose there now,
+     *        filled or not. Of those n positions, the `floor(n * (1 - t / T))` with the lowest
+     *        score are masked, including positions filled at earlier steps; a position is masked
+     *        when its score is strictly below the cutoff, as DPLM's `topk_masking` does. Every
+     *        other masked position takes its chosen token, and every other filled position keeps
+     *        the token it has. Every step runs the model and is recorded, even one that changes
+     *        nothing, and the last masks nothing.
+     */
+    Remasking,
 };
 
 /** @brief Sampling settings. The defaults fill greedily by confidence. */
@@ -64,28 +78,35 @@ struct MaskedDiffusionWrite {
     int64_t position = 0;
     int64_t token = 0;
     /** @brief The model's probability of the token (softmax of the raw logits, before any
-     *         processing), the confidence the Confidence schedule ranks by. */
+     *         processing), the confidence the Confidence schedule ranks by. Remasking ranks by the
+     *         probability over the allowed tokens instead, as DPLM does. */
     float probability = 0.0f;
 };
 
-/** @brief One step that filled at least one position. */
+/** @brief One step that filled at least one position (under Remasking, any step). */
 struct MaskedDiffusionStep {
     /** @brief The sequence the model saw at this step. */
     std::vector<int64_t> input;
-    /** @brief The positions filled from the model's output, in position order. */
+    /** @brief The positions filled from the model's output, in position order. A position is
+     *         only ever written while it holds the mask token. */
     std::vector<MaskedDiffusionWrite> writes;
+    /** @brief The positions that held a token in `input` and are masked again after this step,
+     *         in position order (Remasking only). */
+    std::vector<int64_t> remasked;
 };
 
 /** @brief A sampled sequence and how it was produced. */
 struct MaskedDiffusionResult {
     /** @brief The final sequence: no masked position remains. */
     std::vector<int64_t> tokens;
-    /** @brief Every step that filled something, in order. Each step's input is the previous
-     *         step's input with the previous writes applied. */
+    /** @brief Every step that filled something (under Remasking, every step), in order. Each
+     *         step's input is the previous step's input with the previous writes and re-masks
+     *         applied. */
     std::vector<MaskedDiffusionStep> steps;
     /** @brief For each position, the index into `steps` of the step that last wrote it, or -1 for
-     *         a position that wasn't masked in the input (a prompt token). Neither schedule
-     *         re-masks, so a position's last write is also its only one. */
+     *         a position that wasn't masked in the input (a prompt token). Under Confidence and
+     *         Ancestral a position's last write is also its only one; under Remasking a position
+     *         can be written, masked again and rewritten. */
     std::vector<int64_t> last_write_step;
 };
 
@@ -105,5 +126,13 @@ struct MaskedDiffusionResult {
  *        `(1, L, vocab)`. The model isn't owned and must outlive the function.
  */
 [[nodiscard]] DenoiserFn MakeDenoiser(EncoderLM& model, DeviceBackend* backend);
+
+/**
+ * @brief A DenoiserFn for a CausalLM loaded with bidirectional attention, such as an A2D
+ *        diffusion model (`HfModelConfig::causal` false). The model must outlive the function.
+ * @throws std::invalid_argument if the model is causal: each position would see only the masks
+ *         before it.
+ */
+[[nodiscard]] DenoiserFn MakeDenoiser(CausalLM& model, DeviceBackend* backend);
 
 }  // namespace pulsatrix
