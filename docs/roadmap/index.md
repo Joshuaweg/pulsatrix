@@ -2365,6 +2365,23 @@ planted tasks, causal patching and faithfulness. The rules are on the
   tokens, so this is the model under one-position-per-step confidence decoding; its card uses
   blocks of 64. Block decoding isn't in pulsatrix yet. The explanation still runs, and it gives
   the best patch result so far (Spearman 0.38).
+- **DIFF-5's split is the signed ratio, not the absolute-value ratio.** The planted
+  class-conditional DDPM refuted the design's split: it gave the class the wrong sign in 9 of 12
+  samples, because the network term opposes the skip term whenever `ε_θ` removes noise and the
+  split ignores sign. `TrajectorySplit::SignedRatio` keeps each term's sign, stays bounded, and
+  reports what the terms cancel as a sink. Its per-step class relevance tracks the effect of
+  removing the class at that step (median Spearman 0.98). The absolute split and the signed
+  epsilon rule remain options.
+- **DIFF-5's network rule puts the bias in the denominator.** The codebase's default pre-bias
+  epsilon rule blew up when chained over 20 steps (shares up to 570 times the value).
+  `ConcatDenoiser` defaults to `TrajectoryNetworkRules()`; the biases' share is reported as leak.
+- **DIFF-5's planted task couldn't test the early-concentration falsifier.** In the planted model
+  the class acts late (the per-step intervention effect rises from 0.3% to 28% of the region), and
+  the explanation agrees. A model that decides early, with DIFF-10's critical windows, is needed.
+  The planted model uses a linear schedule to β = 0.05, not the cosine one, because the cosine
+  schedule's tiny ᾱ_T needs x̂_0 clipping, which isn't part of the linear step D1 splits.
+- **DIFF-5 leaves the randomization check out.** Randomizing the denoiser changes the trajectory
+  too, so the comparison needs a design; the interventional check above replaced it.
 
 ## Open questions
 

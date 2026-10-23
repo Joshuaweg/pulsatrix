@@ -1,6 +1,6 @@
 /** @file noise_schedule.hpp
- *  @brief DDPM linear noise schedule: precomputed beta/alpha/alpha_bar, forward noising and
- *         reverse sampling steps.
+ *  @brief DDPM noise schedules (linear and cosine): precomputed beta/alpha/alpha_bar, forward
+ *         noising, and DDPM and DDIM reverse steps.
  *  @ingroup dl_modules
  */
 #pragma once
@@ -12,6 +12,16 @@
 #include "pulsatrix/tensor.hpp"
 
 namespace pulsatrix {
+
+/**
+ * @brief One reverse step as `x_prev = skip * x_t - network * eps_theta + noise * z` (DIFF-5).
+ *        DDPM and DDIM steps both have this form; only the coefficients differ.
+ */
+struct ReverseStepCoefficients {
+    float skip = 0.0f;
+    float network = 0.0f;
+    float noise = 0.0f;
+};
 
 /**
  * @brief The DDPM (Ho et al. 2020, arXiv:2006.11239) linear variance schedule plus the two
@@ -33,11 +43,9 @@ namespace pulsatrix {
  *       model is actually optimized against is a plain MSELoss between the true and
  *       predicted noise (`L_simple`), which needs no new loss class; the gradient path runs
  *       entirely through the caller's `epsilon_theta` network, never through this object.
- * @note **No LRP rule, nothing to stub.** Diffusion's research spike found no credible
- *       native LRP rule (iterative stochastic denoising has no single conserved relevance
- *       seed per timestep) -- and since this is not a Module, there is no
- *       `propagate_relevance` to stub either. Same disposition as Reparameterize /
- *       KLDivergenceLoss; see the campaign's Phase 5 Amendment (2026-09-23).
+ * @note **No LRP rule of its own.** A reverse step is `skip * x_t - network * eps + noise * z`
+ *       (ReverseStepCoefficients), and trajectory LRP (trajectory_lrp.hpp, DIFF-5) splits
+ *       relevance across those three terms. The schedule only supplies the coefficients.
  * @note **`epsilon` and `z` are caller-supplied, never sampled internally.** Identical
  *       convention to Reparameterize's `epsilon`: it keeps both operations deterministic and
  *       therefore directly testable against hand-computed values. Wiring real Gaussian
@@ -59,6 +67,16 @@ public:
      *       rather than dividing by T - 1 == 0).
      */
     explicit NoiseSchedule(int64_t num_timesteps, float beta_start = 1e-4f, float beta_end = 0.02f);
+
+    /**
+     * @brief The cosine schedule of Nichol & Dhariwal 2021 (arXiv:2102.09672):
+     *        `alpha_bar_t = f(t) / f(0)` with `f(t) = cos^2(((t / T) + offset) / (1 + offset) * pi / 2)`,
+     *        and `beta_t = min(1 - alpha_bar_t / alpha_bar_{t-1}, max_beta)`. Computed in double.
+     * @throws std::invalid_argument if num_timesteps <= 0, offset < 0, or max_beta is outside (0, 1].
+     * @note alpha_bar() then follows the clipped betas, as in the paper's code: only the last steps
+     *       are clipped, where f falls to zero.
+     */
+    [[nodiscard]] static NoiseSchedule Cosine(int64_t num_timesteps, double offset = 0.008, double max_beta = 0.999);
 
     /** @brief Number of diffusion steps T this schedule was built for. */
     [[nodiscard]] int64_t num_timesteps() const { return num_timesteps_; }
@@ -125,7 +143,38 @@ public:
     [[nodiscard]] Tensor denoise_step(const Tensor& x_t, const Tensor& predicted_epsilon, const Tensor& z,
                                       int64_t t) const;
 
+    /**
+     * @brief denoise_step()'s coefficients: skip `1/sqrt(alpha_t)`, network
+     *        `beta_t / (sqrt(alpha_t) sqrt(1 - alpha_bar_t))`, noise `sqrt(beta_t)`.
+     * @throws std::out_of_range if t is outside [1, T].
+     */
+    [[nodiscard]] ReverseStepCoefficients ddpm_coefficients(int64_t t) const;
+
+    /**
+     * @brief A DDIM step (Song et al. 2021, arXiv:2010.02502, eq. 12) from t to an earlier s:
+     *        `x_s = sqrt(alpha_bar_s) x0_hat + sqrt(1 - alpha_bar_s - sigma^2) eps + sigma z` with
+     *        `x0_hat = (x_t - sqrt(1 - alpha_bar_t) eps) / sqrt(alpha_bar_t)` and
+     *        `sigma = eta sqrt((1 - alpha_bar_s) / (1 - alpha_bar_t)) sqrt(1 - alpha_bar_t / alpha_bar_s)`.
+     *        `s = 0` is the clean sample, `alpha_bar_0 = 1`, where sigma is zero.
+     * @param eta 0 is deterministic DDIM; 1 with s = t - 1 has the mean of a DDPM step and the
+     *        posterior variance beta_tilde_t as its noise.
+     * @throws std::out_of_range if t is outside [1, T] or s outside [0, t).
+     * @throws std::invalid_argument if eta < 0.
+     */
+    [[nodiscard]] ReverseStepCoefficients ddim_coefficients(int64_t t, int64_t s, float eta = 0.0f) const;
+
+    /**
+     * @brief Applies ddim_coefficients(t, s, eta): `skip * x_t - network * eps + noise * z`.
+     * @throws as ddim_coefficients(), and std::invalid_argument if the shapes or devices differ.
+     */
+    [[nodiscard]] Tensor ddim_step(const Tensor& x_t, const Tensor& predicted_epsilon, const Tensor& z, int64_t t,
+                                   int64_t s, float eta = 0.0f) const;
+
 private:
+    struct FromBetas {};
+    /** @brief Builds the schedule from its betas, computing alpha and alpha_bar in double. */
+    NoiseSchedule(FromBetas, const std::vector<double>& betas);
+
     /**
      * @brief Converts a published 1-based timestep to a storage index, validating the range.
      * @throws std::out_of_range if t is outside [1, T].

@@ -1,6 +1,7 @@
 # LRP for Diffusion Models (Design)
 
-**Status:** D2 is implemented ([below](#d2-in-pulsatrix)); D1 and D3 are designs only. The work
+**Status:** D1 and D2 are implemented ([D1](#d1-in-pulsatrix), [D2](#d2-in-pulsatrix)); D3 is a
+design only. D1's split changed when it was tested: see [D1 in pulsatrix](#d1-in-pulsatrix). The work
 is tracked as the [DIFF epic](../roadmap/index.md#diff-diffusion-models-and-their-explanations), and the evidence
 is in the [research notes](../roadmap/research-notes.md#diff-diffusion-models).
 
@@ -73,6 +74,14 @@ The weakness is that the split follows magnitude, not contribution. Two large ca
 each get about half, so the network's share in an early step says how big the terms were, not
 what the network decided. The checks below are there to catch this.
 
+**The checks caught it.** On a planted class-conditional DDPM (DIFF-5) the absolute-value split
+gave the class the wrong sign in 9 of 12 samples. The network term `−c2·ε_θ` opposes the skip term
+whenever the network removes noise, yet the split hands it a share with the sign of `R`, so
+everything that acts through `ε_θ` comes back flipped. Pulsatrix's default is now the **signed
+ratio** `R_k = R · h_k · sign(Σh) / (Σ|h_j| + ε)`: each term keeps the sign of its contribution,
+every share is still bounded by `|R|`, and what the terms cancel, `R · (1 − |Σh| / Σ|h_j|)`, goes to a
+reported sink. See [D1 in pulsatrix](#d1-in-pulsatrix).
+
 ### The seed: a scalar of x_0
 
 Seed a scalar computed from the final sample, not the raw noise prediction. The one reported
@@ -114,6 +123,77 @@ match the one being explained.
   first Flux step to 5.4% at the last) both predict that it should.
 - Explanations vary across sampler seeds as much as DAAM's authors feared when they called
   gradient attribution through the sampler intractable.
+
+### D1 in pulsatrix
+
+`include/pulsatrix/trajectory_lrp.hpp` (DIFF-5) samples a continuous diffusion model, records the
+trajectory, and explains a scalar of the final sample back through it:
+
+```cpp
+#include "pulsatrix/trajectory_lrp.hpp"
+
+NoiseSchedule schedule(100, 1e-4f, 0.05f);                // or NoiseSchedule::Cosine(T)
+ConcatDenoiser model(net, 8, 8, {1.0f, 0.0f}, &cpu);      // net reads [x_t, embedding(t), class]
+ContinuousSamplerConfig config;                           // DDIM, 50 steps, eta 0 by default
+config.steps = 20;
+ContinuousTrajectory t = SampleContinuousDiffusion(model, schedule, StandardNormal(8, 1), config);
+TrajectoryRelevance r = ExplainTrajectory(model, t, RegionSeed(t.sample(), {0, 1, 2, 3}));
+// r.x_T: relevance on the starting noise. r.condition: on the class, r.condition_by_step per step.
+// r.hops: each step's split (skip, network, noise, absorbed), the signed fractions, and where the
+// network's share landed. value = x_T + condition + time + noise + absorbed + leak, exactly.
+```
+
+- **Samplers.** `NoiseSchedule` has the linear and the cosine schedule (Nichol & Dhariwal 2021),
+  DDPM's step and DDIM's (`ddim_coefficients`, `ddim_step`), both as
+  `x_prev = skip · x_t − network · ε + noise · z`. `SampleContinuousDiffusion` runs DDPM on every
+  timestep or DDIM on evenly spaced ones, and records every state and every noise draw. The noise
+  comes from its own Box-Muller over `mt19937_64`, so a seed gives the same trajectory on every
+  platform.
+- **Seeds.** `RegionSeed` (a region of x_0), `ReconstructionSeed` (`‖x_0 − x_ref‖²`), or any
+  relevance vector on x_0, such as a classifier's input relevance.
+- **Splits.** `TrajectorySplit::SignedRatio` (the default), `AbsoluteRatio` (the design's first
+  choice) and `SignedEpsilon`. Every hop logs the signed fractions `Σ R_i · h_k,i / s_i` next to
+  the split, so cancellation is visible whichever split runs.
+- **The network.** `ContinuousDenoiser` is the interface; `ConcatDenoiser` wraps a `Module` that
+  reads `[x_t, embedding(t), c]` and splits its input relevance into x_t, the timestep embedding
+  (a sink) and the conditioning. Its default rule is the epsilon rule with the bias in the
+  denominator (`TrajectoryNetworkRules()`). Pulsatrix's usual pre-bias rule divides by `x W` alone,
+  which a hidden layer's bias can leave near zero while the unit is active. Chained over 20 steps
+  it blew up: conditioning shares up to 570 times the explained value.
+- **The rerun check.** Each step is recomputed from the stored `x_t`, `z` and coefficients before
+  its relevance pass; if that doesn't reproduce the stored next state, the explanation throws
+  rather than explain a different trajectory.
+
+**What the tests show.**
+- A one-step DDIM on a linear denoiser matches the hand computation for both splits.
+- Under DDIM the noise sink is exactly zero; under DDPM it isn't, except at the last step. The
+  budget balances to 1e-5 in every test.
+- When the skip and network terms cancel to 0.1%, the absolute split gives each half, the
+  signed epsilon rule gives each about 1000 times the relevance, and the signed ratio gives each
+  half with its own sign and absorbs the 99.95% that cancels.
+- **A planted class-conditional DDPM** (8 values, the class sets the sign of the first 4 and
+  nothing else; an MLP denoiser trained here; 20 DDIM steps; 12 samples, all of which follow
+  their class). The ground truth is interventional: remove the class at one step only, rerun the
+  rest, and measure how far region A moves. That effect grows from 0.3% of the region at the
+  first step to 28% at the last. Under the signed ratio:
+  - The class gets the region's sign in all 12 samples. Its relevance on region A (median 2.06)
+    is about 7 times that on region B (0.29). Removing the class at every step moves A by 2.83
+    and B by 0.63: the model does use the class a little for B.
+  - Per step, the class's relevance tracks the intervention: median Spearman 0.98 over the 20
+    steps, lowest 0.89. Averaged over samples it rises from 0.0008 of the value at the first step
+    to 0.18 at step 18, against 0.0026 and 0.16 for the intervention.
+  - The absolute split's sign is wrong in 9 of 12 samples, and its per-step relevance doesn't
+    track the intervention (median Spearman 0.17).
+- **The first falsifier doesn't apply here.** In this model the class acts late, not early, and
+  the explanation agrees with the intervention that says so. A model whose class is decided
+  early, and the critical-window measurement of when it is decided (DIFF-10), are needed to test
+  it. The planted model uses a linear schedule to β = 0.05 (ᾱ_T = 0.08), not the cosine one: the
+  cosine schedule's ᾱ_T of 1e-4 makes the first DDIM step multiply the noise prediction's error
+  about 100 times, which samplers hide by clipping x̂_0, and clipping isn't part of the step D1
+  splits.
+
+**Not yet.** Randomizing the denoiser, Integrated Gradients through the sampler (DIFF-8),
+classifier-free guidance, latent diffusion's decoder, and a real image model.
 
 ## D2: commitment-graph LRP for masked diffusion LMs
 
