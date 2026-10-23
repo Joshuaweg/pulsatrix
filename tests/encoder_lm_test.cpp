@@ -243,7 +243,20 @@ TEST(EsmConfig, RefusesWhatEncoderLMDoesntRun) {
     EXPECT_THROW((void)ParseEsmConfig(base + R"(, "position_embedding_type": "absolute"})"), std::invalid_argument);
     EXPECT_THROW((void)ParseEsmConfig(base + R"(, "is_folding_model": true})"), std::invalid_argument);
     EXPECT_THROW((void)ParseEsmConfig(base + R"(, "emb_layer_norm_before": true})"), std::invalid_argument);
-    EXPECT_THROW((void)ParseEsmConfig(base + R"(, "architectures": ["EsmForTokenClassification"]})"), std::invalid_argument);
+    const auto with_architecture = [&base](const std::string& name) {
+        std::string json = base + "}";
+        json.replace(json.find("EsmForMaskedLM"), std::string("EsmForMaskedLM").size(), name);
+        return json;
+    };
+    // The message names the architecture, so the refusal is for the right reason.
+    try {
+        (void)ParseEsmConfig(with_architecture("EsmForTokenClassification"));
+        ADD_FAILURE() << "EsmForTokenClassification was accepted";
+    } catch (const std::invalid_argument& e) {
+        EXPECT_NE(std::string(e.what()).find("EsmForTokenClassification"), std::string::npos) << e.what();
+    }
+    // DPLM (DIFF-4) saves EsmForMaskedLM's weights under its own class name.
+    EXPECT_EQ(ParseEsmConfig(with_architecture("EsmForDPLM")).architecture, "EsmForDPLM");
     EXPECT_THROW((void)ParseEsmConfig(R"({"model_type": "llama"})"), std::invalid_argument);
 }
 

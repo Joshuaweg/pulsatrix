@@ -69,6 +69,21 @@ public:
         return c;
     }
 
+    /** @brief @p token's log-probability at @p position over the allowed tokens only (DPLM sets
+     *         the others' logits to -inf before its log-softmax). */
+    [[nodiscard]] double allowed_log_probability(const std::vector<float>& logits, int64_t position, int64_t token) const {
+        const float* row = logits.data() + position * vocab_;
+        double top = -std::numeric_limits<double>::infinity();
+        for (int64_t v = 0; v < vocab_; ++v) {
+            if (allowed_[static_cast<size_t>(v)]) top = std::max(top, static_cast<double>(row[v]));
+        }
+        double total = 0;
+        for (int64_t v = 0; v < vocab_; ++v) {
+            if (allowed_[static_cast<size_t>(v)]) total += std::exp(row[v] - top);
+        }
+        return row[token] - top - std::log(total);
+    }
+
 private:
     const MaskedDiffusionConfig& config_;
     int64_t vocab_;
@@ -115,6 +130,48 @@ MaskedDiffusionResult SampleMaskedDiffusion(const DenoiserFn& model, const std::
         return logits;
     };
 
+    if (config.schedule == UnmaskingSchedule::Remasking) {
+        std::vector<int64_t> free;
+        for (int64_t p = 0; p < L; ++p) {
+            if (tokens[static_cast<size_t>(p)] == config.mask_token_id) free.push_back(p);
+        }
+        for (int64_t step = 1; step <= config.steps; ++step) {
+            const std::vector<float>& out = logits_now();
+            std::vector<MaskedDiffusionWrite> chosen;
+            std::vector<float> scores;
+            for (int64_t p : free) {
+                const Choice c = (*choose)(out, p, config.do_sample, engine);
+                chosen.push_back({p, c.token, c.probability});
+                // DPLM's scores are float32.
+                scores.push_back(static_cast<float>(choose->allowed_log_probability(out, p, c.token)));
+            }
+            // DPLM: cutoff_len = (n * rate).long() in float32, cutoff = sorted(scores)[cutoff_len],
+            // and positions scoring strictly below the cutoff are masked.
+            const float rate = static_cast<float>(1.0 - static_cast<double>(step) / static_cast<double>(config.steps));
+            const auto k = static_cast<size_t>(static_cast<float>(M) * rate);
+            std::vector<float> sorted = scores;
+            std::sort(sorted.begin(), sorted.end());
+            const float cutoff = sorted[std::min(k, sorted.size() - 1)];
+            // _reparam_decoding starts from the previous tokens: a filled position that isn't
+            // masked keeps its token, whatever the model would choose there now.
+            MaskedDiffusionStep record{result.tokens, {}, {}};
+            for (size_t i = 0; i < chosen.size(); ++i) {
+                const auto p = static_cast<size_t>(chosen[i].position);
+                const bool filled = result.tokens[p] != config.mask_token_id;
+                if (scores[i] < cutoff) {
+                    if (filled) record.remasked.push_back(chosen[i].position);
+                    result.tokens[p] = config.mask_token_id;
+                } else if (!filled) {
+                    record.writes.push_back(chosen[i]);
+                    result.tokens[p] = chosen[i].token;
+                    result.last_write_step[p] = static_cast<int64_t>(result.steps.size());
+                }
+            }
+            result.steps.push_back(std::move(record));
+        }
+        return result;
+    }
+
     const int64_t base = M / config.steps, remainder = M % config.steps;
     const double t_end = 1e-5;
     for (int64_t step = 0; step < config.steps; ++step) {
@@ -155,7 +212,7 @@ MaskedDiffusionResult SampleMaskedDiffusion(const DenoiserFn& model, const std::
             }
         }
         std::sort(writes.begin(), writes.end(), [](const auto& a, const auto& b) { return a.position < b.position; });
-        MaskedDiffusionStep record{result.tokens, writes};
+        MaskedDiffusionStep record{result.tokens, writes, {}};
         for (const MaskedDiffusionWrite& w : writes) {
             result.tokens[static_cast<size_t>(w.position)] = w.token;
             result.last_write_step[static_cast<size_t>(w.position)] = static_cast<int64_t>(result.steps.size());
@@ -163,6 +220,14 @@ MaskedDiffusionResult SampleMaskedDiffusion(const DenoiserFn& model, const std::
         result.steps.push_back(std::move(record));
     }
     return result;
+}
+
+DenoiserFn MakeDenoiser(CausalLM& model, DeviceBackend* backend) {
+    if (model.config().causal) throw std::invalid_argument("MakeDenoiser: the CausalLM is causal; a denoiser needs bidirectional attention");
+    return [&model, backend](const std::vector<int64_t>& tokens) {
+        const int64_t L = static_cast<int64_t>(tokens.size());
+        return model.forward(Tensor(Shape({1, L}), backend, std::vector<float>(tokens.begin(), tokens.end()), backend->device())).to_host_vector();
+    };
 }
 
 DenoiserFn MakeDenoiser(EncoderLM& model, DeviceBackend* backend) {

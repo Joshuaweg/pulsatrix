@@ -160,6 +160,7 @@ void CausalLM::set_intervention(int64_t layer, std::unique_ptr<ResidualIntervent
 }
 
 NextTokenLogitsFn CausalLM::next_token_logits(int64_t max_length) {
+    if (!config_.causal) throw std::logic_error("CausalLM::next_token_logits: the model attends bidirectionally (a diffusion LM), so it has no next-token cache");
     std::vector<TransformerBlock*> blocks;
     for (auto& layer : layers_) blocks.push_back(layer.get());
     Module* head = tied_head_ ? static_cast<Module*>(tied_head_.get()) : lm_head_.get();

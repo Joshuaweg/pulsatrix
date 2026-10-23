@@ -111,6 +111,7 @@ public:
      * @brief A cached next-token function for Generate (LLM-5): one pass over the prompt, then one
      *        position per new token.
      * @note Holds pointers into this model, which must outlive it.
+     * @throws std::logic_error for a model with bidirectional attention (`config().causal` false).
      */
     [[nodiscard]] NextTokenLogitsFn next_token_logits(int64_t max_length);
 

@@ -2318,7 +2318,7 @@ planted tasks, causal patching and faithfulness. The rules are on the
 | DIFF-1 | Research on diffusion interpretability and diffusion LMs; the three rule designs (D1 trajectory, D2 commitment graph, D3 adaLN) with their budgets, falsifiers and checks | No published LRP for diffusion exists to adopt | — | P1 | S | Done, [#193](https://github.com/Joshuaweg/pulsatrix/pull/193) |
 | DIFF-2 | `MaskedDiffusionSampler`: carry-over and remasking samplers that record the whole trajectory (sequence and writes at each step), greedy for explanation. MDLM-owt loading, with its constant adaLN folded into the weights at load time, and golden parity with its remote code | The first real diffusion LM, and the trajectory D2 explains | — | P1 | M |Done, [#194](https://github.com/Joshuaweg/pulsatrix/pull/194) (see below) |
 | DIFF-3 | Commitment-graph LRP (D2): AttnLRP inside each step, re-seeding at the last step that wrote each token, one relevance pass per step, the sink ledger. Checked against IG under a frozen commit order, prompt deletion, step-resolved patching and a planted copy task | The design the evidence supports best, and the ledger D1 reuses | DIFF-2 | P1 | M | Done, [#195](https://github.com/Joshuaweg/pulsatrix/pull/195) (see below) |
-| DIFF-4 | More diffusion LMs: Qwen3-0.6B diffusion (the Qwen loader with a bidirectional mask), DPLM-150M/650M (the ESM-2 loader after `pickle_to_safetensors.py`, under DPLM's remasking sampler), DiffuGPT-M | D2 under remasking, at a larger scale, and against DLIG's published numbers | DIFF-3 | P2 | M | |
+| DIFF-4 | More diffusion LMs: Qwen3-0.6B diffusion (the Qwen loader with a bidirectional mask), DPLM-150M/650M (the ESM-2 loader after `pickle_to_safetensors.py`, under DPLM's remasking sampler), DiffuGPT-M | D2 under remasking, at a larger scale, and against DLIG's published numbers | DIFF-3 | P2 | M | Done, [#196](https://github.com/Joshuaweg/pulsatrix/pull/196) (see below) |
 | DIFF-5 | Trajectory LRP (D1): DDIM steps and a cosine schedule on `NoiseSchedule`, the absolute-ratio split with signed fractions logged, scalar seeds on x_0, the budget, recomputing each step from the stored trajectory. A planted class-conditional DDPM | Explains a continuous sampler end to end | DIFF-3 | P1 | M | |
 | DIFF-6 | `AdaLayerNormModule` with adaLN-Zero and a DiT block, with D3's split and detach modes, conservation tests and a hand-applied reference. A planted class-conditional DiT settles the default; SEDD-small runs on it | Conditioning enters a DiT only through adaLN. Replaces ARCH-9 | DIFF-5 | P2 | M | |
 | DIFF-7 | Lenses across steps: x̂_0 and logit lens at every step, and the commit-order trajectory, exported as versioned JSON for the VIZ pack | Shows when a decision is made, not just when it's committed | DIFF-2 | P1 | S | |
@@ -2341,14 +2341,30 @@ planted tasks, causal patching and faithfulness. The rules are on the
 - **DIFF-2's sampler doesn't re-mask.** The remasking sampler moves to DIFF-4, with DPLM, the only
   target that needs it. DIFF-2 has LLaDA's confidence schedule and MDLM's ancestral one, and
   neither revises a filled position.
-- **DIFF-3's IG comparison moves to DIFF-7.** Integrated Gradients across a whole trajectory needs
+- **DIFF-3's IG comparison moves to DIFF-8.** Integrated Gradients across a whole trajectory needs
   gradients at each step's input embeddings, chained through a soft relaxation of the committed
-  tokens. EncoderLM takes token ids and has no such path yet, and DLIG (DIFF-7) builds it.
+  tokens. EncoderLM takes token ids and has no such path yet, and DLIG (DIFF-8) builds it.
   DIFF-3 is checked instead by exact hand computation on a linear model, a planted copy task,
   prompt deletion with the trajectory replayed, and step-resolved patching.
 - **DIFF-3 seeds logits, not log-probabilities.** DLIG explains the summed log-probability, but
   log-softmax isn't linear in the logits, so it can't be seeded on them the way LRP seeds a
   logit. The explained value is the written tokens' logits, as in the rest of pulsatrix's AttnLRP.
+- **DIFF-4 leaves DiffuGPT-M to DIFF-8.** It is GPT-2 (learned positions, GELU-tanh, fused
+  `c_attn`), an architecture pulsatrix has no loader for, and its only use here is replicating
+  DLIG's published numbers, which is DIFF-8's job.
+- **DPLM's sampler was misread at first.** The research notes said every unmasked position takes
+  the new prediction at each step. DPLM's `_reparam_decoding` starts from the previous step's
+  tokens, so a decoded position that isn't re-masked keeps its token. The golden test, which runs
+  DPLM's own `generate` and compares every step's input, caught it before any result depended
+  on it.
+- **DIFF-4's remasking evidence is thin.** Greedy DPLM seldom re-masks: on ubiquitin and TEM-1
+  it made none, even with three positions filled per step. Only the golden GFP case re-masks
+  (3 times), and the explainer handles it, but D2 under remasking at scale rests on that case
+  and the hand-built test. Sampling at temperature, or ReMDM, would exercise it properly.
+- **A2D-Qwen3's greedy infill degenerates into repetition.** The authors' code writes the same
+  tokens, so this is the model under one-position-per-step confidence decoding; its card uses
+  blocks of 64. Block decoding isn't in pulsatrix yet. The explanation still runs, and it gives
+  the best patch result so far (Spearman 0.38).
 
 ## Open questions
 

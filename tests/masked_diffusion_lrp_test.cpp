@@ -223,6 +223,41 @@ TEST(CommitmentLrp, DeletionRemovesTheMostRelevantPromptTokenFirst) {
     EXPECT_LT(d.auc, d.random_auc);
 }
 
+TEST(CommitmentLrp, UnderRemaskingRelevanceGoesToTheWriteTheStepSawNotTheLastOne) {
+    // Position 2 is written at step 0, re-masked at step 1 after position 3 has read it, and
+    // written again at step 2. Position 3's relevance must go back to step 0's write, the one step
+    // 1 saw, not to step 2's, which came later.
+    ChainModel model;
+    MaskedDiffusionResult order;
+    order.tokens.assign(kL, kMask);
+    order.steps.push_back({{}, {{2, 0, 0.0f}}, {}});
+    order.steps.push_back({{}, {{3, 0, 0.0f}}, {2}});
+    order.steps.push_back({{}, {{2, 0, 0.0f}, {4, 0, 0.0f}}, {}});
+    const MaskedDiffusionResult t = ReplayMaskedDiffusion(model.denoiser(), order, {2, 1, kMask, kMask, kMask}, ChainConfig());
+    EXPECT_EQ(t.tokens, (std::vector<int64_t>{2, 1, 2, 2, 2}));
+    EXPECT_EQ(t.last_write_step, (std::vector<int64_t>{-1, -1, 2, 1, 2}));
+    ASSERT_EQ(t.steps[1].remasked, (std::vector<int64_t>{2}));
+    EXPECT_EQ(t.steps[2].input[2], kMask);
+
+    const CommitmentRelevance r = ExplainCommitments(model, t, kMask, {{4, std::nullopt}});
+    ASSERT_EQ(r.hops.size(), 3u);
+    // The same numbers as without the re-mask: the chain 4 <- 3 <- 2 <- 0 is unchanged.
+    EXPECT_NEAR(r.value, 4.5, 1e-6);
+    EXPECT_NEAR(r.prompt[0], 4.0 * 4.0 / 4.25, 1e-5);
+    EXPECT_NEAR(r.prompt[1], 0.5, 1e-6);
+    EXPECT_NEAR(r.hops[2].seeded, 4.0 * 4.0 / 4.25, 1e-5);  // step 0 received position 2's share
+    EXPECT_NEAR(r.prompt_total() + r.mask_total() + r.leak_total(), r.value, 1e-9);
+    // Position 2's own token, last written at step 2, reads position 0 there.
+    const CommitmentRelevance two = ExplainCommitments(model, t, kMask, {{2, std::nullopt}});
+    ASSERT_EQ(two.hops.size(), 1u);
+    EXPECT_EQ(two.hops[0].step, 2);
+    EXPECT_NEAR(two.prompt[0], 4.0, 1e-6);
+    // Replaying with position 2 skipped leaves it masked throughout, re-mask included.
+    const MaskedDiffusionResult skipped = ReplayMaskedDiffusion(model.denoiser(), t, t.steps[0].input, ChainConfig(), {2});
+    EXPECT_TRUE(skipped.steps[1].remasked.empty());
+    EXPECT_EQ(skipped.tokens[2], kMask);
+}
+
 TEST(CommitmentLrp, RejectsBadTargets) {
     ChainModel model;
     const MaskedDiffusionResult t = ChainTrajectory(model);

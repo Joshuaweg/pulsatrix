@@ -1,15 +1,24 @@
-// pulsatrix_diffusion_lrp: commitment-graph LRP (roadmap DIFF-3) on a masked diffusion LM's infill.
-// Masks a span of a text, lets the model fill it back in by confidence, explains the filled span
-// back to the rest of the text, and runs the checks that could show the explanation is wrong.
+// pulsatrix_diffusion_lrp: commitment-graph LRP (roadmap DIFF-3, DIFF-4) on a masked diffusion LM's
+// infill. Masks a span of a text or a protein, lets the model fill it back in, explains the filled
+// span back to the rest of the input, and runs the checks that could show the explanation is wrong.
 //
-//   pulsatrix_diffusion_lrp MDLM_DIR TOKENIZER_JSON --text FILE [--length 1024] [--span-start 512]
-//       [--span 32] [--steps 32] [--deletion-steps 10] [--random-orders 3] [--patch] [--csv FILE]
+//   pulsatrix_diffusion_lrp MODEL_DIR TOKENIZER --text FILE [--length 1024] [--span-start 512]
+//       [--span 32] [--steps 32] [--schedule confidence|ancestral|remasking] [--targets all|last]
+//       [--mask-id N] [--deletion-steps 10] [--random-orders 3] [--patch] [--csv FILE]
 //       [--device cpu|hip]
 //
-// MDLM_DIR is an MDLM checkpoint (kuleshov-group/mdlm-owt) and TOKENIZER_JSON its tokenizer
-// (GPT-2's). The text's first --length tokens are used (MDLM-owt was trained on 1024); the span
-// [--span-start, --span-start + --span) is masked and refilled over --steps steps, greedily.
-// The explained value is the filled tokens' logits, each at the step that wrote it, summed.
+// MODEL_DIR is a checkpoint whose config.json names the model: `mdlm` (kuleshov-group/mdlm-owt)
+// or `esm` (ESM-2, DPLM) load as an EncoderLM, `a2d-qwen3` (dLLM's Qwen3-0.6B diffusion) as a
+// CausalLM with bidirectional attention. TOKENIZER is a tokenizer.json, or for ESM and DPLM a
+// vocab.txt, in which case FILE holds a protein sequence and gets ESM's <cls> and <eos>. The
+// input's first --length tokens are used (0: all of them; MDLM-owt was trained on 1024); the span
+// [--span-start, --span-start + --span) is masked and refilled over --steps steps, greedily, by
+// --schedule (remasking is DPLM's sampler, the default for ESM checkpoints; for them <cls>, <pad>,
+// <eos> and X are never generated, as in DPLM). The mask token is the model's own, or the
+// tokenizer's `<|mask|>` for A2D models, or --mask-id. The explained value is the targets' logits,
+// each at the step that last wrote it, summed: every filled position (--targets all), or those last
+// written at the last step that wrote anything (--targets last), which leaves the others for --patch
+// to test.
 //
 // Reports:
 //   - the original and the infilled span;
@@ -22,6 +31,7 @@
 //     relayed through it.
 // --csv writes position, token, prompt relevance (graph and step-local) and mask-sink relevance.
 #include <algorithm>
+#include <cctype>
 #include <chrono>
 #include <cmath>
 #include <cstdio>
@@ -34,10 +44,13 @@
 #include <string>
 #include <vector>
 
+#include "pulsatrix/causal_lm.hpp"
 #include "pulsatrix/cpu_backend.hpp"
 #include "pulsatrix/encoder_lm.hpp"
+#include "pulsatrix/json.hpp"
 #include "pulsatrix/masked_diffusion.hpp"
 #include "pulsatrix/masked_diffusion_lrp.hpp"
+#include "pulsatrix/protein_sequences.hpp"
 #include "pulsatrix/tokenizer_json.hpp"
 #ifdef PULSATRIX_GOLDEN_WITH_HIP
 #include "pulsatrix/hip_backend.hpp"
@@ -49,16 +62,67 @@ using namespace pulsatrix;
 
 [[noreturn]] void Usage(const std::string& problem) {
     std::cerr << "pulsatrix_diffusion_lrp: " << problem << "\n"
-              << "usage: pulsatrix_diffusion_lrp MDLM_DIR TOKENIZER_JSON --text FILE [--length N] [--span-start P] [--span N]\n"
-              << "       [--steps N] [--deletion-steps N] [--random-orders N] [--patch] [--csv FILE] [--device cpu|hip]\n";
+              << "usage: pulsatrix_diffusion_lrp MODEL_DIR TOKENIZER --text FILE [--length N] [--span-start P] [--span N]\n"
+              << "       [--steps N] [--schedule confidence|ancestral|remasking] [--targets all|last] [--mask-id N]\n"
+              << "       [--deletion-steps N] [--random-orders N] [--patch] [--csv FILE] [--device cpu|hip]\n";
     std::exit(2);
 }
 
 struct Options {
-    std::string model, tokenizer, text, csv, device = "cpu";
-    int64_t length = 1024, span_start = 512, span = 32, steps = 32, deletion_steps = 10, random_orders = 3;
+    std::string model, tokenizer, text, csv, device = "cpu", schedule, targets = "all";
+    int64_t length = 1024, span_start = 512, span = 32, steps = 32, deletion_steps = 10, random_orders = 3, mask_id = -1;
     bool patch = false;
 };
+
+/** @brief The model behind the sampler and the explainer, whichever class it loads as. */
+struct DiffusionLm {
+    std::string model_type;
+    std::unique_ptr<EncoderLM> encoder;
+    std::unique_ptr<CausalLM> decoder;
+    std::unique_ptr<StepRelevanceModel> step;
+    DenoiserFn denoise;
+    int64_t mask = -1;
+
+    /** @brief Frees what the EncoderLM kept for a relevance pass; sampling and replays need none. */
+    void release() {
+        if (encoder) {
+            encoder->release_activations();
+            encoder->set_keep_activations(false);
+        }
+    }
+};
+
+std::string ModelType(const std::string& dir) {
+    std::ifstream in(dir + "/config.json");
+    if (!in) Usage("can't read " + dir + "/config.json");
+    std::stringstream buffer;
+    buffer << in.rdbuf();
+    const JsonValue config = ParseJson(buffer.str());
+    const JsonValue* type = config.find("model_type");
+    if (type == nullptr || type->type() != JsonValue::Type::String) Usage(dir + "/config.json has no model_type");
+    return type->as_string();
+}
+
+DiffusionLm LoadDiffusionLm(const std::string& dir, DeviceBackend* backend) {
+    DiffusionLm lm;
+    lm.model_type = ModelType(dir);
+    if (lm.model_type == "a2d-qwen3") {
+        lm.decoder = LoadCausalLM(dir, backend);
+        lm.denoise = MakeDenoiser(*lm.decoder, backend);
+        lm.step = std::make_unique<CausalLMStepModel>(*lm.decoder, backend);
+    } else {
+        lm.encoder = LoadEncoderLM(dir, backend);
+        lm.encoder->set_keep_activations(false);
+        lm.denoise = MakeDenoiser(*lm.encoder, backend);
+        lm.step = std::make_unique<EncoderLMStepModel>(*lm.encoder, backend);
+        lm.mask = lm.encoder->config().mask_token_id;
+    }
+    return lm;
+}
+
+bool EndsWith(const std::string& s, const std::string& suffix) {
+    return s.size() >= suffix.size() && s.compare(s.size() - suffix.size(), suffix.size(), suffix) == 0;
+}
 
 double Seconds(std::chrono::steady_clock::time_point since) {
     return std::chrono::duration<double>(std::chrono::steady_clock::now() - since).count();
@@ -95,46 +159,69 @@ void Curve(const char* name, const CommitmentDeletionCurve& d, bool random) {
 
 int Run(DeviceBackend* backend, const Options& o) {
     auto start = std::chrono::steady_clock::now();
-    std::unique_ptr<EncoderLM> model = LoadEncoderLM(o.model, backend);
-    const TextTokenizer tok = LoadTokenizerJson(o.tokenizer);
-    const int64_t mask = model->config().mask_token_id;
+    DiffusionLm lm = LoadDiffusionLm(o.model, backend);
+    const bool protein = EndsWith(o.tokenizer, "vocab.txt");
+    const TextTokenizer tok = protein ? LoadEsmTokenizer(o.tokenizer) : LoadTokenizerJson(o.tokenizer);
+    int64_t mask = o.mask_id >= 0 ? o.mask_id : lm.mask;
+    if (mask < 0) mask = tok.token_to_id("<|mask|>").value_or(-1);
+    if (mask < 0) Usage("the model names no mask token; give --mask-id");
     std::ifstream in(o.text);
     if (!in) Usage("can't read " + o.text);
     std::stringstream buffer;
     buffer << in.rdbuf();
-    std::vector<int64_t> ids = tok.encode(buffer.str(), false).ids;
-    if (static_cast<int64_t>(ids.size()) < o.length) {
-        Usage("the text has " + std::to_string(ids.size()) + " tokens, fewer than --length " + std::to_string(o.length));
+    std::string text = buffer.str();
+    if (protein) text.erase(std::remove_if(text.begin(), text.end(), [](unsigned char c) { return std::isspace(c) != 0; }), text.end());
+    std::vector<int64_t> ids = tok.encode(text, protein).ids;
+    const int64_t length = o.length > 0 ? o.length : static_cast<int64_t>(ids.size());
+    if (static_cast<int64_t>(ids.size()) < length) {
+        Usage("the input has " + std::to_string(ids.size()) + " tokens, fewer than --length " + std::to_string(length));
     }
-    ids.resize(static_cast<size_t>(o.length));
-    if (o.span < 1 || o.span_start < 0 || o.span_start + o.span > o.length) Usage("the span must lie inside the sequence");
+    ids.resize(static_cast<size_t>(length));
+    if (o.span < 1 || o.span_start < 0 || o.span_start + o.span > length) Usage("the span must lie inside the sequence");
     const std::vector<int64_t> original(ids.begin() + o.span_start, ids.begin() + o.span_start + o.span);
     std::vector<int64_t> input = ids;
     for (int64_t p = o.span_start; p < o.span_start + o.span; ++p) input[static_cast<size_t>(p)] = mask;
-    std::printf("model %s, %lld tokens, span [%lld, %lld), %lld steps (loaded in %.1f s)\n", o.model.c_str(), static_cast<long long>(o.length),
-                static_cast<long long>(o.span_start), static_cast<long long>(o.span_start + o.span), static_cast<long long>(o.steps),
-                Seconds(start));
-
     MaskedDiffusionConfig config;
     config.steps = o.steps;
     config.mask_token_id = mask;
+    const std::string schedule = !o.schedule.empty() ? o.schedule : lm.model_type == "esm" ? "remasking" : "confidence";
+    if (schedule == "confidence") config.schedule = UnmaskingSchedule::Confidence;
+    else if (schedule == "ancestral") config.schedule = UnmaskingSchedule::Ancestral;
+    else if (schedule == "remasking") config.schedule = UnmaskingSchedule::Remasking;
+    else Usage("unknown --schedule " + schedule);
+    if (lm.model_type == "esm") {
+        for (const char* special : {"<cls>", "<pad>", "<eos>", "X"}) {
+            if (auto id = tok.token_to_id(special)) config.suppressed_token_ids.push_back(*id);
+        }
+    }
+    std::printf("model %s (%s), %lld tokens, span [%lld, %lld), %lld steps, %s schedule (loaded in %.1f s)\n", o.model.c_str(),
+                lm.model_type.c_str(), static_cast<long long>(length), static_cast<long long>(o.span_start),
+                static_cast<long long>(o.span_start + o.span), static_cast<long long>(o.steps), schedule.c_str(), Seconds(start));
+
     start = std::chrono::steady_clock::now();
-    model->set_keep_activations(false);
-    const DenoiserFn denoise = MakeDenoiser(*model, backend);
+    const DenoiserFn& denoise = lm.denoise;
     const MaskedDiffusionResult t = SampleMaskedDiffusion(denoise, input, config);
+    size_t remasks = 0;
+    for (const MaskedDiffusionStep& s : t.steps) remasks += s.remasked.size();
     const std::vector<int64_t> filled(t.tokens.begin() + o.span_start, t.tokens.begin() + o.span_start + o.span);
-    std::printf("\noriginal  %s\ninfilled  %s\n(%zu steps in %.1f s)\n", Quoted(tok, original).c_str(), Quoted(tok, filled).c_str(),
-                t.steps.size(), Seconds(start));
+    int64_t matches = 0;
+    for (size_t i = 0; i < filled.size(); ++i) matches += filled[i] == original[i] ? 1 : 0;
+    std::printf("\noriginal  %s\ninfilled  %s\n(%zu steps in %.1f s, %zu re-masks; %lld of %lld tokens as in the original)\n",
+                Quoted(tok, original).c_str(), Quoted(tok, filled).c_str(), t.steps.size(), Seconds(start), remasks,
+                static_cast<long long>(matches), static_cast<long long>(filled.size()));
 
     std::vector<CommitmentTarget> targets;
-    for (int64_t p = o.span_start; p < o.span_start + o.span; ++p) targets.push_back({p, std::nullopt});
-    EncoderLMStepModel step(*model, backend);
+    int64_t last_step = -1;
+    for (int64_t p = o.span_start; p < o.span_start + o.span; ++p) last_step = std::max(last_step, t.last_write_step[static_cast<size_t>(p)]);
+    for (int64_t p = o.span_start; p < o.span_start + o.span; ++p) {
+        if (o.targets == "all" || t.last_write_step[static_cast<size_t>(p)] == last_step) targets.push_back({p, std::nullopt});
+    }
+    std::printf("explaining %zu of the %lld filled tokens (--targets %s)\n", targets.size(), static_cast<long long>(o.span), o.targets.c_str());
     start = std::chrono::steady_clock::now();
-    const CommitmentRelevance graph = ExplainCommitments(step, t, mask, targets);
+    const CommitmentRelevance graph = ExplainCommitments(*lm.step, t, mask, targets);
     const double graph_seconds = Seconds(start);
-    const CommitmentRelevance local = ExplainCommitments(step, t, mask, targets, CommitmentMode::StepLocal);
-    model->release_activations();
-    model->set_keep_activations(false);
+    const CommitmentRelevance local = ExplainCommitments(*lm.step, t, mask, targets, CommitmentMode::StepLocal);
+    lm.release();
     std::printf("\nledger (graph explained in %.1f s)\n", graph_seconds);
     Ledger("graph", graph);
     Ledger("step-local", local);
@@ -145,7 +232,7 @@ int Run(DeviceBackend* backend, const Options& o) {
     std::vector<int64_t> order;
     double total_abs = 0, near_abs = 0;
     int64_t near_count = 0;
-    for (int64_t p = 0; p < o.length; ++p) {
+    for (int64_t p = 0; p < length; ++p) {
         if (t.last_write_step[static_cast<size_t>(p)] >= 0) continue;
         order.push_back(p);
         const double a = std::abs(graph.prompt[static_cast<size_t>(p)]);
@@ -191,7 +278,7 @@ int Run(DeviceBackend* backend, const Options& o) {
     if (!o.csv.empty()) {
         std::ofstream csv(o.csv);
         csv << "position,token,prompt_graph,prompt_step_local,mask_sink,relayed\n";
-        for (int64_t p = 0; p < o.length; ++p) {
+        for (int64_t p = 0; p < length; ++p) {
             const size_t i = static_cast<size_t>(p);
             csv << p << "," << t.tokens[i] << "," << graph.prompt[i] << "," << local.prompt[i] << "," << graph.mask[i] << "," << graph.relayed[i]
                 << "\n";
@@ -219,14 +306,18 @@ int main(int argc, char** argv) {
         else if (a == "--steps") o.steps = std::atoll(value().c_str());
         else if (a == "--deletion-steps") o.deletion_steps = std::atoll(value().c_str());
         else if (a == "--random-orders") o.random_orders = std::atoll(value().c_str());
+        else if (a == "--schedule") o.schedule = value();
+        else if (a == "--targets") o.targets = value();
+        else if (a == "--mask-id") o.mask_id = std::atoll(value().c_str());
         else if (a == "--patch") o.patch = true;
         else if (a == "--csv") o.csv = value();
         else if (a == "--device") o.device = value();
         else if (a.rfind("--", 0) == 0) Usage("unknown option " + a);
         else positional.push_back(a);
     }
-    if (positional.size() != 2) Usage("needs MDLM_DIR and TOKENIZER_JSON");
+    if (positional.size() != 2) Usage("needs MODEL_DIR and TOKENIZER");
     if (o.text.empty()) Usage("needs --text");
+    if (o.targets != "all" && o.targets != "last") Usage("--targets must be all or last");
     o.model = positional[0];
     o.tokenizer = positional[1];
     try {
