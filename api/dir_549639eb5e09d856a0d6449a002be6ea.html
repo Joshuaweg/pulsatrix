@@ -669,7 +669,7 @@ Files</h2></td></tr>
 <tr class="memdesc:node_8hpp"><td class="mdescLeft">&#160;</td><td class="mdescRight">Computation graph node &ndash; op type, shape, optional label, parent/child edges. <br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top"><a href="noise__schedule_8hpp_source.html"><span class="icondoc"></span></a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="noise__schedule_8hpp.html">noise_schedule.hpp</a></td></tr>
-<tr class="memdesc:noise__schedule_8hpp"><td class="mdescLeft">&#160;</td><td class="mdescRight">DDPM linear noise schedule: precomputed beta/alpha/alpha_bar, forward noising and reverse sampling steps. <br /></td></tr>
+<tr class="memdesc:noise__schedule_8hpp"><td class="mdescLeft">&#160;</td><td class="mdescRight">DDPM noise schedules (linear and cosine): precomputed beta/alpha/alpha_bar, forward noising, and DDPM and DDIM reverse steps. <br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top"><a href="nsga2_8hpp_source.html"><span class="icondoc"></span></a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="nsga2_8hpp.html">nsga2.hpp</a></td></tr>
 <tr class="memdesc:nsga2_8hpp"><td class="mdescLeft">&#160;</td><td class="mdescRight">NSGA-II multi-objective survivor selection (Deb, Pratap, Agarwal, Meyarivan, "A Fast and Elitist Multiobjective Genetic Algorithm: NSGA-II," IEEE TEVC 6(2), 2002): fast non-dominated sorting, crowding distance, and truncation selection. <br /></td></tr>
@@ -904,6 +904,9 @@ Files</h2></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top"><a href="trajectory__balance__loss_8hpp_source.html"><span class="icondoc"></span></a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="trajectory__balance__loss_8hpp.html">trajectory_balance_loss.hpp</a></td></tr>
 <tr class="memdesc:trajectory__balance__loss_8hpp"><td class="mdescLeft">&#160;</td><td class="mdescRight">GFlowNet Trajectory Balance loss (Malkin et al. 2022, arXiv:2201.13259). <br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top"><a href="trajectory__lrp_8hpp_source.html"><span class="icondoc"></span></a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="trajectory__lrp_8hpp.html">trajectory_lrp.hpp</a></td></tr>
+<tr class="memdesc:trajectory__lrp_8hpp"><td class="mdescLeft">&#160;</td><td class="mdescRight">Explaining a continuous diffusion sampler end to end (DIFF-5): trajectory LRP (design D1), which seeds a scalar of the final sample x_0 once and carries its relevance back through every reverse step to the starting noise x_T, the conditioning, and named sinks. <br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top"><a href="transcoder_8hpp_source.html"><span class="icondoc"></span></a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="transcoder_8hpp.html">transcoder.hpp</a></td></tr>
 <tr class="memdesc:transcoder_8hpp"><td class="mdescLeft">&#160;</td><td class="mdescRight">Transcoders and skip transcoders (FEAT-5): sparse, wide replacements for an MLP that predict its output from its input (Dunefsky et al., "Transcoders Find Interpretable LLM

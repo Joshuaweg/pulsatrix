@@ -110,6 +110,11 @@ var hierarchy =
     [ "pulsatrix::ContactPrecisions", "structpulsatrix_1_1ContactPrecisions.html", null ],
     [ "pulsatrix::ContactPredictor", "classpulsatrix_1_1ContactPredictor.html", null ],
     [ "pulsatrix::orch::ContentBlock", "structpulsatrix_1_1orch_1_1ContentBlock.html", null ],
+    [ "pulsatrix::ContinuousDenoiser", "classpulsatrix_1_1ContinuousDenoiser.html", [
+      [ "pulsatrix::ConcatDenoiser", "classpulsatrix_1_1ConcatDenoiser.html", null ]
+    ] ],
+    [ "pulsatrix::ContinuousSamplerConfig", "structpulsatrix_1_1ContinuousSamplerConfig.html", null ],
+    [ "pulsatrix::ContinuousTrajectory", "structpulsatrix_1_1ContinuousTrajectory.html", null ],
     [ "pulsatrix::ContrastiveOptions", "structpulsatrix_1_1ContrastiveOptions.html", null ],
     [ "pulsatrix::ContrastiveResult", "structpulsatrix_1_1ContrastiveResult.html", null ],
     [ "pulsatrix::ConvGeometry", "structpulsatrix_1_1ConvGeometry.html", null ],
@@ -152,6 +157,7 @@ var hierarchy =
     ] ],
     [ "pulsatrix::DecompositionLoss", "structpulsatrix_1_1DecompositionLoss.html", null ],
     [ "pulsatrix::DecompositionOptions", "structpulsatrix_1_1DecompositionOptions.html", null ],
+    [ "pulsatrix::DenoiserRelevance", "structpulsatrix_1_1DenoiserRelevance.html", null ],
     [ "pulsatrix::DescriptionLength", "structpulsatrix_1_1DescriptionLength.html", null ],
     [ "pulsatrix::DetailedBalanceLoss", "classpulsatrix_1_1DetailedBalanceLoss.html", null ],
     [ "pulsatrix::DeviceBackend", "classpulsatrix_1_1DeviceBackend.html", [
@@ -515,6 +521,7 @@ var hierarchy =
       [ "pulsatrix::PBTResumableTrial", "classpulsatrix_1_1PBTResumableTrial.html", null ]
     ] ],
     [ "pulsatrix::orch::RetryPolicy", "structpulsatrix_1_1orch_1_1RetryPolicy.html", null ],
+    [ "pulsatrix::ReverseStepCoefficients", "structpulsatrix_1_1ReverseStepCoefficients.html", null ],
     [ "pulsatrix::RgbColor", "structpulsatrix_1_1RgbColor.html", null ],
     [ "pulsatrix::RgbImageBuffer", "structpulsatrix_1_1RgbImageBuffer.html", null ],
     [ "pulsatrix::RipsFeature", "structpulsatrix_1_1RipsFeature.html", null ],
@@ -643,6 +650,9 @@ var hierarchy =
     [ "pulsatrix::TrainingDashboard", "classpulsatrix_1_1TrainingDashboard.html", null ],
     [ "pulsatrix::TrainingLogDocument", "structpulsatrix_1_1TrainingLogDocument.html", null ],
     [ "pulsatrix::TrajectoryBalanceLoss", "classpulsatrix_1_1TrajectoryBalanceLoss.html", null ],
+    [ "pulsatrix::TrajectoryHop", "structpulsatrix_1_1TrajectoryHop.html", null ],
+    [ "pulsatrix::TrajectoryLrpConfig", "structpulsatrix_1_1TrajectoryLrpConfig.html", null ],
+    [ "pulsatrix::TrajectoryRelevance", "structpulsatrix_1_1TrajectoryRelevance.html", null ],
     [ "pulsatrix::TranscoderOptions", "structpulsatrix_1_1TranscoderOptions.html", null ],
     [ "pulsatrix::Transform", "classpulsatrix_1_1Transform.html", [
       [ "pulsatrix::CenterCropTransform", "classpulsatrix_1_1CenterCropTransform.html", null ],
