@@ -239,6 +239,7 @@ add_executable(pulsatrix_tests
     diffusion_integration_test.cpp
     masked_diffusion_test.cpp
     masked_diffusion_lrp_test.cpp
+    trajectory_lrp_test.cpp
     dqn_cartpole_integration_test.cpp
     reinforce_cartpole_integration_test.cpp
     a2c_cartpole_integration_test.cpp
