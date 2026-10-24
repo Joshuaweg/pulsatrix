@@ -8886,7 +8886,7 @@ planted tasks, causal patching and faithfulness. The rules are on the
 <td>DIFF-3</td>
 <td>P1</td>
 <td>M</td>
-<td></td>
+<td>Done, <a href="https://github.com/Joshuaweg/pulsatrix/pull/197">#197</a> (see below)</td>
 </tr>
 <tr>
 <td>DIFF-6</td>
@@ -8990,6 +8990,23 @@ planted tasks, causal patching and faithfulness. The rules are on the
   tokens, so this is the model under one-position-per-step confidence decoding; its card uses
   blocks of 64. Block decoding isn't in pulsatrix yet. The explanation still runs, and it gives
   the best patch result so far (Spearman 0.38).</li>
+<li><strong>DIFF-5's split is the signed ratio, not the absolute-value ratio.</strong> The planted
+  class-conditional DDPM refuted the design's split: it gave the class the wrong sign in 9 of 12
+  samples, because the network term opposes the skip term whenever <code>ε_θ</code> removes noise and the
+  split ignores sign. <code>TrajectorySplit::SignedRatio</code> keeps each term's sign, stays bounded, and
+  reports what the terms cancel as a sink. Its per-step class relevance tracks the effect of
+  removing the class at that step (median Spearman 0.98). The absolute split and the signed
+  epsilon rule remain options.</li>
+<li><strong>DIFF-5's network rule puts the bias in the denominator.</strong> The codebase's default pre-bias
+  epsilon rule blew up when chained over 20 steps (shares up to 570 times the value).
+  <code>ConcatDenoiser</code> defaults to <code>TrajectoryNetworkRules()</code>; the biases' share is reported as leak.</li>
+<li><strong>DIFF-5's planted task couldn't test the early-concentration falsifier.</strong> In the planted model
+  the class acts late (the per-step intervention effect rises from 0.3% to 28% of the region), and
+  the explanation agrees. A model that decides early, with DIFF-10's critical windows, is needed.
+  The planted model uses a linear schedule to β = 0.05, not the cosine one, because the cosine
+  schedule's tiny ᾱ_T needs x̂_0 clipping, which isn't part of the linear step D1 splits.</li>
+<li><strong>DIFF-5 leaves the randomization check out.</strong> Randomizing the denoiser changes the trajectory
+  too, so the comparison needs a design; the interventional check above replaced it.</li>
 </ul>
 <h2 id="open-questions">Open questions<a class="headerlink" href="#open-questions" title="Permanent link">&para;</a></h2>
 <p>These came up in the research and aren't settled yet.</p>

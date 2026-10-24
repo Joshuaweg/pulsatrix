@@ -3203,8 +3203,9 @@ whole network, see <a href="../interpretability/lrp/">Layer-wise Relevance Propa
   <code>AdamWOptimizer</code>, all with parameter groups; <code>MSELoss</code>, <code>CrossEntropyLoss</code>,
   <code>TokenCrossEntropyLoss</code>, <code>DistillationLoss</code>, <code>HiddenStateCosineLoss</code>, <code>BCEWithLogitsLoss</code>,
   <code>KLDivergenceLoss</code>, <code>CalibrationLoss</code></li>
-<li><strong>Generative building blocks</strong>: <code>Reparameterize</code> (VAE), <code>NoiseSchedule</code> and
-  <code>SinusoidalTimestepEmbedding()</code> (diffusion)</li>
+<li><strong>Generative building blocks</strong>: <code>Reparameterize</code> (VAE), <code>NoiseSchedule</code> (linear and cosine
+  schedules, DDPM and DDIM steps), <code>SinusoidalTimestepEmbedding()</code> and
+  <code>SampleContinuousDiffusion()</code> (diffusion; <code>trajectory_lrp.hpp</code> explains its samples)</li>
 <li><strong>Training utilities</strong>: <code>ClipGradNorm</code>, <code>LRSchedule</code>/<code>LRScheduler</code>, parameter groups
   (<code>param_groups.hpp</code>), checkpoints (<code>SaveCheckpoint</code>/<code>LoadCheckpoint</code>, <code>safetensors.hpp</code>),
   <code>set_seed</code>/<code>set_deterministic</code>, and <code>MetricsSink</code>/<code>NoOpMetricsSink</code> (where <code>train_step</code> logs

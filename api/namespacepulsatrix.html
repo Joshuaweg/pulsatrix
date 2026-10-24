@@ -424,6 +424,9 @@ Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1ComputationGraph.html">ComputationGraph</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Owns every <a class="el" href="classpulsatrix_1_1Node.html" title="A single computation graph node. Owned exclusively by its ComputationGraph (see computation_graph....">Node</a> in a computation graph and exposes read access for graph-walking code (autograd's backward pass, Phase 2+ explainers).  <a href="classpulsatrix_1_1ComputationGraph.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1ConcatDenoiser.html">ConcatDenoiser</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">A <a class="el" href="classpulsatrix_1_1Module.html" title="Base class for every layer type (LinearModule, Conv2DModule, activations, ...).">Module</a> that reads <code>[x_t, embedding(t), c]</code> as one row, conditioned by concatenation as in tests/diffusion_integration_test.cpp: x_t, then a sinusoidal timestep embedding (SinusoidalTimestepEmbedding), then a fixed conditioning vector such as a one-hot class. Its input relevance is split back into those three parts.  <a href="classpulsatrix_1_1ConcatDenoiser.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpulsatrix_1_1ConceptMask.html">ConceptMask</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Keep the relevance of these channels at this layer, and zero the rest.  <a href="structpulsatrix_1_1ConceptMask.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -474,6 +477,14 @@ Classes</h2></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1ContinuousCartPoleEnv.html">ContinuousCartPoleEnv</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The cart-pole balancing task with a <em>continuous</em> action: the action is a single force fraction in [-1, 1] rather than a discrete left/right choice.  <a href="classpulsatrix_1_1ContinuousCartPoleEnv.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1ContinuousDenoiser.html">ContinuousDenoiser</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The noise predictor eps_theta as the explainer sees it, with its conditioning fixed: a forward pass that keeps what the relevance pass needs, and the relevance pass.  <a href="classpulsatrix_1_1ContinuousDenoiser.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpulsatrix_1_1ContinuousSamplerConfig.html">ContinuousSamplerConfig</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpulsatrix_1_1ContinuousTrajectory.html">ContinuousTrajectory</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">A reverse process, recorded so it can be explained: every state and every noise draw.  <a href="structpulsatrix_1_1ContinuousTrajectory.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpulsatrix_1_1ContrastiveOptions.html">ContrastiveOptions</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">CEM's settings. The defaults are the paper's MNIST settings, scaled to its 1,000 steps.  <a href="structpulsatrix_1_1ContrastiveOptions.html#details">More...</a><br /></td></tr>
@@ -563,6 +574,9 @@ Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpulsatrix_1_1DecompositionLoss.html">DecompositionLoss</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpulsatrix_1_1DecompositionOptions.html">DecompositionOptions</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpulsatrix_1_1DenoiserRelevance.html">DenoiserRelevance</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Where the network's share of one step landed.  <a href="structpulsatrix_1_1DenoiserRelevance.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpulsatrix_1_1DescriptionLength.html">DescriptionLength</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The paper's minimum description length (Appendix C), in bits per input at distortion <code>δ = distortion_fraction · (mean per-dimension variance of x)</code>:  <a href="structpulsatrix_1_1DescriptionLength.html#details">More...</a><br /></td></tr>
@@ -1390,6 +1404,9 @@ Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1RetNetModule.html">RetNetModule</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Core RetNet retention block (Sun et al. 2023, arXiv:2307.08621), recurrent mode, input (N, L, d_model) -&gt; output (N, L, d_model).  <a href="classpulsatrix_1_1RetNetModule.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpulsatrix_1_1ReverseStepCoefficients.html">ReverseStepCoefficients</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">One reverse step as <code>x_prev = skip * x_t - network * eps_theta + noise * z</code> (DIFF-5). DDPM and DDIM steps both have this form; only the coefficients differ.  <a href="structpulsatrix_1_1ReverseStepCoefficients.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpulsatrix_1_1RgbColor.html">RgbColor</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">An RGB color, each channel in [0, 1].  <a href="structpulsatrix_1_1RgbColor.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -1746,6 +1763,14 @@ Classes</h2></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1TrajectoryBalanceLoss.html">TrajectoryBalanceLoss</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight"><code>Δ(τ) = log Zθ + Σ log P_F(s_{t+1}|s_t) − log R(x) − Σ log P_B(s_t|s_{t+1})</code>, <code>loss = Δ(τ)²</code>.  <a href="classpulsatrix_1_1TrajectoryBalanceLoss.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpulsatrix_1_1TrajectoryHop.html">TrajectoryHop</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">One reverse step's split, aggregated over elements.  <a href="structpulsatrix_1_1TrajectoryHop.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpulsatrix_1_1TrajectoryLrpConfig.html">TrajectoryLrpConfig</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpulsatrix_1_1TrajectoryRelevance.html">TrajectoryRelevance</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Where the seed's relevance went. The budget balances exactly: value = x_T + condition + time + noise + absorbed + leak.  <a href="structpulsatrix_1_1TrajectoryRelevance.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1Transcoder.html">Transcoder</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">A transcoder: <code>z = ReLU(TopK_k(x W_enc + b_enc))</code>, <code>ŷ = z W_dec + b_dec [+ x W_skip]</code>, trained to predict an MLP's output y from its input x by <code>mean((ŷ - y)²)</code> plus AuxK.  <a href="classpulsatrix_1_1Transcoder.html#details">More...</a><br /></td></tr>
@@ -2348,6 +2373,17 @@ Enumerations</h2></td></tr>
  }</td></tr>
 <tr class="memdesc:afac97d73c04740a34d6f4ce4298789d8"><td class="mdescLeft">&#160;</td><td class="mdescRight">How PointCloud turns one sample's activations into points.  <a href="namespacepulsatrix.html#afac97d73c04740a34d6f4ce4298789d8">More...</a><br /></td></tr>
 <tr class="separator:afac97d73c04740a34d6f4ce4298789d8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a16abc09757a0fa8932b2912a7a8deee6" id="r_a16abc09757a0fa8932b2912a7a8deee6"><td class="memItemLeft" align="right" valign="top">enum class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#a16abc09757a0fa8932b2912a7a8deee6">ContinuousSampler</a> { <a class="el" href="namespacepulsatrix.html#a16abc09757a0fa8932b2912a7a8deee6a5aad2d8e9469857b47e8f1fffea04892">Ddpm</a>
+, <a class="el" href="namespacepulsatrix.html#a16abc09757a0fa8932b2912a7a8deee6a547d390cce7b1df875a70782740fc21a">Ddim</a>
+ }</td></tr>
+<tr class="memdesc:a16abc09757a0fa8932b2912a7a8deee6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Which reverse process to run.  <a href="namespacepulsatrix.html#a16abc09757a0fa8932b2912a7a8deee6">More...</a><br /></td></tr>
+<tr class="separator:a16abc09757a0fa8932b2912a7a8deee6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a623b7b7b27181c2afbbab75bba927788" id="r_a623b7b7b27181c2afbbab75bba927788"><td class="memItemLeft" align="right" valign="top">enum class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#a623b7b7b27181c2afbbab75bba927788">TrajectorySplit</a> { <a class="el" href="namespacepulsatrix.html#a623b7b7b27181c2afbbab75bba927788a21a6cd4ce1fe48ec9f7f83844c505334">AbsoluteRatio</a>
+, <a class="el" href="namespacepulsatrix.html#a623b7b7b27181c2afbbab75bba927788a5944af886bbc147575a84867fb03ee45">SignedEpsilon</a>
+, <a class="el" href="namespacepulsatrix.html#a623b7b7b27181c2afbbab75bba927788a610bac22a4f49151c0addc36a5fba66d">SignedRatio</a>
+ }</td></tr>
+<tr class="memdesc:a623b7b7b27181c2afbbab75bba927788"><td class="mdescLeft">&#160;</td><td class="mdescRight">How the relevance on x_prev is split across skip, network and noise (h_1, h_2, h_3).  <a href="namespacepulsatrix.html#a623b7b7b27181c2afbbab75bba927788">More...</a><br /></td></tr>
+<tr class="separator:a623b7b7b27181c2afbbab75bba927788"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8de26e99febee574ce230489c26fa567" id="r_a8de26e99febee574ce230489c26fa567"><td class="memItemLeft" align="right" valign="top">enum class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#a8de26e99febee574ce230489c26fa567">HtmlScripts</a> { <a class="el" href="namespacepulsatrix.html#a8de26e99febee574ce230489c26fa567a4b335085de5262aba6ea08f93d524393">Cdn</a>
 , <a class="el" href="namespacepulsatrix.html#a8de26e99febee574ce230489c26fa567a0125cf5f3ca38b312ca5d3b511c45a13">Inline</a>
  }</td></tr>
@@ -3815,6 +3851,24 @@ Functions</h2></td></tr>
 <tr class="memitem:a2d278aa15e82c07f12370078484d3e92"><td class="memTemplItemLeft" align="right" valign="top">std::vector&lt; <a class="el" href="classpulsatrix_1_1Trial.html">Trial</a> &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#a2d278aa15e82c07f12370078484d3e92">RunTPELoop</a> (const <a class="el" href="classpulsatrix_1_1SearchSpace.html">SearchSpace</a> &amp;space, ObjectiveFn objective_fn, size_t num_initial_random, size_t num_iterations, double gamma, size_t num_candidates, RNG &amp;rng)</td></tr>
 <tr class="memdesc:a2d278aa15e82c07f12370078484d3e92"><td class="mdescLeft">&#160;</td><td class="mdescRight">Runs TPE: num_initial_random uniformly-random trials (RandomSample), then num_iterations trials each chosen by splitting all trials so far into good/bad by the gamma quantile (maximization convention: good = highest objective values) and picking, among num_candidates uniformly-random candidates, the one maximizing LogDensityRatio.  <br /></td></tr>
 <tr class="separator:a2d278aa15e82c07f12370078484d3e92"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a76e02782b27c44fa1d25e5c4614fe46c" id="r_a76e02782b27c44fa1d25e5c4614fe46c"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structpulsatrix_1_1LRPRuleConfig.html">LRPRuleConfig</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#a76e02782b27c44fa1d25e5c4614fe46c">TrajectoryNetworkRules</a> ()</td></tr>
+<tr class="memdesc:a76e02782b27c44fa1d25e5c4614fe46c"><td class="mdescLeft">&#160;</td><td class="mdescRight">The network rules <a class="el" href="classpulsatrix_1_1ConcatDenoiser.html" title="A Module that reads [x_t, embedding(t), c] as one row, conditioned by concatenation as in tests/diffu...">ConcatDenoiser</a> uses unless told otherwise: the epsilon rule with the bias in the denominator (Zennit's), so the biases absorb their share. The codebase's default pre-bias rule divides by <code>x W</code> alone, which a hidden layer's bias can leave near zero while the unit is active; chained over the steps of a sampler its relevance blew up (DIFF-5's planted DDPM: conditioning shares up to 570 times the explained value).  <br /></td></tr>
+<tr class="separator:a76e02782b27c44fa1d25e5c4614fe46c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a58cbf1f15e9e7931a58513640b2e2bbd" id="r_a58cbf1f15e9e7931a58513640b2e2bbd"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structpulsatrix_1_1ContinuousTrajectory.html">ContinuousTrajectory</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#a58cbf1f15e9e7931a58513640b2e2bbd">SampleContinuousDiffusion</a> (<a class="el" href="classpulsatrix_1_1ContinuousDenoiser.html">ContinuousDenoiser</a> &amp;model, const <a class="el" href="classpulsatrix_1_1NoiseSchedule.html">NoiseSchedule</a> &amp;schedule, const std::vector&lt; float &gt; &amp;x_T, const <a class="el" href="structpulsatrix_1_1ContinuousSamplerConfig.html">ContinuousSamplerConfig</a> &amp;config)</td></tr>
+<tr class="memdesc:a58cbf1f15e9e7931a58513640b2e2bbd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Runs the reverse process from <code>x_T</code> and records it.  <br /></td></tr>
+<tr class="separator:a58cbf1f15e9e7931a58513640b2e2bbd"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a303fd946d35ed5537002bc0dfb3b9211" id="r_a303fd946d35ed5537002bc0dfb3b9211"><td class="memItemLeft" align="right" valign="top">std::vector&lt; float &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#a303fd946d35ed5537002bc0dfb3b9211">StandardNormal</a> (size_t n, uint64_t seed)</td></tr>
+<tr class="memdesc:a303fd946d35ed5537002bc0dfb3b9211"><td class="mdescLeft">&#160;</td><td class="mdescRight">Draws <code>n</code> standard normal values from <code>seed</code>, as SampleContinuousDiffusion does.  <br /></td></tr>
+<tr class="separator:a303fd946d35ed5537002bc0dfb3b9211"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac0e1834e6acc95d6e421ba85e4bbb61b" id="r_ac0e1834e6acc95d6e421ba85e4bbb61b"><td class="memItemLeft" align="right" valign="top">std::vector&lt; float &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#ac0e1834e6acc95d6e421ba85e4bbb61b">RegionSeed</a> (const std::vector&lt; float &gt; &amp;sample, const std::vector&lt; int64_t &gt; &amp;region)</td></tr>
+<tr class="memdesc:ac0e1834e6acc95d6e421ba85e4bbb61b"><td class="mdescLeft">&#160;</td><td class="mdescRight">The sum of <code>sample</code> over <code>region:</code> relevance x0_i on the region's elements, 0 elsewhere.  <br /></td></tr>
+<tr class="separator:ac0e1834e6acc95d6e421ba85e4bbb61b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a56f5f58101230b8a826956355915412d" id="r_a56f5f58101230b8a826956355915412d"><td class="memItemLeft" align="right" valign="top">std::vector&lt; float &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#a56f5f58101230b8a826956355915412d">ReconstructionSeed</a> (const std::vector&lt; float &gt; &amp;sample, const std::vector&lt; float &gt; &amp;reference)</td></tr>
+<tr class="memdesc:a56f5f58101230b8a826956355915412d"><td class="mdescLeft">&#160;</td><td class="mdescRight">The reconstruction error <code>||x_0 - reference||^2</code>, as <a class="el" href="classpulsatrix_1_1LRP.html" title="Whole-model LRP: runs the forward pass, seeds relevance at the chosen output(s), and propagates it to...">LRP</a> for autoencoders seeds it (Kobayashi et al. 2023): relevance <code>(x0_i - ref_i)^2</code> on each element.  <br /></td></tr>
+<tr class="separator:a56f5f58101230b8a826956355915412d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a25c0f8f3df1740c3127cf96acebf54bd" id="r_a25c0f8f3df1740c3127cf96acebf54bd"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structpulsatrix_1_1TrajectoryRelevance.html">TrajectoryRelevance</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#a25c0f8f3df1740c3127cf96acebf54bd">ExplainTrajectory</a> (<a class="el" href="classpulsatrix_1_1ContinuousDenoiser.html">ContinuousDenoiser</a> &amp;model, const <a class="el" href="structpulsatrix_1_1ContinuousTrajectory.html">ContinuousTrajectory</a> &amp;trajectory, const std::vector&lt; float &gt; &amp;seed, const <a class="el" href="structpulsatrix_1_1TrajectoryLrpConfig.html">TrajectoryLrpConfig</a> &amp;config={})</td></tr>
+<tr class="memdesc:a25c0f8f3df1740c3127cf96acebf54bd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Explains <code>seed</code>, relevance on the trajectory's sample x_0 (RegionSeed, ReconstructionSeed, or a downstream classifier's input relevance), back through <code>trajectory</code>, which SampleContinuousDiffusion produced with <code>model</code>.  <br /></td></tr>
+<tr class="separator:a25c0f8f3df1740c3127cf96acebf54bd"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2ba01f66a6a0662a57eacb1c10a0741e" id="r_a2ba01f66a6a0662a57eacb1c10a0741e"><td class="memItemLeft" align="right" valign="top">std::vector&lt; <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#a2ba01f66a6a0662a57eacb1c10a0741e">McDropoutSamples</a> (<a class="el" href="classpulsatrix_1_1Module.html">Module</a> &amp;model, const std::function&lt; <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a>(const <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp;)&gt; &amp;predict, const <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp;input, int64_t samples)</td></tr>
 <tr class="memdesc:a2ba01f66a6a0662a57eacb1c10a0741e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Monte Carlo dropout: runs <code>predict</code> on <code>input</code> <code>samples</code> times with every dropout layer under <code>model</code> in training mode and everything else in eval mode, so BatchNorm uses its running statistics and only the dropout masks change between passes.  <br /></td></tr>
 <tr class="separator:a2ba01f66a6a0662a57eacb1c10a0741e"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -5087,6 +5141,36 @@ Applied to the <a class="el" href="classpulsatrix_1_1ExplainerContext.html" titl
 <tr><td class="fieldname"><a id="a73a0c4c4eb2de07fef8d33c69e4618cca6132295fcf5570fb8b0a944ef322a598" name="a73a0c4c4eb2de07fef8d33c69e4618cca6132295fcf5570fb8b0a944ef322a598"></a>Alpha&#160;</td><td class="fielddoc"><p>Cα. </p>
 </td></tr>
 <tr><td class="fieldname"><a id="a73a0c4c4eb2de07fef8d33c69e4618cca2cb2ce3670408b98b4bcc8e158585e38" name="a73a0c4c4eb2de07fef8d33c69e4618cca2cb2ce3670408b98b4bcc8e158585e38"></a>VirtualBeta&#160;</td><td class="fielddoc"><p>A Cβ placed from the backbone (N, Cα, C) with ideal geometry, for every residue, glycine included. ESM's contact-prediction example and trRosetta use it. </p>
+</td></tr>
+</table>
+
+</div>
+</div>
+<a id="a16abc09757a0fa8932b2912a7a8deee6" name="a16abc09757a0fa8932b2912a7a8deee6"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a16abc09757a0fa8932b2912a7a8deee6">&#9670;&#160;</a></span>ContinuousSampler</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">enum class <a class="el" href="namespacepulsatrix.html#a16abc09757a0fa8932b2912a7a8deee6">pulsatrix::ContinuousSampler</a></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">strong</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Which reverse process to run. </p>
+<table class="fieldtable">
+<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="a16abc09757a0fa8932b2912a7a8deee6a5aad2d8e9469857b47e8f1fffea04892" name="a16abc09757a0fa8932b2912a7a8deee6a5aad2d8e9469857b47e8f1fffea04892"></a>Ddpm&#160;</td><td class="fielddoc"><p>Ancestral DDPM (Ho et al. 2020): every timestep T..1, noise sqrt(beta_t), none at t = 1. </p>
+</td></tr>
+<tr><td class="fieldname"><a id="a16abc09757a0fa8932b2912a7a8deee6a547d390cce7b1df875a70782740fc21a" name="a16abc09757a0fa8932b2912a7a8deee6a547d390cce7b1df875a70782740fc21a"></a>Ddim&#160;</td><td class="fielddoc"><p>DDIM (Song et al. 2021) on evenly spaced timesteps; deterministic when eta = 0. </p>
 </td></tr>
 </table>
 
@@ -6505,6 +6589,38 @@ Every op here computes the <em>forward</em> value only &ndash; no derivative var
 <table class="fieldtable">
 <tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="ae999cb7b2d1c9ba912797e3319968107a06d1956cc4184000b78741d2667533d1" name="ae999cb7b2d1c9ba912797e3319968107a06d1956cc4184000b78741d2667533d1"></a>SumWithPrevious&#160;</td><td class="fielddoc"></td></tr>
 <tr><td class="fieldname"><a id="ae999cb7b2d1c9ba912797e3319968107a09a12a079bf46e996fea54fa0d53783a" name="ae999cb7b2d1c9ba912797e3319968107a09a12a079bf46e996fea54fa0d53783a"></a>DifferenceWithPrevious&#160;</td><td class="fielddoc"></td></tr>
+</table>
+
+</div>
+</div>
+<a id="a623b7b7b27181c2afbbab75bba927788" name="a623b7b7b27181c2afbbab75bba927788"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a623b7b7b27181c2afbbab75bba927788">&#9670;&#160;</a></span>TrajectorySplit</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">enum class <a class="el" href="namespacepulsatrix.html#a623b7b7b27181c2afbbab75bba927788">pulsatrix::TrajectorySplit</a></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">strong</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>How the relevance on x_prev is split across skip, network and noise (h_1, h_2, h_3). </p>
+<table class="fieldtable">
+<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="a623b7b7b27181c2afbbab75bba927788a21a6cd4ce1fe48ec9f7f83844c505334" name="a623b7b7b27181c2afbbab75bba927788a21a6cd4ce1fe48ec9f7f83844c505334"></a>AbsoluteRatio&#160;</td><td class="fielddoc"><p><code>R_k = R |h_k| / (sum_j |h_j| + epsilon)</code>, the absolute-value ratio of <a class="el" href="classpulsatrix_1_1LRP.html" title="Whole-model LRP: runs the forward pass, seeds relevance at the chosen output(s), and propagates it to...">LRP</a> for ResNets (Otsuki et al. 2024), D1's first design. Bounded however much the terms cancel, and conserving up to the epsilon, which only handles 0/0. But it loses sign: a term that opposes x_prev still gets a share of R's sign. The network term opposes the skip term whenever eps_theta removes noise, so everything that acts through eps_theta comes back with the wrong sign. On DIFF-5's planted DDPM the class got the wrong sign in 9 of 12 samples. </p>
+</td></tr>
+<tr><td class="fieldname"><a id="a623b7b7b27181c2afbbab75bba927788a5944af886bbc147575a84867fb03ee45" name="a623b7b7b27181c2afbbab75bba927788a5944af886bbc147575a84867fb03ee45"></a>SignedEpsilon&#160;</td><td class="fielddoc"><p>The signed epsilon rule, <code>R_k = R h_k / (s + e sign(s))</code> with <code>s = sum_j h_j</code> and the stabilizer e = epsilon * sum_j |h_j|. Shares grow without bound when the terms cancel; what the stabilizer absorbs is reported. </p>
+</td></tr>
+<tr><td class="fieldname"><a id="a623b7b7b27181c2afbbab75bba927788a610bac22a4f49151c0addc36a5fba66d" name="a623b7b7b27181c2afbbab75bba927788a610bac22a4f49151c0addc36a5fba66d"></a>SignedRatio&#160;</td><td class="fielddoc"><p><code>R_k = R h_k sign(s) / (sum_j |h_j| + epsilon)</code>: each term keeps the sign of its contribution to x_prev and is bounded by |R|. What the terms cancel, <code>R (1 - |s| / sum_j |h_j|)</code>, is absorbed and reported. It is the signed epsilon rule with the stabilizer <code>sum_j |h_j| - |s|</code>, just large enough to bound every share. </p>
+</td></tr>
 </table>
 
 </div>
@@ -13179,6 +13295,56 @@ template&lt;typename Genotype , typename FitnessT , typename FitnessFn &gt; </di
 </div><div class="memdoc">
 
 <p>The explainers that answer <code>question:</code> those that list it first, then the rest, each group in catalog order. Empty for a question pulsatrix has no explainer for yet. </p>
+
+</div>
+</div>
+<a id="a25c0f8f3df1740c3127cf96acebf54bd" name="a25c0f8f3df1740c3127cf96acebf54bd"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a25c0f8f3df1740c3127cf96acebf54bd">&#9670;&#160;</a></span>ExplainTrajectory()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="structpulsatrix_1_1TrajectoryRelevance.html">TrajectoryRelevance</a> pulsatrix::ExplainTrajectory </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classpulsatrix_1_1ContinuousDenoiser.html">ContinuousDenoiser</a> &amp;&#160;</td>
+          <td class="paramname"><em>model</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="structpulsatrix_1_1ContinuousTrajectory.html">ContinuousTrajectory</a> &amp;&#160;</td>
+          <td class="paramname"><em>trajectory</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const std::vector&lt; float &gt; &amp;&#160;</td>
+          <td class="paramname"><em>seed</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="structpulsatrix_1_1TrajectoryLrpConfig.html">TrajectoryLrpConfig</a> &amp;&#160;</td>
+          <td class="paramname"><em>config</em> = <code>{}</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Explains <code>seed</code>, relevance on the trajectory's sample x_0 (RegionSeed, ReconstructionSeed, or a downstream classifier's input relevance), back through <code>trajectory</code>, which SampleContinuousDiffusion produced with <code>model</code>. </p>
+<dl class="section note"><dt>Note</dt><dd>Cost: one forward and one relevance pass per step. Memory: one step's activations. </dd></dl>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname">std::invalid_argument</td><td>if the seed's size differs from the sample's, or a model output has the wrong size. </td></tr>
+    <tr><td class="paramname">std::runtime_error</td><td>if a step, rerun from the stored state, doesn't reproduce the stored next state within config.recompute_tolerance (the model isn't the one that sampled, or isn't deterministic). </td></tr>
+  </table>
+  </dd>
+</dl>
 
 </div>
 </div>
@@ -22521,6 +22687,78 @@ template&lt;typename Genotype , typename FitnessT &gt; </div>
 
 </div>
 </div>
+<a id="a56f5f58101230b8a826956355915412d" name="a56f5f58101230b8a826956355915412d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a56f5f58101230b8a826956355915412d">&#9670;&#160;</a></span>ReconstructionSeed()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::vector&lt; float &gt; pulsatrix::ReconstructionSeed </td>
+          <td>(</td>
+          <td class="paramtype">const std::vector&lt; float &gt; &amp;&#160;</td>
+          <td class="paramname"><em>sample</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const std::vector&lt; float &gt; &amp;&#160;</td>
+          <td class="paramname"><em>reference</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>The reconstruction error <code>||x_0 - reference||^2</code>, as <a class="el" href="classpulsatrix_1_1LRP.html" title="Whole-model LRP: runs the forward pass, seeds relevance at the chosen output(s), and propagates it to...">LRP</a> for autoencoders seeds it (Kobayashi et al. 2023): relevance <code>(x0_i - ref_i)^2</code> on each element. </p>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname">std::invalid_argument</td><td>if the sizes differ. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="ac0e1834e6acc95d6e421ba85e4bbb61b" name="ac0e1834e6acc95d6e421ba85e4bbb61b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac0e1834e6acc95d6e421ba85e4bbb61b">&#9670;&#160;</a></span>RegionSeed()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::vector&lt; float &gt; pulsatrix::RegionSeed </td>
+          <td>(</td>
+          <td class="paramtype">const std::vector&lt; float &gt; &amp;&#160;</td>
+          <td class="paramname"><em>sample</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const std::vector&lt; int64_t &gt; &amp;&#160;</td>
+          <td class="paramname"><em>region</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>The sum of <code>sample</code> over <code>region:</code> relevance x0_i on the region's elements, 0 elsewhere. </p>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname">std::invalid_argument</td><td>for an index outside the sample. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
 <a id="a27ada5559b2ea9d71fdb73638e9e0101" name="a27ada5559b2ea9d71fdb73638e9e0101"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a27ada5559b2ea9d71fdb73638e9e0101">&#9670;&#160;</a></span>ReinitializeParameters()</h2>
 
@@ -26403,6 +26641,54 @@ template&lt;typename ObjectiveFn , typename RNG &gt; </div>
 
 </div>
 </div>
+<a id="a58cbf1f15e9e7931a58513640b2e2bbd" name="a58cbf1f15e9e7931a58513640b2e2bbd"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a58cbf1f15e9e7931a58513640b2e2bbd">&#9670;&#160;</a></span>SampleContinuousDiffusion()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="structpulsatrix_1_1ContinuousTrajectory.html">ContinuousTrajectory</a> pulsatrix::SampleContinuousDiffusion </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classpulsatrix_1_1ContinuousDenoiser.html">ContinuousDenoiser</a> &amp;&#160;</td>
+          <td class="paramname"><em>model</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="classpulsatrix_1_1NoiseSchedule.html">NoiseSchedule</a> &amp;&#160;</td>
+          <td class="paramname"><em>schedule</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const std::vector&lt; float &gt; &amp;&#160;</td>
+          <td class="paramname"><em>x_T</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="structpulsatrix_1_1ContinuousSamplerConfig.html">ContinuousSamplerConfig</a> &amp;&#160;</td>
+          <td class="paramname"><em>config</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Runs the reverse process from <code>x_T</code> and records it. </p>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname">std::invalid_argument</td><td>for an empty x_T, steps &lt; 1, a negative eta, or a prediction of the wrong size. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
 <a id="ae9eab891dc86593d9e9db7840d27dbd2" name="ae9eab891dc86593d9e9db7840d27dbd2"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ae9eab891dc86593d9e9db7840d27dbd2">&#9670;&#160;</a></span>SampleMaskedDiffusion()</h2>
 
@@ -27685,6 +27971,36 @@ Scoped to the small, dense, well-conditioned systems this codebase's callers act
   </table>
   </dd>
 </dl>
+
+</div>
+</div>
+<a id="a303fd946d35ed5537002bc0dfb3b9211" name="a303fd946d35ed5537002bc0dfb3b9211"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a303fd946d35ed5537002bc0dfb3b9211">&#9670;&#160;</a></span>StandardNormal()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::vector&lt; float &gt; pulsatrix::StandardNormal </td>
+          <td>(</td>
+          <td class="paramtype">size_t&#160;</td>
+          <td class="paramname"><em>n</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">uint64_t&#160;</td>
+          <td class="paramname"><em>seed</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Draws <code>n</code> standard normal values from <code>seed</code>, as SampleContinuousDiffusion does. </p>
 
 </div>
 </div>
@@ -31472,6 +31788,25 @@ template&lt;typename Optimizer &gt; </div>
 <p>Trains every parameter of <code>tagger</code> on <code>rule</code> with the whole v1.1 training stack: AdamW with parameter groups, warmup plus cosine, gradient accumulation normalized by the window's token count, and gradient clipping. </p>
 <dl class="section return"><dt>Returns</dt><dd>The loss of each step run (the window mean over its real tokens). </dd></dl>
 <dl class="section note"><dt>Note</dt><dd>Each step's data depends only on (data_seed, step), so a resumed run sees exactly the batches an uninterrupted one would. </dd></dl>
+
+</div>
+</div>
+<a id="a76e02782b27c44fa1d25e5c4614fe46c" name="a76e02782b27c44fa1d25e5c4614fe46c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a76e02782b27c44fa1d25e5c4614fe46c">&#9670;&#160;</a></span>TrajectoryNetworkRules()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="structpulsatrix_1_1LRPRuleConfig.html">LRPRuleConfig</a> pulsatrix::TrajectoryNetworkRules </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>The network rules <a class="el" href="classpulsatrix_1_1ConcatDenoiser.html" title="A Module that reads [x_t, embedding(t), c] as one row, conditioned by concatenation as in tests/diffu...">ConcatDenoiser</a> uses unless told otherwise: the epsilon rule with the bias in the denominator (Zennit's), so the biases absorb their share. The codebase's default pre-bias rule divides by <code>x W</code> alone, which a hidden layer's bias can leave near zero while the unit is active; chained over the steps of a sampler its relevance blew up (DIFF-5's planted DDPM: conditioning shares up to 570 times the explained value). </p>
 
 </div>
 </div>

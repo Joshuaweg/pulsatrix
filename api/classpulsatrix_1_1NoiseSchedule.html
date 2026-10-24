@@ -94,7 +94,9 @@ $(document).ready(function(){initNavTree('classpulsatrix_1_1NoiseSchedule.html',
 
 <div class="header">
   <div class="summary">
+<a href="#nested-classes">Classes</a> &#124;
 <a href="#pub-methods">Public Member Functions</a> &#124;
+<a href="#pub-static-methods">Static Public Member Functions</a> &#124;
 <a href="classpulsatrix_1_1NoiseSchedule-members.html">List of all members</a>  </div>
   <div class="headertitle"><div class="title">pulsatrix::NoiseSchedule Class Reference</div></div>
 </div><!--header-->
@@ -128,6 +130,21 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a62eeb0e2312ef57ee8418fe40980b0ce" id="r_a62eeb0e2312ef57ee8418fe40980b0ce"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1NoiseSchedule.html#a62eeb0e2312ef57ee8418fe40980b0ce">denoise_step</a> (const <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp;x_t, const <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp;predicted_epsilon, const <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp;z, int64_t t) const</td></tr>
 <tr class="memdesc:a62eeb0e2312ef57ee8418fe40980b0ce"><td class="mdescLeft">&#160;</td><td class="mdescRight">One reverse (sampling) step, <code>x_{t-1} = mean_term + sqrt(beta_t) * z</code> where the mean term is <code>(1/sqrt(alpha_t)) * (x_t - (beta_t/sqrt(1-alpha_bar_t)) * eps_theta)</code>.  <br /></td></tr>
 <tr class="separator:a62eeb0e2312ef57ee8418fe40980b0ce"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad4f58bd8d969cad5299536f70b3fc8a7" id="r_ad4f58bd8d969cad5299536f70b3fc8a7"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structpulsatrix_1_1ReverseStepCoefficients.html">ReverseStepCoefficients</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1NoiseSchedule.html#ad4f58bd8d969cad5299536f70b3fc8a7">ddpm_coefficients</a> (int64_t t) const</td></tr>
+<tr class="memdesc:ad4f58bd8d969cad5299536f70b3fc8a7"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="classpulsatrix_1_1NoiseSchedule.html#a62eeb0e2312ef57ee8418fe40980b0ce" title="One reverse (sampling) step, x_{t-1} = mean_term + sqrt(beta_t) * z where the mean term is (1/sqrt(al...">denoise_step()</a>'s coefficients: skip <code>1/sqrt(alpha_t)</code>, network <code>beta_t / (sqrt(alpha_t) sqrt(1 - alpha_bar_t))</code>, noise <code>sqrt(beta_t)</code>.  <br /></td></tr>
+<tr class="separator:ad4f58bd8d969cad5299536f70b3fc8a7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab8d226b6fe3756864b020dc21e7ca523" id="r_ab8d226b6fe3756864b020dc21e7ca523"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structpulsatrix_1_1ReverseStepCoefficients.html">ReverseStepCoefficients</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1NoiseSchedule.html#ab8d226b6fe3756864b020dc21e7ca523">ddim_coefficients</a> (int64_t t, int64_t s, float eta=0.0f) const</td></tr>
+<tr class="memdesc:ab8d226b6fe3756864b020dc21e7ca523"><td class="mdescLeft">&#160;</td><td class="mdescRight">A DDIM step (Song et al. 2021, arXiv:2010.02502, eq. 12) from t to an earlier s: <code>x_s = sqrt(alpha_bar_s) x0_hat + sqrt(1 - alpha_bar_s - sigma^2) eps + sigma z</code> with <code>x0_hat = (x_t - sqrt(1 - alpha_bar_t) eps) / sqrt(alpha_bar_t)</code> and <code>sigma = eta sqrt((1 - alpha_bar_s) / (1 - alpha_bar_t)) sqrt(1 - alpha_bar_t / alpha_bar_s)</code>. <code>s = 0</code> is the clean sample, <code>alpha_bar_0 = 1</code>, where sigma is zero.  <br /></td></tr>
+<tr class="separator:ab8d226b6fe3756864b020dc21e7ca523"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a10fc51dc66cc43070537656e5b90d8c1" id="r_a10fc51dc66cc43070537656e5b90d8c1"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1NoiseSchedule.html#a10fc51dc66cc43070537656e5b90d8c1">ddim_step</a> (const <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp;x_t, const <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp;predicted_epsilon, const <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp;z, int64_t t, int64_t s, float eta=0.0f) const</td></tr>
+<tr class="memdesc:a10fc51dc66cc43070537656e5b90d8c1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Applies ddim_coefficients(t, s, eta): <code>skip * x_t - network * eps + noise * z</code>.  <br /></td></tr>
+<tr class="separator:a10fc51dc66cc43070537656e5b90d8c1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-static-methods" name="pub-static-methods"></a>
+Static Public Member Functions</h2></td></tr>
+<tr class="memitem:a2471eaec35a39549f0eee748b734825d" id="r_a2471eaec35a39549f0eee748b734825d"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="classpulsatrix_1_1NoiseSchedule.html">NoiseSchedule</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1NoiseSchedule.html#a2471eaec35a39549f0eee748b734825d">Cosine</a> (int64_t <a class="el" href="classpulsatrix_1_1NoiseSchedule.html#adbc053d6242ecbc799956f9e86ce49fc">num_timesteps</a>, double offset=0.008, double max_beta=0.999)</td></tr>
+<tr class="memdesc:a2471eaec35a39549f0eee748b734825d"><td class="mdescLeft">&#160;</td><td class="mdescRight">The cosine schedule of Nichol &amp; Dhariwal 2021 (arXiv:2102.09672): <code>alpha_bar_t = f(t) / f(0)</code> with <code>f(t) = cos^2(((t / T) + offset) / (1 + offset) * pi / 2)</code>, and <code>beta_t = min(1 - alpha_bar_t / alpha_bar_{t-1}, max_beta)</code>. Computed in double.  <br /></td></tr>
+<tr class="separator:a2471eaec35a39549f0eee748b734825d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>The DDPM (Ho et al. 2020, arXiv:2006.11239) linear variance schedule plus the two tensor operations defined directly on top of it &ndash; closed-form forward noising and the reverse (sampling) step. </p>
@@ -136,7 +153,7 @@ Public Member Functions</h2></td></tr>
 <dd>
 <b>Not a <a class="el" href="classpulsatrix_1_1Module.html" title="Base class for every layer type (LinearModule, Conv2DModule, activations, ...).">Module</a>, and has no parameters.</b> Nothing here is learned and nothing here has a backward pass of its own &ndash; the schedule is a fixed, deterministic function of its three constructor arguments, precomputed at construction in the same spirit as <a class="el" href="classpulsatrix_1_1RoPEModule.html" title="Rotary Position Embedding (RoPE, Su et al. 2021): a fixed, non-learnable, position-dependent rotation...">RoPEModule</a>'s fixed non-learned rotation angles. The training objective a diffusion model is actually optimized against is a plain <a class="el" href="classpulsatrix_1_1MSELoss.html" title="MSE = mean((prediction - target)^2).">MSELoss</a> between the true and predicted noise (<code>L_simple</code>), which needs no new loss class; the gradient path runs entirely through the caller's <code>epsilon_theta</code> network, never through this object. </dd>
 <dd>
-<b>No <a class="el" href="classpulsatrix_1_1LRP.html" title="Whole-model LRP: runs the forward pass, seeds relevance at the chosen output(s), and propagates it to...">LRP</a> rule, nothing to stub.</b> Diffusion's research spike found no credible native <a class="el" href="classpulsatrix_1_1LRP.html" title="Whole-model LRP: runs the forward pass, seeds relevance at the chosen output(s), and propagates it to...">LRP</a> rule (iterative stochastic denoising has no single conserved relevance seed per timestep) &ndash; and since this is not a <a class="el" href="classpulsatrix_1_1Module.html" title="Base class for every layer type (LinearModule, Conv2DModule, activations, ...).">Module</a>, there is no <code>propagate_relevance</code> to stub either. Same disposition as <a class="el" href="classpulsatrix_1_1Reparameterize.html" title="VAE reparameterization trick (Kingma &amp; Welling 2013, arXiv:1312.6114), z[b,d] = mu[b,...">Reparameterize</a> / <a class="el" href="classpulsatrix_1_1KLDivergenceLoss.html" title="Closed-form KL(N(mu, sigma^2) || N(0, I)) for a diagonal Gaussian posterior (Kingma &amp; Welling 2013,...">KLDivergenceLoss</a>; see the campaign's Phase 5 Amendment (2026-09-23). </dd>
+<b>No <a class="el" href="classpulsatrix_1_1LRP.html" title="Whole-model LRP: runs the forward pass, seeds relevance at the chosen output(s), and propagates it to...">LRP</a> rule of its own.</b> A reverse step is <code>skip * x_t - network * eps + noise * z</code> (<a class="el" href="structpulsatrix_1_1ReverseStepCoefficients.html" title="One reverse step as x_prev = skip * x_t - network * eps_theta + noise * z (DIFF-5)....">ReverseStepCoefficients</a>), and trajectory <a class="el" href="classpulsatrix_1_1LRP.html" title="Whole-model LRP: runs the forward pass, seeds relevance at the chosen output(s), and propagates it to...">LRP</a> (<a class="el" href="trajectory__lrp_8hpp.html" title="Explaining a continuous diffusion sampler end to end (DIFF-5): trajectory LRP (design D1),...">trajectory_lrp.hpp</a>, DIFF-5) splits relevance across those three terms. The schedule only supplies the coefficients. </dd>
 <dd>
 **<code>epsilon</code> and <code>z</code> are caller-supplied, never sampled internally.** Identical convention to <a class="el" href="classpulsatrix_1_1Reparameterize.html" title="VAE reparameterization trick (Kingma &amp; Welling 2013, arXiv:1312.6114), z[b,d] = mu[b,...">Reparameterize</a>'s <code>epsilon</code>: it keeps both operations deterministic and therefore directly testable against hand-computed values. Wiring real Gaussian sampling in is a demo's job, not this class's. </dd></dl>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
@@ -341,6 +358,192 @@ Public Member Functions</h2></td></tr>
   </table>
   </dd>
 </dl>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname">std::out_of_range</td><td>if t is outside [1, T]. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="a2471eaec35a39549f0eee748b734825d" name="a2471eaec35a39549f0eee748b734825d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2471eaec35a39549f0eee748b734825d">&#9670;&#160;</a></span>Cosine()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static <a class="el" href="classpulsatrix_1_1NoiseSchedule.html">NoiseSchedule</a> pulsatrix::NoiseSchedule::Cosine </td>
+          <td>(</td>
+          <td class="paramtype">int64_t&#160;</td>
+          <td class="paramname"><em>num_timesteps</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">double&#160;</td>
+          <td class="paramname"><em>offset</em> = <code>0.008</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">double&#160;</td>
+          <td class="paramname"><em>max_beta</em> = <code>0.999</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>The cosine schedule of Nichol &amp; Dhariwal 2021 (arXiv:2102.09672): <code>alpha_bar_t = f(t) / f(0)</code> with <code>f(t) = cos^2(((t / T) + offset) / (1 + offset) * pi / 2)</code>, and <code>beta_t = min(1 - alpha_bar_t / alpha_bar_{t-1}, max_beta)</code>. Computed in double. </p>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname">std::invalid_argument</td><td>if num_timesteps &lt;= 0, offset &lt; 0, or max_beta is outside (0, 1]. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section note"><dt>Note</dt><dd><a class="el" href="classpulsatrix_1_1NoiseSchedule.html#a072712d69f33fe008c044a84fb2de586" title="alpha_bar_t = prod_{s=1..t} alpha_s (the cumulative product).">alpha_bar()</a> then follows the clipped betas, as in the paper's code: only the last steps are clipped, where f falls to zero. </dd></dl>
+
+</div>
+</div>
+<a id="ab8d226b6fe3756864b020dc21e7ca523" name="ab8d226b6fe3756864b020dc21e7ca523"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab8d226b6fe3756864b020dc21e7ca523">&#9670;&#160;</a></span>ddim_coefficients()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="structpulsatrix_1_1ReverseStepCoefficients.html">ReverseStepCoefficients</a> pulsatrix::NoiseSchedule::ddim_coefficients </td>
+          <td>(</td>
+          <td class="paramtype">int64_t&#160;</td>
+          <td class="paramname"><em>t</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int64_t&#160;</td>
+          <td class="paramname"><em>s</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">float&#160;</td>
+          <td class="paramname"><em>eta</em> = <code>0.0f</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>A DDIM step (Song et al. 2021, arXiv:2010.02502, eq. 12) from t to an earlier s: <code>x_s = sqrt(alpha_bar_s) x0_hat + sqrt(1 - alpha_bar_s - sigma^2) eps + sigma z</code> with <code>x0_hat = (x_t - sqrt(1 - alpha_bar_t) eps) / sqrt(alpha_bar_t)</code> and <code>sigma = eta sqrt((1 - alpha_bar_s) / (1 - alpha_bar_t)) sqrt(1 - alpha_bar_t / alpha_bar_s)</code>. <code>s = 0</code> is the clean sample, <code>alpha_bar_0 = 1</code>, where sigma is zero. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">eta</td><td>0 is deterministic DDIM; 1 with s = t - 1 has the mean of a DDPM step and the posterior variance beta_tilde_t as its noise. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname">std::out_of_range</td><td>if t is outside [1, T] or s outside [0, t). </td></tr>
+    <tr><td class="paramname">std::invalid_argument</td><td>if eta &lt; 0. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="a10fc51dc66cc43070537656e5b90d8c1" name="a10fc51dc66cc43070537656e5b90d8c1"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a10fc51dc66cc43070537656e5b90d8c1">&#9670;&#160;</a></span>ddim_step()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> pulsatrix::NoiseSchedule::ddim_step </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp;&#160;</td>
+          <td class="paramname"><em>x_t</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp;&#160;</td>
+          <td class="paramname"><em>predicted_epsilon</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp;&#160;</td>
+          <td class="paramname"><em>z</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int64_t&#160;</td>
+          <td class="paramname"><em>t</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int64_t&#160;</td>
+          <td class="paramname"><em>s</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">float&#160;</td>
+          <td class="paramname"><em>eta</em> = <code>0.0f</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Applies ddim_coefficients(t, s, eta): <code>skip * x_t - network * eps + noise * z</code>. </p>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname">as</td><td><a class="el" href="classpulsatrix_1_1NoiseSchedule.html#ab8d226b6fe3756864b020dc21e7ca523" title="A DDIM step (Song et al. 2021, arXiv:2010.02502, eq. 12) from t to an earlier s: x_s = sqrt(alpha_bar...">ddim_coefficients()</a>, and std::invalid_argument if the shapes or devices differ. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="ad4f58bd8d969cad5299536f70b3fc8a7" name="ad4f58bd8d969cad5299536f70b3fc8a7"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad4f58bd8d969cad5299536f70b3fc8a7">&#9670;&#160;</a></span>ddpm_coefficients()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="structpulsatrix_1_1ReverseStepCoefficients.html">ReverseStepCoefficients</a> pulsatrix::NoiseSchedule::ddpm_coefficients </td>
+          <td>(</td>
+          <td class="paramtype">int64_t&#160;</td>
+          <td class="paramname"><em>t</em></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p><a class="el" href="classpulsatrix_1_1NoiseSchedule.html#a62eeb0e2312ef57ee8418fe40980b0ce" title="One reverse (sampling) step, x_{t-1} = mean_term + sqrt(beta_t) * z where the mean term is (1/sqrt(al...">denoise_step()</a>'s coefficients: skip <code>1/sqrt(alpha_t)</code>, network <code>beta_t / (sqrt(alpha_t) sqrt(1 - alpha_bar_t))</code>, noise <code>sqrt(beta_t)</code>. </p>
 <dl class="exception"><dt>Exceptions</dt><dd>
   <table class="exception">
     <tr><td class="paramname">std::out_of_range</td><td>if t is outside [1, T]. </td></tr>

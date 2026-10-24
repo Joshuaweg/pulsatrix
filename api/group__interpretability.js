@@ -17,6 +17,7 @@ var group__interpretability =
     [ "protein_contacts.hpp", "protein__contacts_8hpp.html", null ],
     [ "protein_explanations.hpp", "protein__explanations_8hpp.html", null ],
     [ "proteingym.hpp", "proteingym_8hpp.html", null ],
+    [ "trajectory_lrp.hpp", "trajectory__lrp_8hpp.html", null ],
     [ "uncertainty.hpp", "uncertainty_8hpp.html", null ],
     [ "variant_scoring.hpp", "variant__scoring_8hpp.html", null ]
 ];

@@ -256,6 +256,7 @@ var dir_549639eb5e09d856a0d6449a002be6ea =
     [ "topk_sparse_autoencoder.hpp", "topk__sparse__autoencoder_8hpp.html", "topk__sparse__autoencoder_8hpp" ],
     [ "tpe.hpp", "tpe_8hpp.html", "tpe_8hpp" ],
     [ "trajectory_balance_loss.hpp", "trajectory__balance__loss_8hpp.html", "trajectory__balance__loss_8hpp" ],
+    [ "trajectory_lrp.hpp", "trajectory__lrp_8hpp.html", "trajectory__lrp_8hpp" ],
     [ "transcoder.hpp", "transcoder_8hpp.html", "transcoder_8hpp" ],
     [ "transform.hpp", "transform_8hpp.html", "transform_8hpp" ],
     [ "transformer_block.hpp", "transformer__block_8hpp.html", "transformer__block_8hpp" ],
