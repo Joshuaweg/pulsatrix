@@ -74,8 +74,9 @@ whole network, see [Layer-wise Relevance Propagation](../interpretability/lrp.md
   `AdamWOptimizer`, all with parameter groups; `MSELoss`, `CrossEntropyLoss`,
   `TokenCrossEntropyLoss`, `DistillationLoss`, `HiddenStateCosineLoss`, `BCEWithLogitsLoss`,
   `KLDivergenceLoss`, `CalibrationLoss`
-- **Generative building blocks**: `Reparameterize` (VAE), `NoiseSchedule` and
-  `SinusoidalTimestepEmbedding()` (diffusion)
+- **Generative building blocks**: `Reparameterize` (VAE), `NoiseSchedule` (linear and cosine
+  schedules, DDPM and DDIM steps), `SinusoidalTimestepEmbedding()` and
+  `SampleContinuousDiffusion()` (diffusion; `trajectory_lrp.hpp` explains its samples)
 - **Training utilities**: `ClipGradNorm`, `LRSchedule`/`LRScheduler`, parameter groups
   (`param_groups.hpp`), checkpoints (`SaveCheckpoint`/`LoadCheckpoint`, `safetensors.hpp`),
   `set_seed`/`set_deterministic`, and `MetricsSink`/`NoOpMetricsSink` (where `train_step` logs

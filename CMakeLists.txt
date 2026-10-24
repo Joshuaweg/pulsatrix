@@ -202,6 +202,7 @@ add_library(pulsatrix_core
     src/noise_schedule.cpp
     src/masked_diffusion.cpp
     src/masked_diffusion_lrp.cpp
+    src/trajectory_lrp.cpp
     src/sinusoidal_timestep_embedding.cpp
     src/cartpole_env.cpp
     src/continuous_cartpole_env.cpp
